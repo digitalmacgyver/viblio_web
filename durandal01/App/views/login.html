@@ -1,0 +1,84 @@
+<div id="login-page">
+
+  <div class="row">
+    <div class="span4">
+      <a style="margin-left: 20px;" data-bind="click: facebookAuthenticate">
+	<img style="margin: 0;" src="/Content/images/facebook-connect2.png" />
+      </a>
+    </div>
+    <div class="span2">
+      <p class="lead">or...</p>
+    </div>
+    <div id="login" class="form-inline span6">
+      <form>
+	<span data-bind="css: { error: email_entry_error() }">
+          <input type="text" class="text" data-bind="value: email" placeholder="Email" />
+	</span>
+	<span data-bind="css: { error: password_entry_error() }">
+          <input type="password" class="text" data-bind="value: password" placeholder="Password" />
+	</span>
+	<button class="btn" data-bind="click: nativeAuthenticate">
+          Login
+	</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="row">
+    <div id="headline" class="span12">
+      Make Something Cool!
+    </div>
+  </div>
+
+  <div id="backdrop" class="row">
+    <div id="register" class="span6">
+      <div id="sub-heading">
+	Get started - it's free!
+      </div>
+      <p>Registration takes less than a minute.</p>
+      <form class="form-inline">
+	<div>
+          <input type="text" class="input-xlarge" data-bind="value: rfullname" placeholder="Full Name" />
+	</div>
+	<div>
+          <input type="email" class="input-xlarge" data-bind="value: remail"  placeholder="Email" />
+	</div>
+	<div>
+          <input type="password" class="input-xlarge" data-bind="value: rpassword1" placeholder="Password" />
+	</div>
+	<div>
+          <input type="password" class="input-xlarge" data-bind="value: rpassword2" placeholder="Password Again" />
+	</div>
+	<div style="margin-bottom: 15px;">&nbsp;</div>
+	<button type="button" class="btn" data-bind="click: register">
+          Join Now
+	</button>
+      </form>
+    </div>
+
+    <div id="invite" class="span6">
+      <div id="sub-heading">
+	You're Invited!
+      </div>
+      <p>Enter your invite code below and you're in.</p>
+      <form class="form-inline">
+	<div>
+          <input type="text" class="input-xlarge" data-bind="value: ifullname" placeholder="Full Name" />
+	</div>
+	<div>
+          <input type="email" class="input-xlarge" data-bind="value: iemail" placeholder="Email" />
+	</div>
+	<div>
+          <input type="password" class="input-xlarge" data-bind="value: ipassword" placeholder="Password" />
+	</div>
+	<div>
+          <input type="text" class="input-xlarge" data-bind="value: icode" placeholder="Invite Code" />
+	</div>
+	<div style="margin-bottom: 15px;">&nbsp;</div>
+	<button type="button" class="btn" data-bind="click: invite">
+          Complete
+	</button>
+      </form>
+    </div>
+
+</div>
