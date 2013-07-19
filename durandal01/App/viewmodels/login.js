@@ -19,9 +19,6 @@ define( ['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/conf
     fb_appid   = config.facebook_appid();
     fb_channel = config.facebook_channel();
 
-    system.log( 'appid: ' +  fb_appid );
-    system.log( 'channel: ' + fb_channel );
-
     FB.init({
 	appId: fb_appid,
 	channelUrl: fb_channel,
@@ -63,7 +60,7 @@ define( ['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/conf
 			  });
 	    }
 	    else {
-		app.showMessage( 'User cancelled?', 'Authentication' );
+		dialogs.showMessage( 'User cancelled?', 'Authentication' );
 	    }
 	},{scope: config.facebook_ask_features()});
     }

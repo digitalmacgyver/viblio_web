@@ -1,4 +1,4 @@
-define(['durandal/plugins/router', 'durandal/app', 'durandal/system'], function (router, app, system) {
+define(['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/dialogs'], function (router, app, system, dialogs) {
 
     // The currently logged in user
     var user = ko.observable();
@@ -76,7 +76,7 @@ define(['durandal/plugins/router', 'durandal/app', 'durandal/system'], function 
 			self.debug( 'Must (re)authenticate!' );
 			if ( data.message && data.message == 'Login failed' ) {
 			    // I am already on the login page!
-			    app.showMessage( 'Authentication Failure', 'Login Failed' );
+			    dialogs.showMessage( 'Authentication Failure', 'Login Failed' );
 			}
 			else {
 			    self.setLastAttempt( router.activeRoute().hash );
@@ -84,12 +84,12 @@ define(['durandal/plugins/router', 'durandal/app', 'durandal/system'], function 
 			}
 		    }
 		    else {
-			app.showMessage( 'No code: Message: ' + data.message + ', ' + data.detail, 'API Error' );
+			dialogs.showMessage( 'No code: Message: ' + data.message + ', ' + data.detail, 'API Error' );
 		    }
 		    deferred.reject( x, 'error' );
 		}
 		else if ( data && data.error ) {
-		    app.showMessage( data.message + ', ' + data.detail, 'API Error' );
+		    dialogs.showMessage( data.message + ', ' + data.detail, 'API Error' );
 		}
 		else {
 		    deferred.resolve( data, status, xhr );
