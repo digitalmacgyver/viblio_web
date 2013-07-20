@@ -1,0 +1,49 @@
+.media-file {
+    width: 128px;
+    height: 128px;
+    float: left;
+    margin-left: 24px;
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.mplay-icon, .mplay-icon:hover, .mplay-icon:visited {
+    position: absolute;
+    z-index: 100;
+    border: 0;
+    text-decoration: none;
+    opacity: .8;
+    top: 48px;
+    left: 48px;
+}
+
+.mplay-icon i {
+    color: white;
+    font-size: 40px;
+}
+
+.media-file .icon-ok-sign {
+    position: absolute;
+    z-index: 100;
+    border: 0;
+    text-decoration: none;
+    top: 48px;
+    left: 48px;
+    display: none;
+    color: white;
+    font-size: 40px;
+}
+
+.selected .icon-ok-sign {
+    display: block;
+}
+
+
+.fancybox-wrap {
+  width: 80% !important;
+}
+
+#player {
+    height: 480px;
+}
+

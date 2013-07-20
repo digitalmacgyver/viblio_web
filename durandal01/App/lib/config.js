@@ -26,6 +26,8 @@ define( function() {
 	    player: 'player'
 	},
 
+	site_server: myLocation,
+
 	// Facebook params.
 	facebook_appid: function() {
 	    return fbInfo[window.location.protocol + myLocation];
