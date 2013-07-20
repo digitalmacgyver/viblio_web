@@ -1,4 +1,4 @@
-define(['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/dialogs'], function (router, app, system, dialogs) {
+define(['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'lib/dialogs'], function (router, app, system, messageq, dialogs) {
 
     // The currently logged in user
     var user = ko.observable();
@@ -8,6 +8,8 @@ define(['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/dialo
 		// Don't change it if its the same user, to prevent
 		// subscribe callbacks from firing.
 		user( u );
+		// subscribe to the async message queue
+		messageq.subscribe( u.uuid );
 	    }
 	}
 	else {
@@ -15,6 +17,7 @@ define(['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/dialo
 		displayname: 'anonymous',
 		uuid: null
 	    });
+	    messageq.unsubscribe();
 	}
     };
     setUser( null );
@@ -34,6 +37,10 @@ define(['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/dialo
 	},
 
 	log: function( msg ) {
+	    system.log( msg );
+	},
+
+	log_error: function( msg ) {
 	    system.log( msg );
 	},
 

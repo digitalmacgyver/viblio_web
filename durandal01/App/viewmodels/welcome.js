@@ -28,6 +28,7 @@ define(['durandal/app','lib/viblio','lib/dialogs','viewmodels/mediafile'],functi
 	viewAttached: function( view ) {
 	    return viblio.api( '/services/user/media', { from: 's3' } ).then( function( json ) {
 		// media( json.media );
+		media.removeAll();
 		for( var i=0; i<json.media.length; i++ )
 		    media.push( new Mediafile( json.media[i] ) );
 	    });

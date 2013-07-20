@@ -7,8 +7,6 @@ requirejs.config({
     paths: {
         'text': 'durandal/amd/text',
         'facebook': '//connect.facebook.net/en_US/all',
-	'flowplayer': '../Vendor/flowplayer/flowplayer-3.2.12.min',
-	'flowplayer-ipad': '../Vendor/flowplayer/plugins/flowplayer.ipad-3.2.12.min',
 	'fancybox': '../Vendor/fancybox-2.1.5/jquery.fancybox'
     }
 });

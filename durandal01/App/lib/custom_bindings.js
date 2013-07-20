@@ -3,7 +3,7 @@
    General useage:
      <div data-bind="name: {}"></div>
 */
-define(['lib/config','fancybox','flowplayer','flowplayer-ipad'],function(config) {
+define(['lib/config','fancybox'],function(config) {
     var videoel = document.createElement("video"),
     idevice = /ip(hone|ad|od)/i.test(navigator.userAgent),
     noflash = flashembed.getVersion()[0] === 0,
