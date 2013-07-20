@@ -13,7 +13,7 @@ requirejs.config({
     }
 });
 
-define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/plugins/router','lib/viblio'],
+define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/plugins/router','lib/custom_bindings','lib/viblio'],
     function(app, viewLocator, system, router) {
 
         //>>excludeStart("build", true);

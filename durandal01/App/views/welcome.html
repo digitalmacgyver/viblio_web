@@ -2,8 +2,10 @@
 
   <div data-bind="compose:'viewmodels/header'"></div>
 
-  <div data-bind="foreach:media">
-    <div data-bind="compose: $data"></div>
+  <div data-bind="modal_fancybox_flowplayer: {}">
+    <div data-bind="foreach:media">
+      <div data-bind="compose: $data"></div>
+    </div>
   </div>
 
   <div style="clear: both;">
