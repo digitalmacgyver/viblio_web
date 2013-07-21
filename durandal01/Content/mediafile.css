@@ -1,10 +1,12 @@
 .media-file {
     width: 128px;
     height: 128px;
-    float: left;
     margin-left: 24px;
     margin-bottom: 24px;
+/*
+    float: left;
     position: relative;
+*/
 }
 
 .mplay-icon, .mplay-icon:hover, .mplay-icon:visited {

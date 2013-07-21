@@ -2,11 +2,15 @@
 
   <div data-bind="compose:'viewmodels/header'"></div>
 
-  <div data-bind="modal_fancybox_flowplayer: {}">
-    <div data-bind="foreach:media">
+  <!--  <div data-bind="smooth_div_scroll: {}">  -->
+  <div class="well">
+    <div class="smooth-div-scrollable" data-bind="modal_fancybox_flowplayer: {}">
+      <!-- ko foreach: media -->
       <div data-bind="compose: $data"></div>
+      <!-- /ko -->
     </div>
   </div>
+  <!--  </div> -->
 
   <div style="clear: both;">
     <button class="btn" data-bind="click: toggleEditMode, html: edit_state"></button>
@@ -20,4 +24,6 @@
       </div>
     </div>
   </div>
+
 </div>
+

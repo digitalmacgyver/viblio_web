@@ -82,5 +82,18 @@ define(['lib/config','fancybox'],function(config) {
 	update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
 	}
     };
+    
+    ko.bindingHandlers.smooth_div_scroll = {
+	init: function( element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+	    $(element).find(".smooth-div-scrollable").smoothDivScroll({
+		manualContinuousScrolling: false,
+		mousewheelScrolling: "horizontal",
+		touchScrolling: true
+	    });
+	},
+	update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+	}
+    };
+
     return({});
 });
