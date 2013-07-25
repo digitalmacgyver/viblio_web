@@ -1,0 +1,28 @@
+<div id="player-page">
+  <!-- Right Column -->
+  <div id="right-column" class="pull-right">
+    <div id="share-wrapper">
+      <div><a class="btn" href="#">
+	<i class="icon-share"></i> Share this Video
+      </a></div>
+    </div>
+    <div id="related-wrapper">
+      <div><p>Related Videos</p></div>
+      <div data-bind="compose: related"></div>
+    </div>
+  </div>
+
+  <!-- Main Page -->
+  <div id="main">
+    <div id="container">
+      <div id="center" class="column">
+	<div id="tv">tv</div>
+	<div id="info">info</div>
+	<div id="comments">comments</div>
+      </div>
+      <div id="left"  class="column"><a href="#" data-bind="click: previousRelated"><i class="icon-step-backward"></i></a></div>
+      <div id="right" class="column"><a href="#" data-bind="click: nextRelated"><i class="icon-step-forward"></i></a></div>
+    </div>
+    <div style="clear: both"></div>
+  </div>
+</div>

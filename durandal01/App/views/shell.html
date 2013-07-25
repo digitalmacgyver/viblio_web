@@ -1,5 +1,6 @@
 <div>
-  <div class="container page-host">
+  <div data-bind="compose:'viewmodels/header'"></div>
+  <div class="container-fluid page-host">
     <!--ko compose: { 
         model: router.activeItem, //wiring the router
         afterCompose: router.afterCompose, //wiring the router

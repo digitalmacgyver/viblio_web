@@ -85,6 +85,19 @@ define(['durandal/plugins/router','durandal/app','durandal/system','lib/viblio',
 		    }
 		});
 	    }).promise();
+        },
+	viewAttached: function( view ) {
+            // Wrap the main content page with a custom scrollbar
+            $(view).find(".container-fluid").mCustomScrollbar({
+                contentTouchScroll: true,
+                theme: 'dark-thick',
+                mouseWheel: true,
+                autoHideScrollbar: true,
+                advanced: {
+                    updateOnContentResize: true,
+                    updateOnBrowserResize: true
+                }
+            });
         }
     };
 });

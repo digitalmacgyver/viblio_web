@@ -5,6 +5,7 @@ requirejs.config({
         }
     },
     paths: {
+	'purl': '../Scripts/purl',
         'text': 'durandal/amd/text',
         'facebook': '//connect.facebook.net/en_US/all',
 	'fancybox': '../Vendor/fancybox-2.1.5/jquery.fancybox'
@@ -38,11 +39,11 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/plu
                 url: 'welcome',
                 visible: true,
                 moduleId: null, name: null,
-                authenticated: false
+                authenticated: true
             });
 
             router.mapRoute({
-                url: 'flickr',
+                url: 'player',
                 visible: true,
                 moduleId: null, name: null,
                 authenticated: true

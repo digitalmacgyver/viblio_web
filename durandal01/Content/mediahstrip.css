@@ -1,0 +1,34 @@
+.hstrip .media-area {
+    width:100%;
+    position:relative;
+}
+.hstrip .portfolio {
+    width:100%;
+    position:relative;
+}
+.hstrip .portfolio ul{
+    width:100%;
+    display:block;
+    white-space:nowrap;
+    overflow:none; /* change to auto to get normal scrollbars */
+    list-style:none;
+    padding:0;
+    margin:0;
+    text-align:center; /*in case not enough images to create a scroll*/
+}
+.hstrip .portfolio ul > div {
+    display:inline-block;
+    position:relative;
+}
+
+.hstrip .title span {
+    display:inline-block; 
+    vertical-align:middle;
+    margin-bottom: 10px;
+}
+
+.hstrip .title > h2 {
+    display: inline;
+    padding-right: 20px;
+}
+

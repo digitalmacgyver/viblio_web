@@ -1,29 +1,7 @@
 <div>
-
-  <div data-bind="compose:'viewmodels/header'"></div>
-
-  <!--  <div data-bind="smooth_div_scroll: {}">  -->
-  <div class="well">
-    <div class="smooth-div-scrollable" data-bind="modal_fancybox_flowplayer: {}">
-      <!-- ko foreach: media -->
-      <div data-bind="compose: $data"></div>
-      <!-- /ko -->
-    </div>
+  <h2 data-bind="html: displayName"></h2>
+  <div data-bind="foreach: strips">
+    <div data-bind="compose: $data"></div>
   </div>
-  <!--  </div> -->
-
-  <div style="clear: both;">
-    <button class="btn" data-bind="click: toggleEditMode, html: edit_state"></button>
-  </div>
-
-  <div data-bind="if: edit_state() == 'Done'">
-    <div>Selected Videos:</div>
-    <div data-bind="foreach:media">
-      <div data-bind="if: selected()">
-	<div data-bind="html: media.uuid"></div>
-      </div>
-    </div>
-  </div>
-
 </div>
 

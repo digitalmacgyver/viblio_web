@@ -1,0 +1,107 @@
+#player-page {
+    margin-top: 20px;
+}
+
+#player-page #right-column {
+    width: 320px;
+}
+
+#player-page #share-wrapper {
+    background-color: #ccc;
+    height: 60px;
+    width: 100%;
+    padding-top: 30px;
+}
+
+#player-page #share-wrapper > div {
+    display: table;
+    margin: 0 auto;
+}
+
+#player-page #related-wrapper {
+    min-height: 600px;
+    margin-top: 3px;
+    background-color: #ccc;
+}
+
+#player-page #related-wrapper p {
+    text-align: center;
+    font-size: 25px;
+    margin-top: 6px;
+}
+
+/***** MAIN LAYOUT ****/
+
+#player-page #main {
+    position: absolute;
+}
+
+#container {
+  padding-left: 50px;   /* LC width */
+  padding-right: 50px;  /* RC width */
+}
+#container .column {
+  position: relative;
+  float: left;
+}
+#center {
+  width: 100%;
+}
+#left {
+  width: 50px;          /* LC width */
+  right: 50px;          /* LC width */
+  margin-left: -100%;
+}
+#right {
+  width: 50px;          /* RC width */
+  margin-right: -50px;  /* RC width */
+}
+
+/*** IE6 Fix ***/
+* html #left {
+  left: 50px;           /* RC width */
+}
+
+/*********** GUTS ****************/*
+
+
+#left a i, #right a i {
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 150px;
+    width: 100%;
+    font-size: 35px;
+}
+
+#left a:hover, #right a:hover {
+    text-decoration: none;
+}
+
+#tv {
+    height: 480px;
+    background-color: orange;
+}
+
+#info {
+    height: 100px;
+    background-color: #eee;
+}
+
+#comments {
+    height: 50px;
+    background-color: black;
+}
+
+#player-page .vstrip .media-area {
+    height: 600px;
+    overflow: auto;
+}
+
+#player-page .vstrip div {
+    margin: 0 auto;
+}
+
+#player-page .vstrip div.mediafile {
+    position: relative;
+}
+

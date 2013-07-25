@@ -1,0 +1,14 @@
+<div class="hstrip well">
+  <div class="title">
+    <button class="btn btn-small pull-right" data-bind="click: toggleEditMode, text: editLabel"></button>
+    <h2 class="cinematic" data-bind="html: title"></h2>
+    <span class="muted" data-bind="html: subtitle"></span>
+  </div>
+  <div class="media-area">
+    <div class="portfolio">
+      <ul data-bind="foreach: mediafiles">
+	<div data-bind="compose: $data"></div>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,12 +1,15 @@
-<div>
-<div class="media-file video-file" data-bind="css:{selected:selected}">
-  <a class="fancybox mplay-icon" href="#" 
-     data-bind="attr:{'data-uri':media.views.main.uri,'data-url':media.views.main.url,'data-uuid':media.views.main.uuid}">
+<!-- <div class="mediafile" data-bind="click:select, css:{selected: selected()}"> -->
+<div class="mediafile" data-bind="click:play, attr:{id:media().uuid}">
+  <a class="mplay-icon" href="#">
     <i class="icon-play-circle"></i> 
   </a>
   <i class="icon-ok-sign"></i>
   <div href-"#">
-    <img width="128" height="128" data-bind="{attr:{src:media.views.thumbnail.url}}" />
+    <img data-bind="{attr:{src:media().views.thumbnail.url}}" />
+  </div>
+  <div class="information">
+    <div class="aux pull-right muted"><span data-bind="html: media().eyes">0</span> views</div>
+    <div class="title truncate" style="width: 130px" data-bind="html: media().title"></div>
   </div>
 </div>
-</div>
+

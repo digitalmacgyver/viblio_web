@@ -76,7 +76,6 @@ define(['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/messa
 	    });
 
 	    x.done( function( data, status, xhr ) {
-		self.log( 'AJAX DONE: data=' + data );
 		if ( data && data.error && data.code ) {
 		    if ( data.code == 401 || data.code == 403 ) {
 			// authentication failure; redirect back to login page

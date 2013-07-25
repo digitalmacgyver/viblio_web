@@ -95,5 +95,28 @@ define(['lib/config','fancybox'],function(config) {
 	}
     };
 
+    ko.bindingHandlers.mCustomScrollbar = {
+        init: function(element, valueAccessor) {
+            var options = ko.utils.unwrapObservable(valueAccessor()),
+            $element = $(element);
+
+            options.mouseWheel = options.mouseWheel || true;
+            options.theme = options.theme || 'dark-thick';
+            options.autoHideScrollbar = options.autoHideScrollbar || true;
+            options.mouseWheelPixels = options.mouseWheelPixels || 'auto';
+            options.horizontalScroll = options.horizontalScroll || false;
+            options.advanced = options.advanced || {};
+            options.advanced.autoExpandHorizontalScroll = options.horizontalScroll;
+            options.advanced.updateOnContentResize = options.advanced.updateOnContentResize || true;
+            options.advanced.updateOnBrowserResize = options.advanced.updateOnBrowserResize || true;
+	    
+            $element.mCustomScrollbar( options );
+
+            ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
+                $element.mCustomScrollbar("destroy");
+            });
+        }
+    };
+
     return({});
 });

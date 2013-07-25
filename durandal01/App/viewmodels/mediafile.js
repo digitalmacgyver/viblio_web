@@ -1,31 +1,36 @@
-define(['durandal/app','lib/config','lib/viblio'],function(app,config,viblio) {
+define(['durandal/events'],function(Events) {
+
+    function randomFromInterval(from,to) {
+        return Math.floor(Math.random()*(to-from+1)+from);
+    }
 
     var video = function( data ) {
-	this.media = data;
+	data.title = data.filename;
+	data.description = 'no description',
+	data.eyes = randomFromInterval( 3, 199 );
+
+	this.media    = ko.observable( data );
 	this.selected = ko.observable( false );
-	this.view = null;
+	this.edittable = ko.observable( false );
+
+	Events.includeIn( this );
     };
 
-    video.prototype.select = function(event) {
-	var self = event.data;
-	viblio.debug( 'media file selected: ' + self.media.uuid );
-	self.selected( self.selected() ? false : true );
+    video.prototype.select = function() {
+	this.selected( this.selected() ? false : true );
+	this.trigger( 'mediafile:selected', this );
     };
 
-    video.prototype.enterEditMode = function() {
-	$(this.view).find( ".mplay-icon" ).hide();
-        $(this.view).find( ".media-file").on( 'click', this, this.select );
+    video.prototype.play = function() {
+	this.trigger( 'mediafile:play', this );
     };
-
-    video.prototype.exitEditMode = function() {
-	$(this.view).find( ".mplay-icon" ).show();
-        this.selected( false );
-        $(this.view).find( ".media-file").off( 'click', this, this.select );
+    
+    video.prototype.toggleEditMode = function() {
+	this.edittable( this.edittable() ? false : true );
     };
 
     video.prototype.viewAttached = function( view ) {
-	this.view = view;
-	viblio.debug( 'in after render: ' + this.media.uuid );
+	this.trigger( 'mediafile:attached', this );
     };
 
     return video;
