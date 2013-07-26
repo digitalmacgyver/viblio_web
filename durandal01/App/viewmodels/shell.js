@@ -1,4 +1,4 @@
-define(['durandal/plugins/router','durandal/app','durandal/system','lib/viblio','facebook'], function (router, app, system, viblio) {
+define(['durandal/plugins/router','durandal/app','durandal/system','lib/viblio','facebook','purl'], function (router, app, system, viblio) {
     
     // This is how you "guard" routes; ie make conditional decisions
     // on whether a route should proceed.  Combined with router.mapRoute()
@@ -22,7 +22,8 @@ define(['durandal/plugins/router','durandal/app','durandal/system','lib/viblio',
 		    if ( res && res.error ) {
 			// Remember the failed attempt so we can return there
 			// after a successful login.
-			viblio.setLastAttempt( routeInfo.hash );
+			var p = $.url( window.location.href );
+			viblio.setLastAttempt( p.attr( 'relative') );
 			dfd.resolve('#/login');
 		    }
 		    else {

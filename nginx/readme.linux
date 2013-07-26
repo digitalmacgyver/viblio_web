@@ -1,0 +1,21 @@
+
+Under ./nginx you will see a "local.conf". Make a copy of that file to 
+your-name.conf. Edit the file and change the "root" for "location /" 
+(about line 10 or 11) to point to where you cloned your repository.
+
+Install nginx. On Ubuntu:
+
+sudo apt-get install nginx
+
+The nginx configuration is under /etc/nginx. You need to incorporate your 
+your-name.conf into the nginx configuration. What I like to do is to add 
+the following lines at the bottom of the http{} section in 
+/etc/ngin/nginx.conf:
+
+include /etc/nginx/conf.d/*.conf;
+include /etc/nginx/sites-enabled/*;
+
+Then "mkdir /etc/nginx/sites-enabled" and either copy or link to 
+your-name.conf. Then restart nginx:
+
+sudo /etc/init.d/nginx restart

@@ -1,0 +1,27 @@
+If you've never enabled the web server on your mac:
+
+In Lion, do the following:
+To turn on Apache, go to System Preferences > Sharing and enable Web Sharing.
+ 
+In Mountain Lion, the Web Sharing checkbox in System Preferences > Sharing 
+is gone. Instead, do the following: 
+
+sudo launchctl load -w /System/Library/LaunchDaemons/org.apache.httpd.plist
+
+---------------
+
+Assuming you git-clone into /Users/joe/web-clients ...
+
+The apache server runs as a user that cannot access your files.  So:
+
+cd /Users/joe
+chmod -R oug+rw web-clients
+
+Then add the following line at the very bottom of /etc/apache2/httpd.conf:
+
+Include /Users/joe/web-clients/apache2/viblio.conf
+
+Then restart apache:
+
+sudo apachectl restart
+

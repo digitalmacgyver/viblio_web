@@ -65,12 +65,19 @@
 /*********** GUTS ****************/*
 
 
+/*
 #left a i, #right a i {
     text-align: center;
     margin: 0 auto;
     margin-top: 150px;
     width: 100%;
     font-size: 35px;
+}
+*/
+
+#left a, #right a {
+    margin-left: 9px;
+    margin-top: 100px;
 }
 
 #left a:hover, #right a:hover {
@@ -79,7 +86,13 @@
 
 #tv {
     height: 480px;
-    background-color: orange;
+    background-color: white;
+}
+
+#tv img {
+    display: block;
+    margin: 0 auto;
+    margin-top: 200px;
 }
 
 #info {

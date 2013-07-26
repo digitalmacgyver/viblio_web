@@ -1,0 +1,52 @@
+Major Components 
+----------------
+
+This document is bound to be old before the ink is dry, but here is an attempt 
+to describe the most interesting componets in the present GUI.
+
+mediafile
+---------
+
+The most reusable view/model is probably the "mediafile".  The viewmodel returns
+an object factory, not a singleton.  Usage:
+
+    define( ['viewmodels/mediafile'], function( Mediafile ) {
+      var mediafiles = ko.observableArray([]);
+      viblio.api( '/services/user/media' ).then( function( res ) {
+        res.media.forEach( function( mediafile_json_obj ) {
+	  mediafiles.push( new Mediafile( mediafile_json_obj ) );
+	});
+      });
+
+The constructor takes a "mediafile" json object returned from the server
+and returns a viewmodel instance.  In the view for the model example
+shown above, you might do something like this:
+
+    <div data-bind="foreach: mediafiles">
+      <div data-bind="compose: $data"></div>
+    </div>
+
+The mediafile view displays the media file's thumbnail, and the
+files "title" (filename) and number of views (may change this).
+A small play icon is over laid on top of the thumbnail.
+
+The mediafile viewmodel has three observables that are useful:
+
+    media()     - The mediafile json object from the Cat server
+    selected()  - true/false mediafile in selected mode
+    edittable() - true/false mediafile in edit mode
+
+and one method:
+
+    toggleEditMode() - toggle the edittable() flag
+
+and three events that can be listened for:
+
+    mediafile:selected
+    mediafile:play
+    mediafile:attached
+
+All three events pass the mediafile view/model instances as
+an argument to event handlers.  "mediafile:attached" is fired
+from the viewAttached() method in the mediafile model.
+

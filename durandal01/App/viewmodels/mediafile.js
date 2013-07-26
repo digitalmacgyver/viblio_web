@@ -1,10 +1,23 @@
+/*
+  The main mediafile view/model.  Represents a mediafile from the
+  server.  Returns an instance factory.
+*/
 define(['durandal/events'],function(Events) {
 
+    // Temporary.  Used to create random numbers to use for
+    // number of video views, ratings, etc.  For GUI development
+    // before the backend features are available.
+    //
     function randomFromInterval(from,to) {
         return Math.floor(Math.random()*(to-from+1)+from);
     }
 
-    var video = function( data ) {
+    // Constructor takes a mediafile json object from the
+    // server and wraps it up as an observable.  Typical
+    // access from a model or view is:
+    //   m.media().views.main.url
+    //
+    var Video = function( data ) {
 	data.title = data.filename;
 	data.description = 'no description',
 	data.eyes = randomFromInterval( 3, 199 );
@@ -16,22 +29,29 @@ define(['durandal/events'],function(Events) {
 	Events.includeIn( this );
     };
 
-    video.prototype.select = function() {
+    // Toggle selected state and send an event.
+    Video.prototype.select = function() {
 	this.selected( this.selected() ? false : true );
 	this.trigger( 'mediafile:selected', this );
     };
 
-    video.prototype.play = function() {
+    // User clicked on play(), send an event.
+    Video.prototype.play = function() {
 	this.trigger( 'mediafile:play', this );
     };
     
-    video.prototype.toggleEditMode = function() {
+    // Method usually called from above; toggle
+    // the edittable observable.  Will affect the
+    // GUI state.
+    Video.prototype.toggleEditMode = function() {
 	this.edittable( this.edittable() ? false : true );
     };
 
-    video.prototype.viewAttached = function( view ) {
+    // Send an event, so those above can manage screen
+    // redraws, if needed.
+    Video.prototype.viewAttached = function( view ) {
 	this.trigger( 'mediafile:attached', this );
     };
 
-    return video;
+    return Video;
 });
