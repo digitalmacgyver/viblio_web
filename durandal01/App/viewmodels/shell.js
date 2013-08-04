@@ -1,5 +1,19 @@
-define(['durandal/plugins/router','durandal/app','durandal/system','lib/viblio','facebook','purl'], function (router, app, system, viblio) {
+define(['durandal/plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','lib/viblio','facebook','purl'], function (router, app, system, page_header, landing_header, viblio) {
+
+    var header = ko.observable( landing_header );
     
+    router.onNavigationComplete = function(routeInfo, params, module) {
+        if (app.title) {
+            document.title = routeInfo.caption + " | " + app.title;
+        } else {
+            document.title = routeInfo.caption;
+        }
+	if ( routeInfo.hash == '#/landing' || routeInfo.hash == '#/login' )
+	    header( landing_header );
+	else
+	    header( page_header );
+    };
+
     // This is how you "guard" routes; ie make conditional decisions
     // on whether a route should proceed.  Combined with router.mapRoute()
     // (in main.js) with custom attributes (authenticated=true/false in
@@ -60,6 +74,7 @@ define(['durandal/plugins/router','durandal/app','durandal/system','lib/viblio',
 
     return {
         router: router,
+	header: header,
         search: function() {
             //It's really easy to show a message box.
             //You can add custom options too. Also, it returns a promise for the user's response.
@@ -74,13 +89,13 @@ define(['durandal/plugins/router','durandal/app','durandal/system','lib/viblio',
 	    return system.defer( function( dfd ) {
 		$.getJSON( '/services/user/me' ).then( function( res ) {
 		    if ( res && res.error ) {
-			router.activate( 'login' ).then( function() {
+			router.activate( 'landing' ).then( function() {
 			    dfd.resolve();
 			});
 		    }
 		    else {
 			viblio.setUser( res.user );
-			router.activate( 'welcome' ).then( function() {
+			router.activate( 'home' ).then( function() {
 			    dfd.resolve();
 			});
 		    }

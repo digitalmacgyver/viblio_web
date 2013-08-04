@@ -11,7 +11,7 @@ form, input, h1, h2, button, label, a, img {
 
 /* But allow text input
  */
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[email] {
   -moz-user-select: text;
   -webkit-user-select: text;
 }

@@ -36,7 +36,7 @@ define( ['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/conf
 	// either go to the personal channel page, or
 	// do a pass thru to the page the user was
 	// trying to get to.
-	router.navigateTo( viblio.getLastAttempt() || '#/welcome' );
+	router.navigateTo( viblio.getLastAttempt() || '#/home' );
     }
 
     function nativeAuthenticate() {

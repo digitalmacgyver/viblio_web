@@ -155,7 +155,7 @@ define( ['durandal/plugins/router','lib/dialogs','lib/config','lib/viblio','view
 	    //
 	    if ( ! mid ) {
 		return dialogs.showMessage( 'No video to play!' ).then( function() {
-		    router.navigateTo( '#/welcome' );
+		    router.navigateTo( '#/home' );
 		});
 	    }
 

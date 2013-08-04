@@ -42,15 +42,29 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/plu
         });
 
         router.mapRoute({
-            url: 'welcome',
+            url: 'home',
             visible: true,
             moduleId: null, name: null,
             authenticated: true
         });
 
         router.mapRoute({
-            url: 'player',
+            url: 'upload',
             visible: true,
+            moduleId: null, name: null,
+            authenticated: true
+        });
+
+        router.mapRoute({
+            url: 'landing',
+            visible: false,
+            moduleId: null, name: null,
+            authenticated: false
+        });
+
+        router.mapRoute({
+            url: 'player',
+            visible: false,
             moduleId: null, name: null,
             authenticated: true
         });

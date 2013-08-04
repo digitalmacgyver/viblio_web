@@ -1,9 +1,8 @@
-<div>
+<div id="page-header">
   <div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-      <a class="brand" href="#">
-        <i class="icon-home"></i>
-        <span>Viblio</span>
+<!--    <div class="navbar-inner"> -->
+      <a class="brand" href="#/landing">
+	<img src="Content/images/logo-25-white.png" />
       </a>
       <ul class="nav" data-bind="foreach: router.visibleRoutes">
         <li data-bind="css: { active: isActive }">
@@ -19,6 +18,6 @@
       <p class="navbar-text pull-right">
 	Welcome <span data-bind="html: user().displayname">anonymous</span>
       </p>
-    </div>
+<!--     </div> -->
   </div>
 </div>
