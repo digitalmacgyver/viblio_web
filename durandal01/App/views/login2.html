@@ -1,0 +1,34 @@
+<div id="login-page">
+    <div id='loginArea' class='row span6 offset3'>
+        <div>
+            <h3>Log in to your Account</h3>
+        </div>
+        <div>
+            <a id='facebookLoginBtn' data-bind="click: facebookAuthenticate"> Log in with Facebook </a>
+        </div>
+        <div id='or-Wrap'>
+            <p>OR</p>
+        </div>
+        <form>
+            <div>
+                <span data-bind="css: { error: email_entry_error() }">
+                    <input type="text" class="text" data-bind="value: email" placeholder="Email" />
+                </span>
+                <span data-bind="css: { error: password_entry_error() }">
+                    <input type="password" class="text" data-bind="value: password" placeholder="Password" />
+                </span>
+                <a>Forgot Password?</a>
+                <button class="btn btn-primary" data-bind="click: nativeAuthenticate">
+                    Log In
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <div id='noAccount' class='row span6 offset3'>
+        <div>
+            <h3>Don't have an account?</h3>
+            <a>Download Viblio Free!</a>
+        </div>
+    </div>
+</div>
