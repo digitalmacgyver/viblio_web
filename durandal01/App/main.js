@@ -75,6 +75,13 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/plu
             moduleId: null, name: null,
             authenticated: false
         });
+        
+        router.mapRoute({
+            url: 'invite',
+            visible: false,
+            moduleId: null, name: null,
+            authenticated: false
+        });
 
         app.adaptToDevice();
 
