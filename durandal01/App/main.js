@@ -77,6 +77,13 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/plu
         });
         
         router.mapRoute({
+            url: 'forgotPassword',
+            visible: false,
+            moduleId: null, name: null,
+            authenticated: false
+        });
+        
+        router.mapRoute({
             url: 'invite',
             visible: false,
             moduleId: null, name: null,

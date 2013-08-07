@@ -64,7 +64,7 @@ define( ['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/conf
 	    }
 	},{scope: config.facebook_ask_features()});
     }
-
+    
     function register() {
 	dialogs.showMessage( 'A request has been sent' );
     }

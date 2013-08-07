@@ -77,8 +77,9 @@
 #loginArea form div input {
     display: block;
     width: 100%;
-    padding: 14px 6px;
+    padding: 16px 6px;
     box-sizing: border-box;
+    -moz-box-sizing:border-box;
     margin-bottom: 18px;
 }
 
