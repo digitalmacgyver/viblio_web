@@ -2,6 +2,10 @@
     margin-top: 5%;
 }
 
+#fbb {
+    cursor: pointer;
+}
+
 #login-page #login span {
 }
 

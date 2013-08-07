@@ -50,6 +50,9 @@ define( ['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/conf
     }
 
     function facebookAuthenticate() {
+	if ( ! fb_appid )
+	    dialogs.showMessage( 'In development, Facebook login will not work.' );
+
 	FB.login(function(response) {
             if (response.authResponse) {
 		viblio.api( '/services/na/authenticate',
