@@ -7,7 +7,8 @@ define( function() {
     //
     var fbInfo = {
 	'http://192.168.1.22:3000': '566096966734454',
-	'http://staging.viblio.com': '153462094815829'
+	'http://staging.viblio.com': '153462094815829',
+	'http://prod.viblio.com': '538791729508064'
     };
     var myLocation = '//' + window.location.hostname;
     if ( window.location.port )
