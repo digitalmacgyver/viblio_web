@@ -12,7 +12,7 @@ requirejs.config({
     }
 });
 
-define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/plugins/router','lib/custom_bindings','lib/viblio'], function(app, viewLocator, system, router) {
+define(['viewmodels/header', 'viewmodels/landing_header', 'durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/plugins/router','lib/custom_bindings','lib/viblio'], function(page_header, landing_header, app, viewLocator, system, router) {
 
     //>>excludeStart("build", true);
     system.debug(true);
@@ -38,56 +38,56 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/plu
             url: 'login',
             visible: false,
             moduleId: null, name: null,
-            authenticated: false
+            authenticated: false,
+            header: landing_header
         });
 
         router.mapRoute({
             url: 'home',
             visible: true,
             moduleId: null, name: null,
-            authenticated: true
+            authenticated: true,
+            header: page_header
         });
 
         router.mapRoute({
             url: 'upload',
             visible: true,
             moduleId: null, name: null,
-            authenticated: true
+            authenticated: true,
+            header: page_header
         });
 
         router.mapRoute({
             url: 'landing',
             visible: false,
             moduleId: null, name: null,
-            authenticated: false
+            authenticated: false,
+            header: landing_header
         });
 
         router.mapRoute({
             url: 'player',
             visible: false,
             moduleId: null, name: null,
-            authenticated: true
-        });
-        
-        router.mapRoute({
-            url: 'login2',
-            visible: false,
-            moduleId: null, name: null,
-            authenticated: false
+            authenticated: true,
+            header: page_header
         });
         
         router.mapRoute({
             url: 'forgotPassword',
             visible: false,
             moduleId: null, name: null,
-            authenticated: false
+            authenticated: false,
+            header: landing_header
         });
         
         router.mapRoute({
             url: 'invite',
             visible: false,
             moduleId: null, name: null,
-            authenticated: false
+            authenticated: false,
+            header: landing_header
         });
 
         app.adaptToDevice();

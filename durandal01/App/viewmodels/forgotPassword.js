@@ -7,7 +7,7 @@ define( ['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/conf
     }
 
     function cancel() {
-        router.navigateTo( '#/login2' );
+        router.navigateTo( '#/login' );
     }
 
     return {

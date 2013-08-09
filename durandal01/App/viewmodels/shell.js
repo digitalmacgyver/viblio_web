@@ -8,10 +8,7 @@ define(['durandal/plugins/router','durandal/app','durandal/system','viewmodels/h
         } else {
             document.title = routeInfo.caption;
         }
-	if ( routeInfo.hash == '#/landing' || routeInfo.hash == '#/login' )
-	    header( landing_header );
-	else
-	    header( page_header );
+	header( routeInfo.header );
     };
 
     // This is how you "guard" routes; ie make conditional decisions
@@ -102,9 +99,15 @@ define(['durandal/plugins/router','durandal/app','durandal/system','viewmodels/h
 		});
 	    }).promise();
         },
+        
+        // Creates a margin on both sides of the page host to make up for the 30px created by the scrollbar
+        afterBind: function( view ) {
+            $(view).find(".page-host").css({"margin-left":"35px", "margin-right":"30px"});
+        },
+        
 	viewAttached: function( view ) {
             // Wrap the main content page with a custom scrollbar
-            $(view).find(".container-fluid").mCustomScrollbar({
+            $(view).find(".scrollBarContainer").mCustomScrollbar({
                 contentTouchScroll: true,
                 theme: 'dark-thick',
                 mouseWheel: true,

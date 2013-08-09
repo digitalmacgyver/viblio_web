@@ -40,6 +40,7 @@ input[type=text], input[type=password], input[email] {
 .page-host {
     position: relative;
     top: 0;
+    padding: 0;
 }
 
 .navbar-fixed-top .navbar-inner {
@@ -105,11 +106,19 @@ font-family: 'Oxygen', serif; /* google font */
 font-family: 'Limelight', serif; /* google font */
 }
 
-.container-fluid {
+/*.container-fluid {
     overflow: auto;
     padding: 0;
     margin-right: 20px;
     margin-left: 20px;
+}*/
+
+#mCSB_1 {
+    width: 100%;
+}
+
+.mCSB_container {
+    margin: 0px;
 }
 
 /*** END PRESENTATION ***/
