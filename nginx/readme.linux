@@ -1,5 +1,5 @@
 
-Under ./nginx you will see a "local.conf". Make a copy of that file to 
+Under ./nginx you will see a "local-staging.conf". Make a copy of that file to 
 your-name.conf. Edit the file and change the "root" for "location /" 
 (about line 10 or 11) to point to where you cloned your repository.
 
@@ -19,3 +19,11 @@ Then "mkdir /etc/nginx/sites-enabled" and either copy or link to
 your-name.conf. Then restart nginx:
 
 sudo /etc/init.d/nginx restart
+
+***
+
+local.conf: Cat server running locally, GUI local
+local-staging: Cat server on staging.viblio.com, GUI local
+staging.conf: deployment on staging.viblio.com
+prod.conf: deployment on prod.viblio.conf
+
