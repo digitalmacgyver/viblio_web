@@ -36,11 +36,11 @@ body {
 }
 
 .iv-box-outline {
-    #d0d0d0;
+    border: #d0d0d0;
 }
 
 .iv-text-color {
-    #4d5d72;
+    color: #4d5d72;
 }
 
 p.text-center {

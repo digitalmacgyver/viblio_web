@@ -1,13 +1,13 @@
+.content-Wrap {
+    margin: 0 20px;
+}
+
 #loginArea,
 #noAccount {
-    background-color: white;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    -webkit-box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1);
-    box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 50px;
+    width: 600px;
+    max-width: 100%;
+    overflow: auto;
 }
 
 #loginArea > div,
@@ -48,12 +48,7 @@
     cursor: pointer;
 }
 
-#loginArea > div {
-    border-bottom: 1px solid rgba(0,0,0,.1);
-}
-
 #loginArea div:nth-of-type(3) {
-    border: none;
     padding: 0;
 }
 
@@ -70,8 +65,7 @@
 
 #loginArea form div {
     width: 75%;
-    margin-left: auto;
-    margin-right: auto;
+    overflow: auto;
 }
 
 #loginArea form div input {
@@ -85,17 +79,15 @@
 
 #loginArea form a {
     display: inline-block;
-    color: rgba(76,93,113,1);
     text-decoration: none;
     cursor: pointer;
     font-size: 16px;
-    margin-top: 6px;
+    margin: 6px 0 20px;
 }
 
 #loginArea form button {
     float: right;
-    width: 96px;
-    height: 36px;
+    clear: both;
 }
 
 #noAccount h3 {
@@ -103,11 +95,10 @@
 }
 
 #noAccount a {
-    color: rgba(76,93,113,1);
     text-decoration: underline;
-    cursor: pointer;
     font-size: 17px;
-    margin-top: 24px;
+    margin: 24px 0 36px;
     float: right;
+    clear: both;
 }
 
