@@ -39,17 +39,26 @@ define(['durandal/events'],function(Events) {
     Video.prototype.play = function() {
 	this.trigger( 'mediafile:play', this );
     };
+
+    // User clicked on delete(), send an event
+    Video.prototype.mfdelete = function() {
+	this.trigger( 'mediafile:delete', this );
+    };
     
     // Method usually called from above; toggle
     // the edittable observable.  Will affect the
     // GUI state.
     Video.prototype.toggleEditMode = function() {
 	this.edittable( this.edittable() ? false : true );
+	if ( this.edittable ) {
+	    $(this.view).find( '.dbtn' ).toggle('slide', {direction: 'right'}, 300);
+	}
     };
 
     // Send an event, so those above can manage screen
     // redraws, if needed.
     Video.prototype.viewAttached = function( view ) {
+	this.view = view;
 	this.trigger( 'mediafile:attached', this );
     };
 

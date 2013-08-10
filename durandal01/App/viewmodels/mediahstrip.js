@@ -73,6 +73,15 @@ define( ['durandal/plugins/router', 'lib/viblio', 'durandal/app', 'viewmodels/me
 	    router.navigateTo( '#/player?mid=' + m.media().uuid );
 	});
 
+	// When a mediafile wishes to be deleted
+	//
+	m.on( 'mediafile:delete', function( m ) {
+	    viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function() {
+		self.mediafiles.remove( m );
+		$(self.element).find(".media-area").mCustomScrollbar("update");
+	    });
+	});
+
 	// Add it to the list
 	self.mediafiles.push( m );
     };

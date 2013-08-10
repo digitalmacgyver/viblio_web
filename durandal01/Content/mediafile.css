@@ -107,3 +107,11 @@
     display: block;
 }
 */
+
+.dbtn {
+    position: absolute;
+    display: none;
+    z-index: 100;
+    top: 10px;
+    right: 8px;
+}

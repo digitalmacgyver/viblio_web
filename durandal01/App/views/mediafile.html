@@ -1,10 +1,11 @@
 <!-- <div class="mediafile" data-bind="click:select, css:{selected: selected()}"> -->
-<div class="mediafile" data-bind="click:play, attr:{id:media().uuid}">
-  <a class="mplay-icon" href="#">
+<div class="mediafile" data-bind="attr:{id:media().uuid}">
+  <button class="dbtn btn btn-danger btn-mini" data-bind="click:mfdelete">delete</button>
+  <a class="mplay-icon" data-bind="click:play" href="#">
     <i class="icon-play-circle"></i> 
   </a>
   <i class="icon-ok-sign"></i>
-  <div href-"#">
+  <div>
     <img data-bind="{attr:{src:media().views.thumbnail.url}}" />
   </div>
   <div class="information">
