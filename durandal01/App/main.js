@@ -89,7 +89,7 @@ define(['viewmodels/header', 'viewmodels/landing_header', 'durandal/app', 'duran
             authenticated: false,
             header: landing_header
         });
-
+        
         app.adaptToDevice();
 
         //Show the app by setting the root view model for our application with a transition.
