@@ -1,4 +1,4 @@
-define(['lib/config','lib/viblio','lib/dialogs'], function( config, viblio, dialogs ) {
+define(['lib/config','lib/viblio','lib/dialogs','durandal/app'], function( config, viblio, dialogs, app ) {
     var mq = null;
     var subscribed = false;
     var last_uuid = null;
@@ -33,6 +33,10 @@ define(['lib/config','lib/viblio','lib/dialogs'], function( config, viblio, dial
 				    else {
 					var messages = data.messages;
 					console.log( "=> received " + messages.length + " messages" );
+					for( var i=0; i<messages.length; i++ ) {
+					    console.log( 'triggering mediafile:ready' );
+					    app.trigger( 'mediafile:ready', messages[i].media );
+					}
 					dialogs.showMessage( "=> received " + messages.length + " messages" );
 					console.log( JSON.stringify( messages ) );
 				    }

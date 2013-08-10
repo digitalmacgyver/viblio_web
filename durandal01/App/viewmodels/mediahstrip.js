@@ -6,6 +6,8 @@
 */
 define( ['durandal/plugins/router', 'lib/viblio', 'durandal/app', 'viewmodels/mediafile'], function(router,viblio,app,Mediafile) {
     var Strip = function( title, subtitle ) {
+	var self = this;
+
 	// The view element, used to manipulate the scroller mostly
 	this.element = null;
 
@@ -32,6 +34,16 @@ define( ['durandal/plugins/router', 'lib/viblio', 'durandal/app', 'viewmodels/me
             entries_per_page: 12,
             total_entries: -1 /* currently unknown */
         };
+
+	// When new mediafiles arrive in the system async, add them
+	// to the start of the list.
+	app.on( 'mediafile:ready', function( mf ) {
+	    var m = new Mediafile( mf );
+	    self.mediafiles.unshift( m );
+	    setTimeout( function() {
+		$(self.element).find(".media-area").mCustomScrollbar("update");
+	    },100);
+	});
 
     };
 
