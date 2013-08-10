@@ -21,6 +21,14 @@ define( ['durandal/plugins/router','lib/dialogs','lib/config','lib/viblio','view
 	return p;
     }
 
+    // Given a S3 url, parse out and return the bucket name.  Needed for
+    // Wowza urls.
+    //
+    function s3bucket( s3url ) {
+	var host = $.url( s3url ).attr( 'host' );
+	return host.split(".")[0];
+    }
+
     // Used by flowplayer, to decide if we're on a platform that
     // does not support flash but does support html5 video tag.
     // If that is the case, then flowplayer will be "simulated"
@@ -62,7 +70,7 @@ define( ['durandal/plugins/router','lib/dialogs','lib/config','lib/viblio','view
     //
     function playVid( m ) {
 	flowplayer().play({
-            url: 'mp4:amazons3/viblio-mediafiles/' + m.media().views.main.uri,
+            url: 'mp4:amazons3/' + s3bucket( m.media().views.main.url ) + '/' + m.media().views.main.uri,
             ipadUrl: encodeURIComponent(m.media().views.main.url),
             // URL for sharing on FB, etc.
             pageUrl: config.site_server + '/shared/flowplayer/' + m.media().views.main.uuid,
@@ -180,9 +188,10 @@ define( ['durandal/plugins/router','lib/dialogs','lib/config','lib/viblio','view
 		flowplayer( 'tv', "Vendor/flowplayer/flowplayer-3.2.16.swf" );
 
 		// Instanciate the main flowplayer
+		console.log( 'Bucket: ' + s3bucket( mf.views.main.url ) );
 		$("#tv").flowplayer( "Vendor/flowplayer/flowplayer-3.2.16.swf", {
                     clip: {
-                        url: 'mp4:amazons3/viblio-mediafiles/' + mf.views.main.uri,
+                        url: 'mp4:amazons3/' + s3bucket( mf.views.main.url ) + '/' + mf.views.main.uri,
                         ipadUrl: encodeURIComponent(mf.views.main.url),
                         // URL for sharing on FB, etc.
                         pageUrl: config.site_server + '/shared/flowplayer/' + mf.views.main.uuid,
