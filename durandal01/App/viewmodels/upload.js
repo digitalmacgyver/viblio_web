@@ -1,5 +1,8 @@
-define( function() {
+define( ['lib/dialogs'], function(dialogs) {
     return {
-	displayName: 'Media Upload'
+	displayName: 'Media Upload',
+	message: function() {
+	    dialogs.showMessage( 'This is a body', 'Title' );
+	}
     };
 });
