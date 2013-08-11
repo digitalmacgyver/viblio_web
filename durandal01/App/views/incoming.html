@@ -1,0 +1,57 @@
+<div id="incoming" class="messageBox">
+
+  <div class="modal-header">
+    <button type="button" class="close" data-bind="click: dismiss" aria-hidden="true">&times;</button>
+    <h3>You have new Videos!</h3>
+  </div>
+
+  <div class="modal-body">
+    <p>Congratulations.  You have <span data-bind="html: count"></span> new
+      video<span data-bind="if: count > 1">s</span> in your 
+      personal <a href="/#/home/">Viblio Channel</a>
+    </p>
+    
+    <hr />
+
+    <div class="poster">
+      <a class="mplay-icon" data-bind="click:play" href="#">
+	<i class="icon-play-circle"></i> 
+      </a>
+      <a href="#" data-bind="click: play">
+	<img class="img-polaroid" data-bind="attr:{src:messages[0].media.views.poster.url}" />
+      </a>
+    </div>
+
+    <p data-bind="if: count > 1">... and <span data-bind="html: (count-1)"></span> more</p>
+
+    <hr />
+
+    <p>Viblio discovers faces of your friends and loved ones and
+      makes sharing (and privacy!) easy.</p>
+
+    <div data-bind="if: faces_count > 0">
+      <h3>We found these new faces in your video:</h3>
+      <ul data-bind="foreach: faces">
+	<li class="face">
+	  <div class="thumbnail">
+	    <img data-bind="attr:{src:$data.url}" alt=""/>
+	    <div class="name">Stranger</div>
+	  </div>
+	</li>
+      </ul>
+      <div style="clear: both;"></div>
+      <button style="margin-top: 20px;" class="btn btn-primary centeredEl" data-bind="click: nameFaces">Name these faces &gt;&gt;</button>
+
+    </div>
+
+    <div data-bind="if: faces_count == 0">
+      <h3>Sorry, we couldn't find any faces in <span data-bind="if: count > 1">these videos</span><span data-bind="if: count == 1">this video</span>.</h3>
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-primary autofocus" data-bind="click: dismiss">Dismiss</button>
+  </div>
+
+</div>

@@ -34,11 +34,9 @@ define(['lib/config','lib/viblio','lib/dialogs','durandal/app'], function( confi
 					var messages = data.messages;
 					console.log( "=> received " + messages.length + " messages" );
 					for( var i=0; i<messages.length; i++ ) {
-					    console.log( 'triggering mediafile:ready' );
 					    app.trigger( 'mediafile:ready', messages[i].media );
 					}
-					dialogs.showMessage( "=> received " + messages.length + " messages" );
-					console.log( JSON.stringify( messages ) );
+					dialogs.showIncoming( messages );
 				    }
 				},
 				error: function( x, t, e ) {

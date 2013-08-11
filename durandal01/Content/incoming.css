@@ -1,0 +1,87 @@
+#incoming .modal-body {
+    /* max-height: 800px; */
+    max-width: 500px;
+}
+
+#incoming .thumbnail img {
+    width: 64px;
+    height: 64px;
+}
+#incoming #wrapper {
+    width: 530px;
+    padding: 30px;
+    background-color: #373b49;
+    margin-right: auto;
+    margin-left: auto;
+}
+#incoming #w2 {
+    background-color: white;
+    color: #71707d;
+}
+#incoming a, #incoming a:hover, #incoming a:active {
+    color: #f57f75;
+    text-decoration: none;
+}
+
+#incoming #top, #incoming #middle, #incoming #bottom {
+    margin: 30px;
+}
+
+#incoming h2, #incoming h3, #incoming p, #incoming ul {
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#incoming ul {
+    margin-bottom: 20px;
+}
+
+#incoming ul li {
+    display: inline;
+    list-style-type: none;
+    padding-right: 20px;
+    float: left;
+}
+
+#incoming .poster {
+    position: relative;
+}
+
+#incoming .poster .mplay-icon {
+    left: 220px;
+}
+
+#incoming .poster .mplay-icon i {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#incoming .poster a img {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#incoming #name-btn {
+}
+    
+#incoming #name-btn a {
+    margin-right: auto;
+    margin-left: auto;
+    background-color: #f57f75;
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+}
+
+#incoming .thumbnail {
+    width: 64px;
+}
+
+#incoming .thumbnail .name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
