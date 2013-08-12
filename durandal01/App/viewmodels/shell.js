@@ -100,9 +100,10 @@ define(['durandal/plugins/router','durandal/app','durandal/system','viewmodels/h
 	    }).promise();
         },
         
-        // Creates a margin on both sides of the page host to make up for the 30px created by the scrollbar
+        // Creates a margin on both sides of the page host to make up for the 30px created by the scrollbar.
+        // Doing it on afterBind prevents any jerky animations.
         afterBind: function( view ) {
-            $(view).find(".page-host").css({"margin-left":"35px", "margin-right":"30px"});
+            $(view).find(".page-host").css({"margin-left":"10px", "margin-right":"10px"});
         },
         
 	viewAttached: function( view ) {
