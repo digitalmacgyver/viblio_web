@@ -12,12 +12,16 @@
       <div class="loader pull-right" data-bind="css: { active: router.isNavigating }">
         <i class="icon-spinner icon-2x icon-spin"></i>
       </div>
-      <form class="navbar-form pull-right">
-	<button class="btn btn-mini" data-bind="click: logout">logout</button>
-      </form>
-      <p class="navbar-text pull-right">
-	Welcome <span data-bind="html: user().displayname">anonymous</span>
-      </p>
+      <ul class="nav pull-right">
+	<li class="dropdown">
+	  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span data-bind="html: user().displayname">anonymous</span></a>
+	  <ul class="dropdown-menu">
+	    <li><a href="#">Settings</a></li>
+	    <li><a href="#">Get the App</a></li>
+	    <li class="divider"></li>
+	    <li><a href="#" data-bind="click: logout">Log Out</a></li>
+	  </ul>
+      </ul>
 <!--     </div> -->
   </div>
 </div>
