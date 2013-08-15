@@ -1,16 +1,4 @@
 <div id="player-page">
-  <!-- Right Column -->
-  <div id="right-column" class="pull-right">
-    <div id="share-wrapper">
-      <div><a class="btn" href="#">
-	<i class="icon-share"></i> Share this Video
-      </a></div>
-    </div>
-    <div id="related-wrapper">
-      <div><p>Related Videos</p></div>
-      <div data-bind="compose: related"></div>
-    </div>
-  </div>
 
   <!-- Main Page -->
   <div id="main">
@@ -29,4 +17,18 @@
     </div>
     <div style="clear: both"></div>
   </div>
+  
+  <!-- Right Column -->
+  <div id="right-column">
+    <div id="share-wrapper">
+      <div><a class="btn" href="#" data-bind="click: showShareVidModal">
+	<i class="icon-share"></i> Share this Video
+      </a></div>
+    </div>
+    <div id="related-wrapper">
+      <div><p>Related Videos</p></div>
+      <div data-bind="compose: related"></div>
+    </div>
+  </div>
+  
 </div>
