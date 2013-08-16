@@ -30,6 +30,14 @@ define( ['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/conf
     }
 
     function nativeAuthenticate() {
+	if ( ! email() ) {
+	    dialogs.showMessage( 'The email field is required.', 'Authentication' );
+	    return;
+	}
+	if ( ! password() ) {
+	    dialogs.showMessage( 'The password field is required.', 'Authentication' );
+	    return;
+	}
 	viblio.api( '/services/na/authenticate',
 		    { email: email(),
 		      password: password(),

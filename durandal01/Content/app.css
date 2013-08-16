@@ -161,3 +161,10 @@ font-family: 'Limelight', serif; /* google font */
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.facebookColor {
+    color: #3b5998;
+}
+.facebookBGColor {
+    background-color: #3b5998;
+}
