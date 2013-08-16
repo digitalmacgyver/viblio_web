@@ -1,0 +1,85 @@
+<div id="settings-page">
+  <div class="content-Wrap">
+    <h2>Your Viblio Settings</h2>
+    <div class="iwhiteDropshadowBackground roundedCorners">
+      <div class="igreyBottomBrdr">
+	<h3>Account Information</h3>
+	<!--
+	<div class="avatar pull-left">
+	  <img class="img-polaroid" src="/services/user/avatar?uid=-&y=70" />
+	  <div>
+	    <a href="#" data-bind="click: changeAvatar">Change...</a>
+	  </div>
+	</div>
+	<div class="email-password">
+	  <p>More info ...</p>
+	  <p>More info ...</p>
+	</div>
+	<div style="clear: both;" />
+	-->
+	<table class="account-info">
+	  <tr>
+	    <td class="avatar">
+	      <img class="img-polaroid" src="/services/user/avatar?uid=-&y=70" />
+	      <div>
+		<a href="#" data-bind="click: changeAvatar">Change...</a>
+	      </div>
+	    </td>
+	    <td class="email-password">
+	      <form>
+		<fieldset>
+		  <label for="email">Email</label>
+		  <input type="email" data-bind="value: profile().email" />
+		</fieldset>
+		<a href="#" data-bind="click: changePassword">Change Password...</a>
+	      </form>
+	    </td>
+	  </tr>
+	</table>
+      </div>
+      <div  class="igreyBottomBrdr">
+	<h3>Connected Accounts</h3>
+	<div data-bind="ifnot: linkedFacebook">
+	  <a href="#" data-bind="click: linkAccount.bind( $data, 'facebook' )" class="pull-right link-disconnect">Connect...</a>
+	  <i class="facebookColor icon-facebook-sign" /> Connect to your Facebook account for some great features!
+	</div>
+	<div data-bind="if: linkedFacebook">
+	  <a href="#" data-bind="click: unlinkAccount.bind( $data, 'facebook' )" class="pull-right link-disconnect">Disconnect...</a>
+	  <i class="facebookColor icon-facebook-sign" />Connected: <span class="link-link" data-bind="html: links().facebook"></span>
+	</div>
+      </div>
+    </div>
+    <div class="iwhiteDropshadowBackground roundedCorners">
+      <div class="igreyBottomBrdr">
+	<h3>Email Notifications</h3>
+	<form>
+	  <fieldset>
+	    <label class="checkbox">
+	      <input type="checkbox" data-bind="checked: showMoreEmailFields" />Get email notifications
+	    </label>
+	  </fieldset>
+	</form>
+      </div>
+      <div class="igreyBottomBrdr" data-bind="visible: showMoreEmailFields">
+	<form>
+	  <fieldset>
+	    <label class="checkbox">
+	      <input type="checkbox" data-bind="checked: fields().email_comment" /> Someone comments on your video
+	    </label>
+	    <label class="checkbox">
+	      <input type="checkbox" data-bind="checked: fields().email_upload" /> Your videos finish uploading
+	    </label>
+	    <label class="checkbox">
+	      <input type="checkbox" data-bind="checked: fields().email_face" /> We detect a new face in your video
+	    </label>
+	    <label class="checkbox">
+	      <input type="checkbox" data-bind="checked: fields().email_viblio" /> Viblio adds new features and updates
+	    </label>
+	  </fieldset>
+	</form>
+      </div>
+    </div>
+    <button class="btn btn-primary" data-bind="click: save">Save your Settings</button>
+    <button class="btn" data-bind="click: cancel">Cancel - Discard Changes</button>
+  </div>
+</div>

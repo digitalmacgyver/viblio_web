@@ -51,6 +51,14 @@ define(['viewmodels/header', 'viewmodels/landing_header', 'durandal/app', 'duran
         });
 
         router.mapRoute({
+            url: 'settings',
+            visible: false,
+            moduleId: null, name: null,
+            authenticated: true,
+            header: page_header
+        });
+
+        router.mapRoute({
             url: 'upload',
             visible: true,
             moduleId: null, name: null,
