@@ -14,3 +14,19 @@
     borader-bottom: 1px solid #318592;
 }
 
+.primaryBtn {
+    background-color: #24b8d1;
+    border: none;
+    color: white;
+    border-bottom: 3px solid rgba(0,0,0,.16);
+    padding-top: 4px;
+}
+
+.primaryBtn:hover {
+    background-color: #24b8d1;
+    border: none;
+    color: white;
+    border-bottom: 5px solid rgba(0,0,0,.16);
+    padding-top: 6px;
+}
+
