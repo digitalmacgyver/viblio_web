@@ -4,6 +4,9 @@ define( ['lib/dialogs','lib/viblio','lib/config','facebook'], function(dialogs,v
 	message: function() {
 	    dialogs.showMessage( 'This is a body', 'Title' );
 	},
+	testNewVideo: function() {
+	    viblio.api( '/services/test/new_video_test' );
+	},
 	linkFacebookAccount: function() {
 	    var fb_appid   = config.facebook_appid();
 	    var fb_channel = config.facebook_channel();
