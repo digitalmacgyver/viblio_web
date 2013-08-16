@@ -4,25 +4,15 @@
     <div class="iwhiteDropshadowBackground roundedCorners">
       <div class="igreyBottomBrdr">
 	<h3>Account Information</h3>
-	<!--
-	<div class="avatar pull-left">
-	  <img class="img-polaroid" src="/services/user/avatar?uid=-&y=70" />
-	  <div>
-	    <a href="#" data-bind="click: changeAvatar">Change...</a>
-	  </div>
-	</div>
-	<div class="email-password">
-	  <p>More info ...</p>
-	  <p>More info ...</p>
-	</div>
-	<div style="clear: both;" />
-	-->
 	<table class="account-info">
 	  <tr>
 	    <td class="avatar">
-	      <img class="img-polaroid" src="/services/user/avatar?uid=-&y=70" />
+	      <img id="apic" class="img-polaroid" src="/services/user/avatar?uid=-&y=70" />
 	      <div>
-		<a href="#" data-bind="click: changeAvatar">Change...</a>
+		<span class="fileinput-button">
+		  <span>Change...</span>
+		  <input id="fileupload" type="file" name="upload" data-url="/services/user/add_or_replace_profile_photo" />
+		</span>
 	      </div>
 	    </td>
 	    <td class="email-password">

@@ -90,8 +90,20 @@ define(['durandal/plugins/router','lib/viblio','lib/config','lib/dialogs','faceb
 	changePassword: function() {
 	},
 	viewAttached: function( view ) {
+	    var self = this;
+	    self.view = view;
+
+	    // jqueryFileUpload
+	    $(self.view).find("#fileupload").fileupload({
+		dataType: 'json',
+		done: function(e, data) {
+		    $(self.view).find("#apic").attr('src',"/services/user/avatar?uid=-&y=70");
+		}
+	    });
+
 	    return viblio.api( '/services/user/profile' ).then( function( json ) {
 		
+
 		var p = { uuid: json.profile.uuid,
 			  email: json.profile.email,
 			  fields: {},
