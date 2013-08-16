@@ -4,6 +4,7 @@
 
 #player-page #right-column {
     width: 320px;
+    float: left;
 }
 
 #player-page #share-wrapper {
@@ -33,7 +34,15 @@
 /***** MAIN LAYOUT ****/
 
 #player-page #main {
-    position: absolute;
+    /*position: absolute;*/
+    width:  1040px;
+    float: left;
+}
+
+@media (max-width: 767px) {
+    #player-page #right-column {
+        width: 100%;
+    }
 }
 
 #container {
@@ -85,14 +94,19 @@
 }
 
 #tv {
-    height: 480px;
+    height: 529px;
     background-color: white;
+}
+
+#tv object {
+    width  : 100%;
+    height : 100%;
 }
 
 #tv img {
     display: block;
     margin: 0 auto;
-    margin-top: 200px;
+    padding-top: 200px;
 }
 
 #info {
@@ -117,4 +131,3 @@
 #player-page .vstrip div.mediafile {
     position: relative;
 }
-

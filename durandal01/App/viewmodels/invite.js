@@ -10,12 +10,20 @@ define( ['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/conf
     var ipassword = ko.observable();
     var icode = ko.observable();
 
-    function register() {
-	dialogs.showMessage( 'A request has been sent' );
+    function register() {viblio.api( '/services/na/invite_request',
+        { email: remail, password: rpassword2, username: rfullname } ).then( function() {
+           dialogs.showMessage( 'An invite request has been sent via email to ' + remail() + '. Thanks!' );
+        });
     }
 
     function invite() {
-	dialogs.showMessage( 'Thanks!' );
+	viblio.api( '/services/na/new_user',
+        { email: iemail, password: ipassword, username: ifullname, code: icode } ).then(function(json) {
+          var user = json.user;
+          viblio.setUser( user );
+          dialogs.showMessage( 'Thanks!' );
+          router.navigateTo( '#/home' );
+       });
     }
 
     return {

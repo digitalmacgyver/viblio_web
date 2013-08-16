@@ -98,6 +98,13 @@ define(['viewmodels/header', 'viewmodels/landing_header', 'durandal/app', 'duran
             header: landing_header
         });
         
+        router.mapRoute({
+            url: 'shareVidModal',
+            visible: false,
+            moduleId: null, name: null,
+            authenticated: false
+        });
+        
         app.adaptToDevice();
 
         //Show the app by setting the root view model for our application with a transition.

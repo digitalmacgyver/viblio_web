@@ -11,7 +11,7 @@
   this way in case we use this page as a link to shared
   videos.
 */
-define( ['durandal/plugins/router','lib/dialogs','lib/config','lib/viblio','viewmodels/mediavstrip','purl'], function(router,dialogs,config,viblio,Strip) {
+define( ['durandal/app','durandal/plugins/router','lib/dialogs','lib/config','lib/viblio','viewmodels/mediavstrip','purl'], function(app,router,dialogs,config,viblio,Strip) {
     // Extract any query params on the page.  Other parts
     // of the application can:
     //   router.navigateTo( '#/player?mid=' + mediafile.content().uuid );
@@ -49,10 +49,35 @@ define( ['durandal/plugins/router','lib/dialogs','lib/config','lib/viblio','view
     // Manage the fluid width of the main part of the
     // page.  The right side will remain fixed, 
     // and the main part will resize with browser.
-    function resize() {
-	$("#main").width( $("#right-column").offset().left -
-			  $("#main").offset().left - 3 );
+    function resizePlayer() {
+        if( $(window).width() > 767) {
+            $("#main").width( $("#player-page").width() - 323 );
+            // if on a device that does not support flash
+            if( $("#tv video") ) {
+                $("#tv video").width( $("#player-page").width() - 423 );
+            }
+        } else {
+            $("#main").width( $("#player-page").width() );
+            // if on a device that does not support flash
+            if( $("#tv video") ) {
+                $("#tv video").width( $("#player-page").width() - 100 );
+            }
+        }          
+
+        // Keeps video at a 16:9 ratio while resizing widnow
+        $("#tv, #tv video").height( ($("#tv").width()*9) / 16 );                   
     }
+    
+    /*function initialSize() {
+        // Sets initial size of the player based on page width and then sets height as a 16:9 ratio of width
+        if( $(window).width() > 767) {
+            $("#main").width( $("#player-page").width() - 323 );
+        } else {
+            $("#main").width( $("#player-page").width() );
+        }                    
+        $("#tv").height( ($("#tv").width()*9) / 16 );                   
+    }*/
+    
     // Index of the next clip to play on nextRelated/previousRelated
     var next_available_clip = ko.observable( 0 );
 
@@ -75,7 +100,6 @@ define( ['durandal/plugins/router','lib/dialogs','lib/config','lib/viblio','view
             // URL for sharing on FB, etc.
             pageUrl: config.site_server + '/shared/flowplayer/' + m.media().views.main.uuid,
             //scaling: 'fit',
-            ratio: 9/16,
             //splash: true,
             provider: 'rtmp'
         });
@@ -132,6 +156,11 @@ define( ['durandal/plugins/router','lib/dialogs','lib/config','lib/viblio','view
     }
 
     return {
+        
+        showShareVidModal: function() {
+            app.showModal('viewmodels/shareVidModal');
+        },
+    
 	query: query,
 	playing: playing,
 	related: related,
@@ -142,19 +171,21 @@ define( ['durandal/plugins/router','lib/dialogs','lib/config','lib/viblio','view
 	activate: function( view ) {
 	    // Resize the main window and install a handler
 	    // to do it when the browser resizes.
-	    $(window).bind( 'resize', function() {
-		setTimeout( resize, 300 );
-	    });
-	    setTimeout( resize, 300 );
+           $(window).bind('resize', function() {
+                resizePlayer();
+            });
 	},
 	canDeactivate: function () {
 	    // Remove the handler
-	    $(window).unbind( 'resize', resize );
+	    $(window).unbind( 'resizePlayer', resizePlayer );
 	    // Remove the player
 	    flowplayer().unload();
 	    return true;
 	},
-	viewAttached: function( view ) {
+                
+	viewAttached: function ( view ) {
+            resizePlayer();
+            
 	    query( params() );
 	    var mid = query().mid;
 
