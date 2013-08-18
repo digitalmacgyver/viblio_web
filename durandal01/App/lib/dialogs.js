@@ -3,6 +3,7 @@
    Later we'll do different things like slide downs and such.
 */
 define( ['durandal/app', 'durandal/system', 'durandal/modalDialog', 'viewmodels/incoming'], function( app, system, modalDialog, Incoming, Upload ) {
+    var incoming = null;
     return {
 	showMessage: function( msg, title, options ) {
 	    return app.showMessage( msg, title, options );
@@ -11,7 +12,15 @@ define( ['durandal/app', 'durandal/system', 'durandal/modalDialog', 'viewmodels/
 	    return app.showModal( obj, activationData, context );
 	},
 	showIncoming: function( messages ) {
-	    return modalDialog.show( new Incoming( messages ) );
+	    // Incoming dialog is a little special.  If its already showing,
+	    // we want to update the information on the screen.
+	    if ( incoming ) {
+		incoming.update( messages );
+	    }
+	    else {
+		incoming = new Incoming( messages, function() { incoming = null; } );
+		return modalDialog.show( incoming );
+	    }
 	}
     };
 });
