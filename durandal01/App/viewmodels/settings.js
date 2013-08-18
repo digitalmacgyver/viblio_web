@@ -101,8 +101,9 @@ define(['durandal/plugins/router','lib/viblio','lib/config','lib/dialogs','faceb
 		}
 	    });
 
+	    dialogs.showLoading();
 	    return viblio.api( '/services/user/profile' ).then( function( json ) {
-		
+		dialogs.hideLoading();
 
 		var p = { uuid: json.profile.uuid,
 			  email: json.profile.email,
