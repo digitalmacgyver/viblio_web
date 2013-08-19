@@ -42,3 +42,7 @@
     width: 200px;
     height: 40px;
 }
+
+#settings-page .avatar i {
+    visibility: hidden;
+}

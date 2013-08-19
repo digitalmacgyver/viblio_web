@@ -13,13 +13,14 @@
 		  <span>Change...</span>
 		  <input id="fileupload" type="file" name="upload" data-url="/services/user/add_or_replace_profile_photo" />
 		</span>
+		<i class="icon-spinner icon-2x icon-spin"></i>
 	      </div>
 	    </td>
 	    <td class="email-password">
 	      <form>
 		<fieldset>
 		  <label for="email">Email</label>
-		  <input type="email" data-bind="value: profile().email" />
+		  <input type="email" data-bind="value: email, enable: false" />
 		</fieldset>
 		<a href="#" data-bind="click: changePassword">Change Password...</a>
 	      </form>
@@ -45,31 +46,31 @@
 	<form>
 	  <fieldset>
 	    <label class="checkbox">
-	      <input type="checkbox" data-bind="checked: showMoreEmailFields" />Get email notifications
+	      <input type="checkbox" data-bind="checked: email_notifications" />Get email notifications
 	    </label>
 	  </fieldset>
 	</form>
+	<button class="btn btn-primary" data-bind="visible: email_changes, click: save">Save Email Settings</button>
       </div>
-      <div class="igreyBottomBrdr" data-bind="visible: showMoreEmailFields">
+      <div class="igreyBottomBrdr" data-bind="visible: email_notifications">
 	<form>
 	  <fieldset>
 	    <label class="checkbox">
-	      <input type="checkbox" data-bind="checked: fields().email_comment" /> Someone comments on your video
+	      <input type="checkbox" data-bind="checked: email_comment" /> Someone comments on your video
 	    </label>
 	    <label class="checkbox">
-	      <input type="checkbox" data-bind="checked: fields().email_upload" /> Your videos finish uploading
+	      <input type="checkbox" data-bind="checked: email_upload" /> Your videos finish uploading
 	    </label>
 	    <label class="checkbox">
-	      <input type="checkbox" data-bind="checked: fields().email_face" /> We detect a new face in your video
+	      <input type="checkbox" data-bind="checked: email_face" /> We detect a new face in your video
 	    </label>
 	    <label class="checkbox">
-	      <input type="checkbox" data-bind="checked: fields().email_viblio" /> Viblio adds new features and updates
+	      <input type="checkbox" data-bind="checked: email_viblio" /> Viblio adds new features and updates
 	    </label>
 	  </fieldset>
 	</form>
       </div>
     </div>
-    <button class="btn btn-primary" data-bind="click: save">Save your Settings</button>
-    <button class="btn" data-bind="click: cancel">Cancel - Discard Changes</button>
+    <button class="btn btn-primary" data-bind="click: cancel">Done</button>
   </div>
 </div>
