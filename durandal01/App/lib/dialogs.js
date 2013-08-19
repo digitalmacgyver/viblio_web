@@ -2,11 +2,20 @@
    Application wide dialogs.  For now, just use Durandal standard.
    Later we'll do different things like slide downs and such.
 */
-define( ['durandal/app', 'durandal/system', 'durandal/modalDialog', 'viewmodels/incoming', 'viewmodels/loading'], function( app, system, modalDialog, Incoming, Loading ) {
+define( ['durandal/app', 'durandal/system', 'durandal/modalDialog', 'viewmodels/incoming', 'viewmodels/loading', 'viewmodels/change_password'], function( app, system, modalDialog, Incoming, Loading, ChangePassword ) {
     var incoming = null;
     var loading  = null;
     return {
 	showMessage: function( msg, title, options ) {
+	    return app.showMessage( msg, title, options );
+	},
+	showError: function( msg, title, options ) {
+	    return app.showMessage( msg, title, options );
+	},
+	showWarning: function( msg, title, options ) {
+	    return app.showMessage( msg, title, options );
+	},
+	showInfo: function( msg, title, options ) {
 	    return app.showMessage( msg, title, options );
 	},
 	showModal: function( obj, activationData, context ) {
@@ -33,6 +42,9 @@ define( ['durandal/app', 'durandal/system', 'durandal/modalDialog', 'viewmodels/
 	    if ( loading ) 
 		loading.modal.close();
 	    loading = null;
+	},
+	showPassword: function() {
+	    return modalDialog.show( new ChangePassword() );
 	}
     };
 });
