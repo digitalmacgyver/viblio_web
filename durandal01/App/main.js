@@ -5,8 +5,11 @@ requirejs.config({
         }
     },
     paths: {
+        'text': '../Scripts/text',
+        'durandal': '../Scripts/durandal',
+        'plugins': '../Scripts/durandal/plugins',
+        'transitions': '../Scripts/durandal/transitions',
 	'purl': '../Scripts/purl',
-        'text': 'durandal/amd/text',
         'facebook': '//connect.facebook.net/en_US/all',
 	'fancybox': '../Vendor/fancybox-2.1.5/jquery.fancybox'
     }
