@@ -1,4 +1,4 @@
-define(['durandal/plugins/router','lib/viblio','lib/config','lib/dialogs','facebook'],function(router,viblio,config,dialogs) {
+define(['plugins/router','lib/viblio','lib/config','plugins/dialog','facebook'],function(router,viblio,config,dialogs) {
     var profile = ko.observable({});
     var fields  = ko.observable({});
     var links   = ko.observable({});
@@ -89,7 +89,7 @@ define(['durandal/plugins/router','lib/viblio','lib/config','lib/dialogs','faceb
 	},
 	changePassword: function() {
 	},
-	viewAttached: function( view ) {
+	attached: function( view ) {
 	    return viblio.api( '/services/user/profile' ).then( function( json ) {
 		
 		var p = { uuid: json.profile.uuid,

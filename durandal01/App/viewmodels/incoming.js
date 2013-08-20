@@ -1,6 +1,6 @@
 /* The incoming video dialog
 */
-define( ['durandal/plugins/router'], function(router) {
+define( ['plugins/router'], function(router) {
     var Incoming = function( messages ) {
 	this.messages = messages;
 	this.count = this.messages.length;
@@ -36,7 +36,7 @@ define( ['durandal/plugins/router'], function(router) {
 
     Incoming.prototype.play = function() {
 	this.modal.close();
-	router.navigateTo( '#/player?mid=' + this.messages[0].media.uuid );
+	router.navigate( '#/player?mid=' + this.messages[0].media.uuid );
     };
 
     Incoming.prototype.nameFaces = function() {

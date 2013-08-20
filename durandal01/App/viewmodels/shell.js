@@ -1,15 +1,16 @@
-define(['durandal/plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','lib/viblio','facebook','purl'], function (router, app, system, page_header, landing_header, viblio) {
+define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','lib/viblio','facebook','purl'], function (router, app, system, page_header, landing_header, viblio) {
 
     var header = ko.observable( landing_header );
     
-    router.onNavigationComplete = function(routeInfo, params, module) {
+    router.on('router:navigation:complete').then(function(instance, instruction, router) {
         if (app.title) {
-            document.title = routeInfo.caption + " | " + app.title;
+            document.title = instruction.config.title + " | " + app.title;
         } else {
-            document.title = routeInfo.caption;
+            document.title = instruction.config.title;
         }
-	header( routeInfo.header );
-    };
+	header( instruction.config.header );
+        system.log("params from onNavigationComplete: " + instruction.config);
+    });
 
     // This is how you "guard" routes; ie make conditional decisions
     // on whether a route should proceed.  Combined with router.mapRoute()
@@ -19,11 +20,12 @@ define(['durandal/plugins/router','durandal/app','durandal/system','viewmodels/h
     // By remembering failed attempts, you can implement passthru authentication
     // as well.
     //
-    router.guardRoute = function( routeInfo, params, instance ) {
-        if ( routeInfo.hash == '#/login' || routeInfo.hash == '#/' )
+    router.guardRoute = function( instance, instruction ) {
+        
+        if ( instruction.config.hash == '#/login' || instruction.config.hash == '#/' )
             return({});
 
-	if ( routeInfo.authenticated ) {
+	if ( instruction.config.authenticated ) {
 	    // If the route is marked authenticated, then do a server
 	    // round trip to make sure we have a session.  If we do
 	    // not, then redirect to login.  Otherwise continue to
@@ -60,7 +62,7 @@ define(['durandal/plugins/router','durandal/app','durandal/system','viewmodels/h
     function logout() {
 	viblio.api( '/services/na/logout' ).then( function() {
 	    viblio.setUser( null );
-	    router.navigateTo( '#/login' );
+	    router.navigate( '#/login' );
 	});
     }
     // Most will call this logout() function by triggering an event.
@@ -83,7 +85,26 @@ define(['durandal/plugins/router','durandal/app','durandal/system','viewmodels/h
 	       login screen.  If they already have an open session, take them to the landing
 	       page.
 	    */
-	    return system.defer( function( dfd ) {
+
+           router.on('router:route:activating').then(function(instance, instruction) {
+                system.log("routeInfo: " + instruction.config);
+            });
+           
+           
+           router.map([
+                { route: '',                   moduleId: 'landing',            title: 'Viblio Landing Page',       nav: false,   authenticated: false,  header: landing_header },
+                { route: 'landing',            moduleId: 'landing',            title: 'Viblio Landing Page',       nav: false,   authenticated: false,  header: landing_header },
+                { route: 'home',               moduleId: 'home',               title: 'Viblio Channels Page',      nav: true,    authenticated: true,   header: page_header },
+                { route: 'login',              moduleId: 'login',              title: 'login',                     nav: false,   authenticated: false,  header: landing_header },
+                { route: 'settings',           moduleId: 'settings',           title: 'User Settings',             nav: false,   authenticated: true,   header: page_header },
+                { route: 'upload',             moduleId: 'upload',             title: 'Video Upload',              nav: true,    authenticated: true,   header: page_header },
+                { route: 'player',             moduleId: 'player',             title: 'Video Player',              nav: false,   authenticated: true,   header: page_header},
+                { route: 'forgotPassword',     moduleId: 'forgotPassword',     title: 'Forgot Password',           nav: false,   authenticated: false,  header: landing_header},
+                { route: 'invite',             moduleId: 'invite',             title: 'Viblio Invite',             nav: false,   authenticated: false,  header: landing_header},
+                { route: 'shareVidModal',      moduleId: 'shareVidModal',      title: 'Viblio Share Video',        nav: false,   authenticated: true,   header: page_header}
+            ]).buildNavigationModel();
+           
+	    system.defer( function( dfd ) {
 		$.getJSON( '/services/user/me' ).then( function( res ) {
 		    if ( res && res.error ) {
 			router.activate( 'landing' ).then( function() {
@@ -98,15 +119,18 @@ define(['durandal/plugins/router','durandal/app','durandal/system','viewmodels/h
 		    }
 		});
 	    }).promise();
+            
+            return system.defer;
+            //router.activate();
         },
         
         // Creates a margin on both sides of the page host to make up for the 30px created by the scrollbar.
-        // Doing it on afterBind prevents any jerky animations.
-        afterBind: function( view ) {
+        // Doing it on "bindingComplete" prevents any jerky animations.
+        bindingComplete: function( view ) {
             $(view).find(".page-host").css({"margin-left":"10px", "margin-right":"10px"});
         },
         
-	viewAttached: function( view ) {
+	attached: function( view ) {
             // Wrap the main content page with a custom scrollbar
             $(view).find(".scrollBarContainer").mCustomScrollbar({
                 contentTouchScroll: true,

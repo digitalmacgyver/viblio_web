@@ -1,13 +1,8 @@
 <div>
   <div data-bind="compose:header"></div>
   <div class="scrollBarContainer container-fluid page-host">
-      <div id="innerPadding"> <!-- Needed in order to keep outer and inner element scrollbars from overlapping -->
-          <!--ko compose: { 
-            model: router.activeItem, //wiring the router
-            afterCompose: router.afterCompose, //wiring the router
-            transition:'entrance', //use the 'entrance' transition when switching views
-            alwaysAttachView:true // always re-attach views
-            }--><!--/ko-->
+      <div id="innerPadding" data-bind="router: { model: router.activeItem, afterCompose: router.afterCompose, transition:'entrance', alwaysAttachView:true}">
+          <!-- innerPadding needed in order to keep outer and inner element scrollbars from overlapping -->
       </div>
   </div>
 </div>

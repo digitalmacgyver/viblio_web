@@ -1,4 +1,4 @@
-define( ['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'lib/dialogs', 'facebook'], function( router, app, system, config, viblio, dialogs ) {
+define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'plugins/dialog', 'facebook'], function( router, app, system, config, viblio, dialogs ) {
 
     var rfullname = ko.observable();
     var remail = ko.observable();
@@ -22,7 +22,7 @@ define( ['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/conf
           var user = json.user;
           viblio.setUser( user );
           dialogs.showMessage( 'Thanks!' );
-          router.navigateTo( '#/home' );
+          router.navigate( '#/home' );
        });
     }
 

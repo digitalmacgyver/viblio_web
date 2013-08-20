@@ -1,4 +1,4 @@
-define(['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'lib/dialogs'], function (router, app, system, messageq, dialogs) {
+define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'plugins/dialog'], function (router, app, system, messageq, dialogs) {
 
     // The currently logged in user
     var user = ko.observable();
@@ -86,7 +86,7 @@ define(['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/messa
 			}
 			else {
 			    self.setLastAttempt( router.activeRoute().hash );
-			    router.navigateTo( '#/login' );
+			    router.navigate( '#/login' );
 			}
 		    }
 		    else {

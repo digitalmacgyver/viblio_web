@@ -27,7 +27,7 @@ video), you need to pass parameters to the route that the target
 page viewmodel can get to.  Durandal 1.x does not support route
 params natively.  But you can:
 
-    router.navigateTo( '#/target?foo=bar' );
+    router.navigate( '#/target?foo=bar' );
 
 and in the target view model:
 
@@ -39,7 +39,7 @@ There is a virtual-to-phyical route name mapper in the "config" library
 (see below).  The idea is/was that during development, we may change what
 pages (routes) are navigated to.  Using this technique:
 
-    router.navigateTo( '#/' + config.routes.landing );
+    router.navigate( '#/' + config.routes.landing );
 
 This way we can change where "landing" maps to by changing it in one place
 (config.js) instead of changing multiple places in the application code.
@@ -59,12 +59,12 @@ Dialogs
 
 Let's centralize application dialogs in one place so we can create
 a unified and consistent use model and visual presentation.  There
-is App/lib/dialogs.js, which presently contains showMessage() and
+is App/plugins/dialog.js, which presently contains showMessage() and
 showModel() which just call the standard Durandal app methods.  We
 can change this later.  The GUI should always use dialogs from this
 model.
 
-    define( ['lib/dialogs'], function( dialogs ) {
+    define( ['plugins/dialog'], function( dialogs ) {
       dialogs.showMessage( 'You blew it!' );
 
 Custom Knockout Bindings

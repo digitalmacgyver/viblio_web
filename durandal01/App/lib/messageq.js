@@ -1,4 +1,4 @@
-define(['lib/config','lib/viblio','lib/dialogs','durandal/app'], function( config, viblio, dialogs, app ) {
+define(['lib/config','lib/viblio','plugins/dialog','durandal/app'], function( config, viblio, dialogs, app ) {
     var mq = null;
     var subscribed = false;
     var last_uuid = null;

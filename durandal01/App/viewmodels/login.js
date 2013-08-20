@@ -1,4 +1,4 @@
-define( ['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'lib/dialogs', 'facebook'], function( router, app, system, config, viblio, dialogs ) {
+define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'plugins/dialog', 'facebook'], function( router, app, system, config, viblio, dialogs ) {
 
     var email = ko.observable();
     var email_entry_error = ko.observable( false );
@@ -26,7 +26,7 @@ define( ['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/conf
 	// either go to the personal channel page, or
 	// do a pass thru to the page the user was
 	// trying to get to.
-	router.navigateTo( viblio.getLastAttempt() || '#/home' );
+	router.navigate( viblio.getLastAttempt() || '#/home' );
     }
 
     function nativeAuthenticate() {

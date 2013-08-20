@@ -1,4 +1,4 @@
-define( ['lib/dialogs','lib/viblio','lib/config','facebook'], function(dialogs,viblio,config) {
+define( ['plugins/dialog','lib/viblio','lib/config','facebook'], function(dialogs,viblio,config) {
     return {
 	displayName: 'Media Upload',
 	message: function() {

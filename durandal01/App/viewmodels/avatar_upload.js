@@ -1,4 +1,4 @@
-define(['lib/viblio','durandal/plugins/router'], function( viblio, router ) {
+define(['lib/viblio','plugins/router'], function( viblio, router ) {
     var Upload = function() {
     };
     Upload.prototype.dismiss = function() {
@@ -8,10 +8,10 @@ define(['lib/viblio','durandal/plugins/router'], function( viblio, router ) {
 	var self = this;
 	var data = $(self.view).find("form").serialize();
 	viblio.api( '/services/user/add_or_replace_profile_photo', data ).then( function() {
-	    self.modal.close();
+	    dialog.close(self);
 	});
     };
-    Upload.prototype.viewAttached = function( view ) {
+    Upload.prototype.attached = function( view ) {
 	this.view = view;
     };
     return Upload;

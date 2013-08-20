@@ -4,17 +4,17 @@
 
   The way to play a video is to
 
-  router.navigateTo( '#/player?mid=uuid' );
+  router.navigate( '#/player?mid=uuid' );
 
   Where uuid is a mediafile uuid.  The mediafile is
   actually fetched from the server to play.  We do it
   this way in case we use this page as a link to shared
   videos.
 */
-define( ['durandal/app','durandal/plugins/router','lib/dialogs','lib/config','lib/viblio','viewmodels/mediavstrip','purl'], function(app,router,dialogs,config,viblio,Strip) {
+define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','purl'], function(app,router,dialogs,config,viblio,Strip) {
     // Extract any query params on the page.  Other parts
     // of the application can:
-    //   router.navigateTo( '#/player?mid=' + mediafile.content().uuid );
+    //   router.navigate( '#/player?mid=' + mediafile.content().uuid );
     //
     function params() {
 	var p = $.url(window.location.href.replace('/#','')).param();
@@ -85,13 +85,13 @@ define( ['durandal/app','durandal/plugins/router','lib/dialogs','lib/config','li
     var playing = ko.observable({});
 
     // This observable will contain the vstrip when it is
-    // created in viewAttached.  Its a view model and is
+    // created in attached.  Its a view model and is
     // composed into the main view.
     //
     var related = ko.observable();
 
     // Play a new video.  Used after the main player is created in
-    // viewAttached.  This reuses the player to play a different clip.
+    // attached.  This reuses the player to play a different clip.
     //
     function playVid( m ) {
 	flowplayer().play({
@@ -158,7 +158,7 @@ define( ['durandal/app','durandal/plugins/router','lib/dialogs','lib/config','li
     return {
         
         showShareVidModal: function() {
-            app.showModal('viewmodels/shareVidModal');
+            app.showDialog('viewmodels/shareVidModal');
         },
     
 	query: query,
@@ -183,9 +183,8 @@ define( ['durandal/app','durandal/plugins/router','lib/dialogs','lib/config','li
 	    return true;
 	},
                 
-	viewAttached: function ( view ) {
-            resizePlayer();
-            
+	attached: function ( view ) {
+    
 	    query( params() );
 	    var mid = query().mid;
 
@@ -194,7 +193,7 @@ define( ['durandal/app','durandal/plugins/router','lib/dialogs','lib/config','li
 	    //
 	    if ( ! mid ) {
 		return dialogs.showMessage( 'No video to play!' ).then( function() {
-		    router.navigateTo( '#/home' );
+		    router.navigate( '#/home' );
 		});
 	    }
 
@@ -262,7 +261,11 @@ define( ['durandal/app','durandal/plugins/router','lib/dialogs','lib/config','li
                 }).flowplayer().ipad({simulateiDevice: should_simulate()});
 	    });
 	    return promise;
-	}
+	},
+        
+        compositionComplete: function(view, parent) {
+            resizePlayer();
+        }
     };
 });
 

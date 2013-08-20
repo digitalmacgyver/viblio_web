@@ -1,4 +1,4 @@
-define( ['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'lib/dialogs', 'facebook'], function( router, app, system, config, viblio, dialogs ) {
+define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'plugins/dialog', 'facebook'], function( router, app, system, config, viblio, dialogs ) {
 
     var shareVidEmail = ko.observable();
     var shareEmail_entry_error = ko.observable( false );
@@ -18,7 +18,7 @@ define( ['durandal/plugins/router', 'durandal/app', 'durandal/system', 'lib/conf
     });
     
     function showShareVidModal() {
-        app.showModal('viewmodels/shareVidModal');
+        app.showDialog('viewmodels/shareVidModal');
     };
     
     function emailLink() {

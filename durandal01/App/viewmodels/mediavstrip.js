@@ -145,9 +145,9 @@ define( ['lib/viblio', 'durandal/app', 'viewmodels/mediafile','durandal/events']
 	$(self.element).find(".media-area").mCustomScrollbar('scrollTo', '#'+m.media().uuid );
     };
 
-    // In viewAttached, attach the mCustomScrollbar we're presently
+    // In attached, attach the mCustomScrollbar we're presently
     // employing for this purpose.
-    Strip.prototype.viewAttached = function( view ) {
+    Strip.prototype.attached = function( view ) {
 	var self = this;
 	self.element = view;
 	

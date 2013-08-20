@@ -18,7 +18,7 @@ define(['durandal/http', 'durandal/app'], function (http, app) {
             //the app model allows easy display of modal dialogs by passing a view model
             //views are usually located by convention, but you an specify it as well with viewUrl
             item.viewUrl = 'views/detail';
-            app.showModal(item);
+            app.showDialog(item);
         }
 	/**
         canDeactivate: function () {
