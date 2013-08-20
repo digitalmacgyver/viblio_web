@@ -11,7 +11,7 @@
   this way in case we use this page as a link to shared
   videos.
 */
-define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','purl'], function(app,router,dialogs,config,viblio,Strip) {
+define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','purl'], function(app,router,dialog,config,viblio,Strip) {
     // Extract any query params on the page.  Other parts
     // of the application can:
     //   router.navigate( '#/player?mid=' + mediafile.content().uuid );
@@ -192,7 +192,7 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	    // page.  We *better* have, or I am not sure what to do!
 	    //
 	    if ( ! mid ) {
-		return dialogs.showMessage( 'No video to play!' ).then( function() {
+		return dialog.showMessage( 'No video to play!' ).then( function() {
 		    router.navigate( '#/home' );
 		});
 	    }

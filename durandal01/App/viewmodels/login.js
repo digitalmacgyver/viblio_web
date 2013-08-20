@@ -1,4 +1,4 @@
-define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'plugins/dialog', 'facebook'], function( router, app, system, config, viblio, dialogs ) {
+define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'plugins/dialog', 'facebook'], function( router, app, system, config, viblio, dialog ) {
 
     var email = ko.observable();
     var email_entry_error = ko.observable( false );
@@ -31,11 +31,11 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 
     function nativeAuthenticate() {
 	if ( ! email() ) {
-	    dialogs.showMessage( 'The email field is required.', 'Authentication' );
+	    dialog.showMessage( 'The email field is required.', 'Authentication' );
 	    return;
 	}
 	if ( ! password() ) {
-	    dialogs.showMessage( 'The password field is required.', 'Authentication' );
+	    dialog.showMessage( 'The password field is required.', 'Authentication' );
 	    return;
 	}
 	viblio.api( '/services/na/authenticate',
@@ -49,7 +49,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 
     function facebookAuthenticate() {
 	if ( ! fb_appid )
-	    dialogs.showMessage( 'In development, Facebook login will not work.' );
+	    dialog.showMessage( 'In development, Facebook login will not work.' );
 
 	FB.login(function(response) {
             if (response.authResponse) {
@@ -61,7 +61,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 			  });
 	    }
 	    else {
-		dialogs.showMessage( 'User cancelled?', 'Authentication' );
+		dialog.showMessage( 'User cancelled?', 'Authentication' );
 	    }
 	},{scope: config.facebook_ask_features()});
     }

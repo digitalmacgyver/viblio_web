@@ -1,4 +1,4 @@
-define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'plugins/dialog', 'facebook'], function( router, app, system, config, viblio, dialogs ) {
+define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'plugins/dialog', 'facebook'], function( router, app, system, config, viblio, dialog ) {
 
     var rfullname = ko.observable();
     var remail = ko.observable();
@@ -12,7 +12,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 
     function register() {viblio.api( '/services/na/invite_request',
         { email: remail, password: rpassword2, username: rfullname } ).then( function() {
-           dialogs.showMessage( 'An invite request has been sent via email to ' + remail() + '. Thanks!' );
+           dialog.showMessage( 'An invite request has been sent via email to ' + remail() + '. Thanks!' );
         });
     }
 
@@ -21,7 +21,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
         { email: iemail, password: ipassword, username: ifullname, code: icode } ).then(function(json) {
           var user = json.user;
           viblio.setUser( user );
-          dialogs.showMessage( 'Thanks!' );
+          dialog.showMessage( 'Thanks!' );
           router.navigate( '#/home' );
        });
     }

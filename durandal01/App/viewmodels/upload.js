@@ -1,15 +1,15 @@
-define( ['plugins/dialog','lib/viblio','lib/config','facebook'], function(dialogs,viblio,config) {
+define( ['plugins/dialog','lib/viblio','lib/config','facebook'], function(dialog,viblio,config) {
     return {
 	displayName: 'Media Upload',
 	message: function() {
-	    dialogs.showMessage( 'This is a body', 'Title' );
+	    dialog.showMessage( 'This is a body', 'Title' );
 	},
 	linkFacebookAccount: function() {
 	    var fb_appid   = config.facebook_appid();
 	    var fb_channel = config.facebook_channel();
 
 	    if ( ! fb_appid ) {
-		dialogs.showMessage( 'In development, Facebook login will not work.' );
+		dialog.showMessage( 'In development, Facebook login will not work.' );
 		return;
 	    }
 
@@ -26,7 +26,7 @@ define( ['plugins/dialog','lib/viblio','lib/config','facebook'], function(dialog
 		    viblio.api( '/services/user/link_facebook_account',
 				{ access_token: response.authResponse.accessToken }
 			      ).then( function( json ) {
-				  dialogs.showMessage( 'Your Facebook account has been successfully linked!', 'Congradulations!' );
+				  dialog.showMessage( 'Your Facebook account has been successfully linked!', 'Congradulations!' );
 			      });
 		}
 	    },{scope: config.facebook_ask_features()});

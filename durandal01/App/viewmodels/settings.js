@@ -1,4 +1,4 @@
-define(['plugins/router','lib/viblio','lib/config','plugins/dialog','facebook'],function(router,viblio,config,dialogs) {
+define(['durandal/app','plugins/router','lib/viblio','lib/config','plugins/dialog','facebook'],function(app,router,viblio,config,dialog) {
     var profile = ko.observable({});
     var fields  = ko.observable({});
     var links   = ko.observable({});
@@ -14,7 +14,7 @@ define(['plugins/router','lib/viblio','lib/config','plugins/dialog','facebook'],
 	var fb_channel = config.facebook_channel();
 
 	if ( ! fb_appid ) {
-	    dialogs.showMessage( 'In development, Facebook login will not work.' );
+	    dialog.showMessage( 'In development, Facebook login will not work.' );
 	    return;
 	}
 
@@ -31,7 +31,7 @@ define(['plugins/router','lib/viblio','lib/config','plugins/dialog','facebook'],
 		viblio.api( '/services/user/link_facebook_account',
 			    { access_token: response.authResponse.accessToken }
 			  ).then( function( json ) {
-			      dialogs.showMessage( 'Your Facebook account has been successfully linked!', 'Congradulations!' );
+			      dialog.showMessage( 'Your Facebook account has been successfully linked!', 'Congradulations!' );
 			      links().facebook = json.user.link;
 			      linkedFacebook( true );
 			  });
@@ -42,7 +42,7 @@ define(['plugins/router','lib/viblio','lib/config','plugins/dialog','facebook'],
     function unlinkFacebookAccount() {
 	viblio.api( '/services/user/unlink_facebook_account' ).then( function() {
 	    linkedFacebook( false );
-	    dialogs.showMessage( 'Your Facebook account has been successfully disconnected.', 'Linked Accounts' );
+	    dialog.showMessage( 'Your Facebook account has been successfully disconnected.', 'Linked Accounts' );
 	});
     }
 
@@ -85,7 +85,7 @@ define(['plugins/router','lib/viblio','lib/config','plugins/dialog','facebook'],
 	    router.navigateBack();
 	},
 	changeAvatar: function() {
-	    dialogs.showAvatarUpload();
+	    app.showDialog('viewmodels/avatar_upload');
 	},
 	changePassword: function() {
 	},

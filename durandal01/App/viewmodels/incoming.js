@@ -1,6 +1,6 @@
 /* The incoming video dialog
 */
-define( ['plugins/router'], function(router) {
+define( ['plugins/router', 'plugins/dialog'], function(router, dialog) {
     var Incoming = function( messages ) {
 	this.messages = messages;
 	this.count = this.messages.length;
@@ -31,16 +31,19 @@ define( ['plugins/router'], function(router) {
     };
 
     Incoming.prototype.dismiss = function() {
-	this.modal.close();
+	var self = this;
+	dialog.close(self);
     };
 
     Incoming.prototype.play = function() {
-	this.modal.close();
+	var self = this;
+	dialog.close(self);
 	router.navigate( '#/player?mid=' + this.messages[0].media.uuid );
     };
 
     Incoming.prototype.nameFaces = function() {
-	this.modal.close();
+	var self = this;
+	dialog.close(self);
     };
 
     return Incoming;
