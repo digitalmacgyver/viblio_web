@@ -1,6 +1,6 @@
 /* The incoming video dialog
 */
-define( ['plugins/dialog', 'durandal/plugins/router'], function(dialog, router) {
+define( ['plugins/dialog', 'plugins/router'], function(dialog, router) {
     var Incoming = function( messages, dismiss_cb ) {
 	this.messages = ko.observableArray();
 	this.count = ko.observable(0);
