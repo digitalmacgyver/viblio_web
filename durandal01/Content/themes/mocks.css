@@ -1,0 +1,122 @@
+body {
+    background-color: rgba(239,239,232,1);
+    color: rgba(50,53,68,1);
+    padding-top: 57px; /* match header height */
+}
+
+#innerPadding {
+    margin: 0;
+}
+
+/*********************  Utility Classes  ******************************/
+
+.boxShadowed {
+    -moz-box-shadow: 3px 3px 2px 1px rgba(0,0,0,.2); /* Firefox */
+    -webkit-box-shadow: 3px 3px 2px 1px rgba(0,0,0,.2);
+    box-shadow: 3px 3px 2px 1px rgba(0,0,0,.2);
+}
+
+.textShadowed {
+    -moz-text-shadow: 2px 2px rgba(0,0,0,.2);
+    -webkit-text-shadow: 2px 2px rgba(0,0,0,.2);
+    text-shadow: 2px 2px rgba(0,0,0,.2);
+}
+
+/********************  Home Page Section  *****************************/
+
+#page-header .navbar {
+    height: 57px;
+    border-bottom: 3px solid black;
+}
+
+#page-header .navbar .nav > .active > a,
+#page-header .navbar .nav > .active > a:hover,
+#page-header .navbar .nav > .active > a:focus {
+    background-color: rgba(28,184,209,1);
+    border-bottom: 3px solid #137089;
+}
+
+#page-header .navbar .nav a {
+    font-size: 18px;
+}
+
+#page-header .navbar img {
+    height: 42px;
+}
+
+#page-header .navbar .nav > li > a {
+    padding: 15px 30px;
+}
+
+.navbar .nav.pull-right.dropdown-toggle {
+    padding: 0;
+}
+
+.mainVidSection {
+    width: 100%;
+    /*height: 392px;*/
+    background-color: rgba(239,85,65,1);
+}
+
+.hstrip {
+    padding: 35px 0 35px 45px;
+}
+
+.hstrip .title h2 {
+    color: white;
+}
+
+.hstrip .title span {
+    color: rgba(0,0,0,.5);
+}
+
+.mainVidSection .portfolio {
+    margin-bottom: 10px;
+}
+
+.mainVidSection .mediafile {
+    width: 360px;
+    margin-right: 25px;
+}
+
+.mainVidSection .mediafile img {
+    width: 100%;
+    height: 202px;
+    border: none;
+}
+
+.mainVidSection .mediafile .information {
+    width: 100%;
+    height: 54px;
+    background-color: white;
+    padding: 17px 5px;
+    position: relative;
+    box-sizing: border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+}
+
+.mplay-icon {
+    left: 145px;
+}
+
+.mplay-icon:hover {
+    left: 145px;
+}
+
+.mediafile .information .aux {
+    background-color: rgba(211,246,253,1);
+    width: 54px;
+    height: 54px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    color: rgba(82,152,189,1);
+}
+
+.mediafile .information .title {
+    color: rgba(64,66,79,.75);
+}
+
+

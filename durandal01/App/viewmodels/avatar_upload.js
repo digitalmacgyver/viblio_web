@@ -9,9 +9,9 @@ define(['lib/viblio','plugins/router', 'plugins/dialog'], function( viblio, rout
 	var self = this;
 	var data = $(self.view).find("form").serialize();
         console.log("Here is the upload data: " + data);
-	/*viblio.api( '/services/user/add_or_replace_profile_photo', data ).then( function() {
+	viblio.api( '/services/user/add_or_replace_profile_photo', data ).then( function() {
 	    dialog.close(self);
-	});*/
+	});
     };
     Upload.prototype.attached = function( view ) {
 	this.view = view;

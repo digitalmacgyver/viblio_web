@@ -17,6 +17,10 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	xfbml: true
     });
     
+    function closeModal() {
+        dialog.close(this);
+    }
+    
     function showShareVidModal() {
         dialog.show('viewmodels/shareVidModal');
     };
@@ -36,6 +40,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	shareVidMessage: shareVidMessage,
 	shareMessage_entry_error: shareMessage_entry_error,
         
+        closeModal: closeModal,
         showShareVidModal: showShareVidModal
         
     };

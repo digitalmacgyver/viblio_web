@@ -85,19 +85,20 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	       login screen.  If they already have an open session, take them to the landing
 	       page.
 	    */
-
+           
+           // Used to gain access to routeInfo
            router.on('router:route:activating').then(function(instance, instruction) {
                 system.log("routeInfo: " + instruction.config);
             });
            
            
            router.map([
-                { route: '',                   moduleId: 'home',               title: 'Channels',                  nav: false,   authenticated: true,   header: page_header },
+                { route: '',                   moduleId: 'home',               title: 'HOME',                  nav: false,   authenticated: true,   header: page_header },
                 { route: 'landing',            moduleId: 'landing',            title: 'Viblio Landing Page',       nav: false,   authenticated: false,  header: landing_header },
-                { route: 'home',               moduleId: 'home',               title: 'Channels',                  nav: true,    authenticated: true,   header: page_header },
+                { route: 'home',               moduleId: 'home',               title: 'HOME',                  nav: true,    authenticated: true,   header: page_header },
                 { route: 'login',              moduleId: 'login',              title: 'login',                     nav: false,   authenticated: false,  header: landing_header },
                 { route: 'settings',           moduleId: 'settings',           title: 'User Settings',             nav: false,   authenticated: true,   header: page_header },
-                { route: 'upload',             moduleId: 'upload',             title: 'Upload',                    nav: true,    authenticated: true,   header: page_header },
+                { route: 'upload',             moduleId: 'upload',             title: 'UPLOAD',                    nav: true,    authenticated: true,   header: page_header },
                 { route: 'player',             moduleId: 'player',             title: 'Video Player',              nav: false,   authenticated: true,   header: page_header},
                 { route: 'forgotPassword',     moduleId: 'forgotPassword',     title: 'Forgot Password',           nav: false,   authenticated: false,  header: landing_header},
                 { route: 'invite',             moduleId: 'invite',             title: 'Viblio Invite',             nav: false,   authenticated: false,  header: landing_header},
@@ -126,9 +127,9 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
         
         // Creates a margin on both sides of the page host to make up for the 30px created by the scrollbar.
         // Doing it on "bindingComplete" prevents any jerky animations.
-        bindingComplete: function( view ) {
+        /*bindingComplete: function( view ) {
             $(view).find(".page-host").css({"margin-left":"10px", "margin-right":"10px"});
-        },
+        },*/
         
 	attached: function( view ) {
             // Wrap the main content page with a custom scrollbar
