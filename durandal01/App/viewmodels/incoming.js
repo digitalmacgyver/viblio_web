@@ -22,6 +22,10 @@ define( ['durandal/plugins/router'], function(router) {
 	    if ( media.views.face ) {
 		for( var f=0; f<media.views.face.length; f++ ) {
 		    var face = media.views.face[f];
+		    if ( ! face['contact'] )
+			face['has_contact'] = false;
+		    else
+			face['has_contact'] = true;
 		    this.faces.push( face );
 		}
 	    }
@@ -43,6 +47,12 @@ define( ['durandal/plugins/router'], function(router) {
     Incoming.prototype.nameFaces = function() {
 	this.modal.close();
 	this.dismiss_cb();
+    };
+
+    Incoming.prototype.viewAttached = function( view ) {
+	$(view).tooltip({
+	    selector: "[rel=tooltip]"
+	});
     };
 
     return Incoming;

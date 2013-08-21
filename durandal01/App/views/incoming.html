@@ -35,7 +35,12 @@
 	<li class="face">
 	  <div class="thumbnail">
 	    <img data-bind="attr:{src:$data.url}" alt=""/>
+	    <!-- ko if:has_contact -->
+	    <div rel="tooltip" data-placement="bottom" data-bind="text: contact.contact_name, attr:{title: contact.contact_name}" class="name"></div>
+	    <!-- /ko -->
+	    <!-- ko ifnot:has_contact -->
 	    <div class="name">Stranger</div>
+	    <!-- /ko -->
 	  </div>
 	</li>
       </ul>
