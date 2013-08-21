@@ -6,7 +6,7 @@ define( function() {
     // environment in which we are running this application.
     //
     var fbInfo = {
-	'http://192.168.1.22:3000': '566096966734454',
+	'http://192.168.1.21': '566096966734454',
 	'http://staging.viblio.com': '153462094815829',
 	'http://prod.viblio.com': '538791729508064',
 	'http://10.100.8.99': '357358674377173'

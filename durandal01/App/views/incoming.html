@@ -18,20 +18,20 @@
 	<i class="icon-play-circle"></i> 
       </a>
       <a href="#" data-bind="click: play">
-	<img class="img-polaroid" data-bind="attr:{src:messages[0].media.views.poster.url}" />
+	<img class="img-polaroid" data-bind="attr:{src:messages()[0].media.views.poster.url}" />
       </a>
     </div>
 
-    <p data-bind="if: count > 1">... and <span data-bind="html: (count-1)"></span> more</p>
+    <p data-bind="if: count() > 1">... and <span data-bind="html: (count()-1)"></span> more</p>
 
     <hr />
 
     <p>Viblio discovers faces of your friends and loved ones and
       makes sharing (and privacy!) easy.</p>
 
-    <div data-bind="if: faces_count > 0">
+    <div data-bind="if: faces_count() > 0">
       <h3>We found these new faces in your video:</h3>
-      <ul data-bind="foreach: faces">
+      <ul data-bind="foreach: faces()">
 	<li class="face">
 	  <div class="thumbnail">
 	    <img data-bind="attr:{src:$data.url}" alt=""/>
@@ -44,8 +44,8 @@
 
     </div>
 
-    <div data-bind="if: faces_count == 0">
-      <h3>Sorry, we couldn't find any faces in <span data-bind="if: count > 1">these videos</span><span data-bind="if: count == 1">this video</span>.</h3>
+    <div data-bind="if: faces_count() == 0">
+      <h3>Sorry, we couldn't find any faces in <span data-bind="if: count() > 1">these videos</span><span data-bind="if: count() == 1">this video</span>.</h3>
     </div>
 
   </div>
