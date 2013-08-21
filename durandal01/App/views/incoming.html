@@ -8,13 +8,13 @@
   <div class="modal-body">
     <p>Congratulations.  You have <span data-bind="html: count"></span> new
       video<span data-bind="if: count > 1">s</span> in your 
-      personal <a href="/#/home/">Viblio Channel</a>
+      personal <a data-bind="click: goHome" href="#">Viblio Channel</a>
     </p>
     
     <hr />
 
     <div class="poster">
-      <a class="mplay-icon" data-bind="click:play" href="#">
+      <a class="mplay-icon" data-bind="click: play" href="#">
 	<i class="icon-play-circle"></i> 
       </a>
       <a href="#" data-bind="click: play">

@@ -1,4 +1,4 @@
-define(['lib/config','lib/viblio','plugins/dialog','durandal/app'], function( config, viblio, dialogs, app ) {
+define(['lib/config','lib/viblio','lib/customDialogs','plugins/dialog','durandal/app'], function( config, viblio, customDialogs, dialogs, app ) {
     var mq = null;
     var subscribed = false;
     var last_uuid = null;
@@ -36,7 +36,7 @@ define(['lib/config','lib/viblio','plugins/dialog','durandal/app'], function( co
 					for( var i=0; i<messages.length; i++ ) {
 					    app.trigger( 'mediafile:ready', messages[i].media );
 					}
-					dialogs.showIncoming( messages );
+					customDialogs.showIncoming( messages );
 				    }
 				},
 				error: function( x, t, e ) {

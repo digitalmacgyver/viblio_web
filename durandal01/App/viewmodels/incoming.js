@@ -1,6 +1,6 @@
 /* The incoming video dialog
 */
-define( ['plugins/dialog', 'plugins/router'], function(dialog, router) {
+define( ['durandal/system', 'plugins/dialog', 'plugins/router'], function(system, dialog, router) {
     var Incoming = function( messages, dismiss_cb ) {
 	this.messages = ko.observableArray();
 	this.count = ko.observable(0);
@@ -13,6 +13,7 @@ define( ['plugins/dialog', 'plugins/router'], function(dialog, router) {
     };
 
     Incoming.prototype.update = function( messages ) {
+        system.log("messages from incoming.js " + messages);
 	var count = messages.length;
 	for( var i=(count - 1); i>=0; i-- )
 	    this.messages.unshift( messages[i] );
@@ -38,10 +39,17 @@ define( ['plugins/dialog', 'plugins/router'], function(dialog, router) {
 	this.dismiss_cb();
     };
 
-    Incoming.prototype.play = function() {
+    Incoming.prototype.goHome = function() {
 	dialog.close( this );
 	this.dismiss_cb();
-	router.navigateTo( '#/player?mid=' + this.messages[0].media.uuid );
+        router.navigate( '#home' );
+    };
+
+    Incoming.prototype.play = function() {
+        system.log("messages from incoming.play " + this.messages()[0].media.uuid );
+	dialog.close( this );
+	this.dismiss_cb();
+	router.navigate( '#/player?mid=' + this.messages()[0].media.uuid );
     };
 
     Incoming.prototype.nameFaces = function() {

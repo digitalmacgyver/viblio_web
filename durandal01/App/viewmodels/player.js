@@ -179,7 +179,9 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	    // Remove the handler
 	    $(window).unbind( 'resizePlayer', resizePlayer );
 	    // Remove the player
-	    flowplayer().unload();
+	    if(flowplayer()){
+                flowplayer().unload();
+            }
 	    return true;
 	},
                 

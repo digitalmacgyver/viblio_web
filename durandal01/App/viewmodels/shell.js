@@ -103,7 +103,8 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
                 { route: 'forgotPassword',     moduleId: 'forgotPassword',     title: 'Forgot Password',           nav: false,   authenticated: false,  header: landing_header},
                 { route: 'invite',             moduleId: 'invite',             title: 'Viblio Invite',             nav: false,   authenticated: false,  header: landing_header},
                 { route: 'shareVidModal',      moduleId: 'shareVidModal',      title: 'Viblio Share Video',        nav: false,   authenticated: true,   header: page_header},
-                { route: 'shareVidModal',      moduleId: 'settings',           title: 'User Settings',             nav: false,   authenticated: true,   header: page_header}
+                { route: 'settings',           moduleId: 'settings',           title: 'User Settings',             nav: false,   authenticated: true,   header: page_header},
+                { route: 'incoming',           moduleId: 'incoming',           title: 'Incoming Message',          nav: false,   authenticated: true,   header: page_header},
             ]).buildNavigationModel();
            
 	    system.defer( function( dfd ) {
