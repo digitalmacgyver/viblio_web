@@ -1,4 +1,4 @@
-define(['durandal/app','plugins/router','lib/viblio','lib/config','plugins/dialog','facebook'],function(app,router,viblio,config,dialog) {
+define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/dialogs','plugins/dialog','facebook'],function(app,router,viblio,config,dialogs,dialog) {
     var profile = ko.observable({});
     var email   = ko.observable();
     var links   = ko.observable({});
@@ -25,7 +25,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','plugins/dialo
 	$.get( '/services/user/change_email', { email: addr } ).then(
 	    function( json ) {
 		if ( json.error ) {
-		    dialogs.showError( json.message );
+		    dialog.showError( json.message );
 		    email( profile().email );
 		}
 	    });
@@ -123,19 +123,16 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','plugins/dialo
 	cancel: function() {
 	    router.navigateBack();
 	},
-<<<<<<< HEAD
+                
 	changeAvatar: function() {
 	    app.showDialog('viewmodels/avatar_upload');
-	},
-=======
->>>>>>> master
+	},        
+
 	changePassword: function() {
 	    dialogs.showPassword();
 	},
-<<<<<<< HEAD
+                
 	attached: function( view ) {
-=======
-	viewAttached: function( view ) {
 	    var self = this;
 	    self.view = view;
 
@@ -155,7 +152,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','plugins/dialo
 	    });
 
 	    dialogs.showLoading();
->>>>>>> master
+            
 	    return viblio.api( '/services/user/profile' ).then( function( json ) {
 		dialogs.hideLoading();
 

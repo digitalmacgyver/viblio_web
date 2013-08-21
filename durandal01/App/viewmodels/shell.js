@@ -93,16 +93,17 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
            
            
            router.map([
-                { route: '',                   moduleId: 'home',               title: 'HOME',                  nav: false,   authenticated: true,   header: page_header },
+                { route: '',                   moduleId: 'home',               title: 'HOME',                      nav: false,   authenticated: true,   header: page_header },
                 { route: 'landing',            moduleId: 'landing',            title: 'Viblio Landing Page',       nav: false,   authenticated: false,  header: landing_header },
-                { route: 'home',               moduleId: 'home',               title: 'HOME',                  nav: true,    authenticated: true,   header: page_header },
+                { route: 'home',               moduleId: 'home',               title: 'HOME',                      nav: true,    authenticated: true,   header: page_header },
                 { route: 'login',              moduleId: 'login',              title: 'login',                     nav: false,   authenticated: false,  header: landing_header },
                 { route: 'settings',           moduleId: 'settings',           title: 'User Settings',             nav: false,   authenticated: true,   header: page_header },
                 { route: 'upload',             moduleId: 'upload',             title: 'UPLOAD',                    nav: true,    authenticated: true,   header: page_header },
                 { route: 'player',             moduleId: 'player',             title: 'Video Player',              nav: false,   authenticated: true,   header: page_header},
                 { route: 'forgotPassword',     moduleId: 'forgotPassword',     title: 'Forgot Password',           nav: false,   authenticated: false,  header: landing_header},
                 { route: 'invite',             moduleId: 'invite',             title: 'Viblio Invite',             nav: false,   authenticated: false,  header: landing_header},
-                { route: 'shareVidModal',      moduleId: 'shareVidModal',      title: 'Viblio Share Video',        nav: false,   authenticated: true,   header: page_header}
+                { route: 'shareVidModal',      moduleId: 'shareVidModal',      title: 'Viblio Share Video',        nav: false,   authenticated: true,   header: page_header},
+                { route: 'shareVidModal',      moduleId: 'settings',           title: 'User Settings',             nav: false,   authenticated: true,   header: page_header}
             ]).buildNavigationModel();
            
 	    system.defer( function( dfd ) {

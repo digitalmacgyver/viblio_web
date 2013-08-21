@@ -2,7 +2,7 @@
    Application wide dialogs.  For now, just use Durandal standard.
    Later we'll do different things like slide downs and such.
 */
-define( ['durandal/app', 'durandal/system', 'durandal/modalDialog', 'viewmodels/incoming', 'viewmodels/loading', 'viewmodels/change_password'], function( app, system, modalDialog, Incoming, Loading, ChangePassword ) {
+define( ['durandal/app', 'durandal/system', 'plugins/dialog', 'viewmodels/incoming', 'viewmodels/loading', 'viewmodels/change_password'], function( app, system, dialog, Incoming, Loading, ChangePassword ) {
     var incoming = null;
     var loading  = null;
     return {
@@ -19,7 +19,7 @@ define( ['durandal/app', 'durandal/system', 'durandal/modalDialog', 'viewmodels/
 	    return app.showMessage( msg, title, options );
 	},
 	showModal: function( obj, activationData, context ) {
-	    return app.showModal( obj, activationData, context );
+	    return app.showDialog( obj, activationData, context );
 	},
 	showIncoming: function( messages ) {
 	    // Incoming dialog is a little special.  If its already showing,
@@ -29,22 +29,22 @@ define( ['durandal/app', 'durandal/system', 'durandal/modalDialog', 'viewmodels/
 	    }
 	    else {
 		incoming = new Incoming( messages, function() { incoming = null; } );
-		return modalDialog.show( incoming );
+		return app.showDialog( incoming );
 	    }
 	},
 	showLoading: function() {
 	    if ( loading == null ) {
 		loading = new Loading();
-		return modalDialog.show( loading );
+		return app.showDialog( loading );
 	    }
 	},
 	hideLoading: function() {
 	    if ( loading ) 
-		loading.modal.close();
+                dialog.close( loading );
 	    loading = null;
 	},
 	showPassword: function() {
-	    return modalDialog.show( new ChangePassword() );
+	    return app.showDialog( new ChangePassword() );
 	}
     };
 });

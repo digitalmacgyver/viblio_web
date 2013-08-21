@@ -1,20 +1,11 @@
 /* The incoming video dialog
 */
-<<<<<<< HEAD
-define( ['plugins/router', 'plugins/dialog'], function(router, dialog) {
-    var Incoming = function( messages ) {
-	this.messages = messages;
-	this.count = this.messages.length;
-	this.faces_count = 0;
-	this.faces = new Array();
-=======
-define( ['durandal/plugins/router'], function(router) {
+define( ['plugins/dialog', 'durandal/plugins/router'], function(dialog, router) {
     var Incoming = function( messages, dismiss_cb ) {
 	this.messages = ko.observableArray();
 	this.count = ko.observable(0);
 	this.faces_count = ko.observable(0);
 	this.faces = ko.observableArray();
->>>>>>> master
 
 	this.dismiss_cb = dismiss_cb;
 
@@ -43,35 +34,19 @@ define( ['durandal/plugins/router'], function(router) {
     };
 
     Incoming.prototype.dismiss = function() {
-<<<<<<< HEAD
-	var self = this;
-	dialog.close(self);
-    };
-
-    Incoming.prototype.play = function() {
-	var self = this;
-	dialog.close(self);
-	router.navigate( '#/player?mid=' + this.messages[0].media.uuid );
-    };
-
-    Incoming.prototype.nameFaces = function() {
-	var self = this;
-	dialog.close(self);
-=======
-	this.modal.close();
+	dialog.close( this );
 	this.dismiss_cb();
     };
 
     Incoming.prototype.play = function() {
-	this.modal.close();
+	dialog.close( this );
 	this.dismiss_cb();
 	router.navigateTo( '#/player?mid=' + this.messages[0].media.uuid );
     };
 
     Incoming.prototype.nameFaces = function() {
-	this.modal.close();
+	dialog.close( this );
 	this.dismiss_cb();
->>>>>>> master
     };
 
     Incoming.prototype.viewAttached = function( view ) {

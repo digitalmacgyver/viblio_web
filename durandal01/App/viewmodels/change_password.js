@@ -1,5 +1,5 @@
 
-define(function() {
+define(['plugins/dialog'], function(dialog) {
 
     var P = function() {
 	this.p1 = ko.observable();
@@ -18,13 +18,13 @@ define(function() {
 
 	    viblio.api( '/services/user/change_password', { password: self.p1() } ).then(
 		function() {
-		    self.modal.close();
+		    dialog.close( self );
 		});
 	}
     };
 
     P.prototype.dismiss = function() {
-	this.modal.close();
+	dialog.close( this );
     };
 
     P.prototype.viewAttached = function( view ) {

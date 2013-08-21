@@ -4,7 +4,7 @@ define( function() {
     };
 
     Loading.prototype.hide = function() {
-	this.modal.close();
+	dialog.close(this);
     };
 
     return Loading;
