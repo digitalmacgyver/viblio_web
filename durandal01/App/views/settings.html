@@ -8,11 +8,11 @@
 	<h3 class="mainLabel">Account Information</h3>
 	<table class="account-info">
 	  <tr>
-	    <td class="avatar">
-	      <img id="apic" class="img-polaroid" src="/services/user/avatar?uid=-&y=70" />
-	      <div>
+	    <td class="avatar boxShadowed">
+	      <img id="apic" class="" src="/services/user/avatar?uid=-&y=70" />
+	      <div class="darkBlueBG">
 		<span class="fileinput-button">
-		  <span>Change...</span>
+		  <span>Change Avatar</span>
 		  <input id="fileupload" type="file" name="upload" data-url="/services/user/add_or_replace_profile_photo" />
 		</span>
 		<i class="icon-spinner icon-2x icon-spin"></i>
@@ -21,7 +21,7 @@
 	    <td class="email-password">
 	      <form>
 		<fieldset>
-		  <label for="email">Email</label>
+		  <label for="email">Email address</label>
 		  <input type="email" data-bind="value: email, enable: false" />
 		</fieldset>
 		<a href="#" data-bind="click: changePassword">Change Password...</a>
@@ -55,6 +55,7 @@
 	<button class="btn btn-primary" data-bind="visible: email_changes, click: save">Save Email Settings</button>
       </div>
       <div class="bottomBorder-Thick paddedDiv" data-bind="visible: email_notifications">
+        <h3 class="mainLabel">Get an email when...</h3>
 	<form>
 	  <fieldset>
 	    <label class="checkbox">
@@ -73,6 +74,6 @@
 	</form>
       </div>
     </div>
-    <button class="btn btn-primary" data-bind="click: cancel">Done</button>
+    <button class="btn btn-primary" data-bind="click: cancel">Save your Settings</button>
   </div>
 </div>

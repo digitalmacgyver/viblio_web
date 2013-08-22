@@ -8,6 +8,61 @@ body {
     margin: 0;
 }
 
+textarea, input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+    background-color: white;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    border-color: rgba(0,0,0,.3);
+    height: 30px;
+}
+
+.btn {
+    background: none;
+    filter: none;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    background-repeat: no-repeat;
+    border-color: transparent;
+    border: none;
+    color: white;
+    height: 35px;
+    -moz-text-shadow: 2px 2px rgba(0,0,0,.2);
+    -webkit-text-shadow: 2px 2px rgba(0,0,0,.2);
+    text-shadow: 2px 2px rgba(0,0,0,.2);
+    border-bottom: 3px inset rgba(0,0,0,.2);
+    padding: 5px 40px;
+}
+
+.btn-primary {
+    background-color: rgba(239,85,65,1);
+}
+
+.btn-secondary {
+    background-color: rgba(0,0,0,.5);
+}
+
 /*********************  Utility Classes  ******************************/
 
 .boxShadowed {
@@ -20,6 +75,10 @@ body {
     -moz-text-shadow: 2px 2px rgba(0,0,0,.2);
     -webkit-text-shadow: 2px 2px rgba(0,0,0,.2);
     text-shadow: 2px 2px rgba(0,0,0,.2);
+}
+
+.darkBlueBG {
+    background-color: rgba(50,53,68,1);
 }
 
 /********************  Home Page Section  *****************************/
@@ -58,8 +117,12 @@ body {
     background-color: rgba(239,85,65,1);
 }
 
+.mainVidSection .title {
+    margin-bottom: 25px;
+}
+
 .hstrip {
-    padding: 35px 0 35px 45px;
+    padding: 35px 0 10px 45px;
 }
 
 .hstrip .title h2 {
@@ -141,7 +204,7 @@ body {
 }
 
 .bottomBorder-Thick {
-    border-bottom: 8px inset rgba(0,0,0,.3); 
+    border-bottom: 8px inset rgba(0,0,0,.1); 
 }
 
 .turquoiseBG {
@@ -154,17 +217,49 @@ body {
 
 .mainLabel {
     margin-top: 0;
-    margin-bottom: 32px;
+    margin-bottom: 22px;
     color: rgba(50,53,68,.6);
 }
 
 .paddedDiv {
-    padding: 40px 50px;
+    padding: 27px 50px 40px;
+}
+
+.content-Wrap > div {
+    margin-bottom: 36px;
 }
 
 .title-Wrap {
     text-align: center;
     padding: 20px;
     margin-bottom: 48px;
+}
+
+.email-password label {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.email-password a {
+    color: rgba(28,184,209,1);
+    font-size: 16px;
+    margin-top: 5px;
+    display: block;
+}
+
+.email-password input {
+    width: 332px;
+}
+
+#apic {
+    width: 120px;
+}
+
+.avatar div {
+    color: white;
+    padding: 2px 0 4px 4px;
+    width: 120px;
+    box-sizing: border-box;
+    -moz-box-sizing:border-box; /* Firefox */
 }
 
