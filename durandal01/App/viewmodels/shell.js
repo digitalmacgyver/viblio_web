@@ -1,6 +1,6 @@
 define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','lib/viblio','facebook','purl'], function (router, app, system, page_header, landing_header, viblio) {
 
-    var header = ko.observable( landing_header );
+    var header = ko.observable( );
     
     router.on('router:navigation:complete').then(function(instance, instruction, router) {
         if (app.title) {
@@ -9,7 +9,6 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             document.title = instruction.config.title;
         }
 	header( instruction.config.header );
-        system.log("params from onNavigationComplete: " + instruction.config);
     });
 
     // This is how you "guard" routes; ie make conditional decisions
@@ -93,21 +92,21 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
            
            
            router.map([
-                { route: '',                   moduleId: 'home',               title: 'HOME',                      nav: false,   authenticated: true,   header: page_header },
-                { route: 'landing',            moduleId: 'landing',            title: 'Viblio Landing Page',       nav: false,   authenticated: false,  header: landing_header },
-                { route: 'home',               moduleId: 'home',               title: 'HOME',                      nav: true,    authenticated: true,   header: page_header },
-                { route: 'login',              moduleId: 'login',              title: 'login',                     nav: false,   authenticated: false,  header: landing_header },
-                { route: 'settings',           moduleId: 'settings',           title: 'User Settings',             nav: false,   authenticated: true,   header: page_header },
-                { route: 'upload',             moduleId: 'upload',             title: 'UPLOAD',                    nav: true,    authenticated: true,   header: page_header },
-                { route: 'player',             moduleId: 'player',             title: 'Video Player',              nav: false,   authenticated: true,   header: page_header },
-                { route: 'forgotPassword',     moduleId: 'forgotPassword',     title: 'Forgot Password',           nav: false,   authenticated: false,  header: landing_header },
-                { route: 'invite',             moduleId: 'invite',             title: 'Viblio Invite',             nav: false,   authenticated: false,  header: landing_header },
-                { route: 'shareVidModal',      moduleId: 'shareVidModal',      title: 'Viblio Share Video',        nav: false,   authenticated: true,   header: page_header },
-                { route: 'settings',           moduleId: 'settings',           title: 'User Settings',             nav: false,   authenticated: true,   header: page_header },
-                { route: 'incoming',           moduleId: 'incoming',           title: 'Incoming Message',          nav: false,   authenticated: true,   header: page_header },
-            ]).buildNavigationModel();
+                { route: '',                   moduleId: 'home',               title: 'HOME',                           nav: false,   authenticated: true,   header: page_header },
+                { route: 'landing',            moduleId: 'landing',            title: 'Viblio Landing Page',            nav: false,   authenticated: false,  header: landing_header },
+                { route: 'home',               moduleId: 'home',               title: 'HOME',                           nav: true,    authenticated: true,   header: page_header },
+                { route: 'login',              moduleId: 'login',              title: 'Log in to your Viblio account',  nav: false,   authenticated: false,  header: landing_header },
+                { route: 'settings',           moduleId: 'settings',           title: 'User Settings',                  nav: false,   authenticated: true,   header: page_header },
+                { route: 'upload',             moduleId: 'upload',             title: 'UPLOAD',                         nav: true,    authenticated: true,   header: page_header },
+                { route: 'player',             moduleId: 'player',             title: 'Video Player',                   nav: false,   authenticated: true,   header: page_header },
+                { route: 'forgotPassword',     moduleId: 'forgotPassword',     title: 'Forgot your Password?',                nav: false,   authenticated: false,  header: landing_header },
+                { route: 'invite',             moduleId: 'invite',             title: 'Viblio Invite',                  nav: false,   authenticated: false,  header: landing_header },
+                { route: 'shareVidModal',      moduleId: 'shareVidModal',      title: 'Viblio Share Video',             nav: false,   authenticated: true,   header: page_header },
+                { route: 'settings',           moduleId: 'settings',           title: 'User Settings',                  nav: false,   authenticated: true,   header: page_header },
+                { route: 'incoming',           moduleId: 'incoming',           title: 'Incoming Message',               nav: false,   authenticated: true,   header: page_header },
+            ]).buildNavigationModel().activate();
            
-	    system.defer( function( dfd ) {
+	    /*system.defer( function( dfd ) {
 		$.getJSON( '/services/user/me' ).then( function( res ) {
 		    if ( res && res.error ) {
                         router.activate({silent:true});
@@ -115,7 +114,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
                         //router.activate({silent:true}).then(function(){ router.navigate('landing'); });
 			/*router.activate( 'landing' ).then( function() {
 			    dfd.resolve();
-			});*/
+			});
 		    }
 		    else {
 			viblio.setUser( res.user );
@@ -124,13 +123,13 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
                         //router.activate({silent:true}).then(function(){ router.navigate('home'); });
 			/*router.activate( 'home' ).then( function() {
 			    dfd.resolve();
-			});*/
+			});
 		    }
 		});
 	    }).promise();
             
             return system.defer;
-            //router.activate();
+            //router.activate();*/
         },
         
         // Creates a margin on both sides of the page host to make up for the 30px created by the scrollbar.
