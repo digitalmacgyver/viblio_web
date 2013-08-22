@@ -1,9 +1,11 @@
 <div id="settings-page">
-  <h2>Your Viblio Settings</h2>  
+  <div class="title-Wrap turquoiseBG bottomBorder-Thin whiteText textShadowed">
+      <h2>Your Viblio Settings</h2>    
+  </div>   
   <div class="content-Wrap">
-    <div class="iwhiteDropshadowBackground roundedCorners">
-      <div class="igreyBottomBrdr">
-	<h3>Account Information</h3>
+    <div id="accountInfo" class="mocksWhiteBG">
+      <div class="bottomBorder paddedDiv">
+	<h3 class="mainLabel">Account Information</h3>
 	<table class="account-info">
 	  <tr>
 	    <td class="avatar">
@@ -28,8 +30,8 @@
 	  </tr>
 	</table>
       </div>
-      <div  class="igreyBottomBrdr">
-	<h3>Connected Accounts</h3>
+      <div  class="bottomBorder-Thick paddedDiv">
+	<h3 class="mainLabel">Connected Accounts</h3>
 	<div data-bind="ifnot: linkedFacebook">
 	  <a href="#" data-bind="click: linkAccount.bind( $data, 'facebook' )" class="pull-right link-disconnect">Connect...</a>
 	  <i class="facebookColor icon-facebook-sign" /> Connect to your Facebook account for some great features!
@@ -40,9 +42,9 @@
 	</div>
       </div>
     </div>
-    <div class="iwhiteDropshadowBackground roundedCorners">
-      <div class="igreyBottomBrdr">
-	<h3>Email Notifications</h3>
+    <div id="emailNotifications" class="mocksWhiteBG">
+      <div class="bottomBorder paddedDiv">
+	<h3 class="mainLabel">Email Notifications</h3>
 	<form>
 	  <fieldset>
 	    <label class="checkbox">
@@ -52,7 +54,7 @@
 	</form>
 	<button class="btn btn-primary" data-bind="visible: email_changes, click: save">Save Email Settings</button>
       </div>
-      <div class="igreyBottomBrdr" data-bind="visible: email_notifications">
+      <div class="bottomBorder-Thick paddedDiv" data-bind="visible: email_notifications">
 	<form>
 	  <fieldset>
 	    <label class="checkbox">

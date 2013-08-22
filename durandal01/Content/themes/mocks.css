@@ -95,15 +95,15 @@ body {
     -moz-box-sizing:border-box; /* Firefox */
 }
 
-.mplay-icon {
+.mainVidSection .mplay-icon {
     left: 145px;
 }
 
-.mplay-icon:hover {
+.mainVidSection .mplay-icon:hover {
     left: 145px;
 }
 
-.mediafile .information .aux {
+.mainVidSection .mediafile .information .aux {
     background-color: rgba(211,246,253,1);
     width: 54px;
     height: 54px;
@@ -119,4 +119,52 @@ body {
     color: rgba(64,66,79,.75);
 }
 
+
+/********************  Settings Page Section  *****************************/
+
+#settings-page .content-Wrap {
+    width: 600px;
+    margin: 0 auto;
+}
+
+.mocksWhiteBG {
+    background-color: white;
+    border: 1px solid lightgrey;
+}
+
+.bottomBorder {
+    border-bottom: 1px solid rgba(0,0,0,.2);
+}
+
+.bottomBorder-Thin {
+    border-bottom: 3px inset rgba(0,0,0,.2);
+}
+
+.bottomBorder-Thick {
+    border-bottom: 8px inset rgba(0,0,0,.3); 
+}
+
+.turquoiseBG {
+    background-color: rgba(28,184,209,1);
+}
+
+.whiteText {
+    color: white;
+}
+
+.mainLabel {
+    margin-top: 0;
+    margin-bottom: 32px;
+    color: rgba(50,53,68,.6);
+}
+
+.paddedDiv {
+    padding: 40px 50px;
+}
+
+.title-Wrap {
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 48px;
+}
 
