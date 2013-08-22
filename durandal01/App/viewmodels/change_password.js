@@ -27,7 +27,7 @@ define(['plugins/dialog'], function(dialog) {
 	dialog.close( this );
     };
 
-    P.prototype.viewAttached = function( view ) {
+    P.prototype.attached = function( view ) {
 	this.view = view;
     };
 

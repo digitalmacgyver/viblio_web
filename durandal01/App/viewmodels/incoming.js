@@ -57,7 +57,7 @@ define( ['durandal/system', 'plugins/dialog', 'plugins/router'], function(system
 	this.dismiss_cb();
     };
 
-    Incoming.prototype.viewAttached = function( view ) {
+    Incoming.prototype.attached = function( view ) {
 	$(view).tooltip({
 	    selector: "[rel=tooltip]"
 	});

@@ -99,26 +99,32 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
                 { route: 'login',              moduleId: 'login',              title: 'login',                     nav: false,   authenticated: false,  header: landing_header },
                 { route: 'settings',           moduleId: 'settings',           title: 'User Settings',             nav: false,   authenticated: true,   header: page_header },
                 { route: 'upload',             moduleId: 'upload',             title: 'UPLOAD',                    nav: true,    authenticated: true,   header: page_header },
-                { route: 'player',             moduleId: 'player',             title: 'Video Player',              nav: false,   authenticated: true,   header: page_header},
-                { route: 'forgotPassword',     moduleId: 'forgotPassword',     title: 'Forgot Password',           nav: false,   authenticated: false,  header: landing_header},
-                { route: 'invite',             moduleId: 'invite',             title: 'Viblio Invite',             nav: false,   authenticated: false,  header: landing_header},
-                { route: 'shareVidModal',      moduleId: 'shareVidModal',      title: 'Viblio Share Video',        nav: false,   authenticated: true,   header: page_header},
-                { route: 'settings',           moduleId: 'settings',           title: 'User Settings',             nav: false,   authenticated: true,   header: page_header},
-                { route: 'incoming',           moduleId: 'incoming',           title: 'Incoming Message',          nav: false,   authenticated: true,   header: page_header},
+                { route: 'player',             moduleId: 'player',             title: 'Video Player',              nav: false,   authenticated: true,   header: page_header },
+                { route: 'forgotPassword',     moduleId: 'forgotPassword',     title: 'Forgot Password',           nav: false,   authenticated: false,  header: landing_header },
+                { route: 'invite',             moduleId: 'invite',             title: 'Viblio Invite',             nav: false,   authenticated: false,  header: landing_header },
+                { route: 'shareVidModal',      moduleId: 'shareVidModal',      title: 'Viblio Share Video',        nav: false,   authenticated: true,   header: page_header },
+                { route: 'settings',           moduleId: 'settings',           title: 'User Settings',             nav: false,   authenticated: true,   header: page_header },
+                { route: 'incoming',           moduleId: 'incoming',           title: 'Incoming Message',          nav: false,   authenticated: true,   header: page_header },
             ]).buildNavigationModel();
            
 	    system.defer( function( dfd ) {
 		$.getJSON( '/services/user/me' ).then( function( res ) {
 		    if ( res && res.error ) {
-			router.activate( 'landing' ).then( function() {
+                        router.activate({silent:true});
+                        router.navigate('landing'); 
+                        //router.activate({silent:true}).then(function(){ router.navigate('landing'); });
+			/*router.activate( 'landing' ).then( function() {
 			    dfd.resolve();
-			});
+			});*/
 		    }
 		    else {
 			viblio.setUser( res.user );
-			router.activate( 'home' ).then( function() {
+                        router.activate({silent:true});
+                        router.navigate('home'); 
+                        //router.activate({silent:true}).then(function(){ router.navigate('home'); });
+			/*router.activate( 'home' ).then( function() {
 			    dfd.resolve();
-			});
+			});*/
 		    }
 		});
 	    }).promise();
