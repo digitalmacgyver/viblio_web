@@ -1,0 +1,104 @@
+.content-Wrap {
+    margin: 0 20px;
+}
+
+#loginArea,
+#noAccount {
+    margin-bottom: 50px;
+    width: 600px;
+    max-width: 100%;
+    overflow: auto;
+}
+
+#loginArea > div,
+#loginArea form,
+#noAccount div {
+    padding: 20px 36px;
+}
+
+#loginArea form {
+    padding-top: 10px;
+}
+
+#facebookLoginBtn {
+    display: block;
+    color: white;
+    border-radius: 4px;
+    text-align: center;
+    width: 65%;
+    margin: 16px auto;
+    padding: 9px 0;
+    font-size: 18px;
+    background: rgba(89,138,179,1);
+    background: linear-gradient(to bottom, rgba(89,138,179,1) 0%, rgba(45,93,142,1) 100%);
+    background: -moz-linear-gradient(top, rgba(89,138,179,1) 0%, rgba(45,93,142,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(89,138,179,1)), color-stop(100%,rgba(45,93,142,1)));
+    background: -webkit-linear-gradient(top, rgba(89,138,179,1) 0%,rgba(45,93,142,1) 100%);
+    background: -o-linear-gradient(top, rgba(89,138,179,1) 0%,rgba(45,93,142,1) 100%);
+    background: -ms-linear-gradient(top, rgba(89,138,179,1) 0%,rgba(45,93,142,1) 100%);
+    background: linear-gradient(to bottom, rgba(89,138,179,1) 0%,rgba(45,93,142,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='rgba(89,138,179,1)', endColorstr='rgba(45,93,142,1)',GradientType=0 );
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.3);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,.3);
+    box-shadow: 0 1px 3px rgba(0,0,0,.3);
+}
+
+#facebookLoginBtn:hover {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#loginArea div:nth-of-type(3) {
+    padding: 0;
+}
+
+#or-Wrap p {
+    width: 40px;
+    margin: 0 auto;
+    background: white;
+    border: none;
+    padding: 0;
+    position: relative;
+    top: -10px;
+    text-align: center;
+}
+
+#loginArea form div {
+    width: 75%;
+    overflow: auto;
+}
+
+#loginArea form div input {
+    display: block;
+    width: 100%;
+    height: 34px;
+    box-sizing: border-box;
+    -moz-box-sizing:border-box;
+    margin-bottom: 18px;
+}
+
+#loginArea form a {
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 6px 0 20px;
+}
+
+#loginArea form button {
+    float: right;
+    clear: both;
+}
+
+#noAccount h3 {
+    display: inline-block;
+}
+
+#noAccount a {
+    text-decoration: underline;
+    font-size: 17px;
+    margin: 24px 0 36px;
+    float: right;
+    clear: both;
+}
+

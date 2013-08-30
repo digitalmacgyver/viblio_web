@@ -1,0 +1,34 @@
+<div id="player-page">
+
+  <!-- Main Page -->
+  <div id="main">
+    <div id="container">
+      <div id="center" class="column">
+	<div id="tv">
+	  <img src="css/v-medium.png" />
+	</div>
+	<div id="info">info</div>
+	<div id="comments">comments</div>
+      </div>
+      <div id="left"  class="column"><a href="#" class="btn" 
+					data-bind="click: previousRelated, css: {disabled: disable_prev()}"><i class="icon-step-backward"></i></a></div>
+      <div id="right" class="column"><a href="#" class="btn" 
+					data-bind="click: nextRelated, css: {disabled: disable_next()}"><i class="icon-step-forward"></i></a></div>
+    </div>
+    <div style="clear: both"></div>
+  </div>
+  
+  <!-- Right Column -->
+  <div id="right-column">
+    <div id="share-wrapper">
+      <div><a class="btn" href="#" data-bind="click: showShareVidModal">
+	<i class="icon-share"></i> Share this Video
+      </a></div>
+    </div>
+    <div id="related-wrapper">
+      <div><p>Related Videos</p></div>
+      <div data-bind="compose: related"></div>
+    </div>
+  </div>
+  
+</div>

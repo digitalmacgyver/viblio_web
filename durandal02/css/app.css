@@ -1,0 +1,176 @@
+
+/* Prevent text selection on ordinary elements
+ */
+html, body, div, span, object,
+form, input, h1, h2, button, label, a, img {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  /* this will work for QtWebKit in future */
+  -webkit-user-drag: none;
+}
+
+/* But allow text input
+ */
+input[type=text], input[type=password], input[type=email] {
+  -moz-user-select: text;
+  -webkit-user-select: text;
+}
+
+
+.splash {
+    text-align: center;
+    margin: 10% 0 0 0;
+}
+
+.splash .message {
+    font-size: 5em;
+    line-height: 1.5em;
+    -webkit-text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 15px;
+    text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 15px;
+    text-transform: uppercase;
+}
+
+.splash .icon-spinner {
+    text-align: center;
+    display: inline-block;
+    font-size: 5em;
+    margin-top: 50px;
+}
+
+.page-host {
+    position: relative;
+    top: 0;
+    padding: 0;
+}
+
+.roundedCorners {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.centeredEl {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.navbar-fixed-top .navbar-inner {
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.navbar-fixed-top .icon-home {
+    font-size: 18px
+}
+
+.loader {
+    margin: 6px 8px 4px 8px;
+    visibility: hidden;
+}
+
+.loader.active {
+    visibility: visible;
+}
+
+@media (max-width: 767px) {
+    .loader {
+        padding-right: 20px;
+    }
+}
+
+@media (max-width: 979px) {
+    .page-host {
+        top: 0;
+    }
+
+    .navbar-fixed-top {
+        margin-bottom: 0;
+        height: 40px; /* keeps nav bar links clickable below screen widths of 979px */
+    }
+}
+
+/*
+  This section manages the overall page presentation.
+  I am going for a 40px tall fixed header on all pages.
+  It does not scroll with the page.  The body under
+  the fixed header does scroll with a mCustomScrollbar
+  and responds to browser resizes via some javascript
+  in index.html.
+*/
+html {
+height:100%; /* fix height to 100% for IE */
+max-height:100%; /* fix height for other browsers */
+padding:0; /*remove padding */
+margin:0; /* remove margins */
+border:0; /* remove borders */
+/* hide overflow:hidden from IE5/Mac */
+/* \*/
+overflow:hidden; /*get rid of scroll bars in IE */
+/* */
+}
+
+body {
+height:100%; /* fix height to 100% for IE */
+max-height:100%; /* fix height for other browsers */
+overflow:hidden; /*get rid of scroll bars in IE */
+padding:0; /*remove padding */
+padding-top: 40px; /* account for the fixed header */
+margin:0; /* remove margins */
+border:0; /* remove borders */
+font-family: 'Source Sans Pro', serif; /* google font */
+}
+
+#innerPadding {
+    margin: 0 15px;
+}
+
+/* stops header from dropping down and shiffting page content when browser width is below 979px */
+@media (max-width: 979px) {
+    body {
+        padding-top: 0;
+    }
+}
+
+.cinematic {
+font-family: 'Limelight', serif; /* google font */
+}
+
+/*.container-fluid {
+    overflow: auto;
+    padding: 0ex;
+    margin-right: 20px;
+    margin-left: 20px;
+}*/
+
+/* keeps scrollbar area wider so it doesn't take up as much screen real estate*/
+.mCustomScrollBox {
+    width: 100%;
+}
+
+/* prevents scrollbar from adding 30px right margin when needed and stops content from shifting*/
+.mCSB_container {
+    margin: 0px;
+}
+
+/*** END PRESENTATION ***/
+
+.truncate {
+    width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.facebookColor {
+    color: #3b5998;
+}
+.facebookBGColor {
+    background-color: #3b5998;
+}
+
+/* Puts dialogs a little closer to the top of the screen
+
+.modalHost {
+    top: 20%;
+}*/

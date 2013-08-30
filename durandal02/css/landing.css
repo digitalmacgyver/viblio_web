@@ -1,0 +1,39 @@
+#landing-page #headline {
+    line-height: 1.45;
+    vertical-align: top;
+    text-shadow: 1px 1px 2px #cccccc;
+    text-align: center;
+    font-size: 400%;
+    margin-bottom: 60px;
+}
+
+#landing-page button {
+    margin: 80px 0;
+    font-size: 22px;
+    padding: 15px 60px;
+}
+
+#landing-page {
+    margin-top: 150px;
+}
+
+.landingImage-Container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.landingImage {
+    width: 260px;
+    height: 260px;
+    color: white;
+    margin: 0 auto 20px;
+}
+
+.landingImage-Wrap {
+    width: 33%;
+    display: inline-table;
+}
+
+.landingImage-Container p {
+    font-size: 22px
+}

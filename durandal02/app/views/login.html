@@ -1,0 +1,41 @@
+<div id="login-page">
+    <p class="landingHeaderTitle darkBlueBG">Log in <span>to your</span> Viblio account</p>
+    <div class="orangeBG bottomBorder-Thin"></div>
+    <div class="content-Wrap centeredEl">
+        
+        <div id="loginArea" class="mocksWhiteBG centeredEl">
+            <div id="fbBtn-Wrap" class="bottomBorder">
+                <a id="facebookLoginBtn" class="centeredEl" data-bind="click: facebookAuthenticate"> Log in with Facebook </a>
+            </div>
+            <div id='or-Wrap'>
+                <p>or</p>
+            </div>
+            <form class="bottomBorder-Thick">
+                <div class="centeredEl">
+                    <span data-bind="css: { error: email_entry_error() }">
+                        <input type="email" class="text" data-bind="value: email" placeholder="Email address" />
+                    </span>
+                    <span data-bind="css: { error: password_entry_error() }">
+                        <input type="password" class="text" data-bind="value: password" placeholder="Password" />
+                    </span>
+                    <a href="#/forgotPassword">Forgot Password?</a>
+                    <button class="btn btn-primary" data-bind="click: nativeAuthenticate">
+                        Log In
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="noAccount-Wrap" class="yellowBG">
+            <div class="bottomBorder-Thick">
+                <div id="noAccount" class=" centeredEl paddedDiv">
+                    <div>
+                        <h3>Don't have an account?</h3>
+                        <a href="">Download Viblio Free!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>          
+</div>
