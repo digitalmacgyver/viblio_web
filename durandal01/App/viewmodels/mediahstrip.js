@@ -4,7 +4,7 @@
   criterion for media.  The scroller is currently mCustomScrollbar which
   has some nice features.
 */
-define( ['durandal/plugins/router', 'lib/viblio', 'durandal/app', 'viewmodels/mediafile'], function(router,viblio,app,Mediafile) {
+define( ['plugins/router', 'lib/viblio', 'durandal/app', 'viewmodels/mediafile'], function(router,viblio,app,Mediafile) {
     var Strip = function( title, subtitle ) {
 	var self = this;
 
@@ -82,7 +82,7 @@ define( ['durandal/plugins/router', 'lib/viblio', 'durandal/app', 'viewmodels/me
 	// Play a mediafile clip.  This uses the query parameter
 	// passing technique to pass in the mediafile to play.
 	m.on( 'mediafile:play', function( m ) {
-	    router.navigateTo( '#/player?mid=' + m.media().uuid );
+	    router.navigate( '#/player?mid=' + m.media().uuid );
 	});
 
 	// When a mediafile wishes to be deleted
@@ -140,9 +140,9 @@ define( ['durandal/plugins/router', 'lib/viblio', 'durandal/app', 'viewmodels/me
 	return this;
     };
 
-    // In viewAttached, attach the mCustomScrollbar we're presently
+    // In attached, attach the mCustomScrollbar we're presently
     // employing for this purpose.
-    Strip.prototype.viewAttached = function( view ) {
+    Strip.prototype.attached = function( view ) {
 	var self = this;
 	self.element = view;
 	

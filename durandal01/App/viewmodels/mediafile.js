@@ -57,7 +57,7 @@ define(['durandal/events'],function(Events) {
 
     // Send an event, so those above can manage screen
     // redraws, if needed.
-    Video.prototype.viewAttached = function( view ) {
+    Video.prototype.attached = function( view ) {
 	this.view = view;
 	this.trigger( 'mediafile:attached', this );
     };

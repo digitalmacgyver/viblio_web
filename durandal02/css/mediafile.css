@@ -1,0 +1,117 @@
+/**
+.media-file {
+    width: 128px;
+    height: 128px;
+    margin-left: 24px;
+    margin-bottom: 24px;
+}
+
+.mplay-icon, .mplay-icon:hover, .mplay-icon:visited {
+    position: absolute;
+    z-index: 100;
+    border: 0;
+    text-decoration: none;
+    opacity: .8;
+    top: 48px;
+    left: 48px;
+}
+
+.mplay-icon i {
+    color: white;
+    font-size: 40px;
+}
+
+.media-file .icon-ok-sign {
+    position: absolute;
+    z-index: 100;
+    border: 0;
+    text-decoration: none;
+    top: 48px;
+    left: 48px;
+    display: none;
+    color: white;
+    font-size: 40px;
+}
+
+.selected .icon-ok-sign {
+    display: block;
+}
+**/
+
+.fancybox-wrap {
+  width: 80% !important;
+}
+
+#player {
+    height: 480px;
+}
+
+.mediafile img {
+    width: 260px; height: 180px;
+}
+
+.mediafile {
+    width: 260px;
+}
+
+.mediafile img {
+    border: 1px solid white;
+}
+
+.mediafile.selected img {
+    border: 1px solid red;
+}
+
+.mediafile .information {
+    text-align: left;
+}
+
+.mediafile .information .title {
+    margin-left: 6px;
+}
+
+.mediafile .information .aux {
+    margin-right: 6px;
+}
+
+/**/
+
+.mplay-icon, .mplay-icon:hover, .mplay-icon:visited {
+    position: absolute;
+    z-index: 100;
+    border: 0;
+    text-decoration: none;
+    opacity: .6;
+    top: 50px;
+    left: 90px;
+}
+
+.mplay-icon i {
+    color: white;
+    font-size: 80px;
+}
+
+.mediafile .icon-ok-sign {
+    position: absolute;
+    z-index: 100;
+    border: 0;
+    text-decoration: none;
+    top: 50px;
+    left: 90px;
+    display: none;
+    color: white;
+    font-size: 80px;
+}
+/*
+.selected .icon-ok-sign {
+    display: block;
+}
+*/
+
+.dbtn {
+    position: absolute;
+    display: none;
+    z-index: 100;
+    top: 10px;
+    right: 8px;
+}

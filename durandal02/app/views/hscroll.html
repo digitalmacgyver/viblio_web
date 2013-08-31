@@ -1,0 +1,17 @@
+<div class="hstrip bottomBorder-Thin">
+
+  <div class="title">
+    <button class="btn btn-secondary pull-right" data-bind="click: toggleEditMode, text: editLabel"></button>
+    <h2 class="cinematic textShadowed" data-bind="html: title"></h2>
+    <span class="muted" data-bind="html: subtitle"></span>
+  </div>
+
+  <div class="hscroll">
+    <div class="item-container">
+      <!-- ko foreach: mediafiles -->
+        <!-- ko compose: $data --><!--/ko-->
+      <!--/ko-->
+    </div>
+  </div>
+
+</div>

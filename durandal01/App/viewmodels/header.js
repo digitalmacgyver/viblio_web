@@ -1,6 +1,6 @@
 /* A common header.  
  */
-define( ['durandal/plugins/router', 'durandal/app', 'lib/viblio'], function(router,app,viblio) {
+define( ['plugins/router', 'durandal/app', 'lib/viblio'], function(router, app, viblio) {
     // The header can show router navigation points.  It also has a logout
     // function.
     //
