@@ -64,7 +64,7 @@ define(['durandal/system', 'knockout'], function (system, ko) {
             binder.binding(data, view, instruction);
 
             if(instruction.applyBindings){
-                system.log('Binding', viewName, data);
+                //system.log('Binding', viewName, data);
                 ko.applyBindings(bindingTarget, view);
             }else if(obj){
                 ko.utils.domData.set(view, koBindingContextKey, { $data:obj });
