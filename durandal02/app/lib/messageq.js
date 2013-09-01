@@ -1,4 +1,4 @@
-define(['lib/config','lib/viblio','lib/customDialogs','plugins/dialog','durandal/app'], function( config, viblio, customDialogs, dialogs, app ) {
+define(['lib/config','durandal/system','lib/customDialogs','plugins/dialog','durandal/app'], function( config, system, customDialogs, dialogs, app ) {
     var mq = null;
     var subscribed = false;
     var last_uuid = null;
@@ -11,7 +11,7 @@ define(['lib/config','lib/viblio','lib/customDialogs','plugins/dialog','durandal
 	mq.disable( 'websocket' );
 	mq.disable('eventsource'); 
     } catch( e ) {
-	console.log( 'Failed to connect to Faye.' );
+	system.log( 'Failed to connect to Faye.' );
     };
 
     return {
@@ -19,9 +19,9 @@ define(['lib/config','lib/viblio','lib/customDialogs','plugins/dialog','durandal
 	    if ( mq ) {
 		if ( ! subscribed ) {
 		    try {
-			console.log( 'Attempting to subscribe to /messages/'+ uuid);
+			system.log( 'Attempting to subscribe to /messages/'+ uuid);
 			var s = mq.subscribe( '/messages/' + uuid, function( msg ) {
-			    console.log( 'Messages! I have ' + msg.count + ' messages waiting' );
+			    system.log( 'Messages! I have ' + msg.count + ' messages waiting' );
 			    $.ajax({
 				url: '/mq/dequeue',
 				data: { uid: uuid },
@@ -32,7 +32,7 @@ define(['lib/config','lib/viblio','lib/customDialogs','plugins/dialog','durandal
 				    }
 				    else {
 					var messages = data.messages;
-					console.log( "=> received " + messages.length + " messages" );
+					system.log( "=> received " + messages.length + " messages" );
 					for( var i=0; i<messages.length; i++ ) {
 					    app.trigger( 'mediafile:ready', messages[i].media );
 					}
@@ -40,22 +40,21 @@ define(['lib/config','lib/viblio','lib/customDialogs','plugins/dialog','durandal
 				    }
 				},
 				error: function( x, t, e ) {
-				    console.log( 'Could not dequeue!' );
+				    system.log( 'Could not dequeue!' );
 				}
 			    });
 			});
 			s.callback( function(arg) {
-			    console.log( 'Subscription is now active for: ' + uuid );
-			    console.log( arg );
+			    system.log( 'Subscription is now active for: ' + uuid );
 			    subscribed = true;
 			    last_uuid = uuid;
 			});
 			s.errback( function( err ) {
-			    console.log( 'Failed to subscribe to message queue: ' + err );
+			    system.log( 'Failed to subscribe to message queue: ' + err );
 			    subscribed = false;
 			});
 		    } catch(e) {
-			console.log( 'Failed to subscribe to message queue!' );
+			system.log( 'Failed to subscribe to message queue!' );
 		    }
 		}
 		else {
@@ -63,7 +62,7 @@ define(['lib/config','lib/viblio','lib/customDialogs','plugins/dialog','durandal
 		}
 	    }
 	    else {
-		console.log( 'Attempt to subscribe to Faye failed: never connected.' );
+		system.log( 'Attempt to subscribe to Faye failed: never connected.' );
 	    }
 	},
 	unsubscribe: function() {

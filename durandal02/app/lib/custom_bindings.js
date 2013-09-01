@@ -109,6 +109,9 @@ define(['lib/config'],function(config) {
             options.advanced.autoExpandHorizontalScroll = options.horizontalScroll;
             options.advanced.updateOnContentResize = options.advanced.updateOnContentResize || true;
             options.advanced.updateOnBrowserResize = options.advanced.updateOnBrowserResize || true;
+
+	    options.scrollInertia = 800;
+	    options.mouseWheelPixels = 300;
 	    
             $element.mCustomScrollbar( options );
 

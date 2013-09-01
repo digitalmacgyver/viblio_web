@@ -25,7 +25,6 @@ define( ['durandal/app', 'durandal/system', 'plugins/dialog', 'viewmodels/incomi
 	    // Incoming dialog is a little special.  If its already showing,
 	    // we want to update the information on the screen.
 	    if ( incoming ) {
-                console.log("messages from customDialog.js" + messages);
 		incoming.update( messages );
 	    }
 	    else {

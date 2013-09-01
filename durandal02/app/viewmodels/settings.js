@@ -33,7 +33,6 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 
     email.subscribe( function( v ) {
 	if ( v != profile().email ) {
-	    console.log( 'changing email from', profile().email, 'to', v );
 	    newEmail( v );
 	}
     });

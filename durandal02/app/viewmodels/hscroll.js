@@ -132,7 +132,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     };
 
     HScroll.prototype.ready = function( parent ) {
-	system.log( "READY");
 	var self = this;
 	$(self.view).mCustomScrollbar({
 	    horizontalScroll: true,

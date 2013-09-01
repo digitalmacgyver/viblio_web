@@ -2,7 +2,7 @@
   The channels page, which I think is the default page for an authenticated
   user.
 */
-define(['durandal/app','durandal/system','viewmodels/hscroll'],function(app,system,HScroll) {
+define(['durandal/app','durandal/system','viewmodels/hscroll','lib/customDialogs'],function(app,system,HScroll,customDialogs) {
     // A list of horizontal media display lists
     var strips = ko.observableArray([]);
     
@@ -23,11 +23,18 @@ define(['durandal/app','durandal/system','viewmodels/hscroll'],function(app,syst
 		self.strips.push( h2 );
 	    });
         },
+	attached: function() {
+	    return system.defer( function( dfd ) {
+		customDialogs.showLoading();
+		dfd.resolve();
+	    }).promise();
+	},
 	compositionComplete: function( view, parent ) {
 	    var self = this;
 	    system.wait(1).then( function() {
 		self.strips()[0].ready( view, parent );
 		self.strips()[1].ready( view, parent );
+		customDialogs.hideLoading();
 	    });
 	}
     };
