@@ -12,15 +12,6 @@
   videos.
 */
 define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','purl'], function(app,router,dialog,config,viblio,Strip) {
-    // Extract any query params on the page.  Other parts
-    // of the application can:
-    //   router.navigate( '#/player?mid=' + mediafile.content().uuid );
-    //
-    function params() {
-	var p = $.url(window.location.href.replace('/#','')).param();
-	return p;
-    }
-
     // Given a S3 url, parse out and return the bucket name.  Needed for
     // Wowza urls.
     //
@@ -103,6 +94,8 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
             //splash: true,
             provider: 'rtmp'
         });
+	// push it onto history
+	//router.navigate( '#/player?mid=' + m.media().uuid, false);
     }
 
     // Store the disable_prev/next as observables so
@@ -156,11 +149,9 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
     }
 
     return {
-        
         showShareVidModal: function() {
             app.showDialog('viewmodels/shareVidModal');
         },
-    
 	query: query,
 	playing: playing,
 	related: related,
@@ -168,7 +159,9 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	nextRelated: nextRelated,
 	disable_prev: disable_prev,
 	disable_next: disable_next,
-	activate: function( view ) {
+	activate: function( args ) {
+	    // capture the query arguments
+	    query(args);
 	    // Resize the main window and install a handler
 	    // to do it when the browser resizes.
            $(window).bind('resize', function() {
@@ -186,8 +179,6 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	},
                 
 	attached: function ( view ) {
-    
-	    query( params() );
 	    var mid = query().mid;
 
 	    // We have a mediafile uuid as an argument to this
