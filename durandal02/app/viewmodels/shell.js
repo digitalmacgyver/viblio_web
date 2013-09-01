@@ -144,6 +144,8 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
                 contentTouchScroll: true,
                 theme: 'dark-thick',
                 mouseWheel: true,
+		scrollInertia: 800,
+		mouseWheelPixels: 300,
                 autoHideScrollbar: true,
                 advanced: {
                     updateOnContentResize: true,
