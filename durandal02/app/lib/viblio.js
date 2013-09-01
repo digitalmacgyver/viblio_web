@@ -85,8 +85,8 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 			    dialogs.showMessage( 'Authentication Failure', 'Login Failed' );
 			}
 			else {
-			    self.setLastAttempt( router.activeRoute().hash );
-			    router.navigate( '#/login' );
+			    self.setLastAttempt( router.activeInstruction().config.route );
+			    router.navigate( 'login' );
 			}
 		    }
 		    else {
