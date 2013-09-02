@@ -1,0 +1,36 @@
+.face img {
+    width: 260px; height: 180px;
+    cursor: pointer;
+}
+
+.face {
+    width: 260px;
+}
+
+.face img {
+    border: 1px solid white;
+}
+
+.face.selected img {
+    border: 1px solid red;
+}
+
+.face .information {
+    text-align: left;
+}
+
+.face .information .title {
+    margin-left: 6px;
+}
+
+.face .information .aux {
+    margin-right: 6px;
+}
+
+.face .icon-certificate {
+    position: absolute;
+    display: none;
+    z-index: 100;
+    top: 10px;
+    right: 8px;
+}

@@ -2,13 +2,19 @@
   The channels page, which I think is the default page for an authenticated
   user.
 */
-define(['durandal/app','durandal/system','viewmodels/hscroll','lib/customDialogs'],function(app,system,HScroll,customDialogs) {
+define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscroll','lib/customDialogs'],function(app,system,HScroll,PScroll,customDialogs) {
     // A list of horizontal media display lists
     var strips = ko.observableArray([]);
     
-    function ii(title, subtitle) {
+    function hh(title, subtitle) {
         return system.defer( function( dfd ) {
             dfd.resolve( new HScroll(title, subtitle) );
+        } ).promise();
+    }
+
+    function pp(title, subtitle) {
+        return system.defer( function( dfd ) {
+            dfd.resolve( new PScroll(title, subtitle) );
         } ).promise();
     }
 
@@ -18,7 +24,7 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','lib/customDialogs
         activate: function () {
 	    var self = this;
 	    self.strips.removeAll();
-	    return $.when( ii('All Media', 'Everything there is...'), ii('Favs', 'You took em!') ).then( function( h1, h2 ) {
+	    return $.when( hh('Box Office Hits', 'Your most popular videos'), pp('Top Actors', 'Who\'s in your videos') ).then( function( h1, h2 ) {
 		self.strips.push( h1 );
 		self.strips.push( h2 );
 	    });
