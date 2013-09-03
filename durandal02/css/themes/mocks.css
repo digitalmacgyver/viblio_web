@@ -270,10 +270,16 @@ input[type="color"],
 
 .hstrip .title h2 {
     color: white;
+    display: inline;
+}
+
+.hstrip .title .btn {
+    margin-right: 35px;
 }
 
 .hstrip .title span {
     color: rgba(0,0,0,.5);
+    margin-left: 10px;
 }
 
 .mainVidSection .portfolio {
@@ -334,10 +340,12 @@ input[type="color"],
 
 .pstrip .title h2 {
     color: white;
+    display: inline;
 }
 
 .pstrip .title span {
     color: rgba(0,0,0,.5);
+    margin-left: 10px;
 }
 
 .mainVidSection .face {

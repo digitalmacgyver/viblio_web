@@ -1,5 +1,6 @@
 <div class="face">
-  <i class="icon-certificate"></i>
+  <i class="icon-certificate" data-bind="visible: star"></i>
+  <span class="appears-in" data-bind="visible: star, html: appears_in"></span>
   <img data-bind="attr:{src:url}, click: select" />
   <div class="name" data-bind="text: name"></div>
 </div>

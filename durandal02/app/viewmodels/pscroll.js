@@ -110,7 +110,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     // to do paging to handle infinite scroll.
     Pscroll.prototype.search = function() {
 	var self = this;
-	return viblio.api( '/services/faces/for_user',
+	return viblio.api( '/services/faces/contacts',
 			   { page: self.pager.next_page, 
 			     rows: self.pager.entries_per_page } )
 	    .then( function( json ) {
