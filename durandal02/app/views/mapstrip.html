@@ -1,0 +1,14 @@
+<div class="map bottomBorder-Thin" data-center="37.765,-122.413" data-zoom="11" data-provider="openstreetmap">
+  <!-- ko foreach: points -->
+  <div class="marker" data-bind="attr:{'data-location': location}">
+    <!-- <i class="icon-play-sign" data-bind="click: $parent.play"></i> -->
+    <i class="icon-play-sign" data-toggle="popover" data-bind="click: $parent.play,attr:{'data-content':thumbnail}" data-title="title"></i>
+  </div>
+  <!-- /ko -->
+  <!--
+  <div class="controls">
+    <button data-action="zoomIn">+ in</button>
+    <button data-action="zoomOut">− out</button>
+  </div>
+  -->
+</div>
