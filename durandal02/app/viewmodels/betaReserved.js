@@ -18,10 +18,6 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     function showBetaReservedModal() {
         dialog.show('viewmodels/betaReserved');
     };
-    
-    function showLabel() {
-        
-    };
 
     return {
         
