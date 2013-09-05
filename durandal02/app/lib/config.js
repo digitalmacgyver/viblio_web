@@ -9,7 +9,9 @@ define( function() {
 	'http://192.168.1.21': '566096966734454',
 	'https://192.168.1.35': '566096966734454',
 	'http://staging.viblio.com': '153462094815829',
+	'https://staging.viblio.com': '153462094815829',
 	'http://prod.viblio.com': '538791729508064',
+	'https://prod.viblio.com': '538791729508064',
 	'http://10.100.8.99': '357358674377173'
     };
     var myLocation = '//' + window.location.hostname;

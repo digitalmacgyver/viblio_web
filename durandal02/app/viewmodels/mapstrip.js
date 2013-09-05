@@ -10,6 +10,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'modestmap'], function(a
 	// need to add asset uuid so we can play the video when
 	// the marker is clicked on.
 	//
+<<<<<<< HEAD
 	this.points.push({
 	    lat: 37.7749295, 
 	    lng: -122.4194155,
@@ -33,11 +34,17 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'modestmap'], function(a
 	    json.media.forEach( function( m ) {
 		if ( m.lat && m.lng ) {
 		    /**
+=======
+	return viblio.api( '/services/mediafile/list' ).then( function( json ) {
+	    json.media.forEach( function( m ) {
+		if ( m.lat && m.lng ) {
+>>>>>>> master
 		    self.points.push({
 			lat: m.lat,
 			lng: m.lng,
 			location: m.lat.toString() + ',' + m.lng.toString(),
 			uuid: m.uuid,
+<<<<<<< HEAD
 			thumbnail: m.views.thumbnail.url
 		    });
 		    **/
@@ -46,6 +53,10 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'modestmap'], function(a
 		    self.points()[cc].thumbnail = '<img class="popover-img" src="' + m.views.thumbnail.url + '" />';
 		    cc += 1;
 		    if ( cc > 2 ) cc = 0;
+=======
+			thumbnail: '<img class="popover-img" src="' + m.views.thumbnail.url + '" />'
+		    });
+>>>>>>> master
 		}
 	    });
 	});
