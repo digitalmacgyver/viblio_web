@@ -2,11 +2,7 @@
   The channels page, which I think is the default page for an authenticated
   user.
 */
-<<<<<<< HEAD
-define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscroll','viewmodels/mapstrip','lib/customDialogs'],function(app,system,HScroll,PScroll,MapStrip,customDialogs) {
-=======
 define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscroll','viewmodels/fscroll','viewmodels/mapstrip','lib/customDialogs'],function(app,system,HScroll,PScroll,FScroll,MapStrip,customDialogs) {
->>>>>>> master
     // A list of horizontal media display lists
     var strips = ko.observableArray([]);
 
@@ -24,15 +20,12 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
         } ).promise();
     }
 
-<<<<<<< HEAD
-=======
     function ff(title,subtitle) {
         return system.defer( function( dfd ) {
             dfd.resolve( new FScroll(title,subtitle) );
         } ).promise();
     }
 
->>>>>>> master
     function mm() {
         return system.defer( function( dfd ) {
             dfd.resolve( new MapStrip() );
@@ -47,13 +40,6 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 	    self.strips.removeAll();
 	    return $.when( hh('Box Office Hits', 'Your most popular videos'), 
 			   pp('Top Actors', 'Who\'s in your videos'),
-<<<<<<< HEAD
-			   mm()
-			 ).then( function( h1, h2, h3 ) {
-			     self.strips.push( h1 );
-			     self.strips.push( h2 );
-			     self.strips.push( h3 );
-=======
 			   ff('n Videos with Anonymous', '' ),
 			   mm()
 			 ).then( function( h1, h2, h3, h4 ) {
@@ -75,7 +61,6 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 			     self.strips.push( h2 );
 			     self.strips.push( h3 );
 			     self.strips.push( h4 );
->>>>>>> master
 			 });
         },
 	attached: function() {
