@@ -1,0 +1,50 @@
+<div id="nplayer-page">
+  <table id="main-table">
+    <tr>
+      <td id="left-arrow-column">
+	<div class="player-control lightBlueBG bottomBorder-Thin" id="left-arrow">
+	  <i class="icon-step-backward  textShadowed" data-bind="click: previousRelated, css: {disabled: disable_prev()}"></i>
+	</div>
+      </td>
+      <td id="left-side">
+	<div id="tv">
+	</div>
+	<table id="info-table">
+	  <tr>
+	    <td id="comment-column">
+	      <div id="title-desc">
+		<h2 data-bind="text: title"></h2>
+		<p data-bind="text: description"></p>
+	      </div>
+	      <div class="babyBlueBG" id="comments">
+		<input type="text" placeholder="Comment on this video..." />
+	      </div>
+	    </td>
+	    <td id="faces-column">
+	      <div class="orangeBG bottomBorder-Thin" id="faces">
+	      </div>
+	      <div class="lightBlueBG bottomBorder-Thin" id="geo">
+	      </div>
+	    </td>
+	  </tr>
+	</table><!-- info-table -->
+      </td>
+      <td id="right-arrow-column">
+	<div class="player-control lightBlueBG bottomBorder-Thin" id="right-arrow">
+	  <i class="icon-step-forward textShadowed" data-bind="click: nextRelated, css: {disabled: disable_next()}"></i>
+	</div>
+      </td>
+      <td id="right-side">
+	<div class="orangeBG bottomBorder-Thin" id="share-video-block">
+	  <div><a class="btn" href="#" data-bind="click: showShareVidModal">
+	      <i class="icon-share"></i> Share this Video
+	  </a></div>
+	</div>
+	<div class="lightBlueBG bottomBorder-Thin" id="related-videos-block">
+	  <p>Related Videos</p>
+	  <div class="media-area" data-bind="compose: related"></div>
+	</div>
+      </td>
+    </tr>
+  </table><!-- main-table -->
+</div>
