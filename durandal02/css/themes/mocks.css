@@ -124,6 +124,14 @@ input[type="color"],
     border: 1px solid lightgrey;
 }
 
+.lightBlueBG {
+    background-color: #24b8d1;
+}
+
+.babyBlueBG {
+    background-color: rgb(154, 241, 241);
+}
+
 /********************  Landing Page Header Section  *****************************/
 
 #landing-header .navbar {

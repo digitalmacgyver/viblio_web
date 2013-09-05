@@ -114,10 +114,12 @@
     background-color: #eee;
 }
 
+/**
 #comments {
     height: 50px;
     background-color: black;
 }
+**/
 
 #player-page .vstrip .media-area {
     height: 600px;

@@ -1,0 +1,140 @@
+#nplayer-page {
+}
+
+#nplayer-page tr, #nplayer-page td {
+    vertical-align: top;
+}
+
+
+#nplayer-page #main-table {
+}
+
+#nplayer-page #main-table #left-arrow-column {
+    width: 40px;
+}
+
+#nplayer-page #main-table #right-arrow-column {
+    width: 40px;
+}
+
+#nplayer-page #main-table #left-side {
+    width: 100%;
+}
+
+#nplayer-page #main-table #right-side {
+    width: 280px;
+}
+
+#nplayer-page #main-table #info-table {
+    width: 100%;
+}
+
+#nplayer-page #main-table #info-table #comment-column {
+    width: 100%;
+}
+
+#nplayer-page #main-table #info-table #title-desc {
+    padding: 18px;
+    background-color: white;
+}
+
+#nplayer-page #main-table #info-table #comments {
+    padding: 18px;
+}
+
+#nplayer-page #main-table #info-table #faces-column {
+    width: 550px;
+}
+
+#nplayer-page #main-table #info-table #faces-column #faces {
+    width: 550px;
+    height: 100px;
+}
+
+#nplayer-page #main-table #info-table #faces-column #geo {
+    width: 550px;
+    height: 100px;
+}
+
+#nplayer-page .player-control {
+    width: 40px;
+    margin-top: 200px;
+    color: white;
+    font-size: 28px;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    cursor: pointer;
+}
+
+#nplayer-page .player-control i {
+}
+
+#nplayer-page #right-arrow {
+}
+
+#nplayer-page #left-arrow {
+}
+
+#nplayer-page #share-video-block {
+    height: 100px;
+    width: 280px;
+}
+
+#nplayer-page #share-video-block div {
+    padding-top: 20px;
+    padding-left: 22px;
+}
+
+#nplayer-page #share-video-block div a {
+    color: #666;
+    font-size: 20px;
+    padding-top: 21px;
+}
+
+#nplayer-page #share-video-block div a.btn {
+    background-color: white;
+}
+
+#nplayer-page #related-videos-block {
+    height: 650px;
+    width: 280px;
+}
+
+#nplayer-page #related-videos-block p {
+    text-align: center;
+    font-size: 25px;
+    margin-top: 6px;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#nplayer-page .vstrip .media-area {
+    height: 600px;
+    overflow: auto;
+}
+
+#nplayer-page .vstrip div {
+    margin: 0 auto;
+}
+
+#nplayer-page .vstrip div.mediafile {
+    position: relative;
+}
+
+#nplayer-page #tv {
+    height: 529px;
+    background-color: white;
+}
+
+#nplayer-page #tv object {
+    width  : 100%;
+    height : 100%;
+}
+
+#nplayer-page #tv img {
+    display: block;
+    margin: 0 auto;
+    padding-top: 200px;
+}
