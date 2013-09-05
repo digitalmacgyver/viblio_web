@@ -331,6 +331,27 @@ input[type="color"],
     color: rgba(64,66,79,.75);
 }
 
+/************************** fstrip *******************************/
+
+.fstrip {
+    padding: 35px 0 10px 45px;
+    background-color: grey;
+}
+
+.fstrip .title h2 {
+    color: white;
+    display: inline;
+}
+
+.fstrip .title .btn {
+    margin-left: 35px;
+}
+
+.fstrip .title span {
+    color: rgba(0,0,0,.5);
+    margin-left: 10px;
+}
+
 /************************** pstrip *******************************/
 
 .pstrip {

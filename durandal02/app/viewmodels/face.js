@@ -11,9 +11,9 @@ define(['durandal/events'],function(Events) {
 	Events.includeIn( this );
     };
 
-    Face.prototype.select = function() {
-	console.log( 'Selected ' + this.name() );
-	this.trigger( 'face:selected', this );
+    Face.prototype.select = function(f, e) {
+	var pos = Math.round( e.target.x + (e.target.width/2) );
+	this.trigger( 'face:selected', this, pos );
     };
 
     Face.prototype.attached = function( view ) {
