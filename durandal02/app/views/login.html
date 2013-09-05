@@ -5,7 +5,7 @@
         
         <div id="loginArea" class="mocksWhiteBG centeredEl">
             <div id="fbBtn-Wrap" class="bottomBorder">
-                <a id="facebookLoginBtn" class="centeredEl" data-bind="click: facebookAuthenticate"> Log in with Facebook </a>
+                <a id="facebookLoginBtn" class="centeredEl" data-bind="click: facebookAuthenticate"><img src="css/images/FBf.png" /> Log in with Facebook </a>
             </div>
             <div id='or-Wrap'>
                 <p>or</p>
@@ -28,11 +28,16 @@
 
         <div id="noAccount-Wrap" class="yellowBG">
             <div class="bottomBorder-Thick">
-                <div id="noAccount" class=" centeredEl paddedDiv">
-                    <div>
-                        <h3>Don't have an account?</h3>
-                        <a href="">Download Viblio Free!</a>
-                    </div>
+                <div id="noAccount" class="centeredEl paddedDiv">
+                    <form>
+                        <p>Don't have an account? Join the private Beta:</p>
+                        <span data-bind="css: { error: emailBeta_entry_error() }">
+                            <input type="email" class="text" data-bind="value: emailBeta" placeholder="Enter your email" />
+                        </span>
+                        <button class="btn btn-blue" data-bind="click: ">
+                            Reserve
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

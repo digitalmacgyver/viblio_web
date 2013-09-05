@@ -5,6 +5,9 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 
     var password = ko.observable();
     var password_entry_error = ko.observable( false );
+    
+    var emailBeta = ko.observable();
+    var emailBeta_entry_error = ko.observable( false );
 
     fb_appid   = config.facebook_appid();
     fb_channel = config.facebook_channel();
@@ -69,6 +72,9 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     return {
 	email: email,
 	email_entry_error: email_entry_error,
+        
+        emailBeta: emailBeta,
+	emailBeta_entry_error: emailBeta_entry_error,
 
 	password: password,
 	password_entry_error: password_entry_error,
