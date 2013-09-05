@@ -68,6 +68,18 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	    }
 	},{scope: config.facebook_ask_features()});
     }
+    
+    function betaEnroll() {
+        if ( ! emailBeta() ) {
+            dialog.showMessage( 'The email field is required.', 'Authentication' );
+	    return;
+        }
+        showBetaReservedModal();
+    }
+    
+    function showBetaReservedModal() {
+        dialog.show('viewmodels/betaReserved');
+    };
 
     return {
 	email: email,
@@ -80,6 +92,8 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	password_entry_error: password_entry_error,
         
 	nativeAuthenticate: nativeAuthenticate,
-	facebookAuthenticate: facebookAuthenticate
+	facebookAuthenticate: facebookAuthenticate,
+        betaEnroll: betaEnroll,
+        showBetaReservedModal: showBetaReservedModal
     };
 });

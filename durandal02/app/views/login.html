@@ -32,9 +32,9 @@
                     <form>
                         <p>Don't have an account? Join the private Beta:</p>
                         <span data-bind="css: { error: emailBeta_entry_error() }">
-                            <input type="email" class="text" data-bind="value: emailBeta" placeholder="Enter your email" />
+                            <input type="email" class="text" data-bind="value: emailBeta" placeholder="Enter your email" required />
                         </span>
-                        <button class="btn btn-blue" data-bind="click: ">
+                        <button class="btn btn-blue" data-bind="click: betaEnroll">
                             Reserve
                         </button>
                     </form>

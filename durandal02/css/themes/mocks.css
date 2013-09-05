@@ -9,6 +9,10 @@ body {
     margin: 0;
 }
 
+input, button, select, textarea {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
 textarea, input[type="text"],
 input[type="password"],
 input[type="datetime"],
@@ -236,6 +240,7 @@ input[type="color"],
     font-size: 16px;
     margin: 6px 0 20px;
     color: rgba(28,184,209,1);
+    font-weight: 600;
 }
 
 #loginArea form {
@@ -271,7 +276,7 @@ input[type="color"],
 }
 
 #noAccount input[type="email"] {
-    width: 68%;
+    width: 336px;
     margin-right: 9px;
 }
 
@@ -311,6 +316,94 @@ input[type="color"],
 #forgotPassword-Wrap .content-Wrap button:first-of-type {
     margin-right: 10px;
 }
+
+/********************  Beta Reserved Modal Section  *****************************/
+
+#betaReservedModal {
+    width: 600px;
+    position: relative;
+    color: rgba(0,0,0,.5);
+}
+
+#betaReservedModal .closeX {
+    width: 23px;
+    height: 20px;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 10px;
+    position: absolute;
+    right: 10px;
+    top: -4px;
+}
+
+#betaReservedModal p {
+    font-size: 21px;
+    font-weight: 200;
+    margin-bottom: 0;
+}
+
+#shareIconList {
+    margin: 0;
+    margin-top: 10px;
+}
+
+#shareIconList li {
+    display: inline-block;
+    margin-right: 35px;
+    margin-bottom: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#shareIconList li label {
+    margin-bottom: -32px;
+    font-size: 16px;
+    color: rgba(0,0,0,.5);
+    visibility: hidden;
+}
+
+#shareIconList li:hover > label {
+    visibility: inherit;
+}
+
+#shareIconList li:last-of-type {
+    vertical-align: top;
+}
+
+#shareIconList a {
+    padding-top: 20px;
+    display: block;
+    font-size: 16px;
+    color: rgba(0,0,0,.5);
+}
+
+.shareIcon {
+    width: 65px;
+    height: 65px;
+    border-bottom: 3px inset rgba(0,0,0,.2);
+    text-align: center;
+    padding-top: 18px;
+    box-sizing: border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+}
+
+.fb {
+    background-color: rgba(48,97,148,1);
+}
+
+.twitter {
+    background-color: rgba(40,168,224,1);
+}
+
+.gPlus {
+    background-color: rgba(199,65,53,1);
+}
+
+.tumblr {
+    background-color: rgba(56,87,118,1);
+}
+
 
 /********************  Home Page Section  *****************************/
 
