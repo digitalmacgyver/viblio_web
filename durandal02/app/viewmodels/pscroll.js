@@ -1,4 +1,4 @@
-define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'viewmodels/face', 'lib/customDialogs'], function (router, app, system, viblio, Face, dialogs) {
+define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'viewmodels/face', 'lib/customDialogs'], function (Events, router, app, system, viblio, Face, dialogs) {
 
     var Pscroll = function( title, subtitle ) {
 	var self = this;
@@ -36,12 +36,15 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	    var m = self.addFace( mf );
 	    self.faces.unshift( m );
 	});
+
+	Events.includeIn( this );
     };
 
     // We may not use selection in the GUI, but if we do,
     // this managed a radio-selection behavior.
-    Pscroll.prototype.faceSelected = function( face ) {
-	dialogs.showMessage( face.name(), 'Selected' );
+    Pscroll.prototype.faceSelected = function( face, pos ) {
+	this.trigger( 'pscroll:faceSelected', face, pos );
+	// dialogs.showMessage( face.name(), 'Selected' );
 	if ( this.currentSelection ) {
 	    if ( this.currentSelection != face ) {
 		this.currentSelection.selected( false );
@@ -61,8 +64,8 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	// Register a callback for when a Face is selected.
 	// This is so we can deselect the previous one to create
 	// a radio behavior.
-	m.on( 'face:selected',  function( sel ) {
-	    self.faceSelected( sel );
+	m.on( 'face:selected',  function( sel, pos ) {
+	    self.faceSelected( sel, pos );
 	});
 
 	// Play a face clip.  This uses the query parameter

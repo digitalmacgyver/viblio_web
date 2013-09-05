@@ -1,0 +1,52 @@
+.fscroll{margin:20px 0 40px 40px; overflow:auto;}
+
+.fscroll .mediafile{max-width:100%; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; padding:4px; border:solid 1px #666;}
+
+.fscroll .item-container .mediafile{display:block; float:left; margin:0 5px; border:none; padding:5px; background:rgba(0,0,0,0.3); -webkit-box-shadow:1px 1px 10px rgba(0,0,0,0.2); -moz-box-shadow:1px 1px 10px rgba(0,0,0,0.2); box-shadow:1px 1px 10px rgba(0,0,0,0.2);}
+
+.fscroll {position:relative; margin:20px auto; width:100%; height:310px; overflow:auto; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box;}
+
+.fscroll .item-container{position: relative; overflow:hidden;max-height:266px;}
+.fscroll .item-container{min-height: 266px;}
+.fscroll .item-container .mediafile{position: relative; max-width:none;}
+.fscroll .item-container .mediafile:first-child{margin-left:0;}
+.fscroll .item-container .mediafile:last-child{margin-right:0;}
+.fscroll .item-container .mediafile.new{background:#de4816;}
+
+
+/* fscroll scrollbar */
+.fscroll>.mCustomScrollBox>.mCSB_scrollTools{
+	width:88%;
+	margin: 0 6%;
+}
+
+/* horizontal scrollbar, center items if no scroll */
+.fscroll .mCSB_horizontal>.mCSB_container{
+	height:auto;
+	/*margin-right:0;*/
+	margin-right: auto;
+	margin-left: auto;
+	margin-bottom:30px;
+	overflow:hidden;
+}
+
+/* Some indication that background loading is taking place */
+.fscroll .mCSB_scrollTools .mCSB_dragger .hscroller-loading {
+    background: orange;
+}
+.fscroll .mCSB_scrollTools .mCSB_dragger:hover .hscroller-loading {
+    background: orange;
+}
+
+.fstrip {
+    position: relative;
+}
+
+.fstrip .arrow {
+    position: absolute;
+    width: 45px;
+    height: 20px;
+    background-image: url(images/arrow.png);
+    top: -20px;
+    left: 200px;
+}
