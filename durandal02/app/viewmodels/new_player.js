@@ -11,7 +11,7 @@
   this way in case we use this page as a link to shared
   videos.
 */
-define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','viewmodels/face'], function(app,router,dialog,config,viblio,Strip,Face) {
+define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','viewmodels/face','modestmap'], function(app,router,dialog,config,viblio,Strip,Face,MM) {
     // Given a S3 url, parse out and return the bucket name.  Needed for
     // Wowza urls.
     //
@@ -57,6 +57,11 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
     var title = ko.observable();
     var description = ko.observable();
 
+    // holds the map
+    var map = null;
+    var location = ko.observable();
+    var isNear = ko.observable();
+
     // Extract and set up the faces
     var finfo = ko.observable();
     var faces = ko.observableArray([]);
@@ -92,6 +97,7 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	title( m.media().title || 'Click to add a title.' );
 	description( m.media().description || 'Click to add a description.' );
 	setupFaces( m.media() );
+	near( m.media() );
 	flowplayer().play({
             url: 'mp4:amazons3/' + s3bucket( m.media().views.main.url ) + '/' + m.media().views.main.uri,
             ipadUrl: encodeURIComponent(m.media().views.main.url),
@@ -155,6 +161,67 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	playVid( m );
     }
 
+    function getCountry(results)
+    {
+	for (var i = 0; i < results[0].address_components.length; i++) {
+            var shortname = results[0].address_components[i].short_name;
+            var longname = results[0].address_components[i].long_name;
+            var type = results[0].address_components[i].types;
+            if (type.indexOf("country") != -1) {
+		if (!isNullOrWhitespace(shortname)) {
+                    return shortname;
+		}
+		else {
+                    return longname;
+		}
+            }
+	}
+    }
+    
+    function isNullOrWhitespace(text) {
+	if (text == null) {
+            return true;
+	}
+	return text.replace(/\s/gi, '').length < 1;
+    }
+
+    function near( m ) {
+	/*
+	$.getJSON(' http://maps.googleapis.com/maps/api/geocode/json', 
+		  {latlng: lat + ',' + lng, sensor: true } ).then( 
+		      function( result ) {
+			  console.log( result );
+			  var c = getCountry( result );
+			  console.log( c );
+		      });
+	*/
+	if ( m.lat ) {
+	    isNear( 'Somewhere near (here)' );
+	    var loc = m.lat.toString() + ',' + m.lng.toString();
+	    console.log( 'changing map location to ' + loc );
+	    location( loc );
+
+	    if ( ! map ) {
+		map = $("#geo-map").htmapl({
+		    touch: true,
+		    mousewheel: true
+		});
+	    }
+	    // reposition the marker
+	    var l = new MM.Location( m.lat, m.lng );
+	    var p = map.data("map").locationPoint( l );
+	    console.log( p );
+	    $("geo-map .marker").css( 'top', p.x );
+	    $("geo-map .marker").css( 'left', p.y );	    
+
+	    map.centerZoom( loc, 5 );
+
+	}
+	else {
+	    isNear( 'Find in map: Coming soon' );
+	}
+    }
+
     return {
         showShareVidModal: function() {
             app.showDialog('viewmodels/shareVidModal');
@@ -164,6 +231,8 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	title: title,
 	description: description,
 	finfo: finfo,
+	location: location,
+	isNear: isNear,
 	faces: faces,
 	related: related,
 	previousRelated: previousRelated,
@@ -266,6 +335,9 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
             }).flowplayer().ipad({simulateiDevice: should_simulate()});
 
 	    resizePlayer();
+
+	    near( mf );
+
         }
     };
 });
