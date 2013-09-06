@@ -22,6 +22,13 @@
 	    </td>
 	    <td id="faces-column">
 	      <div class="orangeBG bottomBorder-Thin" id="faces">
+		<span class="textShadowed" data-bind="text: finfo"></span>
+		<ul class="clearfix">
+		  <!-- ko foreach: faces -->
+		  <li data-bind="compose: $data"></li>
+		  <!-- /ko -->
+		  <li class="clearfix"></li>
+		</ul>
 	      </div>
 	      <div class="lightBlueBG bottomBorder-Thin" id="geo">
 	      </div>

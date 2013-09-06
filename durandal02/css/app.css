@@ -99,21 +99,12 @@ input[type=text], input[type=password], input[type=email] {
   in index.html.
 */
 html {
-height:100%; /* fix height to 100% for IE */
-max-height:100%; /* fix height for other browsers */
 padding:0; /*remove padding */
 margin:0; /* remove margins */
 border:0; /* remove borders */
-/* hide overflow:hidden from IE5/Mac */
-/* \*/
-overflow:hidden; /*get rid of scroll bars in IE */
-/* */
 }
 
 body {
-height:100%; /* fix height to 100% for IE */
-max-height:100%; /* fix height for other browsers */
-overflow:hidden; /*get rid of scroll bars in IE */
 padding:0; /*remove padding */
 padding-top: 40px; /* account for the fixed header */
 margin:0; /* remove margins */

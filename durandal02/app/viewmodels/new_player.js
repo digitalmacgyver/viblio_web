@@ -11,7 +11,7 @@
   this way in case we use this page as a link to shared
   videos.
 */
-define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','purl'], function(app,router,dialog,config,viblio,Strip) {
+define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','viewmodels/face'], function(app,router,dialog,config,viblio,Strip,Face) {
     // Given a S3 url, parse out and return the bucket name.  Needed for
     // Wowza urls.
     //
@@ -57,12 +57,41 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
     var title = ko.observable();
     var description = ko.observable();
 
+    // Extract and set up the faces
+    var finfo = ko.observable();
+    var faces = ko.observableArray([]);
+    function setupFaces( m ) {
+	faces.removeAll();
+	if ( m.views.face && m.views.face.length ) {
+	    var total = 0;
+	    var ident = 0;
+	    m.views.face.forEach( function( face ) {
+		total += 1;
+		var data = {
+		    url: face.url,
+		    appears_in: 1
+		};
+		if ( face.contact ) {
+		    ident += 1;
+		    data.contact_name = face.contact.contact_name;
+		    data.id           = face.contact_id;
+		}
+		faces.push( new Face( data ) );
+	    });
+	    finfo( 'Starring (' + ident + '/' + total + ')' );
+	}
+	else {
+	    finfo( 'No faces detected' );
+	}
+    }
+
     // Play a new video.  Used after the main player is created in
     // attached.  This reuses the player to play a different clip.
     //
     function playVid( m ) {
-	title( m.title || 'Click to add a title.' );
-	description( m.description || 'Click to add a description.' );
+	title( m.media().title || 'Click to add a title.' );
+	description( m.media().description || 'Click to add a description.' );
+	setupFaces( m.media() );
 	flowplayer().play({
             url: 'mp4:amazons3/' + s3bucket( m.media().views.main.url ) + '/' + m.media().views.main.uri,
             ipadUrl: encodeURIComponent(m.media().views.main.url),
@@ -134,6 +163,8 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	playing: playing,
 	title: title,
 	description: description,
+	finfo: finfo,
+	faces: faces,
 	related: related,
 	previousRelated: previousRelated,
 	nextRelated: nextRelated,
@@ -159,7 +190,7 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 		});
 	    }
 
-	    return viblio.api( '/services/mediafile/get', { mid: mid } ).then( function( json ) {
+	    return viblio.api( '/services/mediafile/get', { mid: mid, include_contact_info: 1 } ).then( function( json ) {
 		var mf = json.media;
 		// Set now playing
 		playing( mf );
@@ -179,6 +210,7 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 
 	    title( mf.title || 'Click to add a title.' );
 	    description( mf.description || 'Click to add a description.' );
+	    setupFaces( mf );
 
 	    // Get related vids
 	    var vstrip = new Strip( 'title', 'subtile' ).search();
@@ -191,7 +223,7 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 
 	    // Instanciate the main flowplayer
 	    console.log( 'Bucket: ' + s3bucket( mf.views.main.url ) );
-	    $("#tv").flowplayer( "lib/flowplayer/flowplayer-3.2.16.swf", {
+	    $("#tv").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
 		ratio: 9/16,
                 clip: {
                     url: 'mp4:amazons3/' + s3bucket( mf.views.main.url ) + '/' + mf.views.main.uri,

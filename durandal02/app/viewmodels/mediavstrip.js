@@ -113,7 +113,8 @@ define( ['lib/viblio', 'durandal/app', 'viewmodels/mediafile','durandal/events']
 
 	if ( self.pager.next_page ) {
 	    viblio.api( '/services/mediafile/list', 
-			{ page: self.pager.next_page, 
+			{ include_contact_info: 1,
+			  page: self.pager.next_page, 
 			  rows: self.pager.entries_per_page } )
 		.then( function( json ) {
 		    self.pager = json.pager;
