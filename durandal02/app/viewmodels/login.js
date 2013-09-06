@@ -1,4 +1,4 @@
-define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'plugins/dialog', 'knockout', 'facebook'], function( router, app, system, config, viblio, dialog, ko ) {
+define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'plugins/dialog', 'plugins/http', 'knockout', 'facebook'], function( router, app, system, config, viblio, dialog, http, ko ) {
 
     var email = ko.observable();
     var email_entry_error = ko.observable( false );
@@ -74,7 +74,26 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
             dialog.showMessage( 'The email field is required.', 'Authentication' );
 	    return;
         }
-        showBetaReservedModal();
+        //http.get('http://viblio.us7.list-manage.com/subscribe/post-json?c=?', $('#mc_signup').serialize() );
+        system.log( ko.toJSON($('#mc_signup')) );
+        
+        $.ajax({
+            type: "GET", // GET & url for json slightly different
+            url: "http://viblio.us7.list-manage.com/subscribe/post-json?c=?",
+            data: ko.toJSON(emailBeta),
+            dataType    : 'json',
+            contentType: "application/json; charset=utf-8",
+            error       : function(err) { alert("Could not connect to the registration server."); },
+            success     : function(data) {
+                if (data.result != "success") {
+                    // Something went wrong, parse data.msg string and display message
+                    system.log(data.msg);
+                } else {
+                    showBetaReservedModal();
+                }
+            }
+        });
+        return false;
     }
     
     function showBetaReservedModal() {

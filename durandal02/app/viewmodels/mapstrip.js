@@ -10,53 +10,16 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'modestmap'], function(a
 	// need to add asset uuid so we can play the video when
 	// the marker is clicked on.
 	//
-<<<<<<< HEAD
-	this.points.push({
-	    lat: 37.7749295, 
-	    lng: -122.4194155,
-	    location: "37.7749295, -122.4194155",
-	    uuid: 'sss1'
-	});
-	this.points.push({
-	    lat: 37.8043722, 
-	    lng: -122.2708026,
-	    location: "37.8043722, -122.2708026",
-	    uuid: 'sss2'
-	});
-	this.points.push({
-	    lat: 37.8715926, 
-	    lng: -122.272747,
-	    location: "37.8715926, -122.272747",
-	    uuid: 'sss3'
-	});
-	return viblio.api( '/services/mediafile/list' ).then( function( json ) {
-	    var cc = 0;
-	    json.media.forEach( function( m ) {
-		if ( m.lat && m.lng ) {
-		    /**
-=======
 	return viblio.api( '/services/mediafile/list' ).then( function( json ) {
 	    json.media.forEach( function( m ) {
 		if ( m.lat && m.lng ) {
->>>>>>> master
 		    self.points.push({
 			lat: m.lat,
 			lng: m.lng,
 			location: m.lat.toString() + ',' + m.lng.toString(),
 			uuid: m.uuid,
-<<<<<<< HEAD
-			thumbnail: m.views.thumbnail.url
-		    });
-		    **/
-		    // FAKE REMOVE ME!!!
-		    self.points()[cc].uuid = m.uuid;
-		    self.points()[cc].thumbnail = '<img class="popover-img" src="' + m.views.thumbnail.url + '" />';
-		    cc += 1;
-		    if ( cc > 2 ) cc = 0;
-=======
 			thumbnail: '<img class="popover-img" src="' + m.views.thumbnail.url + '" />'
 		    });
->>>>>>> master
 		}
 	    });
 	});

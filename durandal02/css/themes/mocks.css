@@ -39,6 +39,13 @@ input[type="color"],
     height: 30px;
 }
 
+::-webkit-input-placeholder,
+::-moz-placeholder, /* firefox 19+ */
+:-ms-input-placeholder, /* ie */
+input:-moz-placeholder { 
+    font-size: 16px; 
+}
+
 .btn {
     font-size: 17px;
     background: none;
@@ -97,6 +104,19 @@ input[type="color"],
     color: white;
 }
 
+/* Make sure that the container the close x is used with has position:relative */
+.closeX {
+    width: 23px;
+    height: 20px;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 10px;
+    position: absolute;
+    right: 10px;
+    top: -4px;
+}
+
 /*********************  Utility Classes  ******************************/
 
 .boxShadowed {
@@ -132,19 +152,16 @@ input[type="color"],
     background-color: rgb(154, 241, 241);
 }
 
+.bigTitle {
+    color: rgba(0,0,0,.6);
+    font-size: 23px;
+    font-weight: 600;
+}
+
 /********************  Landing Page Header Section  *****************************/
 
 #landing-header .navbar {
     height: 57px;
-}
-
-/********************  Login Page Section  *****************************/
-#login-page {
-    margin-top: 0;
-}
-
-#login-page .orangeBG {
-    height: 46px;
 }
 
 .landingHeaderTitle {
@@ -159,6 +176,16 @@ input[type="color"],
 
 .landingHeaderTitle span {
     font-weight: 200;
+}
+
+.orangeBG-Header {
+    background-color: rgba(239,85,65,1);
+    height: 46px;
+}
+
+/********************  Login Page Section  *****************************/
+#login-page {
+    margin-top: 0;
 }
 
 #login-page .content-Wrap {
@@ -294,10 +321,6 @@ input[type="color"],
 
 /******************** Forgot Password Page Section  *****************************/
 
-#forgotPassword-Wrap .orangeBG {
-    height: 46px;
-}
-
 #forgotPassword-Wrap .content-Wrap {
     margin-top: 46px;
     width: 600px;
@@ -331,18 +354,6 @@ input[type="color"],
     width: 600px;
     position: relative;
     color: rgba(0,0,0,.5);
-}
-
-#betaReservedModal .closeX {
-    width: 23px;
-    height: 20px;
-    color: white;
-    font-size: 18px;
-    font-weight: 600;
-    padding: 10px;
-    position: absolute;
-    right: 10px;
-    top: -4px;
 }
 
 #betaReservedModal p {
@@ -679,3 +690,44 @@ input[type="color"],
     -moz-box-sizing:border-box; /* Firefox */
 }
 
+/********************  Logged Out Page Section  *****************************/
+
+#loggedOut-page .content-Wrap {
+    margin-top: 46px;
+    width: 600px;
+}
+
+#loggedOut-page .content-Wrap p {
+    margin: 20px 0 5px;
+    font-size: 18px;
+    color: rgba(0,0,0,.5);
+}
+
+#loggedOut-page .content-Wrap button {
+    font-size: 19px;
+    letter-spacing: .1em;
+}
+
+
+/********************  Logged Out Tell Friends Modal Section  *****************************/
+
+#loggedOutTellFriendsModal {
+    width: 600px;
+    position: relative;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+#loggedOutTellFriendsModal form {
+    margin: 0;
+}
+
+#loggedOutTellFriendsModal input,
+#loggedOutTellFriendsModal textarea {
+    width: 97%;
+}
+
+#loggedOutTellFriendsModal textarea {
+    height: 60px;
+    max-width: 97%;
+}
