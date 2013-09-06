@@ -21,7 +21,11 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     };
     
     function tellFriends() {
+        if( ! tellFriendsMessage() ) {
+            $('#tellFriendsMessage').val( $('#tellFriendsMessage').attr('placeholder') );
+        };
         
+        system.log( friendsEmails(), tellFriendsMessage(), $('#tellFriendsMessage').val()  );
     };
 
     return {
