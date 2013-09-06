@@ -39,17 +39,6 @@ define(['viewmodels/header', 'viewmodels/landing_header', 'durandal/app', 'duran
         widget: true
     });
 
-    function rsize() {
-        var h = $(window).height() - 40;
-        $(".container-fluid").height( h );
-    }
-    $(document).ready(function() {
-        $(window).bind( 'resize', rsize );
-        setTimeout( function() {
-            rsize();
-        },1000);
-    });
-
     app.start().then(function() {
         //Replace 'viewmodels' in the moduleId with 'views' to locate the view.
         //Look for partial views in a 'views' folder in the root.

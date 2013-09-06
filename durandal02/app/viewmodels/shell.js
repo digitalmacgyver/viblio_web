@@ -143,22 +143,6 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	    }).promise();
 
 	    return router.activate();
-        },
-        
-	attached: function( view ) {
-            // Wrap the main content page with a custom scrollbar
-            $(view).find(".scrollBarContainer").mCustomScrollbar({
-                contentTouchScroll: true,
-                theme: 'dark-thick',
-                mouseWheel: true,
-		scrollInertia: 800,
-		mouseWheelPixels: 300,
-                autoHideScrollbar: true,
-                advanced: {
-                    updateOnContentResize: true,
-                    updateOnBrowserResize: true
-                }
-            });
         }
     };
 });
