@@ -43,16 +43,34 @@
 }
 
 #nplayer-page #main-table #info-table #faces-column {
-    width: 550px;
+    width: 427px;
 }
 
 #nplayer-page #main-table #info-table #faces-column #faces {
-    width: 550px;
-    height: 100px;
+    width: 427px;
+    padding-top: 10px;
+}
+
+#nplayer-page #main-table #info-table #faces-column #faces span {
+    margin-left: 25px;
+    color: white;
+    font-size: 25px;
+}
+
+#nplayer-page #main-table #info-table #faces-column #faces ul {
+    list-style-type:none;
+    margin-left: 25px;
+    margin-top: 10px;
+    padding:0;
+}
+
+#nplayer-page #main-table #info-table #faces-column #faces li {
+    float: left;
+    margin-bottom: 8px;
 }
 
 #nplayer-page #main-table #info-table #faces-column #geo {
-    width: 550px;
+    width: 427px;
     height: 100px;
 }
 

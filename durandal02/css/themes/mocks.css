@@ -377,18 +377,18 @@ input[type="color"],
     margin-left: 10px;
 }
 
-.mainVidSection .face {
+.face {
     width: 175px;
     margin-right: 25px;
 }
 
-.mainVidSection .face img {
+.face img {
     width: 100%;
     height: 150px;
     border: none;
 }
 
-.mainVidSection .face .name {
+.face .name {
     width: 100%;
     height: 54px;
     background-color: white;
@@ -399,7 +399,7 @@ input[type="color"],
     -moz-box-sizing:border-box; /* Firefox */
 }
 
-.mainVidSection .face .information .aux {
+.face .information .aux {
     background-color: rgba(211,246,253,1);
     width: 54px;
     height: 54px;
