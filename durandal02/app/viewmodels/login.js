@@ -6,9 +6,6 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     var password = ko.observable();
     var password_entry_error = ko.observable( false );
     
-    var emailBeta = ko.observable();
-    var emailBeta_entry_error = ko.observable( false );
-
     fb_appid   = config.facebook_appid();
     fb_channel = config.facebook_channel();
 
@@ -69,32 +66,43 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	},{scope: config.facebook_ask_features()});
     }
     
+    // Valid email address is checked, if entered it will send a confirmation email to address
+    // and if the confirmation email is clicked then the email address is submitted to mailchimp
+    // list called "Viblio Beta Enrollment from Login Page"
     function betaEnroll() {
-        if ( ! emailBeta() ) {
+        if ( $('#mce-EMAIL').val() == "" ) {
             dialog.showMessage( 'The email field is required.', 'Authentication' );
 	    return;
-        }
-        //http.get('http://viblio.us7.list-manage.com/subscribe/post-json?c=?', $('#mc_signup').serialize() );
-        system.log( ko.toJSON($('#mc_signup')) );
+        };
         
+        if ( ! $('#mce-EMAIL')[0].checkValidity() ) {
+            dialog.showMessage( 'Please enter a valid email address.', 'Authentication' );
+	    return;
+        };
+        
+        register( $('#mc-signup') );
+    };
+    
+    function register( $form ) {
         $.ajax({
-            type: "GET", // GET & url for json slightly different
-            url: "http://viblio.us7.list-manage.com/subscribe/post-json?c=?",
-            data: ko.toJSON(emailBeta),
-            dataType    : 'json',
+            type: $form.attr('method'),
+            url: $form.attr('action').replace('/post?', '/post-json?').concat('&c=?'),
+            data: $form.serialize(),
+            timeout: 5000, // Set timeout value, 5 seconds
+            cache       : false,
+            dataType    : 'jsonp',
             contentType: "application/json; charset=utf-8",
-            error       : function(err) { alert("Could not connect to the registration server."); },
+            error       : function(err) { alert("Could not connect to the registration server. Please try again later."); },
             success     : function(data) {
                 if (data.result != "success") {
-                    // Something went wrong, parse data.msg string and display message
-                    system.log(data.msg);
+                    // Something went wrong, do something to notify the user. maybe alert(data.msg);
+                    dialog.showMessage( data.msg, 'Authentication' );
                 } else {
                     showBetaReservedModal();
                 }
             }
         });
-        return false;
-    }
+    };
     
     function showBetaReservedModal() {
         dialog.show('viewmodels/betaReserved');
@@ -103,9 +111,6 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     return {
 	email: email,
 	email_entry_error: email_entry_error,
-        
-        emailBeta: emailBeta,
-	emailBeta_entry_error: emailBeta_entry_error,
 
 	password: password,
 	password_entry_error: password_entry_error,
@@ -113,6 +118,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	nativeAuthenticate: nativeAuthenticate,
 	facebookAuthenticate: facebookAuthenticate,
         betaEnroll: betaEnroll,
+        register: register,
         showBetaReservedModal: showBetaReservedModal
     };
 });

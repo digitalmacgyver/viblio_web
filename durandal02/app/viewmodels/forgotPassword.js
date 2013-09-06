@@ -12,7 +12,10 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     });
 
     function send() {
-	dialog.showMessage( 'A request has been sent. Please check your email shortly.' );
+        viblio.api( '/services/na/forgot_password_request', { email: forgetEmail() } ).then(
+		function() {
+		    dialog.showMessage( 'A request has been sent. Please check your email shortly.' );
+		});
     }
 
     function cancel() {
