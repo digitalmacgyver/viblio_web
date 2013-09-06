@@ -45,7 +45,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'modestmap'], function(a
 	    console.log( 'NO POINTS' );
 
 	// Enable popovers
-	$(view).find(".marker i").popover({
+	$(view).find(".marker img").popover({
 	    trigger: 'hover',
 	    html: true
 	});
