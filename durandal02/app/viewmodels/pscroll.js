@@ -26,7 +26,7 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
         // the first fetch works.
         self.pager = {
             next_page: 1,
-            entries_per_page: 10,
+            entries_per_page: 1000, /* practically all, until we can accurately page from the database */
             total_entries: -1 /* currently unknown */
         };
 
