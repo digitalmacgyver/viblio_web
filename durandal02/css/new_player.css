@@ -71,7 +71,7 @@
 
 #nplayer-page #main-table #info-table #faces-column #geo {
     width: 427px;
-    height: 200px;
+    height: 255px;
 }
 
 #geo-map {
@@ -79,6 +79,18 @@
     height: 180px;
     margin-right: auto;
     margin-left: auto;
+}
+
+#geo-title span {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    display: block;
+    padding-top: 20px;
+    font-size: 20px;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #geo-map .marker {

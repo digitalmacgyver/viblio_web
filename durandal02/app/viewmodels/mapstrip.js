@@ -57,7 +57,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'modestmap'], function(a
 	// metadata (title, description, captured on date, length, etc)
 	// and a play/cancel function maybe.  Or just go to player screen.
 	console.log( "play", point.uuid );
-	router.navigate( '#/player?mid=' + point.uuid );
+	router.navigate( '#/new_player?mid=' + point.uuid );
 	//console.log( a, b );
 	//$(a.target).popover( 'toggle' );
     };

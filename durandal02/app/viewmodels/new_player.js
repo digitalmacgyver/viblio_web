@@ -70,7 +70,13 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	if ( m.views.face && m.views.face.length ) {
 	    var total = 0;
 	    var ident = 0;
-	    m.views.face.forEach( function( face ) {
+
+	    // Only do a max of four faces
+	    var count = m.views.face.length;
+	    if ( count > 4 ) count = 4;
+
+	    for( var i=0; i<count; i++ ) {
+		var face = m.views.face[i];
 		total += 1;
 		var data = {
 		    url: face.url,
@@ -82,7 +88,7 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 		    data.id           = face.contact_id;
 		}
 		faces.push( new Face( data ) );
-	    });
+	    }
 	    finfo( 'Starring (' + ident + '/' + total + ')' );
 	}
 	else {
@@ -163,6 +169,7 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 
     function getCountry(results)
     {
+	return results[0].formatted_address;
 	for (var i = 0; i < results[0].address_components.length; i++) {
             var shortname = results[0].address_components[i].short_name;
             var longname = results[0].address_components[i].long_name;
@@ -186,39 +193,65 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
     }
 
     function near( m ) {
-	/*
-	$.getJSON(' http://maps.googleapis.com/maps/api/geocode/json', 
-		  {latlng: lat + ',' + lng, sensor: true } ).then( 
-		      function( result ) {
-			  console.log( result );
-			  var c = getCountry( result );
-			  console.log( c );
-		      });
-	*/
+	if ( ! map ) {
+	    map = $("#geo-map").htmapl({
+		touch: true,
+		mousewheel: true
+	    });
+	}
+
 	if ( m.lat ) {
-	    isNear( 'Somewhere near (here)' );
 	    var loc = m.lat.toString() + ',' + m.lng.toString();
 	    console.log( 'changing map location to ' + loc );
 	    location( loc );
 
-	    if ( ! map ) {
-		map = $("#geo-map").htmapl({
-		    touch: true,
-		    mousewheel: true
-		});
+	    viblio.api( '/services/faces/location', { lat: m.lat, lng: m.lng } ).then( function( res ) {
+		if ( res && res.length ) {
+		    isNear( 'Near ' + getCountry( res ) );
+		}
+		else {
+		    console.log( res );
+		    isNear( 'Find in map: Coming soon' );
+		    if ( map.data("map") ) {
+			// reposition the marker
+			loc = "37.451269,-122.158495";
+			location( loc );
+			var l = new MM.Location( 37.451269, -122.158495 );
+			var p = map.data("map").locationPoint( l );
+			console.log( p );
+			$("geo-map .marker").css( 'top', p.x );
+			$("geo-map .marker").css( 'left', p.y );	    
+			
+			map.centerZoom( loc, 11 )
+		    }
+		}
+	    });
+
+	    if ( map.data("map") ) {
+		// reposition the marker
+		var l = new MM.Location( m.lat, m.lng );
+		var p = map.data("map").locationPoint( l );
+		console.log( p );
+		$("geo-map .marker").css( 'top', p.x );
+		$("geo-map .marker").css( 'left', p.y );	    
+
+		map.centerZoom( loc, 11 )
 	    }
-	    // reposition the marker
-	    var l = new MM.Location( m.lat, m.lng );
-	    var p = map.data("map").locationPoint( l );
-	    console.log( p );
-	    $("geo-map .marker").css( 'top', p.x );
-	    $("geo-map .marker").css( 'left', p.y );	    
-
-	    map.centerZoom( loc, 5 );
-
 	}
 	else {
 	    isNear( 'Find in map: Coming soon' );
+	    if ( map.data("map") ) {
+		// reposition the marker
+		loc = "37.451269,-122.158495";
+		location( loc );
+		var l = new MM.Location( 37.451269, -122.158495 );
+		var p = map.data("map").locationPoint( l );
+		console.log( p );
+		$("geo-map .marker").css( 'top', p.x );
+		$("geo-map .marker").css( 'left', p.y );	    
+
+		map.centerZoom( loc, 11 )
+	    }
 	}
     }
 

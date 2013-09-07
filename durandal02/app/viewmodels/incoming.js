@@ -49,7 +49,7 @@ define( ['durandal/system', 'plugins/dialog', 'plugins/router'], function(system
         system.log("messages from incoming.play " + this.messages()[0].media.uuid );
 	dialog.close( this );
 	this.dismiss_cb();
-	router.navigate( '#/player?mid=' + this.messages()[0].media.uuid );
+	router.navigate( '#/new_player?mid=' + this.messages()[0].media.uuid );
     };
 
     Incoming.prototype.nameFaces = function() {
