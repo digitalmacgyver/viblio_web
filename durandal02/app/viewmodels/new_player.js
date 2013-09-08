@@ -11,7 +11,7 @@
   this way in case we use this page as a link to shared
   videos.
 */
-define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','viewmodels/face','modestmap'], function(app,router,dialog,config,viblio,Strip,Face,MM) {
+define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','viewmodels/face','modestmap'], function(app,system,router,dialog,config,viblio,Strip,Face,MM) {
     // Given a S3 url, parse out and return the bucket name.  Needed for
     // Wowza urls.
     //
@@ -59,8 +59,23 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 
     // holds the map
     var map = null;
-    var location = ko.observable();
+    var locations = ko.observableArray([]);
     var isNear = ko.observable();
+
+    // When new media files are added to the vstrip, as a result if
+    // infinite scrolling for example, a new location will be added.
+    // We subscribe to these events and manually add a marker to the
+    // map.  Other techniques failed to work because at the time
+    // this function is called the dom has not yet been updated.
+    //
+    locations.subscribe( function( v ) {
+	var loc = v[v.length-1];
+	if ( map ) {
+	    el = $('<div class="marker"><i class="icon-play-sign"></i></div>');
+	    el.data( 'location', loc );
+	    map.addMarker( el.get(0) );
+	}
+    });
 
     // Extract and set up the faces
     var finfo = ko.observable();
@@ -167,6 +182,9 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	playVid( m );
     }
 
+    // Extracts an address from the structure returned from
+    // a call on the server to http://maps.googleapis.com
+    //
     function getCountry(results)
     {
 	return results[0].formatted_address;
@@ -192,66 +210,25 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	return text.replace(/\s/gi, '').length < 1;
     }
 
+    // A new video is beling played.  Fetch its approx. location (string
+    // address from http://maps.googleapis.com) and center/zoom to it on the
+    // map.
     function near( m ) {
-	if ( ! map ) {
-	    map = $("#geo-map").htmapl({
-		touch: true,
-		mousewheel: true
-	    });
-	}
-
 	if ( m.lat ) {
-	    var loc = m.lat.toString() + ',' + m.lng.toString();
-	    console.log( 'changing map location to ' + loc );
-	    location( loc );
-
 	    viblio.api( '/services/faces/location', { lat: m.lat, lng: m.lng } ).then( function( res ) {
 		if ( res && res.length ) {
 		    isNear( 'Near ' + getCountry( res ) );
+		    map.centerZoom( m.lat.toString() + ',' + m.lng.toString(), 11 );
 		}
 		else {
-		    console.log( res );
 		    isNear( 'Find in map: Coming soon' );
-		    if ( map.data("map") ) {
-			// reposition the marker
-			loc = "37.451269,-122.158495";
-			location( loc );
-			var l = new MM.Location( 37.451269, -122.158495 );
-			var p = map.data("map").locationPoint( l );
-			console.log( p );
-			$("geo-map .marker").css( 'top', p.x );
-			$("geo-map .marker").css( 'left', p.y );	    
-			
-			map.centerZoom( loc, 11 )
-		    }
+		    map.centerZoom( config.geoLocationOfVideoAnalytics, 11 );
 		}
 	    });
-
-	    if ( map.data("map") ) {
-		// reposition the marker
-		var l = new MM.Location( m.lat, m.lng );
-		var p = map.data("map").locationPoint( l );
-		console.log( p );
-		$("geo-map .marker").css( 'top', p.x );
-		$("geo-map .marker").css( 'left', p.y );	    
-
-		map.centerZoom( loc, 11 )
-	    }
 	}
 	else {
 	    isNear( 'Find in map: Coming soon' );
-	    if ( map.data("map") ) {
-		// reposition the marker
-		loc = "37.451269,-122.158495";
-		location( loc );
-		var l = new MM.Location( 37.451269, -122.158495 );
-		var p = map.data("map").locationPoint( l );
-		console.log( p );
-		$("geo-map .marker").css( 'top', p.x );
-		$("geo-map .marker").css( 'left', p.y );	    
-
-		map.centerZoom( loc, 11 )
-	    }
+	    map.centerZoom( config.geoLocationOfVideoAnalytics, 11 )
 	}
     }
 
@@ -264,7 +241,7 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	title: title,
 	description: description,
 	finfo: finfo,
-	location: location,
+	locations: locations,
 	isNear: isNear,
 	faces: faces,
 	related: related,
@@ -275,6 +252,11 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	activate: function( args ) {
 	    // capture the query arguments
 	    query(args);
+
+	    if ( ! query() ) {
+		router.navigate( '#/home' );
+	    }
+
 	    var mid = query().mid;
 
 	    $(window).bind('resize', function() {
@@ -292,11 +274,57 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 		});
 	    }
 
-	    return viblio.api( '/services/mediafile/get', { mid: mid, include_contact_info: 1 } ).then( function( json ) {
-		var mf = json.media;
-		// Set now playing
-		playing( mf );
-	    });
+	    return system.defer( function( dfd ) {
+		viblio.api( '/services/mediafile/get', { mid: mid, include_contact_info: 1 } ).then( function( json ) {
+		    var mf = json.media;
+		    // Set now playing
+		    playing( mf );
+
+		    title( mf.title || 'Click to add a title.' );
+		    description( mf.description || 'Click to add a description.' );
+		    setupFaces( mf );
+
+		    console.log( 'me', mf.lat.toString() + ',' + mf.lng.toString() );
+		    locations.push( mf.lat.toString() + ',' + mf.lng.toString() );
+
+		    // Get related vids
+		    var vstrip = new Strip( 'title', 'subtile' );
+
+		    // Subscribe to new mediafiles being added to the vstrip, from
+		    // infinite scrolling for example, and add new locations to the
+		    // map.
+		    vstrip.mediafiles.subscribe( function( mediafiles ) {
+			var m = mediafiles[ mediafiles.length - 1];
+			if ( m.media().lat ) {
+			    // if it doesn't already exist
+			    if ( locations.indexOf( m.media().lat.toString() + ',' + m.media().lng.toString() ) == -1 )
+				locations.push( m.media().lat.toString() + ',' + m.media().lng.toString() );
+			}
+		    });
+
+		    // This async routine is the long pole.  Let it do the promise() resolution to
+		    // pause the system until we have all the data.
+		    //
+		    vstrip.search().then( function() {
+			// Get all of the geo locations of the related media
+			/* DONE ABOVE IN SUBSCRIBE CALLBACK TO HANDLE INFINITE SCROLL (WIP: WILL REMOVE SOON)
+			vstrip.mediafiles().forEach( function( m ) {
+			    if ( m.media().lat ) {
+				console.log( m.media().lat.toString() + ',' + m.media().lng.toString() );
+				locations.push( m.media().lat.toString() + ',' + m.media().lng.toString() );
+			    }
+			});
+			*/
+			dfd.resolve();
+		    });
+		    vstrip.on( 'mediavstrip:play', function( m ) {
+			// When the user selects a related video to play, play it
+			playRelated( m );
+		    });
+		    // make it observable for the composure
+		    related( vstrip );
+		});
+	    }).promise();
 	},
 	canDeactivate: function () {
 	    $(window).unbind( 'resizePlayer', resizePlayer );
@@ -310,21 +338,7 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	    var mid = query().mid;
 	    var mf = playing();
 
-	    title( mf.title || 'Click to add a title.' );
-	    description( mf.description || 'Click to add a description.' );
-	    setupFaces( mf );
-
-	    // Get related vids
-	    var vstrip = new Strip( 'title', 'subtile' ).search();
-	    vstrip.on( 'mediavstrip:play', function( m ) {
-		// When the user selects a related video to play, play it
-		playRelated( m );
-	    });
-	    // make it observable for the composure
-	    related( vstrip );
-
 	    // Instanciate the main flowplayer
-	    console.log( 'Bucket: ' + s3bucket( mf.views.main.url ) );
 	    $("#tv").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
 		ratio: 9/16,
                 clip: {
@@ -369,8 +383,13 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 
 	    resizePlayer();
 
+	    // create the map
+	    map = $("#geo-map").htmapl({
+		touch: true,
+		mousewheel: true
+	    });
+	    // center/zoom to media file location
 	    near( mf );
-
         }
     };
 });

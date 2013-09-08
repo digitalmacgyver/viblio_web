@@ -12,7 +12,7 @@
   observable.
 */
 
-define( ['lib/viblio', 'durandal/app', 'viewmodels/mediafile','durandal/events'], function(viblio,app,Mediafile,Events) {
+define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile','durandal/events'], function(viblio,app,system,Mediafile,Events) {
     var Strip = function( title, subtitle ) {
 	// The element the view is attached to.
 	this.element = null;
@@ -111,24 +111,26 @@ define( ['lib/viblio', 'durandal/app', 'viewmodels/mediafile','durandal/events']
     Strip.prototype.search = function() {
 	var self = this;
 
-	if ( self.pager.next_page ) {
-	    viblio.api( '/services/mediafile/list', 
-			{ include_contact_info: 1,
-			  page: self.pager.next_page, 
-			  rows: self.pager.entries_per_page } )
-		.then( function( json ) {
-		    self.pager = json.pager;
-		    json.media.forEach( function( mf ) {
-			if ( mf.views.main.location == 's3' || mf.views.main.location == 'us' ) {
-			    self.addMediaFile( mf );
-			}
+	return system.defer( function( dfd ) {
+	    if ( self.pager.next_page ) {
+		viblio.api( '/services/mediafile/list', 
+			    { include_contact_info: 1,
+			      page: self.pager.next_page, 
+			      rows: self.pager.entries_per_page } )
+		    .then( function( json ) {
+			self.pager = json.pager;
+			json.media.forEach( function( mf ) {
+			    if ( mf.views.main.location == 's3' || mf.views.main.location == 'us' ) {
+				self.addMediaFile( mf );
+			    }
+			});
+			dfd.resolve();
 		    });
-		});
-	}
-	// Else I got all media files for this
-	// query.
-
-	return this;
+	    }
+	    else {
+		dfd.resolve();
+	    }
+	}).promise();
     };
 
     // Can be called from above to see if a particular mediafile
@@ -148,7 +150,7 @@ define( ['lib/viblio', 'durandal/app', 'viewmodels/mediafile','durandal/events']
 
     // In attached, attach the mCustomScrollbar we're presently
     // employing for this purpose.
-    Strip.prototype.attached = function( view ) {
+    Strip.prototype.compositionComplete = function( view ) {
 	var self = this;
 	self.element = view;
 	

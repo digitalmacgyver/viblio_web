@@ -1,7 +1,7 @@
-define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','lib/viblio','facebook','purl'], function (router, app, system, page_header, landing_header, viblio) {
+define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','lib/viblio','lib/customDialogs','facebook','purl'], function (router, app, system, page_header, landing_header, viblio, customDialogs) {
 
     var header = ko.observable( );
-    
+
     router.on('router:navigation:complete').then(function(instance, instruction, router) {
         if (app.title) {
             document.title = instruction.config.title + " | " + app.title;

@@ -1128,6 +1128,18 @@ if (typeof HTMAPL === "undefined") var HTMAPL = {};
             });
         };
 
+	$.fn.addMarker = function( marker ) {
+	    if ( marker && $(this).data("map") ) {
+		var layers = $(this).data("map").getLayers();
+		if ( layers && layers.length && layers.length > 1 ) {
+		    var markerLayer = layers[1];
+		    var rawLocation = $(this).data("map").getData(marker, "location"),
+                        parsedLocation = PARSE.latLon(rawLocation);
+		    markerLayer.addMarker( marker, parsedLocation );
+		}
+	    }
+	};
+
         // automatically map-ulate anything with data-htmapl="true"
         $(function() {
             $("*[data-htmapl=true]").htmapl();

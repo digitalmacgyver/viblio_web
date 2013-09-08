@@ -42,6 +42,7 @@ define( function() {
 	},
 	facebook_ask_features: function() {
 	    return 'email,user_photos,user_videos,read_friendlists,friends_photos,friends_videos';
-	}
+	},
+	geoLocationOfVideoAnalytics: "37.451269,-122.158495"
     };
 });

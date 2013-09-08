@@ -133,7 +133,7 @@
          * provided GeoJSON feature, Location instance (or {lat,lon} object
          * literal), or "lat,lon" string.
          */
-        addMarker: function(marker, feature) {
+        addMarker: function(marker, feature, dont_addto_dom) {
             if (!marker || !feature) {
                 return null;
             }
@@ -146,7 +146,8 @@
                 this.repositionMarker(marker);
             }
             // append it to the DOM
-            this.parent.appendChild(marker);
+	    if ( ! dont_addto_dom )
+		this.parent.appendChild(marker);
             // add it to the list
             this.markers.push(marker);
             return marker;

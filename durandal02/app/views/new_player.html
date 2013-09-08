@@ -35,9 +35,11 @@
 		  <span data-bind="text: isNear"></span>
 		</div>
 		<div id="geo-map" class="map" data-zoom="11" data-provider="openstreetmap">
-		  <div class="marker" data-bind="attr:{'data-location': location}">
+		  <!-- ko foreach: locations -->
+		  <div class="marker" data-bind="attr:{'data-location': $data}">
 		    <i class="icon-play-sign"></i>
 		  </div>
+		  <!--/ko-->
 		</div>
 	      </div>
 	    </td>
