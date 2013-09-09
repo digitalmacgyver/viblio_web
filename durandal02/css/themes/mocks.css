@@ -233,7 +233,7 @@ input:-moz-placeholder {
     margin-top: 10px;
 }
 
-.avatar img {
+#page-header .avatar img {
     height: 38px;
 }
 
@@ -545,6 +545,54 @@ input:-moz-placeholder {
 .cinematic {
     font-weight: 100;
     font-family: inherit;
+}
+
+/********************  Player Page Section  *****************************/
+
+#related-videos-block .mediafile img {
+    border: none;
+}
+
+#nplayer-page .vstrip .mediafile {
+    margin-bottom: 20px;
+}
+
+#related-videos-block .mediafile .information {
+    width: 100%;
+    height: 40px;
+    background-color: white;
+    padding: 10px 5px;
+    position: relative;
+    box-sizing: border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+    text-align: left;
+}
+
+#related-videos-block .mediafile .information .title {
+    margin: 0 0 0 10px;
+    font-weight: 600;
+}
+
+#related-videos-block .mediafile .information .aux {
+    background-color: rgba(211,246,253,1);
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    color: rgba(82,152,189,1);
+    text-align: center;
+}
+
+#related-videos-block .mediafile .information .aux img {
+    width: 30px;
+    height: 22px;
+    display: block;
+    text-align: center;
+    margin: 2px auto -4px;
+    border: none;
 }
 
 /************************** hstrip *******************************/
