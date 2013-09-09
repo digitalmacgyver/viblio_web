@@ -71,7 +71,49 @@
 
 #nplayer-page #main-table #info-table #faces-column #geo {
     width: 427px;
-    height: 100px;
+    height: 255px;
+}
+
+#geo-map {
+    width: 90%;
+    height: 180px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#geo-title span {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    display: block;
+    padding-top: 20px;
+    font-size: 20px;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#geo-map .marker {
+    display: inline-block;
+}
+
+#geo-map .marker a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: bold;
+    color: #fff;
+    background: #f00;
+    padding: 5px;
+}
+
+#geo-map .marker i {
+    z-index: 100000;
+    font-size: 20px;
+    color: red;
+    cursor: pointer;
+    -moz-text-shadow: 2px 2px rgba(0,0,0,.2);
+    -webkit-text-shadow: 2px 2px rgba(0,0,0,.2);
+    text-shadow: 2px 2px rgba(0,0,0,.2);
 }
 
 #nplayer-page .player-control {

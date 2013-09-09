@@ -26,7 +26,7 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
         // the first fetch works.
         self.pager = {
             next_page: 1,
-            entries_per_page: 10,
+            entries_per_page: 1000, /* practically all, until we can accurately page from the database */
             total_entries: -1 /* currently unknown */
         };
 
@@ -71,7 +71,7 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	// Play a face clip.  This uses the query parameter
 	// passing technique to pass in the face to play.
 	m.on( 'face:play', function( m ) {
-	    router.navigate( '#/player?mid=' + m.face().uuid );
+	    router.navigate( '#/new_player?mid=' + m.face().uuid );
 	});
 
 	m.on( 'face:composed', function() {

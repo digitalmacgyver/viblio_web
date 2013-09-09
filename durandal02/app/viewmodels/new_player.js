@@ -11,7 +11,7 @@
   this way in case we use this page as a link to shared
   videos.
 */
-define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','viewmodels/face'], function(app,router,dialog,config,viblio,Strip,Face) {
+define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','viewmodels/face','modestmap'], function(app,system,router,dialog,config,viblio,Strip,Face,MM) {
     // Given a S3 url, parse out and return the bucket name.  Needed for
     // Wowza urls.
     //
@@ -57,6 +57,26 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
     var title = ko.observable();
     var description = ko.observable();
 
+    // holds the map
+    var map = null;
+    var locations = ko.observableArray([]);
+    var isNear = ko.observable();
+
+    // When new media files are added to the vstrip, as a result if
+    // infinite scrolling for example, a new location will be added.
+    // We subscribe to these events and manually add a marker to the
+    // map.  Other techniques failed to work because at the time
+    // this function is called the dom has not yet been updated.
+    //
+    locations.subscribe( function( v ) {
+	var loc = v[v.length-1];
+	if ( map ) {
+	    el = $('<div class="marker"><i class="icon-play-sign"></i></div>');
+	    el.data( 'location', loc );
+	    map.addMarker( el.get(0) );
+	}
+    });
+
     // Extract and set up the faces
     var finfo = ko.observable();
     var faces = ko.observableArray([]);
@@ -65,7 +85,13 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	if ( m.views.face && m.views.face.length ) {
 	    var total = 0;
 	    var ident = 0;
-	    m.views.face.forEach( function( face ) {
+
+	    // Only do a max of four faces
+	    var count = m.views.face.length;
+	    if ( count > 4 ) count = 4;
+
+	    for( var i=0; i<count; i++ ) {
+		var face = m.views.face[i];
 		total += 1;
 		var data = {
 		    url: face.url,
@@ -77,7 +103,7 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 		    data.id           = face.contact_id;
 		}
 		faces.push( new Face( data ) );
-	    });
+	    }
 	    finfo( 'Starring (' + ident + '/' + total + ')' );
 	}
 	else {
@@ -92,6 +118,7 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	title( m.media().title || 'Click to add a title.' );
 	description( m.media().description || 'Click to add a description.' );
 	setupFaces( m.media() );
+	near( m.media() );
 	flowplayer().play({
             url: 'mp4:amazons3/' + s3bucket( m.media().views.main.url ) + '/' + m.media().views.main.uri,
             ipadUrl: encodeURIComponent(m.media().views.main.url),
@@ -155,6 +182,56 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	playVid( m );
     }
 
+    // Extracts an address from the structure returned from
+    // a call on the server to http://maps.googleapis.com
+    //
+    function getCountry(results)
+    {
+	return results[0].formatted_address;
+	for (var i = 0; i < results[0].address_components.length; i++) {
+            var shortname = results[0].address_components[i].short_name;
+            var longname = results[0].address_components[i].long_name;
+            var type = results[0].address_components[i].types;
+            if (type.indexOf("country") != -1) {
+		if (!isNullOrWhitespace(shortname)) {
+                    return shortname;
+		}
+		else {
+                    return longname;
+		}
+            }
+	}
+    }
+    
+    function isNullOrWhitespace(text) {
+	if (text == null) {
+            return true;
+	}
+	return text.replace(/\s/gi, '').length < 1;
+    }
+
+    // A new video is beling played.  Fetch its approx. location (string
+    // address from http://maps.googleapis.com) and center/zoom to it on the
+    // map.
+    function near( m ) {
+	if ( m.lat ) {
+	    viblio.api( '/services/faces/location', { lat: m.lat, lng: m.lng } ).then( function( res ) {
+		if ( res && res.length ) {
+		    isNear( 'Near ' + getCountry( res ) );
+		    map.centerZoom( m.lat.toString() + ',' + m.lng.toString(), 11 );
+		}
+		else {
+		    isNear( 'Find in map: Coming soon' );
+		    map.centerZoom( config.geoLocationOfVideoAnalytics, 11 );
+		}
+	    });
+	}
+	else {
+	    isNear( 'Find in map: Coming soon' );
+	    map.centerZoom( config.geoLocationOfVideoAnalytics, 11 )
+	}
+    }
+
     return {
         showShareVidModal: function() {
             app.showDialog('viewmodels/shareVidModal');
@@ -164,6 +241,8 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	title: title,
 	description: description,
 	finfo: finfo,
+	locations: locations,
+	isNear: isNear,
 	faces: faces,
 	related: related,
 	previousRelated: previousRelated,
@@ -173,6 +252,11 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	activate: function( args ) {
 	    // capture the query arguments
 	    query(args);
+
+	    if ( ! query() ) {
+		router.navigate( '#/home' );
+	    }
+
 	    var mid = query().mid;
 
 	    $(window).bind('resize', function() {
@@ -190,11 +274,57 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 		});
 	    }
 
-	    return viblio.api( '/services/mediafile/get', { mid: mid, include_contact_info: 1 } ).then( function( json ) {
-		var mf = json.media;
-		// Set now playing
-		playing( mf );
-	    });
+	    return system.defer( function( dfd ) {
+		viblio.api( '/services/mediafile/get', { mid: mid, include_contact_info: 1 } ).then( function( json ) {
+		    var mf = json.media;
+		    // Set now playing
+		    playing( mf );
+
+		    title( mf.title || 'Click to add a title.' );
+		    description( mf.description || 'Click to add a description.' );
+		    setupFaces( mf );
+
+		    console.log( 'me', mf.lat.toString() + ',' + mf.lng.toString() );
+		    locations.push( mf.lat.toString() + ',' + mf.lng.toString() );
+
+		    // Get related vids
+		    var vstrip = new Strip( 'title', 'subtile' );
+
+		    // Subscribe to new mediafiles being added to the vstrip, from
+		    // infinite scrolling for example, and add new locations to the
+		    // map.
+		    vstrip.mediafiles.subscribe( function( mediafiles ) {
+			var m = mediafiles[ mediafiles.length - 1];
+			if ( m.media().lat ) {
+			    // if it doesn't already exist
+			    if ( locations.indexOf( m.media().lat.toString() + ',' + m.media().lng.toString() ) == -1 )
+				locations.push( m.media().lat.toString() + ',' + m.media().lng.toString() );
+			}
+		    });
+
+		    // This async routine is the long pole.  Let it do the promise() resolution to
+		    // pause the system until we have all the data.
+		    //
+		    vstrip.search().then( function() {
+			// Get all of the geo locations of the related media
+			/* DONE ABOVE IN SUBSCRIBE CALLBACK TO HANDLE INFINITE SCROLL (WIP: WILL REMOVE SOON)
+			vstrip.mediafiles().forEach( function( m ) {
+			    if ( m.media().lat ) {
+				console.log( m.media().lat.toString() + ',' + m.media().lng.toString() );
+				locations.push( m.media().lat.toString() + ',' + m.media().lng.toString() );
+			    }
+			});
+			*/
+			dfd.resolve();
+		    });
+		    vstrip.on( 'mediavstrip:play', function( m ) {
+			// When the user selects a related video to play, play it
+			playRelated( m );
+		    });
+		    // make it observable for the composure
+		    related( vstrip );
+		});
+	    }).promise();
 	},
 	canDeactivate: function () {
 	    $(window).unbind( 'resizePlayer', resizePlayer );
@@ -208,21 +338,7 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
 	    var mid = query().mid;
 	    var mf = playing();
 
-	    title( mf.title || 'Click to add a title.' );
-	    description( mf.description || 'Click to add a description.' );
-	    setupFaces( mf );
-
-	    // Get related vids
-	    var vstrip = new Strip( 'title', 'subtile' ).search();
-	    vstrip.on( 'mediavstrip:play', function( m ) {
-		// When the user selects a related video to play, play it
-		playRelated( m );
-	    });
-	    // make it observable for the composure
-	    related( vstrip );
-
 	    // Instanciate the main flowplayer
-	    console.log( 'Bucket: ' + s3bucket( mf.views.main.url ) );
 	    $("#tv").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
 		ratio: 9/16,
                 clip: {
@@ -266,6 +382,14 @@ define( ['durandal/app','plugins/router','plugins/dialog','lib/config','lib/vibl
             }).flowplayer().ipad({simulateiDevice: should_simulate()});
 
 	    resizePlayer();
+
+	    // create the map
+	    map = $("#geo-map").htmapl({
+		touch: true,
+		mousewheel: true
+	    });
+	    // center/zoom to media file location
+	    near( mf );
         }
     };
 });

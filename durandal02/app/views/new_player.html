@@ -31,6 +31,16 @@
 		</ul>
 	      </div>
 	      <div class="lightBlueBG bottomBorder-Thin" id="geo">
+		<div id="geo-title">
+		  <span data-bind="text: isNear"></span>
+		</div>
+		<div id="geo-map" class="map" data-zoom="11" data-provider="openstreetmap">
+		  <!-- ko foreach: locations -->
+		  <div class="marker" data-bind="attr:{'data-location': $data}">
+		    <i class="icon-play-sign"></i>
+		  </div>
+		  <!--/ko-->
+		</div>
 	      </div>
 	    </td>
 	  </tr>
