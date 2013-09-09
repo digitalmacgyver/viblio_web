@@ -37,8 +37,8 @@ define( ['plugins/dialog','lib/viblio','lib/config','facebook'], function(dialog
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", CREATE_ENDPT(), false);
 	xhr.setRequestHeader('Final-Length', SIZE);
-	console.log(JSON.stringify({uuid: uuid, file: fn}));
-	xhr.send(JSON.stringify({uuid: uuid, file: fn}));
+	console.log(JSON.stringify({uuid: uuid, file: { Path: fn}}));
+	xhr.send(JSON.stringify({uuid: uuid, file: { Path: fn}}));
 	submit_url = xhr.getResponseHeader("Location");
 	console.log("new post url " + submit_url);
 	
