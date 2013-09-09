@@ -1,5 +1,38 @@
 <div>
   <h2 data-bind="html: displayName"></h2>
-  <button class="btn" data-bind="click: testNewVideo">New Video Upload Test</button>
+  <p>Uploading to: <span data-bind="text: endpoint"></span></p>
+  <form>
+    <fieldset>
+      <legend>Override Protocol</legend>
+      <label class="radio">
+	<input type="radio" name="protocol" value="http:" data-bind="checked: protocol" />HTTP
+      </label>
+      <label class="radio">
+	<input type="radio" name="protocol" value="https:" data-bind="checked: protocol" />HTTPS
+      </label>
+    </fieldset>
+    <fieldset>
+      <legend>Override Server</legend>
+      <label class="radio">
+	<input type="radio" name="server" data-bind="checked: server, value: localhost" />Current
+      </label>
+      <label class="radio">
+	<input type="radio" name="server" value="staging.viblio.com" data-bind="checked: server" />stading.viblio.com
+      </label>
+      <label class="radio">
+	<input type="radio" name="server" value="upload.viblio.com" data-bind="checked: server" />upload.viblio.com
+      </label>
+    </fieldset>
+    <fieldset>
+      <legend>Choose Video File to Upload</legend>
+      <!-- <input type="file" data-bind="event:{onchange:function(data,ev){uploadFile(this.files[0]);}}" /> -->
+      <input type="file" />
+    </fieldset>
+  </form>  
+  <div>
+    <div id="notes"></div>
+    <div id="t"></div>
+    <div id="speed"></div>
+  </div>
 </div>
 
