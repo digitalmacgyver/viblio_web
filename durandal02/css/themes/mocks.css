@@ -37,13 +37,7 @@ input[type="color"],
     -webkit-box-shadow: none;
     border-color: rgba(0,0,0,.3);
     height: 30px;
-}
-
-::-webkit-input-placeholder,
-::-moz-placeholder, /* firefox 19+ */
-:-ms-input-placeholder, /* ie */
-input:-moz-placeholder { 
-    font-size: 16px; 
+    font-size: 17px;
 }
 
 .btn {
@@ -132,6 +126,24 @@ input:-moz-placeholder {
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
+}
+
+.modalBlockout {
+    background: rgba(50,53,68,1);
+}
+
+/*For Webkit browsers (Chrome, Safari) */
+
+textarea,
+input::-webkit-input-placeholder {
+   font-size: 17px;
+}
+
+/* For Mozilla Firefox */
+
+textarea,
+input:-moz-placeholder {
+    font-size: 17px;
 }
 
 /*********************  Utility Classes  ******************************/
@@ -549,6 +561,33 @@ input:-moz-placeholder {
 
 /********************  Player Page Section  *****************************/
 
+#nplayer-page #main-table #info-table #faces-column #faces {
+    padding-top: 20px; 
+}
+
+#nplayer-page #main-table #info-table #faces-column #faces span {
+    margin-left: 25px;
+    color: white;
+    font-size: 20px;
+    font-weight: 200;
+}
+
+#faces-column .face {
+    width: 140px;
+}
+
+#faces-column .face img {
+    height: 140px;
+}
+
+#comment-column {
+    color: rgba(0,0,0,.5);
+}
+
+#nplayer-page #related-videos-block p {
+    margin-top: 0;
+}
+
 #related-videos-block .mediafile img {
     border: none;
 }
@@ -614,6 +653,10 @@ input:-moz-placeholder {
     color: rgba(0,0,0,.5);
     margin-left: 40px;
     font-size: 18px;
+}
+
+.hscroll .item-container .mediafile {
+    margin-right: 15px;
 }
 
 .mainVidSection .portfolio {
@@ -682,7 +725,6 @@ input:-moz-placeholder {
 
 .fstrip {
     padding: 35px 0 10px 45px;
-    background-color: grey;
 }
 
 .fstrip .title h2 {
@@ -699,6 +741,20 @@ input:-moz-placeholder {
     margin-left: 10px;
 }
 
+.fscroll .mCSB_horizontal>.mCSB_container {
+    margin-left: 0;
+}
+
+
+.fscroll .item-container .mediafile {
+    margin-right: 15px;
+}
+
+.fstrip .arrow {
+    width: 75px;
+    background-image: url(../images/arrowBlue.png);
+}
+
 /************************** pstrip *******************************/
 
 .pstrip {
@@ -711,26 +767,37 @@ input:-moz-placeholder {
     display: inline;
 }
 
-.face {
-    width: 175px;
+.pscroll .item-container .face {
+    width: 170px;
     margin-right: 25px;
+}
+
+.face.selected img {
+    border: none;
+}
+
+.pscroll .item-container .face.selected {
+    background: rgba(239,85,65,1);
 }
 
 .face img {
     width: 100%;
-    height: 150px;
+    height: 160px;
     border: none;
 }
 
 .face .name {
     width: 100%;
-    height: 54px;
+    height: 36px;
     background-color: white;
-    padding: 17px 5px;
+    padding: 8px 5px;
     position: relative;
     text-align: center;
     box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
+    font-weight: 600;
+    font-size: 16px;
+    color: rgba(0,0,0,.5);
 }
 
 .face .information .aux {
@@ -840,6 +907,15 @@ input:-moz-placeholder {
     -moz-box-sizing: border-box;
 }
 
+#loggedOutTellFriendsForm .bigTitle {
+    margin-bottom: 30px;
+    margin-top: 10px;
+}
+
+#loggedOutTellFriendsForm .paddedDiv:first-of-type {
+    padding-bottom: 10px;
+}
+
 #loggedOutTellFriendsModal form {
     margin: 0;
 }
@@ -847,6 +923,7 @@ input:-moz-placeholder {
 #loggedOutTellFriendsModal input,
 #loggedOutTellFriendsModal textarea {
     width: 97%;
+    margin-bottom: 20px;
 }
 
 #loggedOutTellFriendsModal textarea {

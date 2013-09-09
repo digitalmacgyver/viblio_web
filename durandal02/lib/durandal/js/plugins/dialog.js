@@ -307,7 +307,7 @@ define(['durandal/system', 'durandal/app', 'durandal/composition', 'durandal/act
      * @class DialogContext
      */
     dialog.addContext('default', {
-        blockoutOpacity: .2,
+        blockoutOpacity: .9,
         removeDelay: 200,
         /**
          * In this function, you are expected to add a DOM element to the tree which will serve as the "host" for the modal's composed view. You must add a property called host to the modalWindow object which references the dom element. It is this host which is passed to the composition module.
