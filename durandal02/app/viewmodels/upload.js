@@ -8,7 +8,7 @@ define( ['plugins/dialog','lib/viblio','lib/config','facebook'], function(dialog
 	if ( protocol() == 'https:' )
 	    return 443;
 	else
-	    return 8080;
+	    return 80;
     }, this );
 
     var CREATE_ENDPT = ko.computed( function() {
