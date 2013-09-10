@@ -1,8 +1,11 @@
 <div class="map bottomBorder-Thin" data-center="37.765,-122.413" data-zoom="11" data-provider="openstreetmap">
+  <div class="title">
+    <h2 class="cinematic textShadowed">Locations</h2>
+  </div>
   <!-- ko foreach: points -->
   <div class="marker" data-bind="attr:{'data-location': location}">
-    <!-- <i class="icon-play-sign" data-bind="click: $parent.play"></i> -->
-    <i class="icon-play-sign" data-toggle="popover" data-bind="click: $parent.play,attr:{'data-content':thumbnail}" data-title="title"></i>
+    <!-- <img class="icon-play-sign" data-bind="click: $parent.play" /img> -->
+    <img src='css/images/mapMarker.png' class="icon-play-sign" data-toggle="popover" data-bind="click: $parent.play,attr:{'data-content':thumbnail}" data-title="title"/>
   </div>
   <!-- /ko -->
   <!--

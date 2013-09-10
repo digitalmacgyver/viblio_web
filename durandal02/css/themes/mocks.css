@@ -37,13 +37,7 @@ input[type="color"],
     -webkit-box-shadow: none;
     border-color: rgba(0,0,0,.3);
     height: 30px;
-}
-
-::-webkit-input-placeholder,
-::-moz-placeholder, /* firefox 19+ */
-:-ms-input-placeholder, /* ie */
-input:-moz-placeholder { 
-    font-size: 16px; 
+    font-size: 17px;
 }
 
 .btn {
@@ -82,6 +76,9 @@ input:-moz-placeholder {
     background-color: rgba(239,85,65,1);
 }
 
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
 .btn-primary:hover {
     background-color: rgba(239,85,65,.75);
 }
@@ -90,6 +87,9 @@ input:-moz-placeholder {
     background-color: rgba(179,179,179,1);
 }
 
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
 .btn-secondary:hover {
     background-color: rgba(179,179,179,.75);
     color: white;
@@ -99,6 +99,9 @@ input:-moz-placeholder {
     background-color: rgba(28,184,209,1);
 }
 
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
 .btn-blue:hover {
     background-color: rgba(28,184,209,.75);
     color: white;
@@ -115,6 +118,32 @@ input:-moz-placeholder {
     position: absolute;
     right: 10px;
     top: -4px;
+}
+
+.messageBox {
+    background-color: white;
+    border: 1px solid lightgrey;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+.modalBlockout {
+    background: rgba(50,53,68,1);
+}
+
+/*For Webkit browsers (Chrome, Safari) */
+
+textarea,
+input::-webkit-input-placeholder {
+   font-size: 17px;
+}
+
+/* For Mozilla Firefox */
+
+textarea,
+input:-moz-placeholder {
+    font-size: 17px;
 }
 
 /*********************  Utility Classes  ******************************/
@@ -152,10 +181,99 @@ input:-moz-placeholder {
     background-color: rgb(154, 241, 241);
 }
 
+.turquoiseBG {
+    background-color: rgba(28,184,209,1);
+}
+
+.mocksWhiteBG {
+    background-color: white;
+    border: 1px solid lightgrey;
+}
+
 .bigTitle {
     color: rgba(0,0,0,.6);
     font-size: 23px;
     font-weight: 600;
+}
+
+.bottomBorder {
+    border-bottom: 1px solid rgba(0,0,0,.2);
+}
+
+.bottomBorder-Thin {
+    border-bottom: 4px inset rgba(0,0,0,.2);
+}
+
+.bottomBorder-Thick {
+    border-bottom: 8px inset rgba(0,0,0,.1); 
+}
+
+.whiteText {
+    color: white;
+}
+
+.mainLabel {
+    margin-top: 0;
+    margin-bottom: 22px;
+    color: rgba(50,53,68,.6);
+}
+
+.paddedDiv {
+    padding: 27px 50px 40px;
+}
+
+/********************  Page Header Section  *****************************/
+
+#page-header .navbar {
+    height: 57px;
+    border-bottom: 3px solid black;
+}
+
+#page-header .navbar .nav > .active > a,
+#page-header .navbar .nav > .active > a:hover,
+#page-header .navbar .nav > .active > a:focus {
+    background-color: rgba(28,184,209,1);
+    border-bottom: 3px solid #137089;
+}
+
+#page-header .navbar .nav > li > a {
+    padding: 15px 30px;
+    font-size: 18px;
+}
+
+.avatar {
+    margin-top: 10px;
+}
+
+#page-header .avatar img {
+    height: 38px;
+}
+
+#page-header .navbar .nav .dropdown-toggle {
+    padding: 18px 10px;
+}
+
+.navbar .nav.pull-right.dropdown-toggle {
+    padding: 0;
+}
+
+#page-header .navbar .dropdown-toggle img {
+    height: 100%;
+    margin-left: 5px;
+}
+
+#page-header .navbar .dropdown-toggle span:first-of-type {
+    font-size: 16px;
+    font-weight: 300;
+}
+
+#page-header .navbar .dropdown-toggle span:last-of-type {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.navbar .nav > li > a {
+    color: rgba(159,163,170,1);
 }
 
 /********************  Landing Page Header Section  *****************************/
@@ -426,34 +544,6 @@ input:-moz-placeholder {
 
 /********************  Home Page Section  *****************************/
 
-#page-header .navbar {
-    height: 57px;
-    border-bottom: 3px solid black;
-}
-
-#page-header .navbar .nav > .active > a,
-#page-header .navbar .nav > .active > a:hover,
-#page-header .navbar .nav > .active > a:focus {
-    background-color: rgba(28,184,209,1);
-    border-bottom: 3px solid #137089;
-}
-
-#page-header .navbar .nav a {
-    font-size: 18px;
-}
-
-#page-header .navbar img {
-    height: 42px;
-}
-
-#page-header .navbar .nav > li > a {
-    padding: 15px 30px;
-}
-
-.navbar .nav.pull-right.dropdown-toggle {
-    padding: 0;
-}
-
 .mainVidSection {
     width: 100%;
     /*height: 392px;*/
@@ -462,6 +552,86 @@ input:-moz-placeholder {
 
 .mainVidSection .title {
     margin-bottom: 25px;
+}
+
+.cinematic {
+    font-weight: 100;
+    font-family: inherit;
+}
+
+/********************  Player Page Section  *****************************/
+
+#nplayer-page #main-table #info-table #faces-column #faces {
+    padding-top: 20px; 
+}
+
+#nplayer-page #main-table #info-table #faces-column #faces span {
+    margin-left: 25px;
+    color: white;
+    font-size: 20px;
+    font-weight: 200;
+}
+
+#faces-column .face {
+    width: 140px;
+}
+
+#faces-column .face img {
+    height: 140px;
+}
+
+#comment-column {
+    color: rgba(0,0,0,.5);
+}
+
+#nplayer-page #related-videos-block p {
+    margin-top: 0;
+}
+
+#related-videos-block .mediafile img {
+    border: none;
+}
+
+#nplayer-page .vstrip .mediafile {
+    margin-bottom: 20px;
+}
+
+#related-videos-block .mediafile .information {
+    width: 100%;
+    height: 40px;
+    background-color: white;
+    padding: 10px 5px;
+    position: relative;
+    box-sizing: border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+    text-align: left;
+}
+
+#related-videos-block .mediafile .information .title {
+    margin: 0 0 0 10px;
+    font-weight: 600;
+}
+
+#related-videos-block .mediafile .information .aux {
+    background-color: rgba(211,246,253,1);
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    color: rgba(82,152,189,1);
+    text-align: center;
+}
+
+#related-videos-block .mediafile .information .aux img {
+    width: 30px;
+    height: 22px;
+    display: block;
+    text-align: center;
+    margin: 2px auto -4px;
+    border: none;
 }
 
 /************************** hstrip *******************************/
@@ -479,9 +649,14 @@ input:-moz-placeholder {
     margin-right: 35px;
 }
 
-.hstrip .title span {
+.title span {
     color: rgba(0,0,0,.5);
-    margin-left: 10px;
+    margin-left: 40px;
+    font-size: 18px;
+}
+
+.hscroll .item-container .mediafile {
+    margin-right: 15px;
 }
 
 .mainVidSection .portfolio {
@@ -527,6 +702,19 @@ input:-moz-placeholder {
     margin: 0;
     padding: 0;
     color: rgba(82,152,189,1);
+    text-align: center;
+}
+
+.mainVidSection .mediafile .information .aux img {
+    width: 40px;
+    height: 30px;
+    display: block;
+    text-align: center;
+    margin: 4px auto -4px;
+}
+
+.aux span {
+    font-weight: 300;
 }
 
 .mediafile .information .title {
@@ -537,7 +725,6 @@ input:-moz-placeholder {
 
 .fstrip {
     padding: 35px 0 10px 45px;
-    background-color: grey;
 }
 
 .fstrip .title h2 {
@@ -554,6 +741,20 @@ input:-moz-placeholder {
     margin-left: 10px;
 }
 
+.fscroll .mCSB_horizontal>.mCSB_container {
+    margin-left: 0;
+}
+
+
+.fscroll .item-container .mediafile {
+    margin-right: 15px;
+}
+
+.fstrip .arrow {
+    width: 75px;
+    background-image: url(../images/arrowBlue.png);
+}
+
 /************************** pstrip *******************************/
 
 .pstrip {
@@ -566,31 +767,37 @@ input:-moz-placeholder {
     display: inline;
 }
 
-.pstrip .title span {
-    color: rgba(0,0,0,.5);
-    margin-left: 10px;
+.pscroll .item-container .face {
+    width: 170px;
+    margin-right: 25px;
 }
 
-.face {
-    width: 175px;
-    margin-right: 25px;
+.face.selected img {
+    border: none;
+}
+
+.pscroll .item-container .face.selected {
+    background: rgba(239,85,65,1);
 }
 
 .face img {
     width: 100%;
-    height: 150px;
+    height: 160px;
     border: none;
 }
 
 .face .name {
     width: 100%;
-    height: 54px;
+    height: 36px;
     background-color: white;
-    padding: 17px 5px;
+    padding: 8px 5px;
     position: relative;
     text-align: center;
     box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
+    font-weight: 600;
+    font-size: 16px;
+    color: rgba(0,0,0,.5);
 }
 
 .face .information .aux {
@@ -609,47 +816,23 @@ input:-moz-placeholder {
     color: rgba(64,66,79,.75);
 }
 
+/********************  Map Strip  *****************************/
+
+.map > .title {
+    position: absolute;
+    top: 25px;
+    left: 42px;
+}
+
+.map > .title > h2 {
+    font-weight: 300;
+}
 
 /********************  Settings Page Section  *****************************/
 
 #settings-page .content-Wrap {
     width: 600px;
     margin: 0 auto;
-}
-
-.mocksWhiteBG {
-    background-color: white;
-    border: 1px solid lightgrey;
-}
-
-.bottomBorder {
-    border-bottom: 1px solid rgba(0,0,0,.2);
-}
-
-.bottomBorder-Thin {
-    border-bottom: 4px inset rgba(0,0,0,.2);
-}
-
-.bottomBorder-Thick {
-    border-bottom: 8px inset rgba(0,0,0,.1); 
-}
-
-.turquoiseBG {
-    background-color: rgba(28,184,209,1);
-}
-
-.whiteText {
-    color: white;
-}
-
-.mainLabel {
-    margin-top: 0;
-    margin-bottom: 22px;
-    color: rgba(50,53,68,.6);
-}
-
-.paddedDiv {
-    padding: 27px 50px 40px;
 }
 
 .content-Wrap > div {
@@ -690,6 +873,12 @@ input:-moz-placeholder {
     -moz-box-sizing:border-box; /* Firefox */
 }
 
+/********************  Change Password Modal  *****************************/
+
+#changePasswordModal {
+    position: relative;
+}
+
 /********************  Logged Out Page Section  *****************************/
 
 #loggedOut-page .content-Wrap {
@@ -718,6 +907,15 @@ input:-moz-placeholder {
     -moz-box-sizing: border-box;
 }
 
+#loggedOutTellFriendsForm .bigTitle {
+    margin-bottom: 30px;
+    margin-top: 10px;
+}
+
+#loggedOutTellFriendsForm .paddedDiv:first-of-type {
+    padding-bottom: 10px;
+}
+
 #loggedOutTellFriendsModal form {
     margin: 0;
 }
@@ -725,6 +923,7 @@ input:-moz-placeholder {
 #loggedOutTellFriendsModal input,
 #loggedOutTellFriendsModal textarea {
     width: 97%;
+    margin-bottom: 20px;
 }
 
 #loggedOutTellFriendsModal textarea {

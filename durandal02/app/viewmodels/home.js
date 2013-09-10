@@ -39,7 +39,7 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 	    var self = this;
 	    self.strips.removeAll();
 	    return $.when( hh('Box Office Hits', 'Your most popular videos'), 
-			   pp('Top Actors', 'Who\'s in your videos'),
+			   pp('Top Actors', 'Who\'s who in your videos'),
 			   ff('n Videos with Anonymous', '' ),
 			   mm()
 			 ).then( function( h1, h2, h3, h4 ) {

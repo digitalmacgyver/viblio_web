@@ -8,6 +8,7 @@ define( ['plugins/router', 'durandal/app', 'lib/viblio'], function(router, app, 
 	router: router,
 	// Show details about the user
 	user: viblio.user,
+        
 	testNewVideo: function() {
 	    viblio.api( '/services/test/new_video_test' );
 	},
@@ -16,6 +17,9 @@ define( ['plugins/router', 'durandal/app', 'lib/viblio'], function(router, app, 
 	    // happen from other parts of the app.
 	    //
 	    app.trigger( 'system:logout' );
-	}
+	},
+        compositionComplete: function() {
+            console.log( "user data: " + ko.toJSON( viblio.user() ) );
+        }        
     };
 });
