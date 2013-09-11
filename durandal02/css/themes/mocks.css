@@ -46,7 +46,7 @@ input[type="color"],
 .btn-group > .btn,
 .btn {
     font-size: 17px;
-    background: none;
+    background-image: none;
     filter: none;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
@@ -63,7 +63,8 @@ input[type="color"],
     -webkit-text-shadow: 2px 2px rgba(0,0,0,.2);
     text-shadow: 2px 2px rgba(0,0,0,.2);
     border-bottom: 3px inset rgba(0,0,0,.2);
-    padding: 5px 40px;
+    padding: 9px 40px;
+    box-sizing: border-box;
 }
 
 .btn-primary.disabled, .btn-primary[disabled] {
@@ -91,9 +92,9 @@ input[type="color"],
     background-color: rgba(179,179,179,1);
 }
 
-.btn-primary:focus,
-.btn-primary:active,
-.btn-primary.active,
+.btn-secondary:focus,
+.btn-secondary:active,
+.btn-secondary.active,
 .btn-secondary:hover {
     background-color: rgba(179,179,179,.75);
     color: white;
@@ -103,9 +104,9 @@ input[type="color"],
     background-color: rgba(28,184,209,1);
 }
 
-.btn-primary:focus,
-.btn-primary:active,
-.btn-primary.active,
+.btn-blue:focus,
+.btn-blue:active,
+.btn-blue.active,
 .btn-blue:hover {
     background-color: rgba(28,184,209,.75);
     color: white;
