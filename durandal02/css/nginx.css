@@ -1,0 +1,59 @@
+#nginx {
+    padding: 35px;
+    background: white;
+}
+
+#nginx table {
+    width: 100%;
+    border: 0;
+    color: #888;
+    margin-top: 20px;
+    padding: 10px 0px 10px 0px;
+}
+ 
+#nginx tr {
+    height: 30px;
+}
+ 
+#nginx td.filename {
+    width: 25%;
+}
+ 
+#nginx .bar {
+    background-color: green;
+    display: block;
+    text-align: center;
+}
+ 
+#nginx td.progress {
+    width: 20%;
+    border: 1px solid #ccc;
+    padding: 0px;
+    color: #fff;
+    font-weight: bold;
+}
+
+#nginx td.done {
+    background: rgb(74, 170, 170);
+    text-align: center;
+}
+ 
+#nginx td.start-cancel {
+    padding-left: 8px;
+}
+
+#nginx th { 
+    text-align: left;
+}
+
+#nginx span.file-input-name {
+    display: none;
+}
+
+#nginx #total_progress {
+    font-weight: bold;
+}
+
+#nginx .alert {
+    visibility: hidden;
+}

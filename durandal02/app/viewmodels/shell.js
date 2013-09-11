@@ -90,7 +90,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'settings',           moduleId: 'settings',           title: 'User Settings',                  
 	      nav: false,   authenticated: true,   header: page_header },
 
-            { route: 'upload',             moduleId: 'upload',             title: 'UPLOAD',                         
+            { route: 'upload',             moduleId: 'nginx',             title: 'UPLOAD',                         
 	      nav: true,    authenticated: true,   header: page_header },
 	    
             { route: 'player',             moduleId: 'player',             title: 'Video Player',                   
