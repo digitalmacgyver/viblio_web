@@ -47,7 +47,8 @@
     <link rel="stylesheet" href="css/home.css" />
     <link rel="stylesheet" href="css/player.css" />
     <link rel="stylesheet" href="css/new_player.css" />
-    <link rel="stylesheet" href="css/upload.css" />
+    <!-- <link rel="stylesheet" href="css/upload.css" /> -->
+    <link rel="stylesheet" href="css/nginx.css" />
 
     <!-- Dialogs -->
     <link rel="stylesheet" href="css/incoming.css" />
@@ -93,10 +94,6 @@
     <script src="lib/knockout/knockout-2.3.0.js"></script>
     <script src="lib/bootstrap/js/bootstrap.js"></script>
 
-    <script src="lib/jqueryFileUpload/js/jquery.ui.widget.js"></script>
-    <script src="lib/jqueryFileUpload/js/jquery.iframe-transport.js"></script>
-    <script src="lib/jqueryFileUpload/js/jquery.fileupload.js"></script>
-
     <script src="lib/flowplayer/flowplayer-3.2.12.min.js"></script>
     <script src="lib/flowplayer/plugins/flowplayer.ipad-3.2.12.min.js"></script>
 
@@ -104,6 +101,23 @@
     <script src="lib/htmapl/modestmaps.js"></script>
     <script src="lib/htmapl/modestmaps.markers.js"></script>
     <script src="lib/htmapl/htmapl.js"></script>
+
+    <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+    <script src="lib/jqueryFileUpload/js/vendor/jquery.ui.widget.js"></script>
+    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+    <script src="lib/jqueryFileUpload/js/jquery.iframe-transport.js"></script>
+    <!-- The basic File Upload plugin -->
+    <script src="lib/jqueryFileUpload/js/jquery.fileupload.js"></script>
+    <!-- The File Upload processing plugin -->
+    <script src="lib/jqueryFileUpload/js/jquery.fileupload-process.js"></script>
+    <!-- The File Upload validation plugin -->
+    <script src="lib/jqueryFileUpload/js/jquery.fileupload-validate.js"></script>
+    <!-- Plugin to change input type=file into a bootstrap button -->
+    <script src="lib/jqueryFileUpload/js/vendor/bootstrap.file-input.js"></script>
+    <!-- The XDomainRequest Transport is included for cross-domain file deletion for IE 8 and IE 9 -->
+    <!--[if (gte IE 8)&(lt IE 10)]>
+	<script src="lib/jqueryFileUpload/js/cors/jquery.xdr-transport.js"></script>
+    <![endif]-->
 
     <script src="/mq/faye.js"></script>
 
