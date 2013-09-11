@@ -8,9 +8,9 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 
     var hits, actors, features, map;
     
-    function hh(title, subtitle) {
+    function hh(title, subtitle, advanced) {
         return system.defer( function( dfd ) {
-            dfd.resolve( new HScroll(title, subtitle) );
+            dfd.resolve( new HScroll(title, subtitle, advanced) );
         } ).promise();
     }
 
@@ -35,10 +35,15 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
     return {
         displayName: 'Channels',
         strips: strips,
-        activate: function () {
+        activate: function (args) {
 	    var self = this;
 	    self.strips.removeAll();
-	    return $.when( hh('Box Office Hits', 'Your most popular videos'), 
+
+	    var advanced = false;
+	    if ( args && args.advanced )
+		advanced = true;
+
+	    return $.when( hh('Box Office Hits', 'Your most popular videos', advanced), 
 			   pp('Top Actors', 'Who\'s who in your videos'),
 			   ff('n Videos with Anonymous', '' ),
 			   mm()
