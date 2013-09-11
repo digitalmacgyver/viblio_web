@@ -10,15 +10,15 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'modestmap'], function(a
 	// need to add asset uuid so we can play the video when
 	// the marker is clicked on.
 	//
-	return viblio.api( '/services/mediafile/list' ).then( function( json ) {
-	    json.media.forEach( function( m ) {
+	return viblio.api( '/services/geo/all' ).then( function( json ) {
+	    json.locations.forEach( function( m ) {
 		if ( m.lat && m.lng ) {
 		    self.points.push({
 			lat: m.lat,
 			lng: m.lng,
 			location: m.lat.toString() + ',' + m.lng.toString(),
 			uuid: m.uuid,
-			thumbnail: '<img class="popover-img" src="' + m.views.thumbnail.url + '" />'
+			thumbnail: '<img class="popover-img" src="' + m.url + '" />'
 		    });
 		}
 	    });
