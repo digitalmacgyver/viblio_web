@@ -74,6 +74,13 @@ define(['lib/viblio'], function(viblio) {
 	    $(files[index].context).data('canceled', true);
 	    if ( files[index].jqXHR ) {
 		files[index].jqXHR.abort();
+
+		// Cancel the upload on the server side
+		var sessionID = $(files[index].context).attr('sessionID');
+		var endpoint = CREATE_ENDPT() + '/' + sessionID;
+		var xhr = new XMLHttpRequest();
+		xhr.open("DELETE", endpoint, false ); // sync!
+		xhr.send();
 	    }
 	    // $(files[index].context).remove();
 	}
@@ -361,7 +368,10 @@ define(['lib/viblio'], function(viblio) {
 		    row = $(data.context[0]);
 		    
 		    if ( row.data( 'canceled' ) ) {
-			row.remove();
+			row.find( '.btn-group').empty();
+			row.find(".progress").html('Canceled!');
+			row.find(".progress .bar").css( 'width', '100%' );
+			row.find(".progress").addClass( 'done' );
 			return;
 		    }
 
