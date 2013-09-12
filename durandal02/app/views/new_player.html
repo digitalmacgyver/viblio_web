@@ -13,8 +13,20 @@
 	  <tr>
 	    <td id="comment-column">
 	      <div id="title-desc">
-		<h3 data-bind="text: title"></h3>
-		<p data-bind="text: description"></p>
+                  <div data-bind="liveEditor: title">
+                      <h3 class="view" id="vidTitle" data-bind="click: title.edit, text: title() || 'Click to edit title'"></h3>
+                      <div id="editTitle-Wrap">
+                          <input class="edit" data-bind="value: title, 
+                            selectAndFocus: title.editing, 
+                            event: { blur: function() { title.stopEditing(); title.save( playing(), 'title' ) } }" />
+                      </div>  
+                  </div>
+                  <div data-bind="liveEditor: description">
+                      <p class="view" id="vidDescription" data-bind="click: description.edit, text: description() || 'Click to edit description'"></p>
+                      <textarea id="editDescription" class="edit" data-bind="value: description, 
+                            selectAndFocus: description.editing, 
+                            event: { blur: function() { description.stopEditing(); description.save( playing(), 'description' ) } }"></textarea>
+                  </div>
 	      </div>
 	      <div class="babyBlueBG" id="comments">
 		<input type="text" placeholder="Comment on this video..." />

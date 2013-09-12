@@ -53,7 +53,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     //
     var related = ko.observable();
 
-    // Title and description
+    // Title and description - code to update/change is located in custom_bindings.js
     var title = ko.observable();
     var description = ko.observable();
 

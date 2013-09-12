@@ -3,7 +3,7 @@
    General useage:
      <div data-bind="name: {}"></div>
 */
-define(['lib/config'],function(config) {
+define(['lib/config', 'durandal/system'],function(config, system) {
     var videoel = document.createElement("video"),
     idevice = /ip(hone|ad|od)/i.test(navigator.userAgent),
     noflash = flashembed.getVersion()[0] === 0,
@@ -118,6 +118,50 @@ define(['lib/config'],function(config) {
             ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
                 $element.mCustomScrollbar("destroy");
             });
+        }
+    };
+    
+    // Used to edit the video title and description on Player Page
+    ko.extenders.liveEditor = function (target) {
+        target.editing = ko.observable(false);
+        var oldVal = ko.observable( null );
+        
+        target.edit = function () {
+            target.editing(true);
+            oldVal = target();
+        };
+
+        target.stopEditing = function () {
+            target.editing(false);
+        };
+        
+        // Either playing() + uuid or query() + mid will work, but only from home page, not related videos section
+        target.save = function( data, targetName ) {
+            var viblio = require( "lib/viblio" );
+            if( oldVal != target() ) {
+                console.log('Value has changed, save it. mid:' + data.uuid + ', ' + targetName + ':' + target() );
+                var vidJSON = {};
+                    vidJSON["mid"] = data.uuid;
+                    vidJSON[targetName] = target();
+                    
+                viblio.api( '/services/mediafile/set_title_description', vidJSON ).then(function(data){
+                        console.log(data);
+                }); 
+            };
+        };
+        
+        return target;
+    };
+    
+    // Used to edit the video title and description on Player Page
+    ko.bindingHandlers.liveEditor = {
+        init: function (element, valueAccessor) {
+            var observable = valueAccessor();
+            observable.extend({ liveEditor: this });
+        },
+        update: function (element, valueAccessor) {
+            var observable = valueAccessor();
+            ko.bindingHandlers.css.update(element, function () { return { editing: observable.editing }; });
         }
     };
 
