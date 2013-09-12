@@ -2,7 +2,7 @@
    with api to deal with Brewtus protocol.  Supports multiple, parallel uploads and
    even drag and drop!
 */
-define( function() {
+define(['lib/viblio'], function(viblio) {
     var calculateProgress, cancelAllUploads, cancelUpload, createProgressBar, 
     fileName, files, maxChunkSize, startAllUploads, startUpload, uploadedFilePath, view;
 
@@ -71,10 +71,11 @@ define( function() {
      */
     cancelUpload = function(index) {
 	if (files[index]) {
+	    $(files[index].context).data('canceled', true);
 	    if ( files[index].jqXHR ) {
 		files[index].jqXHR.abort();
 	    }
-	    $(files[index].context).remove();
+	    // $(files[index].context).remove();
 	}
     };
  
@@ -188,7 +189,7 @@ define( function() {
 		multipart: false,
 		dataType: 'text',
 		dropZone: $(document),
-		acceptFileTypes: /(\.|\/)(3gp|avi|flv|m4v|mp4|mov|mpeg|mpg|ogg|swf|mwv)$/i,
+		acceptFileTypes: /(\.|\/)(3gp|avi|flv|m4v|mp4|mts|mov|mpeg|mpg|ogg|swf|mwv)$/i,
 		maxFileSize: 10000000000, // 10 GB
 		minFileSize: 10, // 10 Bytes
 		messages: {
@@ -242,9 +243,8 @@ define( function() {
 			    /* qp 
 			       Do the initial brewtus HEAD to "create" the file and get back the file id.
 			    */
-			    var uuid="682DC812-05C3-11E3-839F-54DE3DA5649D";
+			    var uuid = viblio.getUser().uuid;
 			    var file = data.files[0];
-			    // var endpoint = $(that).data('url');
 			    var endpoint = CREATE_ENDPT();
 			    var xhr = new XMLHttpRequest();
 			    xhr.open("POST", endpoint, false ); // sync!
@@ -360,12 +360,17 @@ define( function() {
 		    // Get the context for this upload
 		    row = $(data.context[0]);
 		    
+		    if ( row.data( 'canceled' ) ) {
+			row.remove();
+			return;
+		    }
+
 		    // Grab its current retry count
 		    retryCount = row.data("retries") || 1;
  
 		    // Get our maxRetries and retryTimeout settings
-		    maxRetries = $(this).data("fileupload").options.maxRetries + 1;
-		    retryTimeout = $(this).data("fileupload").options.retryTimeout;
+		    maxRetries = $(this).data("blueimpFileupload").options.maxRetries + 1;
+		    retryTimeout = $(this).data("blueimpFileupload").options.retryTimeout;
 		    
 		    // If we can still attempt a retry
 		    if (retryCount < maxRetries) {
