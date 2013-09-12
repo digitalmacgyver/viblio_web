@@ -284,8 +284,8 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    description( mf.description || 'Click to add a description.' );
 		    setupFaces( mf );
 
-		    console.log( 'me', mf.lat.toString() + ',' + mf.lng.toString() );
-		    locations.push( mf.lat.toString() + ',' + mf.lng.toString() );
+		    if ( mf.lat )
+			locations.push( mf.lat.toString() + ',' + mf.lng.toString() );
 
 		    // Get related vids
 		    var vstrip = new Strip( 'title', 'subtile' );

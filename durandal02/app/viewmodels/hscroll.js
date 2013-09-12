@@ -1,6 +1,6 @@
 define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'viewmodels/mediafile'], function (router, app, system, viblio, Mediafile) {
 
-    var HScroll = function( title, subtitle ) {
+    var HScroll = function( title, subtitle, advanced ) {
 	var self = this;
 
 	// The view element, used to manipulate the scroller mostly
@@ -9,6 +9,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	// Passed in title and subtitle
 	self.title = ko.observable(title);
 	self.subtitle = ko.observable(subtitle || '&nbsp;' );
+	self.advanced = advanced;
 
 	// Will eventually pass in a query, somehow
 
