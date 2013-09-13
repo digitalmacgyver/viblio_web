@@ -4,20 +4,29 @@ define(['durandal/events'],function(Events) {
 
 	this.url = ko.observable( data.url );
 	this.name = ko.observable( data.contact_name ? data.contact_name : 'unknown' );
-	this.appears_in = ko.observable( data.appears_in );
-	this.star = ko.observable( data.star_power != 'star0' );
-        this.star_power = ko.observable( data.star_power.slice(4) );
-	this.selected = ko.observable( false );
-        this.starColor = ko.computed( function() {
-            if( data.star_power === 'star1' ) {
-                return 'css/images/gold-star.png';
-            } else if ( data.star_power === 'star2' ) {
-                return 'css/images/silver-star.png';
-            } else if ( data.star_power === 'star3' ) {
-                return 'css/images/bronze-star.png';
+	this.appsears_in = ko.observable( data.appears_in );
+        this.hasStarPower = ko.computed( function() {
+            if ( data.star_power ) {
+                return true;
+            } else {
+                return false;
             }
         });
-
+        if( this.hasStarPower() ) {
+            this.star_power = ko.observable( data.star_power.slice(4) );
+            this.star = ko.observable( data.star_power !== 'star0' );
+            this.starColor = ko.computed( function() {
+                if( data.star_power === 'star1' ) {
+                    return 'css/images/gold-star.png';
+                } else if ( data.star_power === 'star2' ) {
+                    return 'css/images/silver-star.png';
+                } else if ( data.star_power === 'star3' ) {
+                    return 'css/images/bronze-star.png';
+                }
+            });
+        };
+	this.selected = ko.observable( false );
+        
 	Events.includeIn( this );
     };
 

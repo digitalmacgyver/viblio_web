@@ -593,6 +593,10 @@ input:-moz-placeholder {
     height: 140px;
 }
 
+#faces-column .face .star {
+    height: 40px;
+}
+
 #comment-column {
     color: rgba(0,0,0,.5);
 }
@@ -821,6 +825,10 @@ input:-moz-placeholder {
 .pscroll .item-container .face {
     width: 170px;
     margin-right: 25px;
+}
+
+.face {
+    position: relative;
 }
 
 .face.selected img {
