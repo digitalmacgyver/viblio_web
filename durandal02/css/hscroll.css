@@ -18,6 +18,7 @@
 .hscroll>.mCustomScrollBox>.mCSB_scrollTools{
 	width:88%;
 	margin: 0 6%;
+	visibility: hidden;
 }
 
 /* horizontal scrollbar, center items if no scroll */
