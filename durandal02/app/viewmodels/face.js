@@ -33,8 +33,8 @@ define(['durandal/events'],function(Events) {
     Face.prototype.select = function(f, e) {
 	var pos = Math.round( e.target.x + (e.target.width/2) );
 	this.trigger( 'face:selected', this, pos );
-        $(e.target).parent('.face').siblings('.face').removeClass('selected');
-        $(e.target).parent('.face').addClass('selected');
+        $(e.target).parents('.face').siblings('.face').removeClass('selected');
+        $(e.target).parents('.face').addClass('selected');
     };
 
     Face.prototype.attached = function( view ) {

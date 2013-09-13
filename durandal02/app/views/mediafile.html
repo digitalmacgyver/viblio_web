@@ -1,23 +1,25 @@
 <!-- <div class="mediafile" data-bind="click:select, css:{selected: selected()}"> -->
-<div class="mediafile boxShadowed" data-bind="attr:{id:media().uuid}">
-  <button class="dbtn btn btn-danger btn-mini" data-bind="click:mfdelete">delete</button>
-  <a class="mplay-icon" data-bind="click:play" href="#">
-    <i class="icon-play-circle"></i> 
-  </a>
-  <i class="icon-ok-sign"></i>
-  <div>
-    <img data-bind="{attr:{src:media().views.thumbnail.url}}" />
-  </div>
-  <div class="information">
-    <div class="aux pull-right muted"><img src='css/images/viewsEye.png'/><span data-bind="html: media().eyes">0</span></div>
-    <div data-bind="liveEditor: title">
-      <div class="view vidTitle title truncate" style="width: 130px" data-bind="click: title.edit, text: title() || 'Click to edit title'"></div>
-      <div class="editTitle-Wrap">
-        <input class="edit" data-bind="value: title, 
-				       selectAndFocus: title.editing, 
-				       event: { blur: function() { title.stopEditing(); title.save( $data, media(), 'title' ) } }" />
-      </div>  
+<div class="mediafile" data-bind="attr:{id:media().uuid}">
+    <div class="boxShadowed">
+        <button class="dbtn btn btn-danger btn-mini" data-bind="click:mfdelete">delete</button>
+        <a class="mplay-icon" data-bind="click:play" href="#">
+            <i class="icon-play-circle"></i> 
+        </a>
+        <i class="icon-ok-sign"></i>
+        <div>
+            <img data-bind="{attr:{src:media().views.thumbnail.url}}" />
+        </div>
+        <div class="information">
+            <div class="aux pull-right muted"><img src='css/images/viewsEye.png'/><span data-bind="html: media().eyes">0</span></div>
+            <div data-bind="liveEditor: title">
+                <div class="view vidTitle title truncate" style="width: 130px" data-bind="click: title.edit, text: title() || 'Click to edit title'"></div>
+                <div class="editTitle-Wrap">
+                    <input class="edit" data-bind="value: title, 
+                                         selectAndFocus: title.editing, 
+                                         event: { blur: function() { title.stopEditing(); title.save( $data, media(), 'title' ) } }" />
+                </div>  
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 

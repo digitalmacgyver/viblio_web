@@ -156,10 +156,11 @@ input:-moz-placeholder {
 
 /*********************  Utility Classes  ******************************/
 
+/* change 0px to a higher number (like 2px for example) to increase spread of shadow and make it softer */
 .boxShadowed {
-    -moz-box-shadow: 3px 3px 2px 1px rgba(0,0,0,.2); /* Firefox */
-    -webkit-box-shadow: 3px 3px 2px 1px rgba(0,0,0,.2);
-    box-shadow: 3px 3px 2px 1px rgba(0,0,0,.2);
+    -moz-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2); /* Firefox */
+    -webkit-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2);
+    box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2);
 }
 
 .textShadowed {
@@ -597,6 +598,13 @@ input:-moz-placeholder {
     height: 40px;
 }
 
+.pscroll .item-container .face {
+    background: transparent;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
 #comment-column {
     color: rgba(0,0,0,.5);
 }
@@ -708,6 +716,10 @@ input:-moz-placeholder {
 
 .hscroll .item-container .mediafile {
     margin-right: 15px;
+    background: transparent;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
 }
 
 .mainVidSection .portfolio {
@@ -837,6 +849,12 @@ input:-moz-placeholder {
 
 .pscroll .item-container .face.selected {
     background: rgba(239,85,65,1);
+}
+
+.face.selected .boxShadowed {
+    -moz-box-shadow: none; /* Firefox */
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
 
 .face .star {

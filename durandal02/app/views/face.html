@@ -1,10 +1,12 @@
 <div class="face">
-    <div data-bind="if: hasStarPower()">
-        <img class="star" data-bind="visible: star, attr: { src: starColor }"/>
-        <span class="starRank textShadowed" data-bind="visible: star, html: star_power() "></span>
+    <div class="boxShadowed">
+        <div data-bind="if: hasStarPower()">
+            <img class="star" data-bind="visible: star, attr: { src: starColor }"/>
+            <span class="starRank textShadowed" data-bind="visible: star, html: star_power() "></span>
+        </div>
+        <img data-bind="attr:{src:url}, click: select" />
+        <div class="name" data-bind="text: name"></div>
     </div>
-    <img data-bind="attr:{src:url}, click: select" />
-    <div class="name" data-bind="text: name"></div>
 </div>
 
 <!--user().displayname.slice(0,user().displayname.indexOf(' ')-->
