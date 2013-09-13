@@ -135,21 +135,15 @@ define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip
             target.editing(false);
         };
         
-        // Either playing() + uuid or query() + mid will work, but only from home page, not related videos section
-        target.save = function( data, targetName ) {
-            var viblio = require( "lib/viblio" );
+        target.save = function( obj, data, targetName ) {
+	    console.log('here', 'old', oldVal, 'new', target());
             if( oldVal != target() ) {
                 console.log('Value has changed, save it. mid:' + data.uuid + ', ' + targetName + ':' + target() );
                 var vidJSON = {};
                     vidJSON["mid"] = data.uuid;
                     vidJSON[targetName] = target();
-                    
-                viblio.api( '/services/mediafile/set_title_description', vidJSON ).then(function(data){
-                        console.log( vidJSON["mid"] );
-                        console.log(data);
-                        app.trigger( "mediaFile:TitleDescChanged", vidJSON ); 
-                }); 
-            };
+                obj.trigger( "mediaFile:TitleDescChanged", vidJSON ); 
+            }
         };
         
         return target;

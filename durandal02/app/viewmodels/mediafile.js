@@ -2,7 +2,7 @@
   The main mediafile view/model.  Represents a mediafile from the
   server.  Returns an instance factory.
 */
-define(['durandal/app', 'durandal/events'],function(app, Events) {
+define(['durandal/app', 'durandal/events', 'lib/viblio'],function(app, Events, viblio) {
 
     // Temporary.  Used to create random numbers to use for
     // number of video views, ratings, etc.  For GUI development
@@ -25,8 +25,23 @@ define(['durandal/app', 'durandal/events'],function(app, Events) {
 	this.media    = ko.observable( data );
 	this.selected = ko.observable( false );
 	this.edittable = ko.observable( false );
+
+	this.title = ko.observable( data.title );
+	this.description = ko.observable( data.description );
         
 	Events.includeIn( this );
+
+	// This will be triggered by a save on the liveEdit custom
+	// binding.
+	var self = this;
+	this.on( "mediaFile:TitleDescChanged", function( data ) {
+	    viblio.api( '/services/mediafile/set_title_description',
+			{ mid: self.media().uuid,
+			  title: self.title(),
+			  description: self.description()
+			});
+	});
+
     };
 
     // Toggle selected state and send an event.

@@ -649,13 +649,13 @@ input:-moz-placeholder {
 
 /********************  Player Page Title and Description Section  *****************************/
 
-#vidTitle:hover,
-#vidDescription:hover {
+.vidTitle:hover,
+.vidDescription:hover {
     cursor: pointer;
     background-color: rgba(246,248,209,1); 
 }
 
-#editTitle-Wrap {
+.editTitle-Wrap {
     /*height: 40px;*/
 }
 

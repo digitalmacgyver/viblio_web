@@ -10,7 +10,14 @@
   </div>
   <div class="information">
     <div class="aux pull-right muted"><img src='css/images/viewsEye.png'/><span data-bind="html: media().eyes">0</span></div>
-    <div class="title truncate" style="width: 130px" data-bind="text: media().title"></div>
+    <div data-bind="liveEditor: title">
+      <div class="view vidTitle title truncate" style="width: 130px" data-bind="click: title.edit, text: title() || 'Click to edit title'"></div>
+      <div class="editTitle-Wrap">
+        <input class="edit" data-bind="value: title, 
+				       selectAndFocus: title.editing, 
+				       event: { blur: function() { title.stopEditing(); title.save( $data, media(), 'title' ) } }" />
+      </div>  
+    </div>
   </div>
 </div>
 

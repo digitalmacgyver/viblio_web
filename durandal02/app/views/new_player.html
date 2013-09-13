@@ -14,18 +14,18 @@
 	    <td id="comment-column">
 	      <div id="title-desc">
                   <div data-bind="liveEditor: title">
-                      <h3 class="view" id="vidTitle" data-bind="click: title.edit, text: title() || 'Click to edit title'"></h3>
-                      <div id="editTitle-Wrap">
+                      <h3 class="view vidTitle" data-bind="click: title.edit, text: title() || 'Click to edit title'"></h3>
+                      <div class="editTitle-Wrap">
                           <input class="edit" data-bind="value: title, 
                             selectAndFocus: title.editing, 
-                            event: { blur: function() { title.stopEditing(); title.save( playing(), 'title' ) } }" />
+                            event: { blur: function() { title.stopEditing(); title.save( playing(), playing().media(), 'title' ) } }" />
                       </div>  
                   </div>
                   <div data-bind="liveEditor: description">
-                      <p class="view" id="vidDescription" data-bind="click: description.edit, text: description() || 'Click to edit description'"></p>
-                      <textarea id="editDescription" class="edit" data-bind="value: description, 
+                      <p class="view vidDescription" data-bind="click: description.edit, text: description() || 'Click to edit description'"></p>
+                      <textarea class="edit editDescription" data-bind="value: description, 
                             selectAndFocus: description.editing, 
-                            event: { blur: function() { description.stopEditing(); description.save( playing(), 'description' ) } }"></textarea>
+                            event: { blur: function() { description.stopEditing(); description.save( playing(), playing().media(), 'description' ) } }"></textarea>
                   </div>
 	      </div>
 	      <div class="babyBlueBG" id="comments">

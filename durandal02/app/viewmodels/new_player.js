@@ -11,7 +11,7 @@
   this way in case we use this page as a link to shared
   videos.
 */
-define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','viewmodels/face','modestmap'], function(app,system,router,dialog,config,viblio,Strip,Face,MM) {
+define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','viewmodels/face','modestmap','viewmodels/mediafile'], function(app,system,router,dialog,config,viblio,Strip,Face,MM, Mediafile) {
     // Given a S3 url, parse out and return the bucket name.  Needed for
     // Wowza urls.
     //
@@ -45,7 +45,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     var next_available_clip = ko.observable( 0 );
 
     // Currently playing mediafile.  This is the JSON struct, not a view model
-    var playing = ko.observable({});
+    var playing = ko.observable();
 
     // This observable will contain the vstrip when it is
     // created in attached.  Its a view model and is
@@ -56,27 +56,21 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     // Title and description - code to update/change is located in custom_bindings.js
     var title = ko.observable();
     var description = ko.observable();
-    
-    // Used to update the related video's title and description when the playing video is changed and also
-    // occurs in the related video section
-    app.on( "mediaFile:TitleDescChanged", function( data ) {
-        var lookForId = data.mid;
-        console.log( lookForId );
-        console.log( $('#' + lookForId).children('.title').text() );
-        if ( $(this).find('#' + lookForId) ) {
-            $('#' + lookForId).find('.truncate').text( title() );
-        }
-        for(var i = 0; i < related().mediafiles().length; i++) {
-            console.log( related().mediafiles()[i].media().title, related().mediafiles()[i].media().description );
-            if ( related().mediafiles()[i].view.id == data.mid ) {
-                console.log ("it's me!" + title() );
-                related().mediafiles()[i].media().title = title();
-                related().mediafiles()[i].media().description = description();
-            }
-        }; 
+
+    // When title or description changes (due to inline edit),
+    // change the playing video's observables, so the related vid on the
+    // right gets updated.
+    //
+    title.subscribe( function( v ) {
+	console.log( 'setting title QP', v );
+	playing().title( v );
     });
     
-
+    description.subscribe( function( v ) {
+	console.log( 'setting desc QP', v );
+	playing().description( v );
+    });
+    
     // holds the map
     var map = null;
     var locations = ko.observableArray([]);
@@ -135,9 +129,9 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     // attached.  This reuses the player to play a different clip.
     //
     function playVid( m ) {
-        playing( m.media() );
-	title( playing().title || 'Click to add a title.' );
-	description( playing().description || 'Click to add a description.' );
+        playing( m );
+	title( playing().title() || 'Click to add a title.' );
+	description( playing().description() || 'Click to add a description.' );
         
         console.log("From sidebar: " + m.media().uuid, playing().title, playing().description );
         
@@ -302,7 +296,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		viblio.api( '/services/mediafile/get', { mid: mid, include_contact_info: 1 } ).then( function( json ) {
 		    var mf = json.media;
 		    // Set now playing
-		    playing( mf );
+		    playing( new Mediafile( mf ) );
 
 		    //title( playing().title || 'Click to add a title.' );
 		    //description( playing().description || 'Click to add a description.' );
@@ -360,10 +354,10 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	},
         compositionComplete: function(view, parent) {
 	    var mid = query().mid;
-	    var mf = playing();
-            title( playing().title || 'Click to add a title.' );
-            description( playing().description || 'Click to add a description.' );
-            console.log("From home player: " + playing().uuid, playing().title, playing().description );
+	    var mf = playing().media();
+            title( playing().media().title || 'Click to add a title.' );
+            description( playing().media().description || 'Click to add a description.' );
+            console.log("From home player: " + playing().media().uuid, playing().media().title, playing().media().description );
 	    // Instanciate the main flowplayer
 	    $("#tv").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
 		ratio: 9/16,
