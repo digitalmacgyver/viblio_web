@@ -814,6 +814,10 @@ input:-moz-placeholder {
     display: inline;
 }
 
+.pscroll .item-container {
+    padding-top: 5px;
+}
+
 .pscroll .item-container .face {
     width: 170px;
     margin-right: 25px;
@@ -825,6 +829,23 @@ input:-moz-placeholder {
 
 .pscroll .item-container .face.selected {
     background: rgba(239,85,65,1);
+}
+
+.face .star {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    right: -10px;
+    top: -5px;
+}
+
+.face .starRank {
+    position: absolute;
+    z-index: 1000;
+    top: 3px;
+    right: 6px;
+    color: white;
+    font-size: 21px;
 }
 
 .face img {
