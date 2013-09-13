@@ -18,6 +18,7 @@
 .hscroll>.mCustomScrollBox>.mCSB_scrollTools{
 	width:88%;
 	margin: 0 6%;
+	visibility: hidden;
 }
 
 /* horizontal scrollbar, center items if no scroll */
@@ -36,5 +37,24 @@
 }
 .hscroll .mCSB_scrollTools .mCSB_dragger:hover .hscroller-loading {
     background: orange;
+}
+
+.hstrip {
+    position: relative;
+}
+
+.hstrip .fwd {
+    position: absolute;
+    top: 50%;
+    right: -20px;
+    z-index: 10000;
+    visibility: hidden;
+}
+.hstrip .back {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    z-index: 10000;
+    visibility: hidden;
 }
 

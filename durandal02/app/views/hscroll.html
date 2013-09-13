@@ -2,15 +2,21 @@
 
   <div class="title">
     <button class="btn btn-small btn-secondary pull-right" data-bind="visible: advanced, click: toggleEditMode, text: editLabel"></button>
+    <button class="btn btn-small pull-right" data-bind="click: scrollForward">&gt;&gt;</button>
+    <button class="btn btn-small pull-right" data-bind="click: scrollBackward">&lt;&lt;</button>
     <h2 class="cinematic textShadowed" data-bind="html: title"></h2>
     <span class="muted" data-bind="html: subtitle"></span>
   </div>
 
-  <div class="hscroll">
-    <div class="item-container">
-      <!-- ko foreach: mediafiles -->
-        <!-- ko compose: $data --><!--/ko-->
-      <!--/ko-->
+  <div class="hscroll-cc">
+    <button class="btn btn-small fwd" data-bind="click: scrollForward">&gt;&gt;</button>
+    <button class="btn btn-small back" data-bind="click: scrollBackward">&lt;&lt;</button>
+    <div class="hscroll">
+      <div class="item-container">
+	<!-- ko foreach: mediafiles -->
+	<!-- ko compose: $data --><!--/ko-->
+	<!--/ko-->
+      </div>
     </div>
   </div>
 

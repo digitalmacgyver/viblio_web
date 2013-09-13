@@ -7,11 +7,16 @@
     <button class="btn btn-primary">See All &raquo;</button>
   </div>
 
-  <div class="fscroll">
-    <div class="item-container">
-      <!-- ko foreach: mediafiles -->
+  <div class="fscroll-cc">
+    <button class="btn btn-small fwd" data-bind="click: scrollForward">&gt;&gt;</button>
+    <button class="btn btn-small back" data-bind="click: scrollBackward">&lt;&lt;</button>
+  
+    <div class="fscroll">
+      <div class="item-container">
+	<!-- ko foreach: mediafiles -->
         <!-- ko compose: $data --><!--/ko-->
-      <!--/ko-->
+	<!--/ko-->
+      </div>
     </div>
   </div>
 

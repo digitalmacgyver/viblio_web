@@ -127,8 +127,20 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     };
 
     FScroll.prototype.attached = function( view ) {
-	this.view = $(view).find(".fscroll");
-	this.arrow = $(view).find(".arrow");
+	var self = this;
+	self.view = $(view).find(".fscroll");
+	self.arrow = $(view).find(".arrow");
+	$(view).find(".fscroll-cc").mouseover( function(e) {
+	    // hover in
+	    //if ( self.pager.next_page )
+	    $( ".fscroll-cc .fwd" ).css( "visibility", "visible" );
+	    if ( self.pos != 0 )
+		$( ".fscroll-cc .back" ).css( "visibility", "visible" );
+	}).mouseout( function(e) {
+	    // hover out
+	    $( ".fscroll-cc .fwd" ).css( "visibility", "hidden" );
+	    $( ".fscroll-cc .back" ).css( "visibility", "hidden" );
+	});
     };
 
     FScroll.prototype.ready = function( parent ) {
@@ -159,9 +171,31 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 			});
 		    }
 		},
-		onTotalScrollOffset: ( 2 * 250 )
+		onTotalScrollOffset: ( 2 * 250 ),
+		onScroll: function() {
+		    // Keep track of current position if the mouse wheel/swipe is used
+		    self.pos = Math.abs(mcs.left);
+		}
 	    }
 	});
+	self.pos = 0;
+    };
+
+    // manual scroll 
+    FScroll.prototype.scrollForward = function() {
+	var self = this;
+	self.pos += 500;
+	if ( self.pos > $(".item-container").width() - 500 )
+	    self.pos = $(".item-container").width() - 500;
+	$(self.view).mCustomScrollbar("scrollTo", self.pos);
+    };
+
+    // manual scroll
+    FScroll.prototype.scrollBackward = function() {
+	var self = this;
+	self.pos -= 500;
+	if ( self.pos < 0 ) self.pos = 0;
+	$(self.view).mCustomScrollbar("scrollTo", self.pos);
     };
 
     FScroll.prototype.clear = function() {
