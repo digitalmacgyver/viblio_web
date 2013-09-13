@@ -3,7 +3,7 @@
    General useage:
      <div data-bind="name: {}"></div>
 */
-define(['lib/config', 'durandal/system'],function(config, system) {
+define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip'],function(app, config, system, vstrip) {
     var videoel = document.createElement("video"),
     idevice = /ip(hone|ad|od)/i.test(navigator.userAgent),
     noflash = flashembed.getVersion()[0] === 0,
@@ -145,7 +145,9 @@ define(['lib/config', 'durandal/system'],function(config, system) {
                     vidJSON[targetName] = target();
                     
                 viblio.api( '/services/mediafile/set_title_description', vidJSON ).then(function(data){
+                        console.log( vidJSON["mid"] );
                         console.log(data);
+                        app.trigger( "mediaFile:TitleDescChanged", vidJSON ); 
                 }); 
             };
         };

@@ -2,7 +2,7 @@
   The main mediafile view/model.  Represents a mediafile from the
   server.  Returns an instance factory.
 */
-define(['durandal/events'],function(Events) {
+define(['durandal/app', 'durandal/events'],function(app, Events) {
 
     // Temporary.  Used to create random numbers to use for
     // number of video views, ratings, etc.  For GUI development
@@ -18,14 +18,14 @@ define(['durandal/events'],function(Events) {
     //   m.media().views.main.url
     //
     var Video = function( data ) {
-	data.title = data.filename;
-	data.description = 'no description',
+	//data.title = data.filename;
+	//data.description = 'no description',
 	data.eyes = randomFromInterval( 3, 199 );
-
+        
 	this.media    = ko.observable( data );
 	this.selected = ko.observable( false );
 	this.edittable = ko.observable( false );
-
+        
 	Events.includeIn( this );
     };
 
@@ -66,6 +66,6 @@ define(['durandal/events'],function(Events) {
 	this.view = view;
 	this.trigger( 'mediafile:composed', this );
     };
-
+    
     return Video;
 });
