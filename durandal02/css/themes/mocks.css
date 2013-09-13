@@ -659,7 +659,7 @@ input:-moz-placeholder {
     border: none;
 }
 
-/********************  Player Page Title and Description Section  *****************************/
+/********************  Video Title and Description Section  *****************************/
 
 .vidTitle:hover,
 .vidDescription:hover {
@@ -687,7 +687,23 @@ input:-moz-placeholder {
     max-width: 100%;
     box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
-} 
+}
+
+#title-desc textarea {
+    height: auto;
+}
+
+/* Home page video titles */
+.information .editing .edit {
+    margin: 0;
+    width: 75%;
+    max-width: 75%;
+}
+
+/* Player page related video titles */
+.vstrip .information .editing .edit {
+    margin-top: -5px;
+}
 
 .editing .view { 
     display: none; 
