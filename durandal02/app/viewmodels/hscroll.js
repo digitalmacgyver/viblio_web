@@ -129,7 +129,21 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     };
 
     HScroll.prototype.attached = function( view ) {
-	this.view = $(view).find(".hscroll");
+	var self = this;
+	self.view = $(view).find(".hscroll");
+	$(view).find(".hscroll-cc").mouseover( function(e) {
+	    // hover in
+	    console.log( 'enter' );
+	    //if ( self.pager.next_page )
+	    $( ".fwd" ).css( "visibility", "visible" );
+	    if ( self.pos != 0 )
+		$( ".back" ).css( "visibility", "visible" );
+	}).mouseout( function(e) {
+	    // hover out
+	    console.log( 'leave' );
+	    $( ".fwd" ).css( "visibility", "hidden" );
+	    $( ".back" ).css( "visibility", "hidden" );
+	});
     };
 
     HScroll.prototype.ready = function( parent ) {

@@ -39,3 +39,22 @@
     background: orange;
 }
 
+.hstrip {
+    position: relative;
+}
+
+.hstrip .fwd {
+    position: absolute;
+    top: 50%;
+    right: -20px;
+    z-index: 10000;
+    visibility: hidden;
+}
+.hstrip .back {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    z-index: 10000;
+    visibility: hidden;
+}
+
