@@ -62,12 +62,10 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     // right gets updated.
     //
     title.subscribe( function( v ) {
-	console.log( 'setting title QP', v );
 	playing().title( v );
     });
     
     description.subscribe( function( v ) {
-	console.log( 'setting desc QP', v );
 	playing().description( v );
     });
     
@@ -133,8 +131,6 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	title( playing().title() || 'Click to add a title.' );
 	description( playing().description() || 'Click to add a description.' );
         
-        console.log("From sidebar: " + m.media().uuid, playing().title, playing().description );
-        
 	setupFaces( m.media() );
 	near( m.media() );
 	flowplayer().play({
@@ -196,7 +192,6 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     function playRelated( m ) {
 	var index = related().mediafiles.indexOf( m );
 	next_available_clip( index + 1 );
-	console.log( 'play this related: index:' + index );
 	playVid( m );
     }
 
@@ -326,14 +321,6 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    //
 		    vstrip.search().then( function() {
 			// Get all of the geo locations of the related media
-			/* DONE ABOVE IN SUBSCRIBE CALLBACK TO HANDLE INFINITE SCROLL (WIP: WILL REMOVE SOON)
-			vstrip.mediafiles().forEach( function( m ) {
-			    if ( m.media().lat ) {
-				console.log( m.media().lat.toString() + ',' + m.media().lng.toString() );
-				locations.push( m.media().lat.toString() + ',' + m.media().lng.toString() );
-			    }
-			});
-			*/
 			dfd.resolve();
 		    });
 		    vstrip.on( 'mediavstrip:play', function( m ) {
@@ -358,7 +345,6 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    var mf = playing().media();
             title( playing().media().title || 'Click to add a title.' );
             description( playing().media().description || 'Click to add a description.' );
-            console.log("From home player: " + playing().media().uuid, playing().media().title, playing().media().description );
 	    // Instanciate the main flowplayer
 	    $("#tv").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
 		ratio: 9/16,

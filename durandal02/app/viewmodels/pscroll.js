@@ -179,7 +179,6 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 		onScroll: function() {
 		    // Keep track of current position if the mouse wheel/swipe is used
 		    self.pos = Math.abs(mcs.left);
-                    console.log(self.pos);
                     if ( self.pos > 0 ) {
                         self.showIt( $( ".pscroll-cc .back" ), 'fast' );
                     } else {

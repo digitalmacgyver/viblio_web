@@ -136,9 +136,7 @@ define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip
         };
         
         target.save = function( obj, data, targetName ) {
-	    console.log('here', 'old', oldVal, 'new', target());
             if( oldVal != target() ) {
-                console.log('Value has changed, save it. mid:' + data.uuid + ', ' + targetName + ':' + target() );
                 var vidJSON = {};
                     vidJSON["mid"] = data.uuid;
                     vidJSON[targetName] = target();

@@ -17,9 +17,6 @@ define( ['plugins/router', 'durandal/app', 'lib/viblio'], function(router, app, 
 	    // happen from other parts of the app.
 	    //
 	    app.trigger( 'system:logout' );
-	},
-        compositionComplete: function() {
-            console.log( "user data: " + ko.toJSON( viblio.user() ) );
-        }        
+	}
     };
 });

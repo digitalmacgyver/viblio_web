@@ -41,8 +41,6 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'modestmap'], function(a
 	});
 	if ( ext.length )
 	    self.map.extent( ext );
-	else
-	    console.log( 'NO POINTS' );
 
 	// Enable popovers
 	$(view).find(".marker img").popover({
@@ -56,10 +54,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'modestmap'], function(a
 	// A point was clicked on.  Could popup a dialog to display
 	// metadata (title, description, captured on date, length, etc)
 	// and a play/cancel function maybe.  Or just go to player screen.
-	console.log( "play", point.uuid );
 	router.navigate( '#/new_player?mid=' + point.uuid );
-	//console.log( a, b );
-	//$(a.target).popover( 'toggle' );
     };
 
     return Map;
