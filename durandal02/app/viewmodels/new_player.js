@@ -93,6 +93,36 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     var finfo = ko.observable();
     var faces = ko.observableArray([]);
     function setupFaces( m ) {
+	viblio.api( '/services/faces/faces_in_mediafile', { mid: m.uuid } ).then( function( data ) {
+	    faces.removeAll();
+	    if ( data.faces && data.faces.length ) {
+		var total = 0, ident = 0,
+		count = data.faces.length;
+		if ( count > 4 ) count = 4;  // Only do at most four faces
+		
+		for( var i=0; i<count; i++ ) {
+		    var face = data.faces[i];
+		    total += 1;
+		    var F = {
+			url: face.url,
+			appears_in: 1
+		    };
+		    if ( face.contact ) {
+			ident += 1;
+			F.contact_name = face.contact.contact_name;
+			F.id           = face.contact_id;
+		    }
+		    faces.push( new Face( F ) );
+		}
+		finfo( 'Starring (' + ident + '/' + total + ')' );
+	    }
+	    else {
+		finfo( 'No faces detected' );
+	    }
+	});
+    }
+
+    function setupFacesXX( m ) {
 	faces.removeAll();
 	if ( m.views.face && m.views.face.length ) {
 	    var total = 0;
@@ -228,7 +258,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     // map.
     function near( m ) {
 	if ( m.lat ) {
-	    viblio.api( '/services/faces/location', { lat: m.lat, lng: m.lng } ).then( function( res ) {
+	    viblio.api( '/services/geo/location', { lat: m.lat, lng: m.lng } ).then( function( res ) {
 		if ( res && res.length ) {
 		    isNear( 'Near ' + getCountry( res ) );
 		    map.centerZoom( m.lat.toString() + ',' + m.lng.toString(), 11 );
