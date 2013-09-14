@@ -130,7 +130,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	var self = this;
 	self.view = $(view).find(".fscroll");
 	self.arrow = $(view).find(".arrow");
-	$(view).find(".fscroll-cc").mouseover( function(e) {
+	/*$(view).find(".fscroll-cc").mouseover( function(e) {
 	    // hover in
 	    //if ( self.pager.next_page )
 	    $( ".fscroll-cc .fwd" ).css( "visibility", "visible" );
@@ -140,7 +140,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	    // hover out
 	    $( ".fscroll-cc .fwd" ).css( "visibility", "hidden" );
 	    $( ".fscroll-cc .back" ).css( "visibility", "hidden" );
-	});
+	});*/
     };
 
     FScroll.prototype.ready = function( parent ) {
@@ -148,7 +148,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	$(self.view).mCustomScrollbar({
 	    horizontalScroll: true,
 	    scrollInertia: 800,
-	    mouseWheel: true,
+	    mouseWheel: false,
 	    mouseWheelPixels: 300,
 	    autoHideScrollbar: true,
 	    scrollButtons: {
@@ -165,28 +165,66 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 		onTotalScroll: function() {
 		    if ( self.pager.next_page ) {
 			$(self.view).find(".mCSB_dragger_bar").addClass("hscroller-loading" );
-			self.search( self.contact_id ).then(function() {
+			self.search().then(function() {
 			    $(self.view).mCustomScrollbar( "update" );
 			    $(self.view).find(".mCSB_dragger_bar").removeClass("hscroller-loading" );
 			});
-		    }
+		    } else {
+                        self.hideIt( $( ".fscroll-cc .fwd" ), 'fast' );
+                    }
 		},
-		onTotalScrollOffset: ( 2 * 250 ),
+		//onTotalScrollOffset: ( 2 * 250 ),
 		onScroll: function() {
 		    // Keep track of current position if the mouse wheel/swipe is used
 		    self.pos = Math.abs(mcs.left);
-		}
+                    console.log(self.pos);
+                    if ( self.pos > 0 ) {
+                        self.showIt( $( ".fscroll-cc .back" ), 'fast' );
+                    } else {
+                        self.hideIt( $( ".fscroll-cc .back" ), 'fast' );
+                    }
+                    if ( self.pos < ( $(".fscroll-cc .item-container").width() ) ) {
+                        self.showIt( $( ".fscroll-cc .fwd" ), 'fast' );
+                    }
+		},
+                onTotalScrollBack: function() {
+                    self.hideIt( $( ".fscroll-cc .back" ), 'fast' );
+                }        
 	    }
 	});
 	self.pos = 0;
+        if( $(".fscroll-cc .item-container").width() < $('body').width() ) {
+            $( ".fscroll-cc .fwd" ).hide();
+        }
+    };
+
+    FScroll.prototype.hideIt = function( el, speed ) {
+        if (!speed) {
+            speed = 'slow';
+        }
+        el.stop(true, true).fadeOut( speed );
+    };
+    
+    FScroll.prototype.showIt = function( el, speed ) {
+        if (!speed) {
+            speed = 'slow';
+        }
+        el.stop(true, true).fadeIn( speed );
     };
 
     // manual scroll 
     FScroll.prototype.scrollForward = function() {
 	var self = this;
 	self.pos += 500;
-	if ( self.pos > $(".item-container").width() - 500 )
+	if ( self.pos > $(".item-container").width() - 500 ) {
 	    self.pos = $(".item-container").width() - 500;
+        }
+        /*if ( self.pos != 0 ) {
+            this.showIt( $( ".fscroll-cc .back" ) );
+        }
+        if ( self.pos > ( $(".item-container").width()/2 ) + 500 ) {
+            this.hideIt( $( ".fscroll-cc .fwd" ) );
+        }*/
 	$(self.view).mCustomScrollbar("scrollTo", self.pos);
     };
 
@@ -194,7 +232,15 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     FScroll.prototype.scrollBackward = function() {
 	var self = this;
 	self.pos -= 500;
-	if ( self.pos < 0 ) self.pos = 0;
+	if ( self.pos < 0 ) {
+            self.pos = 0;
+        }
+        /*if ( self.pos == 0 ) {
+            this.hideIt( $( ".fscroll-cc .back" ) );
+        }
+        if ( self.pos < ( $(".item-container").width()/2 ) + 500 ) {
+            this.showIt( $( ".fscroll-cc .fwd" ) );
+        }*/
 	$(self.view).mCustomScrollbar("scrollTo", self.pos);
     };
 

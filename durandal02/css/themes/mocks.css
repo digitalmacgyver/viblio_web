@@ -113,6 +113,38 @@ input[type="color"],
     color: white;
 }
 
+.btn-nav {
+    background-color: rgba(50,53,68,1);
+    width: 54px;
+    height: 90px;
+    top: 40%;
+    padding: 0;
+}
+
+.pstrip .back,
+.pstrip .fwd,
+.fstrip .back,
+.fstrip .fwd,
+.hstrip .back,
+.hstrip .fwd {
+    top: 40%;
+    z-index: 1000;
+    visibility: visible;
+}
+
+.pstrip .back,
+.fstrip .back,
+.hstrip .back {
+    display: none;
+}
+
+.pstrip .fwd,
+.fstrip .fwd,
+.hstrip .fwd {
+    right: 0;
+    padding-left: 10px;
+}
+
 /* Make sure that the container the close x is used with has position:relative */
 .closeX {
     color: white;
@@ -942,7 +974,7 @@ input:-moz-placeholder {
 
 #settings-page .content-Wrap {
     width: 600px;
-    margin: 0 auto;
+    margin: 0 auto 100px;
 }
 
 .content-Wrap > div {

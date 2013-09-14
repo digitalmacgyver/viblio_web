@@ -131,17 +131,21 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     HScroll.prototype.attached = function( view ) {
 	var self = this;
 	self.view = $(view).find(".hscroll");
+        $( ".hscroll-cc .back" ).hide();
+        /*if ( self.pos != 0 ) {
+            $( ".hscroll-cc .back" ).fadeIn( 'slow' );
+        }
 	$(view).find(".hscroll-cc").mouseover( function(e) {
 	    // hover in
 	    //if ( self.pager.next_page )
-	    $( ".hscroll-cc .fwd" ).css( "visibility", "visible" );
+	    $( ".hscroll-cc .fwd" ).fadeIn( 'slow' );
 	    if ( self.pos != 0 )
-		$( ".hscroll-cc .back" ).css( "visibility", "visible" );
+		$( ".hscroll-cc .back" ).fadeIn( 'slow' );
 	}).mouseout( function(e) {
 	    // hover out
-	    $( ".hscroll-cc .fwd" ).css( "visibility", "hidden" );
-	    $( ".hscroll-cc .back" ).css( "visibility", "hidden" );
-	});
+	    $( ".hscroll-cc .fwd" ).fadeOut( 'slow' );
+	    $( ".hscroll-cc .back" ).fadeOut( 'slow' );
+	});*/
     };
 
     HScroll.prototype.ready = function( parent ) {
@@ -149,7 +153,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	$(self.view).mCustomScrollbar({
 	    horizontalScroll: true,
 	    scrollInertia: 800,
-	    mouseWheel: true,
+	    mouseWheel: false,
 	    mouseWheelPixels: 300,
 	    autoHideScrollbar: true,
 	    scrollButtons: {
@@ -170,24 +174,62 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 			    $(self.view).mCustomScrollbar( "update" );
 			    $(self.view).find(".mCSB_dragger_bar").removeClass("hscroller-loading" );
 			});
-		    }
+		    } else {
+                        self.hideIt( $( ".hscroll-cc .fwd" ), 'fast' );
+                    }
 		},
-		onTotalScrollOffset: ( 2 * 250 ),
+		//onTotalScrollOffset: ( 2 * 250 ),
 		onScroll: function() {
 		    // Keep track of current position if the mouse wheel/swipe is used
 		    self.pos = Math.abs(mcs.left);
-		}
+                    console.log(self.pos);
+                    if ( self.pos > 0 ) {
+                        self.showIt( $( ".hscroll-cc .back" ), 'fast' );
+                    } else {
+                        self.hideIt( $( ".hscroll-cc .back" ), 'fast' );
+                    }
+                    if ( self.pos < ( $(".hscroll-cc .item-container").width() ) ) {
+                        self.showIt( $( ".hscroll-cc .fwd" ), 'fast' );
+                    }
+		},
+                onTotalScrollBack: function() {
+                    self.hideIt( $( ".hscroll-cc .back" ), 'fast' );
+                }        
 	    }
 	});
 	self.pos = 0;
+        if( $(".hscroll-cc .item-container").width() < $('body').width() ) {
+            $( ".hscroll-cc .fwd" ).hide();
+        }
+    };
+    
+    HScroll.prototype.hideIt = function( el, speed ) {
+        if (!speed) {
+            speed = 'slow';
+        }
+        el.stop(true, true).fadeOut( speed );
+    };
+    
+    HScroll.prototype.showIt = function( el, speed ) {
+        if (!speed) {
+            speed = 'slow';
+        }
+        el.stop(true, true).fadeIn( speed );
     };
 
     // manual scroll 
     HScroll.prototype.scrollForward = function() {
 	var self = this;
 	self.pos += 500;
-	if ( self.pos > $(".item-container").width() - 500 )
+	/*if ( self.pos > $(".item-container").width() - 500 ) {
 	    self.pos = $(".item-container").width() - 500;
+        }
+        if ( self.pos != 0 ) {
+            this.showIt( $( ".hscroll-cc .back" ) );
+        }
+        if ( self.pos > ( $(".item-container").width()/2 ) + 500 ) {
+            this.hideIt( $( ".hscroll-cc .fwd" ) );
+        }*/
 	$(self.view).mCustomScrollbar("scrollTo", self.pos);
     };
 
@@ -195,7 +237,15 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     HScroll.prototype.scrollBackward = function() {
 	var self = this;
 	self.pos -= 500;
-	if ( self.pos < 0 ) self.pos = 0;
+	if ( self.pos < 0 ) {
+            self.pos = 0;
+        }
+        /*if ( self.pos == 0 ) {
+            this.hideIt( $( ".hscroll-cc .back" ) );
+        }
+        if ( self.pos < ( $(".item-container").width()/2 ) + 500 ) {
+            this.showIt( $( ".hscroll-cc .fwd" ) );
+        }*/
 	$(self.view).mCustomScrollbar("scrollTo", self.pos);
     };
 

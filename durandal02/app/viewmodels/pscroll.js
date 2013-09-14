@@ -132,7 +132,7 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
     Pscroll.prototype.attached = function( view ) {
 	var self = this;
 	self.view = $(view).find(".pscroll");
-	$(view).find(".pscroll-cc").mouseover( function(e) {
+	/*$(view).find(".pscroll-cc").mouseover( function(e) {
 	    // hover in
 	    //if ( self.pager.next_page )
 	    $( ".pscroll-cc .fwd" ).css( "visibility", "visible" );
@@ -142,7 +142,7 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	    // hover out
 	    $( ".pscroll-cc .fwd" ).css( "visibility", "hidden" );
 	    $( ".pscroll-cc .back" ).css( "visibility", "hidden" );
-	});
+	});*/
     };
 
     Pscroll.prototype.ready = function( parent ) {
@@ -150,7 +150,7 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	$(self.view).mCustomScrollbar({
 	    horizontalScroll: true,
 	    scrollInertia: 800,
-	    mouseWheel: true,
+	    mouseWheel: false,
 	    mouseWheelPixels: 300,
 	    autoHideScrollbar: true,
 	    scrollButtons: {
@@ -171,24 +171,62 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 			    $(self.view).mCustomScrollbar( "update" );
 			    $(self.view).find(".mCSB_dragger_bar").removeClass("hscroller-loading" );
 			});
-		    }
+		    } else {
+                        self.hideIt( $( ".pscroll-cc .fwd" ), 'fast' );
+                    }
 		},
-		onTotalScrollOffset: ( 2 * 250 ),
+		//onTotalScrollOffset: ( 2 * 250 ),
 		onScroll: function() {
 		    // Keep track of current position if the mouse wheel/swipe is used
 		    self.pos = Math.abs(mcs.left);
-		}
+                    console.log(self.pos);
+                    if ( self.pos > 0 ) {
+                        self.showIt( $( ".pscroll-cc .back" ), 'fast' );
+                    } else {
+                        self.hideIt( $( ".pscroll-cc .back" ), 'fast' );
+                    }
+                    if ( self.pos < ( $(".pscroll-cc .item-container").width() ) ) {
+                        self.showIt( $( ".pscroll-cc .fwd" ), 'fast' );
+                    }
+		},
+                onTotalScrollBack: function() {
+                    self.hideIt( $( ".pscroll-cc .back" ), 'fast' );
+                }        
 	    }
 	});
 	self.pos = 0;
+        if( $(".pscroll-cc .item-container").width() < $('body').width() ) {
+            $( ".pscroll-cc .fwd" ).hide();
+        }
+    };
+
+    Pscroll.prototype.hideIt = function( el, speed ) {
+        if (!speed) {
+            speed = 'slow';
+        }
+        el.stop(true, true).fadeOut( speed );
+    };
+    
+    Pscroll.prototype.showIt = function( el, speed ) {
+        if (!speed) {
+            speed = 'slow';
+        }
+        el.stop(true, true).fadeIn( speed );
     };
 
     // manual scroll 
     Pscroll.prototype.scrollForward = function() {
 	var self = this;
 	self.pos += 500;
-	if ( self.pos > $(".item-container").width() - 500 )
+	if ( self.pos > $(".item-container").width() - 500 ) {
 	    self.pos = $(".item-container").width() - 500;
+        }/*
+        if ( self.pos != 0 ) {
+            this.showIt( $( ".pscroll-cc .back" ) );
+        }
+        if ( self.pos > ( $(".item-container").width()/2 ) + 500 ) {
+            this.hideIt( $( ".pscroll-cc .fwd" ) );
+        }*/
 	$(self.view).mCustomScrollbar("scrollTo", self.pos);
     };
 
@@ -196,7 +234,15 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
     Pscroll.prototype.scrollBackward = function() {
 	var self = this;
 	self.pos -= 500;
-	if ( self.pos < 0 ) self.pos = 0;
+	if ( self.pos < 0 ) {
+            self.pos = 0;
+        }
+        /*if ( self.pos == 0 ) {
+            this.hideIt( $( ".pscroll-cc .back" ) );
+        }
+        if ( self.pos < ( $(".item-container").width()/2 ) + 500 ) {
+            this.showIt( $( ".pscroll-cc .fwd" ) );
+        }*/
 	$(self.view).mCustomScrollbar("scrollTo", self.pos);
     };
 

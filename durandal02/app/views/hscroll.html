@@ -1,16 +1,14 @@
 <div class="hstrip bottomBorder-Thin">
 
   <div class="title">
-    <button class="btn btn-small btn-secondary pull-right" data-bind="visible: advanced, click: toggleEditMode, text: editLabel"></button>
-    <button class="btn btn-small pull-right" data-bind="click: scrollForward">&gt;&gt;</button>
-    <button class="btn btn-small pull-right" data-bind="click: scrollBackward">&lt;&lt;</button>
+    <button class="btn btn-small btn-secondary pull-right btn-nav btn-nav-right" data-bind="visible: advanced, click: toggleEditMode, text: editLabel"></button>
     <h2 class="cinematic textShadowed" data-bind="html: title"></h2>
     <span class="muted" data-bind="html: subtitle"></span>
   </div>
 
   <div class="hscroll-cc">
-    <button class="btn btn-small fwd" data-bind="click: scrollForward">&gt;&gt;</button>
-    <button class="btn btn-small back" data-bind="click: scrollBackward">&lt;&lt;</button>
+    <button class="btn btn-small fwd btn-nav mCSB_buttonRight" data-bind="click: scrollForward"><img src="css/images/arrowRight.png"/></button>
+    <button class="btn btn-small back btn-nav mCSB_buttonLeft" data-bind="click: scrollBackward"><img src="css/images/arrowLeft.png"/></button>
     <div class="hscroll">
       <div class="item-container">
 	<!-- ko foreach: mediafiles -->
