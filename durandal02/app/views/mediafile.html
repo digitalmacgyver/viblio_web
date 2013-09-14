@@ -15,7 +15,7 @@
                 <div class="view vidTitle title truncate" style="width: 130px" data-bind="click: title.edit, text: title() || 'Click to edit title'"></div>
                 <div class="editTitle-Wrap">
                     <input class="edit" data-bind="value: title, 
-                                         selectAndFocus: title.editing, 
+                                         hasFocus: title.editing, 
                                          event: { blur: function() { title.stopEditing(); title.save( $data, media(), 'title' ) } }" />
                 </div>  
             </div>

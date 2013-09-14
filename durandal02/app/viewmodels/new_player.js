@@ -297,6 +297,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    var mf = json.media;
 		    // Set now playing
 		    playing( new Mediafile( mf ) );
+		    next_available_clip( 0 );
 
 		    //title( playing().title || 'Click to add a title.' );
 		    //description( playing().description || 'Click to add a description.' );

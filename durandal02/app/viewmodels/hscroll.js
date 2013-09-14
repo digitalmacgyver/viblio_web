@@ -164,6 +164,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	    },
 	    contentTouchScroll: true,
 	    advanced: {
+		autoScrollOnFocus: false,
 		autoExpandHorizontalScroll: true
 	    },
 	    callbacks: {
