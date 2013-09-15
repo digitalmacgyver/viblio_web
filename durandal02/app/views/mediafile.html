@@ -16,7 +16,7 @@
                 <div class="editTitle-Wrap">
                     <input class="edit" data-bind="value: title, 
                                          hasFocus: title.editing, 
-                                         event: { blur: function() { title.stopEditing(); title.save( $data, media(), 'title' ) } }" />
+                                         event: { blur: function() { title.stopEditing(); title.save( $data, media(), 'mediaFile:TitleDescChanged' ) } }" />
                 </div>  
             </div>
         </div>
