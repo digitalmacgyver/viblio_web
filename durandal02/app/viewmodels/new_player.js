@@ -126,7 +126,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		var now = new Date();
 		data.comments.forEach( function( c ) {
 		    var hash = { comment: c.comment };
-		    hash['who'] = 'anonymous'; // we don't have this info yet
+		    hash['who'] = c.who || 'anonymous'; 
 		    hash['when'] = prettyWhen( now, new Date( c.created_date + ' GMT' ) );
 		    comments.push( hash );
 		});
