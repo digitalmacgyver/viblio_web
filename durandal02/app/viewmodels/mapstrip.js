@@ -1,6 +1,8 @@
 define(['durandal/app', 'plugins/router', 'lib/viblio', 'modestmap'], function(app,router,viblio,MM) {
     var Map = function() {
 	this.points = ko.observableArray([]);
+	this.markerTitle = ko.observable();
+	this.markerImage = ko.observable();
     };
 
     Map.prototype.activate = function() {
@@ -18,7 +20,8 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'modestmap'], function(a
 			lng: m.lng,
 			location: m.lat.toString() + ',' + m.lng.toString(),
 			uuid: m.uuid,
-			thumbnail: '<img class="popover-img" src="' + m.url + '" />'
+			title: m.title,
+			url: m.url
 		    });
 		}
 	    });
@@ -27,11 +30,12 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'modestmap'], function(a
 
     Map.prototype.compositionComplete = function( view, parent ) {
 	var self = this;
+	self.view = view;
 
 	// Create the map, enable mouse wheel and touch interaction
 	self.map = $(view).htmapl({
-	    touch: true,
-            mousewheel: true
+	    touch: false,
+            mousewheel: false
 	});
 	// Create an array of Location objects to center the map
 	// around those points.
@@ -43,11 +47,23 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'modestmap'], function(a
 	    self.map.extent( ext );
 
 	// Enable popovers
-	$(view).find(".marker img").popover({
-	    trigger: 'hover',
-	    html: true
-	});
+	//$(view).find(".marker img").popover({
+	//    trigger: 'hover',
+	//    html: true
+	//});
 
+    };
+
+    Map.prototype.enableDetails = function(marker) {
+	this.markerTitle( marker.title );
+	this.markerImage( marker.url );
+	$(this.view).find( '.marker-display' ).css( 'visibility', 'visible' );
+    };
+
+    Map.prototype.disableDetails = function(marker) {
+	this.markerTitle();
+	this.markerImage();
+	$(this.view).find( '.marker-display' ).css( 'visibility', 'hidden' );
     };
 
     Map.prototype.play = function( point, a, b ) {

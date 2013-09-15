@@ -1,6 +1,7 @@
 div.map {
     background: #eee;
     height: 300px;
+    position: relative;
 }
 
 div.map .controls {
@@ -49,6 +50,9 @@ div.map .marker i {
     width: 180px;
 }
 
+.map .popover .popover-title {
+}
+
 .map .popover-content {
     text-align: center;
     margin-right: auto;
@@ -56,6 +60,20 @@ div.map .marker i {
 }
 
 .map .popover-img {
+}
+
+.map .marker-display {
+    width: 120px;
+    visibility: hidden;
+}
+
+.map .marker-display .marker-image img {
     width: 120px;
     height: 68px;
+}
+
+.map .marker-display .marker-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
