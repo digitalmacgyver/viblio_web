@@ -422,8 +422,8 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 
 	    // create the map
 	    map = $("#geo-map").htmapl({
-		touch: true,
-		mousewheel: true
+		touch: false,
+		mousewheel: false
 	    });
 	    // center/zoom to media file location
 	    near( mf );
