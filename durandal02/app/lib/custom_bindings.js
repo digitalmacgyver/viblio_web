@@ -135,12 +135,17 @@ define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip
             target.editing(false);
         };
         
+	// The save function. 
+	// obj: The object to send an event message to.  If null, then use app object
+	// data: Date to send to obj via event message
+	// targetName: The event message name to send
         target.save = function( obj, data, targetName ) {
             if( oldVal != target() ) {
-                var vidJSON = {};
-                    vidJSON["mid"] = data.uuid;
-                    vidJSON[targetName] = target();
-                obj.trigger( "mediaFile:TitleDescChanged", vidJSON ); 
+		var o = obj;
+		if ( ! o ) {
+		    o = app;
+		}
+                o.trigger( targetName, data ); 
             }
         };
         
