@@ -165,7 +165,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 		onTotalScroll: function() {
 		    if ( self.pager.next_page ) {
 			$(self.view).find(".mCSB_dragger_bar").addClass("hscroller-loading" );
-			self.search().then(function() {
+			self.search(self.contact_id).then(function() {
 			    $(self.view).mCustomScrollbar( "update" );
 			    $(self.view).find(".mCSB_dragger_bar").removeClass("hscroller-loading" );
 			});

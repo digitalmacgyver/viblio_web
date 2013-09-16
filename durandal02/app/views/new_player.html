@@ -18,18 +18,48 @@
                       <div class="editTitle-Wrap">
                           <input class="edit" data-bind="value: title, 
                             hasFocus: title.editing, 
-                            event: { blur: function() { title.stopEditing(); title.save( playing(), playing().media(), 'title' ) } }" />
+                            event: { blur: function() { title.stopEditing(); title.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }" />
                       </div>  
                   </div>
                   <div data-bind="liveEditor: description">
                       <p class="view vidDescription" data-bind="click: description.edit, text: description() || 'Click to edit description'"></p>
                       <textarea class="edit editDescription" data-bind="value: description, 
                             hasFocus: description.editing, 
-                            event: { blur: function() { description.stopEditing(); description.save( playing(), playing().media(), 'description' ) } }"></textarea>
+                            event: { blur: function() { description.stopEditing(); description.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }"></textarea>
                   </div>
 	      </div>
 	      <div class="babyBlueBG" id="comments">
-		<input type="text" placeholder="Comment on this video..." />
+		<div class="comments-header">
+		  <div class="views pull-right">
+		    <img src="css/images/viewsEye.png" />
+		    <span data-bind="html: playing().media().eyes"></span>
+		  </div>
+		  <div class="todays-date pull-right">Today</div>
+		  <div class="observer">
+		    <img src="/services/user/avatar?uid=-&y=25" />
+		  </div>
+		  <p>by <span data-bind="html: user().displayname"></span></p>
+		</div>
+		<div class="clearfix"></div>
+		<div class="comment-editor" data-bind="liveEditor: usercomment">
+		  <p class="view vidDescription" data-bind="click: usercomment.edit, text:'Comment on this video...'"></p>
+		  <textarea class="edit editDescription" 
+			    data-bind="value:usercomment,
+				       hasFocus: usercomment.editting,
+				       event: { blur: function() { usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment') } }"></textarea>
+		</div>
+		<div class="all-comments">
+		  <span data-bind="visible: comments().length"><span data-bind="text: comments().length"></span>&nbsp;Comments</span>
+		  <!-- ko foreach: comments -->
+		  <div class="comment">
+		    <p class="comment-text" data-bind="html: comment"></p>
+		    <div class="comment-footer">
+		      <div class="when pull-right" data-bind="text: when"></div>
+		      by&nbsp;<span class="who" data-bind="text: who"></span>
+		    </div>
+		  </div>
+		  <!-- /ko -->
+		</div>
 	      </div>
 	    </td>
 	    <td id="faces-column">

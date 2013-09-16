@@ -43,11 +43,11 @@
 }
 
 #nplayer-page #main-table #info-table #faces-column {
-    width: 427px;
+    width: 340px;
 }
 
 #nplayer-page #main-table #info-table #faces-column #faces {
-    width: 427px;
+    width: 340px;
     padding-top: 10px;
 }
 
@@ -70,7 +70,7 @@
 }
 
 #nplayer-page #main-table #info-table #faces-column #geo {
-    width: 427px;
+    width: 340px;
     height: 255px;
 }
 
@@ -197,4 +197,49 @@
     display: block;
     margin: 0 auto;
     padding-top: 200px;
+}
+
+#nplayer-page .comments-header .views {
+    width: 40px;
+    height: 40px;
+    color: rgba(82,152,189,1);
+    text-align: center;
+}
+
+#nplayer-page .comments-header .views img {
+    display: block;
+    text-align: center;
+    margin: 2px auto -4px;
+}
+
+.observer {
+    display: inline;
+}
+.comments-header p {
+    display: inline;
+}
+
+.comment {
+}
+
+.comment .comment-text {
+    background-color: white;
+    padding: 12px;
+    margin-top: 10px;
+    max-height: 50px;
+    overflow: scroll;
+}
+
+.comment .comment-footer {
+}
+
+.comment-editor {
+    background-color: white;
+    padding: 12px;
+    padding-bottom: 1px;
+    margin-bottom: 10px;
+}
+
+.comment-editor textarea.edit {
+    height: 60px;
 }

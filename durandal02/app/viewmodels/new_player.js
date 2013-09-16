@@ -47,6 +47,9 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     // Currently playing mediafile.  This is the JSON struct, not a view model
     var playing = ko.observable();
 
+    // Comments associated with currently playing video
+    var comments = ko.observableArray([]);
+
     // This observable will contain the vstrip when it is
     // created in attached.  Its a view model and is
     // composed into the main view.
@@ -56,6 +59,9 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     // Title and description - code to update/change is located in custom_bindings.js
     var title = ko.observable();
     var description = ko.observable();
+    
+    // The user comment
+    var usercomment = ko.observable('');
 
     // When title or description changes (due to inline edit),
     // change the playing video's observables, so the related vid on the
@@ -89,38 +95,76 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	}
     });
 
+    // Show the difference between to dates in a nice way
+    function prettyWhen( n, d ) {
+	var seconds = Math.floor( ( n - d ) / 1000 );
+	if ( seconds < 1 ) return "now";
+	if ( seconds < 2 ) return "1 second ago";
+	if ( seconds < 60 ) return seconds + ' seconds ago';
+	var minutes = Math.floor( seconds / 60 );
+	if ( minutes <= 1 ) return "1 minute ago";
+	if ( minutes < 60 ) return minutes + ' minutes ago';
+	var hours = Math.floor( minutes / 60 );
+	if ( hours <= 1 ) return 'an hour ago';
+	if ( hours < 24 ) return hours + ' hours ago';
+	var days = Math.floor( hours / 24 );
+	if ( days <= 1 ) return 'a day ago';
+	if ( days < 30 ) return days + ' days ago';
+	var months = Math.floor( days / 30 );
+	if ( months <= 1 ) return 'a month ago';
+	if ( months < 12 ) return months + ' months ago';
+	var years = Math.floor( months / 12 );
+	if ( years <= 1 ) return 'a year ago';
+	return years + ' years ago';
+    }
+
+    // Get the comments
+    function setupComments( m ) {
+	comments.removeAll();
+	viblio.api( '/services/mediafile/comments', { mid: m.uuid } ).then( function( data ) {
+	    if ( data.comments && data.comments.length ) {
+		var now = new Date();
+		data.comments.forEach( function( c ) {
+		    var hash = { comment: c.comment };
+		    hash['who'] = c.who || 'anonymous'; 
+		    hash['when'] = prettyWhen( now, new Date( c.created_date + ' GMT' ) );
+		    comments.push( hash );
+		});
+	    }
+	});
+    }
+
     // Extract and set up the faces
     var finfo = ko.observable();
     var faces = ko.observableArray([]);
     function setupFaces( m ) {
-	faces.removeAll();
-	if ( m.views.face && m.views.face.length ) {
-	    var total = 0;
-	    var ident = 0;
-
-	    // Only do a max of four faces
-	    var count = m.views.face.length;
-	    if ( count > 4 ) count = 4;
-
-	    for( var i=0; i<count; i++ ) {
-		var face = m.views.face[i];
-		total += 1;
-		var data = {
-		    url: face.url,
-		    appears_in: 1
-		};
-		if ( face.contact ) {
-		    ident += 1;
-		    data.contact_name = face.contact.contact_name;
-		    data.id           = face.contact_id;
+	viblio.api( '/services/faces/faces_in_mediafile', { mid: m.uuid } ).then( function( data ) {
+	    faces.removeAll();
+	    if ( data.faces && data.faces.length ) {
+		var total = 0, ident = 0,
+		count = data.faces.length;
+		if ( count > 4 ) count = 4;  // Only do at most four faces
+		
+		for( var i=0; i<count; i++ ) {
+		    var face = data.faces[i];
+		    total += 1;
+		    var F = {
+			url: face.url,
+			appears_in: 1
+		    };
+		    if ( face.contact ) {
+			ident += 1;
+			F.contact_name = face.contact.contact_name;
+			F.id           = face.contact_id;
+		    }
+		    faces.push( new Face( F ) );
 		}
-		faces.push( new Face( data ) );
+		finfo( 'Starring (' + ident + '/' + total + ')' );
 	    }
-	    finfo( 'Starring (' + ident + '/' + total + ')' );
-	}
-	else {
-	    finfo( 'No faces detected' );
-	}
+	    else {
+		finfo( 'No faces detected' );
+	    }
+	});
     }
 
     // Play a new video.  Used after the main player is created in
@@ -130,7 +174,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
         playing( m );
 	title( playing().title() || 'Click to add a title.' );
 	description( playing().description() || 'Click to add a description.' );
-        
+        setupComments( m.media() );
 	setupFaces( m.media() );
 	near( m.media() );
 	flowplayer().play({
@@ -228,7 +272,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     // map.
     function near( m ) {
 	if ( m.lat ) {
-	    viblio.api( '/services/faces/location', { lat: m.lat, lng: m.lng } ).then( function( res ) {
+	    viblio.api( '/services/geo/location', { lat: m.lat, lng: m.lng } ).then( function( res ) {
 		if ( res && res.length ) {
 		    isNear( 'Near ' + getCountry( res ) );
 		    map.centerZoom( m.lat.toString() + ',' + m.lng.toString(), 11 );
@@ -245,14 +289,28 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	}
     }
 
+    // This gets triggered when a new user comment has been entered.
+    //
+    app.on( 'player:newcomment', function( data ) {
+	viblio.api( '/services/mediafile/add_comment',
+		    { mid: playing().media().uuid,
+		      txt: usercomment(),
+		    } ).then( function() {
+			usercomment('');
+		    });
+    });
+
     return {
         showShareVidModal: function() {
             app.showDialog('viewmodels/shareVidModal');
         },
+	user: viblio.user,
 	query: query,
 	playing: playing,
 	title: title,
 	description: description,
+	comments: comments,
+	usercomment: usercomment,
 	finfo: finfo,
 	locations: locations,
 	isNear: isNear,
@@ -294,8 +352,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    playing( new Mediafile( mf ) );
 		    next_available_clip( 0 );
 
-		    //title( playing().title || 'Click to add a title.' );
-		    //description( playing().description || 'Click to add a description.' );
+		    setupComments( mf );
 		    setupFaces( mf );
 
 		    if ( mf.lat )
@@ -392,8 +449,8 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 
 	    // create the map
 	    map = $("#geo-map").htmapl({
-		touch: true,
-		mousewheel: true
+		touch: false,
+		mousewheel: false
 	    });
 	    // center/zoom to media file location
 	    near( mf );

@@ -114,7 +114,7 @@ define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile'
 	return system.defer( function( dfd ) {
 	    if ( self.pager.next_page ) {
 		viblio.api( '/services/mediafile/list', 
-			    { include_contact_info: 1,
+			    { 
 			      page: self.pager.next_page, 
 			      rows: self.pager.entries_per_page } )
 		    .then( function( json ) {
