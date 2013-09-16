@@ -18,14 +18,26 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     
     function closeModal() {
         dialog.close(this);
+	viblio.cancelScheduledLogoutAndLogout();
     };
     
     function tellFriends() {
+	var self = this;
         if( ! tellFriendsMessage() ) {
             $('#tellFriendsMessage').val( $('#tellFriendsMessage').attr('placeholder') );
         };
         
-        system.log( friendsEmails(), tellFriendsMessage(), $('#tellFriendsMessage').val()  );
+	var message = tellFriendsMessage();
+	if ( ! message ) 
+	    message = $('#tellFriendsMessage').val();
+
+        system.log( friendsEmails(), message );
+
+	// Give the api call time to process
+	viblio.rescheduleLogout( 60 );
+	viblio.api( '/services/user/tell_a_friend', { list: friendsEmails(), message: message } ).then( function() {
+	    self.closeModal();
+	});
     };
 
     return {
