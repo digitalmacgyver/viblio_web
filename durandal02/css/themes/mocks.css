@@ -13,6 +13,14 @@ input, button, select, textarea {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
+table td {
+    padding: 0;
+}
+
+table {
+    border-collapse: separate;
+}
+
 textarea, input[type="text"],
 input[type="password"],
 input[type="datetime"],
@@ -196,9 +204,9 @@ input:-moz-placeholder {
 }
 
 .textShadowed {
-    -moz-text-shadow: 2px 2px rgba(0,0,0,.2);
-    -webkit-text-shadow: 2px 2px rgba(0,0,0,.2);
-    text-shadow: 2px 2px rgba(0,0,0,.2);
+    -moz-text-shadow: 1px 1px rgba(0,0,0,.2);
+    -webkit-text-shadow: 1px 1px rgba(0,0,0,.2);
+    text-shadow: 1px 1px rgba(0,0,0,.2);
 }
 
 .darkBlueBG {
@@ -280,6 +288,9 @@ input:-moz-placeholder {
 #page-header .navbar .nav > li > a {
     padding: 15px 30px;
     font-size: 18px;
+    -moz-text-shadow: 2px 2px rgba(0,0,0,.2);
+    -webkit-text-shadow: 2px 2px rgba(0,0,0,.2);
+    text-shadow: 2px 2px rgba(0,0,0,.2);
 }
 
 .avatar {
@@ -592,235 +603,8 @@ input:-moz-placeholder {
 }
 
 .mainVidSection .title {
-    margin-bottom: 25px;
-}
-
-.cinematic {
-    font-weight: 100;
-    font-family: inherit;
-}
-
-/********************  Player Page Section  *****************************/
-
-#playerCommentsNav {
-    padding: 40px 40px 0;
-}
-
-#comments p {
- font-weight: 200;    
-}
-
-#comments .comment-editor > p,
-#comments .comment > p {
-    font-weight: 400;
-    font-size: 16px;
-}
-
-#playerCommentsNav table td {
-    padding: 0;
-}
-
-#left-side {
-    padding: 0;
-}
-
-.lightBlueFont {
-    color: rgba(82,152,189,.7);
-}
-
-.heavyWeightFont {
-    font-weight: 600;
-}
-
-.comments-header {
-    height: 70px;
-}
-
-.comments-header > p {
-    font-size: 18px;
-}
-
-.comments-header .views {
-    margin-top: -7px;
-    margin-left: 40px;
-}
-
-.comments-header .todays-date {
-    margin-top: 7px;
-}
-
-.comments-header p {
-    margin-left: 15px;
-}
-
-#info-table td {
-    padding: 0;
-}
-
-.comment-text.bottomBorder-Thin {
-    border-bottom: 4px solid rgba(0,0,0,.05);
-}
-
-#main-table {
-    margin-bottom: 100px;
-}
-
-#nplayer-page #share-video-block div a {
-    padding-top: 21px;
-    padding-bottom: 38px;
-}
-
-#nplayer-page #main-table #info-table #faces-column #faces {
-    padding-top: 20px; 
-}
-
-#nplayer-page #main-table #info-table #faces-column #faces span {
-    margin-left: 25px;
-    color: white;
-    font-size: 20px;
-    font-weight: 200;
-}
-
-#faces-column .face {
-    width: 140px;
-}
-
-#faces-column .face img {
-    height: 140px;
-}
-
-#faces-column .face .star {
-    height: 40px;
-}
-
-.pscroll .item-container .face {
-    background: transparent;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-}
-
-#comment-column {
-    color: rgba(0,0,0,.5);
-}
-
-#right-side > div {
-    border-left: 4px inset rgba(0,0,0,.2);
-}
-
-#nplayer-page #related-videos-block p {
-    margin-top: 0;
-}
-
-#related-videos-block .mediafile img {
-    border: none;
-}
-
-#nplayer-page .vstrip .mediafile {
-    margin-bottom: 20px;
-}
-
-#related-videos-block .mediafile .information {
-    width: 100%;
-    height: 40px;
-    background-color: white;
-    padding: 10px 5px;
-    position: relative;
-    box-sizing: border-box;
-    -moz-box-sizing:border-box; /* Firefox */
-    text-align: left;
-}
-
-#related-videos-block .mediafile .information .title {
-    margin: 0 0 0 10px;
-    font-weight: 600;
-}
-
-#related-videos-block .mediafile .information .aux {
-    background-color: rgba(211,246,253,1);
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    padding: 0;
-    color: rgba(82,152,189,1);
-    text-align: center;
-}
-
-#related-videos-block .mediafile .information .aux img {
-    width: 30px;
-    height: 22px;
-    display: block;
-    text-align: center;
-    margin: 2px auto -4px;
-    border: none;
-}
-
-/********************  Video Title and Description Section  *****************************/
-
-.vidTitle:hover,
-.vidDescription:hover {
-    cursor: pointer;
-    background-color: rgba(246,248,209,1); 
-}
-
-.editTitle-Wrap {
-    /*height: 40px;*/
-}
-
-.editing {
-    background-color: rgba(246,248,209,1);
-}
-
-.edit { 
-    display: none; 
-} 
-
-.editing .edit { 
-    display: block;
-    height: 30px;
-    margin: 12px 0;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    -moz-box-sizing:border-box; /* Firefox */
-}
-
-#title-desc textarea {
-    height: auto;
-}
-
-/* Home page video titles */
-.information .editing .edit {
-    margin: 0;
-    width: 75%;
-    max-width: 75%;
-}
-
-/* Player page related video titles */
-.vstrip .information .editing .edit {
-    margin-top: -5px;
-}
-
-.editing .view { 
-    display: none; 
-}
-
-/************************** hstrip *******************************/
-
-.hstrip {
-    padding: 35px 0 10px 45px;
-}
-
-.hstrip .title h2 {
-    color: white;
-    display: inline;
-}
-
-.hstrip .title .btn {
-    margin-right: 35px;
+    margin-bottom: 22px;
+    margin-left: 45px;
 }
 
 .title span {
@@ -829,12 +613,9 @@ input:-moz-placeholder {
     font-size: 18px;
 }
 
-.hscroll .item-container .mediafile {
-    margin-right: 15px;
-    background: transparent;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
+.cinematic {
+    font-weight: 100;
+    font-family: inherit;
 }
 
 .mainVidSection .portfolio {
@@ -844,6 +625,18 @@ input:-moz-placeholder {
 .mainVidSection .mediafile {
     width: 360px;
     margin-right: 25px;
+}
+
+.hscroll .item-container .mediafile:first-child,
+.pscroll .item-container .face:first-child,
+.fscroll .item-container .mediafile:first-child {
+    margin-left: 40px;
+}
+
+.hstrip .back,
+.pstrip .back,
+.fstrip .back {
+    left: 0;
 }
 
 .mainVidSection .mediafile img {
@@ -899,10 +692,41 @@ input:-moz-placeholder {
     color: rgba(64,66,79,.75);
 }
 
+/************************** hstrip *******************************/
+
+.hstrip {
+    padding: 29px 0 14px 0;
+}
+
+.hstrip .title h2 {
+    color: white;
+    display: inline;
+}
+
+.hscroll {
+    height: auto;
+}
+
+.hscroll .mCSB_horizontal>.mCSB_container {
+    margin-bottom: 0;
+}
+
+.hstrip .title .btn {
+    margin-right: 35px;
+}
+
+.hscroll .item-container .mediafile {
+    margin-right: 15px;
+    background: transparent;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
 /************************** fstrip *******************************/
 
 .fstrip {
-    padding: 35px 0 10px 45px;
+    padding: 35px 0 10px 0;
 }
 
 .fstrip .title h2 {
@@ -936,7 +760,7 @@ input:-moz-placeholder {
 /************************** pstrip *******************************/
 
 .pstrip {
-    padding: 35px 0 10px 45px;
+    padding: 25px 0 6px 0;
     background-color: #24b8d1;
 }
 
@@ -945,8 +769,17 @@ input:-moz-placeholder {
     display: inline;
 }
 
+.pscroll {
+    height: auto;
+}
+
 .pscroll .item-container {
     padding-top: 5px;
+    margin-bottom: 0;
+}
+
+.pscroll .mCSB_horizontal>.mCSB_container {
+    margin-bottom: 0;
 }
 
 .pscroll .item-container .face {
@@ -1030,11 +863,346 @@ input:-moz-placeholder {
 .map > .title {
     position: absolute;
     top: 25px;
-    left: 42px;
 }
 
 .map > .title > h2 {
     font-weight: 300;
+}
+
+/********************  YIR Section  *****************************/
+
+.yir {
+    padding: 35px 0 100px 0;
+    background-color: rgba(239,239,232,1);
+}
+
+.yir > .title,
+.yir .month-heading {
+    color: rgba(0,0,0,.5);
+    font-weight: 300;
+}
+.yir .month-heading .month-name {
+    font-size: inherit;
+}
+
+.yir .title span {
+    font-size: 30px;
+}
+
+#yirVidWrap {
+    margin-left: 45px;
+}
+
+.yir .month-heading {
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+.yir .media-list .mediafile {
+    width: 425px;
+    margin-right: 35px;
+}
+
+.yir .media-list .mediafile img {
+    height: 239px;
+}
+
+.yir .mplay-icon,
+.yir .mplay-icon:hover {
+    left: 177px;
+    top: 75px;
+}
+
+/********************  Player Page Section  *****************************/
+
+#playerCommentsNav {
+    padding: 50px 40px 100px;
+}
+
+#comments p {
+ font-weight: 200;    
+}
+
+#comments .comment-editor > p,
+#comments .comment > p {
+    font-weight: 400;
+    font-size: 16px;
+}
+
+#comments .comment-editor > p {
+    margin: 0;
+}
+
+#comments .comment-editor {
+    padding: 8px;
+}
+
+.all-comments > p {
+    font-size: 18px;
+    margin: 25px 0;
+}
+
+.comment {
+    margin-bottom: 25px;
+}
+
+.comment-text {
+    margin-bottom: 5px;
+}
+
+#playerCommentsNav table td {
+    padding: 0;
+}
+
+#left-side {
+    padding: 0;
+}
+
+.lightBlueFont {
+    color: rgba(82,152,189,.7);
+}
+
+.heavyWeightFont {
+    font-weight: 600;
+}
+
+.comments-header {
+    height: 70px;
+}
+
+.comments-header > p {
+    font-size: 18px;
+}
+
+.comments-header .views {
+    margin-top: -7px;
+    margin-left: 40px;
+}
+
+.comments-header .todays-date {
+    margin-top: 7px;
+}
+
+.comments-header p {
+    margin-left: 15px;
+}
+
+#info-table td {
+    padding: 0;
+}
+
+.comment-text.bottomBorder-Thin {
+    border-bottom: 4px solid rgba(0,0,0,.05);
+}
+
+#nplayer-page #share-video-block div {
+    padding-top: 15px;
+    padding-left: 5px;
+}
+
+#nplayer-page #share-video-block div a {
+    padding: 25px 23px 0;
+    height: 70px;
+    text-shadow: none;
+    font-size: 24px;
+    font-weight: 600;
+    color: rgba(0,0,0,.5);
+}
+
+#nplayer-page #share-video-block div a img {
+    margin-top: -14px;
+}
+
+#nplayer-page #main-table #info-table #faces-column #faces {
+    padding-top: 20px; 
+}
+
+#nplayer-page #main-table #info-table #faces-column #faces span {
+    margin-left: 25px;
+    color: white;
+    font-size: 20px;
+    font-weight: 200;
+}
+
+#faces-column .face {
+    width: 140px;
+}
+
+#faces-column .face img {
+    height: 140px;
+}
+
+#faces-column .face .star {
+    height: 40px;
+}
+
+.pscroll .item-container .face {
+    background: transparent;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+#comment-column {
+    color: rgba(0,0,0,.5);
+}
+
+#right-side {
+    border-left: 4px inset rgba(0,0,0,.2);
+}
+
+#right-side > div {
+    padding: 20px;
+}
+
+#nplayer-page #share-video-block {
+    height: 100px;
+    width: 280px;
+    margin-left: -4px;
+    border-left: 4px inset rgba(0,0,0,.2);
+}
+
+
+#nplayer-page #related-videos-block {
+    height: auto;
+}
+
+#nplayer-page .vstrip .media-area {
+    height: 100%;
+    overflow: auto;
+}
+
+#nplayer-page #related-videos-block p {
+    margin-top: 0;
+    margin-left: 3px;
+    font-weight: 100;
+    text-align: left;
+}
+
+#related-videos-block .mediafile img {
+    border: none;
+    height: 152px;
+    width: 100%;
+}
+
+#nplayer-page .vstrip .mediafile {
+    margin-bottom: 25px;
+    width: 270px;
+}
+
+#nplayer-page .vstrip .mediafile .mplay-icon,
+#nplayer-page .vstrip .mediafile .mplay-icon:hover,
+#nplayer-page .vstrip .mediafile .mplay-icon:visited {
+    top: 40px;
+    left: 101px;
+}
+
+#related-videos-block .mediafile .information {
+    width: 100%;
+    height: 40px;
+    background-color: white;
+    padding: 10px 5px;
+    position: relative;
+    box-sizing: border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+    text-align: left;
+}
+
+#related-videos-block .mediafile .information .title {
+    margin: 0 0 0 10px;
+    font-weight: 600;
+}
+
+#related-videos-block .mediafile .information .aux {
+    background-color: rgba(211,246,253,1);
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    color: rgba(82,152,189,1);
+    text-align: center;
+}
+
+#related-videos-block .mediafile .information .aux img {
+    width: 30px;
+    height: 22px;
+    display: block;
+    text-align: center;
+    margin: 2px auto -4px;
+    border: none;
+}
+
+/********************  Video Title and Description Section  *****************************/
+
+.vidTitle:hover,
+.vidDescription:hover {
+    cursor: pointer;
+    background-color: rgba(246,248,209,1); 
+}
+
+.editTitle-Wrap {
+    /*height: 40px;*/
+}
+
+.edit { 
+    display: none; 
+} 
+
+.editing .edit { 
+    display: block;
+    margin: 12px 6px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+    border: none;
+    outline: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+#title-desc .editTitle-Wrap .edit {
+    height: 40px;
+    margin: 12px 5px;
+    font-size: 24.5px;
+    line-height: 40px;
+    margin: 10px 0;
+    font-family: inherit;
+    font-weight: bold;
+    text-rendering: optimizelegibility;
+}
+
+#title-desc textarea {
+    height: 100%;
+    margin: 12px 5px;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 10px 0;
+    font-family: inherit;
+    text-rendering: optimizelegibility;
+}
+
+#title-desc textarea {
+    height: auto;
+}
+
+/* Home page video titles */
+.information .editing .edit {
+    margin: 0 0 0 6px;
+    width: 75%;
+    max-width: 75%;
+}
+
+/* Player page related video titles */
+.vstrip .information .editing .edit {
+    margin-top: 0;
+}
+
+.editing .view { 
+    display: none; 
 }
 
 /********************  Settings Page Section  *****************************/

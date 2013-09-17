@@ -152,7 +152,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	var self = this;
 	$(self.view).mCustomScrollbar({
 	    horizontalScroll: true,
-	    scrollInertia: 800,
+	    scrollInertia: 400,
 	    mouseWheel: false,
 	    mouseWheelPixels: 300,
 	    autoHideScrollbar: true,
@@ -160,7 +160,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 		enable: true,
 		scrollType: "continuous",
 		scrollAmount: 300,
-		scrollSpeed: 200
+		scrollSpeed: 400
 	    },
 	    contentTouchScroll: true,
 	    advanced: {
@@ -220,7 +220,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     // manual scroll 
     HScroll.prototype.scrollForward = function() {
 	var self = this;
-	self.pos += 500;
+	self.pos += 390;
 	/*if ( self.pos > $(".item-container").width() - 500 ) {
 	    self.pos = $(".item-container").width() - 500;
         }
@@ -230,13 +230,13 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
         if ( self.pos > ( $(".item-container").width()/2 ) + 500 ) {
             this.hideIt( $( ".hscroll-cc .fwd" ) );
         }*/
-	$(self.view).mCustomScrollbar("scrollTo", self.pos);
+	$(self.view).mCustomScrollbar("scrollTo", self.pos );
     };
 
     // manual scroll
     HScroll.prototype.scrollBackward = function() {
 	var self = this;
-	self.pos -= 500;
+	self.pos -= 390;
 	if ( self.pos < 0 ) {
             self.pos = 0;
         }
@@ -246,7 +246,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
         if ( self.pos < ( $(".item-container").width()/2 ) + 500 ) {
             this.showIt( $( ".hscroll-cc .fwd" ) );
         }*/
-	$(self.view).mCustomScrollbar("scrollTo", self.pos);
+	$(self.view).mCustomScrollbar("scrollTo", self.pos );
     };
 
     HScroll.prototype.action = function( a ) {

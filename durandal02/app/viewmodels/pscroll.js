@@ -149,7 +149,7 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	var self = this;
 	$(self.view).mCustomScrollbar({
 	    horizontalScroll: true,
-	    scrollInertia: 800,
+	    scrollInertia: 400,
 	    mouseWheel: false,
 	    mouseWheelPixels: 300,
 	    autoHideScrollbar: true,
@@ -157,7 +157,7 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 		enable: true,
 		scrollType: "continuous",
 		scrollAmount: 300,
-		scrollSpeed: 200
+		scrollSpeed: 400
 	    },
 	    contentTouchScroll: true,
 	    advanced: {
