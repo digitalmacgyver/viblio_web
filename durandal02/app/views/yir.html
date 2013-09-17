@@ -1,0 +1,23 @@
+<div class="yir bottomBorder-Thin">
+  <div class="title">
+    <h2 class="cinematic textShadowed">Year in Review</h2>
+    <ul data-bind="foreach: years">
+      <li>
+	<span data-bind="click: $parent.yearSelected.bind( $data, $parent ), 
+			 text: $data.label, 
+			 css:{sel: $data.selected()}"></span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ko foreach: months -->
+  <div class="month-heading">
+    <span class="month-name textShadowed" data-bind="text: $data.month"></span><span class="muted num-videos" data-bind="text: '(' + $data.media.length + ' videos)'"></span>
+  </div>
+  <div class="media-list" data-bind="foreach: { data: $data.media, as: 'm' }">
+    <!-- ko compose: m --><!-- /ko -->
+  </div>
+  <div class="clearfix"></div>
+  <!-- /ko -->
+  
+</div>

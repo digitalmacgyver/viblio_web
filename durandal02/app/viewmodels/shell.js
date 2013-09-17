@@ -62,10 +62,8 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
     // one that might be calling logout.
     //
     function logout() {
-	viblio.api( '/services/na/logout' ).then( function() {
-	    viblio.setUser( null );
-	    router.navigate( '#/loggedOut' );
-	});
+	viblio.scheduleLogout();
+	router.navigate( '#/loggedOut' );
     }
     // Most will call this logout() function by triggering an event.
     //
@@ -115,7 +113,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      nav: false,   authenticated: true,   header: page_header },
           
             { route: 'loggedOut',           moduleId: 'loggedOut',           title: 'Log out successful',               
-	      nav: false,   authenticated: false,   header: landing_header }
+	      nav: false,   authenticated: true,   header: landing_header }
         ]).buildNavigationModel();
     }
 

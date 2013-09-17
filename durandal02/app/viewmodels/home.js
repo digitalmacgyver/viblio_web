@@ -2,11 +2,14 @@
   The channels page, which I think is the default page for an authenticated
   user.
 */
-define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscroll','viewmodels/fscroll','viewmodels/mapstrip','lib/customDialogs'],function(app,system,HScroll,PScroll,FScroll,MapStrip,customDialogs) {
+define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscroll','viewmodels/fscroll','viewmodels/mapstrip','viewmodels/yir','lib/customDialogs'],function(app,system,HScroll,PScroll,FScroll,MapStrip,YIR,customDialogs) {
     // A list of horizontal media display lists
     var strips = ko.observableArray([]);
 
     var hits, actors, features, map;
+
+    // to keep track whos sub-videos we're showing to make toggle work
+    var showing_videos_for;
     
     function hh(title, subtitle, advanced) {
         return system.defer( function( dfd ) {
@@ -32,6 +35,12 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
         } ).promise();
     }
 
+    function yy() {
+        return system.defer( function( dfd ) {
+            dfd.resolve( new YIR() );
+        } ).promise();
+    }
+
     return {
         displayName: 'Channels',
         strips: strips,
@@ -46,26 +55,43 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 	    return $.when( hh('Box Office Hits', 'Your most popular videos', advanced), 
 			   pp('Top Actors', 'Who\'s who in your videos'),
 			   ff('n Videos with Anonymous', '' ),
-			   mm()
-			 ).then( function( h1, h2, h3, h4 ) {
+			   mm(),
+			   yy()
+			 ).then( function( h1, h2, h3, h4, h5 ) {
 			     self.hits = h1;
 			     self.actors = h2;
 			     self.features = h3;
 			     self.map = h4;
+			     self.yir = h5;
 
 			     // When a face is selected, show the "features" strip and populate
 			     // it with videos that this person is in
 			     self.actors.on( 'pscroll:faceSelected', function( face, pos ) {
+<<<<<<< HEAD
 				 self.features.clear();
 				 self.features.search( face.data.id );
 				 self.features.setTitle( face.data.appears_in + ' Videos with ' + face.data.contact_name );
 				 self.features.show( pos );
                              });
+=======
+				 if ( self.features.isvisible() && showing_videos_for == face.data.id ) {
+				     self.features.hide();
+				 }
+				 else {
+				     showing_videos_for = face.data.id; 
+				     self.features.clear();
+				     self.features.search( face.data.id );
+				     self.features.setTitle( face.data.appears_in + ' Videos with ' + face.data.contact_name );
+				     self.features.show( pos );
+				 }
+			     });
+>>>>>>> master
 
 			     self.strips.push( h1 );
 			     self.strips.push( h2 );
 			     self.strips.push( h3 );
 			     self.strips.push( h4 );
+			     self.strips.push( h5 );
 			 });
         },
 	attached: function() {
