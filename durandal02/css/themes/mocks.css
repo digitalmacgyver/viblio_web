@@ -219,7 +219,7 @@ input:-moz-placeholder {
 }
 
 .babyBlueBG {
-    background-color: rgb(154, 241, 241);
+    background-color: rgb(211, 246, 253);
 }
 
 .turquoiseBG {
@@ -602,6 +602,69 @@ input:-moz-placeholder {
 
 /********************  Player Page Section  *****************************/
 
+#playerCommentsNav {
+    padding: 40px 40px 0;
+}
+
+#comments p {
+ font-weight: 200;    
+}
+
+#comments .comment-editor > p,
+#comments .comment > p {
+    font-weight: 400;
+    font-size: 16px;
+}
+
+#playerCommentsNav table td {
+    padding: 0;
+}
+
+#left-side {
+    padding: 0;
+}
+
+.lightBlueFont {
+    color: rgba(82,152,189,.7);
+}
+
+.heavyWeightFont {
+    font-weight: 600;
+}
+
+.comments-header {
+    height: 70px;
+}
+
+.comments-header > p {
+    font-size: 18px;
+}
+
+.comments-header .views {
+    margin-top: -7px;
+    margin-left: 40px;
+}
+
+.comments-header .todays-date {
+    margin-top: 7px;
+}
+
+.comments-header p {
+    margin-left: 15px;
+}
+
+#info-table td {
+    padding: 0;
+}
+
+.comment-text.bottomBorder-Thin {
+    border-bottom: 4px solid rgba(0,0,0,.05);
+}
+
+#main-table {
+    margin-bottom: 100px;
+}
+
 #nplayer-page #share-video-block div a {
     padding-top: 21px;
     padding-bottom: 38px;
@@ -639,6 +702,10 @@ input:-moz-placeholder {
 
 #comment-column {
     color: rgba(0,0,0,.5);
+}
+
+#right-side > div {
+    border-left: 4px inset rgba(0,0,0,.2);
 }
 
 #nplayer-page #related-videos-block p {

@@ -34,8 +34,10 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
         };
 
 	self.contact_id = null;
+        
+        self.showFwd = ko.observable( true );
     };
-
+        
     // We may not use selection in the GUI, but if we do,
     // this managed a radio-selection behavior.
     FScroll.prototype.mediaSelected = function( media ) {
@@ -71,8 +73,13 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	m.on( 'mediafile:composed', function() {
 	    if ( self.view ) 
 		$(self.view).mCustomScrollbar("update");
+            if( $(".fscroll-cc .item-container").width() < $('body').width() ) {
+                self.showFwd( false );
+            } else {
+                self.showFwd( true );
+            }
 	});
-
+        
 	// When a mediafile wishes to be deleted
 	//
 	m.on( 'mediafile:delete', function( m ) {
@@ -193,7 +200,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	});
 	self.pos = 0;
         if( $(".fscroll-cc .item-container").width() < $('body').width() ) {
-            $( ".fscroll-cc .fwd" ).hide();
+            this.showFwd(false);
         }
     };
 
@@ -267,6 +274,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     FScroll.prototype.setTitle = function( title ) {
 	this.title( title );
     };
-
+    
     return FScroll;
 });

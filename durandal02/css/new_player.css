@@ -81,16 +81,21 @@
     margin-left: auto;
 }
 
-#geo-title span {
+#geo-title p {
     margin-left: 20px;
     margin-bottom: 20px;
     display: block;
     padding-top: 20px;
+    padding-bottom: 3px;
     font-size: 20px;
     color: white;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+#geo-title p span {
+    font-weight: 100;
 }
 
 #geo-map .marker {
@@ -238,6 +243,7 @@
     padding: 12px;
     padding-bottom: 1px;
     margin-bottom: 10px;
+    border: 1px solid rgba(82,152,189,.7);
 }
 
 .comment-editor textarea.edit {

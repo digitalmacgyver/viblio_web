@@ -274,7 +274,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	if ( m.lat ) {
 	    viblio.api( '/services/geo/location', { lat: m.lat, lng: m.lng } ).then( function( res ) {
 		if ( res && res.length ) {
-		    isNear( 'Near ' + getCountry( res ) );
+		    isNear( '<p><span>Near</span> ' + getCountry( res ) + '</p>');
 		    map.centerZoom( m.lat.toString() + ',' + m.lng.toString(), 11 );
 		}
 		else {

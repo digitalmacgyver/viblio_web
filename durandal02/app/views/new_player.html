@@ -1,109 +1,122 @@
 <div id="nplayer-page">
-  <table id="main-table">
-    <tr>
-      <td id="left-arrow-column">
-	<div class="player-control lightBlueBG bottomBorder-Thin" id="left-arrow">
-	  <i class="icon-step-backward  textShadowed" data-bind="click: previousRelated, css: {disabled: disable_prev()}"></i>
-	</div>
-      </td>
-      <td id="left-side">
-	<div id="tv">
-	</div>
-	<table id="info-table">
-	  <tr>
-	    <td id="comment-column">
-	      <div id="title-desc">
-                  <div data-bind="liveEditor: title">
-                      <h3 class="view vidTitle" data-bind="click: title.edit, text: playing().title() || 'Click to edit title'"></h3>
-                      <div class="editTitle-Wrap">
-                          <input class="edit" data-bind="value: title, 
-                            hasFocus: title.editing, 
-                            event: { blur: function() { title.stopEditing(); title.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }" />
-                      </div>  
-                  </div>
-                  <div data-bind="liveEditor: description">
-                      <p class="view vidDescription" data-bind="click: description.edit, text: description() || 'Click to edit description'"></p>
-                      <textarea class="edit editDescription" data-bind="value: description, 
-                            hasFocus: description.editing, 
-                            event: { blur: function() { description.stopEditing(); description.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }"></textarea>
-                  </div>
-	      </div>
-	      <div class="babyBlueBG" id="comments">
-		<div class="comments-header">
-		  <div class="views pull-right">
-		    <img src="css/images/viewsEye.png" />
-		    <span data-bind="html: playing().media().eyes"></span>
-		  </div>
-		  <div class="todays-date pull-right">Today</div>
-		  <div class="observer">
-		    <img src="/services/user/avatar?uid=-&y=25" />
-		  </div>
-		  <p>by <span data-bind="html: user().displayname"></span></p>
-		</div>
-		<div class="clearfix"></div>
-		<div class="comment-editor" data-bind="liveEditor: usercomment">
-		  <p class="view vidDescription" data-bind="click: usercomment.edit, text:'Comment on this video...'"></p>
-		  <textarea class="edit editDescription" 
-			    data-bind="value:usercomment,
-				       hasFocus: usercomment.editting,
-				       event: { blur: function() { usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment') } }"></textarea>
-		</div>
-		<div class="all-comments">
-		  <span data-bind="visible: comments().length"><span data-bind="text: comments().length"></span>&nbsp;Comments</span>
-		  <!-- ko foreach: comments -->
-		  <div class="comment">
-		    <p class="comment-text" data-bind="html: comment"></p>
-		    <div class="comment-footer">
-		      <div class="when pull-right" data-bind="text: when"></div>
-		      by&nbsp;<span class="who" data-bind="text: who"></span>
-		    </div>
-		  </div>
-		  <!-- /ko -->
-		</div>
-	      </div>
-	    </td>
-	    <td id="faces-column">
-	      <div class="orangeBG bottomBorder-Thin" id="faces">
-		<span class="textShadowed" data-bind="text: finfo"></span>
-		<ul class="clearfix">
-		  <!-- ko foreach: faces -->
-		  <li data-bind="compose: $data"></li>
-		  <!-- /ko -->
-		  <li class="clearfix"></li>
-		</ul>
-	      </div>
-	      <div class="lightBlueBG bottomBorder-Thin" id="geo">
-		<div id="geo-title">
-		  <span data-bind="text: isNear"></span>
-		</div>
-		<div id="geo-map" class="map" data-zoom="11" data-provider="openstreetmap">
-		  <!-- ko foreach: locations -->
-		  <div class="marker" data-bind="attr:{'data-location': $data}">
-		    <i class="icon-play-sign"></i>
-		  </div>
-		  <!--/ko-->
-		</div>
-	      </div>
-	    </td>
-	  </tr>
-	</table><!-- info-table -->
-      </td>
-      <td id="right-arrow-column">
-	<div class="player-control lightBlueBG bottomBorder-Thin" id="right-arrow">
-	  <i class="icon-step-forward textShadowed" data-bind="click: nextRelated, css: {disabled: disable_next()}"></i>
-	</div>
-      </td>
-      <td id="right-side">
-	<div class="orangeBG bottomBorder-Thin" id="share-video-block">
-	  <div><a class="btn" href="#" data-bind="click: showShareVidModal">
-	      <i class="icon-share"></i> Share this Video
-	  </a></div>
-	</div>
-	<div class="lightBlueBG bottomBorder-Thin" id="related-videos-block">
-	  <p>Related Videos</p>
-	  <div class="media-area" data-bind="compose: related"></div>
-	</div>
-      </td>
-    </tr>
-  </table><!-- main-table -->
+    <table id="main-table">
+        <tr>
+            <td id="playerCommentsNav">
+                <table>
+                    
+                    <td id="left-arrow-column">
+                        <div class="player-control lightBlueBG bottomBorder-Thin" id="left-arrow">
+                            <img src="css/images/arrowLeft.png" data-bind="click: previousRelated, css: {disabled: disable_prev()}" />
+                        </div>
+                    </td>
+                    
+                    <td id="left-side" class="boxShadowed">
+                        <div id="tv">
+                        </div>
+                        <table id="info-table">
+                            <tr>
+                                <td id="comment-column" class="babyBlueBG">
+                                    <div id="title-desc">
+                                        <div data-bind="liveEditor: title">
+                                            <h3 class="view vidTitle" data-bind="click: title.edit, text: playing().title() || 'Click to edit title'"></h3>
+                                            <div class="editTitle-Wrap">
+                                                <input class="edit" data-bind="value: title, 
+                                                  hasFocus: title.editing, 
+                                                  event: { blur: function() { title.stopEditing(); title.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }" />
+                                            </div>  
+                                        </div>
+                                        <div data-bind="liveEditor: description">
+                                            <p class="view vidDescription" data-bind="click: description.edit, text: description() || 'Click to edit description'"></p>
+                                            <textarea class="edit editDescription" data-bind="value: description, 
+                                                hasFocus: description.editing, 
+                                                event: { blur: function() { description.stopEditing(); description.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }"></textarea>
+                                        </div>
+                                    </div>
+                                    <div id="comments">
+                                        <div class="comments-header lightBlueFont">
+                                            <div class="views pull-right">
+                                              <img src="css/images/viewsEye.png" />
+                                              <span data-bind="html: playing().media().eyes"></span>
+                                            </div>
+                                            <p class="todays-date pull-right">Today</p>
+                                            <div class="observer">
+                                              <img class="boxShadowed" src="/services/user/avatar?uid=-&y=36" />
+                                            </div>
+                                            <p>by <span class="heavyWeightFont" data-bind="html: user().displayname"></span></p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="comment-editor" data-bind="liveEditor: usercomment">
+                                            <p class="view vidDescription" data-bind="click: usercomment.edit, text:'Comment on this video...'"></p>
+                                            <textarea class="edit editDescription" 
+                                                      data-bind="value:usercomment,
+                                                               hasFocus: usercomment.editting,
+                                                               event: { blur: function() { usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment') } }"></textarea>
+                                        </div>
+                                        <div class="all-comments">
+                                            <p class="lightBlueFont" data-bind="visible: comments().length"><span data-bind="text: comments().length"></span>&nbsp;Comments</p>
+                                            <!-- ko foreach: comments -->
+                                            <div class="comment">
+                                                <p class="comment-text bottomBorder-Thin" data-bind="html: comment"></p>
+                                                <div class="comment-footer lightBlueFont">
+                                                    <p class="when pull-right" data-bind="text: when"></p>
+                                                    <p>by&nbsp;<span class="who heavyWeightFont" data-bind="text: who"></span></p>
+                                                </div>
+                                            </div>
+                                          <!-- /ko -->
+                                        </div>
+                                    </div>
+                                </td>
+                                
+                                <td id="faces-column" class="lightBlueBG">
+                                    <div class="orangeBG bottomBorder-Thin" id="faces">
+                                        <span class="textShadowed" data-bind="text: finfo"></span>
+                                        <ul class="clearfix">
+                                            <!-- ko foreach: faces -->
+                                            <li data-bind="compose: $data"></li>
+                                            <!-- /ko -->
+                                            <li class="clearfix"></li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div id="geo">
+                                        <div id="geo-title">
+                                            <div data-bind="html: isNear"></div>
+                                        </div>
+                                        <div id="geo-map" class="map boxShadowed" data-zoom="11" data-provider="openstreetmap">
+                                            <!-- ko foreach: locations -->
+                                            <div class="marker" data-bind="attr:{'data-location': $data}">
+                                              <img src='css/images/mapMarker.png' class="icon-play-sign" />
+                                            </div>
+                                            <!--/ko-->
+                                        </div>
+                                    </div>
+                                </td>
+                                
+                            </tr>
+                        </table><!-- info-table -->
+                    </td>
+                    
+                    <td id="right-arrow-column">
+                        <div class="player-control lightBlueBG bottomBorder-Thin" id="right-arrow">
+                            <img src="css/images/arrowRight.png"  data-bind="click: nextRelated, css: {disabled: disable_next()}"/>
+                        </div>
+                    </td>
+                    
+                </table>
+            </td>
+
+            <td id="right-side">
+                <div class="orangeBG bottomBorder-Thin" id="share-video-block">
+                  <div><a class="btn" href="#" data-bind="click: showShareVidModal">
+                      <i class="icon-share"></i> Share this Video
+                  </a></div>
+                </div>
+                <div class="lightBlueBG bottomBorder-Thin" id="related-videos-block">
+                    <p>Related Videos</p>
+                    <div class="media-area" data-bind="compose: related"></div>
+                </div>
+            </td>
+            
+        </tr>
+    </table><!-- main-table -->
 </div>
