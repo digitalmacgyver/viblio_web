@@ -67,13 +67,6 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 			     // When a face is selected, show the "features" strip and populate
 			     // it with videos that this person is in
 			     self.actors.on( 'pscroll:faceSelected', function( face, pos ) {
-<<<<<<< HEAD
-				 self.features.clear();
-				 self.features.search( face.data.id );
-				 self.features.setTitle( face.data.appears_in + ' Videos with ' + face.data.contact_name );
-				 self.features.show( pos );
-                             });
-=======
 				 if ( self.features.isvisible() && showing_videos_for == face.data.id ) {
 				     self.features.hide();
 				 }
@@ -85,7 +78,6 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 				     self.features.show( pos );
 				 }
 			     });
->>>>>>> master
 
 			     self.strips.push( h1 );
 			     self.strips.push( h2 );
