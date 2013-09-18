@@ -84,6 +84,13 @@
     left: 0;
 }
 
+#geo-nomap img {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    cursor: pointer;
+    width: 100px;
+}
 
 #geo-title span {
     margin-left: 20px;

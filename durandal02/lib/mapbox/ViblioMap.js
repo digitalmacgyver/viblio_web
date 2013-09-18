@@ -24,7 +24,7 @@
 	    defaultMarkerIconSize: [ 26, 34 ],
 	    defaultMarkerIconAnchor: null,
 
-	    defaultSetIconImage: 'css/images/mapMarker.png',
+	    defaultSetIconImage: 'css/images/mapMarker-Blue.png',
 	    defaultSetIconSize: [ 26, 34 ],
 	    defaultSetIconAnchor: null,
 
