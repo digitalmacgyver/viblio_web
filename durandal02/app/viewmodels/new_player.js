@@ -23,11 +23,6 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     function resizePlayer() {
 	$("#tv, #tv video").height( ($("#tv").width()*9) / 16 );
     }
-    
-    function relatedVidHeight() {
-        $('#related-videos-block').height( $(document).height() - 300 );
-        $('#related-videos-block').find('.vstrip .media-area').height( $(document).height() - 300 );
-    }
 
     // Used by flowplayer, to decide if we're on a platform that
     // does not support flash but does support html5 video tag.
@@ -268,14 +263,9 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	if ( m.lat ) {
 	    viblio.api( '/services/geo/location', { lat: m.lat, lng: m.lng } ).then( function( res ) {
 		if ( res && res.length ) {
-<<<<<<< HEAD
-		    isNear( '<p><span>Near</span> ' + getCountry( res ) + '</p>');
-		    map.centerZoom( m.lat.toString() + ',' + m.lng.toString(), 11 );
-=======
 		    nolocation( false );
 		    isNear( 'Near ' + getCountry( res ) );
 		    map.addMarker( m.lat, m.lng, m, true );
->>>>>>> master
 		}
 		else {
 		    isNear( 'Find in map' );
@@ -463,8 +453,6 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 
 	    // center/zoom to media file location
 	    near( mf );
-            // resize related video height
-            relatedVidHeight();
         }
     };
 });
