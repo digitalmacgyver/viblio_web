@@ -901,6 +901,7 @@ input:-moz-placeholder {
 .yir .media-list .mediafile {
     width: 425px;
     margin-right: 35px;
+    margin-bottom: 35px;
 }
 
 .yir .media-list .mediafile img {
@@ -915,8 +916,16 @@ input:-moz-placeholder {
 
 /********************  Player Page Section  *****************************/
 
-#playerCommentsNav {
+#main-table {
+    width: 100%;
+}
+
+#playerCommentsNavTable-Wrap {
     padding: 50px 40px 100px;
+}
+
+#playerCommentsNavTable {
+    width: 100%;
 }
 
 #comments p {
@@ -950,10 +959,6 @@ input:-moz-placeholder {
     margin-bottom: 5px;
 }
 
-#playerCommentsNav table td {
-    padding: 0;
-}
-
 #left-side {
     padding: 0;
 }
@@ -967,7 +972,7 @@ input:-moz-placeholder {
 }
 
 .comments-header {
-    height: 70px;
+    margin-bottom: 34px;
 }
 
 .comments-header > p {
@@ -995,12 +1000,12 @@ input:-moz-placeholder {
     border-bottom: 4px solid rgba(0,0,0,.05);
 }
 
-#nplayer-page #share-video-block div {
+#share-video-block div {
     padding-top: 15px;
     padding-left: 5px;
 }
 
-#nplayer-page #share-video-block div a {
+#share-video-block div a {
     padding: 25px 23px 0;
     height: 70px;
     text-shadow: none;
@@ -1009,16 +1014,29 @@ input:-moz-placeholder {
     color: rgba(0,0,0,.5);
 }
 
-#nplayer-page #share-video-block div a img {
+#share-video-block div a img {
     margin-top: -14px;
 }
 
 #nplayer-page #main-table #info-table #faces-column #faces {
-    padding-top: 20px; 
+    padding: 30px;
+    width: 306px;
+    padding-top: 25px;
+    height: auto;
+}
+
+#nplayer-page #main-table #info-table #faces-column #geo {
+    padding: 30px;
+    width: 306px;
+    height: auto;
+}
+
+#geo-map {
+    width: 100%;
 }
 
 #nplayer-page #main-table #info-table #faces-column #faces span {
-    margin-left: 25px;
+    margin-left: 0;
     color: white;
     font-size: 20px;
     font-weight: 200;
@@ -1064,11 +1082,9 @@ input:-moz-placeholder {
 
 
 #nplayer-page #related-videos-block {
-    height: auto;
 }
 
 #nplayer-page .vstrip .media-area {
-    height: 100%;
     overflow: auto;
 }
 
