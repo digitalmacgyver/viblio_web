@@ -2,7 +2,7 @@
    Application wide dialogs.  For now, just use Durandal standard.
    Later we'll do different things like slide downs and such.
 */
-define( ['durandal/app', 'durandal/system', 'plugins/dialog', 'viewmodels/incoming', 'viewmodels/loading', 'viewmodels/change_password'], function( app, system, dialog, Incoming, Loading, ChangePassword ) {
+define( ['durandal/app', 'durandal/system', 'plugins/dialog', 'viewmodels/incoming', 'viewmodels/loading', 'viewmodels/change_password', 'viewmodels/imap'], function( app, system, dialog, Incoming, Loading, ChangePassword, IMap ) {
     var incoming = null;
     var loading  = null;
     return {
@@ -45,6 +45,9 @@ define( ['durandal/app', 'durandal/system', 'plugins/dialog', 'viewmodels/incomi
 	},
 	showPassword: function() {
 	    return app.showDialog( new ChangePassword() );
+	},
+	showInteractiveMap: function( mediafile, options ) {
+	    return app.showDialog( new IMap( mediafile, options ) );
 	}
     };
 });

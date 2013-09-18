@@ -76,12 +76,12 @@
 		<div id="geo-title">
 		  <span data-bind="text: isNear"></span>
 		</div>
-		<div id="geo-map" class="map" data-zoom="11" data-provider="openstreetmap">
-		  <!-- ko foreach: locations -->
-		  <div class="marker" data-bind="attr:{'data-location': $data}">
-		    <i class="icon-play-sign"></i>
+		<div style="position: relative; margin-left: 20px; margin-right: 20px;">
+		  <div id="geo-map" class="map" data-bind="css:{hideme: nolocation() == true}">
 		  </div>
-		  <!--/ko-->
+		  <div id="geo-nomap" data-bind="css:{hideme: nolocation() == false}">
+		    <button class="btn btn-primary" data-bind="click: showInteractiveMap">Set Location</button>
+		  </div>
 		</div>
 	      </div>
 	    </td>

@@ -11,7 +11,7 @@
   this way in case we use this page as a link to shared
   videos.
 */
-define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','viewmodels/face','modestmap','viewmodels/mediafile'], function(app,system,router,dialog,config,viblio,Strip,Face,MM, Mediafile) {
+define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','viewmodels/face','viewmodels/mediafile','lib/customDialogs'], function(app,system,router,dialog,config,viblio,Strip,Face,Mediafile,customDialogs) {
     // Given a S3 url, parse out and return the bucket name.  Needed for
     // Wowza urls.
     //
@@ -63,10 +63,13 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     // The user comment
     var usercomment = ko.observable('');
 
+    // Currently playing video location status
+    var nolocation = ko.observable( true );
+
     // When title or description changes (due to inline edit),
     // change the playing video's observables, so the related vid on the
     // right gets updated.
-    //
+
     title.subscribe( function( v ) {
 	playing().title( v );
     });
@@ -77,23 +80,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     
     // holds the map
     var map = null;
-    var locations = ko.observableArray([]);
     var isNear = ko.observable();
-
-    // When new media files are added to the vstrip, as a result if
-    // infinite scrolling for example, a new location will be added.
-    // We subscribe to these events and manually add a marker to the
-    // map.  Other techniques failed to work because at the time
-    // this function is called the dom has not yet been updated.
-    //
-    locations.subscribe( function( v ) {
-	var loc = v[v.length-1];
-	if ( map ) {
-	    el = $('<div class="marker"><i class="icon-play-sign"></i></div>');
-	    el.data( 'location', loc );
-	    map.addMarker( el.get(0) );
-	}
-    });
 
     // Show the difference between to dates in a nice way
     function prettyWhen( n, d ) {
@@ -271,22 +258,42 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     // address from http://maps.googleapis.com) and center/zoom to it on the
     // map.
     function near( m ) {
+	map.removeAllMarkers();
+	// map.disableSetLocation();
 	if ( m.lat ) {
 	    viblio.api( '/services/geo/location', { lat: m.lat, lng: m.lng } ).then( function( res ) {
 		if ( res && res.length ) {
+		    nolocation( false );
 		    isNear( 'Near ' + getCountry( res ) );
-		    map.centerZoom( m.lat.toString() + ',' + m.lng.toString(), 11 );
+		    map.addMarker( m.lat, m.lng, m, true );
 		}
 		else {
-		    isNear( 'Find in map: Coming soon' );
-		    map.centerZoom( config.geoLocationOfVideoAnalytics, 11 );
+		    isNear( 'Find in map' );
+		    // comingSoon(m);
+		    nolocation( true );
 		}
 	    });
 	}
 	else {
-	    isNear( 'Find in map: Coming soon' );
-	    map.centerZoom( config.geoLocationOfVideoAnalytics, 11 )
+	    isNear( 'Find in map' );
+	    // comingSoon(m);
+	    nolocation( true );
 	}
+    }
+
+    function comingSoon( m ) {
+	map.centerDefault();
+	map.enableSetLocation( function( latlng ) {
+	    console.log( 'new location: ', latlng );
+	    viblio.api( '/services/geo/change_latlng', 
+			{ mid: playing().media().uuid,
+			  lat: latlng.lat,
+			  lng: latlng.lng } ).then( function() {
+			      playing().media().lat = latlng.lat;
+			      playing().media().lng = latlng.lng;
+			      near( playing().media() );
+			  });
+	});
     }
 
     // This gets triggered when a new user comment has been entered.
@@ -308,11 +315,11 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	query: query,
 	playing: playing,
 	title: title,
+	nolocation: nolocation,
 	description: description,
 	comments: comments,
 	usercomment: usercomment,
 	finfo: finfo,
-	locations: locations,
 	isNear: isNear,
 	faces: faces,
 	related: related,
@@ -320,6 +327,13 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	nextRelated: nextRelated,
 	disable_prev: disable_prev,
 	disable_next: disable_next,
+	showInteractiveMap: function() {
+	    customDialogs.showInteractiveMap( playing().media, {
+		doneCallback: function( m ) {
+		    near( m );
+		}
+	    });
+	},
 	activate: function( args ) {
 	    // capture the query arguments
 	    query(args);
@@ -355,23 +369,8 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    setupComments( mf );
 		    setupFaces( mf );
 
-		    if ( mf.lat )
-			locations.push( mf.lat.toString() + ',' + mf.lng.toString() );
-
 		    // Get related vids
 		    var vstrip = new Strip( 'title', 'subtile' );
-
-		    // Subscribe to new mediafiles being added to the vstrip, from
-		    // infinite scrolling for example, and add new locations to the
-		    // map.
-		    vstrip.mediafiles.subscribe( function( mediafiles ) {
-			var m = mediafiles[ mediafiles.length - 1];
-			if ( m.media().lat ) {
-			    // if it doesn't already exist
-			    if ( locations.indexOf( m.media().lat.toString() + ',' + m.media().lng.toString() ) == -1 )
-				locations.push( m.media().lat.toString() + ',' + m.media().lng.toString() );
-			}
-		    });
 
 		    // This async routine is the long pole.  Let it do the promise() resolution to
 		    // pause the system until we have all the data.
@@ -448,10 +447,10 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    resizePlayer();
 
 	    // create the map
-	    map = $("#geo-map").htmapl({
-		touch: false,
-		mousewheel: false
+	    map = $("#geo-map").vibliomap({
+		disableZoomControl: true
 	    });
+
 	    // center/zoom to media file location
 	    near( mf );
         }

@@ -1,4 +1,4 @@
-<div class="map bottomBorder-Thin" data-center="37.765,-122.413" data-zoom="11" data-provider="openstreetmap">
+<div class="map bottomBorder-Thin">
   <div class="title">
     <h2 class="cinematic textShadowed">Locations</h2>
     <div class="marker-display">
@@ -8,19 +8,4 @@
       </div>
     </div>
   </div>
-  <!-- ko foreach: points -->
-  <div class="marker" data-bind="attr:{'data-location': location}">
-    <!-- <img class="icon-play-sign" data-bind="click: $parent.play" /img> -->
-    <img src='css/images/mapMarker.png' 
-	 class="icon-play-sign" 
-	 data-toggle="popover" 
-	 data-bind="click: $parent.play,event:{mouseover: $parent.enableDetails.bind($parent), mouseout: $parent.disableDetails.bind($parent)}"/>
-  </div>
-  <!-- /ko -->
-  <!--
-  <div class="controls">
-    <button data-action="zoomIn">+ in</button>
-    <button data-action="zoomOut">− out</button>
-  </div>
-  -->
 </div>
