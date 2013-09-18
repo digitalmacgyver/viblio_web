@@ -24,6 +24,11 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	$("#tv, #tv video").height( ($("#tv").width()*9) / 16 );
     }
 
+    function relatedVidHeight() {
+	$('#related-videos-block').height( $(document).height() - 300 );
+-       $('#related-videos-block').find('.vstrip .media-area').height( $(document).height() - 300 );
+    }
+
     // Used by flowplayer, to decide if we're on a platform that
     // does not support flash but does support html5 video tag.
     // If that is the case, then flowplayer will be "simulated"
@@ -453,6 +458,8 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 
 	    // center/zoom to media file location
 	    near( mf );
+            // resize height of related video seciton based on page height
+            relatedVidHeight();
         }
     };
 });
