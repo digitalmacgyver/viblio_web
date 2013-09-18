@@ -1,7 +1,16 @@
 div.map {
     background: #eee;
     height: 300px;
-    position: relative;
+    /* position: relative; */
+}
+
+div.map div.title {
+    z-index: 10000;
+}
+
+div.map .viblio-map-popup button {
+    display: block;
+    width: 180px;
 }
 
 div.map .controls {

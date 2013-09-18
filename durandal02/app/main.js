@@ -22,7 +22,6 @@
 
 define('jquery', function () { return jQuery; });
 define('knockout', ko);
-define('modestmap', function() { return MM; });
 
 define(['viewmodels/header', 'viewmodels/landing_header', 'durandal/app', 'durandal/viewLocator', 'durandal/system', 'plugins/router','lib/custom_bindings','lib/viblio','m-custom-scrollbar'], function(page_header, landing_header, app, viewLocator, system, router) {
 

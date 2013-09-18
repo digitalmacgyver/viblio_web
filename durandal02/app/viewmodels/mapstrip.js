@@ -1,8 +1,8 @@
-define(['durandal/app', 'plugins/router', 'lib/viblio', 'modestmap'], function(app,router,viblio,MM) {
+define(['durandal/app', 'plugins/router', 'lib/viblio'], function(app,router,viblio) {
     var Map = function() {
-	this.points = ko.observableArray([]);
-	this.markerTitle = ko.observable();
-	this.markerImage = ko.observable();
+        this.points = [];
+        this.markerTitle = ko.observable();
+        this.markerImage = ko.observable();
     };
 
     Map.prototype.activate = function() {
@@ -33,25 +33,24 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'modestmap'], function(a
 	self.view = view;
 
 	// Create the map, enable mouse wheel and touch interaction
-	self.map = $(view).htmapl({
-	    touch: false,
-            mousewheel: false
+	self.map = $(view).vibliomap({
+	    markerClickCallback: function( mapper, data ) {
+		self.play( data );
+	    },
+	    markerMouseoverCallback: function( mapper, data ) {
+		self.enableDetails( data );
+	    },
+	    markerMouseoutCallback: function( mapper, data ) {
+		self.disableDetails( data );
+	    }
 	});
+
 	// Create an array of Location objects to center the map
 	// around those points.
-	var ext = [];
-	self.points().forEach( function( p ) {
-	    ext.push( new MM.Location( p.lat, p.lng ) );
+	self.points.forEach( function( p ) {
+	    self.map.addMarker( p.lat, p.lng, p );
 	});
-	if ( ext.length )
-	    self.map.extent( ext );
-
-	// Enable popovers
-	//$(view).find(".marker img").popover({
-	//    trigger: 'hover',
-	//    html: true
-	//});
-
+	self.map.fitBounds();
     };
 
     Map.prototype.enableDetails = function(marker) {
@@ -66,7 +65,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'modestmap'], function(a
 	$(this.view).find( '.marker-display' ).css( 'visibility', 'hidden' );
     };
 
-    Map.prototype.play = function( point, a, b ) {
+    Map.prototype.play = function( point ) {
 	// A point was clicked on.  Could popup a dialog to display
 	// metadata (title, description, captured on date, length, etc)
 	// and a play/cancel function maybe.  Or just go to player screen.

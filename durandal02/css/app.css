@@ -160,6 +160,10 @@ font-family: 'Limelight', serif; /* google font */
     background-color: #3b5998;
 }
 
+.hideme {
+    visibility: hidden;
+}
+
 /* Puts dialogs a little closer to the top of the screen
 
 .modalHost {
