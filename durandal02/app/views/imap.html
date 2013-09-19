@@ -1,11 +1,35 @@
 <div id="imapModal" class="mocksWhiteBG">
+  <!--
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
   </div>
+  -->
   <div class="modal-body">
     <div class="map" style="width: 600px; height: 400px;"></div>
+    <div class="help">
+      <button type="button" class="close" data-bind="click: helpHide" aria-hidden="true">&times;</button>
+      <p><span class="emph">Search</span> for your approximate location by clicking on the
+	  search icon (pic) and entering address, city, state, etc.
+      </p>
+      <p><span class="emph">Zoom</span> in and out of the map by clicking on the
+	[+] and [-] (pics) buttons.
+      </p>
+      <p><span class="emph">Drop</span> a draggable marker (pic) by clicking on the map near the
+	location you want.
+      </p>
+      <p><span class="emph">Drag</span> the (pic) markerover the exact location you want.
+      </p>
+      <p><span class="emph">Click</span> on the (pic) marker to cancel or choose this as your
+	final location.  If you cancel, you can drop another (pic) marker somewhere else.
+      </p>
+      <p><span class="emph">Resize</span> and drag the map around by moving your mouse to the 
+	bottom or right edges of the map and dragging.
+      </p>
+      <button data-bind="click: helpHide">Close Help</button>
+    </div>
   </div>
   <div class="modal-footer">
+    <button class="btn btn-secondary" data-bind="click: help">Help</button>
     <button class="btn btn-secondary" data-bind="click: dismiss">Cancel</button>
   </div>
 </div>
