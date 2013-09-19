@@ -77,7 +77,10 @@ define(['durandal/app', 'plugins/router', 'lib/viblio'], function(app,router,vib
 	self.points.forEach( function( p ) {
 	    self.map.addMarker( p.lat, p.lng, p );
 	});
-	self.map.fitBounds();
+	if ( self.points.length > 0 )
+	    self.map.fitBounds();
+	else
+	    self.map.centerDefault();
     };
 
     Map.prototype.enableDetails = function(marker) {
