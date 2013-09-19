@@ -396,13 +396,13 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		});
 	    }).promise();
 	},
-	canDeactivate: function () {
+	detached: function () {
 	    $(window).unbind( 'resizePlayer', resizePlayer );
 	    // Remove the player
 	    if(flowplayer()){
                 flowplayer().unload();
             }
-	    return true;
+	    if ( map ) map.destroy();
 	},
         compositionComplete: function(view, parent) {
 	    var mid = query().mid;

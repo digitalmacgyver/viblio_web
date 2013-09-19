@@ -144,6 +144,8 @@
 	// Zoom to it if called for
 	if ( zoomTo )
 	    self.data( 'map' ).setView( ll, 16 );
+
+	return m;
     };
 
     // Default center and zoom

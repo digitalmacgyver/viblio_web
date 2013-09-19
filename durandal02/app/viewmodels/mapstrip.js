@@ -3,6 +3,27 @@ define(['durandal/app', 'plugins/router', 'lib/viblio'], function(app,router,vib
         this.points = [];
         this.markerTitle = ko.observable();
         this.markerImage = ko.observable();
+
+	// When a new video appears in the system, add its location
+	// to the map.
+	var self = this;
+	app.on( 'mediafile:ready', function( m ) {
+	    if ( m.lat && m.lng ) {
+		var p = {
+		    lat: m.lat,
+		    lng: m.lng,
+		    location: m.lat.toString() + ',' + m.lng.toString(),
+		    uuid: m.uuid,
+		    title: m.title,
+		    url: m.url
+		};
+		self.points.push( p );
+		if ( self.map ) {
+		    self.map.addMarker( p.lat, p.lng, p );
+		    self.map.fitBounds();
+		}
+	    }
+	});
     };
 
     Map.prototype.activate = function() {
@@ -28,11 +49,17 @@ define(['durandal/app', 'plugins/router', 'lib/viblio'], function(app,router,vib
 	});
     };
 
+    Map.prototype.detached = function() {
+	this.map.destroy();
+	this.map = null;
+    };
+
     Map.prototype.compositionComplete = function( view, parent ) {
 	var self = this;
 	self.view = view;
 
 	// Create the map, enable mouse wheel and touch interaction
+	console.log( 'creating a new map' );
 	self.map = $(view).vibliomap({
 	    markerClickCallback: function( mapper, data ) {
 		self.play( data );
@@ -50,7 +77,10 @@ define(['durandal/app', 'plugins/router', 'lib/viblio'], function(app,router,vib
 	self.points.forEach( function( p ) {
 	    self.map.addMarker( p.lat, p.lng, p );
 	});
-	self.map.fitBounds();
+	if ( self.points.length > 0 )
+	    self.map.fitBounds();
+	else
+	    self.map.centerDefault();
     };
 
     Map.prototype.enableDetails = function(marker) {
