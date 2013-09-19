@@ -6,70 +6,70 @@
 }
 
 
-#nplayer-page #main-table {
+#main-table {
 }
 
-#nplayer-page #main-table #left-arrow-column {
+#left-arrow-column {
     width: 40px;
 }
 
-#nplayer-page #main-table #right-arrow-column {
+#right-arrow-column {
     width: 40px;
 }
 
-#nplayer-page #main-table #left-side {
+#left-side {
     width: 100%;
 }
 
-#nplayer-page #main-table #right-side {
+#right-side {
     width: 280px;
 }
 
-#nplayer-page #main-table #info-table {
+#info-table {
     width: 100%;
 }
 
-#nplayer-page #main-table #info-table #comment-column {
+#comment-column {
     width: 100%;
 }
 
-#nplayer-page #main-table #info-table #title-desc {
+#title-desc {
     padding: 18px;
     background-color: white;
 }
 
-#nplayer-page #main-table #info-table #comments {
+#comments {
     padding: 24px;
 }
 
-#nplayer-page #main-table #info-table #faces-column {
+#faces-column {
     width: 340px;
 }
 
-#nplayer-page #main-table #info-table #faces-column #faces {
+#faces {
     width: 340px;
     padding-top: 10px;
 }
 
-#nplayer-page #main-table #info-table #faces-column #faces span {
+#faces span {
     margin-left: 25px;
     color: white;
     font-size: 25px;
 }
 
-#nplayer-page #main-table #info-table #faces-column #faces ul {
+#faces ul {
     list-style-type:none;
     margin-left: 25px;
     margin-top: 10px;
     padding:0;
 }
 
-#nplayer-page #main-table #info-table #faces-column #faces li {
+#faces li {
     float: left;
-    margin-bottom: 8px;
+    margin-bottom: 25px;
 }
 
-#nplayer-page #main-table #info-table #faces-column #geo {
+#geo {
     width: 340px;
     height: 255px;
 }
@@ -146,38 +146,38 @@
 #nplayer-page .player-control i {
 }
 
-#nplayer-page #right-arrow {
+#right-arrow {
 }
 
-#nplayer-page #left-arrow {
+#left-arrow {
 }
 
-#nplayer-page #share-video-block {
+#share-video-block {
     height: 100px;
     width: 280px;
 }
 
-#nplayer-page #share-video-block div {
+#share-video-block div {
     padding-top: 20px;
     padding-left: 22px;
 }
 
-#nplayer-page #share-video-block div a {
+#share-video-block div a {
     color: #666;
     font-size: 20px;
     padding-top: 21px;
 }
 
-#nplayer-page #share-video-block div a.btn {
+#share-video-block div a.btn {
     background-color: white;
 }
 
-#nplayer-page #related-videos-block {
-    height: 650px;
+#related-videos-block {
+    /*height: 650px;*/
     width: 280px;
 }
 
-#nplayer-page #related-videos-block p {
+#related-videos-block p {
     text-align: center;
     font-size: 25px;
     margin-top: 6px;
@@ -187,7 +187,7 @@
 }
 
 #nplayer-page .vstrip .media-area {
-    height: 600px;
+    /*height: 600px;*/
     overflow: auto;
 }
 
@@ -199,17 +199,17 @@
     position: relative;
 }
 
-#nplayer-page #tv {
+#tv {
     height: 529px;
     background-color: white;
 }
 
-#nplayer-page #tv object {
+#tv object {
     width  : 100%;
     height : 100%;
 }
 
-#nplayer-page #tv img {
+#tv img {
     display: block;
     margin: 0 auto;
     padding-top: 200px;

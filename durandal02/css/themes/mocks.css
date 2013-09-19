@@ -239,6 +239,14 @@ input:-moz-placeholder {
     border: 1px solid lightgrey;
 }
 
+.lightBlueFont {
+    color: rgba(82,152,189,.7);
+}
+
+.heavyWeightFont {
+    font-weight: 600;
+}
+
 .bigTitle {
     color: rgba(0,0,0,.6);
     font-size: 23px;
@@ -928,6 +936,8 @@ input:-moz-placeholder {
     width: 100%;
 }
 
+/*************** Player Comments ****************/
+
 #comments p {
  font-weight: 200;    
 }
@@ -959,18 +969,6 @@ input:-moz-placeholder {
     margin-bottom: 5px;
 }
 
-#left-side {
-    padding: 0;
-}
-
-.lightBlueFont {
-    color: rgba(82,152,189,.7);
-}
-
-.heavyWeightFont {
-    font-weight: 600;
-}
-
 .comments-header {
     margin-bottom: 34px;
 }
@@ -1000,23 +998,7 @@ input:-moz-placeholder {
     border-bottom: 4px solid rgba(0,0,0,.05);
 }
 
-#share-video-block div {
-    padding-top: 15px;
-    padding-left: 5px;
-}
-
-#share-video-block div a {
-    padding: 25px 23px 0;
-    height: 70px;
-    text-shadow: none;
-    font-size: 24px;
-    font-weight: 600;
-    color: rgba(0,0,0,.5);
-}
-
-#share-video-block div a img {
-    margin-top: -14px;
-}
+/******************** Player Faces **********************/
 
 #nplayer-page #main-table #info-table #faces-column #faces {
     padding: 30px;
@@ -1025,22 +1007,28 @@ input:-moz-placeholder {
     height: auto;
 }
 
-#nplayer-page #main-table #info-table #faces-column #geo {
-    padding: 30px;
-    width: 306px;
-    height: auto;
-}
-
-#geo-map {
-    width: 100%;
-}
-
-#nplayer-page #main-table #info-table #faces-column #faces span {
+#faces > span {
     margin-left: 0;
     color: white;
     font-size: 20px;
     font-weight: 200;
+    margin-bottom: 25px;
+    display: block;
 }
+
+#nplayer-page #main-table #info-table #faces-column #faces ul {
+    margin-left: 0;
+    margin-bottom: 0;
+}
+
+#faces li:nth-last-of-type(2) {
+    margin-bottom: 0;
+}
+
+#faces li:nth-of-type(2n) {
+    margin-left: 25px;
+}
+
 
 #faces-column .face {
     width: 140px;
@@ -1061,9 +1049,35 @@ input:-moz-placeholder {
     box-shadow: none;
 }
 
+/********************** Player Map ***********************/
+
+#nplayer-page #main-table #info-table #faces-column #geo {
+    padding: 30px;
+    width: 306px;
+   /* height: auto;*/
+}
+
+#geo-map {
+    width: 100%;
+}
+
+#geo-title {
+    color: white;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+#geo-title span:first-of-type {
+    font-weight: 200;
+}
+
+/********************* Player Comments ************************/
+
 #comment-column {
     color: rgba(0,0,0,.5);
 }
+
+/****************** Player Right Column ************************/
 
 #right-side {
     border-left: 4px inset rgba(0,0,0,.2);
@@ -1080,11 +1094,30 @@ input:-moz-placeholder {
     border-left: 4px inset rgba(0,0,0,.2);
 }
 
+#share-video-block div {
+    padding-top: 15px;
+    padding-left: 5px;
+}
+
+#share-video-block div a {
+    padding: 25px 23px 0;
+    height: 70px;
+    text-shadow: none;
+    font-size: 24px;
+    font-weight: 600;
+    color: rgba(0,0,0,.5);
+}
+
+#share-video-block div a img {
+    margin-top: -14px;
+}
 
 #nplayer-page #related-videos-block {
+    /*height: auto;*/
 }
 
 #nplayer-page .vstrip .media-area {
+    max-height: 1277px;
     overflow: auto;
 }
 

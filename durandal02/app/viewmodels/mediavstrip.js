@@ -177,7 +177,8 @@ define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile'
 		},
 		advanced: {
 		    autoScrollOnFocus: false,
-		    updateOnBrowserResize: true
+		    updateOnBrowserResize: true,
+                    updateOnContentResize:true
 		}
 
 	    });

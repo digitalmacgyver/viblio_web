@@ -25,10 +25,13 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     }
 
     function relatedVidHeight() {
-	$('#related-videos-block').height( $(document).height() - 300 );
--       $('#related-videos-block').find('.vstrip .media-area').height( $(document).height() - 300 );
+        var newHeight = ko.observable( $('#playerCommentsNavTable-Wrap').height() - 85 );
+        
+	//$('#related-videos-block').height( 'auto' );
+        $('#related-videos-block').find('.vstrip .media-area').height( newHeight() );
+        console.log('relatedVidHeight fired! ' + newHeight() );
     }
-
+    
     // Used by flowplayer, to decide if we're on a platform that
     // does not support flash but does support html5 video tag.
     // If that is the case, then flowplayer will be "simulated"
@@ -269,7 +272,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    viblio.api( '/services/geo/location', { lat: m.lat, lng: m.lng } ).then( function( res ) {
 		if ( res && res.length ) {
 		    nolocation( false );
-		    isNear( 'Near ' + getCountry( res ) );
+		    isNear( getCountry( res ) );
 		    map.addMarker( m.lat, m.lng, m, true );
 		}
 		else {
@@ -459,7 +462,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    // center/zoom to media file location
 	    near( mf );
             // resize height of related video seciton based on page height
-            relatedVidHeight();
+            //relatedVidHeight();
         }
     };
 });

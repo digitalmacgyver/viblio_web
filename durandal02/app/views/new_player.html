@@ -55,7 +55,7 @@
                                         <div class="all-comments">
                                             <p class="lightBlueFont" data-bind="visible: comments().length"><span data-bind="text: comments().length"></span>&nbsp;Comments</p>
                                             <!-- ko foreach: comments -->
-                                            <div class="comment">
+                                            <div class="comment" data-bind="visible: comment != '' ">
                                                 <p class="comment-text bottomBorder-Thin" data-bind="html: comment"></p>
                                                 <div class="comment-footer lightBlueFont">
                                                     <p class="when pull-right" data-bind="text: when"></p>
@@ -79,10 +79,10 @@
                                     </div>
                                     
                                     <div id="geo">
-                                        <div id="geo-title">
-                                            <div data-bind="html: isNear"></div>
+                                        <div id="geo-title" class="textShadowed">
+                                            <span data-bind="visible: isNear() != 'Find in map' ">Near&nbsp;</span><span data-bind="text: isNear()"></span>
                                         </div>
-                                        <div style="position: relative; margin-left: 20px; margin-right: 20px;">
+                                        <div style="position: relative">
                                             <div id="geo-map" class="map boxShadowed" data-bind="css:{hideme: nolocation() == true}"></div>
                                             <div id="geo-nomap" data-bind="css:{hideme: nolocation() == false}">
                                                 <img src="css/images/mapMarker-White.png" data-bind="click: showInteractiveMap" />
