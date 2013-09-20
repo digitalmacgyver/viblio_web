@@ -5,6 +5,13 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile'], function( router
 
 	self.years  = ko.observableArray([]);
 	self.months = ko.observableArray([]);
+        self.shouldBeVisible = ko.computed(function() {
+            if(self.months().length >= 1) {
+                return true;
+            } else {
+                return false;
+            }
+        });
     };
 
     YIR.prototype.fetch = function( year ) {
@@ -48,6 +55,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile'], function( router
 	    }
 	});
     };
+    
+    // Animation callbacks
+    this.showElement = function(elem) { if (elem.nodeType === 1) $(elem).hide().fadeIn('slow') }
+    this.hideElement = function(elem) { if (elem.nodeType === 1) $(elem).fadeOut(function() { $(elem).remove(); }) }
 
     return YIR;
 

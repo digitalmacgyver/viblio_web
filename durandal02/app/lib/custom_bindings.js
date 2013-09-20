@@ -163,6 +163,19 @@ define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip
             ko.bindingHandlers.css.update(element, function () { return { editing: observable.editing }; });
         }
     };
+    
+    ko.bindingHandlers.highlightChange = {
+       origValue : null,
+       init: function (element, valueAccessor) {
+           origValue = '';
+       },
+       update: function (element, valueAccessor) {
+           if (origValue !== valueAccessor())
+           {
+               $(element).hide().fadeIn('slow');
+           }
+       }
+    };
 
     return({});
 });

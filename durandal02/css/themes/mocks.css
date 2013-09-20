@@ -649,7 +649,7 @@ input:-moz-placeholder {
 
 .mainVidSection .mediafile img {
     width: 100%;
-    height: 202px;
+    height: 197px;
     border: none;
 }
 
@@ -877,6 +877,10 @@ input:-moz-placeholder {
     font-weight: 300;
 }
 
+div.map div.title {
+    z-index: 1000;
+}
+
 /********************  YIR Section  *****************************/
 
 .yir {
@@ -899,6 +903,7 @@ input:-moz-placeholder {
 
 #yirVidWrap {
     margin-left: 45px;
+    min-height: 386px;
 }
 
 .yir .month-heading {
@@ -910,6 +915,10 @@ input:-moz-placeholder {
     width: 425px;
     margin-right: 35px;
     margin-bottom: 35px;
+}
+
+.yir .media-list .mediafile:last-of-type {
+    margin-right: 0px;
 }
 
 .yir .media-list .mediafile img {
