@@ -35,9 +35,24 @@
     <button class="btn btn-success" id="start_upload" type="button">Start uploads</button> &nbsp;
     <button class="btn btn-danger" id="stop_uploads" type="button">Cancel all uploads</button>
   </div>
-  &nbsp;&nbsp;&nbsp;&nbsp;<span>Total progress: <span data-bind="text: overall" id="total_progress">0%</span></span>
   <div class="alert alert-error">
   </div>
   <table id="files">
   </table>
+  <div id="stats">
+    <table>
+      <tr>
+	<td><span class="data-point" data-bind="text: overall_bitrate"></span></td>
+	<!-- <td><span class="data-point" data-bind="text: overall_time"></span></td> -->
+	<td><span class="data-point" data-bind="text: overall_percent"></span></td>
+	<td><span class="data-point" data-bind="text: overall_size"></span></td>
+      </tr>
+      <tr>
+	<td><span class="data-title">Upload Speed</span></td>
+	<!-- <td><span class="data-title">Time Remaining</span></td> -->
+	<td><span class="data-title">Percent Done</span></td>
+	<td><span class="data-title">Data Remaining</span></td>
+      </tr>
+    </table>
+  </div>
 </div>

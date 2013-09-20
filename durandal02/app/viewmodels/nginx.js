@@ -32,7 +32,10 @@ define(['lib/viblio'], function(viblio) {
 
     /* END OF TESTING STUFF */
 
-    var overall = ko.observable( "0%" );
+    var overall_bitrate = ko.observable('0');
+    var overall_time = ko.observable('00:00:00:00');
+    var overall_percent = ko.observable('0%');
+    var overall_size = ko.observable('0 / 0');
  
     // A container to hold all of the upload data objects.
     files = [];
@@ -120,57 +123,60 @@ define(['lib/viblio'], function(viblio) {
 	return '<span class="bar" style="width: ' + progress + '">' + progress + '</span>';
     };
 
+    _formatFileSize = function (bytes) {
+        if (typeof bytes !== 'number') {
+	    return '';
+        }
+        if (bytes >= 1000000000) {
+	    return (bytes / 1000000000).toFixed(2) + ' GB';
+        }
+        if (bytes >= 1000000) {
+	    return (bytes / 1000000).toFixed(2) + ' MB';
+        }
+        return (bytes / 1000).toFixed(2) + ' KB';
+    };
+
+    _formatBitrate = function (bits) {
+        if (typeof bits !== 'number') {
+	    return '';
+        }
+        if (bits >= 1000000000) {
+	    return (bits / 1000000000).toFixed(2) + ' Gbit/s';
+        }
+        if (bits >= 1000000) {
+	    return (bits / 1000000).toFixed(2) + ' Mbit/s';
+        }
+        if (bits >= 1000) {
+	    return (bits / 1000).toFixed(2) + ' kbit/s';
+        }
+        return bits.toFixed(2) + ' bit/s';
+    };
+
+    _formatTime = function (seconds) {
+        var date = new Date(seconds * 1000),
+        days = Math.floor(seconds / 86400);
+        days = days ? days + 'd ' : '';
+        return days +
+	    ('0' + date.getUTCHours()).slice(-2) + ':' +
+	    ('0' + date.getUTCMinutes()).slice(-2) + ':' +
+	    ('0' + date.getUTCSeconds()).slice(-2);
+    };
+    
+    _formatPercentage = function (floatValue) {
+        return (floatValue * 100).toFixed(2) + ' %';
+    };
+
     return {
-	overall: overall,
+	overall_bitrate: overall_bitrate,
+	overall_time: overall_time,
+	overall_percent: overall_percent,
+	overall_size: overall_size,
 	displayName: 'Video File Upload',
 	protocol: protocol,
 	server: server,
 	port: port,
 	localhost: localhost,
 	endpoint: CREATE_ENDPT,
-	_formatFileSize: function (bytes) {
-            if (typeof bytes !== 'number') {
-		return '';
-            }
-            if (bytes >= 1000000000) {
-		return (bytes / 1000000000).toFixed(2) + ' GB';
-            }
-            if (bytes >= 1000000) {
-		return (bytes / 1000000).toFixed(2) + ' MB';
-            }
-            return (bytes / 1000).toFixed(2) + ' KB';
-	},
-
-	_formatBitrate: function (bits) {
-            if (typeof bits !== 'number') {
-		return '';
-            }
-            if (bits >= 1000000000) {
-		return (bits / 1000000000).toFixed(2) + ' Gbit/s';
-            }
-            if (bits >= 1000000) {
-		return (bits / 1000000).toFixed(2) + ' Mbit/s';
-            }
-            if (bits >= 1000) {
-		return (bits / 1000).toFixed(2) + ' kbit/s';
-            }
-            return bits.toFixed(2) + ' bit/s';
-	},
-
-	_formatTime: function (seconds) {
-            var date = new Date(seconds * 1000),
-            days = Math.floor(seconds / 86400);
-            days = days ? days + 'd ' : '';
-            return days +
-		('0' + date.getUTCHours()).slice(-2) + ':' +
-		('0' + date.getUTCMinutes()).slice(-2) + ':' +
-		('0' + date.getUTCSeconds()).slice(-2);
-	},
-    
-	_formatPercentage: function (floatValue) {
-            return (floatValue * 100).toFixed(2) + ' %';
-	},
-
 	_renderExtendedProgress: function (data) {
             return this._formatBitrate(data.bitrate) + ' | ' +
 		this._formatTime(
@@ -199,6 +205,7 @@ define(['lib/viblio'], function(viblio) {
 		acceptFileTypes: /(\.|\/)(3gp|avi|flv|m4v|mp4|mts|mov|mpeg|mpg|ogg|swf|mwv)$/i,
 		maxFileSize: 10000000000, // 10 GB
 		minFileSize: 10, // 10 Bytes
+		limitConcurrentUploads: 4,
 		messages: {
                     maxNumberOfFiles: 'Maximum number of files exceeded',
                     acceptFileTypes: 'Only video file types are uploadable',
@@ -309,10 +316,10 @@ define(['lib/viblio'], function(viblio) {
 		 * This callback keeps track of the combined progress for all active uploads.
 		 */
 		progressall: function (e, data) {
-		    //var progress = calculateProgress(data);
-		    var progress = self._renderExtendedProgress( data );
-		    //$("#total_progress").text(progress);
-		    overall( progress );
+		    overall_bitrate( _formatBitrate(data.bitrate) );
+		    overall_time( _formatTime( (data.total - data.loaded) * 8 / data.bitrate ) );
+		    overall_percent( _formatPercentage( data.loaded / data.total ) );
+		    overall_size( _formatFileSize(data.loaded) + ' / ' + _formatFileSize(data.total) );
 		},
  
  

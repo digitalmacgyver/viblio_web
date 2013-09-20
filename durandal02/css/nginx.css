@@ -57,3 +57,18 @@
 #nginx .alert {
     visibility: hidden;
 }
+
+#nginx .data-point {
+    text-align: left;
+    font-size: 30px;
+}
+#nginx .data-title {
+    text-align: left;
+}
+
+#nginx #stats table {
+    width: 100%;
+}
+#nginx #stats table td {
+    width: 33%;
+}
