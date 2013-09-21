@@ -242,7 +242,7 @@
     padding: 12px;
     margin-top: 10px;
     max-height: 50px;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .comment .comment-footer {
