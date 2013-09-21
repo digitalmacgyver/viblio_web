@@ -116,7 +116,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	var self = this;
 	self.contact_id = contact_id;
 	return viblio.api( '/services/faces/media_face_appears_in',
-			   { contact_id: contact_id,
+			   { contact_uuid: contact_id,
 			     page: self.pager.next_page, 
 			     rows: self.pager.entries_per_page } )
 	    .then( function( json ) {
@@ -131,6 +131,10 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 
     FScroll.prototype.activate = function() {
 	var self = this;
+    };
+
+    FScroll.prototype.seeAll = function() {
+	router.navigate( '#/videosof?uuid=' + this.contact_id );
     };
 
     FScroll.prototype.attached = function( view ) {
