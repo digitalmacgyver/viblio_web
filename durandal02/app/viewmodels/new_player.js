@@ -337,6 +337,10 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	disable_next: disable_next,
 	showInteractiveMap: function() {
 	    customDialogs.showInteractiveMap( playing().media, {
+		disableMapDrag: false,
+		disableMapMouseZoom: false,
+		disableMapTouchZoom: false,
+		disableMapClickZoom: true,
 		doneCallback: function( m ) {
 		    near( m );
 		}

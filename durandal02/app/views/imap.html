@@ -28,8 +28,9 @@
       <button data-bind="click: helpHide">Close Help</button>
     </div>
   </div>
+  <div class="is-near"><div data-bind="text: isNear"></div></div>
   <div class="modal-footer">
-    <button class="btn btn-secondary" data-bind="click: help">Help</button>
+    <button class="btn btn-secondary" data-bind="click: useLocation, visible: dropped">Use Drop Marker Location</button>
     <button class="btn btn-secondary" data-bind="click: dismiss">Cancel</button>
   </div>
 </div>
