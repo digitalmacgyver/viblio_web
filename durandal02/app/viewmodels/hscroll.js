@@ -1,6 +1,6 @@
 define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'viewmodels/mediafile'], function (router, app, system, viblio, Mediafile) {
 
-    var HScroll = function( title, subtitle, advanced ) {
+    var HScroll = function( title, subtitle, options ) {
 	var self = this;
 
 	// The view element, used to manipulate the scroller mostly
@@ -9,7 +9,8 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	// Passed in title and subtitle
 	self.title = ko.observable(title);
 	self.subtitle = ko.observable(subtitle || '&nbsp;' );
-	self.advanced = advanced;
+	self.advanced = options.advanced;
+	self.search_api = options.search_api;
 
 	// Will eventually pass in a query, somehow
 
@@ -110,9 +111,15 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     // to do paging to handle infinite scroll.
     HScroll.prototype.search = function() {
 	var self = this;
-	return viblio.api( '/services/mediafile/list',
-			   { page: self.pager.next_page, 
-			     rows: self.pager.entries_per_page } )
+	var api = '/services/mediafile/list';
+	var args = { page: self.pager.next_page, 
+		     rows: self.pager.entries_per_page };
+	if ( self.search_api ) {
+	    var proto = self.search_api();
+	    api = proto.api;
+	    args = $.extend( args, proto.args ); 
+	}
+	return viblio.api( api, args )
 	    .then( function( json ) {
 		self.pager = json.pager;
 		json.media.forEach( function( mf ) {

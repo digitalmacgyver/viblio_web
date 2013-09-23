@@ -164,6 +164,7 @@
     // Support for the Set Location functions
     var setMarker;
     var setMarkerCallback;
+    var dragMarkerCallback;
     var lastLatLng;
 
     // When the map is clicked on in Set Location mode
@@ -191,8 +192,14 @@
 	$(popupButtons).append( $(startOverButton) );
 	$(popupButtons).append( $(useButton) );
 	setMarker.bindPopup(popupButtons.get(0));
+
+	if ( dragMarkerCallback )
+	    dragMarkerCallback( lastLatLng );
+
 	setMarker.on( 'dragend', function( event ) {
 	    lastLatLng = event.target._latlng; // keep track of lat/lng
+	    if ( dragMarkerCallback )
+		dragMarkerCallback( lastLatLng );
 	});
     }
 
@@ -208,9 +215,10 @@
 
     // Turn this map into a 'Set Location' widget
     //
-    $.fn.enableSetLocation = function( callback ) {
+    $.fn.enableSetLocation = function( setCallback, dragCallback ) {
 	var self = $(this);
-	setMarkerCallback = callback;
+	setMarkerCallback = setCallback;
+	dragMarkerCallback = dragCallback;
 	// Add the mapbox geocoder, a search box that helps get
 	// close to locations on the map
 	self.data( 'geocoder', L.mapbox.geocoderControl( 
@@ -234,6 +242,7 @@
 	    self.data( 'map' ).removeLayer( setMarker );
 	setMarker = null;
 	self.data( 'map' ).off( 'click', setLocationHandler );
+	dragMarkerCallback = setMarkerCallback = null;
     };
 
     // Destroys the map and clears all related event listeners

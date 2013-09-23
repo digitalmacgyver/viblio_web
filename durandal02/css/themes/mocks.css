@@ -1463,3 +1463,35 @@ div.map div.title {
     height: 60px;
     max-width: 97%;
 }
+
+/** Make Horizontal Stips a bit more generic **/
+
+.horizontalStrip {
+    padding: 29px 0 14px 0;
+}
+
+.horizontalStrip .title {
+    margin-left: 45px;
+    margin-bottom: 22px;
+}
+
+.horizontalStrip .title h2 {
+    color: white;
+    display: inline;
+}
+
+.horizontalStrip .title span {
+    color: rgba(0,0,0,.5);
+    margin-left: 40px;
+    font-size: 18px;
+}
+
+.horizontalStrip .cinematic {
+    font-weight: 100;
+    font-family: inherit;
+}
+
+.horizontalStrip .item-container {
+    margin-left: 45px;
+    margin-bottom: 20px;
+}

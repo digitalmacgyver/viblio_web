@@ -82,6 +82,9 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'home',               moduleId: 'home',               title: 'HOME',                           
 	      nav: true,    authenticated: true,   header: page_header },
 
+            { route: 'videosof',           moduleId: 'videosof',           title: 'Videos Starring',                           
+	      nav: false,    authenticated: true,   header: page_header },
+
             { route: 'login',              moduleId: 'login',              title: 'Log in to your Viblio account',  
 	      nav: false,   authenticated: false,  header: landing_header },
 
@@ -89,6 +92,9 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      nav: false,   authenticated: true,   header: page_header },
 
             { route: 'upload',             moduleId: 'nginx',             title: 'UPLOAD',                         
+	      nav: true,    authenticated: true,   header: page_header },
+	    
+            { route: 'faces',              moduleId: 'faces',             title: 'Faces',                         
 	      nav: true,    authenticated: true,   header: page_header },
 	    
             { route: 'player',             moduleId: 'player',             title: 'Video Player',                   

@@ -1,0 +1,11 @@
+#videosof-page .pstrip img {
+    width: 70px;
+    height: 70px;
+    margin-left: 45px;
+    margin-right: 20px;    
+}
+
+#videosof-page .pstrip span {
+    color: white;
+    font-size: 30px;
+}

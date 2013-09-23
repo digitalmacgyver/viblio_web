@@ -15,11 +15,15 @@ define(['durandal/app', 'plugins/router', 'lib/viblio'], function(app,router,vib
 		    location: m.lat.toString() + ',' + m.lng.toString(),
 		    uuid: m.uuid,
 		    title: m.title,
-		    url: m.url
+		    url: m.views.poster.url
 		};
 		self.points.push( p );
 		if ( self.map ) {
-		    self.map.addMarker( p.lat, p.lng, p );
+		    var m = self.map.addMarker( p.lat, p.lng, p );
+		    m.on( 'mouseover', function( e ) {
+			m.bindPopup( '<img src="' + p.url + '" style="width:120px;height:68px;" />' )
+			    .openPopup();
+		    });
 		    self.map.fitBounds();
 		}
 	    }
@@ -59,23 +63,20 @@ define(['durandal/app', 'plugins/router', 'lib/viblio'], function(app,router,vib
 	self.view = view;
 
 	// Create the map, enable mouse wheel and touch interaction
-	console.log( 'creating a new map' );
 	self.map = $(view).vibliomap({
 	    markerClickCallback: function( mapper, data ) {
 		self.play( data );
-	    },
-	    markerMouseoverCallback: function( mapper, data ) {
-		self.enableDetails( data );
-	    },
-	    markerMouseoutCallback: function( mapper, data ) {
-		self.disableDetails( data );
 	    }
 	});
 
 	// Create an array of Location objects to center the map
 	// around those points.
 	self.points.forEach( function( p ) {
-	    self.map.addMarker( p.lat, p.lng, p );
+	    var m = self.map.addMarker( p.lat, p.lng, p );
+	    m.on( 'mouseover', function( e ) {
+		m.bindPopup( '<img src="' + p.url + '" style="width:120px;height:68px;" />' )
+		    .openPopup();
+	    });
 	});
 	if ( self.points.length > 0 )
 	    self.map.fitBounds();

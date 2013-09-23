@@ -1,6 +1,6 @@
 define( ['plugins/router','lib/viblio','viewmodels/mediafile'], function( router,viblio, Mediafile ) {
 
-    var YIR = function() {
+    var YIR = function( cid ) {
 	var self = this;
 
 	self.years  = ko.observableArray([]);
@@ -12,11 +12,14 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile'], function( router
                 return false;
             }
         });
+	self.cid = cid;
     };
 
     YIR.prototype.fetch = function( year ) {
 	var self = this;
-	viblio.api( '/services/yir/videos_for_year', { year: year } ).then( function( data ) {
+	var args = { year: year };
+	if ( self.cid ) args['cid'] = self.cid;
+	viblio.api( '/services/yir/videos_for_year', args ).then( function( data ) {
 	    self.months.removeAll();
 	    data.media.forEach( function( month ) {
 		var mediafiles = new Array;
@@ -42,7 +45,9 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile'], function( router
 
     YIR.prototype.activate = function() {
 	var self = this;
-	return viblio.api( '/services/yir/years' ).then( function( data ) {
+	var args = {};
+	if ( self.cid ) args['cid'] = self.cid;
+	return viblio.api( '/services/yir/years', args ).then( function( data ) {
 	    var arr = [];
 	    data.years.forEach( function( year ) {
 		arr.push({ label: year, selected: ko.observable(false) });

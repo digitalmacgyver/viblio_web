@@ -1,0 +1,20 @@
+<div id="magicTagModal" class="mocksWhiteBG">
+  <div class="modal-body">
+    <h2>Tag this person!</h2>
+    <img class="magic-face" data-bind="attr:{src:url}" />
+    <input type="text" name="cname" id="cname" />
+    <div class="is-same-as">
+      <!--
+      <img data-bind="attr:{src:sameas}" />
+      -->
+      <!-- ko foreach: aliases -->
+      <img class="alias" data-bind="attr:{src:$data}, click:$parent.swap.bind( $data, $parent )" />
+      <!-- /ko -->
+      <div class="clearfix"></div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary"   data-bind="click: name, visible: named">Done</button>
+    <button class="btn btn-secondary" data-bind="click: dismiss">Cancel</button>
+  </div>
+</div>

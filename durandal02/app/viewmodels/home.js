@@ -11,9 +11,9 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
     // to keep track whos sub-videos we're showing to make toggle work
     var showing_videos_for;
     
-    function hh(title, subtitle, advanced) {
+    function hh(title, subtitle, options) {
         return system.defer( function( dfd ) {
-            dfd.resolve( new HScroll(title, subtitle, advanced) );
+            dfd.resolve( new HScroll(title, subtitle, options) );
         } ).promise();
     }
 
@@ -52,7 +52,7 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 	    if ( args && args.advanced )
 		advanced = true;
 
-	    return $.when( hh('Box Office Hits', 'Your most popular videos', advanced), 
+	    return $.when( hh('Box Office Hits', 'Your most popular videos', { advanced: advanced }), 
 			   pp('Top Actors', 'Who\'s who in your videos'),
 			   ff('n Videos with Anonymous', '' ),
 			   mm(),
@@ -67,13 +67,13 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 			     // When a face is selected, show the "features" strip and populate
 			     // it with videos that this person is in
 			     self.actors.on( 'pscroll:faceSelected', function( face, pos ) {
-				 if ( self.features.isvisible() && showing_videos_for == face.data.id ) {
+				 if ( self.features.isvisible() && showing_videos_for == face.data.uuid ) {
 				     self.features.hide();
 				 }
 				 else {
-				     showing_videos_for = face.data.id; 
+				     showing_videos_for = face.data.uuid; 
 				     self.features.clear();
-				     self.features.search( face.data.id );
+				     self.features.search( face.data.uuid );
 				     self.features.setTitle( face.data.appears_in + ' Videos with ' + face.data.contact_name );
 				     self.features.show( pos );
 				 }

@@ -1,0 +1,10 @@
+<div id="videosof-page">
+  <div class="pstrip bottomBorder-Thin">
+    <img data-bind="attr:{src:contactPhoto}" />
+    <span>Videos starring <span class="contact-name" data-bind="text: contactName"></span></span>
+  </div>
+  <div class="mainVidSection" data-bind="foreach: strips">
+    <div data-bind="compose: $data"></div>
+  </div>
+</div>
+
