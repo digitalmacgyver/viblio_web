@@ -9,23 +9,23 @@
               <a data-bind="attr: { href: hash }, html: title"></a>
           </li>
       </ul>
-      <div class="loader pull-right" data-bind="css: { active: router.isNavigating }">
-        <i class="icon-spinner icon-2x icon-spin"></i>
-      </div>
-      <ul class="nav pull-right">
+      <ul id='userNamePicNav' class="nav pull-right">
 	<li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class='textShadowed'>Welcome, </span><span class='textShadowed' data-bind="html: user().displayname.slice(0,user().displayname.indexOf(' ') )">anonymous</span><img src='css/images/chevron-down2.png'/></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <div class="nav avatar">
+                    <img style="display: block;" src="/services/user/avatar?uid=-&y=37" />
+                </div>
+                <div id='userNameText-Wrap'>
+                    <span class='textShadowed'>Welcome, </span><span class='textShadowed' data-bind="html: user().displayname.slice(0,user().displayname.indexOf(' ') )">anonymous</span><img src='css/images/chevron-down2.png'/>
+                </div>
+            </a>
 	  <ul class="dropdown-menu">
 	    <li><a href="#settings">Settings</a></li>
 	    <li><a href="#">Get the App</a></li>
-	    <li class="divider"></li>
 	    <li><a href="#" data-bind="click: testNewVideo">Test New Video</a></li>
 	    <li><a href="#" data-bind="click: logout">Log Out</a></li>
 	  </ul>
       </ul>
-      <div class="nav avatar pull-right boxShadowed">
-	<img style="display: block;" src="/services/user/avatar?uid=-&y=38" />
-      </div>
 <!--     </div> -->
   </div>
 </div>
