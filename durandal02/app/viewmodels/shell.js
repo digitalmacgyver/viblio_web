@@ -94,6 +94,9 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'upload',             moduleId: 'nginx',             title: 'UPLOAD',                         
 	      nav: true,    authenticated: true,   header: page_header },
 	    
+            { route: 'faces',              moduleId: 'faces',             title: 'Faces',                         
+	      nav: true,    authenticated: true,   header: page_header },
+	    
             { route: 'player',             moduleId: 'player',             title: 'Video Player',                   
 	      nav: false,   authenticated: true,   header: page_header },
 

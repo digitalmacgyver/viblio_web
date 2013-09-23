@@ -1,0 +1,33 @@
+#faces-page .face {
+    width: 128px;
+    float: left;
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+
+#faces-page .face.selected img {
+    border: none;
+}
+
+#faces-page .item-container .face.selected {
+    background: rgba(239,85,65,1);
+}
+
+#faces-page .face.selected .boxShadowed {
+    -moz-box-shadow: none; /* Firefox */
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+#faces-page .face img {
+    height: 128px;
+    width: 128px;
+}
+
+#faces-page .face div.name {
+    width: 128;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+

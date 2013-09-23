@@ -1,0 +1,26 @@
+#magicTagModal img {
+    vertical-align: top;
+    width: 100px;
+    height: 100px;
+}
+.ui-autocomplete { z-index:2147483647; }
+
+#magicTagModal .is-same-as img {
+    width: 40px;
+    height: 40px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 3px;
+    display: block;
+}
+
+#magicTagModal .is-same-as {
+    /* visibility: hidden; */
+    width: 100px;
+}
+
+#magicTagModal .is-same-as .alias {
+    width: 33px;
+    height: 33px;
+    float: left;
+}
