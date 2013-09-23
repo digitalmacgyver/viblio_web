@@ -339,6 +339,10 @@ input:-moz-placeholder {
     outline: none;
 }
 
+#page-header .navbar .nav .dropdown-toggle:focus {
+    color: rgba(159,163,170,1);
+}
+
 .dropdown-toggle div {
     display: inline-block;
 }
