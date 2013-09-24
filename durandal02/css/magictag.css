@@ -1,4 +1,4 @@
-#magicTagModal img {
+#magicTagModal .modal-body > img {
     vertical-align: top;
     width: 100px;
     height: 100px;

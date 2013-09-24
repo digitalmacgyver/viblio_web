@@ -22,7 +22,7 @@ define(['plugins/dialog'], function(dialog) {
 	self.data = {};
 	me = self;
     };
-
+    
     MagicTag.prototype.dismiss = function() {
 	// Pass the data back on close.
 	dialog.close( this, this.data );
