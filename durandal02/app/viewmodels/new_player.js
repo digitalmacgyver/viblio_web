@@ -28,8 +28,9 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
         var newHeight = ko.observable( $('#playerCommentsNavTable-Wrap').height() - 85 );
         
 	//$('#related-videos-block').height( 'auto' );
-        $('#related-videos-block').find('.vstrip .media-area').height( newHeight() );
-        console.log('relatedVidHeight fired! ' + newHeight() );
+        //$('#related-videos-block').find('.vstrip .media-area').height( newHeight() );
+        //console.log('relatedVidHeight fired! ' + newHeight() );
+	$('#related-videos-block').find('.vstrip .media-container').css( 'max-height', newHeight() );
     }
     
     // Used by flowplayer, to decide if we're on a platform that
@@ -466,7 +467,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    // center/zoom to media file location
 	    near( mf );
             // resize height of related video seciton based on page height
-            //relatedVidHeight();
+            relatedVidHeight();
         }
     };
 });
