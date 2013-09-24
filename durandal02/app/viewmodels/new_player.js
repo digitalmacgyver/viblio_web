@@ -25,11 +25,12 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     }
 
     function relatedVidHeight() {
-        var newHeight = ko.observable( $('#playerCommentsNavTable-Wrap').height() - 85 );
+        var newHeight = ko.observable( $('#playerCommentsNavTable').height() - 85 );
         
 	//$('#related-videos-block').height( 'auto' );
-        $('#related-videos-block').find('.vstrip .media-area').height( newHeight() );
-        console.log('relatedVidHeight fired! ' + newHeight() );
+        //$('#related-videos-block').find('.vstrip .media-area').height( newHeight() );
+        //console.log('relatedVidHeight fired! ' + newHeight() );
+	$('#related-videos-block').find('.vstrip .media-container').css( 'max-height', newHeight() );
     }
     
     // Used by flowplayer, to decide if we're on a platform that
@@ -57,6 +58,12 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 
     // Comments associated with currently playing video
     var comments = ko.observableArray([]);
+    var numComments = ko.observable();
+    comments.subscribe(function () {
+        if(comments().length == numComments) {
+            relatedVidHeight();
+        }
+    });
 
     // This observable will contain the vstrip when it is
     // created in attached.  Its a view model and is
@@ -117,6 +124,8 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     function setupComments( m ) {
 	comments.removeAll();
 	viblio.api( '/services/mediafile/comments', { mid: m.uuid } ).then( function( data ) {
+            
+            numComments = data.comments.length;
 	    if ( data.comments && data.comments.length ) {
 		var now = new Date();
 		data.comments.forEach( function( c ) {
@@ -326,6 +335,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	nolocation: nolocation,
 	description: description,
 	comments: comments,
+        numComments: numComments,
 	usercomment: usercomment,
 	finfo: finfo,
 	isNear: isNear,
@@ -466,7 +476,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    // center/zoom to media file location
 	    near( mf );
             // resize height of related video seciton based on page height
-            //relatedVidHeight();
+            relatedVidHeight();
         }
     };
 });
