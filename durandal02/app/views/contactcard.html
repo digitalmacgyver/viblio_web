@@ -1,9 +1,20 @@
-<div id="magicTagModal" class="mocksWhiteBG">
+<div id="contactcardModal" class="mocksWhiteBG">
   <div class='closeX btn btn-primary' data-bind="click: dismiss"><img src='css/images/closeX.png'/></div>
   <div class="modal-body">
-    <h2>Tag this person!</h2>
-    <img class="magic-face" data-bind="attr:{src:url}" />
-    <input type="text" name="cname" id="cname" />
+    <h2>Manage this actor</h2>
+    <table>
+      <tr>
+	<td>
+	  <img class="magic-face" data-bind="attr:{src:url}" />
+	</td>
+	<td>
+	  <div class="cvalues">
+	    <input type="text" name="cname" id="cname" data-bind="value: name" placeholder="Name" /><br />
+	    <input type="email" name="cemail" id="cemail" data-bind="value: email" placeholder="Email" />
+	  </div>
+	</td>
+      </tr>
+    </table>
     <div class="is-same-as">
       <!--
       <img data-bind="attr:{src:sameas}" />
@@ -15,7 +26,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary"   data-bind="click: name, visible: named">Done</button>
+    <button class="btn btn-primary"   data-bind="click: done, visible: named">Done</button>
     <button class="btn btn-secondary" data-bind="click: dismiss">Cancel</button>
   </div>
 </div>

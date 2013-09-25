@@ -4,6 +4,7 @@ define(['durandal/events'],function(Events) {
 
 	this.url = ko.observable( data.url );
 	this.name = ko.observable( data.contact_name ? data.contact_name : 'unknown' );
+	this.email = ko.observable( data.contact_email );
 	this.appsears_in = ko.observable( data.appears_in );
         this.hasStarPower = ko.computed( function() {
             if ( data.star_power ) {

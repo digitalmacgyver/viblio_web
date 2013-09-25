@@ -15,6 +15,11 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 		data.contacts.forEach( function( contact ) {
 		    var face = new Face( contact );
 		    if ( contact.contact_name ) {
+			face.on( 'face:selected',  function( sel, pos ) {
+			    customDialogs.showContactCard( sel ).then( function( data ) {
+				// Make changes
+			    });
+			});
 			known_faces.push( face );
 		    }
 		    else {
