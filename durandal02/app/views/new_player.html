@@ -84,6 +84,9 @@
                                         </div>
                                         <div style="position: relative">
                                             <div id="geo-map" class="map boxShadowed" data-bind="css:{hideme: nolocation() == true}"></div>
+					    <div id="geo-map-reloc" data-bind="css:{hideme: nolocation() == true}">
+					      <button class="btn btn-primary" data-bind="click: relocate">Change Location</button>
+					    </div>
                                             <div id="geo-nomap" data-bind="css:{hideme: nolocation() == false}">
                                                 <img src="css/images/mapMarker-Large.png" data-bind="click: showInteractiveMap" />
                                             </div>

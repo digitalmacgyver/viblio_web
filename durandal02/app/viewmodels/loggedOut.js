@@ -7,7 +7,13 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 
     return {
         
-        showLoggedOutTellFriendsModal: showLoggedOutTellFriendsModal
+        showLoggedOutTellFriendsModal: showLoggedOutTellFriendsModal,
+
+	detached: function() {
+	    console.log( 'canceling logout timeout' );
+	    viblio.cancelScheduledLogoutAndLogout();
+	    return true;
+	}
         
     };
 });

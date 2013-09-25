@@ -79,10 +79,14 @@
     height: 180px;
     margin-right: auto;
     margin-left: auto;
-    position: absolute;
+    position: relative;
     top: 0;
     left: 0;
 }
+#geo-nomap {
+    position: absolute;
+}
+
 
 #geo-nomap img {
     display: block;
@@ -266,4 +270,15 @@
 
 .comment-editor textarea.edit {
     height: 60px;
+}
+
+#nplayer-page #geo-map-reloc {
+    width: 100%;
+}
+
+#nplayer-page #geo-map-reloc button {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 6px;
 }

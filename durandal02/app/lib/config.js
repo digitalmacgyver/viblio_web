@@ -12,7 +12,8 @@ define( function() {
 	'https://staging.viblio.com': '153462094815829',
 	'http://prod.viblio.com': '538791729508064',
 	'https://prod.viblio.com': '538791729508064',
-	'http://10.100.8.99': '357358674377173'
+	'http://10.100.8.99': '357358674377173',
+	'http://10.100.10.61': '357358674377173'
     };
     var myLocation = '//' + window.location.hostname;
     if ( window.location.port )

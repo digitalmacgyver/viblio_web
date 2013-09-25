@@ -8,6 +8,9 @@ define(['plugins/dialog'], function(dialog) {
 	self.sameas = ko.observable();
 	self.aliases = ko.observableArray([]);
 
+	self.original_uri = face.url;
+	self.new_uri = null;
+
 	self.last_x = 0;
 	self.pic_index = 0;
 	self.pic_num = 0;
@@ -37,7 +40,10 @@ define(['plugins/dialog'], function(dialog) {
 	// the name
 	var contact_name = $(self.view).find("#cname").val();
 
-	var ret = { uuid: self.face.data.uuid, cid: cid, contact_name: contact_name };
+	var ret = { uuid: self.face.data.uuid, 
+		    cid: cid,
+		    new_uri: self.new_uri,
+		    contact_name: contact_name };
 
 	var viblio = require( 'lib/viblio' );
 //	viblio.api( '/services/faces/tag', ret ).then( function() {
@@ -56,8 +62,9 @@ define(['plugins/dialog'], function(dialog) {
     };
 
     MagicTag.prototype.swap = function( me, a ) {
-	me.face.url( a );
-	me.url( a );
+	me.face.url( a.url );
+	me.url( a.url );
+	me.new_uri = a.uri;
     };
 
     MagicTag.prototype.compositionComplete = function(view, parent) {

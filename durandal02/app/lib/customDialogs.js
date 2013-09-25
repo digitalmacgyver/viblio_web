@@ -2,7 +2,7 @@
    Application wide dialogs.  For now, just use Durandal standard.
    Later we'll do different things like slide downs and such.
 */
-define( ['durandal/app', 'durandal/system', 'plugins/dialog', 'viewmodels/incoming', 'viewmodels/loading', 'viewmodels/change_password', 'viewmodels/imap','viewmodels/magictag'], function( app, system, dialog, Incoming, Loading, ChangePassword, IMap, MagicTag ) {
+define( ['durandal/app', 'durandal/system', 'plugins/dialog', 'viewmodels/incoming', 'viewmodels/loading', 'viewmodels/change_password', 'viewmodels/imap','viewmodels/magictag','viewmodels/contactcard'], function( app, system, dialog, Incoming, Loading, ChangePassword, IMap, MagicTag, ContactCard ) {
     var incoming = null;
     var loading  = null;
     return {
@@ -51,6 +51,9 @@ define( ['durandal/app', 'durandal/system', 'plugins/dialog', 'viewmodels/incomi
 	},
 	showMagicTag: function( face ) {
 	    return app.showDialog( new MagicTag( face ) );
+	},
+	showContactCard: function( face ) {
+	    return app.showDialog( new ContactCard( face ) );
 	}
     };
 });
