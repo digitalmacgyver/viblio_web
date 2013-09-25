@@ -27,11 +27,8 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     function relatedVidHeight() {
         var newHeight = $('#playerCommentsNavTable').height() + 18;
         
-        console.log('relatedVidHeight fired! from relatedVidHeight ' + newHeight);
-        
 	$('#related-videos-block').find('.vstrip .media-container').css( 'height', newHeight );
-        //$('#related-videos-block').find('.vstrip .media-container-inner').css( 'height', 100 );
-        //Strip.prototype.infiniteScroll();
+        vstrip.updateScroller();
     }
     
     // Used by flowplayer, to decide if we're on a platform that
@@ -56,17 +53,21 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 
     // Currently playing mediafile.  This is the JSON struct, not a view model
     var playing = ko.observable();
-
+    
+    var vstrip = new Strip( 'title', 'subtile' );
+    
     // Comments associated with currently playing video
     var comments = ko.observableArray([]);
     var numComments = 0;
     comments.subscribe(function () {
-        
-        //relatedVidHeight();
-        if(comments().length == numComments) {
-            console.log(comments().length);
-            console.log(numComments);
-            relatedVidHeight();
+        if( comments().length != 0 ) {
+            if(comments().length == numComments) {
+                relatedVidHeight();
+            }
+        } else {
+            setTimeout(function() {
+                relatedVidHeight();
+            }, 300);
         }    
     });
 
@@ -338,6 +339,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	title: title,
 	nolocation: nolocation,
 	description: description,
+        vstrip: vstrip,
 	comments: comments,
 	usercomment: usercomment,
 	finfo: finfo,
@@ -407,7 +409,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    setupFaces( mf );
 
 		    // Get related vids
-		    var vstrip = new Strip( 'title', 'subtile' );
+		    vstrip = new Strip( 'title', 'subtile' );
 
 		    // This async routine is the long pole.  Let it do the promise() resolution to
 		    // pause the system until we have all the data.
@@ -492,7 +494,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    near( mf );
             // resize height of related video seciton based on page height
             relatedVidHeight();
-            
+            vstrip.updateScroller(); 
             console.log('new_player comp complete');
         }
     };

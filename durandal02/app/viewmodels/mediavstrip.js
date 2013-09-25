@@ -142,34 +142,6 @@ define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile'
 	var item = scroller.find('#'+m.media().uuid);
 	scroller.scrollTop( item.position().top + scroller.scrollTop() );
     };
-<<<<<<< HEAD
-    
-    // In attached, attach the mCustomScrollbar we're presently
-    // employing for this purpose.
-    Strip.prototype.compositionComplete = function( view ) {
-	var self = this;
-	self.element = view;
-        
-	// Set up a scroll() handler for infinite scroll
-	$(self.element).find(".media-container").scroll( function() {
-	    var $this = $(this);
-            var height = this.scrollHeight - $this.height(); // Get the height of the div
-            var scroll = $this.scrollTop(); // Get the vertical scroll position
-
-            var isScrolledToEnd = (scroll >= height);
-
-            if (isScrolledToEnd) {
-		self.search();
-            }
-	});
-
-	// At this point (and only at this point!) we have an accurate
-	// height dimension for the scroll area and its item container.
-	// If the item container is shorter than the scroller, and there
-	// is more data on the server, then fetch more data.  We either
-	// want enough data to enable the scrollbar, or all the data
-	//
-=======
 
     // If the item container is shorter than the scroller, and there
     // is more data on the server, then fetch more data.  We either
@@ -177,7 +149,6 @@ define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile'
     //
     Strip.prototype.updateScroller = function() {
 	var self = this;
->>>>>>> master
 	var scroller_height = $(self.element).find(".media-container").height();
 	var container_height = $(self.element).find(".media-container-inner").height();
         
