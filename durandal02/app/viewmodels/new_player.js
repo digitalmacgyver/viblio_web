@@ -26,7 +26,12 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 
     function relatedVidHeight() {
         var newHeight = $('#playerCommentsNavTable').height() + 18;
-	$('#related-videos-block').find('.vstrip .media-container').css( 'max-height', newHeight );
+        
+        console.log('relatedVidHeight fired! from relatedVidHeight ' + newHeight);
+        
+	$('#related-videos-block').find('.vstrip .media-container').css( 'height', newHeight );
+        //$('#related-videos-block').find('.vstrip .media-container-inner').css( 'height', 100 );
+        //Strip.prototype.infiniteScroll();
     }
     
     // Used by flowplayer, to decide if we're on a platform that
@@ -54,11 +59,15 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 
     // Comments associated with currently playing video
     var comments = ko.observableArray([]);
-    var numComments = null;
+    var numComments = 0;
     comments.subscribe(function () {
-        setTimeout(function(){
+        
+        //relatedVidHeight();
+        if(comments().length == numComments) {
+            console.log(comments().length);
+            console.log(numComments);
             relatedVidHeight();
-        },300);
+        }    
     });
 
     // This observable will contain the vstrip when it is
@@ -471,6 +480,8 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    near( mf );
             // resize height of related video seciton based on page height
             relatedVidHeight();
+            
+            console.log('new_player comp complete');
         }
     };
 });

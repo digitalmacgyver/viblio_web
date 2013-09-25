@@ -142,13 +142,13 @@ define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile'
 	var item = scroller.find('#'+m.media().uuid);
 	scroller.scrollTop( item.position().top + scroller.scrollTop() );
     };
-
+    
     // In attached, attach the mCustomScrollbar we're presently
     // employing for this purpose.
     Strip.prototype.compositionComplete = function( view ) {
 	var self = this;
 	self.element = view;
-
+        
 	// Set up a scroll() handler for infinite scroll
 	$(self.element).find(".media-container").scroll( function() {
 	    var $this = $(this);
@@ -170,8 +170,8 @@ define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile'
 	//
 	var scroller_height = $(self.element).find(".media-container").height();
 	var container_height = $(self.element).find(".media-container-inner").height();
-
-	if ( container_height < scroller_height ) {
+        
+            if ( container_height < scroller_height ) {
 	    if ( self.pager.next_page ) {
 		var rows = self.pager.entries_per_page;
 		// There is more data on the server and we have room to display it.
@@ -188,7 +188,7 @@ define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile'
 			    $('body').dequeue();
 			});
 		    });
-	    }
+            }   
 	}
     };
 
