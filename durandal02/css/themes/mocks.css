@@ -1029,7 +1029,7 @@ div.map div.title {
 }
 
 #playerCommentsNavTable-Wrap {
-    padding: 50px 40px 100px;
+    padding: 50px 40px 206px;
 }
 
 #playerCommentsNavTable {
@@ -1224,10 +1224,12 @@ div.map div.title {
     /*height: auto;*/
 }
 
+/*
 #nplayer-page .vstrip .media-area {
     max-height: 1277px;
     overflow: auto;
 }
+*/
 
 #nplayer-page #related-videos-block p {
     margin-top: 0;

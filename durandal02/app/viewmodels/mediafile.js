@@ -78,8 +78,9 @@ define(['durandal/app', 'durandal/events', 'lib/viblio'],function(app, Events, v
     };
 
     Video.prototype.compositionComplete = function( view ) {
-	this.view = view;
-	this.trigger( 'mediafile:composed', this );
+	var self = this;
+	self.view = view;
+	self.trigger( 'mediafile:composed', self );
     };
     
     return Video;

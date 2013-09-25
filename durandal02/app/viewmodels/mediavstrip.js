@@ -74,12 +74,6 @@ define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile'
 	    self.mediaSelected( sel );
 	});
 
-	// When a new Mediafile is added to the horizontal scroller,
-	// we neeed to call its update() method to redraw.
-	m.on( 'mediafile:attached', function() {
-	    $(self.element).find(".media-area").mCustomScrollbar("update");
-	});
-
 	// Proxy the mediafile play event and send it along to
 	// our parent.
 	m.on( 'mediafile:play', function( m ) {
@@ -110,7 +104,6 @@ define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile'
     // to do paging to handle infinite scroll.
     Strip.prototype.search = function() {
 	var self = this;
-
 	return system.defer( function( dfd ) {
 	    if ( self.pager.next_page ) {
 		viblio.api( '/services/mediafile/list', 
@@ -145,7 +138,9 @@ define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile'
     // Scroll to the mediafile specified.
     Strip.prototype.scrollTo = function( m ) {
 	var self = this;
-	$(self.element).find(".media-area").mCustomScrollbar('scrollTo', '#'+m.media().uuid );
+	var scroller = $(self.element).find(".media-container");
+	var item = scroller.find('#'+m.media().uuid);
+	scroller.scrollTop( item.position().top + scroller.scrollTop() );
     };
 
     // In attached, attach the mCustomScrollbar we're presently
@@ -153,40 +148,48 @@ define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile'
     Strip.prototype.compositionComplete = function( view ) {
 	var self = this;
 	self.element = view;
-	
-	if ( true ) { // might need to change to false to debug in chrome tools
-            $(self.element).find(".media-area").mCustomScrollbar({
-		contentTouchScroll: true,
-		theme: 'dark-thick',
-		mouseWheel: true,
-		autoHideScrollbar: true,
-		mouseWheel: true,
-		mouseWheelPixels: 300,
-		horizontalScroll: false,
-		scrollButtons: {
-		    enable: true,
-		    scrollType: 'continuous',
-		    scrollSpeed: 'auto'
-		},
-		callbacks: {
-		    onTotalScrollOffset: ( 2 * 180 ), // The height of 2 pics
-		    onTotalScroll: function() {
-			// fetch more media files
-			self.search();
-		    }
-		},
-		advanced: {
-		    autoScrollOnFocus: false,
-		    updateOnBrowserResize: true,
-                    updateOnContentResize:true
-		}
 
-	    });
+	// Set up a scroll() handler for infinite scroll
+	$(self.element).find(".media-container").scroll( function() {
+	    var $this = $(this);
+            var height = this.scrollHeight - $this.height(); // Get the height of the div
+            var scroll = $this.scrollTop(); // Get the vertical scroll position
+
+            var isScrolledToEnd = (scroll >= height);
+
+            if (isScrolledToEnd) {
+		self.search();
+            }
+	});
+
+	// At this point (and only at this point!) we have an accurate
+	// height dimension for the scroll area and its item container.
+	// If the item container is shorter than the scroller, and there
+	// is more data on the server, then fetch more data.  We either
+	// want enough data to enable the scrollbar, or all the data
+	//
+	var scroller_height = $(self.element).find(".media-container").height();
+	var container_height = $(self.element).find(".media-container-inner").height();
+
+	if ( container_height < scroller_height ) {
+	    if ( self.pager.next_page ) {
+		var rows = self.pager.entries_per_page;
+		// There is more data on the server and we have room to display it.
+		// Will fetching 'rows' cover what we need, or do we need to do multiple
+		// fetches?
+		var item_height = Math.ceil( container_height / rows ); // each item height
+		var total_rows  = Math.ceil( scroller_height / item_height );
+		var need_rows = (total_rows - rows) + 1; // this is how many more we need to fetch
+		var fetches = Math.ceil( need_rows / rows ); // how many search()s
+		// This code *should* queue up N searches to run in serial.
+		for( var i=0; i<fetches; i++ )
+		    $('body').queue(function() {
+			self.search().then( function() {
+			    $('body').dequeue();
+			});
+		    });
+	    }
 	}
-	
-        ko.utils.domNodeDisposal.addDisposeCallback(self.element, function() {
-            $(self.element).find(".media-area").mCustomScrollbar("destroy");
-        });
     };
 
     return Strip;
