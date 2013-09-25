@@ -64,6 +64,7 @@ input[type="color"],
     -webkit-box-shadow: none;
     background-repeat: no-repeat;
     border-color: transparent;
+    position: relative;
     border: none;
     color: white;
     height: 40px;
@@ -74,6 +75,19 @@ input[type="color"],
     padding: 9px 40px;
     box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
+}
+
+.btn-primary:focus::after,
+.btn-primary:active::after,
+.btn:active::after,
+.btn:hover::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.1);
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 
 .btn-primary.disabled, .btn-primary[disabled] {
@@ -94,7 +108,7 @@ input[type="color"],
 .btn-primary:active,
 .btn-primary.active,
 .btn-primary:hover {
-    background-color: rgba(239,85,65,.75);
+    background-color: rgba(239,85,65,1);
 }
 
 .btn-secondary {
@@ -105,7 +119,7 @@ input[type="color"],
 .btn-secondary:active,
 .btn-secondary.active,
 .btn-secondary:hover {
-    background-color: rgba(179,179,179,.75);
+    background-color: rgba(179,179,179,1);
     color: white;
 }
 
@@ -117,7 +131,7 @@ input[type="color"],
 .btn-blue:active,
 .btn-blue.active,
 .btn-blue:hover {
-    background-color: rgba(28,184,209,.75);
+    background-color: rgba(28,184,209,1);
     color: white;
 }
 
@@ -127,6 +141,14 @@ input[type="color"],
     height: 90px;
     top: 40%;
     padding: 0;
+}
+
+.hscroll .mCSB_horizontal>.mCSB_container {
+    height: auto;
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: 30px;
+    overflow: hidden;
 }
 
 .pstrip .back,
@@ -156,12 +178,16 @@ input[type="color"],
 /* Make sure that the container the close x is used with has position:relative */
 .closeX {
     color: white;
-    font-size: 18px;
-    font-weight: 600;
     padding: 8px 10px 10px;
     position: absolute;
     right: 10px;
     top: -4px;
+    z-index: 1;
+}
+
+.closeX > img {
+    max-height: 21px;
+    max-width: 21px;
 }
 
 .messageBox {
@@ -258,7 +284,7 @@ input:-moz-placeholder {
 }
 
 .bottomBorder-Thin {
-    border-bottom: 4px inset rgba(0,0,0,.2);
+    border-bottom: 3px inset rgba(0,0,0,.2);
 }
 
 .bottomBorder-Thick {
@@ -286,19 +312,25 @@ input:-moz-placeholder {
     border-bottom: 3px solid black;
 }
 
+.navbar .brand {
+    padding: 5px 14px 7px;
+}
+
 #page-header .navbar .nav > .active > a,
 #page-header .navbar .nav > .active > a:hover,
 #page-header .navbar .nav > .active > a:focus {
     background-color: rgba(28,184,209,1);
     border-bottom: 3px solid #137089;
+    font-weight: 400;
 }
 
 #page-header .navbar .nav > li > a {
-    padding: 15px 30px;
+    padding: 20px 27px 8px 27px;
     font-size: 18px;
     -moz-text-shadow: 2px 2px rgba(0,0,0,.2);
     -webkit-text-shadow: 2px 2px rgba(0,0,0,.2);
     text-shadow: 2px 2px rgba(0,0,0,.2);
+    font-weight: 100;
 }
 
 .avatar {
@@ -425,6 +457,12 @@ input:-moz-placeholder {
     background-image: none;
     background-repeat: no-repeat;
     filter: none;
+}
+
+/********************  Modals Section  *****************************/
+
+#magicTagModal {
+    position: relative;
 }
 
 /********************  Landing Page Header Section  *****************************/
@@ -1020,6 +1058,12 @@ div.map div.title {
 .yir .mplay-icon:hover {
     left: 177px;
     top: 75px;
+}
+
+/********************  Videos Of Page Section  ***************************/
+
+#videosof-page .pstrip {
+    padding: 0 0 15px 0;
 }
 
 /********************  Player Page Section  *****************************/

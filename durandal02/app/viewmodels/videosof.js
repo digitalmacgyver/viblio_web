@@ -5,7 +5,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
     var contact_id;
     var contactPhoto = ko.observable();
     var contactName  = ko.observable();
-
+    
     function hh(title, subtitle, options) {
         return system.defer( function( dfd ) {
             dfd.resolve( new HScroll(title, subtitle, options) );
@@ -19,7 +19,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
     }
 
     return {
-        displayName: 'Videos Starring',
+        displayName: 'Videos Starring',        
 	contactPhoto: contactPhoto,
 	contactName: contactName,
         strips: strips,
@@ -27,7 +27,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 	    var self = this;
 	    contact_id = args.uuid;
 	    self.strips.removeAll();
-
+            
 	    return system.defer( function( dfd ) {
 		viblio.api( '/services/faces/contact', { cid: contact_id }).then( function( data ) {
 		    var contact = data.contact;
@@ -59,6 +59,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 	    system.wait(1).then( function() {
 		self.strips()[0].ready( view, parent );
 		customDialogs.hideLoading();
+                console.log(self.hits.mediafiles().length);
 	    });
 	}
     };
