@@ -183,10 +183,10 @@
 	});
 	var useButton = $('<button>Use this location</button>');
 	$(useButton).click( function() {
+	    if ( setMarkerCallback ) setMarkerCallback( lastLatLng );
 	    if ( map._viblio ) {
 		map._viblio.disableSetLocation();
 	    }
-	    if ( setMarkerCallback ) setMarkerCallback( lastLatLng );
 	});
 	var popupButtons = $('<div class="viblio-map-popup"></div>');
 	$(popupButtons).append( $(startOverButton) );

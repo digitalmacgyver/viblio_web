@@ -79,14 +79,17 @@ define(['plugins/dialog'], function(dialog) {
 	return viblio.api( '/services/geo/all' ).then( function( json ) {
 	    json.locations.forEach( function( m ) {
 		if ( m.lat && m.lng ) {
-		    self.points.push({
-			lat: m.lat,
-			lng: m.lng,
-			location: m.lat.toString() + ',' + m.lng.toString(),
-			uuid: m.uuid,
-			title: m.title,
-			url: m.url
-		    });
+		    if ( ! (self.options && self.options.relocate && 
+			    self.media().lat == m.lat && self.media().lng == m.lng ) ) {
+			self.points.push({
+			    lat: m.lat,
+			    lng: m.lng,
+			    location: m.lat.toString() + ',' + m.lng.toString(),
+			    uuid: m.uuid,
+			    title: m.title,
+			    url: m.url
+			});
+		    }
 		}
 	    });
 	});

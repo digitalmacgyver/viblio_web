@@ -350,6 +350,18 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		}
 	    });
 	},
+	relocate: function() {
+	    customDialogs.showInteractiveMap( playing().media, {
+		relocate: true,
+		disableMapDrag: false,
+		disableMapMouseZoom: false,
+		disableMapTouchZoom: false,
+		disableMapClickZoom: true,
+		doneCallback: function( m ) {
+		    near( m );
+		}
+	    });
+	},
 	activate: function( args ) {
 	    // capture the query arguments
 	    query(args);
