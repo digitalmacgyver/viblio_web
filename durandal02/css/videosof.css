@@ -1,11 +1,14 @@
 #videosof-page .pstrip img {
-    width: 70px;
-    height: 70px;
+    width: 65px;
+    height: 65px;
     margin-left: 45px;
-    margin-right: 20px;    
+    margin-right: 20px;
+    margin-top: -13px;
 }
 
 #videosof-page .pstrip span {
+    padding-top: 21px;
+    display: inline-block;
     color: white;
-    font-size: 30px;
+    font-size: 32px;
 }

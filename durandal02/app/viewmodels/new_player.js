@@ -25,11 +25,8 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     }
 
     function relatedVidHeight() {
-        var newHeight = ko.observable( $('#playerCommentsNavTable-Wrap').height() - 85 );
-        
-	//$('#related-videos-block').height( 'auto' );
-        $('#related-videos-block').find('.vstrip .media-area').height( newHeight() );
-        console.log('relatedVidHeight fired! ' + newHeight() );
+        var newHeight = $('#playerCommentsNavTable').height() + 18;
+	$('#related-videos-block').find('.vstrip .media-container').css( 'max-height', newHeight );
     }
     
     // Used by flowplayer, to decide if we're on a platform that
@@ -57,6 +54,12 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 
     // Comments associated with currently playing video
     var comments = ko.observableArray([]);
+    var numComments = null;
+    comments.subscribe(function () {
+        setTimeout(function(){
+            relatedVidHeight();
+        },300);
+    });
 
     // This observable will contain the vstrip when it is
     // created in attached.  Its a view model and is
@@ -118,6 +121,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	comments.removeAll();
 	viblio.api( '/services/mediafile/comments', { mid: m.uuid } ).then( function( data ) {
 	    if ( data.comments && data.comments.length ) {
+                numComments = data.comments.length;
 		var now = new Date();
 		data.comments.forEach( function( c ) {
 		    var hash = { comment: c.comment };
@@ -125,8 +129,8 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    hash['when'] = prettyWhen( now, new Date( c.created_date + ' GMT' ) );
 		    comments.push( hash );
 		});
-	    }
-	});
+            }
+        });
     }
 
     // Extract and set up the faces
@@ -466,7 +470,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    // center/zoom to media file location
 	    near( mf );
             // resize height of related video seciton based on page height
-            //relatedVidHeight();
+            relatedVidHeight();
         }
     };
 });

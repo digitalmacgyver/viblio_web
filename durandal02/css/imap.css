@@ -1,3 +1,7 @@
+#imapModal {
+    position: relative;
+}
+
 #imapModal .map {
     width: 600px;
     height: 400px;
@@ -13,6 +17,7 @@
 
 #imapModal .modal-body {
     max-height: none;
+    padding-top: 40px;
 }
 
 #imapModal .help {

@@ -1,11 +1,15 @@
-#magicTagModal .modal-body > img {
+#contactcardModal {
+    position: relative;
+}
+
+#contactcardModal .modal-body table img {
     vertical-align: top;
     width: 100px;
     height: 100px;
+    margin-right: 10px;
 }
-.ui-autocomplete { z-index:2147483647; }
 
-#magicTagModal .is-same-as img {
+#contactcardModal .is-same-as img {
     width: 40px;
     height: 40px;
     margin-right: auto;
@@ -14,13 +18,17 @@
     display: block;
 }
 
-#magicTagModal .is-same-as {
+#contactcardModal .is-same-as {
     /* visibility: hidden; */
     width: 100px;
 }
 
-#magicTagModal .is-same-as .alias {
+#contactcardModal .is-same-as .alias {
     width: 33px;
     height: 33px;
     float: left;
+}
+
+#contactcardModal .modal-body .cvalues {
+    display: inline;
 }

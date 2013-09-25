@@ -1,19 +1,9 @@
-<!--
 <div class="vstrip">
-  <div class="media-area">
-    <div class="portfolio">
-      <ul data-bind="foreach: mediafiles">
-	<div data-bind="compose: $data"></div>
-      </ul>
-    </div>
-  </div>
-</div>
--->
-
-<div class="vstrip">
-  <div class="media-area">
-    <div data-bind="foreach: mediafiles">
+  <div class="media-container">
+    <div class="media-container-inner">
+      <!-- ko foreach: mediafiles -->
       <div data-bind="compose: $data"></div>
+      <!-- /ko -->
     </div>
   </div>
 </div>
