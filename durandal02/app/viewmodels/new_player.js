@@ -54,7 +54,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     // Currently playing mediafile.  This is the JSON struct, not a view model
     var playing = ko.observable();
     
-    var vstrip = new Strip( 'title', 'subtile' );
+    var vstrip;
     
     // Comments associated with currently playing video
     var comments = ko.observableArray([]);

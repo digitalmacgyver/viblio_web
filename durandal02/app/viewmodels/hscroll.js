@@ -223,7 +223,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
         }
         el.stop(true, true).fadeIn( speed );
     };
-
+    
     // manual scroll 
     HScroll.prototype.scrollForward = function() {
 	var self = this;
