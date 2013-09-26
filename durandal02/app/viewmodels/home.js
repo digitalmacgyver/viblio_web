@@ -98,6 +98,7 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 		self.strips()[0].ready( view, parent );
 		self.strips()[1].ready( view, parent );
 		self.strips()[2].ready( view, parent );
+		self.map.resize();
 		customDialogs.hideLoading();
 	    });
 	}
