@@ -58,3 +58,15 @@
     visibility: hidden;
 }
 
+.sd-scroll {
+    height: 251px;
+    width: 100%;
+    position: relative;
+}
+
+.sd-scroll .mediafile {
+    position: relative;
+    float: left;
+    display: block;
+}
+

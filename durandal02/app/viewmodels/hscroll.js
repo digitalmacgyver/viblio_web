@@ -137,7 +137,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 
     HScroll.prototype.attached = function( view ) {
 	var self = this;
-	self.view = $(view).find(".hscroll");
+	self.view = $(view).find(".sd-scroll");
         $( ".hscroll-cc .back" ).hide();
         /*if ( self.pos != 0 ) {
             $( ".hscroll-cc .back" ).fadeIn( 'slow' );
@@ -157,6 +157,25 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 
     HScroll.prototype.ready = function( parent ) {
 	var self = this;
+	$(self.view).smoothDivScroll({
+	    hotSpotScrolling: true,
+	    visibleHotSpotBackgrounds: 'hover',
+	    scrollerRightLimitReached: function() {
+		console.log( 'SCROLL LIMIT, FETCH...' );
+		self.search().then( function() {
+		    $(self.view).smoothDivScroll("recalculateScrollableArea");
+		    $(self.view).smoothDivScroll("redoHotSpots");
+		});
+	    }
+	});
+	$(self.view).trigger( 'initialize' );
+	/**
+	setTimeout( function() {
+	    console.log( 'recalculating' );
+	    $(self.view).smoothDivScroll("recalculateScrollableArea");
+	}, 2000 );
+	**/
+	/**
 	$(self.view).mCustomScrollbar({
 	    horizontalScroll: true,
 	    scrollInertia: 400,
@@ -208,6 +227,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
         if( $(".hscroll-cc .item-container").width() < $('body').width() ) {
             $( ".hscroll-cc .fwd" ).hide();
         }
+	**/
     };
     
     HScroll.prototype.hideIt = function( el, speed ) {
