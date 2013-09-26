@@ -496,7 +496,7 @@
 				el.data("scrollingHotSpotRight").addClass("scrollingHotSpotRightVisible");
 
 				// Fade in the hotspots
-				el.data("scrollingHotSpotLeft").add(el.data("scrollingHotSpotRight")).fadeTo(fadeSpeed, 0.35);
+				el.data("scrollingHotSpotLeft").add(el.data("scrollingHotSpotRight")).fadeTo(fadeSpeed, 1);
 			}
 			// Don't fade, just show them
 			else {
