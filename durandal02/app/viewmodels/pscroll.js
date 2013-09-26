@@ -131,138 +131,38 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 
     Pscroll.prototype.attached = function( view ) {
 	var self = this;
-	self.view = $(view).find(".pscroll");
-	/*$(view).find(".pscroll-cc").mouseover( function(e) {
-	    // hover in
-	    //if ( self.pager.next_page )
-	    $( ".pscroll-cc .fwd" ).css( "visibility", "visible" );
-	    if ( self.pos != 0 )
-		$( ".pscroll-cc .back" ).css( "visibility", "visible" );
-	}).mouseout( function(e) {
-	    // hover out
-	    $( ".pscroll-cc .fwd" ).css( "visibility", "hidden" );
-	    $( ".pscroll-cc .back" ).css( "visibility", "hidden" );
-	});*/
+	self.view = $(view).find(".sd-pscroll");
     };
 
     Pscroll.prototype.ready = function( parent ) {
 	var self = this;
-	$(self.view).mCustomScrollbar({
-	    horizontalScroll: true,
-	    scrollInertia: 400,
-	    mouseWheel: false,
-	    mouseWheelPixels: 300,
-	    autoHideScrollbar: true,
-	    scrollButtons: {
-		enable: true,
-		scrollType: "continuous",
-		scrollAmount: 300,
-		scrollSpeed: 400
-	    },
-	    contentTouchScroll: true,
-	    advanced: {
-		autoExpandHorizontalScroll: true
-	    },
-	    callbacks: {
-		onTotalScroll: function() {
-		    if ( self.pager.next_page ) {
-			$(self.view).find(".mCSB_dragger_bar").addClass("hscroller-loading" );
-			self.search().then(function() {
-			    $(self.view).mCustomScrollbar( "update" );
-			    $(self.view).find(".mCSB_dragger_bar").removeClass("hscroller-loading" );
-			});
-		    } else {
-                        self.hideIt( $( ".pscroll-cc .fwd" ), 'fast' );
-                    }
-		},
-		//onTotalScrollOffset: ( 2 * 250 ),
-		onScroll: function() {
-		    // Keep track of current position if the mouse wheel/swipe is used
-		    self.pos = Math.abs(mcs.left);
-                    if ( self.pos > 0 ) {
-                        self.showIt( $( ".pscroll-cc .back" ), 'fast' );
-                    } else {
-                        self.hideIt( $( ".pscroll-cc .back" ), 'fast' );
-                    }
-                    if ( self.pos < ( $(".pscroll-cc .item-container").width() ) ) {
-                        self.showIt( $( ".pscroll-cc .fwd" ), 'fast' );
-                    }
-		},
-                onTotalScrollBack: function() {
-                    self.hideIt( $( ".pscroll-cc .back" ), 'fast' );
-                }        
+
+	$(self.view).smoothDivScroll({
+	    hotSpotScrolling: true,
+	    visibleHotSpotBackgrounds: 'hover',
+	    scrollerRightLimitReached: function() {
+		if ( self.pager.next_page ) {
+		    // pause is needed to temporarily turn off the timers that control
+		    // hover and mousedown scrolling, while we go off and fetch data
+		    $(self.view).smoothDivScroll("pause");
+		    self.search().then( function() {
+			// Recalculate the geometry
+			$(self.view).smoothDivScroll("recalculateScrollableArea");
+			// re-enable (come out of pause)
+			$(self.view).smoothDivScroll("enable");
+		    });
+		}
+		else {
+		    // Since we hacked the widget to remove flicker,
+		    // we need to manually hide the right most arrow when
+		    // we hit the end.
+		    $(self.view).smoothDivScroll("nomoredata");
+		}
 	    }
 	});
-	self.pos = 0;
-        if( $(".pscroll-cc .item-container").width() < $('body').width() ) {
-            $( ".pscroll-cc .fwd" ).hide();
-        }
-    };
-
-    Pscroll.prototype.hideIt = function( el, speed ) {
-        if (!speed) {
-            speed = 'slow';
-        }
-        el.stop(true, true).fadeOut( speed );
-    };
-    
-    Pscroll.prototype.showIt = function( el, speed ) {
-        if (!speed) {
-            speed = 'slow';
-        }
-        el.stop(true, true).fadeIn( speed );
-    };
-
-    // manual scroll 
-    Pscroll.prototype.scrollForward = function() {
-	var self = this;
-	self.pos += 500;
-	if ( self.pos > $(".item-container").width() - 500 ) {
-	    self.pos = $(".item-container").width() - 500;
-        }/*
-        if ( self.pos != 0 ) {
-            this.showIt( $( ".pscroll-cc .back" ) );
-        }
-        if ( self.pos > ( $(".item-container").width()/2 ) + 500 ) {
-            this.hideIt( $( ".pscroll-cc .fwd" ) );
-        }*/
-	$(self.view).mCustomScrollbar("scrollTo", self.pos);
-    };
-
-    // manual scroll
-    Pscroll.prototype.scrollBackward = function() {
-	var self = this;
-	self.pos -= 500;
-	if ( self.pos < 0 ) {
-            self.pos = 0;
-        }
-        /*if ( self.pos == 0 ) {
-            this.hideIt( $( ".pscroll-cc .back" ) );
-        }
-        if ( self.pos < ( $(".item-container").width()/2 ) + 500 ) {
-            this.showIt( $( ".pscroll-cc .fwd" ) );
-        }*/
-	$(self.view).mCustomScrollbar("scrollTo", self.pos);
-    };
-
-    Pscroll.prototype.action = function( a ) {
-	var self = this;
-	if ( a == 'removeall' ) {
-	    self.items.removeAll();
-	    $(self.view).mCustomScrollbar( "update" );
-	}
-	else if ( a == 'addone' ) {
-	    var m = new Face( self.save[ self.idx ] );
-	    m.on( 'face:compositionComplete', function() {
-		// Have to wait until the face object has composed
-		// itself before updating the scrollbar
-		$(self.view).mCustomScrollbar( "update" );
-	    });
-	    self.items.push( m );
-
-	    self.idx = self.idx + 1;
-	    if ( self.idx > 10 ) self.idx = 5;
-	}
+	// This causes the widget to initialize, since it was originally
+	// designed to initialize on page load.
+	$(self.view).trigger( 'initialize' );
     };
 
     return Pscroll;
