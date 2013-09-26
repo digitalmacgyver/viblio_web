@@ -397,7 +397,6 @@
 			});
 
 		        el.on( 'initialize', function() {
-			    console.log( 'SMOOTH DIV SCROLL INIT' );
 				// If scroller is not hidden, recalculate the scrollable area
 				if (!(o.hiddenOnStart)) {
 					self.recalculateScrollableArea();
@@ -578,13 +577,14 @@
 					// the right scroll hotspot should be hidden
 					// and the left hotspot visible
 					else if (el.data("scrollableAreaWidth") <= (el.data("scrollWrapper").innerWidth() + el.data("scrollWrapper").scrollLeft())) {
-						el.data("scrollingHotSpotLeft").show();
-						el.data("scrollingHotSpotRight").hide();
-						// Callback
-						self._trigger("scrollerRightLimitReached");
-						// Clear interval
-						clearInterval(el.data("rightScrollingInterval"));
-						el.data("rightScrollingInterval", null);
+					    el.data("scrollingHotSpotLeft").show();
+					    // (qp) el.data("scrollingHotSpotRight").hide();
+					    // Callback
+					    self._trigger("scrollerRightLimitReached");
+					    // Clear interval
+					    // (qp) save the interval callback so we can put it back later
+					    // clearInterval(el.data("rightScrollingInterval"));
+					    //el.data("rightScrollingInterval", null);
 					}
 					// If you are somewhere in the middle of your
 					// scrolling, both hotspots should be visible
@@ -1023,6 +1023,10 @@
 	    redoHotSpots: function() {
 		this._showHideHotSpots();
 	    },
+	    redoTimers: function() {
+		var el = this.element;
+		setInterval( el.data( "rightScrollingInterval" ), this.options.hotSpotScrollingInterval );
+	    },
 		recalculateScrollableArea: function () {
 
 			var tempScrollableAreaWidth = 0, foundStartAtElement = false, o = this.options, el = this.element;
@@ -1049,9 +1053,9 @@
 			el.data("scrollableArea").width(el.data("scrollableAreaWidth"));
 
 			// Move to the starting position
-		    console.log( 'Starting Position is', el.data("startingPosition") );
-			el.data("scrollWrapper").scrollLeft(el.data("startingPosition"));
-			el.data("scrollXPos", el.data("startingPosition"));
+		    //(qp) DO NOT RESET BACK TO BEGINNING
+			//el.data("scrollWrapper").scrollLeft(el.data("startingPosition"));
+			//el.data("scrollXPos", el.data("startingPosition"));
 		},
 		/**********************************************************
 		Get current scrolling left offset
@@ -1285,6 +1289,19 @@
 			// Set enabled to false
 			el.data("enabled", false);
 		},
+	        pause: function () {
+			var self = this, el = this.element;
+
+			// Clear all running intervals
+			self.stopAutoScrolling();
+
+			// Set enabled to false
+			el.data("enabled", false);
+		},
+                nomoredata: function() {
+		    var self = this, el = this.element;
+		    el.data("scrollingHotSpotRight").hide();
+	        },
 		destroy: function () {
 			var self = this, el = this.element;
 

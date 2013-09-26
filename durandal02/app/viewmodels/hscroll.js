@@ -138,21 +138,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     HScroll.prototype.attached = function( view ) {
 	var self = this;
 	self.view = $(view).find(".sd-scroll");
-        $( ".hscroll-cc .back" ).hide();
-        /*if ( self.pos != 0 ) {
-            $( ".hscroll-cc .back" ).fadeIn( 'slow' );
-        }
-	$(view).find(".hscroll-cc").mouseover( function(e) {
-	    // hover in
-	    //if ( self.pager.next_page )
-	    $( ".hscroll-cc .fwd" ).fadeIn( 'slow' );
-	    if ( self.pos != 0 )
-		$( ".hscroll-cc .back" ).fadeIn( 'slow' );
-	}).mouseout( function(e) {
-	    // hover out
-	    $( ".hscroll-cc .fwd" ).fadeOut( 'slow' );
-	    $( ".hscroll-cc .back" ).fadeOut( 'slow' );
-	});*/
     };
 
     HScroll.prototype.ready = function( parent ) {
@@ -161,140 +146,29 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	    hotSpotScrolling: true,
 	    visibleHotSpotBackgrounds: 'hover',
 	    scrollerRightLimitReached: function() {
-		console.log( 'SCROLL LIMIT, FETCH...' );
-		self.search().then( function() {
-		    $(self.view).smoothDivScroll("recalculateScrollableArea");
-		    $(self.view).smoothDivScroll("redoHotSpots");
-		});
+		if ( self.pager.next_page ) {
+		    // pause is needed to temporarily turn off the timers that control
+		    // hover and mousedown scrolling, while we go off and fetch data
+		    $(self.view).smoothDivScroll("pause");
+		    self.search().then( function() {
+			// Recalculate the geometry
+			$(self.view).smoothDivScroll("recalculateScrollableArea");
+			// re-enable (come out of pause)
+			$(self.view).smoothDivScroll("enable");
+		    });
+		}
+		else {
+		    // Since we hacked the widget to remove flicker,
+		    // we need to manually hide the right most arrow when
+		    // we hit the end.
+		    $(self.view).smoothDivScroll("nomoredata");
+		}
 	    }
 	});
+	// This causes the widget to initialize, since it was originally
+	// designed to initialize on page load.
 	$(self.view).trigger( 'initialize' );
-	/**
-	setTimeout( function() {
-	    console.log( 'recalculating' );
-	    $(self.view).smoothDivScroll("recalculateScrollableArea");
-	}, 2000 );
-	**/
-	/**
-	$(self.view).mCustomScrollbar({
-	    horizontalScroll: true,
-	    scrollInertia: 400,
-	    mouseWheel: false,
-	    mouseWheelPixels: 300,
-	    autoHideScrollbar: true,
-	    scrollButtons: {
-		enable: true,
-		scrollType: "continuous",
-		scrollAmount: 300,
-		scrollSpeed: 400
-	    },
-	    contentTouchScroll: true,
-	    advanced: {
-		autoScrollOnFocus: false,
-		autoExpandHorizontalScroll: true
-	    },
-	    callbacks: {
-		onTotalScroll: function() {
-		    if ( self.pager.next_page ) {
-			$(self.view).find(".mCSB_dragger_bar").addClass("hscroller-loading" );
-			self.search().then(function() {
-			    $(self.view).mCustomScrollbar( "update" );
-			    $(self.view).find(".mCSB_dragger_bar").removeClass("hscroller-loading" );
-			});
-		    } else {
-                        self.hideIt( $( ".hscroll-cc .fwd" ), 'fast' );
-                    }
-		},
-		//onTotalScrollOffset: ( 2 * 250 ),
-		onScroll: function() {
-		    // Keep track of current position if the mouse wheel/swipe is used
-		    self.pos = Math.abs(mcs.left);
-                    if ( self.pos > 0 ) {
-                        self.showIt( $( ".hscroll-cc .back" ), 'fast' );
-                    } else {
-                        self.hideIt( $( ".hscroll-cc .back" ), 'fast' );
-                    }
-                    if ( self.pos < ( $(".hscroll-cc .item-container").width() ) ) {
-                        self.showIt( $( ".hscroll-cc .fwd" ), 'fast' );
-                    }
-		},
-                onTotalScrollBack: function() {
-                    self.hideIt( $( ".hscroll-cc .back" ), 'fast' );
-                }        
-	    }
-	});
-	self.pos = 0;
-        if( $(".hscroll-cc .item-container").width() < $('body').width() ) {
-            $( ".hscroll-cc .fwd" ).hide();
-        }
-	**/
     };
     
-    HScroll.prototype.hideIt = function( el, speed ) {
-        if (!speed) {
-            speed = 'slow';
-        }
-        el.stop(true, true).fadeOut( speed );
-    };
-    
-    HScroll.prototype.showIt = function( el, speed ) {
-        if (!speed) {
-            speed = 'slow';
-        }
-        el.stop(true, true).fadeIn( speed );
-    };
-
-    // manual scroll 
-    HScroll.prototype.scrollForward = function() {
-	var self = this;
-	self.pos += 390;
-	/*if ( self.pos > $(".item-container").width() - 500 ) {
-	    self.pos = $(".item-container").width() - 500;
-        }
-        if ( self.pos != 0 ) {
-            this.showIt( $( ".hscroll-cc .back" ) );
-        }
-        if ( self.pos > ( $(".item-container").width()/2 ) + 500 ) {
-            this.hideIt( $( ".hscroll-cc .fwd" ) );
-        }*/
-	$(self.view).mCustomScrollbar("scrollTo", self.pos );
-    };
-
-    // manual scroll
-    HScroll.prototype.scrollBackward = function() {
-	var self = this;
-	self.pos -= 390;
-	if ( self.pos < 0 ) {
-            self.pos = 0;
-        }
-        /*if ( self.pos == 0 ) {
-            this.hideIt( $( ".hscroll-cc .back" ) );
-        }
-        if ( self.pos < ( $(".item-container").width()/2 ) + 500 ) {
-            this.showIt( $( ".hscroll-cc .fwd" ) );
-        }*/
-	$(self.view).mCustomScrollbar("scrollTo", self.pos );
-    };
-
-    HScroll.prototype.action = function( a ) {
-	var self = this;
-	if ( a == 'removeall' ) {
-	    self.items.removeAll();
-	    $(self.view).mCustomScrollbar( "update" );
-	}
-	else if ( a == 'addone' ) {
-	    var m = new Mediafile( self.save[ self.idx ] );
-	    m.on( 'mediafile:compositionComplete', function() {
-		// Have to wait until the mediafile object has composed
-		// itself before updating the scrollbar
-		$(self.view).mCustomScrollbar( "update" );
-	    });
-	    self.items.push( m );
-
-	    self.idx = self.idx + 1;
-	    if ( self.idx > 10 ) self.idx = 5;
-	}
-    };
-
     return HScroll;
 });
