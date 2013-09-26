@@ -169,6 +169,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	// designed to initialize on page load.
 	$(self.view).trigger( 'initialize' );
     };
-    
+
     return HScroll;
 });

@@ -180,6 +180,14 @@
     width: 280px;
 }
 
+/*#related-videos-block .media-container {
+    height: 200px;
+}
+
+#related-videos-block .media-container-inner {
+    height: 100px;
+}*/
+
 #related-videos-block p {
     text-align: center;
     font-size: 25px;
