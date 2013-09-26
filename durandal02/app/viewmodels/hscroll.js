@@ -143,6 +143,8 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     HScroll.prototype.ready = function( parent ) {
 	var self = this;
 	$(self.view).smoothDivScroll({
+            scrollingHotSpotLeftClass: "mCSB_buttonLeft",
+            scrollingHotSpotRightClass: "mCSB_buttonRight",
 	    hotSpotScrolling: true,
 	    visibleHotSpotBackgrounds: 'hover',
 	    scrollerRightLimitReached: function() {

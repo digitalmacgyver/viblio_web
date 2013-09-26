@@ -995,6 +995,27 @@ input:-moz-placeholder {
     color: rgba(64,66,79,.75);
 }
 
+/*/\/\/\/\/\/\/\/\/\/\ SmoothDivScroll /\/\/\/\/\/\/\/\/\/\*/
+
+.hstrip .btn-nav {
+    position: absolute;
+    top: 30%;
+}
+
+.sd-scroll .scrollableArea:first-child {
+    margin-left: 45px;
+}
+
+.hstrip .sd-scroll .mCSB_buttonLeft{
+    /*  The first url is for Firefox and other browsers, the second is for Internet Explorer */
+    cursor: url(/lib/smoothDivScroll/images/cursors/cursor_arrow_left.png), url(/lib/smoothDivScroll/images/cursors/cursor_arrow_left.cur),w-resize;
+}
+
+.hstrip .sd-scroll .mCSB_buttonRight {
+    /*  The first url is for Firefox and other browsers, the second is for Internet Explorer */
+    cursor: url(/lib/smoothDivScroll/images/cursors/cursor_arrow_right.png), url(/lib/smoothDivScroll/images/cursors/cursor_arrow_right.cur),e-resize;
+}
+
 /********************  Map Strip  *****************************/
 
 .map > .title {
