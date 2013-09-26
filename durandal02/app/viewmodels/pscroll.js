@@ -6,6 +6,9 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	// The view element, used to manipulate the scroller mostly
 	self.view = null;
 
+	// When the scroller has been initialize
+	self.scroller_ready = false;
+
 	// Passed in title and subtitle
 	self.title = ko.observable(title);
 	self.subtitle = ko.observable(subtitle || '&nbsp;' );
@@ -35,6 +38,8 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	app.on( 'face:ready', function( mf ) {
 	    var m = self.addFace( mf );
 	    self.faces.unshift( m );
+	    if ( self.scroller_ready ) 
+		$(self.view).smoothDivScroll("recalculateScrollableArea");
 	});
 
 	Events.includeIn( this );
@@ -74,17 +79,12 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	    router.navigate( '#/new_player?mid=' + m.face().uuid );
 	});
 
-	m.on( 'face:composed', function() {
-	    if ( self.view ) 
-		$(self.view).mCustomScrollbar("update");
-	});
-
 	// When a face wishes to be deleted
 	//
 	m.on( 'face:delete', function( m ) {
 	    viblio.api( '/services/faces/delete', { uuid: m.face().uuid } ).then( function() {
 		self.faces.remove( m );
-		$(self.view).mCustomScrollbar("update");
+		$(self.view).smoothDivScroll("recalculateScrollableArea");
 	    });
 	});
 
@@ -140,6 +140,9 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	$(self.view).smoothDivScroll({
 	    hotSpotScrolling: true,
 	    visibleHotSpotBackgrounds: 'hover',
+	    setupComplete: function() {
+		self.scroller_ready = true;
+	    },
 	    scrollerRightLimitReached: function() {
 		if ( self.pager.next_page ) {
 		    // pause is needed to temporarily turn off the timers that control

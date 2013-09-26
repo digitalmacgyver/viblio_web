@@ -6,6 +6,9 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	// The view element, used to manipulate the scroller mostly
 	self.view = null;
 
+	// When the scroller has been initialize
+	self.scroller_ready = false;
+
 	// Passed in title and subtitle
 	self.title = ko.observable(title);
 	self.subtitle = ko.observable(subtitle || '&nbsp;' );
@@ -71,7 +74,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	});
 
 	m.on( 'mediafile:composed', function() {
-	    if ( self.view ) 
+	    if ( self.scroller_ready ) 
 		$(self.view).smoothDivScroll("recalculateScrollableArea");
 	});
         
@@ -143,6 +146,9 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	$(self.view).smoothDivScroll({
 	    hotSpotScrolling: true,
 	    visibleHotSpotBackgrounds: 'hover',
+	    setupComplete: function() {
+		self.scroller_ready = true;
+	    },
 	    scrollerRightLimitReached: function() {
 		if ( self.pager.next_page ) {
 		    // pause is needed to temporarily turn off the timers that control
