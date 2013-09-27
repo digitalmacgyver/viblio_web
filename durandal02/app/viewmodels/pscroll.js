@@ -138,6 +138,8 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	var self = this;
 
 	$(self.view).smoothDivScroll({
+	    scrollingHotSpotLeftClass: "mCSB_buttonLeft",
+            scrollingHotSpotRightClass: "mCSB_buttonRight",
 	    hotSpotScrolling: true,
 	    visibleHotSpotBackgrounds: 'hover',
 	    setupComplete: function() {
