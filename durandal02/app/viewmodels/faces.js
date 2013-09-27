@@ -37,6 +37,11 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 					// Add to list of known faces and resort
 					known_faces.push( rm[0] );
 					rm[0].off( 'face:selected' );
+					rm[0].on( 'face:selected',  function( sel, pos ) {
+					    customDialogs.showContactCard( sel ).then( function( data ) {
+						// Make changes
+					    });
+					});
 					known_faces.sort( function( f1, f2 ) {
 					    return f1.name() == f2.name() ? 0 :
 						(f1.name() < f2.name() ? -1 : 1 );
