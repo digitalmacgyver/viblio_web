@@ -1,4 +1,4 @@
-define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'plugins/dialog', 'facebook'], function( router, app, system, config, viblio, dialog ) {
+define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'plugins/dialog', 'cloudsponge'], function( router, app, system, config, viblio, dialog ) {
     
     var friendsEmailsValid = ko.observable(false);
     var tellFriendsMessage = ko.observable();
@@ -10,6 +10,11 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     function closeModal() {
         dialog.close(this);
 	viblio.cancelScheduledLogoutAndLogout();
+    };
+
+    function cimport() {
+	cloudsponge.launch({
+	});
     };
     
     function tellFriends() {
@@ -35,10 +40,23 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     return {
         friendsEmailsValid: friendsEmailsValid,
         tellFriendsMessage: tellFriendsMessage,
-
+	cimport: cimport,
 	compositionComplete: function( view ) {
 	    var self = this;
 	    self.view = view;
+
+	    cloudsponge.init({
+		domain_key:config.cloudsponge_appid(),
+		textarea_id: null,
+		afterSubmitContacts: function( contacts, source, owner ) {
+		    contacts.forEach( function( c ) {
+			$(self.view).find( "#friendsEmails" ).tokenInput( "add", {
+			    id: c.selectedEmail(), 
+			    name: c.first_name });
+		    });
+		}
+	    });
+
 	    $(self.view).find( "#friendsEmails" ).tokenInput( 
 		'/services/faces/contact_emails',
 		{ minChars: 2,

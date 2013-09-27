@@ -11,6 +11,8 @@
 
 	'fancybox': '../lib/fancybox-2.1.5/jquery.fancybox',
 
+	'cloudsponge': '//api.cloudsponge.com/address_books',
+
         'm-custom-scrollbar' : '../lib/m-custom-scrollbar/jquery.mCustomScrollbar.concat.min'
     },
     shim: {
