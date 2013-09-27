@@ -138,8 +138,10 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	var self = this;
 
 	$(self.view).smoothDivScroll({
+            scrollingHotSpotLeftClass: "mCSB_buttonLeft",
+            scrollingHotSpotRightClass: "mCSB_buttonRight",
 	    hotSpotScrolling: true,
-	    visibleHotSpotBackgrounds: 'hover',
+	    visibleHotSpotBackgrounds: 'always',
 	    scrollerRightLimitReached: function() {
 		if ( self.pager.next_page ) {
 		    // pause is needed to temporarily turn off the timers that control
