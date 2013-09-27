@@ -77,6 +77,11 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	    router.navigate( '#/new_player?mid=' + m.media().uuid );
 	});
 
+	m.on( 'mediafile:composed', function() {
+	    if ( self.scroller_ready ) 
+		$(self.view).smoothDivScroll("recalculateScrollableArea");
+	});
+
 	// When a mediafile wishes to be deleted
 	//
 	m.on( 'mediafile:delete', function( m ) {
