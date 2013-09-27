@@ -6,6 +6,9 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	// The view element, used to manipulate the scroller mostly
 	self.view = null;
 
+	// When the scroller has been initialize
+	self.scroller_ready = false;
+
 	// Passed in title and subtitle
 	self.title = ko.observable(title);
 	self.subtitle = ko.observable(subtitle || '&nbsp;' );
@@ -71,13 +74,8 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	});
 
 	m.on( 'mediafile:composed', function() {
-	    if ( self.view ) 
-		$(self.view).mCustomScrollbar("update");
-            if( $(".fscroll-cc .item-container").width() < $('body').width() ) {
-                self.showFwd( false );
-            } else {
-                self.showFwd( true );
-            }
+	    if ( self.scroller_ready ) 
+		$(self.view).smoothDivScroll("recalculateScrollableArea");
 	});
         
 	// When a mediafile wishes to be deleted
@@ -85,7 +83,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	m.on( 'mediafile:delete', function( m ) {
 	    viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function() {
 		self.mediafiles.remove( m );
-		$(self.view).mCustomScrollbar("update");
+		$(self.view).smoothDivScroll("recalculateScrollableArea");
 	    });
 	});
 
@@ -139,119 +137,43 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 
     FScroll.prototype.attached = function( view ) {
 	var self = this;
-	self.view = $(view).find(".fscroll");
+	self.view = $(view).find(".sd-fscroll");
 	self.arrow = $(view).find(".arrow");
-	/*$(view).find(".fscroll-cc").mouseover( function(e) {
-	    // hover in
-	    //if ( self.pager.next_page )
-	    $( ".fscroll-cc .fwd" ).css( "visibility", "visible" );
-	    if ( self.pos != 0 )
-		$( ".fscroll-cc .back" ).css( "visibility", "visible" );
-	}).mouseout( function(e) {
-	    // hover out
-	    $( ".fscroll-cc .fwd" ).css( "visibility", "hidden" );
-	    $( ".fscroll-cc .back" ).css( "visibility", "hidden" );
-	});*/
     };
 
     FScroll.prototype.ready = function( parent ) {
 	var self = this;
-	$(self.view).mCustomScrollbar({
-	    horizontalScroll: true,
-	    scrollInertia: 400,
-	    mouseWheel: false,
-	    mouseWheelPixels: 300,
-	    autoHideScrollbar: true,
-	    scrollButtons: {
-		enable: true,
-		scrollType: "continuous",
-		scrollAmount: 300,
-		scrollSpeed: 400
+	$(self.view).smoothDivScroll({
+	    scrollingHotSpotLeftClass: "mCSB_buttonLeft",
+            scrollingHotSpotRightClass: "mCSB_buttonRight",
+	    hotSpotScrolling: true,
+	    visibleHotSpotBackgrounds: 'hover',
+	    setupComplete: function() {
+		self.scroller_ready = true;
 	    },
-	    contentTouchScroll: true,
-	    advanced: {
-		autoExpandHorizontalScroll: true
-	    },
-	    callbacks: {
-		onTotalScroll: function() {
-		    if ( self.pager.next_page ) {
-			$(self.view).find(".mCSB_dragger_bar").addClass("hscroller-loading" );
-			self.search(self.contact_id).then(function() {
-			    $(self.view).mCustomScrollbar( "update" );
-			    $(self.view).find(".mCSB_dragger_bar").removeClass("hscroller-loading" );
-			});
-		    } else {
-                        self.hideIt( $( ".fscroll-cc .fwd" ), 'fast' );
-                    }
-		},
-		//onTotalScrollOffset: ( 2 * 250 ),
-		onScroll: function() {
-		    // Keep track of current position if the mouse wheel/swipe is used
-		    self.pos = Math.abs(mcs.left);
-                    if ( self.pos > 0 ) {
-                        self.showIt( $( ".fscroll-cc .back" ), 'fast' );
-                    } else {
-                        self.hideIt( $( ".fscroll-cc .back" ), 'fast' );
-                    }
-                    if ( self.pos < ( $(".fscroll-cc .item-container").width() ) ) {
-                        self.showIt( $( ".fscroll-cc .fwd" ), 'fast' );
-                    }
-		},
-                onTotalScrollBack: function() {
-                    self.hideIt( $( ".fscroll-cc .back" ), 'fast' );
-                }        
+	    scrollerRightLimitReached: function() {
+		if ( self.pager.next_page ) {
+		    // pause is needed to temporarily turn off the timers that control
+		    // hover and mousedown scrolling, while we go off and fetch data
+		    $(self.view).smoothDivScroll("pause");
+		    self.search( self.contact_id ).then( function() {
+			// Recalculate the geometry
+			$(self.view).smoothDivScroll("recalculateScrollableArea");
+			// re-enable (come out of pause)
+			$(self.view).smoothDivScroll("enable");
+		    });
+		}
+		else {
+		    // Since we hacked the widget to remove flicker,
+		    // we need to manually hide the right most arrow when
+		    // we hit the end.
+		    $(self.view).smoothDivScroll("nomoredata");
+		}
 	    }
 	});
-	self.pos = 0;
-        if( $(".fscroll-cc .item-container").width() < $('body').width() ) {
-            this.showFwd(false);
-        }
-    };
-
-    FScroll.prototype.hideIt = function( el, speed ) {
-        if (!speed) {
-            speed = 'slow';
-        }
-        el.stop(true, true).fadeOut( speed );
-    };
-    
-    FScroll.prototype.showIt = function( el, speed ) {
-        if (!speed) {
-            speed = 'slow';
-        }
-        el.stop(true, true).fadeIn( speed );
-    };
-
-    // manual scroll 
-    FScroll.prototype.scrollForward = function() {
-	var self = this;
-	self.pos += 500;
-	if ( self.pos > $(".item-container").width() - 500 ) {
-	    self.pos = $(".item-container").width() - 500;
-        }
-        /*if ( self.pos != 0 ) {
-            this.showIt( $( ".fscroll-cc .back" ) );
-        }
-        if ( self.pos > ( $(".item-container").width()/2 ) + 500 ) {
-            this.hideIt( $( ".fscroll-cc .fwd" ) );
-        }*/
-	$(self.view).mCustomScrollbar("scrollTo", self.pos);
-    };
-
-    // manual scroll
-    FScroll.prototype.scrollBackward = function() {
-	var self = this;
-	self.pos -= 500;
-	if ( self.pos < 0 ) {
-            self.pos = 0;
-        }
-        /*if ( self.pos == 0 ) {
-            this.hideIt( $( ".fscroll-cc .back" ) );
-        }
-        if ( self.pos < ( $(".item-container").width()/2 ) + 500 ) {
-            this.showIt( $( ".fscroll-cc .fwd" ) );
-        }*/
-	$(self.view).mCustomScrollbar("scrollTo", self.pos);
+	// This causes the widget to initialize, since it was originally
+	// designed to initialize on page load.
+	$(self.view).trigger( 'initialize' );
     };
 
     FScroll.prototype.clear = function() {
@@ -262,7 +184,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
             total_entries: -1 /* currently unknown */
         };
 	self.mediafiles.removeAll();
-	$(self.view).mCustomScrollbar( "update" );
+	$(self.view).smoothDivScroll("recalculateScrollableArea");
     };
 
     FScroll.prototype.show = function( pos ) {

@@ -6,6 +6,9 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	// The view element, used to manipulate the scroller mostly
 	self.view = null;
 
+	// When the scroller has been initialize
+	self.scroller_ready = false;
+
 	// Passed in title and subtitle
 	self.title = ko.observable(title);
 	self.subtitle = ko.observable(subtitle || '&nbsp;' );
@@ -37,6 +40,8 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	app.on( 'mediafile:ready', function( mf ) {
 	    var m = self.addMediaFile( mf );
 	    self.mediafiles.unshift( m );
+	    if ( self.scroller_ready ) 
+		$(self.view).smoothDivScroll("recalculateScrollableArea");
 	});
     };
 
@@ -72,17 +77,12 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	    router.navigate( '#/new_player?mid=' + m.media().uuid );
 	});
 
-	m.on( 'mediafile:composed', function() {
-	    if ( self.view ) 
-		$(self.view).mCustomScrollbar("update");
-	});
-
 	// When a mediafile wishes to be deleted
 	//
 	m.on( 'mediafile:delete', function( m ) {
 	    viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function() {
 		self.mediafiles.remove( m );
-		$(self.view).mCustomScrollbar("update");
+		$(self.view).smoothDivScroll("recalculateScrollableArea");
 	    });
 	});
 
@@ -147,6 +147,9 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
             scrollingHotSpotRightClass: "mCSB_buttonRight",
 	    hotSpotScrolling: true,
 	    visibleHotSpotBackgrounds: 'always',
+	    setupComplete: function() {
+		self.scroller_ready = true;
+	    },
 	    scrollerRightLimitReached: function() {
 		if ( self.pager.next_page ) {
 		    // pause is needed to temporarily turn off the timers that control
