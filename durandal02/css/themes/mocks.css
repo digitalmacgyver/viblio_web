@@ -143,14 +143,6 @@ input[type="color"],
     padding: 0;
 }
 
-.hscroll .mCSB_horizontal>.mCSB_container {
-    height: auto;
-    margin-right: 0;
-    margin-left: 0;
-    margin-bottom: 30px;
-    overflow: hidden;
-}
-
 .pstrip .back,
 .pstrip .fwd,
 .fstrip .back,
@@ -742,6 +734,8 @@ input:-moz-placeholder {
 .mainVidSection .title {
     margin-bottom: 27px;
     margin-left: 45px;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .title span {
@@ -850,7 +844,7 @@ input:-moz-placeholder {
 /************************** fstrip *******************************/
 
 .fstrip {
-    padding: 35px 0 10px 0;
+    padding: 35px 0 40px 0;
 }
 
 .fstrip .title h2 {
@@ -867,13 +861,15 @@ input:-moz-placeholder {
     margin-left: 10px;
 }
 
-.fscroll .mCSB_horizontal>.mCSB_container {
-    margin-left: 0;
+.sd-fscroll .scrollWrapper {
+    padding-bottom: 5px;
 }
 
-
-.fscroll .item-container .mediafile {
-    margin-right: 15px;
+.sd-fscroll .scrollableArea .mediafile {
+    margin: 0;
+    padding-right: 20px;
+    padding-left: 5px;
+    padding-bottom: 5px;
 }
 
 .fstrip .arrow {
