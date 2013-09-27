@@ -172,8 +172,8 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 		    // we need to manually hide the right most arrow when
 		    // we hit the end.
 		    $(self.view).smoothDivScroll("nomoredata");
+                    }
 		}
-	    }
 	});
 	// This causes the widget to initialize, since it was originally
 	// designed to initialize on page load.
