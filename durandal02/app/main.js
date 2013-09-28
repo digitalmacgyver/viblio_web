@@ -6,12 +6,8 @@
         'transitions' : '../lib/durandal/js/transitions',
 
 	'facebook': '//connect.facebook.net/en_US/all',
-
 	'purl': '../lib/purl',
-
-	'fancybox': '../lib/fancybox-2.1.5/jquery.fancybox',
-
-        'm-custom-scrollbar' : '../lib/m-custom-scrollbar/jquery.mCustomScrollbar.concat.min'
+	'fancybox': '../lib/fancybox-2.1.5/jquery.fancybox'
     },
     shim: {
         'facebook' : {
@@ -23,7 +19,7 @@
 define('jquery', function () { return jQuery; });
 define('knockout', ko);
 
-define(['viewmodels/header', 'viewmodels/landing_header', 'durandal/app', 'durandal/viewLocator', 'durandal/system', 'plugins/router','lib/custom_bindings','lib/viblio','m-custom-scrollbar'], function(page_header, landing_header, app, viewLocator, system, router) {
+define(['viewmodels/header', 'viewmodels/landing_header', 'durandal/app', 'durandal/viewLocator', 'durandal/system', 'plugins/router','lib/custom_bindings','lib/viblio'], function(page_header, landing_header, app, viewLocator, system, router) {
 
     //>>excludeStart("build", true);
     system.debug(true);

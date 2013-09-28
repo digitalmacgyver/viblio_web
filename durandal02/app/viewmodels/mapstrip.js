@@ -58,6 +58,15 @@ define(['durandal/app', 'plugins/router', 'lib/viblio'], function(app,router,vib
 	this.map = null;
     };
 
+    Map.prototype.resize = function() {
+	var self = this;
+	if ( self.map ) {
+	    self.map.data( "map" ).invalidateSize();
+	    self.map.fitBounds();
+	}
+    };
+	
+
     Map.prototype.compositionComplete = function( view, parent ) {
 	var self = this;
 	self.view = view;

@@ -1,59 +1,26 @@
-.pscroll{margin:20px 0 40px 40px; overflow:auto;}
 
-.pscroll .face{max-width:100%; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; padding:4px; border:solid 1px #666;}
-
-.pscroll .item-container .face{display:block; float:left; margin:0 5px; border:none; padding:5px; background:rgba(0,0,0,0.3); -webkit-box-shadow:1px 1px 10px rgba(0,0,0,0.2); -moz-box-shadow:1px 1px 10px rgba(0,0,0,0.2); box-shadow:1px 1px 10px rgba(0,0,0,0.2);}
-
-.pscroll {position:relative; margin:20px auto; width:100%; height:266px; overflow:auto; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box;}
-
-.pscroll .item-container{position: relative; overflow:hidden;max-height:214px;}
-.pscroll .item-container{min-height: 214px;}
-.pscroll .item-container .face{position: relative; max-width:none;}
-.pscroll .item-container .face:first-child{margin-left:0;}
-.pscroll .item-container .face:last-child{margin-right:0;}
-.pscroll .item-container .face.new{background:#de4816;}
-
-
-/* pscroll scrollbar */
-.pscroll>.mCustomScrollBox>.mCSB_scrollTools{
-	width:88%;
-	margin: 0 6%;
-	visibility: hidden;
-}
-
-/* horizontal scrollbar, center items if no scroll */
-.pscroll .mCSB_horizontal>.mCSB_container{
-	height:auto;
-	/*margin-right:0;*/
-	margin-right: auto;
-	margin-left: auto;
-	margin-bottom:30px;
-	overflow:hidden;
-}
-
-/* Some indication that background loading is taking place */
-.pscroll .mCSB_scrollTools .mCSB_dragger .hscroller-loading {
-    background: orange;
-}
-.pscroll .mCSB_scrollTools .mCSB_dragger:hover .hscroller-loading {
-    background: orange;
-}
-
-.pstrip {
+.sd-pscroll {
+    height: 208px;
+    width: 100%;
     position: relative;
 }
 
-.pstrip .fwd {
-    position: absolute;
-    top: 50%;
-    right: -20px;
-    z-index: 10000;
-    visibility: hidden;
+.sd-pscroll .face {
+    position: relative;
+    float: left;
+    display: block;
+    width: 170px;
+    margin-right: 25px;
 }
-.pstrip .back {
-    position: absolute;
-    top: 50%;
-    left: 20px;
-    z-index: 10000;
-    visibility: hidden;
+
+.sd-pscroll .face {
+    display: block;
+    float: left;
+    margin: 0 5px;
+    border: none;
+    padding: 5px;
+    background: rgba(0,0,0,0.3);
+    -webkit-box-shadow: 1px 1px 10px rgba(0,0,0,0.2);
+    -moz-box-shadow: 1px 1px 10px rgba(0,0,0,0.2);
+    box-shadow: 1px 1px 10px rgba(0,0,0,0.2);
 }

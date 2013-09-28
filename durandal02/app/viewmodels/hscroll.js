@@ -6,6 +6,10 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	// The view element, used to manipulate the scroller mostly
 	self.view = null;
 
+	// When the scroller has been initialize
+	self.scroller_ready = false;
+	self.pending_adds   = 0;
+
 	// Passed in title and subtitle
 	self.title = ko.observable(title);
 	self.subtitle = ko.observable(subtitle || '&nbsp;' );
@@ -37,6 +41,8 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	app.on( 'mediafile:ready', function( mf ) {
 	    var m = self.addMediaFile( mf );
 	    self.mediafiles.unshift( m );
+	    if ( self.scroller_ready ) 
+		$(self.view).smoothDivScroll("recalculateScrollableArea");
 	});
     };
 
@@ -73,8 +79,15 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	});
 
 	m.on( 'mediafile:composed', function() {
-	    if ( self.view ) 
-		$(self.view).mCustomScrollbar("update");
+	    if ( self.scroller_ready ) {
+		if ( self.pending_adds > 0 ) {
+		    self.pending_adds -= 1;
+		}
+		else {
+		    $(self.view).smoothDivScroll("recalculateScrollableArea");
+		    $(self.view).smoothDivScroll("enable");
+		}
+	    }
 	});
 
 	// When a mediafile wishes to be deleted
@@ -82,7 +95,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	m.on( 'mediafile:delete', function( m ) {
 	    viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function() {
 		self.mediafiles.remove( m );
-		$(self.view).mCustomScrollbar("update");
+		$(self.view).smoothDivScroll("recalculateScrollableArea");
 	    });
 	});
 
@@ -119,9 +132,20 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	    api = proto.api;
 	    args = $.extend( args, proto.args ); 
 	}
+
+	// pause is needed to temporarily turn off the timers that control
+	// hover and mousedown scrolling, while we go off and fetch data
+	// it will be re-enabled in mediafile:composed at the proper time
+	$(self.view).smoothDivScroll("pause");
+
 	return viblio.api( api, args )
 	    .then( function( json ) {
 		self.pager = json.pager;
+
+		// Remember how many new items will be composed.  This
+		// affects when the scrollbar geometry calcs will happen
+		self.pending_adds = json.media.length - 1;
+
 		json.media.forEach( function( mf ) {
 		    if ( mf.views.main.location == 's3' || mf.views.main.location == 'us' ) {
 			self.mediafiles.push( self.addMediaFile( mf ) );
@@ -137,143 +161,34 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 
     HScroll.prototype.attached = function( view ) {
 	var self = this;
-	self.view = $(view).find(".hscroll");
-        $( ".hscroll-cc .back" ).hide();
-        /*if ( self.pos != 0 ) {
-            $( ".hscroll-cc .back" ).fadeIn( 'slow' );
-        }
-	$(view).find(".hscroll-cc").mouseover( function(e) {
-	    // hover in
-	    //if ( self.pager.next_page )
-	    $( ".hscroll-cc .fwd" ).fadeIn( 'slow' );
-	    if ( self.pos != 0 )
-		$( ".hscroll-cc .back" ).fadeIn( 'slow' );
-	}).mouseout( function(e) {
-	    // hover out
-	    $( ".hscroll-cc .fwd" ).fadeOut( 'slow' );
-	    $( ".hscroll-cc .back" ).fadeOut( 'slow' );
-	});*/
+	self.view = $(view).find(".sd-scroll");
     };
 
     HScroll.prototype.ready = function( parent ) {
 	var self = this;
-	$(self.view).mCustomScrollbar({
-	    horizontalScroll: true,
-	    scrollInertia: 400,
-	    mouseWheel: false,
-	    mouseWheelPixels: 300,
-	    autoHideScrollbar: true,
-	    scrollButtons: {
-		enable: true,
-		scrollType: "continuous",
-		scrollAmount: 300,
-		scrollSpeed: 400
+	$(self.view).smoothDivScroll({
+            scrollingHotSpotLeftClass: "mCSB_buttonLeft",
+            scrollingHotSpotRightClass: "mCSB_buttonRight",
+	    hotSpotScrolling: true,
+	    visibleHotSpotBackgrounds: 'always',
+	    setupComplete: function() {
+		self.scroller_ready = true;
 	    },
-	    contentTouchScroll: true,
-	    advanced: {
-		autoScrollOnFocus: false,
-		autoExpandHorizontalScroll: true
-	    },
-	    callbacks: {
-		onTotalScroll: function() {
-		    if ( self.pager.next_page ) {
-			$(self.view).find(".mCSB_dragger_bar").addClass("hscroller-loading" );
-			self.search().then(function() {
-			    $(self.view).mCustomScrollbar( "update" );
-			    $(self.view).find(".mCSB_dragger_bar").removeClass("hscroller-loading" );
-			});
-		    } else {
-                        self.hideIt( $( ".hscroll-cc .fwd" ), 'fast' );
+	    scrollerRightLimitReached: function() {
+		if ( self.pager.next_page ) {
+		    self.search();
+		}
+		else {
+		    // Since we hacked the widget to remove flicker,
+		    // we need to manually hide the right most arrow when
+		    // we hit the end.
+		    $(self.view).smoothDivScroll("nomoredata");
                     }
-		},
-		//onTotalScrollOffset: ( 2 * 250 ),
-		onScroll: function() {
-		    // Keep track of current position if the mouse wheel/swipe is used
-		    self.pos = Math.abs(mcs.left);
-                    if ( self.pos > 0 ) {
-                        self.showIt( $( ".hscroll-cc .back" ), 'fast' );
-                    } else {
-                        self.hideIt( $( ".hscroll-cc .back" ), 'fast' );
-                    }
-                    if ( self.pos < ( $(".hscroll-cc .item-container").width() ) ) {
-                        self.showIt( $( ".hscroll-cc .fwd" ), 'fast' );
-                    }
-		},
-                onTotalScrollBack: function() {
-                    self.hideIt( $( ".hscroll-cc .back" ), 'fast' );
-                }        
-	    }
+		}
 	});
-	self.pos = 0;
-        if( $(".hscroll-cc .item-container").width() < $('body').width() ) {
-            $( ".hscroll-cc .fwd" ).hide();
-        }
-    };
-    
-    HScroll.prototype.hideIt = function( el, speed ) {
-        if (!speed) {
-            speed = 'slow';
-        }
-        el.stop(true, true).fadeOut( speed );
-    };
-    
-    HScroll.prototype.showIt = function( el, speed ) {
-        if (!speed) {
-            speed = 'slow';
-        }
-        el.stop(true, true).fadeIn( speed );
-    };
-    
-    // manual scroll 
-    HScroll.prototype.scrollForward = function() {
-	var self = this;
-	self.pos += 390;
-	/*if ( self.pos > $(".item-container").width() - 500 ) {
-	    self.pos = $(".item-container").width() - 500;
-        }
-        if ( self.pos != 0 ) {
-            this.showIt( $( ".hscroll-cc .back" ) );
-        }
-        if ( self.pos > ( $(".item-container").width()/2 ) + 500 ) {
-            this.hideIt( $( ".hscroll-cc .fwd" ) );
-        }*/
-	$(self.view).mCustomScrollbar("scrollTo", self.pos );
-    };
-
-    // manual scroll
-    HScroll.prototype.scrollBackward = function() {
-	var self = this;
-	self.pos -= 390;
-	if ( self.pos < 0 ) {
-            self.pos = 0;
-        }
-        /*if ( self.pos == 0 ) {
-            this.hideIt( $( ".hscroll-cc .back" ) );
-        }
-        if ( self.pos < ( $(".item-container").width()/2 ) + 500 ) {
-            this.showIt( $( ".hscroll-cc .fwd" ) );
-        }*/
-	$(self.view).mCustomScrollbar("scrollTo", self.pos );
-    };
-
-    HScroll.prototype.action = function( a ) {
-	var self = this;
-	if ( a == 'removeall' ) {
-	    self.items.removeAll();
-	    $(self.view).mCustomScrollbar( "update" );
-	}
-	else if ( a == 'addone' ) {
-	    var m = new Mediafile( self.save[ self.idx ] );
-	    m.on( 'mediafile:compositionComplete', function() {
-		// Have to wait until the mediafile object has composed
-		// itself before updating the scrollbar
-		$(self.view).mCustomScrollbar( "update" );
-	    });
-	    self.items.push( m );
-
-	    self.idx = self.idx + 1;
-	    if ( self.idx > 10 ) self.idx = 5;
-	}
+	// This causes the widget to initialize, since it was originally
+	// designed to initialize on page load.
+	$(self.view).trigger( 'initialize' );
     };
 
     return HScroll;

@@ -143,14 +143,6 @@ input[type="color"],
     padding: 0;
 }
 
-.hscroll .mCSB_horizontal>.mCSB_container {
-    height: auto;
-    margin-right: 0;
-    margin-left: 0;
-    margin-bottom: 30px;
-    overflow: hidden;
-}
-
 .pstrip .back,
 .pstrip .fwd,
 .fstrip .back,
@@ -740,8 +732,10 @@ input:-moz-placeholder {
 }
 
 .mainVidSection .title {
-    margin-bottom: 22px;
+    margin-bottom: 27px;
     margin-left: 45px;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .title span {
@@ -760,20 +754,8 @@ input:-moz-placeholder {
 }
 
 .mainVidSection .mediafile {
-    width: 360px;
+    width: 350px;
     margin-right: 25px;
-}
-
-.hscroll .item-container .mediafile:first-child,
-.pscroll .item-container .face:first-child,
-.fscroll .item-container .mediafile:first-child {
-    margin-left: 40px;
-}
-
-.hstrip .back,
-.pstrip .back,
-.fstrip .back {
-    left: 0;
 }
 
 .mainVidSection .mediafile img {
@@ -832,7 +814,7 @@ input:-moz-placeholder {
 /************************** hstrip *******************************/
 
 .hstrip {
-    padding: 29px 0 14px 0;
+    padding: 29px 0 39px 0;
 }
 
 .hstrip .title h2 {
@@ -840,20 +822,19 @@ input:-moz-placeholder {
     display: inline;
 }
 
-.hscroll {
-    height: auto;
-}
-
-.hscroll .mCSB_horizontal>.mCSB_container {
-    margin-bottom: 0;
-}
-
 .hstrip .title .btn {
     margin-right: 35px;
 }
 
-.hscroll .item-container .mediafile {
-    margin-right: 15px;
+.hstrip .scrollWrapper .mediafile {
+    position: relative;
+    display: block;
+    float: left;
+    margin: 0;
+    border: none;
+    padding-right: 20px;
+    padding-left: 5px;
+    padding-bottom: 5px;
     background: transparent;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -863,7 +844,7 @@ input:-moz-placeholder {
 /************************** fstrip *******************************/
 
 .fstrip {
-    padding: 35px 0 10px 0;
+    padding: 35px 0 40px 0;
 }
 
 .fstrip .title h2 {
@@ -880,13 +861,15 @@ input:-moz-placeholder {
     margin-left: 10px;
 }
 
-.fscroll .mCSB_horizontal>.mCSB_container {
-    margin-left: 0;
+.sd-fscroll .scrollWrapper {
+    padding-bottom: 5px;
 }
 
-
-.fscroll .item-container .mediafile {
-    margin-right: 15px;
+.sd-fscroll .scrollableArea .mediafile {
+    margin: 0;
+    padding-right: 20px;
+    padding-left: 5px;
+    padding-bottom: 5px;
 }
 
 .fstrip .arrow {
@@ -897,7 +880,7 @@ input:-moz-placeholder {
 /************************** pstrip *******************************/
 
 .pstrip {
-    padding: 25px 0 6px 0;
+    padding: 25px 0 33px 0;
     background-color: #24b8d1;
 }
 
@@ -906,22 +889,22 @@ input:-moz-placeholder {
     display: inline;
 }
 
-.pscroll {
-    height: auto;
-}
-
-.pscroll .item-container {
+.sd-pscroll .scrollWrapper {
     padding-top: 5px;
     margin-bottom: 0;
 }
 
-.pscroll .mCSB_horizontal>.mCSB_container {
+.sd-pscroll .mCSB_horizontal>.mCSB_container {
     margin-bottom: 0;
 }
 
-.pscroll .item-container .face {
-    width: 170px;
-    margin-right: 25px;
+.sd-pscroll .scrollWrapper .face {
+    width: 160px;
+    margin-right: 20px;
+    background: transparent;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
 }
 
 .face {
@@ -932,7 +915,7 @@ input:-moz-placeholder {
     border: none;
 }
 
-.pscroll .item-container .face.selected {
+.sd-pscroll .scrollWrapper .face.selected {
     background: rgba(239,85,65,1);
 }
 
@@ -993,6 +976,35 @@ input:-moz-placeholder {
 
 .face .information .title {
     color: rgba(64,66,79,.75);
+}
+
+/*/\/\/\/\/\/\/\/\/\/\ SmoothDivScroll /\/\/\/\/\/\/\/\/\/\*/
+
+.fstrip .btn-nav,
+.pstrip .btn-nav,
+.hstrip .btn-nav {
+    position: absolute;
+    top: 24%;
+}
+
+.sd-fscroll .scrollableArea:first-child,
+.sd-pscroll .scrollableArea:first-child,
+.sd-scroll .scrollableArea:first-child {
+    margin-left: 40px;
+}
+
+.mCSB_buttonLeft{
+    /*  The first url is for Firefox and other browsers, the second is for Internet Explorer */
+    cursor: url(/lib/smoothDivScroll/images/cursors/cursor_arrow_left.png), url(/lib/smoothDivScroll/images/cursors/cursor_arrow_left.cur),w-resize;
+}
+
+.mCSB_buttonRight {
+    /*  The first url is for Firefox and other browsers, the second is for Internet Explorer */
+    cursor: url(/lib/smoothDivScroll/images/cursors/cursor_arrow_right.png), url(/lib/smoothDivScroll/images/cursors/cursor_arrow_right.cur),e-resize;
+}
+
+.sd-scroll {
+    overflow: hidden;
 }
 
 /********************  Map Strip  *****************************/
@@ -1192,13 +1204,6 @@ div.map div.title {
 
 #faces-column .face .star {
     height: 40px;
-}
-
-.pscroll .item-container .face {
-    background: transparent;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
 }
 
 /********************** Player Map ***********************/
