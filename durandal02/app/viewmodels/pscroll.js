@@ -8,6 +8,7 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 
 	// When the scroller has been initialize
 	self.scroller_ready = false;
+	self.pending_adds   = 0;
 
 	// Passed in title and subtitle
 	self.title = ko.observable(title);
@@ -79,6 +80,18 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	    router.navigate( '#/new_player?mid=' + m.face().uuid );
 	});
 
+        m.on( 'face:composed', function() {
+            if ( self.scroller_ready ) {
+                if ( self.pending_adds > 0 ) {
+                    self.pending_adds -= 1;
+                }
+                else {
+                    $(self.view).smoothDivScroll("recalculateScrollableArea");
+                    $(self.view).smoothDivScroll("enable");
+                }
+            }
+        });
+
 	// When a face wishes to be deleted
 	//
 	m.on( 'face:delete', function( m ) {
@@ -113,10 +126,21 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
     // to do paging to handle infinite scroll.
     Pscroll.prototype.search = function() {
 	var self = this;
+
+        // pause is needed to temporarily turn off the timers that control
+        // hover and mousedown scrolling, while we go off and fetch data
+        // it will be re-enabled in mediafile:composed at the proper time
+        $(self.view).smoothDivScroll("pause");
+
 	return viblio.api( '/services/faces/contacts',
 			   { page: self.pager.next_page, 
 			     rows: self.pager.entries_per_page } )
 	    .then( function( json ) {
+
+                // Remember how many new items will be composed.  This
+                // affects when the scrollbar geometry calcs will happen
+                self.pending_adds = json.faces.length - 1;
+
 		self.pager = json.pager;
 		json.faces.forEach( function( mf ) {
 		    self.faces.push( self.addFace( mf ) );
@@ -147,15 +171,7 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	    },
 	    scrollerRightLimitReached: function() {
 		if ( self.pager.next_page ) {
-		    // pause is needed to temporarily turn off the timers that control
-		    // hover and mousedown scrolling, while we go off and fetch data
-		    $(self.view).smoothDivScroll("pause");
-		    self.search().then( function() {
-			// Recalculate the geometry
-			$(self.view).smoothDivScroll("recalculateScrollableArea");
-			// re-enable (come out of pause)
-			$(self.view).smoothDivScroll("enable");
-		    });
+		    self.search();
 		}
 		else {
 		    // Since we hacked the widget to remove flicker,

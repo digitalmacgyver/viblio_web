@@ -8,6 +8,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 
 	// When the scroller has been initialize
 	self.scroller_ready = false;
+        self.pending_adds   = 0;
 
 	// Passed in title and subtitle
 	self.title = ko.observable(title);
@@ -73,11 +74,18 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	    router.navigate( '#/new_player?mid=' + m.media().uuid );
 	});
 
-	m.on( 'mediafile:composed', function() {
-	    if ( self.scroller_ready ) 
-		$(self.view).smoothDivScroll("recalculateScrollableArea");
-	});
-        
+        m.on( 'mediafile:composed', function() {
+            if ( self.scroller_ready ) {
+                if ( self.pending_adds > 0 ) {
+                    self.pending_adds -= 1;
+                }
+                else {
+                    $(self.view).smoothDivScroll("recalculateScrollableArea");
+                    $(self.view).smoothDivScroll("enable");
+                }
+            }
+        });
+
 	// When a mediafile wishes to be deleted
 	//
 	m.on( 'mediafile:delete', function( m ) {
@@ -113,12 +121,23 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     FScroll.prototype.search = function( contact_id ) {
 	var self = this;
 	self.contact_id = contact_id;
+
+        // pause is needed to temporarily turn off the timers that control
+        // hover and mousedown scrolling, while we go off and fetch data
+        // it will be re-enabled in mediafile:composed at the proper time
+        $(self.view).smoothDivScroll("pause");
+
 	return viblio.api( '/services/faces/media_face_appears_in',
 			   { contact_uuid: contact_id,
 			     page: self.pager.next_page, 
 			     rows: self.pager.entries_per_page } )
 	    .then( function( json ) {
 		self.pager = json.pager;
+
+                // Remember how many new items will be composed.  This
+                // affects when the scrollbar geometry calcs will happen
+                self.pending_adds = json.media.length - 1;
+
 		json.media.forEach( function( mf ) {
 		    if ( mf.views.main.location == 's3' || mf.views.main.location == 'us' ) {
 			self.mediafiles.push( self.addMediaFile( mf ) );
@@ -153,15 +172,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	    },
 	    scrollerRightLimitReached: function() {
 		if ( self.pager.next_page ) {
-		    // pause is needed to temporarily turn off the timers that control
-		    // hover and mousedown scrolling, while we go off and fetch data
-		    $(self.view).smoothDivScroll("pause");
-		    self.search( self.contact_id ).then( function() {
-			// Recalculate the geometry
-			$(self.view).smoothDivScroll("recalculateScrollableArea");
-			// re-enable (come out of pause)
-			$(self.view).smoothDivScroll("enable");
-		    });
+		    self.search( self.contact_id );
 		}
 		else {
 		    // Since we hacked the widget to remove flicker,
