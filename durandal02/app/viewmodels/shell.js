@@ -82,6 +82,9 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'home',               moduleId: 'home',               title: 'HOME',                           
 	      nav: true,    authenticated: true,   header: page_header },
 
+            { route: 'oops',               moduleId: 'oops',               title: 'Oops',                           
+	      nav: false,    authenticated: false,   header: page_header },
+
             { route: 'videosof',           moduleId: 'videosof',           title: 'Videos Starring',                           
 	      nav: false,    authenticated: true,   header: page_header },
 
@@ -137,6 +140,12 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	       login screen.  If they already have an open session, take them to the landing
 	       page.
 	    */
+	    router.on('router:route:not-found', function( fragment ) {
+		viblio._why = { error: 'Route not found: ' + fragment,
+				reason: 'No such route installed' };
+		router.navigate( '#/oops' );
+	    });
+
 	    return system.defer( function( dfd ) {
 		$.getJSON( '/services/user/me' ).then( function( res ) {
 		    if ( res && ! res.error ) {
