@@ -100,9 +100,9 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'faces',              moduleId: 'faces',             title: 'Faces',                         
 	      nav: true,    authenticated: true,   header: page_header },
 	    
-            { route: 'player',             moduleId: 'player',             title: 'Video Player',                   
-	      nav: false,   authenticated: true,   header: page_header },
-
+            { route: 'raw',                moduleId: 'raw',             title: 'Raw Upload',                         
+	      nav: true,    authenticated: true,   header: page_header },
+	    
             { route: 'new_player',             moduleId: 'new_player',             title: 'Video Player',                   
 	      nav: false,   authenticated: true,   header: page_header },
 
