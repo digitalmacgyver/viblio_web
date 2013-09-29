@@ -46,11 +46,11 @@ define(['plugins/dialog'], function(dialog) {
 		    contact_name: contact_name };
 
 	var viblio = require( 'lib/viblio' );
-//	viblio.api( '/services/faces/tag', ret ).then( function() {
+	viblio.api( '/services/faces/tag', ret ).then( function() {
 	    self.face.name( contact_name );
 	    self.data = ret;
 	    self.dismiss();
-//	});
+	});
     };
 
     MagicTag.prototype.activate = function() {

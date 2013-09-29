@@ -52,12 +52,12 @@ define(['plugins/dialog'], function(dialog) {
 		  };
 
 	var viblio = require( 'lib/viblio' );
-//	viblio.api( '/services/faces/change_contact', ret ).then( function() {
+	viblio.api( '/services/faces/change_contact', ret ).then( function() {
 	    self.face.name( contact_name );
 	    self.face.email( contact_email );
 	    self.data = ret;
 	    self.dismiss();
-//	});
+	});
     };
 
     CC.prototype.activate = function() {

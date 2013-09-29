@@ -17,7 +17,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 		    if ( contact.contact_name ) {
 			face.on( 'face:selected',  function( sel, pos ) {
 			    customDialogs.showContactCard( sel ).then( function( data ) {
-				// Make changes
+				// The dialog called the viblio API
 			    });
 			});
 			known_faces.push( face );
@@ -39,7 +39,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 					rm[0].off( 'face:selected' );
 					rm[0].on( 'face:selected',  function( sel, pos ) {
 					    customDialogs.showContactCard( sel ).then( function( data ) {
-						// Make changes
+						// The dialog called the viblio API
 					    });
 					});
 					known_faces.sort( function( f1, f2 ) {
