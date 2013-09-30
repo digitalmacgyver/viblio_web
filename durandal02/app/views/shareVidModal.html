@@ -1,35 +1,17 @@
 <div id="shareVidModal" class="mocksWhiteBG bottomBorder-Thick">
     <div class='closeX btn btn-primary' data-bind="click: closeModal"><img src='css/images/closeX.png'/></div>
-    <div class="bottomBorder paddedDiv">
+    <div id="sharingDiv" class="bottomBorder paddedDiv">
         <p class="bigTitle">Post a link to your Video</p>
-        <ul class='shareIconList'>
+        <ul class='shareIconList' data-bind="foreach: shareNetworks">
             <li>
-                <div class='shareIcon fb'>
-                    <img src='css/images/shareIcons/FBf.png'/>
-                </div>
-                <label>Facebook</label>
+                <a data-bind="attr: { href: url, class: 'shareIcon pop ' + addClass, title: 'Share this page on ' + name }" >
+                    <img data-bind="attr: { src: 'css/images/shareIcons/' + imgName}"/>
+                </a>
+                <label data-bind="text: name"></label>
             </li>
-            <li>
-                <div class='shareIcon twitter'>
-                    <img src='css/images/shareIcons/twitter.png'/>
-                </div>
-                <label>Twitter</label>
-            </li>
-            <li>
-                <div class='shareIcon gPlus'>
-                    <img src='css/images/shareIcons/gPlus.png'/>
-                </div>
-                <label>Google+</label>
-            </li>
-            <li>
-                <div class='shareIcon tumblr'>
-                    <img src='css/images/shareIcons/tumblr.png'/>
-                </div>
-                <label>tumblr</label>
-            </li>
-            <li>
+            <!--<li>
                 <a>more...</a>
-            </li>
+            </li>-->
         </ul>
     </div>
     <form id="sendVidEmail" class="bottomBorder paddedDiv">
@@ -48,7 +30,7 @@
     </form>
     <form id="shareVidLink">
         <p class="bigTitle">Here's your link:</p>
-        <input id="shareLink" type="text" class="text" data-bind="value: shareLink" />
+        <input id="shareLink" type="text" class="text" data-bind="value: $(location).attr('href')" />
         <button id="copyShareLink" class="textShadowed" data-bind="click: copyToClipboard">
             Copy
         </button>
