@@ -8,7 +8,6 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 
 	// When the scroller has been initialize
 	self.scroller_ready = false;
-	self.pending_adds   = 0;
 
 	// Passed in title and subtitle
 	self.title = ko.observable(title);
@@ -82,13 +81,8 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 
         m.on( 'face:composed', function() {
             if ( self.scroller_ready ) {
-                if ( self.pending_adds > 0 ) {
-                    self.pending_adds -= 1;
-                }
-                else {
-                    $(self.view).smoothDivScroll("recalculateScrollableArea");
-                    $(self.view).smoothDivScroll("enable");
-                }
+                $(self.view).smoothDivScroll("recalculateScrollableArea");
+                $(self.view).smoothDivScroll("enable");
             }
         });
 
@@ -136,11 +130,6 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 			   { page: self.pager.next_page, 
 			     rows: self.pager.entries_per_page } )
 	    .then( function( json ) {
-
-                // Remember how many new items will be composed.  This
-                // affects when the scrollbar geometry calcs will happen
-                self.pending_adds = json.faces.length - 1;
-
 		self.pager = json.pager;
 		json.faces.forEach( function( mf ) {
 		    self.faces.push( self.addFace( mf ) );

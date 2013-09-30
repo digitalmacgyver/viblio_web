@@ -1550,3 +1550,19 @@ div.map div.title {
     margin-left: 45px;
     margin-bottom: 20px;
 }
+
+p.uitoken-input ul.token-input-list-facebook {
+    border: 1px solid #ccc;
+    width: inherit;
+}
+
+#loggedOutTellFriendsModal p.uitoken-input input[type="text"] {
+    margin-bottom: 0;
+    background-color: none;
+}
+
+#loggedOutTellFriendsModal p.uitoken-input input[type="text"]:focus {
+    border-color: transparent;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}

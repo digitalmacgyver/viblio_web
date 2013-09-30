@@ -7,7 +7,9 @@
 
 	'facebook': '//connect.facebook.net/en_US/all',
 	'purl': '../lib/purl',
-	'fancybox': '../lib/fancybox-2.1.5/jquery.fancybox'
+
+	'fancybox': '../lib/fancybox-2.1.5/jquery.fancybox',
+	'cloudsponge': '//api.cloudsponge.com/address_books',
     },
     shim: {
         'facebook' : {

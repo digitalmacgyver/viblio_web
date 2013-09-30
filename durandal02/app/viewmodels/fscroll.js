@@ -8,7 +8,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 
 	// When the scroller has been initialize
 	self.scroller_ready = false;
-        self.pending_adds   = 0;
 
 	// Passed in title and subtitle
 	self.title = ko.observable(title);
@@ -76,13 +75,8 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 
         m.on( 'mediafile:composed', function() {
             if ( self.scroller_ready ) {
-                if ( self.pending_adds > 0 ) {
-                    self.pending_adds -= 1;
-                }
-                else {
-                    $(self.view).smoothDivScroll("recalculateScrollableArea");
-                    $(self.view).smoothDivScroll("enable");
-                }
+                $(self.view).smoothDivScroll("recalculateScrollableArea");
+                $(self.view).smoothDivScroll("enable");
             }
         });
 
@@ -133,11 +127,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 			     rows: self.pager.entries_per_page } )
 	    .then( function( json ) {
 		self.pager = json.pager;
-
-                // Remember how many new items will be composed.  This
-                // affects when the scrollbar geometry calcs will happen
-                self.pending_adds = json.media.length - 1;
-
 		json.media.forEach( function( mf ) {
 		    if ( mf.views.main.location == 's3' || mf.views.main.location == 'us' ) {
 			self.mediafiles.push( self.addMediaFile( mf ) );
