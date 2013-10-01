@@ -1,73 +1,61 @@
 define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'plugins/dialog', 'facebook'], function( router, app, system, config, viblio, dialog ) {
     
-    var shareURL = ko.computed(function() {
-        return encodeURIComponent( $(location).attr('href') );
-    });
-    
-    var shareTitle = ko.computed(function() {
-        return encodeURIComponent( $(document).attr('title') );
-    });
-    
-    var shareNetworks = [ { name: 'Facebook', addClass: 'fb', url: 'http://www.facebook.com/share.php?u=' + shareURL(), imgName: 'FBf.png' }, 
-                          { name: 'Twitter', addClass: 'twitter', url: 'https://twitter.com/share?url=' + shareURL() + '&text=' + shareTitle().substring(0,130), imgName: 'twitter.png' }, 
-                          { name: 'Google+', addClass: 'gPlus', url:'https://plusone.google.com/_/+1/confirm?hl=en&url=' + shareURL(), imgName: 'gPlus.png' },
-                          { name: 'tumblr', addClass: 'tumblr', url:'http://www.tumblr.com/share?v=3&u=' + shareURL(), imgName: 'tumblr.png' }
-                        ];
-    
-    var shareVidEmail = ko.observable();
-    var shareEmail_entry_error = ko.observable( false );
+    var S = function( mediafile ) {
+	var self = this;
+	self.mediafile = mediafile;
+	self.shareTitle = ko.computed(function() {
+            return encodeURIComponent( $(document).attr('title') );
+	});
+	self.shareVidEmail = ko.observable();
+	self.shareEmail_entry_error = ko.observable( false );
+	
+	self.shareVidMessage = ko.observable();
+	self.shareMessage_entry_error = ko.observable( false );
+	
+	self.shareNetworks = [ { name: 'Facebook', addClass: 'fb', url: 'http://www.facebook.com/share.php?u=' + self.facebookLink(), imgName: 'FBf.png' }, 
+                               { name: 'Twitter', addClass: 'twitter', url: 'https://twitter.com/share?url=' + self.twitterLink() + '&text=' + self.shareTitle().substring(0,130), imgName: 'twitter.png' }, 
+                               { name: 'Google+', addClass: 'gPlus', url:'https://plusone.google.com/_/+1/confirm?hl=en&url=' + self.googleLink(), imgName: 'gPlus.png' },
+                               { name: 'tumblr', addClass: 'tumblr', url:'http://www.tumblr.com/share?v=3&u=' + self.tumblrLink(), imgName: 'tumblr.png' }
+                             ];
+    };
 
-    var shareVidMessage = ko.observable();
-    var shareMessage_entry_error = ko.observable( false );
+    S.prototype.facebookLink = function() {
+	var server = window.location.protocol + config.site_server;
+	// Override for testing
+	server = 'http://staging.viblio.com';
+	return encodeURIComponent( server + '/shared/flowplayer/' + this.mediafile.media().uuid );
+    };
 
-    fb_appid   = config.facebook_appid();
-    fb_channel = config.facebook_channel();
+    S.prototype.twitterLink = function() {
+	return config.site_server + '/shared/flowplayer/' + this.mediafile.uuid;
+    };
 
-    FB.init({
-	appId: fb_appid,
-	channelUrl: fb_channel,
-	status: true,
-	cookie: true,
-	xfbml: true
-    });
-    
-    function closeModal() {
+    S.prototype.googleLink = function() {
+	return config.site_server + '/shared/flowplayer/' + this.mediafile.uuid;
+    };
+
+    S.prototype.tumblrLink = function() {
+	return config.site_server + '/shared/flowplayer/' + this.mediafile.uuid;
+    };
+
+    S.prototype.closeModal = function() {
         dialog.close(this);
-    }
-    
-    function showShareVidModal() {
-        dialog.show('viewmodels/shareVidModal');
     };
     
-    function emailLink() {
+    S.prototype.emailLink = function() {
         dialog.showMessage('add email vid func');
     };
 
-    function copyToClipboard() {
+    S.prototype.copyToClipboard = function() {
         system.log("Here is the shareLink: " + $('#shareLink').val());
     };
 
-    return {
-        shareURL: shareURL,
-        shareNetworks: shareNetworks,        
-	shareVidEmail: shareVidEmail,
-	shareEmail_entry_error: shareEmail_entry_error,
-
-	shareVidMessage: shareVidMessage,
-	shareMessage_entry_error: shareMessage_entry_error,
-        
-        closeModal: closeModal,
-        showShareVidModal: showShareVidModal,
-        emailLink: emailLink,
-        copyToClipboard: copyToClipboard,
-        
-        attached: function( view, parent ) {
-            
-            $('.pop').click(function(){
-                window.open($(this).attr('href'),'t','toolbar=0,resizable=1,status=0,width=640,height=528');
-                return false;
-            });
-        }
-        
+    S.prototype.attached = function( view, parent ) {
+        $('.pop').click(function(){
+            window.open($(this).attr('href'),'t','toolbar=0,resizable=1,status=0,width=640,height=528');
+            return false;
+        });
     };
+
+    return S;
 });
