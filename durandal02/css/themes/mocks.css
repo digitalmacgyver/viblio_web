@@ -143,6 +143,14 @@ input[type="color"],
     padding: 0;
 }
 
+.btn-nav:hover {
+    background-color: black;
+}
+
+.btn-nav:active {
+    background-color: red;
+}
+
 
 .shareButton {
     padding: 25px 23px 0;
