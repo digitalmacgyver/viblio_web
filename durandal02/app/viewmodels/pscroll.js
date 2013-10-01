@@ -145,12 +145,8 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
     Pscroll.prototype.attached = function( view ) {
 	var self = this;
 	self.view = $(view).find(".sd-pscroll");
-    };
-
-    Pscroll.prototype.ready = function( parent ) {
-	var self = this;
-
-	$(self.view).smoothDivScroll({
+        
+        $(self.view).smoothDivScroll({
 	    scrollingHotSpotLeftClass: "mCSB_buttonLeft",
             scrollingHotSpotRightClass: "mCSB_buttonRight",
 	    hotSpotScrolling: true,
@@ -170,9 +166,16 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 		}
 	    }
 	});
-	// This causes the widget to initialize, since it was originally
+	
+    };
+
+    Pscroll.prototype.ready = function( parent ) {
+	var self = this;
+        
+        // This causes the widget to initialize, since it was originally
 	// designed to initialize on page load.
 	$(self.view).trigger( 'initialize' );
+	
     };
 
     return Pscroll;

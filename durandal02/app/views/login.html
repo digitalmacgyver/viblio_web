@@ -13,10 +13,10 @@
             <form class="bottomBorder-Thick">
                 <div class="centeredEl">
                     <span data-bind="css: { error: email_entry_error() }">
-                        <input type="email" class="text" data-bind="value: email" placeholder="Email address" />
+                        <input type="email" class="text" data-bind="value: email" placeholder="Email address" autocomplete="on"/>
                     </span>
                     <span data-bind="css: { error: password_entry_error() }">
-                        <input type="password" class="text" data-bind="value: password" placeholder="Password" />
+                        <input type="password" class="text" data-bind="value: password" placeholder="Password" autocomplete="off"/>
                     </span>
                     <a href="#/forgotPassword">Forgot Password?</a>
                     <button class="btn btn-primary" data-bind="click: nativeAuthenticate">
