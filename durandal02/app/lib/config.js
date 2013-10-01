@@ -17,7 +17,8 @@ define( function() {
     };
     var csponge = {
 	'http://192.168.1.35': 'FD7C6RP5SE8ERDMB3RHR',
-	'http://staging.viblio.com': 'VPP8BMSQ5AK6JLNRPKCV'
+	'http://staging.viblio.com': 'VPP8BMSQ5AK6JLNRPKCV',
+	'http://prod.viblio.com': 'JQRKUZQYADSCHG5NJQ5P'
     };
     var myLocation = '//' + window.location.hostname;
     if ( window.location.port )
