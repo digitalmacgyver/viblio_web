@@ -143,6 +143,25 @@ input[type="color"],
     padding: 0;
 }
 
+
+.shareButton {
+    padding: 25px 23px 0;
+    width: 270px;
+    height: 70px;
+    text-shadow: none;
+    font-size: 24px;
+    font-weight: 600;
+    color: rgba(0,0,0,.5);
+}
+
+.shareButton:hover {
+    color: white;
+}
+
+.shareButton img {
+    margin-top: -14px;
+}
+
 .pstrip .back,
 .pstrip .fwd,
 .fstrip .back,
@@ -1077,6 +1096,13 @@ div.map div.title {
     padding: 0 0 15px 0;
 }
 
+#videosof-page .shareButton {
+    float: right;
+    margin-top: 18px;
+    margin-right: 26px;
+    clear: both;
+}
+
 /********************  Player Page Section  *****************************/
 
 #main-table {
@@ -1255,17 +1281,9 @@ div.map div.title {
     padding-left: 5px;
 }
 
-#share-video-block div a {
-    padding: 25px 23px 0;
-    height: 70px;
-    text-shadow: none;
-    font-size: 24px;
-    font-weight: 600;
-    color: rgba(0,0,0,.5);
-}
-
-#share-video-block div a img {
-    margin-top: -14px;
+#share-video-block .shareButton {
+    margin-left: 4px;
+    margin-top: 16px;
 }
 
 #nplayer-page #related-videos-block {
