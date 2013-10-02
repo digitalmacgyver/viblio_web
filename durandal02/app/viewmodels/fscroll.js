@@ -178,6 +178,11 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	$(self.view).trigger( 'initialize' );
     };
 
+    FScroll.prototype.detached = function() {
+	$(this.view).smoothDivScroll("destroy");
+	this.scroller_ready = false;
+    };
+
     FScroll.prototype.clear = function() {
 	var self = this;
 	self.pager = {

@@ -144,17 +144,6 @@ input[type="color"],
     padding: 0;
 }
 
-/*.fwd:hover,
-.back:hover {
-    background-color: black;
-}
-
-.fwd.active,
-.back.active {
-    background-color: red;
-}*/
-
-
 .shareButton {
     padding: 25px 23px 0;
     width: 270px;

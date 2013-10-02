@@ -182,5 +182,10 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	$(self.view).trigger( 'initialize' );
     };
 
+    HScroll.prototype.detached = function() {
+	$(this.view).smoothDivScroll("destroy");
+	this.scroller_ready = false;
+    };
+
     return HScroll;
 });

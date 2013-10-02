@@ -34,15 +34,24 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     };
 
     S.prototype.twitterLink = function() {
-	return config.site_server + '/shared/flowplayer/' + this.mediafile.media().uuid;
+	var server = window.location.protocol + config.site_server;
+	// Override for testing
+	server = 'http://staging.viblio.com';
+	return encodeURIComponent( server + '/shared/flowplayer/' + this.mediafile.media().uuid );
     };
 
     S.prototype.googleLink = function() {
-	return config.site_server + '/shared/flowplayer/' + this.mediafile.media().uuid;
+	var server = window.location.protocol + config.site_server;
+	// Override for testing
+	server = 'http://staging.viblio.com';
+	return encodeURIComponent( server + '/shared/flowplayer/' + this.mediafile.media().uuid );
     };
 
     S.prototype.tumblrLink = function() {
-	return config.site_server + '/shared/flowplayer/' + this.mediafile.media().uuid;
+	var server = window.location.protocol + config.site_server;
+	// Override for testing
+	server = 'http://staging.viblio.com';
+	return encodeURIComponent( server + '/shared/flowplayer/' + this.mediafile.media().uuid );
     };
 
     S.prototype.closeModal = function() {
