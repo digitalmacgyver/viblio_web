@@ -13,6 +13,26 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile'], function( router
             }
         });
 	self.cid = cid;
+	
+	// An edit/done label to use on the GUI
+	self.editLabel = ko.observable( 'Edit' );
+    };
+
+    // Toggle edit mode.  This will put all of media
+    // files in the strip into/out of edit mode.  I'm thinking
+    // this will be the way user's can delete their media files
+    YIR.prototype.toggleEditMode = function() {
+	var self = this;
+	if ( self.editLabel() == 'Edit' )
+	    self.editLabel( 'Done' );
+	else
+	    self.editLabel( 'Edit' );
+
+	self.months().forEach( function( month ) {
+	    month.media().forEach( function( mf ) {
+		mf.toggleEditMode();
+	    });
+	});
     };
 
     YIR.prototype.fetch = function( year ) {
@@ -22,11 +42,19 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile'], function( router
 	viblio.api( '/services/yir/videos_for_year', args ).then( function( data ) {
 	    self.months.removeAll();
 	    data.media.forEach( function( month ) {
-		var mediafiles = new Array;
+		//var mediafiles = new Array;
+		var mediafiles = ko.observableArray([]);
 		month.data.forEach( function( mf ) {
 		    var m = new Mediafile( mf );
 		    m.on( 'mediafile:play', function( m ) {
 			router.navigate( '#/new_player?mid=' + m.media().uuid );
+		    });
+		    m.on( 'mediafile:delete', function( m ) {
+			viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function() {
+			    self.months().forEach( function( month ) {
+				month.media.remove( m );
+			    });
+			});
 		    });
 		    mediafiles.push( m );
 		});
@@ -40,6 +68,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile'], function( router
 	    y.selected( false );
 	});
 	year.selected( true );
+	self.editLabel( 'Edit' );
 	self.fetch( year.label );
     };
 
