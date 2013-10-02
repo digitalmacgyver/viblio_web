@@ -73,55 +73,58 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 
     function buildRouterMap() {
         router.map([
-            { route: '',                   moduleId: 'landing',            title: 'Viblio Landing Page',            
+            { route: '',                   moduleId: 'landing',            title: 'Viblio Landing Page',
 	      nav: false,   authenticated: false,  header: landing_header },
 
-            { route: 'landing',            moduleId: 'landing',            title: 'Viblio Landing Page',            
+            { route: 'landing',            moduleId: 'landing',            title: 'Viblio Landing Page',
 	      nav: false,   authenticated: false,  header: landing_header },
 
-            { route: 'home',               moduleId: 'home',               title: 'HOME',                           
+            { route: 'home',               moduleId: 'home',               title: 'HOME',
 	      nav: true,    authenticated: true,   header: page_header },
 
-            { route: 'oops',               moduleId: 'oops',               title: 'Oops',                           
+            { route: 'oops',               moduleId: 'oops',               title: 'Oops',
 	      nav: false,    authenticated: false,   header: page_header },
 
-            { route: 'videosof',           moduleId: 'videosof',           title: 'Videos Starring',                           
+            { route: 'videosof',           moduleId: 'videosof',           title: 'Videos Starring',
 	      nav: false,    authenticated: true,   header: page_header },
 
-            { route: 'login',              moduleId: 'login',              title: 'Log in to your Viblio account',  
+            { route: 'login',              moduleId: 'login',              title: 'Log in to your Viblio account',
 	      nav: false,   authenticated: false,  header: landing_header },
 
-            { route: 'settings',           moduleId: 'settings',           title: 'User Settings',                  
+            { route: 'settings',           moduleId: 'settings',           title: 'User Settings',
 	      nav: false,   authenticated: true,   header: page_header },
 
-            { route: 'upload',             moduleId: 'nginx',             title: 'UPLOAD',                         
+            { route: 'upload',             moduleId: 'nginx',              title: 'UPLOAD',
 	      nav: true,    authenticated: true,   header: page_header },
 	    
-            { route: 'faces',              moduleId: 'faces',             title: 'Faces',                         
+            { route: 'faces',              moduleId: 'faces',              title: 'Faces',
 	      nav: true,    authenticated: true,   header: page_header },
 	    
-            { route: 'raw',                moduleId: 'raw',             title: 'Raw Upload',                         
+            { route: 'raw',                moduleId: 'raw',                title: 'Raw Upload',
 	      nav: true,    authenticated: true,   header: page_header },
 	    
-            { route: 'new_player',             moduleId: 'new_player',             title: 'Video Player',                   
+            { route: 'new_player',             moduleId: 'new_player',     title: 'Video Player',
 	      nav: false,   authenticated: true,   header: page_header },
 
-            { route: 'forgotPassword',     moduleId: 'forgotPassword',     title: 'Forgot your Password?',         
+            { route: 'forgotPassword',     moduleId: 'forgotPassword',     title: 'Forgot your Password?',
 	      nav: false,   authenticated: false,  header: landing_header },
 
-            { route: 'invite',             moduleId: 'invite',             title: 'Viblio Invite',                  
+            { route: 'invite',             moduleId: 'invite',             title: 'Viblio Invite',
 	      nav: false,   authenticated: false,  header: landing_header },
 
-            { route: 'shareVidModal',      moduleId: 'shareVidModal',      title: 'Viblio Share Video',             
+            { route: 'shareVidModal',      moduleId: 'shareVidModal',      title: 'Viblio Share Video',
 	      nav: false,   authenticated: true,   header: page_header },
 
-            { route: 'settings',           moduleId: 'settings',           title: 'User Settings',                  
+            { route: 'settings',           moduleId: 'settings',           title: 'User Settings',
 	      nav: false,   authenticated: true,   header: page_header },
 
-            { route: 'incoming',           moduleId: 'incoming',           title: 'Incoming Message',               
+            { route: 'incoming',           moduleId: 'incoming',           title: 'Incoming Message',
 	      nav: false,   authenticated: true,   header: page_header },
           
-            { route: 'loggedOut',           moduleId: 'loggedOut',           title: 'Log out successful',               
+            { route: 'web_player',         moduleId: 'web_player',         title: 'Video Player',
+	      nav: false,   authenticated: false,   header: landing_header },
+          
+            { route: 'loggedOut',           moduleId: 'loggedOut',         title: 'Log out successful',
 	      nav: false,   authenticated: true,   header: landing_header }
         ]).buildNavigationModel();
     }
