@@ -169,9 +169,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 		    // we need to manually hide the right most arrow when
 		    // we hit the end.
 		    $(self.view).smoothDivScroll("nomoredata");
-                    console.log("that's all folks");
-                    console.log( $(':active')[$(':active').length-1] );
-                    $( $(':active')[$(':active').length-1] ).blur();
                     }
 		}
 	});

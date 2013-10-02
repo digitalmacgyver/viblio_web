@@ -135,7 +135,8 @@ input[type="color"],
     color: white;
 }
 
-.btn-nav {
+.fwd,
+.back {
     background-color: rgba(50,53,68,1);
     width: 54px;
     height: 90px;
@@ -143,13 +144,15 @@ input[type="color"],
     padding: 0;
 }
 
-.btn-nav:hover {
+/*.fwd:hover,
+.back:hover {
     background-color: black;
 }
 
-.btn-nav:active {
+.fwd.active,
+.back.active {
     background-color: red;
-}
+}*/
 
 
 .shareButton {
@@ -1460,10 +1463,26 @@ div.map div.title {
     margin: 0;
 }
 
-#sendVidEmail input,
+#sendVidEmail .uitoken-input,
 #sendVidEmail textarea {
     width: 486px;
     margin-bottom: 18px;
+}
+
+#sendVidEmail .uitoken-input {
+    width: 498px;
+}
+
+.uitoken-input input[type="text"]:focus {
+    outline: none;
+    border: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none; 
+}
+
+li.token-input-token-facebook {
+    padding: 6px;
 }
 
 #sendVidEmail textarea {
@@ -1635,7 +1654,7 @@ div.map div.title {
 }
 
 p.uitoken-input ul.token-input-list-facebook {
-    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.3);
     width: inherit;
 }
 
@@ -1647,5 +1666,6 @@ p.uitoken-input ul.token-input-list-facebook {
 #loggedOutTellFriendsModal p.uitoken-input input[type="text"]:focus {
     border-color: transparent;
     -webkit-box-shadow: none;
+    -moz-box-shadow: none;
     box-shadow: none;
 }

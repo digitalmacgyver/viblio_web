@@ -17,13 +17,11 @@
     <form id="sendVidEmail" class="bottomBorder paddedDiv">
         <div class="centeredEl">
             <p class="bigTitle">Send a link by email</p>
-            <span data-bind="css: { error: shareEmail_entry_error() }">
-                <input type="email" class="text" data-bind="value: shareVidEmail" placeholder="Email address" />
-            </span>
-            <span data-bind="css: { error: shareMessage_entry_error() }">
-                <textarea class="text" data-bind="value: shareVidMessage" placeholder="Check out my new video on Viblio!"></textarea>
-            </span>
-            <button class="btn btn-primary" data-bind="click: emailLink">
+            <p><a href="#" data-bind="click: cimport">Import from Address Book(s)</a></p>
+            <p class="uitoken-input"><input id='shareVidEmail' type="text" placeholder="Email address" /></p>
+            <!--<input type="email" class="text" data-bind="value: shareVidEmail" placeholder="Email address" />-->
+            <textarea id="shareVidMessage" class="text" data-bind="value: shareVidMessage" placeholder="Check out my new video on Viblio!"></textarea>
+            <button class="btn btn-primary" data-bind="click: emailLink, enable: shareVidEmailValid">
                 Send
             </button>
         </div>
