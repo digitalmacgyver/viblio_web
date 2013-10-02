@@ -56,7 +56,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 			viblio.setUser( res.user );
 		    }
 		    viblio.api( '/services/na/media_shared', 
-				{ mid: mid, uid: viblio.getUser().uuid } ).then( function() {
+				{ mid: mid, uid: viblio.getUser().uuid } ).then( function(json) {
 				    var mf = json.media;
 				    playing( new Mediafile( mf ) );
 				    dfd.resolve({});
