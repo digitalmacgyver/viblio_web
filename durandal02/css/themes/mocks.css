@@ -143,6 +143,24 @@ input[type="color"],
     padding: 0;
 }
 
+.shareButton {
+    padding: 25px 23px 0;
+    width: 270px;
+    height: 70px;
+    text-shadow: none;
+    font-size: 24px;
+    font-weight: 600;
+    color: rgba(0,0,0,.5);
+}
+
+.shareButton:hover {
+    color: white;
+}
+
+.shareButton img {
+    margin-top: -14px;
+}
+
 .pstrip .back,
 .pstrip .fwd,
 .fstrip .back,
@@ -254,7 +272,6 @@ input:-moz-placeholder {
 
 .mocksWhiteBG {
     background-color: white;
-    border: 1px solid lightgrey;
 }
 
 .lightBlueFont {
@@ -661,12 +678,12 @@ input:-moz-placeholder {
     margin-bottom: 0;
 }
 
-#shareIconList {
+.shareIconList {
     margin: 0;
     margin-top: 10px;
 }
 
-#shareIconList li {
+.shareIconList li {
     display: inline-block;
     margin-right: 35px;
     margin-bottom: 10px;
@@ -674,22 +691,22 @@ input:-moz-placeholder {
     cursor: pointer;
 }
 
-#shareIconList li label {
+.shareIconList li label {
     margin-bottom: -32px;
     font-size: 16px;
     color: rgba(0,0,0,.5);
     visibility: hidden;
 }
 
-#shareIconList li:hover > label {
+.shareIconList li:hover > label {
     visibility: inherit;
 }
 
-#shareIconList li:last-of-type {
+.shareIconList li:last-of-type {
     vertical-align: top;
 }
 
-#shareIconList a {
+.shareIconList a {
     padding-top: 20px;
     display: block;
     font-size: 16px;
@@ -1078,6 +1095,13 @@ div.map div.title {
     padding: 0 0 15px 0;
 }
 
+#videosof-page .shareButton {
+    float: right;
+    margin-top: 18px;
+    margin-right: 26px;
+    clear: both;
+}
+
 /********************  Player Page Section  *****************************/
 
 #main-table {
@@ -1256,17 +1280,9 @@ div.map div.title {
     padding-left: 5px;
 }
 
-#share-video-block div a {
-    padding: 25px 23px 0;
-    height: 70px;
-    text-shadow: none;
-    font-size: 24px;
-    font-weight: 600;
-    color: rgba(0,0,0,.5);
-}
-
-#share-video-block div a img {
-    margin-top: -14px;
+#share-video-block .shareButton {
+    margin-left: 4px;
+    margin-top: 16px;
 }
 
 #nplayer-page #related-videos-block {
@@ -1414,6 +1430,64 @@ div.map div.title {
 
 .editing .view { 
     display: none; 
+}
+
+/********************  Share Video Modal Section  *************************/
+
+#shareVidModal {
+    width: 600px;
+    position: relative;
+}
+
+#shareVidModal .paddedDiv {
+    padding: 40px 50px 48px;
+}
+
+#shareVidModal .bigTitle {
+    margin-bottom: 30px;
+}
+
+#shareVidModal form {
+    margin: 0;
+}
+
+#sendVidEmail input,
+#sendVidEmail textarea {
+    width: 486px;
+    margin-bottom: 18px;
+}
+
+#sendVidEmail textarea {
+    height: 65px;
+}
+
+#shareVidLink {
+    padding: 30px 50px;
+}
+
+#shareVidLink .bigTitle {
+    display: inline-block;
+    margin-bottom: 0;
+}
+
+#shareVidLink input {
+    position: relative;
+    width: 236px;
+    margin-bottom: 0;
+    margin-left: 20px;
+    top: -5px;
+    padding-right: 70px;
+}
+
+#copyShareLink {
+    position: absolute;
+    right: 54px;
+    bottom: 39px;
+    border: none;
+    color: white;
+    background-color: rgba(152,154,160,1);
+    padding: 6px 13px;
+    font-size: 16px;
 }
 
 /********************  Settings Page Section  *****************************/

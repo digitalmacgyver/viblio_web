@@ -1,31 +1,37 @@
-<div id="shareVidModal" class="roundedCorners iwhiteDropshadowBackground">
-    <div class="close" data-bind="click: closeModal">X</div>
-    <div class="igreyBottomBrdr">
-        <h3>Post a link to your Video</h3>
-        <button>Facebook</button>
-        <button>Twitter</button>
-        <button>Google+</button>
-        <button>Tumblr</button>
-        <a href="">more...</a>
+<div id="shareVidModal" class="mocksWhiteBG bottomBorder-Thick">
+    <div class='closeX btn btn-primary' data-bind="click: closeModal"><img src='css/images/closeX.png'/></div>
+    <div id="sharingDiv" class="bottomBorder paddedDiv">
+        <p class="bigTitle">Post a link to your Video</p>
+        <ul class='shareIconList' data-bind="foreach: shareNetworks">
+            <li>
+                <a data-bind="attr: { href: url, class: 'shareIcon pop ' + addClass, title: 'Share this page on ' + name }" >
+                    <img data-bind="attr: { src: 'css/images/shareIcons/' + imgName}"/>
+                </a>
+                <label data-bind="text: name"></label>
+            </li>
+            <!--<li>
+                <a>more...</a>
+            </li>-->
+        </ul>
     </div>
-    <form class="igreyBottomBrdr">
+    <form id="sendVidEmail" class="bottomBorder paddedDiv">
         <div class="centeredEl">
-            <h3>Send a link by email</h3>
+            <p class="bigTitle">Send a link by email</p>
             <span data-bind="css: { error: shareEmail_entry_error() }">
-                <input type="email" class="text" data-bind="value: shareVidEmail" placeholder="Type email addresses here" />
+                <input type="email" class="text" data-bind="value: shareVidEmail" placeholder="Email address" />
             </span>
             <span data-bind="css: { error: shareMessage_entry_error() }">
-                <input type="text" class="text" data-bind="value: shareVidMessage" placeholder="Include a message (optional)" />
+                <textarea class="text" data-bind="value: shareVidMessage" placeholder="Check out my new video on Viblio!"></textarea>
             </span>
-            <button class="primaryBtn iBtnSz" data-bind="click: emailLink">
+            <button class="btn btn-primary" data-bind="click: emailLink">
                 Send
             </button>
         </div>
     </form>
-    <form>
-        <h3>Here's your link:</h3>
-        <input id="shareLink" type="text" class="text" data-bind="value: shareLink" />
-        <button class="secondaryBtn iBtnSz" data-bind="click: copyToClipboard">
+    <form id="shareVidLink">
+        <p class="bigTitle">Here's your link:</p>
+        <input id="shareLink" type="text" class="text" data-bind="value: $(location).attr('href')" />
+        <button id="copyShareLink" class="textShadowed" data-bind="click: copyToClipboard">
             Copy
         </button>
     </form>

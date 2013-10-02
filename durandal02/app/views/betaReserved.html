@@ -9,34 +9,16 @@
     <div class="bottomBorder-Thick">
         <div class="centeredEl paddedDiv">
             <h3>Your friends can be in on this too!</h3>
-            <ul id='shareIconList'>
+            <ul class='shareIconList' data-bind="foreach: shareNetworks">
                 <li>
-                    <div class='shareIcon fb'>
-                        <img src='css/images/shareIcons/FBf.png'/>
-                    </div>
-                    <label>Facebook</label>
+                    <a data-bind="attr: { href: url, class: 'shareIcon pop ' + addClass, title: 'Share this page on ' + name }" >
+                        <img data-bind="attr: { src: 'css/images/shareIcons/' + imgName}"/>
+                    </a>
+                    <label data-bind="text: name"></label>
                 </li>
-                <li>
-                    <div class='shareIcon twitter'>
-                        <img src='css/images/shareIcons/twitter.png'/>
-                    </div>
-                    <label>Twitter</label>
-                </li>
-                <li>
-                    <div class='shareIcon gPlus'>
-                        <img src='css/images/shareIcons/gPlus.png'/>
-                    </div>
-                    <label>Google+</label>
-                </li>
-                <li>
-                    <div class='shareIcon tumblr'>
-                        <img src='css/images/shareIcons/tumblr.png'/>
-                    </div>
-                    <label>tumblr</label>
-                </li>
-                <li>
+                <!--<li>
                     <a>more...</a>
-                </li>
+                </li>-->
             </ul>
         </div>
     </div>

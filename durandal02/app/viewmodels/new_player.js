@@ -331,7 +331,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 
     return {
         showShareVidModal: function() {
-            app.showDialog('viewmodels/shareVidModal');
+            customDialogs.showShareVidModal( playing() );
         },
 	user: viblio.user,
 	query: query,

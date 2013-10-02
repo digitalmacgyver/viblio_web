@@ -19,6 +19,9 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
     }
 
     return {
+        showShareVidModal: function() {
+            app.showDialog('viewmodels/shareVidModal');
+        },
         displayName: 'Videos Starring',        
 	contactPhoto: contactPhoto,
 	contactName: contactName,

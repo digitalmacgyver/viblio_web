@@ -151,11 +151,8 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     HScroll.prototype.attached = function( view ) {
 	var self = this;
 	self.view = $(view).find(".sd-scroll");
-    };
-
-    HScroll.prototype.ready = function( parent ) {
-	var self = this;
-	$(self.view).smoothDivScroll({
+        
+        $(self.view).smoothDivScroll({
             scrollingHotSpotLeftClass: "mCSB_buttonLeft",
             scrollingHotSpotRightClass: "mCSB_buttonRight",
 	    hotSpotScrolling: true,
@@ -172,9 +169,17 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 		    // we need to manually hide the right most arrow when
 		    // we hit the end.
 		    $(self.view).smoothDivScroll("nomoredata");
+                    console.log("that's all folks");
+                    console.log( $(':active')[$(':active').length-1] );
+                    $( $(':active')[$(':active').length-1] ).blur();
                     }
 		}
 	});
+    };
+
+    HScroll.prototype.ready = function( parent ) {
+	var self = this;
+	
 	// This causes the widget to initialize, since it was originally
 	// designed to initialize on page load.
 	$(self.view).trigger( 'initialize' );
