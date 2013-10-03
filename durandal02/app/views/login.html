@@ -13,10 +13,10 @@
             <form class="bottomBorder-Thick">
                 <div class="centeredEl">
                     <span data-bind="css: { error: email_entry_error() }">
-                        <input type="email" class="text" data-bind="value: email" placeholder="Email address" autocomplete="on"/>
+                        <input type="email" name="email" class="text" data-bind="value: email" placeholder="Email address" />
                     </span>
                     <span data-bind="css: { error: password_entry_error() }">
-                        <input type="password" class="text" data-bind="value: password" placeholder="Password" autocomplete="off"/>
+                        <input type="password" name="pword" class="text" data-bind="value: password" placeholder="Password" />
                     </span>
                     <a href="#/forgotPassword">Forgot Password?</a>
                     <button class="btn btn-primary" data-bind="click: nativeAuthenticate">
@@ -32,7 +32,7 @@
                     <form id="mc-signup" action="http://viblio.us7.list-manage.com/subscribe/post?u=e046498448d5b3dac186f629b&amp;id=45caf02575" method="post">
                         <p>Don't have an account? Join the private Beta:</p>
                         <span>
-                            <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="Enter your email" required>
+                            <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="Enter your email" required />
                         </span>
                         <button class="btn btn-blue" data-bind="click: betaEnroll">
                             Reserve

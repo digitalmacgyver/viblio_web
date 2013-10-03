@@ -398,10 +398,6 @@ input:-moz-placeholder {
     padding: 0;
 }
 
-#page-header .navbar .dropdown-toggle img {
-    height: 100%;
-}
-
 #page-header .navbar .dropdown-toggle span:first-of-type {
     font-size: 16px;
     font-weight: 300;
