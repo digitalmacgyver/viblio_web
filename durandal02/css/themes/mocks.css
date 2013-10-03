@@ -1490,11 +1490,11 @@ li.token-input-token-facebook {
 
 #shareVidLink input {
     position: relative;
-    width: 236px;
+    width: 336px;
     margin-bottom: 0;
     margin-left: 20px;
     top: -5px;
-    padding-right: 70px;
+    padding-right: 5px;
 }
 
 #copyShareLink {

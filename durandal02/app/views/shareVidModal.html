@@ -28,7 +28,7 @@
     </form>
     <form id="shareVidLink">
         <p class="bigTitle">Here's your link:</p>
-        <input id="shareLink" type="text" class="text" data-bind="value: $(location).attr('href')" />
+        <input id="shareLink" type="text" class="text" data-bind="value: window.location" />
         <button id="copyShareLink" class="textShadowed" data-bind="click: copyToClipboard">
             Copy
         </button>

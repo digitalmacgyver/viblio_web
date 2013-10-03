@@ -124,12 +124,12 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 			}
 		    }
 		    else {
-			dialogs.showMessage( 'No code: Message: ' + data.message + ', ' + data.detail, 'API Error' );
+			dialogs.showMessage( 'No code: Message: ' + data.message + ', ' + data.detail || 'no detail', 'API Error' );
 		    }
 		    deferred.reject( x, 'error' );
 		}
 		else if ( data && data.error ) {
-		    dialogs.showMessage( data.message + ', ' + data.detail, 'API Error' );
+		    dialogs.showMessage( data.message + ', ' + data.detail || 'no detail', 'API Error' );
 		}
 		else {
 		    deferred.resolve( data, status, xhr );

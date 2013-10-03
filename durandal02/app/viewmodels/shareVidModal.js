@@ -28,7 +28,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 
     S.prototype.addPublicShare = function( self ) {
 	var viblio = require( 'lib/viblio' );
-	viblio.api( '/services/mediafile/add_share', { mid: self.mediafile.media().uuid, share_type: 'public' } );
+	viblio.api( '/services/mediafile/add_share', { mid: self.mediafile.media().uuid } );
 	return true; // let the href do its thing too!
     };
 
@@ -73,14 +73,10 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
         };
         
 	var message = $('#shareVidMessage').val();
-
-	var list = $( "#shareVidEmail" ).val();
-        system.log( list, message );
-        
-        // TODO - get api endpoint and integrate into call
-	/*viblio.api( '/services/user/tell_a_friend', { list: list, message: message } ).then( function() {
-	    self.closeModal();
-	});*/
+	var list    = $( "#shareVidEmail" ).val();
+	var viblio = require( 'lib/viblio' );
+	viblio.api( '/services/mediafile/add_share', { mid: self.mediafile.media().uuid, list: list, body: message } );
+	self.closeModal();
     };
 
     S.prototype.copyToClipboard = function() {
