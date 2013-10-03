@@ -20,7 +20,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 
     return {
         showShareVidModal: function() {
-            app.showDialog('viewmodels/shareVidModal');
+	    app.showMessage( 'Need a custom dialog for sharing this page.' );
         },
         displayName: 'Videos Starring',        
 	contactPhoto: contactPhoto,

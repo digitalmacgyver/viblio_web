@@ -158,7 +158,8 @@
     //
     $.fn.fitBounds = function() {
 	var self = $(this);
-	self.data( 'map' ).fitBounds( self.data( 'markers' ) );
+	if ( self.data( 'markers' ) && self.data( 'markers' ).length )
+	    self.data( 'map' ).fitBounds( self.data( 'markers' ) );
     };
     
     // Support for the Set Location functions

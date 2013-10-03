@@ -26,11 +26,17 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	});
     };
 
+    S.prototype.addPublicShare = function( self ) {
+	var viblio = require( 'lib/viblio' );
+	viblio.api( '/services/mediafile/add_share', { mid: self.mediafile.media().uuid, share_type: 'public' } );
+	return true; // let the href do its thing too!
+    };
+
     S.prototype.facebookLink = function() {
 	var server = window.location.protocol + config.site_server;
 	// Override for testing
 	server = 'http://staging.viblio.com';
-	return encodeURIComponent( server + '/shared/flowplayer/' + this.mediafile.media.uuid );
+	return encodeURIComponent( server + '/shared/flowplayer/' + this.mediafile.media().uuid );
     };
 
     S.prototype.twitterLink = function() {
