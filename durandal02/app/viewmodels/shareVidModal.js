@@ -30,7 +30,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	var server = window.location.protocol + config.site_server;
 	// Override for testing
 	server = 'http://staging.viblio.com';
-	return encodeURIComponent( server + '/shared/flowplayer/' + this.mediafile.media.uuid );
+	return encodeURIComponent( server + '/shared/flowplayer/' + this.mediafile.media().uuid );
     };
 
     S.prototype.twitterLink = function() {
