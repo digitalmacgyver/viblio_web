@@ -92,7 +92,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 	    return user().uuid;
 	},
 
-	api: function( url, data ) {
+	api: function( url, data, errorCallback ) {
 	    var self = this;
 
 	    var deferred = $.Deferred();
@@ -106,6 +106,9 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 		else {
 		}
 		self.log( 'AJAX FAIL' );
+		if ( errorCallback )
+		    errorCallback({message: 'Cannot communicate with server',
+				   detail: url });
 		deferred.reject( x, 'error' );
 	    });
 
@@ -116,7 +119,11 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 			self.debug( 'Must (re)authenticate!' );
 			if ( data.message && data.message == 'Login failed' ) {
 			    // I am already on the login page!
-			    dialogs.showMessage( 'Authentication Failure', 'Login Failed' );
+			    if ( errorCallback )
+				errorCallback({message: 'Authentication Failure',
+					       detail: 'Login Failed' });
+			    else
+				dialogs.showMessage( 'Authentication Failure', 'Login Failed' );
 			}
 			else {
 			    self.setLastAttempt( router.activeInstruction().config.route );
@@ -124,12 +131,20 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 			}
 		    }
 		    else {
-			dialogs.showMessage( 'No code: Message: ' + data.message + ', ' + data.detail || 'no detail', 'API Error' );
+			if ( errorCallback )
+			    errorCallback({message: data.message,
+					   detail: data.detail });
+			else
+			    dialogs.showMessage( 'No code: Message: ' + data.message + ', ' + data.detail || 'no detail', 'API Error' );
 		    }
 		    deferred.reject( x, 'error' );
 		}
 		else if ( data && data.error ) {
-		    dialogs.showMessage( data.message + ', ' + data.detail || 'no detail', 'API Error' );
+		    if ( errorCallback )
+			errorCallback({message: data.message,
+				       detail: data.detail });
+		    else
+			dialogs.showMessage( data.message + ', ' + data.detail || 'no detail', 'API Error' );
 		}
 		else {
 		    deferred.resolve( data, status, xhr );
