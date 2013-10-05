@@ -2,7 +2,7 @@
    with api to deal with Brewtus protocol.  Supports multiple, parallel uploads and
    even drag and drop!
 */
-define(['lib/viblio'], function(viblio) {
+define(['lib/viblio','lib/customDialogs'], function(viblio,customDialogs) {
     var calculateProgress, cancelAllUploads, cancelUpload, createProgressBar, 
     fileName, files, maxChunkSize, startAllUploads, startUpload, uploadedFilePath, view;
 
@@ -187,6 +187,10 @@ define(['lib/viblio'], function(viblio) {
 		) + ' | ' +
 		this._formatFileSize(data.loaded) + ' / ' +
 		this._formatFileSize(data.total);
+	},
+
+	canDeactivate: function() {
+	    return customDialogs.showMessage('Any uploads in progress will be interrupted and lost.  Are you sure you want to leave this page?', 'Leave this page?', ['Yes', 'No']);
 	},
 
 	compositionComplete: function( el ) {
