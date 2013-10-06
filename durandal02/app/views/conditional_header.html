@@ -1,0 +1,43 @@
+<div id="page-header" data-bind="visible: user().uuid">
+  <div class="navbar navbar-fixed-top">
+    <a class="brand" href="#/landing">
+      <img src="css/images/viblioWhite.png" />
+    </a>
+    <ul class="nav" data-bind="foreach: router.navigationModel">
+      <li data-bind="css: { active: isActive }">
+        <a data-bind="attr: { href: hash }, html: title"></a>
+      </li>
+    </ul>
+    <ul id='userNamePicNav' class="nav pull-right">
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <div class="nav avatar">
+            <img style="display: block;" src="/services/user/avatar?uid=-&y=37" />
+          </div>
+          <div id='userNameText-Wrap'>
+            <span class='textShadowed'>Welcome, </span><span class='textShadowed' data-bind="html: user().displayname.slice(0,user().displayname.indexOf(' ') )">anonymous</span><img src='css/images/chevron-down2.png'/>
+          </div>
+        </a>
+	<ul class="dropdown-menu">
+	  <li><a href="#settings">Settings</a></li>
+	  <li><a href="#">Get the App</a></li>
+	  <li><a href="#" data-bind="click: testNewVideo">Test New Video</a></li>
+	  <li><a href="#" data-bind="click: logout">Log Out</a></li>
+	</ul>
+    </ul>
+  </div>
+</div>
+
+<div id="landing-header" data-bind="visible: user().uuid == null">
+  <div class="navbar navbar-fixed-top darkBlueBG">
+    <a class="brand" href="#/landing">
+      <img src="css/images/viblioWhite.png" />
+    </a>
+    <div class="loader pull-right" data-bind="css: { active: router.isNavigating }">
+      <i class="icon-spinner icon-2x icon-spin"></i>
+    </div>
+    <p class="navbar-text pull-right">
+      <a data-bind="click: signin">Log In</a>
+    </p>
+  </div>
+</div>

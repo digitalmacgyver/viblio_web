@@ -66,55 +66,47 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 	    if ( ! this.mid ) {
 		return;
 	    }
-	    // Fetch mediafile via un-authenticated endpoint.  The mediafile
-	    // being fetched must be marked somehow.  And we need to determine
-	    // whether the person viewing this page is authenticated or not.
-	    $.getJSON( '/services/user/me' ).then( function( res ) {
-		if ( res && res.error ) {
-		    // Not authenticated.  Might still be a viblio user,
-		    // but there is no browser session.
-		    viblio.setUser( null );
+	    viblio.api( '/services/na/media_shared', { mid: self.mid }, errorHandler ).then( function(json) {
+		if ( json.auth_required ) {
+		    // This is a private share and you are not logged in.
+		    viblio.setLastAttempt( '#/web_player?mid=' + self.mid );
+		    router.navigate( '#/login?orsignup=true' );
 		}
 		else {
-		    // Authenticated.  There was a valid browser session.
-		    viblio.setUser( res.user );
+		    var mf = json.media;
+		    playing( new Mediafile( mf ) );
+		    if ( playing() ) {
+			var mf = playing().media();
+			title( playing().media().title );
+			description( playing().media().description );
+			self.showMessage( false );
+			$(".player").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
+			    ratio: 9/16,
+			    clip: {
+				url: 'mp4:amazons3/' + s3bucket( mf.views.main.url ) + '/' + mf.views.main.uri,
+				ipadUrl: encodeURIComponent(mf.views.main.url),
+				// URL for sharing on FB, etc.
+				pageUrl: config.site_server + '/shared/flowplayer/' + mf.views.main.uuid,
+				scaling: 'fit',
+				//ratio: 9/16,
+				//splash: true,
+				provider: 'rtmp'
+			    },
+			    plugins: {
+				// Wowza stuff
+				rtmp: {
+				    url: 'lib/flowplayer/flowplayer.rtmp-3.2.12.swf',
+				    netConnectionUrl: 'rtmp://ec2-54-214-160-185.us-west-2.compute.amazonaws.com/vods3'
+				},
+			    },
+			    canvas: {
+				backgroundColor:'#254558',
+				backgroundGradient: [0.1, 0]
+			    }
+			}).flowplayer().ipad({simulateiDevice: should_simulate()});
+			resizePlayer();
+		    }
 		}
-		viblio.api( '/services/na/media_shared', 
-			    { mid: self.mid, uid: viblio.getUser().uuid }, errorHandler ).then( function(json) {
-				var mf = json.media;
-				playing( new Mediafile( mf ) );
-				if ( playing() ) {
-				    var mf = playing().media();
-				    title( playing().media().title );
-				    description( playing().media().description );
-				    self.showMessage( false );
-				    $(".player").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
-					ratio: 9/16,
-					clip: {
-					    url: 'mp4:amazons3/' + s3bucket( mf.views.main.url ) + '/' + mf.views.main.uri,
-					    ipadUrl: encodeURIComponent(mf.views.main.url),
-					    // URL for sharing on FB, etc.
-					    pageUrl: config.site_server + '/shared/flowplayer/' + mf.views.main.uuid,
-					    scaling: 'fit',
-					    //ratio: 9/16,
-					    //splash: true,
-					    provider: 'rtmp'
-					},
-					plugins: {
-					    // Wowza stuff
-					    rtmp: {
-						url: 'lib/flowplayer/flowplayer.rtmp-3.2.12.swf',
-						netConnectionUrl: 'rtmp://ec2-54-214-160-185.us-west-2.compute.amazonaws.com/vods3'
-					    },
-					},
-					canvas: {
-					    backgroundColor:'#254558',
-					    backgroundGradient: [0.1, 0]
-					}
-				    }).flowplayer().ipad({simulateiDevice: should_simulate()});
-				    resizePlayer();
-				}
-			    });
 	    });
 	}
     };

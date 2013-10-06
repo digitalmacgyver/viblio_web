@@ -5,7 +5,19 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 
     var password = ko.observable();
     var password_entry_error = ko.observable( false );
-    
+
+    var orsignup = ko.observable( false );
+
+    var signup_email = ko.observable();
+    var signup_pw1 = ko.observable();
+    var signup_pw2 = ko.observable();
+    var signup_displayname = ko.observable();
+    var signup_valid = ko.computed( function() {
+	return signup_email() &&
+	    signup_pw1() && signup_pw2 && ( signup_pw1() == signup_pw2() ) &&
+	    signup_displayname();
+    });
+
     fb_appid   = config.facebook_appid();
     fb_channel = config.facebook_channel();
 
@@ -108,17 +120,52 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
         dialog.show('viewmodels/betaReserved');
     };
 
+    function signup() {
+	// The form is good, the values are good.
+	//
+	// Should probably pop a dialog with email/displayname and terms of
+	// service, which can be confirmed/agreed to, after which we call
+	// the new_user end point.  Then we either go home, or to lastAttempt.
+
+	// Should probably call an endpoint to see if this account information
+	// id valid ... email not already registered, displayname something
+	// not objectionable, etc.  Maybe new_user does that.
+
+	// This is the final step, after a new_user has succeeded.
+	email( signup_email() );
+	password( signup_pw1() );
+	nativeAuthenticate();
+    };
+
     return {
 	email: email,
 	email_entry_error: email_entry_error,
 
 	password: password,
 	password_entry_error: password_entry_error,
+
+	orsignup: orsignup,
+
+	signup_email: signup_email,
+	signup_pw1: signup_pw1,
+	signup_pw2: signup_pw2,
+	signup_displayname: signup_displayname,
+	signup_valid: signup_valid,
         
 	nativeAuthenticate: nativeAuthenticate,
 	facebookAuthenticate: facebookAuthenticate,
         betaEnroll: betaEnroll,
         register: register,
-        showBetaReservedModal: showBetaReservedModal
+        showBetaReservedModal: showBetaReservedModal,
+	signup: signup,
+
+	activate: function( args ) {
+	    if ( args && args.orsignup ) {
+		this.orsignup( true );
+	    }
+	    else {
+		this.orsignup( false );
+	    }
+	}
     };
 });
