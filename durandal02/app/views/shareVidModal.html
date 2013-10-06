@@ -17,6 +17,12 @@
     <form id="sendVidEmail" class="bottomBorder paddedDiv">
         <div class="centeredEl">
             <p class="bigTitle">Send a link by email</p>
+	    <label class="radio">
+	      <input type="radio" name="private" value="private" data-bind="checked: private"> As a Private Share
+	    </label>
+	    <label class="radio">
+	      <input type="radio" name="private" value="hidden"  data-bind="checked: private"> As a Hidden Share
+	    </label>
             <p><a href="#" data-bind="click: cimport">Import from Address Book(s)</a></p>
             <p class="uitoken-input"><input id='shareVidEmail' type="text" placeholder="Email address" /></p>
             <!--<input type="email" class="text" data-bind="value: shareVidEmail" placeholder="Email address" />-->
