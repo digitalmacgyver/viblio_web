@@ -1,46 +1,71 @@
 <div id="login-page">
-    <p class="landingHeaderTitle darkBlueBG">Log in <span>to your</span> Viblio account</p>
-    <div class="orangeBG-Header bottomBorder-Thin"></div>
-    <div class="content-Wrap centeredEl">
+  <p class="landingHeaderTitle darkBlueBG">Log in <span>to your</span> Viblio account</p>
+  <div class="orangeBG-Header bottomBorder-Thin"></div>
+  <div class="content-Wrap centeredEl">
         
-        <div id="loginArea" class="mocksWhiteBG centeredEl">
-            <div id="fbBtn-Wrap" class="bottomBorder">
-                <a id="facebookLoginBtn" class="centeredEl" data-bind="click: facebookAuthenticate"><img src="css/images/FBf.png" /> Log in with Facebook </a>
-            </div>
-            <div id='or-Wrap'>
-                <p>or</p>
-            </div>
-            <form class="bottomBorder-Thick">
-                <div class="centeredEl">
-                    <span data-bind="css: { error: email_entry_error() }">
-                        <input type="email" name="email" class="text" data-bind="value: email" placeholder="Email address" />
-                    </span>
-                    <span data-bind="css: { error: password_entry_error() }">
-                        <input type="password" name="pword" class="text" data-bind="value: password" placeholder="Password" />
-                    </span>
-                    <a href="#/forgotPassword">Forgot Password?</a>
-                    <button class="btn btn-primary" data-bind="click: nativeAuthenticate">
-                        Log In
-                    </button>
-                </div>
-            </form>
+    <div id="loginArea" class="mocksWhiteBG centeredEl">
+      <div id="fbBtn-Wrap" class="bottomBorder">
+        <a id="facebookLoginBtn" class="centeredEl" data-bind="click: facebookAuthenticate"><img src="css/images/FBf.png" /> Log in with Facebook </a>
+      </div>
+      <div id='or-Wrap'>
+        <p>or</p>
+      </div>
+      <form class="bottomBorder-Thick">
+        <div class="centeredEl">
+          <span data-bind="css: { error: email_entry_error() }">
+            <input type="email" name="email" class="text" data-bind="value: email" placeholder="Email address" />
+          </span>
+          <span data-bind="css: { error: password_entry_error() }">
+            <input type="password" name="pword" class="text" data-bind="value: password" placeholder="Password" />
+          </span>
+          <a href="#/forgotPassword">Forgot Password?</a>
+          <button class="btn btn-primary" data-bind="click: nativeAuthenticate">
+            Log In
+          </button>
         </div>
+      </form>
+    </div>
 
-        <div id="noAccount-Wrap" class="yellowBG">
-            <div class="bottomBorder-Thick">
-                <div id="noAccount" class="centeredEl paddedDiv">
-                    <form id="mc-signup" action="http://viblio.us7.list-manage.com/subscribe/post?u=e046498448d5b3dac186f629b&amp;id=45caf02575" method="post">
-                        <p>Don't have an account? Join the private Beta:</p>
-                        <span>
-                            <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="Enter your email" required />
-                        </span>
-                        <button class="btn btn-blue" data-bind="click: betaEnroll">
-                            Reserve
-                        </button>
-                    </form>
-                </div>
-            </div>
+    <div id="noAccount-Wrap" class="yellowBG" data-bind="visible: orsignup() == false">
+      <div class="bottomBorder-Thick">
+        <div id="noAccount" class="centeredEl paddedDiv">
+          <form id="mc-signup" action="http://viblio.us7.list-manage.com/subscribe/post?u=e046498448d5b3dac186f629b&amp;id=45caf02575" method="post">
+            <p>Don't have an account? Join the private Beta:</p>
+            <span>
+              <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="Enter your email" required />
+            </span>
+            <button class="btn btn-blue" data-bind="click: betaEnroll">
+              Reserve
+            </button>
+          </form>
         </div>
+      </div>
+    </div>
         
-    </div>          
+    <div id="noAccount-Wrap" class="yellowBG" data-bind="visible: orsignup">
+      <div class="bottomBorder-Thick">
+        <div id="noAccount" class="centeredEl paddedDiv">
+          <form>
+            <p>Don't have an account? Signup for Viblio Today!</p>
+            <span>
+              <input type="email" data-bind="value: signup_email" name="EMAIL" class="email" id="mce-EMAIL" placeholder="Enter your email" required />
+            </span>
+            <span>
+              <input type="password" data-bind="value: signup_pw1" name="pw1" class="password" id="mce-PASSWORD" placeholder="Enter a password" required />
+            </span>
+            <span>
+              <input type="password" data-bind="value: signup_pw2" name="pw2" class="password" id="mce-PASSWORD" placeholder="Confirm password" required />
+            </span>
+            <span>
+              <input type="text" data-bind="value: signup_displayname" name="displayname" class="displayname" id="mce-DISPLAYNAME" placeholder="Your name" required />
+            </span>
+            <button class="btn btn-blue" data-bind="click: signup, enable: signup_valid">
+              Create Account
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+        
+  </div>          
 </div>

@@ -6,7 +6,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	self.shareTitle = ko.computed(function() {
             return encodeURIComponent( $(document).attr('title') );
 	});
-        
+        self.private = ko.observable( 'private' );
         self.shareVidEmailValid = ko.observable(false);
 	self.shareVidEmail = ko.observable();
 	self.shareEmail_entry_error = ko.observable( false );
@@ -75,7 +75,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	var message = $('#shareVidMessage').val();
 	var list    = $( "#shareVidEmail" ).val();
 	var viblio = require( 'lib/viblio' );
-	viblio.api( '/services/mediafile/add_share', { mid: self.mediafile.media().uuid, list: list, body: message } );
+	viblio.api( '/services/mediafile/add_share', { mid: self.mediafile.media().uuid, list: list, body: message, private: self.private() } );
 	self.closeModal();
     };
 

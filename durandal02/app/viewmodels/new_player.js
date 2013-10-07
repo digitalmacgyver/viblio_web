@@ -168,7 +168,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    }
 		    faces.push( new Face( F ) );
 		}
-		finfo( 'Starring (' + ident + '/' + total + ')' );
+		finfo( 'Starring' );
 	    }
 	    else {
 		finfo( 'No faces detected' );

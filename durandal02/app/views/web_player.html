@@ -1,5 +1,15 @@
 <div id="webplayer-page">
   <div class="page-wrapper">
     <div class="player"></div>
+    <div class="message" data-bind="visible: showMessage">
+      <h2>Viblio Web Player</h2>
+      <p>This content will be displayed until there is a video to be played.  If there
+	is an error, this message will remain on the screen.
+      </p>
+    </div>
+    <div class="alert alert-error" data-bind="visible: showError">
+      <h4 data-bind="text: errorMessage"></h4>
+      <p data-bind="text: errorDetail"></p>
+    </div>
   </div>
 </div>

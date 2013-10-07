@@ -1,0 +1,49 @@
+<div id="register-page">
+  <h2 data-bind="html:displayName"></h2>
+  <blockquote>
+    <p>You have been invited to register with Viblio, the best way to organize and share your videos.
+      Please provide the information below to jump right in!
+    </p>
+  </blockquote>
+
+  <form class="form-horizontal">
+    <div class="control-group">
+      <label class="control-label" for="email">Email</label>
+      <div class="controls">
+	<input type="text" id="email" name="email" data-bind="visible: edittable_email, value: email" />
+	<span class="input-xlarge uneditable-input" data-bind="visible: edittable_email() == false, text: email"></span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="displayname">Your Name</label>
+      <div class="controls">
+	<input type="text" id="displayname" name="displayname" data-bind="value: displayname" />
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="password1">Password</label>
+      <div class="controls">
+	<input type="password" id="password1" name="password1" data-bind="value: password1" />
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="password2">Confirm Password</label>
+      <div class="controls">
+	<input type="password" id="password2" name="password2" data-bind="value: password2" />
+      </div>
+    </div>
+  </form>
+
+  <div class="terms">
+    <div data-bind="text: terms"></div>
+  </div>
+
+  <div class="accept">
+    <input type="checkbox" data-bind="checked: accept" />&nbsp;I accept these terms
+  </div>
+
+  <div class="done">
+    <button class="btn btn-primary" data-bind="enable: validated, click: done">Submit</button>
+  </div>
+
+</div>

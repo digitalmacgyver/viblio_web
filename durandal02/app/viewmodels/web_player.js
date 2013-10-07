@@ -27,42 +27,32 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 
     var title = ko.observable();
     var description = ko.observable();
+    var showMessage = ko.observable( true );
+
+    var showError = ko.observable( false );
+    var errorMessage = ko.observable();
+    var errorDetail = ko.observable();
+
+    function errorHandler( data ) {
+	errorMessage( data.message );
+	errorDetail( data.detail );
+	showError( true );
+    }
 
     return {
 	user: viblio.user,
 	playing: playing,
         title: title,
         description: description,
+	showMessage: showMessage,
+	showError: showError,
+	errorMessage: errorMessage,
+	errorDetail: errorDetail,
 	activate: function( args ) {
-	    var mid = args.mid;
+	    this.mid = args.mid;
 	    $(window).bind('resize', function() {
                 resizePlayer();
             });
-	    if ( ! mid ) {
-                return dialog.showMessage( 'No video to play!' )
-	    }
-	    // Fetch mediafile via un-authenticated endpoint.  The mediafile
-	    // being fetched must be marked somehow.  And we need to determine
-	    // whether the person viewing this page is authenticated or not.
-	    return system.defer( function( dfd ) {
-		$.getJSON( '/services/user/me' ).then( function( res ) {
-		    if ( res && res.error ) {
-			// Not authenticated.  Might still be a viblio user,
-			// but there is no browser session.
-			viblio.setUser( null );
-		    }
-		    else {
-			// Authenticated.  There was a valid browser session.
-			viblio.setUser( res.user );
-		    }
-		    viblio.api( '/services/na/media_shared', 
-				{ mid: mid, uid: viblio.getUser().uuid } ).then( function(json) {
-				    var mf = json.media;
-				    playing( new Mediafile( mf ) );
-				    dfd.resolve({});
-				});
-		});
-	    }).promise();
 	},
 	detached: function () {
             $(window).unbind( 'resizePlayer', resizePlayer );
@@ -72,36 +62,52 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
             }
 	},
 	compositionComplete: function(view, parent) {
-	    if ( playing() ) {
-		var mf = playing().media();
-		title( playing().media().title );
-		description( playing().media().description );
-		$(".player").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
-                    ratio: 9/16,
-                    clip: {
-			url: 'mp4:amazons3/' + s3bucket( mf.views.main.url ) + '/' + mf.views.main.uri,
-			ipadUrl: encodeURIComponent(mf.views.main.url),
-			// URL for sharing on FB, etc.
-			pageUrl: config.site_server + '/shared/flowplayer/' + mf.views.main.uuid,
-			scaling: 'fit',
-			//ratio: 9/16,
-			//splash: true,
-			provider: 'rtmp'
-                    },
-                    plugins: {
-			// Wowza stuff
-			rtmp: {
-                            url: 'lib/flowplayer/flowplayer.rtmp-3.2.12.swf',
-                            netConnectionUrl: 'rtmp://ec2-54-214-160-185.us-west-2.compute.amazonaws.com/vods3'
-			},
-                    },
-                    canvas: {
-			backgroundColor:'#254558',
-			backgroundGradient: [0.1, 0]
-                    }
-		}).flowplayer().ipad({simulateiDevice: should_simulate()});
-		resizePlayer();
+	    var self = this;
+	    if ( ! this.mid ) {
+		return;
 	    }
+	    viblio.api( '/services/na/media_shared', { mid: self.mid }, errorHandler ).then( function(json) {
+		if ( json.auth_required ) {
+		    // This is a private share and you are not logged in.
+		    viblio.setLastAttempt( '#/web_player?mid=' + self.mid );
+		    router.navigate( '#/login?orsignup=true' );
+		}
+		else {
+		    var mf = json.media;
+		    playing( new Mediafile( mf ) );
+		    if ( playing() ) {
+			var mf = playing().media();
+			title( playing().media().title );
+			description( playing().media().description );
+			self.showMessage( false );
+			$(".player").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
+			    ratio: 9/16,
+			    clip: {
+				url: 'mp4:amazons3/' + s3bucket( mf.views.main.url ) + '/' + mf.views.main.uri,
+				ipadUrl: encodeURIComponent(mf.views.main.url),
+				// URL for sharing on FB, etc.
+				pageUrl: config.site_server + '/shared/flowplayer/' + mf.views.main.uuid,
+				scaling: 'fit',
+				//ratio: 9/16,
+				//splash: true,
+				provider: 'rtmp'
+			    },
+			    plugins: {
+				// Wowza stuff
+				rtmp: {
+				    url: 'lib/flowplayer/flowplayer.rtmp-3.2.12.swf',
+				    netConnectionUrl: 'rtmp://ec2-54-214-160-185.us-west-2.compute.amazonaws.com/vods3'
+				},
+			    },
+			    canvas: {
+				backgroundColor:'#254558',
+				backgroundGradient: [0.1, 0]
+			    }
+			}).flowplayer().ipad({simulateiDevice: should_simulate()});
+			resizePlayer();
+		    }
+		}
+	    });
 	}
     };
 });

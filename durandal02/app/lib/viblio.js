@@ -92,7 +92,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 	    return user().uuid;
 	},
 
-	api: function( url, data ) {
+	api: function( url, data, errorCallback ) {
 	    var self = this;
 
 	    var deferred = $.Deferred();
@@ -106,6 +106,9 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 		else {
 		}
 		self.log( 'AJAX FAIL' );
+		if ( errorCallback )
+		    errorCallback({message: 'Cannot communicate with server',
+				   detail: url });
 		deferred.reject( x, 'error' );
 	    });
 
@@ -114,22 +117,35 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 		    if ( data.code == 401 || data.code == 403 ) {
 			// authentication failure; redirect back to login page
 			self.debug( 'Must (re)authenticate!' );
-			if ( data.message && data.message == 'Login failed' ) {
+			if ( data.message && ( data.message.indexOf( 'Login failed' ) == 0 ) ) {
 			    // I am already on the login page!
-			    dialogs.showMessage( 'Authentication Failure', 'Login Failed' );
+			    if ( errorCallback )
+				errorCallback({message: 'Authentication Failure',
+					       detail: data.message });
+			    else
+				dialogs.showMessage( data.message, 'Authentication Failure' );
 			}
 			else {
-			    self.setLastAttempt( router.activeInstruction().config.route );
+			    if ( self.getLastAttempt() == null )
+				self.setLastAttempt( router.activeInstruction().config.route );
 			    router.navigate( 'login' );
 			}
 		    }
 		    else {
-			dialogs.showMessage( 'No code: Message: ' + data.message + ', ' + data.detail || 'no detail', 'API Error' );
+			if ( errorCallback )
+			    errorCallback({message: data.message,
+					   detail: data.detail });
+			else
+			    dialogs.showMessage( 'No code: Message: ' + data.message + ', ' + data.detail || 'no detail', 'API Error' );
 		    }
 		    deferred.reject( x, 'error' );
 		}
 		else if ( data && data.error ) {
-		    dialogs.showMessage( data.message + ', ' + data.detail || 'no detail', 'API Error' );
+		    if ( errorCallback )
+			errorCallback({message: data.message,
+				       detail: data.detail });
+		    else
+			dialogs.showMessage( data.message + ', ' + data.detail || 'no detail', 'API Error' );
 		}
 		else {
 		    deferred.resolve( data, status, xhr );
