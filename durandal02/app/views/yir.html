@@ -14,7 +14,7 @@
             <h2 class="cinematic textShadowed">Got any more videos?</h2>
             <p>We noticed you 
                 <span data-bind="if: hits() == 0 ">don't have any videos yet</span>
-                <span data-bind="if: hits() != 0 "><span data-bind="text: (hits() > 0 && hits() < 2) ? 'only have one ' : 'only have two '"></span><span data-bind="text: hits() == 1 ? 'video ' : ' videos'"></span></span>. 
+                <span data-bind="if: hits() != 0 "><span data-bind="text: hits() == 1 ? 'only have one ' : 'only have two '"></span><span data-bind="text: hits() == 1 ? 'video ' : ' videos'"></span></span>. 
                 If you have other videos, why not add them to Viblio!
             </p>
             <button class="btn btn-primary" data-bind="click: goToUpload">Upload more videos &raquo;</button>

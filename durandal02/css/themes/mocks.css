@@ -630,7 +630,7 @@ input:-moz-placeholder {
 
 #noAccount input[type="email"] {
     width: 336px;
-    margin-right: 9px;
+    margin-right: 8px;
 }
 
 #noAccount button {

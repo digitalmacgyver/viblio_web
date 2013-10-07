@@ -36,6 +36,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         events.includeIn(YIR);
         
+        // Once the "Box Office Hits" strip is attached, get the number
+        // of mediafiles so the YIR style can be decided on. 3 or more
+        // mediafiles get's the normal view, while less than 3 gets the
+        // "Got more videos?" style.
         app.on( 'hscroll:attached' ).then(function( data ){
             self.hits(data);
         });

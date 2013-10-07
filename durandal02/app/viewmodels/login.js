@@ -39,7 +39,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	// do a pass thru to the page the user was
 	// trying to get to.
 	router.navigate( viblio.getLastAttempt() || '#/home' );
-    }
+    };
 
     function nativeAuthenticate() {
 	if ( ! email() ) {
@@ -47,9 +47,14 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	    return;
 	}
 	if ( ! password() ) {
-	    dialog.showMessage( 'The password field is required.', 'Authentication' );
-	    return;
+            if( $('#loginPassword').val() ) {
+                password( $('#loginPassword').val() );
+            } else {
+                dialog.showMessage( 'The password field is required.', 'Authentication' );
+                return;
+            }
 	}
+        
 	viblio.api( '/services/na/authenticate',
 		    { email: email(),
 		      password: password(),
@@ -57,7 +62,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 		  ).then( function( json ) {
 		      loginSuccessful( json.user );
 		  });
-    }
+    };
 
     function facebookAuthenticate() {
 	if ( ! fb_appid )
@@ -76,7 +81,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 		dialog.showMessage( 'User cancelled?', 'Authentication' );
 	    }
 	},{scope: config.facebook_ask_features()});
-    }
+    };
     
     // Valid email address is checked, if entered it will send a confirmation email to address
     // and if the confirmation email is clicked then the email address is submitted to mailchimp
