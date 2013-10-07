@@ -7,7 +7,7 @@ define( function() {
     //
     var fbInfo = {
 	'http://192.168.1.21': '566096966734454',
-	'https://192.168.1.35': '566096966734454',
+	'http://192.168.1.35': '566096966734454',
 	'http://staging.viblio.com': '153462094815829',
 	'https://staging.viblio.com': '153462094815829',
 	'http://prod.viblio.com': '538791729508064',
