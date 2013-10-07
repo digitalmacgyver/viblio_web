@@ -150,7 +150,7 @@ input[type="color"],
 }
 
 .shareButton {
-    padding: 25px 23px 0;
+    padding: 25px 0 0;
     width: 270px;
     height: 70px;
     text-shadow: none;
@@ -761,6 +761,7 @@ input:-moz-placeholder {
     color: rgba(0,0,0,.5);
     margin-left: 40px;
     font-size: 18px;
+    font-weight: 400;
 }
 
 .cinematic {
@@ -1048,17 +1049,32 @@ div.map div.title {
     background-color: rgba(239,239,232,1);
 }
 
-.yir > .title,
-.yir .month-heading {
+.yirHeading-Wrap {
+    padding-left: 45px;
+}
+
+.yirHeading-Wrap h2,
+.yirHeading-Wrap p {
+    color: rgba(0,0,0,.5);
+}
+
+.yirHeading-Wrap p {
+    font-size: 18px;
+    margin: 15px 0 25px;
+}
+
+.yir-inner > .title,
+.yir-inner .month-heading {
     color: rgba(0,0,0,.5);
     font-weight: 300;
 }
 .yir .month-heading .month-name {
-    font-size: inherit;
+    font-size: 24px;
 }
 
 .yir .title span {
     font-size: 30px;
+    font-weight: 200;
 }
 
 #yirVidWrap {

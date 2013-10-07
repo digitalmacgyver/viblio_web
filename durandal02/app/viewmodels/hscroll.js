@@ -1,4 +1,4 @@
-define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'viewmodels/mediafile'], function (router, app, system, viblio, Mediafile) {
+define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'viewmodels/mediafile', 'durandal/events'], function (router, app, system, viblio, Mediafile, events) {
 
     var HScroll = function( title, subtitle, options ) {
 	var self = this;
@@ -43,6 +43,10 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	    if ( self.scroller_ready ) 
 		$(self.view).smoothDivScroll("recalculateScrollableArea");
 	});
+        
+        events.includeIn(HScroll);
+        
+        
     };
 
     // We may not use selection in the GUI, but if we do,
@@ -172,6 +176,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
                     }
 		}
 	});
+        app.trigger( 'hscroll:attached', self.mediafiles().length );
     };
 
     HScroll.prototype.ready = function( parent ) {

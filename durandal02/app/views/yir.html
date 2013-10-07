@@ -1,29 +1,55 @@
 <div class="yir bottomBorder-Thin">
-    <div class="title">
-        <button class="btn btn-small btn-secondary pull-right" data-bind="click: toggleEditMode, text: editLabel"></button>
-	<div>
-        <h2 class="cinematic textShadowed">Year in Review</h2>
-        <ul data-bind="foreach: years">
-            <li>
-                <span class="textShadowed" data-bind="click: $parent.yearSelected.bind( $data, $parent ), 
-                                 text: $data.label, 
-                                 css:{sel: $data.selected()}"></span>
-            </li>
-        </ul>
-	</div>
-    </div>
-  
-    <div id="yirVidWrap">
-        <div data-bind="highlightChange: shouldBeVisible()">
-            <!-- ko foreach: months -->
-            <div class="month-heading textShadowed">
-                <span class="month-name heavyWeightFont" data-bind="text: $data.month"></span><span class="num-videos" data-bind="text: '(' + $data.media().length + ' videos)'"></span>
-            </div>
-            <div class="media-list" data-bind="foreach: { data: $data.media, as: 'm' }">
-              <!-- ko compose: m --><!-- /ko -->
-            </div>
-            <div class="clearfix"></div>
-            <!-- /ko -->
+    
+    <div class="yir-inner" data-bind="if: hits() <= 2">
+        <div class="yirHeading-Wrap" data-bind="if: hasCID">
+            <h2 class="cinematic textShadowed">Got any more videos of <span data-bind="text: firstName()"></span>?</h2>
+            <p>We noticed there 
+                <span data-bind="text: hits() == 1 ? 'is ' : ' are '"></span>only 
+                <span data-bind="text: hits() == 1 ? 'one ' : ' two '"></span><span data-bind="text: hits() == 1 ? 'video ' : ' videos'"></span> of <span data-bind="text: name()"></span>. 
+                If you have other videos starring <span data-bind="text: firstName()"></span>, why not add them to Viblio!
+            </p>
+            <button class="btn btn-primary" data-bind="click: goToUpload">Upload more videos &raquo;</button>
+        </div>
+        <div class="yirHeading-Wrap" data-bind="if: !hasCID()">
+            <h2 class="cinematic textShadowed">Got any more videos?</h2>
+            <p>We noticed you 
+                <span data-bind="if: hits() == 0 ">don't have any videos yet</span>
+                <span data-bind="if: hits() != 0 "><span data-bind="text: (hits() > 0 && hits() < 2) ? 'only have one ' : 'only have two '"></span><span data-bind="text: hits() == 1 ? 'video ' : ' videos'"></span></span>. 
+                If you have other videos, why not add them to Viblio!
+            </p>
+            <button class="btn btn-primary" data-bind="click: goToUpload">Upload more videos &raquo;</button>
         </div>
     </div>
+    
+    <div class="yir-inner" data-bind="if: hits() > 2">
+        <div class="title">
+            <button class="btn btn-small btn-secondary pull-right" data-bind="click: toggleEditMode, text: editLabel"></button>
+            <div>
+            <h2 class="cinematic textShadowed">Year in Review</h2>
+            <ul data-bind="foreach: years">
+                <li>
+                    <span class="textShadowed" data-bind="click: $parent.yearSelected.bind( $data, $parent ), 
+                                     text: $data.label, 
+                                     css:{sel: $data.selected()}"></span>
+                </li>
+            </ul>
+            </div>
+        </div>
+
+        <div id="yirVidWrap">
+            <div data-bind="highlightChange: shouldBeVisible()">
+                <!-- ko foreach: months -->
+                <div class="month-heading textShadowed">
+                    <span class="month-name heavyWeightFont" data-bind="text: $data.month"></span>
+                    <span class="num-videos" data-bind="text: '(' + $data.media().length + ( $data.media().length == 1 ? ' video)' : ' videos)' )"></span>
+                </div>
+                <div class="media-list" data-bind="foreach: { data: $data.media, as: 'm' }">
+                  <!-- ko compose: m --><!-- /ko -->
+                </div>
+                <div class="clearfix"></div>
+                <!-- /ko -->
+            </div>
+        </div>
+    </div>
+    
 </div>

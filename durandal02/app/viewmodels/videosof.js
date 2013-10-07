@@ -14,7 +14,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 
     function yy( contact_id ) {
         return system.defer( function( dfd ) {
-            dfd.resolve( new YIR( contact_id ) );
+            dfd.resolve( new YIR( contact_id, contactName() ) );
         } ).promise();
     }
 
@@ -36,7 +36,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 		    var contact = data.contact;
 		    contactPhoto( contact.url );
 		    contactName( contact.contact_name );
-		    $.when( hh('Box Office Hits', contact.contact_name + '\'s most popular videos', 
+		    $.when( hh('Box Office Hits', contactName().slice( 0, contactName().indexOf(' ') ) + '\'s most popular videos', 
 			       { search_api: function() {
 				   return( { api: '/services/faces/media_face_appears_in', args: { contact_uuid: contact_id } } );
 			       }}), 
@@ -62,7 +62,6 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 	    system.wait(1).then( function() {
 		self.strips()[0].ready( view, parent );
 		customDialogs.hideLoading();
-                console.log(self.hits.mediafiles().length);
 	    });
 	}
     };

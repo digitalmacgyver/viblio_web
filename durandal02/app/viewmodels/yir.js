@@ -1,6 +1,6 @@
-define( ['plugins/router','lib/viblio','viewmodels/mediafile'], function( router,viblio, Mediafile ) {
+define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', 'durandal/events'], function( router,viblio, Mediafile, app, events ) {
 
-    var YIR = function( cid ) {
+    var YIR = function( cid, name ) {
 	var self = this;
 
 	self.years  = ko.observableArray([]);
@@ -13,9 +13,36 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile'], function( router
             }
         });
 	self.cid = cid;
+        
+        self.name = ko.observable(name);
+        self.firstName = ko.computed(function() {
+            if ( name ) {
+                return name.slice( 0, name.indexOf(' ') );
+            } else {
+                return null;
+            }
+        });
+        self.hits = ko.observable();
+        self.hasCID = ko.computed(function() {
+            if (self.cid) {
+                return true;
+            } else {
+                return false;
+            }
+        });
 	
 	// An edit/done label to use on the GUI
 	self.editLabel = ko.observable( 'Edit' );
+        
+        events.includeIn(YIR);
+        
+        app.on( 'hscroll:attached' ).then(function( data ){
+            self.hits(data);
+        });
+    };
+    
+    YIR.prototype.goToUpload = function() {
+        router.navigate( '#/upload' );
     };
 
     // Toggle edit mode.  This will put all of media
@@ -59,7 +86,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile'], function( router
 		    mediafiles.push( m );
 		});
 		self.months.push({month: month.month, media: mediafiles});
-	    });
+	    });   
 	});
     };
 
@@ -91,8 +118,8 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile'], function( router
     };
     
     // Animation callbacks
-    this.showElement = function(elem) { if (elem.nodeType === 1) $(elem).hide().fadeIn('slow') }
-    this.hideElement = function(elem) { if (elem.nodeType === 1) $(elem).fadeOut(function() { $(elem).remove(); }) }
+    this.showElement = function(elem) { if (elem.nodeType === 1) $(elem).hide().fadeIn('slow'); };
+    this.hideElement = function(elem) { if (elem.nodeType === 1) $(elem).fadeOut(function() { $(elem).remove(); }); };
 
     return YIR;
 

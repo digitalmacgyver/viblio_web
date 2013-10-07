@@ -253,8 +253,8 @@
     background-color: white;
     padding: 12px;
     margin-top: 10px;
-    max-height: 50px;
-    overflow: auto;
+   /* max-height: 50px;
+    overflow: auto;*/
 }
 
 .comment .comment-footer {
