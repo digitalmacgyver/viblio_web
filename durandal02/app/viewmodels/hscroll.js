@@ -45,8 +45,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	});
         
         events.includeIn(HScroll);
-        
-        
     };
 
     // We may not use selection in the GUI, but if we do,
@@ -176,7 +174,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
                     }
 		}
 	});
-        app.trigger( 'hscroll:attached', self.mediafiles().length );
     };
 
     HScroll.prototype.ready = function( parent ) {

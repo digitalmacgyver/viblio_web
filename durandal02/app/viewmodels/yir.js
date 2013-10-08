@@ -32,17 +32,27 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         });
 	
 	// An edit/done label to use on the GUI
-	self.editLabel = ko.observable( 'Edit' );
-        
-        events.includeIn(YIR);
-        
-        // Once the "Box Office Hits" strip is attached, get the number
-        // of mediafiles so the YIR style can be decided on. 3 or more
-        // mediafiles get's the normal view, while less than 3 gets the
-        // "Got more videos?" style.
-        app.on( 'hscroll:attached' ).then(function( data ){
-            self.hits(data);
-        });
+	self.editLabel = ko.observable( 'Edit' );  
+    };
+    
+    // Get the number of mediafiles so the YIR style can be decided on.
+    // 3 or more mediafiles gets the normal view, while less than 3 gets 
+    // the "Got more videos?" view.
+    YIR.prototype.getHits = function() {
+        var self = this;
+	var args = {};
+	if ( self.cid ) {
+            viblio.api('/services/faces/contact_mediafile_count?cid=' + self.cid).then( function( data ) {
+                console.log( "getHits data with cid:  " + JSON.stringify( data ) );
+                self.hits(data.count);
+            });
+        } else {
+            // can send a user uuid in args to get number of videos for specific user: {uid: uuid}
+            viblio.api( '/services/mediafile/count', args ).then( function( data ) {
+                console.log( "getHits data:  " + JSON.stringify(data) );
+                self.hits(data.count);
+            });
+        }
     };
     
     YIR.prototype.goToUpload = function() {
@@ -106,6 +116,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     YIR.prototype.activate = function() {
 	var self = this;
 	var args = {};
+        self.getHits();
 	if ( self.cid ) args['cid'] = self.cid;
 	return viblio.api( '/services/yir/years', args ).then( function( data ) {
 	    var arr = [];
