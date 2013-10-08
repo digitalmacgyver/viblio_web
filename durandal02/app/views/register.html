@@ -10,36 +10,42 @@
     <div class="control-group">
       <label class="control-label" for="email">Email</label>
       <div class="controls">
-	<input type="text" id="email" name="email" data-bind="visible: edittable_email, value: email" />
-	<span class="input-xlarge uneditable-input" data-bind="visible: edittable_email() == false, text: email"></span>
+	<input type="email" id="email" name="email" data-bind="visible: edittable_email, value: email" />
+	<span class="input uneditable-input" data-bind="visible: edittable_email() == false, text: email"></span>
+	<span class="vmsg" data-bind="css: { valid: email() && email_valid() }, text:email_msg"></span>
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="displayname">Your Name</label>
       <div class="controls">
 	<input type="text" id="displayname" name="displayname" data-bind="value: displayname" />
+	<span class="vmsg" data-bind="css: { valid: displayname() }, text:displayname_msg"></span>
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="password1">Password</label>
       <div class="controls">
 	<input type="password" id="password1" name="password1" data-bind="value: password1" />
+	<span class="vmsg" data-bind="css: { valid: password1() }, text:password1_msg"></span>
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="password2">Confirm Password</label>
       <div class="controls">
 	<input type="password" id="password2" name="password2" data-bind="value: password2" />
+	<span class="vmsg" data-bind="css: { valid: password2() && password2() == password1() }, text:password2_msg"></span>
       </div>
     </div>
   </form>
 
   <div class="terms">
-    <div data-bind="text: terms"></div>
+    <div data-bind="html: terms"></div>
   </div>
 
   <div class="accept">
-    <input type="checkbox" data-bind="checked: accept" />&nbsp;I accept these terms
+    <div class="pull-right">
+      <input type="checkbox" data-bind="checked: accept" />&nbsp;I accept these terms
+    </div>
   </div>
 
   <div class="done">
