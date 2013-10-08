@@ -460,6 +460,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
                         netConnectionUrl: 'rtmp://ec2-54-214-160-185.us-west-2.compute.amazonaws.com/vods3'
                     },
 		    // Sharing stuff
+		    /**
                     viral: {
                         url: 'lib/flowplayer/flowplayer.viralvideos-3.2.13.swf',
                         share: { 
@@ -476,6 +477,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
                         embed: false,
                         email: false
                     }
+		    **/
                 },
                 canvas: {
                     backgroundColor:'#254558',

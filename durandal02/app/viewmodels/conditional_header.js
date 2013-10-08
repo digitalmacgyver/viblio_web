@@ -10,6 +10,18 @@ define( ['plugins/router', 'durandal/app', 'lib/viblio'], function(router, app, 
 	// Show details about the user
 	user: viblio.user,
         
+	activate: function() {
+	    // force a round trip to
+	    return $.getJSON( '/services/user/me' ).then( function( res ) {
+		if ( res && res.error ) {
+		    viblio.setUser( null );
+		}
+		else {
+		    viblio.setUser( res.user );
+		}
+	    });
+	},
+
 	testNewVideo: function() {
 	    viblio.api( '/services/test/new_video_test' );
 	},
