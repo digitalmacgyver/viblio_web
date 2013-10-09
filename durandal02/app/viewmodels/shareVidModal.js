@@ -31,7 +31,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	viblio.api( '/services/mediafile/add_share', { mid: self.mediafile.media().uuid } ).then( function() {
 	    // log it to google analytics
 	    viblio.gaSocial( network.toLowerCase(), 'share', self.mediafile.media().uuid );
-	    viblio.gaEvent(  network.toLowerCase(), 'share', 'social' );
+	    viblio.gaEvent(  'share', network.toLowerCase(), 'social' );
 	});
 	return true; // let the href do its thing too!
     };
@@ -91,7 +91,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 		      private: self.private() } ).then( function() {
 			  // log it to google analytics
 			  viblio.gaSocial( self.private(), 'share', self.mediafile.media().uuid );
-			  viblio.gaEvent(  self.private(), 'share', 'social' );
+			  viblio.gaEvent(  'share', self.private(), 'social' );
 		      });
 	self.closeModal();
     };
