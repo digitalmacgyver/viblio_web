@@ -92,6 +92,34 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 	    return user().uuid;
 	},
 
+	// Log a google analytics event.  This function automatically
+	// attaches the "page" (or route) that was active when this
+	// call was made.
+	gaEvent: function( category, action, label ) {
+	    var page = '/' + ( router.activeInstruction().fragment || 'unknown' );
+	    if ( label )
+		ga( 'send', 'event', category, action, label, { 'page': page } );
+	    else 
+		ga( 'send', 'event', category, action, { 'page': page } );
+	},
+
+	// Log a google analytics "social" event
+	gaSocial: function( network, action, target ) {
+	    var page = '/' + ( router.activeInstruction().fragment || 'unknown' );
+	    target = target || 'no_target_specified';
+	    ga( 'send', 'social', network, action, target, { 'page': page } );
+	},
+
+	// Log a timed event to google analytics.  This is a report of
+	// how long something took to complete.
+	gaTime: function( category, variable, value, label ) {
+	    var page = '/' + ( router.activeInstruction().fragment || 'unknown' );
+	    if ( label )
+		ga( 'send', 'timing', category, variable, value, label, { 'page': page } );
+	    else
+		ga( 'send', 'timing', category, variable, value, { 'page': page } );
+	},
+
 	api: function( url, data, errorCallback ) {
 	    var self = this;
 

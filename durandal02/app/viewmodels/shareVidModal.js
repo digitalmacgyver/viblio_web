@@ -28,7 +28,10 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 
     S.prototype.addPublicShare = function( self ) {
 	var viblio = require( 'lib/viblio' );
-	viblio.api( '/services/mediafile/add_share', { mid: self.mediafile.media().uuid } );
+	viblio.api( '/services/mediafile/add_share', { mid: self.mediafile.media().uuid } ).then( function() {
+	    // log it to google analytics
+	    viblio.gaSocial( this.name.toLowerCase(), 'share', self.mediafile.media().uuid );
+	});
 	return true; // let the href do its thing too!
     };
 
@@ -80,7 +83,14 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	var message = $('#shareVidMessage').val();
 	var list    = $( "#shareVidEmail" ).val();
 	var viblio = require( 'lib/viblio' );
-	viblio.api( '/services/mediafile/add_share', { mid: self.mediafile.media().uuid, list: list, body: message, private: self.private() } );
+	viblio.api( '/services/mediafile/add_share', 
+		    { mid: self.mediafile.media().uuid, 
+		      list: list, 
+		      body: message, 
+		      private: self.private() } ).then( function() {
+			  // log it to google analytics
+			  viblio.gaSocial( self.private(), 'share', self.mediafile.media().uuid );
+		      });
 	self.closeModal();
     };
 
