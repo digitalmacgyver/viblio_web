@@ -26,11 +26,11 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	});
     };
 
-    S.prototype.addPublicShare = function( self ) {
+    S.prototype.addPublicShare = function( self, network ) {
 	var viblio = require( 'lib/viblio' );
 	viblio.api( '/services/mediafile/add_share', { mid: self.mediafile.media().uuid } ).then( function() {
 	    // log it to google analytics
-	    viblio.gaSocial( this.name.toLowerCase(), 'share', self.mediafile.media().uuid );
+	    viblio.gaSocial( network.toLowerCase(), 'share', self.mediafile.media().uuid );
 	});
 	return true; // let the href do its thing too!
     };
