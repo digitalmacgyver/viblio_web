@@ -23,8 +23,8 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	// Log it to analytics
 	ga( 'send', 'pageview', {
 	    title: instruction.config.title,
-	    page: instruction.config.route });
-	console.log( 'route', instruction.config.route );
+	    page: '/' + instruction.config.route });
+	console.log( 'route', '/' + instruction.config.route );
 	if ( instruction.config.authenticated ) {
 	    // If the route is marked authenticated, then do a server
 	    // round trip to make sure we have a session.  If we do
