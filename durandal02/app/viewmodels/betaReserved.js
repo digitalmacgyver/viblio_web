@@ -7,7 +7,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     var shareNetworks = [ { name: 'Facebook', addClass: 'fb', url: 'http://www.facebook.com/share.php?u=' + facebookLink(), imgName: 'FBf.png' }, 
                           { name: 'Twitter', addClass: 'twitter', url: 'https://twitter.com/share?url=' + twitterLink() + '&text=' + shareTitle().substring(0,130), imgName: 'twitter.png' }, 
                           { name: 'Google+', addClass: 'gPlus', url:'https://plusone.google.com/_/+1/confirm?hl=en&url=' + googleLink(), imgName: 'gPlus.png' },
-                          { name: 'tumblr', addClass: 'tumblr', url:'http://www.tumblr.com/share?v=3&u=' + tumblrLink(), imgName: 'tumblr.png' }
+                          { name: 'tumblr', addClass: 'tumblr', url:'http://www.tumblr.com/share/photo?' + tumblrLink(), imgName: 'tumblr.png' }
                         ];
     
     function facebookLink() {
@@ -35,7 +35,12 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	var server = window.location.protocol + config.site_server;
 	// Override for testing
 	server = 'http://staging.viblio.com';
-	return encodeURIComponent( server + '/shared/simple' );
+
+	var thumbnail = encodeURIComponent( server + '/css/images/logo-106.png' );
+	var caption   = encodeURIComponent( 'Viblio is a new video platform that stores, sorts and allows you to privately share your personal videos all in a secure cloud location.  Try it out by signing up at www.viblio.com.' );
+	var clickthru = encodeURIComponent( server + '/shared/simple' );
+
+	return 'source=' + thumbnail + '&caption=' + caption + '&click_thru=' + clickthru;
     }
     
     function closeModal() {
