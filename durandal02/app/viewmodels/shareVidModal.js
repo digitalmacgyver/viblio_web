@@ -17,7 +17,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	self.shareNetworks = [ { name: 'Facebook', addClass: 'fb', url: 'http://www.facebook.com/share.php?u=' + self.facebookLink(), imgName: 'FBf.png' }, 
                                { name: 'Twitter', addClass: 'twitter', url: 'https://twitter.com/share?url=' + self.twitterLink() + '&text=' + self.shareTitle().substring(0,130), imgName: 'twitter.png' }, 
                                { name: 'Google+', addClass: 'gPlus', url:'https://plusone.google.com/_/+1/confirm?hl=en&url=' + self.googleLink(), imgName: 'gPlus.png' },
-                               { name: 'tumblr', addClass: 'tumblr', url:'http://www.tumblr.com/share?v=3&u=' + self.tumblrLink(), imgName: 'tumblr.png' }
+                               { name: 'tumblr', addClass: 'tumblr', url:'http://www.tumblr.com/share/photo?' + self.tumblrLink(), imgName: 'tumblr.png' }
                              ];
     };
     
@@ -57,7 +57,12 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	var server = window.location.protocol + config.site_server;
 	// Override for testing
 	server = 'http://staging.viblio.com';
-	return encodeURIComponent( server + '/shared/flowplayer/' + this.mediafile.media().uuid );
+
+	var thumbnail = encodeURIComponent( server + '/shared/s3_image_proxy/' + this.mediafile.media().views.poster.uri );
+	var caption   = encodeURIComponent( 'Checkout my video on Viblio.com!' );
+	var clickthru = encodeURIComponent( server + '/shared/flowplayer/' + this.mediafile.media().uuid );
+
+	return 'source=' + thumbnail + '&caption=' + caption + '&click_thru=' + clickthru;
     };
 
     S.prototype.closeModal = function() {
