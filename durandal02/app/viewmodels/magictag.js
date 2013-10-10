@@ -90,7 +90,17 @@ define(['plugins/dialog'], function(dialog) {
 		$(self.view).find("#cname").data( 'cid', ui.item.cid );
 		return false;
 	    }
-	});
+	}).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+	    // Extend this jQuery Autocomplete widget to render not only the
+	    // label, but also the picture, if there is one
+	    console.log( 'In custom _renderItem' );
+	    var image = 'css/images/nopic-red-90.png';
+	    if ( item.url ) image = item.url;
+	    return $("<li>")
+		.append( $("<img>" ).attr( "src", image ).attr( "width", 25 ).attr( "height", 25 ) )
+		.append( $("<a>" ).text( item.label ).css( "display", "inline" ) )
+		.appendTo( ul );
+	};
 
 	/** Kind of cool, but too expensive and slow.
 
