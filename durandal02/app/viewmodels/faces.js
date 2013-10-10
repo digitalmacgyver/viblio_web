@@ -13,6 +13,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 		known_faces.removeAll();
 		unknown_faces.removeAll();
 		data.contacts.forEach( function( contact ) {
+		    if ( ! contact.url ) return;
 		    var face = new Face( contact );
 		    if ( contact.contact_name ) {
 			face.on( 'face:selected',  function( sel, pos ) {
