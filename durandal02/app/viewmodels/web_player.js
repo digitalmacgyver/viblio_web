@@ -90,7 +90,29 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 				    scaling: 'fit',
 				    //ratio: 9/16,
 				    //splash: true,
-				    provider: 'rtmp'
+				    provider: 'rtmp',
+
+				    // Google Analytics
+				    onStart: function( clip ) {
+					//console.log( 'Tracking start ...', clip.url );
+					viblio.gaEvent( 'WebPlay', 'Play', clip.url );
+				    },
+				    onPause: function( clip ) {
+					//console.log( 'Tracking pause ...', clip.url, parseInt(this.getTime()) );
+					viblio.gaEvent( 'WebPlay', 'Pause', clip.url, parseInt(this.getTime()) );
+				    },
+				    onResume: function( clip ) {
+					//console.log( 'Tracking resume ...', clip.url );
+					viblio.gaEvent( 'WebPlay', 'Resume', clip.url );
+				    },
+				    onStop: function( clip ) {		    
+					//console.log( 'Tracking stop ...', clip.url, parseInt(this.getTime()) );
+					viblio.gaEvent( 'WebPlay', 'Stop', clip.url, parseInt(this.getTime()) );
+				    },
+				    onFinish: function( clip ) {
+					//console.log( 'Tracking finish ...', clip.url );
+					viblio.gaEvent( 'WebPlay', 'Finish', clip.url );
+				    }
 				},
 				plugins: {
 				    // Wowza stuff

@@ -451,7 +451,30 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
                     scaling: 'fit',
                     //ratio: 9/16,
                     //splash: true,
-                    provider: 'rtmp'
+                    provider: 'rtmp',
+
+		    // Google Analytics
+		    onStart: function( clip ) {
+			//console.log( 'Tracking start ...', clip.url );
+			viblio.gaEvent( 'PrivatePlay', 'Play', clip.url );
+		    },
+		    onPause: function( clip ) {
+			//console.log( 'Tracking pause ...', clip.url, parseInt(this.getTime()) );
+			viblio.gaEvent( 'PrivatePlay', 'Pause', clip.url, parseInt(this.getTime()) );
+		    },
+		    onResume: function( clip ) {
+			//console.log( 'Tracking resume ...', clip.url );
+			viblio.gaEvent( 'PrivatePlay', 'Resume', clip.url );
+		    },
+		    onStop: function( clip ) {		    
+			//console.log( 'Tracking stop ...', clip.url, parseInt(this.getTime()) );
+			viblio.gaEvent( 'PrivatePlay', 'Stop', clip.url, parseInt(this.getTime()) );
+		    },
+		    onFinish: function( clip ) {
+			//console.log( 'Tracking finish ...', clip.url );
+			viblio.gaEvent( 'PrivatePlay', 'Finish', clip.url );
+		    }
+
                 },
                 plugins: {
 		    // Wowza stuff
@@ -459,6 +482,20 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
                         url: 'lib/flowplayer/flowplayer.rtmp-3.2.12.swf',
                         netConnectionUrl: 'rtmp://ec2-54-214-160-185.us-west-2.compute.amazonaws.com/vods3'
                     },
+		    // Google Analytics
+		    /** USES THE OLDER ga.js, but we use analytics.js 
+		    gatracker: {
+			url: 'lib/flowplayer/flowplayer.analytics-3.2.8.swf',
+			events: {
+			    all: true,
+			    finish: 'Finish',
+			    mute: false,
+			    unmute: false
+			},
+			debug: true,
+			accountId: "UA-42975225-1"
+		    },
+		    **/
 		    // Sharing stuff
 		    /**
                     viral: {

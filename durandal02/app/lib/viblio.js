@@ -95,9 +95,11 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 	// Log a google analytics event.  This function automatically
 	// attaches the "page" (or route) that was active when this
 	// call was made.
-	gaEvent: function( category, action, label ) {
+	gaEvent: function( category, action, label, value ) {
 	    var page = '/' + ( router.activeInstruction().fragment || 'unknown' );
-	    if ( label )
+	    if ( value )
+		ga( 'send', 'event', category, action, label, value, { 'page': page } );
+	    else if ( label )
 		ga( 'send', 'event', category, action, label, { 'page': page } );
 	    else 
 		ga( 'send', 'event', category, action, { 'page': page } );
