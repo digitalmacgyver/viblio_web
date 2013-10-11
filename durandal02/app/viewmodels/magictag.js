@@ -76,15 +76,6 @@ define(['plugins/dialog'], function(dialog) {
 	me.url( me.original_uri );
     };
 
-    MagicTag.prototype.attached = function( view ) {
-	var self = this;
-	// The horizontal scroller
-	//$(view).find(".is-same-as").smoothDivScroll({
-	//    hotSpotScrolling: true,
-	//    visibleHotSpotBackgrounds: 'always'
-	//});
-    };
-
     MagicTag.prototype.compositionComplete = function(view, parent) {
 	var self = this;
 	self.view = view;
@@ -123,9 +114,19 @@ define(['plugins/dialog'], function(dialog) {
 		.appendTo( ul );
 	};
 
-	// The horizontal scroller
-	//$(self.view).find(".is-same-as").trigger( 'initialize' );
-
+	if ( self.aliases().length == 0 ) {
+	    $(view).find(".is-same-as").hide();
+	}
+	else {
+	    // The horizontal scroller
+	    $(view).find(".is-same-as").smoothDivScroll({
+		visibleHotSpotBackgrounds: ""
+	    });
+	    $(self.view).find(".is-same-as").trigger( 'initialize' );
+	    // Jeez!  Really gotta help this thing out with its calculations!  We know
+	    // the little images are 40x40 and we know how many there are, so ...
+	    $(self.view).find(".scrollableArea").css( "width", self.aliases().length * 40 );
+	}
     };
 
     return MagicTag;
