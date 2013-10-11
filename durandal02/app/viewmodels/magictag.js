@@ -87,14 +87,11 @@ define(['plugins/dialog'], function(dialog) {
 	    minLength: 2,
 	    focus: function( event, ui ) {
 		$(self.view).find("#cname").val( ui.item.label );
-		// self.sameas( ui.item.url );
-		$(self.view).find(".is-same-as").css( 'visibility', 'visible' );
 	    },
 	    response: function( event, ui ) {
 		self.named( true );
 		if ( ui.content.length == 0 ) {
 		    $(self.view).find("#cname").data( 'cid', null );
-		    $(self.view).find(".is-same-as").css( 'visibility', 'hidden' );
 		}
 	    },
 	    select: function( event, ui ) {
