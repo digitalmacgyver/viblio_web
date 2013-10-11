@@ -9,7 +9,10 @@
       <img data-bind="attr:{src:sameas}" />
       -->
       <!-- ko foreach: aliases -->
-      <img class="alias" data-bind="attr:{src:$data.url,title:$data.id}, click:$parent.swap.bind( $data, $parent )" />
+      <img class="alias" style="cursor: pointer;" 
+	   data-bind="attr:{src:$data.url,title:$data.id}, 
+		      event:{mouseover:$parent.min.bind($data,$parent),mouseout:$parent.mout.bind($data,$parent)}, 
+		      click:$parent.swap.bind( $data, $parent )" />
       <!-- /ko -->
       <div class="clearfix"></div>
     </div>

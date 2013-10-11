@@ -8,7 +8,7 @@ define(['plugins/dialog'], function(dialog) {
 	self.sameas = ko.observable();
 	self.aliases = ko.observableArray([]);
 
-	self.original_uri = face.url;
+	self.original_uri = face.url();
 	self.new_uri = null;
 
 	self.last_x = 0;
@@ -65,11 +65,32 @@ define(['plugins/dialog'], function(dialog) {
 	me.face.url( a.url );
 	me.url( a.url );
 	me.new_uri = a.uri;
+	me.original_uri = a.url;
+    };
+
+    MagicTag.prototype.min = function( me, a ) {
+	me.url( a.url );
+    };
+
+    MagicTag.prototype.mout = function( me, a ) {
+	me.url( me.original_uri );
+    };
+
+    MagicTag.prototype.attached = function( view ) {
+	var self = this;
+	// The horizontal scroller
+	//$(view).find(".is-same-as").smoothDivScroll({
+	//    hotSpotScrolling: true,
+	//    visibleHotSpotBackgrounds: 'always'
+	//});
     };
 
     MagicTag.prototype.compositionComplete = function(view, parent) {
 	var self = this;
 	self.view = view;
+
+	// The autocompleter
+	//
 	self.ac = $(self.view).find("#cname").autocomplete({
 	    source: '/services/faces/all_contacts',
 	    minLength: 2,
@@ -102,44 +123,9 @@ define(['plugins/dialog'], function(dialog) {
 		.appendTo( ul );
 	};
 
-	/** Kind of cool, but too expensive and slow.
+	// The horizontal scroller
+	//$(self.view).find(".is-same-as").trigger( 'initialize' );
 
-	$(self.view).find( ".magic-face" ).mouseover( function() {
-	    // If we haven't already, fetch array of other pictures of this
-	    // person as they've appeared in videos.
-	    var viblio = require( 'lib/viblio' );
-	    if ( ! self.pics ) {
-		viblio.api( '/services/faces/photos_of', { cid: self.face.data.uuid } ).then( function( photos ) {
-		    self.pic_num = photos.length;
-		    self.pic_index = 0;
-		    self.pics = photos;
-		});
-	    }
-	});
-
-	$(self.view).find( ".magic-face" ).mousemove( function( event ) {
-	    // As the mouse moves, flip through the array of other photos
-	    // available of this person.
-	    if ( self.pics && self.pics.length && self.pics.length > 0 ) {
-		if ( event.pageX < self.last_x && Math.abs( event.pageX - self.last_x ) > 2 ) {
-		    // reverse direction
-		    self.pic_index -= 1;
-		    if ( self.pic_index < 0 ) self.pic_index = ( self.pic_num - 1 );
-		    console.log( self.pic_index, self.pics[ self.pic_index ] );
-		    self.url( self.pics[ self.pic_index ] );
-		}
-		else if ( Math.abs( event.pageX - self.last_x ) > 2 ) {
-		    // forward direction
-		    self.pic_index += 1;
-		    if ( self.pic_index >= self.pic_num ) self.pic_index = 0;
-		    console.log( self.pic_index, self.pics[ self.pic_index ] );
-		    self.url( self.pics[ self.pic_index ] );
-		}
-		self.last_x = event.pageX;
-	    }
-	});
-
-	**/
     };
 
     return MagicTag;
