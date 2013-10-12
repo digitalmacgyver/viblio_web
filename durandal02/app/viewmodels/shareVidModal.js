@@ -3,8 +3,10 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     var S = function( mediafile ) {
 	var self = this;
 	self.mediafile = mediafile;
-	self.shareTitle = ko.computed(function() {
-            return encodeURIComponent( $(document).attr('title') );
+	self.videoTitle = ko.computed(function() {
+	    var title = self.mediafile.media().title;
+	    title = title || 'My Viblio Video';
+	    return encodeURIComponent( title );
 	});
         self.private = ko.observable( 'private' );
         self.shareVidEmailValid = ko.observable(false);
@@ -15,7 +17,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	self.shareMessage_entry_error = ko.observable( false );
 	
 	self.shareNetworks = [ { name: 'Facebook', addClass: 'fb', url: 'http://www.facebook.com/share.php?u=' + self.facebookLink(), imgName: 'FBf.png' }, 
-                               { name: 'Twitter', addClass: 'twitter', url: 'https://twitter.com/share?url=' + self.twitterLink() + '&text=' + self.shareTitle().substring(0,130), imgName: 'twitter.png' }, 
+                               { name: 'Twitter', addClass: 'twitter', url: 'https://twitter.com/share?url=' + self.twitterLink() + '&text=' + self.videoTitle().substring(0,130), imgName: 'twitter.png' }, 
                                { name: 'Google+', addClass: 'gPlus', url:'https://plusone.google.com/_/+1/confirm?hl=en&url=' + self.googleLink(), imgName: 'gPlus.png' },
                                { name: 'tumblr', addClass: 'tumblr', url:'http://www.tumblr.com/share/photo?' + self.tumblrLink(), imgName: 'tumblr.png' }
                              ];
