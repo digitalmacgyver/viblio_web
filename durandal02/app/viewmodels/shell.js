@@ -21,9 +21,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
     //
     router.guardRoute = function( instance, instruction ) {
 	// Log it to analytics
-	ga( 'send', 'pageview', {
-	    title: instruction.config.title,
-	    page: '/' + instruction.config.route });
+	viblio.gaPage( instruction.config.title, '/' + instruction.config.route ); 
 	if ( instruction.config.authenticated ) {
 	    // If the route is marked authenticated, then do a server
 	    // round trip to make sure we have a session.  If we do

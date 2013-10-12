@@ -92,6 +92,13 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 	    return user().uuid;
 	},
 
+	// Log a google analytics page view
+	gaPage: function( title, page ) {
+	    ga( 'send', 'pageview', {
+		title: title, page: page });
+	    mixpanel.track_pageview( page );
+	},
+
 	// Log a google analytics event.  This function automatically
 	// attaches the "page" (or route) that was active when this
 	// call was made.
@@ -103,6 +110,10 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 		ga( 'send', 'event', category, action, label, { 'page': page } );
 	    else 
 		ga( 'send', 'event', category, action, { 'page': page } );
+	    mixpanel.track( category, { action: action,
+					label: label,
+					value: value,
+					page: page });
 	},
 
 	// Log a google analytics "social" event
@@ -110,6 +121,10 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 	    var page = '/' + ( router.activeInstruction().fragment || 'unknown' );
 	    target = target || 'no_target_specified';
 	    ga( 'send', 'social', network, action, target, { 'page': page } );
+	    mixpanel.track( 'social', { network: network,
+					action: action,
+					target: target,
+					page: page });
 	},
 
 	// Log a timed event to google analytics.  This is a report of
@@ -120,6 +135,11 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 		ga( 'send', 'timing', category, variable, value, label, { 'page': page } );
 	    else
 		ga( 'send', 'timing', category, variable, value, { 'page': page } );
+
+	    mixpanel.track( 'timing', { category: category,
+					variable: variable,
+					value: value,
+					page: page });
 	},
 
 	api: function( url, data, errorCallback ) {
