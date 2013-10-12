@@ -9,7 +9,7 @@ define(['plugins/dialog'], function(dialog) {
 	self.named = ko.observable( false );
 	self.aliases = ko.observableArray([]);
 
-	self.original_uri = face.url;
+	self.original_uri = face.url();
 	self.new_uri = null;
 
 	// Data will contain the information passed back from
@@ -72,12 +72,36 @@ define(['plugins/dialog'], function(dialog) {
 	me.face.url( a.url );
 	me.url( a.url );
 	me.new_uri = a.uri;
+	me.original_uri = a.url;
 	me.named( true );
+    };
+
+    CC.prototype.min = function( me, a ) {
+	me.url( a.url );
+    };
+
+    CC.prototype.mout = function( me, a ) {
+	me.url( me.original_uri );
     };
 
     CC.prototype.compositionComplete = function(view, parent) {
 	var self = this;
 	self.view = view;
+
+	if ( self.aliases().length == 0 ) {
+	    $(view).find(".is-same-as").hide();
+	}
+	else {
+	    // The horizontal scroller
+	    $(view).find(".is-same-as").smoothDivScroll({
+		visibleHotSpotBackgrounds: ""
+	    });
+	    $(self.view).find(".is-same-as").trigger( 'initialize' );
+	    // Jeez!  Really gotta help this thing out with its calculations!  We know
+	    // the little images are 40x40 and we know how many there are, so ...
+	    $(self.view).find(".scrollableArea").css( "width", self.aliases().length * 40 );
+	}
+
     };
 
     return CC;

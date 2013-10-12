@@ -8,22 +8,26 @@
 	  <img class="magic-face" data-bind="attr:{src:url}" />
 	</td>
 	<td>
-	  <div class="cvalues">
-	    <input type="text" name="cname" id="cname" data-bind="value: name" placeholder="Name" /><br />
-	    <input type="email" name="cemail" id="cemail" data-bind="value: email" placeholder="Email" />
+	  <div class="wrapper">
+	    <div class="is-same-as">
+	      <!-- ko foreach: aliases -->
+	      <img class="alias" style="cursor: pointer;" width="40" height="40"
+		   data-bind="attr:{src:$data.url}, 
+			      event:{mouseover:$parent.min.bind($data,$parent),mouseout:$parent.mout.bind($data,$parent)},
+			      click:$parent.swap.bind( $data, $parent )" />
+	      <!-- /ko -->
+	      <div class="clearfix"></div>
+	    </div>
+	    <div class="cvalues">
+	      <label>Name</label>
+	      <input type="text" name="cname" id="cname" data-bind="value: name" placeholder="Name" /><br />
+	      <label>Email</label>
+	      <input type="email" name="cemail" id="cemail" data-bind="value: email" placeholder="Email" />
+	    </div>
 	  </div>
 	</td>
       </tr>
     </table>
-    <div class="is-same-as">
-      <!--
-      <img data-bind="attr:{src:sameas}" />
-      -->
-      <!-- ko foreach: aliases -->
-      <img class="alias" data-bind="attr:{src:$data.url,title:$data.id}, click:$parent.swap.bind( $data, $parent )" />
-      <!-- /ko -->
-      <div class="clearfix"></div>
-    </div>
   </div>
   <div class="modal-footer">
     <button class="btn btn-primary"   data-bind="click: done, visible: named">Done</button>
