@@ -36,7 +36,7 @@ define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip
 			    url: 'mp4:amazons3/viblio-mediafiles/' + uri,
 			    ipadUrl: encodeURIComponent($(this.element).data( 'url' )),
 			    // URL for sharing on FB, etc.
-			    pageUrl: config.site_server + '/shared/flowplayer/' + $(this.element).data( 'uuid' ),
+			    pageUrl: config.site_server + '/s/p/' + $(this.element).data( 'uuid' ),
 			    //scaling: 'fit',
 			    ratio: 9/16,
 			    //splash: true,

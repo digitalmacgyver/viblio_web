@@ -42,21 +42,21 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	var server = window.location.protocol + config.site_server;
 	// Override for testing
 	server = 'http://staging.viblio.com';
-	return encodeURIComponent( server + '/shared/flowplayer/' + this.mediafile.media().uuid );
+	return encodeURIComponent( server + '/s/p/' + this.mediafile.media().uuid );
     };
 
     S.prototype.twitterLink = function() {
 	var server = window.location.protocol + config.site_server;
 	// Override for testing
 	server = 'http://staging.viblio.com';
-	return encodeURIComponent( server + '/shared/flowplayer/' + this.mediafile.media().uuid );
+	return encodeURIComponent( server + '/s/p/' + this.mediafile.media().uuid );
     };
 
     S.prototype.googleLink = function() {
 	var server = window.location.protocol + config.site_server;
 	// Override for testing
 	server = 'http://staging.viblio.com';
-	return encodeURIComponent( server + '/shared/flowplayer/' + this.mediafile.media().uuid );
+	return encodeURIComponent( server + '/s/p/' + this.mediafile.media().uuid );
     };
 
     S.prototype.tumblrLink = function() {
@@ -64,9 +64,9 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	// Override for testing
 	server = 'http://staging.viblio.com';
 
-	var thumbnail = encodeURIComponent( server + '/shared/s3_image_proxy/' + this.mediafile.media().views.poster.uri );
+	var thumbnail = encodeURIComponent( server + '/s/ip/' + this.mediafile.media().views.poster.uri );
 	var caption   = encodeURIComponent( 'Checkout my video on Viblio.com!' );
-	var clickthru = encodeURIComponent( server + '/shared/flowplayer/' + this.mediafile.media().uuid );
+	var clickthru = encodeURIComponent( server + '/s/p/' + this.mediafile.media().uuid );
 
 	return 'source=' + thumbnail + '&caption=' + caption + '&click_thru=' + clickthru;
     };

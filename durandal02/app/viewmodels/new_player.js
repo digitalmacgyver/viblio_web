@@ -190,7 +190,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
             url: 'mp4:amazons3/' + s3bucket( m.media().views.main.url ) + '/' + m.media().views.main.uri,
             ipadUrl: encodeURIComponent(m.media().views.main.url),
             // URL for sharing on FB, etc.
-            pageUrl: config.site_server + '/shared/flowplayer/' + m.media().views.main.uuid,
+            pageUrl: config.site_server + '/s/p/' + m.media().views.main.uuid,
             //scaling: 'fit',
             //splash: true,
             provider: 'rtmp'
@@ -447,7 +447,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
                     url: 'mp4:amazons3/' + s3bucket( mf.views.main.url ) + '/' + mf.views.main.uri,
                     ipadUrl: encodeURIComponent(mf.views.main.url),
                     // URL for sharing on FB, etc.
-                    pageUrl: config.site_server + '/shared/flowplayer/' + mf.views.main.uuid,
+                    pageUrl: config.site_server + '/s/p/' + mf.views.main.uuid,
                     scaling: 'fit',
                     //ratio: 9/16,
                     //splash: true,
