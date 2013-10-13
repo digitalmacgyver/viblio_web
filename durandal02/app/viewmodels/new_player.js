@@ -105,6 +105,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 
     // Show the difference between to dates in a nice way
     function prettyWhen( n, d ) {
+	if (( n - d ) == 0) return "now";
 	var seconds = Math.floor( ( n - d ) / 1000 );
 	if ( seconds < 1 ) return "now";
 	if ( seconds < 2 ) return "1 second ago";
@@ -324,8 +325,13 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	viblio.api( '/services/mediafile/add_comment',
 		    { mid: playing().media().uuid,
 		      txt: usercomment(),
-		    } ).then( function() {
+		    } ).then( function( json ) {
 			usercomment('');
+			var c = json.comment;
+			var hash = { comment: c.comment };
+			hash['who'] = c.who || 'anonymous'; 
+			hash['when'] = prettyWhen( new Date(), new Date() );
+			comments.unshift( hash );
 		    });
     });
 
