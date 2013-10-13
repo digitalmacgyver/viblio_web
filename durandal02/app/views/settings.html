@@ -8,21 +8,27 @@
 	<h3 class="mainLabel">Account Information</h3>
 	<table class="account-info">
 	  <tr>
-	    <td class="avatar boxShadowed">
-	      <img id="apic" class="" src="/services/user/avatar?uid=-&y=120" />
-	      <div class="darkBlueBG">
-		<span class="fileinput-button">
-		  <span>Change Avatar</span>
-		  <input id="fileupload" type="file" name="upload" data-url="/services/user/add_or_replace_profile_photo" />
-		</span>
-		<i class="icon-spinner icon-2x icon-spin"></i>
+	    <td>
+	      <div class="avatar boxShadowed">
+		<img id="apic" class="" src="/services/user/avatar?uid=-&y=120" />
+		<div class="darkBlueBG">
+		  <span class="fileinput-button">
+		    <span>Change Avatar</span>
+		    <input id="fileupload" type="file" name="upload" data-url="/services/user/add_or_replace_profile_photo" />
+		  </span>
+		  <i class="icon-spinner icon-2x icon-spin"></i>
+		</div>
 	      </div>
 	    </td>
 	    <td class="email-password">
 	      <form>
 		<fieldset>
+		  <label for="displayname">Display Name</label>
+		  <input type="text" name="displayname" data-bind="value: displayname" required />
+		</fieldset>
+		<fieldset>
 		  <label for="email">Email address</label>
-		  <input type="email" data-bind="value: email, enable: false" />
+		  <input type="email" name="email" data-bind="value: email, enable: false" />
 		</fieldset>
 		<a href="#" data-bind="click: changePassword">Change Password...</a>
 	      </form>

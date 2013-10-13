@@ -11,6 +11,9 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 		// subscribe to the async message queue
 		messageq.subscribe( u.uuid );
 	    }
+	    if ( u.displayname != user().displayname ) {
+		user( u );
+	    }
 	}
 	else {
 	    user({

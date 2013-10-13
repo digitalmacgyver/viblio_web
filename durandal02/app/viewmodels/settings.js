@@ -1,6 +1,7 @@
 define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDialogs','plugins/dialog','facebook'],function(app,router,viblio,config,customDialogs,dialog) {
     var profile = ko.observable({});
     var email   = ko.observable();
+    var displayname   = ko.observable();
     var links   = ko.observable({});
     var linkedFacebook = ko.observable( false );
 
@@ -22,7 +23,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
     var email_changes = ko.observable( false );
 
     function newEmail( addr ) {
-	$.get( '/services/user/change_email', { email: addr } ).then(
+	$.get( '/services/user/change_email_or_displayname', { email: addr } ).then(
 	    function( json ) {
 		if ( json.error ) {
 		    dialog.showError( json.message );
@@ -31,10 +32,31 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	    });
     }
 
+    function newDisplayname( name ) {
+	$.get( '/services/user/change_email_or_displayname', { displayname: name } ).then(
+	    function( json ) {
+		if ( json.error ) {
+		    dialog.showError( json.message );
+		    displayname( profile().displayname );
+		}
+		else {
+		    viblio.setUser( json.user );
+		}
+	    });
+    }
+
     email.subscribe( function( v ) {
 	if ( v != profile().email ) {
 	    newEmail( v );
 	}
+    });
+
+    displayname.subscribe( function( v ) {
+	if ( v && profile().displayname && ( v != profile().displayname ) ) {
+	    newDisplayname( v );
+	}
+	if ( v ) 
+	    profile().displayname = v;
     });
 
     function linkFacebookAccount() {
@@ -85,6 +107,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
     return {
 	profile: profile,
 	email: email,
+	displayname: displayname,
 	links: links,
 	linkedFacebook: linkedFacebook,
 
@@ -115,6 +138,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 		email_viblio: email_viblio()
 	    };
 	    customDialogs.showLoading();
+
 	    viblio.api( '/services/user/change_profile', data ).then( function() {
 		customDialogs.hideLoading();
 	    });
@@ -131,7 +155,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	    customDialogs.showPassword();
 	},
                 
-	attached: function( view ) {
+	activate: function( view ) {
 	    var self = this;
 	    self.view = view;
 
@@ -157,6 +181,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 
 		var p = { uuid: json.profile.uuid,
 			  email: json.profile.email,
+			  displayname: json.profile.displayname,
 			  fields: {},
 			  links: {}
 			};
@@ -168,6 +193,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 		}
 		profile( p );
 		email( json.profile.email );
+		displayname( json.profile.displayname );
 		links( p.links );
 
 		email_notifications( p.fields.email_notifications );
