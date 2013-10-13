@@ -4,7 +4,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	var self = this;
 	self.mediafile = mediafile;
 	self.videoTitle = ko.computed(function() {
-	    var title = self.mediafile.media().title;
+	    var title = self.mediafile.title();
 	    title = title || 'My Viblio Video';
 	    return encodeURIComponent( title );
 	});
