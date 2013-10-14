@@ -13,7 +13,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	self.shareVidEmail = ko.observable();
 	self.shareEmail_entry_error = ko.observable( false );
 	
-	self.shareVidMessage = ko.observable( null );
+	self.shareVidMessage = ko.observable( $('#shareVidMessage').val() );
 	self.shareMessage_entry_error = ko.observable( false );
 	
 	self.shareNetworks = [ { name: 'Facebook', addClass: 'fb', url: 'http://www.facebook.com/share.php?u=' + self.facebookLink(), imgName: 'FBf.png' }, 
@@ -73,6 +73,13 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 
     S.prototype.closeModal = function() {
         dialog.close(this);
+    };
+    
+    S.prototype.updateMessage = function() {
+        var self = this;
+        if( self.shareVidMessage() == null ) {
+            $('#shareVidMessage').val( $('#shareVidMessage').attr('placeholder') );
+        };
     };
     
     S.prototype.emailLink = function() {
