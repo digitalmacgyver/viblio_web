@@ -80,7 +80,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
         if( self.shareVidMessage() == null ) {
             $('#shareVidMessage').val( $('#shareVidMessage').attr('placeholder') );
         };
-    }
+    };
     
     S.prototype.emailLink = function() {
         var self = this;

@@ -2,11 +2,11 @@
 <div class="mediafile" data-bind="attr:{id:media().uuid}">
     <div class="boxShadowed">
         <button class="dbtn btn btn-danger btn-mini" data-bind="click:mfdelete">delete</button>
-        <a class="mplay-icon" data-bind="click:play" href="#">
+        <a class="mplay-icon pointer" data-bind="click:play">
             <i class="icon-play-circle"></i> 
         </a>
         <i class="icon-ok-sign"></i>
-        <div>
+        <div class='pointer' data-bind="click:play">
             <img data-bind="{attr:{src:media().views.poster.url}}" />
         </div>
         <div class="information">

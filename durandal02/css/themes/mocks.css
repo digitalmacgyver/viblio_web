@@ -320,6 +320,10 @@ input:-moz-placeholder {
     padding: 27px 50px 40px;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 /********************  Page Header Section  *****************************/
 
 #page-header .navbar {
