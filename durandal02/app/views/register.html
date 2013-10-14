@@ -1,55 +1,17 @@
 <div id="register-page">
-  <h2 data-bind="html:displayName"></h2>
-  <blockquote>
-    <p>You have been invited to register with Viblio, the best way to organize and share your videos.
-      Please provide the information below to jump right in!
-    </p>
-  </blockquote>
+  <h2>Welcome to Viblio!</h2>
 
-  <form class="form-horizontal">
-    <div class="control-group">
-      <label class="control-label" for="email">Email</label>
-      <div class="controls">
-	<input type="email" id="email" name="email" data-bind="visible: edittable_email, value: email" />
-	<span class="input uneditable-input" data-bind="visible: edittable_email() == false, text: email"></span>
-	<span class="vmsg" data-bind="css: { valid: email() && email_valid() }, text:email_msg"></span>
-      </div>
-    </div>
-    <div class="control-group">
-      <label class="control-label" for="displayname">Your Name</label>
-      <div class="controls">
-	<input type="text" id="displayname" name="displayname" data-bind="value: displayname" />
-	<span class="vmsg" data-bind="css: { valid: displayname() }, text:displayname_msg"></span>
-      </div>
-    </div>
-    <div class="control-group">
-      <label class="control-label" for="password1">Password</label>
-      <div class="controls">
-	<input type="password" id="password1" name="password1" data-bind="value: password1" />
-	<span class="vmsg" data-bind="css: { valid: password1() }, text:password1_msg"></span>
-      </div>
-    </div>
-    <div class="control-group">
-      <label class="control-label" for="password2">Confirm Password</label>
-      <div class="controls">
-	<input type="password" id="password2" name="password2" data-bind="value: password2" />
-	<span class="vmsg" data-bind="css: { valid: password2() && password2() == password1() }, text:password2_msg"></span>
-      </div>
-    </div>
-  </form>
+  <span data-bind="text: displayname"></span> has invited you to watch a video.  To protect
+  your privacy, please create a password first:
+  <ul>
+    <input type="password" name="password" data-bind="value: password" placeholder="Password" />
+    <a href="#" data-bind="click: toggleShowHide, text: labelShowHide"></a>
+  </ul>
 
-  <div class="terms">
-    <div data-bind="html: terms"></div>
-  </div>
-
-  <div class="accept">
-    <div class="pull-right">
-      <input type="checkbox" data-bind="checked: accept" />&nbsp;I accept these terms
-    </div>
-  </div>
+  I agree with the <a href="#" data-bind="click: displayTerms">terms</a> of using the Viblio service.
 
   <div class="done">
-    <button class="btn btn-primary" data-bind="enable: validated, click: done">Submit</button>
+    <button class="btn btn-primary" data-bind="enable: validated, click: done">Watch the Video</button>
   </div>
 
 </div>
