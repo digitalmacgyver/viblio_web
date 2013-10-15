@@ -18,9 +18,11 @@ define( function() {
     var csponge = {
 	'http://192.168.1.35': 'FD7C6RP5SE8ERDMB3RHR',
 	'http://staging.viblio.com': 'VPP8BMSQ5AK6JLNRPKCV',
+	'https://staging.viblio.com': 'VPP8BMSQ5AK6JLNRPKCV',
         'http://localhost:5000': 'VXKUHY8HEWA3TSXSXQL6', //Jesse
         'http://169.254.212.140': '3L4MFVUXT8MZCVGR3WJF', //Jesse
-	'http://prod.viblio.com': 'JQRKUZQYADSCHG5NJQ5P'
+	'http://prod.viblio.com': 'JQRKUZQYADSCHG5NJQ5P',
+	'https://prod.viblio.com': 'JQRKUZQYADSCHG5NJQ5P'
     };
     var myLocation = '//' + window.location.hostname;
     if ( window.location.port )
