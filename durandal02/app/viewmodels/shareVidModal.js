@@ -15,6 +15,8 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	
 	self.shareVidMessage = ko.observable( $('#shareVidMessage').val() );
 	self.shareMessage_entry_error = ko.observable( false );
+
+	self.cut_and_paste_url = ko.observable();
 	
 	self.shareNetworks = [ { name: 'Facebook', addClass: 'fb', url: 'http://www.facebook.com/share.php?u=' + self.facebookLink(), imgName: 'FBf.png' }, 
                                { name: 'Twitter', addClass: 'twitter', url: 'https://twitter.com/share?url=' + self.twitterLink() + '&via=iviblio' + '&text=' + self.videoTitle().substring(0,130), imgName: 'twitter.png' }, 
@@ -149,13 +151,22 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
             });
         
 	// This is the copy-to-clipboard support
+	ZeroClipboard.setMoviePath( 'lib/zeroclipboard/ZeroClipboard11.swf' );	
 	self.clip = new ZeroClipboard.Client();
-	ZeroClipboard.setMoviePath( 'lib/zeroclipboard/ZeroClipboard11.swf' );
-	self.clip.setText( 'This is copy text 2' );
 	//self.clip.addEventListener( 'complete', function( client, text ) {
 	//    console.log( 'Copied to Clipboard' );
 	//});
+	self.clip.setText( '' );
 	self.clip.glue( 'copyShareLink', 'shareVidModal' );
+	
+	var viblio = require( 'lib/viblio' );
+	viblio.api( '/services/mediafile/add_share',
+		    { mid: self.mediafile.media().uuid,
+		      private: 'potential'
+		    }).then( function( json ) {
+			self.cut_and_paste_url( json.url );
+			self.clip.setText( json.url );
+		    });
     };
 
     return S;
