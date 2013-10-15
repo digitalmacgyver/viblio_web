@@ -115,6 +115,11 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
             return false;
         });
     };    
+
+    S.prototype.deactivate = function() {
+	// Remove flash object for copy-to-clipboard
+	this.clip.destroy();
+    };
         
     S.prototype.compositionComplete = function( view, parent ) {
         var self = this;
@@ -143,6 +148,14 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
               }
             });
         
+	// This is the copy-to-clipboard support
+	self.clip = new ZeroClipboard.Client();
+	ZeroClipboard.setMoviePath( 'lib/zeroclipboard/ZeroClipboard11.swf' );
+	self.clip.setText( 'This is copy text 2' );
+	//self.clip.addEventListener( 'complete', function( client, text ) {
+	//    console.log( 'Copied to Clipboard' );
+	//});
+	self.clip.glue( 'copyShareLink', 'shareVidModal' );
     };
 
     return S;

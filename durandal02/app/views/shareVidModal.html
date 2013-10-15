@@ -22,16 +22,13 @@
             </button>
         </div>
     </form>
-    <!--
-	THE PROBLEM HERE is that (a) copy to clipboard is not well supported across
-	browsers and (b) I don't know enough to be able to mark this video as a private,
-	hidden or public share.
+
     <form id="shareVidLink">
         <p class="bigTitle">Here's your link:</p>
-        <input id="shareLink" type="text" class="text" data-bind="value: window.location" />
-        <button id="copyShareLink" class="textShadowed" data-bind="click: copyToClipboard">
+        <input id="shareLink" type="text" class="text" data-bind="enable: false, value: window.location" />
+        <button id="copyShareLink" class="btn textShadowed">
             Copy
         </button>
     </form>
-    -->
+
 </div>
