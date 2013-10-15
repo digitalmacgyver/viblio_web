@@ -1,23 +1,32 @@
 define(['plugins/router','lib/viblio','durandal/system'], function( router, viblio, system ) {
 
+    var email = ko.observable();
     var password = ko.observable();
     var displayname = ko.observable();
     var validated = ko.computed( function() {
-	return password();
+	return email() && password();
     });
 
-    var email;
     var url;
 
     var labelShowHide = ko.observable( 'reveal' );
 
     var view;
 
+    var correct = ko.observable( true );
+
     return {
+	email: email,
+	correct: correct,
 	password: password,
 	displayname: displayname,
 	validated: validated,
 	labelShowHide: labelShowHide,
+
+	not_correct: function() {
+	    email(null);
+	    correct( false );
+	},
 
 	toggleShowHide: function() {
 	    var t = $(view).find('input[name="password"]').attr( 'type' );
@@ -62,7 +71,7 @@ define(['plugins/router','lib/viblio','durandal/system'], function( router, vibl
 	activate: function( args ) {
 	    if ( args ) {
 		if ( args.email ) {
-		    email = args.email;
+		    email( args.email );
 		}
 		if ( args.url ) {
 		    url = args.url;
@@ -70,7 +79,7 @@ define(['plugins/router','lib/viblio','durandal/system'], function( router, vibl
 	    }
 	    return viblio.api( 
 		'/services/na/find_share_info_for_pending',
-		{ email: email } ).then( function( json ) {
+		{ email: email() } ).then( function( json ) {
 		    if ( json.owner ) {
 			displayname( json.owner.displayname );
 		    }
@@ -83,9 +92,9 @@ define(['plugins/router','lib/viblio','durandal/system'], function( router, vibl
 	},
 
 	done: function() {
-	    viblio.api( '/services/na/new_user', { email: email,
+	    viblio.api( '/services/na/new_user', { email: email(),
 						   password: password(),
-						   displayname: email } )
+						   displayname: email() } )
 		.then( function() {
 		    router.navigate( viblio.getLastAttempt() || url || '#/home' );
 		});

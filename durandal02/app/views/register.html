@@ -1,14 +1,27 @@
 <div id="register-page">
-  <h2>Welcome to Viblio!</h2>
+  <h2>Welcome to Viblio <span data-bind="text: email"></span>!</h2>
+
+  <div data-bind="if: correct">
+    <p>
+      If you are not <span data-bind="text: email"></span>, click <a href="#" data-bind="click: not_correct">here</a> to
+      create your own Viblio account.
+    </p>
+  </div>
+  <div data-bind="ifnot: correct">
+    <label for="email">Your Email Address:</label>
+    <input type="email" name="email" placeholder="Email" data-bind="value: email" />
+  </div>
 
   <span data-bind="text: displayname"></span> has invited you to watch a video.  To protect
   your privacy, please create a password first:
-  <ul>
+  <div>
     <input type="password" name="password" data-bind="value: password" placeholder="Password" />
     <a href="#" data-bind="click: toggleShowHide, text: labelShowHide"></a>
-  </ul>
+  </div>
 
-  I agree with the <a href="#" data-bind="click: displayTerms">terms</a> of using the Viblio service.
+  <div>
+    I agree with the <a href="#" data-bind="click: displayTerms">terms</a> of using the Viblio service.
+  </div>
 
   <div class="done">
     <button class="btn btn-primary" data-bind="enable: validated, click: done">Watch the Video</button>
