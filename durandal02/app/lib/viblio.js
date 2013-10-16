@@ -37,7 +37,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 	var self = this;
 	seconds = seconds || 60;
 	logoutTimeout = setTimeout( function() {
-	    console.log( 'REALLY LOGGING OUT' );
 	    self.api( '/services/na/logout' ).then( function() {
 		self.setUser( null );
 		router.navigate( '#/login' );
@@ -45,7 +44,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 	}, ( 1000 * seconds ) );
     };
     var rescheduleLogout = function( seconds ) {
-	console.log( 'RESCHEDULING LOGOUT' );
 	if ( logoutTimeout ) clearTimeout( logoutTimeout );
 	logoutTimeout = null;
 	this.scheduleLogout( seconds );
@@ -74,6 +72,14 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 
 	log_error: function( msg ) {
 	    system.log( msg );
+	},
+
+	// Use alertify to notify the user with a small slideout
+	// in the lower right.  type can be null (black), success (green)
+	// or error (red).  Wait can be 0 to keep the notification on
+	// the screen until user clicks on it.
+	notify: function( msg, type, wait ) {
+	    alertify.log( msg, type, wait );
 	},
 
 	setLastAttempt: function( attempt ) {
@@ -158,7 +164,9 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 		}
 		else {
 		}
-		self.log( 'AJAX FAIL' );
+
+		self.notify( 'Server communication failure!', 'error' );
+
 		if ( errorCallback )
 		    errorCallback({message: 'Cannot communicate with server',
 				   detail: url });
@@ -169,7 +177,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 		if ( data && data.error && data.code ) {
 		    if ( data.code == 401 || data.code == 403 ) {
 			// authentication failure; redirect back to login page
-			self.debug( 'Must (re)authenticate!' );
 			if ( data.detail && ( data.detail.indexOf( 'NOLOGIN' ) == 0 ) ) {
 			    // I am already on the login page!
 			    if ( errorCallback )
@@ -185,20 +192,30 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 			}
 		    }
 		    else {
-			if ( errorCallback )
+			if ( errorCallback ) {
 			    errorCallback({message: data.message,
 					   detail: data.detail });
-			else
-			    dialogs.showMessage( 'No code: Message: ' + data.message + ', ' + data.detail || 'no detail', 'API Error' );
+			}
+			else {
+			    self.notify( data.message, 'error' );
+			    console.log( 'API (bad request) ERROR' );
+			    console.log( data.message );
+			    console.log( data.detail );
+			}
 		    }
 		    deferred.reject( x, 'error' );
 		}
 		else if ( data && data.error ) {
-		    if ( errorCallback )
+		    if ( errorCallback ) {
 			errorCallback({message: data.message,
 				       detail: data.detail });
-		    else
-			dialogs.showMessage( data.message + ', ' + data.detail || 'no detail', 'API Error' );
+		    }
+		    else {
+			self.notify( 'Server exception', 'error' );
+			console.log( 'API (exception) ERROR' );
+			console.log( data.message );
+			console.log( data.detail );
+		    }
 		}
 		else {
 		    deferred.resolve( data, status, xhr );

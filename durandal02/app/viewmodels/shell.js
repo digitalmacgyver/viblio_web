@@ -43,6 +43,9 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 			viblio.setUser( res.user );
 			dfd.resolve({});
 		    }
+		}, function() {
+		    viblio.notify( 'Server communication failure!', 'error' );
+		    dfd.resolve(false);
 		});
 	    }).promise();
 	}
