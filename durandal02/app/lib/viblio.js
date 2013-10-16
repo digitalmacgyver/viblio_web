@@ -170,11 +170,11 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'pl
 		    if ( data.code == 401 || data.code == 403 ) {
 			// authentication failure; redirect back to login page
 			self.debug( 'Must (re)authenticate!' );
-			if ( data.message && ( data.message.indexOf( 'Login failed' ) == 0 ) ) {
+			if ( data.detail && ( data.detail.indexOf( 'NOLOGIN' ) == 0 ) ) {
 			    // I am already on the login page!
 			    if ( errorCallback )
 				errorCallback({message: 'Authentication Failure',
-					       detail: data.message });
+					       detail: data.message, code: data.detail });
 			    else
 				dialogs.showMessage( data.message, 'Authentication Failure' );
 			}
