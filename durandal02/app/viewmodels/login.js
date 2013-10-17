@@ -41,16 +41,55 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	router.navigate( viblio.getLastAttempt() || '#/home' );
     };
 
+    function handleLoginFailure( json ) {
+	var code = json.code;
+	var msg;
+	if ( code == "NOLOGIN_NOT_IN_BETA" ) {
+	    msg  = "We are currently in an ivitation-only beta testing phase.  ";
+	    msg += "If you would like to request participation in this beta testing program, ";
+	    msg += "please enter your email below and click the reserver button.";
+	}
+	else if ( code == "NOLOGIN_BLACKLISTED" ) {
+	    msg  = "We are very sorry but this email address is currently being blocked ";
+	    msg += "from normal access.  If you feel this block should be removed, please ";
+	    msg += "send email to <a href=\"mailto:xxx\">xxx</a>.";
+	}
+	else if ( code == "NOLOGIN_EMAIL_NOT_FOUND" ) {
+	    msg  = "We do not have an account set up for " + email() + ".  If this is your ";
+	    msg += "first time creating a Viblio account, start by downloading the ";
+	    msg += '<a href="/services/na/download_trayapp">VIBLIO APP</a>.  ';
+	    msg += "Otherwise, please re-enter the correct account information.";
+	}
+	else if ( code == "NOLOGIN_PASSWORD_MISMATCH" ) {
+	    msg  = "The password you entered does not match the password we have on record for ";
+	    msg += "this account.  Please try again, or click on the forgot password link.";
+	}
+	else if ( code == "NOLOGIN_NOEMAIL" ) {
+	    msg  = "Please enter a valid email address to log in.";
+	}
+	else if ( code == "NOLOGIN_CANCEL" ) {
+	    return;
+	}
+	else {
+	    msg  = "We are very sorry, but something strange happened.  Please try ";
+	    msg += "logging in again.";
+	}
+	return dialog.showMessage( msg, "Authentication Failure" );
+    };
+
+    function downloadTrayApp() {
+    };
+
     function nativeAuthenticate() {
 	if ( ! email() ) {
-	    dialog.showMessage( 'The email field is required.', 'Authentication' );
+	    handleLoginFailure({ code: "NOLOGIN_NOEMAIL" });
 	    return;
 	}
 	if ( ! password() ) {
             if( $('#loginPassword').val() ) {
                 password( $('#loginPassword').val() );
             } else {
-                dialog.showMessage( 'The password field is required.', 'Authentication' );
+                handleLoginFailure({ code: "NOLOGIN_PASSWORD_MISMATCH" });
                 return;
             }
 	}
@@ -58,7 +97,8 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	viblio.api( '/services/na/authenticate',
 		    { email: email(),
 		      password: password(),
-		      realm: 'db' }
+		      realm: 'db' },
+		    handleLoginFailure
 		  ).then( function( json ) {
 		      loginSuccessful( json.user );
 		  });
@@ -72,13 +112,11 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
             if (response.authResponse) {
 		viblio.api( '/services/na/authenticate',
 			    { realm: 'facebook',
-                              access_token: response.authResponse.accessToken }
+                              access_token: response.authResponse.accessToken },
+			    handleLoginFailure
 			  ).then( function( json ) {
 			      loginSuccessful( json.user );
 			  });
-	    }
-	    else {
-		dialog.showMessage( 'User cancelled?', 'Authentication' );
 	    }
 	},{scope: config.facebook_ask_features()});
     };
@@ -88,12 +126,12 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     // list called "Viblio Beta Enrollment from Login Page"
     function betaEnroll() {
         if ( $('#mce-EMAIL').val() == "" ) {
-            dialog.showMessage( 'The email field is required.', 'Authentication' );
+	    handleLoginFailure({code: "NOLOGIN_NOEMAIL"});
 	    return;
         };
         
         if ( ! $('#mce-EMAIL')[0].checkValidity() ) {
-            dialog.showMessage( 'Please enter a valid email address.', 'Authentication' );
+            handleLoginFailure({code: "NOLOGIN_NOEMAIL"});
 	    return;
         };
         
@@ -113,7 +151,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
             success     : function(data) {
                 if (data.result != "success") {
                     // Something went wrong, do something to notify the user. maybe alert(data.msg);
-                    dialog.showMessage( data.msg, 'Authentication' );
+                    dialog.showMessage( data.msg, 'Beta Signup' );
                 } else {
                     showBetaReservedModal();
                 }
