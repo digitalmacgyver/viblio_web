@@ -1,4 +1,4 @@
-define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'plugins/dialog', 'plugins/http', 'knockout', 'facebook'], function( router, app, system, config, viblio, dialog, http, ko ) {
+define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'lib/customDialogs', 'plugins/http', 'knockout', 'facebook'], function( router, app, system, config, viblio, dialog, http, ko ) {
 
     var email = ko.observable();
     var email_entry_error = ko.observable( false );
@@ -122,7 +122,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     };
     
     function showBetaReservedModal() {
-        dialog.show('viewmodels/betaReserved');
+        dialog.showModal('viewmodels/betaReserved');
     };
 
     function signup() {

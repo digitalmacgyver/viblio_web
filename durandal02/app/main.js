@@ -21,7 +21,7 @@
 define('jquery', function () { return jQuery; });
 define('knockout', ko);
 
-define(['viewmodels/header', 'viewmodels/landing_header', 'durandal/app', 'durandal/viewLocator', 'durandal/system', 'plugins/router','lib/custom_bindings','lib/viblio'], function(page_header, landing_header, app, viewLocator, system, router) {
+define(['viewmodels/header', 'viewmodels/landing_header', 'durandal/app', 'durandal/viewLocator', 'durandal/system', 'plugins/router','plugins/dialog','lib/animatedDialogContext','lib/custom_bindings','lib/viblio'], function(page_header, landing_header, app, viewLocator, system, router, dialog, animatedDialogContext) {
 
     //>>excludeStart("build", true);
     system.debug(true);
@@ -35,6 +35,9 @@ define(['viewmodels/header', 'viewmodels/landing_header', 'durandal/app', 'duran
         dialog: true,
         widget: true
     });
+
+    // Create a custom, animated dialog type
+    dialog.addContext( 'animated', animatedDialogContext );
 
     app.start().then(function() {
         //Replace 'viewmodels' in the moduleId with 'views' to locate the view.

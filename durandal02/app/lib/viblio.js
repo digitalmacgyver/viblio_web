@@ -1,4 +1,4 @@
-define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'plugins/dialog'], function (router, app, system, messageq, dialogs) {
+define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'lib/customDialogs'], function (router, app, system, messageq, dialogs) {
 
     // The currently logged in user
     var user = ko.observable();

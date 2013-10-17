@@ -673,7 +673,6 @@ input:-moz-placeholder {
 /********************  Beta Reserved Modal Section  *****************************/
 
 #betaReservedModal {
-    width: 600px;
     position: relative;
     color: rgba(0,0,0,.5);
 }
