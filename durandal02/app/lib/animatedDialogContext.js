@@ -123,7 +123,6 @@ define( ['plugins/dialog'], function( dialog ) {
     };
 
     Context.prototype.compositionComplete = function (child, parent, context) {
-	console.log( 'CONTEXT OVERRIDE' );
 	var $child = $(child);
         var width = $child.width();
         var height = $child.height();
