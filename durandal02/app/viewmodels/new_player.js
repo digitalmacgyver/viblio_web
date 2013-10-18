@@ -188,7 +188,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	setupFaces( m.media() );
 	near( m.media() );
 	flowplayer().play({
-            url: 'mp4:amazons3/' + s3bucket( m.media().views.main.url ) + '/' + m.media().views.main.uri,
+            url: 'mp4:' + m.media().views.main.uri.replace(".mp4",""),
             ipadUrl: encodeURIComponent(m.media().views.main.url),
             // URL for sharing on FB, etc.
             pageUrl: config.site_server + '/s/p/' + m.media().views.main.uuid,
@@ -450,7 +450,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    $("#tv").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
 		ratio: 9/16,
                 clip: {
-                    url: 'mp4:amazons3/' + s3bucket( mf.views.main.url ) + '/' + mf.views.main.uri,
+                    url: 'mp4:' + mf.views.main.uri.replace(".mp4",""),
                     ipadUrl: encodeURIComponent(mf.views.main.url),
                     // URL for sharing on FB, etc.
                     pageUrl: config.site_server + '/s/p/' + mf.views.main.uuid,
@@ -486,7 +486,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    // Wowza stuff
                     rtmp: {
                         url: 'lib/flowplayer/flowplayer.rtmp-3.2.12.swf',
-                        netConnectionUrl: 'rtmp://ec2-54-214-160-185.us-west-2.compute.amazonaws.com/vods3'
+                        netConnectionUrl: 'rtmp://s21xrz3atlg0ot.cloudfront.net/cfx/st'
                     },
 		    // Google Analytics
 		    /** USES THE OLDER ga.js, but we use analytics.js 
