@@ -160,14 +160,18 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    total += 1;
 		    var F = {
 			url: face.url,
-			appears_in: 1
+			appears_in: 1,
+			contact_name: null,
+			contact_email: null
 		    };
 		    if ( face.contact ) {
 			ident += 1;
 			F.contact_name = face.contact.contact_name;
-			F.id           = face.contact_id;
+			F.contact_email = face.contact.contact_email;
+			F.id = face.contact.contact_id;
+			F.uuid = face.contact.uuid;
 		    }
-		    faces.push( new Face( F ) );
+		    faces.push( new Face( F, { allow_changes: true } ) );
 		}
 		finfo( 'Starring' );
 	    }

@@ -14,45 +14,31 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 		unknown_faces.removeAll();
 		data.contacts.forEach( function( contact ) {
 		    if ( ! contact.url ) return;
-		    var face = new Face( contact );
-		    if ( contact.contact_name ) {
-			face.on( 'face:selected',  function( sel, pos ) {
-			    customDialogs.showContactCard( sel ).then( function( data ) {
-				// The dialog called the viblio API
-			    });
-			});
+		    var face = new Face( contact, { allow_changes: true, show_name: true } );
+		    if ( contact.contact_name )
 			known_faces.push( face );
-		    }
-		    else {
-			face.on( 'face:selected',  function( sel, pos ) {
-			    customDialogs.showMagicTag( sel ).then( function( data ) {
-				if ( data.uuid && data.contact_name ) {
-				    // Remove from list of unknown faces
-				    var rm = unknown_faces.remove( function( face ) {
-					return face.data.uuid == data.uuid;
-				    });
-				    if ( data.cid ) {
-					// We are saying this unknown person is the same as a previously known person
-				    }
-				    else {
-					// Add to list of known faces and resort
-					known_faces.push( rm[0] );
-					rm[0].off( 'face:selected' );
-					rm[0].on( 'face:selected',  function( sel, pos ) {
-					    customDialogs.showContactCard( sel ).then( function( data ) {
-						// The dialog called the viblio API
-					    });
-					});
-					known_faces.sort( function( f1, f2 ) {
-					    return f1.name() == f2.name() ? 0 :
-						(f1.name() < f2.name() ? -1 : 1 );
-					});
-				    }
-				}
-			    });
-			});
+		    else
 			unknown_faces.push( face );
-		    }
+		    face.on( 'face:changed', function( f, data ) {
+			if ( data.previous.name != data.current.name &&
+			     ( ! data.previous.name || data.previous.name == 'unknown' ) ) {
+			    // unknown to known
+			    var rm = unknown_faces.remove( function( face ) {
+				return face.data.uuid == data.uuid;
+			    });
+			    if ( data.cid ) {
+				// We are saying this unknown person is the same as a previously known person
+			    }
+			    else {
+				// Add to list of known faces and resort
+				known_faces.push( rm[0] );
+				known_faces.sort( function( f1, f2 ) {
+				    return f1.name() == f2.name() ? 0 :
+					(f1.name() < f2.name() ? -1 : 1 );
+				});
+			    }
+			}
+		    });
 		});
 	    });
 	}
