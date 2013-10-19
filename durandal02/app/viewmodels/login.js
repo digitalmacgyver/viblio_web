@@ -43,7 +43,8 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 
     function handleLoginFailure( json ) {
 	var code = json.code;
-	var msg;
+	var msg  = json.detail;
+
 	if ( code == "NOLOGIN_NOT_IN_BETA" ) {
 	    msg  = "We are currently in an ivitation-only beta testing phase.  ";
 	    msg += "If you would like to request participation in this beta testing program, ";
@@ -70,14 +71,14 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	else if ( code == "NOLOGIN_CANCEL" ) {
 	    return;
 	}
+	else if ( code.match( /NOLOGIN_/g ) ) {
+	    // msg is set to message coming back from server
+	}
 	else {
 	    msg  = "We are very sorry, but something strange happened.  Please try ";
 	    msg += "logging in again.";
 	}
 	return dialog.showMessage( msg, "Authentication Failure" );
-    };
-
-    function downloadTrayApp() {
     };
 
     function nativeAuthenticate() {

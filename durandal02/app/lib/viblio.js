@@ -181,7 +181,8 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 			    // I am already on the login page!
 			    if ( errorCallback )
 				errorCallback({message: 'Authentication Failure',
-					       detail: data.message, code: data.detail });
+					       detail: data.message, 
+					       code: data.detail });
 			    else
 				dialogs.showMessage( data.message, 'Authentication Failure' );
 			}
@@ -190,6 +191,14 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 				self.setLastAttempt( router.activeInstruction().config.route );
 			    router.navigate( 'login' );
 			}
+		    }
+		    else if ( data.detail && data.detail.match( /NOLOGIN_/g ) ) {
+			if ( errorCallback )
+			    errorCallback({message: 'Authentication Failure',
+					   detail: data.message, 
+					   code: data.detail });
+			else
+			    dialogs.showMessage( data.message, 'Authentication Failure' );
 		    }
 		    else {
 			if ( errorCallback ) {
