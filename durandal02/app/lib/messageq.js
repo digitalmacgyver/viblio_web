@@ -1,4 +1,4 @@
-define(['lib/config','durandal/system','lib/customDialogs','plugins/dialog','durandal/app'], function( config, system, customDialogs, dialogs, app ) {
+define(['lib/config','durandal/system','durandal/app'], function( config, system, app) {
     var mq = null;
     var subscribed = false;
     var last_uuid = null;
@@ -19,9 +19,7 @@ define(['lib/config','durandal/system','lib/customDialogs','plugins/dialog','dur
 	    if ( mq ) {
 		if ( ! subscribed ) {
 		    try {
-			system.log( 'Attempting to subscribe to /messages/'+ uuid);
 			var s = mq.subscribe( '/messages/' + uuid, function( msg ) {
-			    system.log( 'Messages! I have ' + msg.count + ' messages waiting' );
 			    $.ajax({
 				url: '/mq/dequeue',
 				data: { uid: uuid },
@@ -36,7 +34,11 @@ define(['lib/config','durandal/system','lib/customDialogs','plugins/dialog','dur
 					for( var i=0; i<messages.length; i++ ) {
 					    app.trigger( 'mediafile:ready', messages[i].media );
 					}
-					customDialogs.showIncoming( messages );
+					var img = '<img src="' + messages[0].media.views.poster.url + 
+					    '" width="80" height="45" style="vertical-align: text-top; margin-right: 3px;"/>';
+					var txt = 'New video available!';
+					var viblio = require( 'lib/viblio' );
+					viblio.notify( img + txt );
 				    }
 				},
 				error: function( x, t, e ) {
@@ -45,7 +47,6 @@ define(['lib/config','durandal/system','lib/customDialogs','plugins/dialog','dur
 			    });
 			});
 			s.callback( function(arg) {
-			    system.log( 'Subscription is now active for: ' + uuid );
 			    subscribed = true;
 			    last_uuid = uuid;
 			});
