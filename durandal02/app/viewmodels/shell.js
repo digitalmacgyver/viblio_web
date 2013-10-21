@@ -58,6 +58,11 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 		 ( viblio.getUser() && viblio.getUser().uuid ) ) {
 		return('#/home');
 	    }
+	    if ( instruction.config.route == '' ||
+		 instruction.config.route == 'landing' ) {
+		console.log( 'redirecting to /signup' );
+		window.location = '/signup/';
+	    }
             return({});
         }
     };
