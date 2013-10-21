@@ -1,4 +1,4 @@
-define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','viewmodels/conditional_header','lib/viblio','lib/customDialogs','facebook','purl'], function (router, app, system, page_header, landing_header, conditional_header, viblio, customDialogs) {
+define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','viewmodels/conditional_header','lib/viblio','lib/customDialogs','viewmodels/emailtest','facebook','purl'], function (router, app, system, page_header, landing_header, conditional_header, viblio, customDialogs,emailtest) {
 
     var header = ko.observable( );
 
@@ -106,7 +106,10 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      nav: true,    authenticated: true,   header: page_header },
 	    
             { route: 'raw',                moduleId: 'raw',                title: 'Raw Upload',
-	      nav: true,    authenticated: true,   header: page_header },
+	      nav: false,    authenticated: true,   header: page_header },
+	    
+            { route: 'emailtest',          moduleId: 'emailtest',          title: 'Email Test',
+	      nav: false,    authenticated: true,   header: page_header },
 	    
             { route: 'new_player',             moduleId: 'new_player',     title: 'Video Player',
 	      nav: false,   authenticated: true,   header: page_header },
