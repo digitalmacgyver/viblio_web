@@ -12,14 +12,17 @@ define(['lib/viblio'],function(viblio) {
 	'videosSharedWithYou.tt',
 	'weeklyDigest.tt'
     ]);
+    var forceStaging = ko.observable( true );
 
     return {
 	email: email,
 	selectedTemplate: selectedTemplate,
 	templates: templates,
+	forceStaging: forceStaging,
 	test: function() {
 	    viblio.api( '/services/test/template_test',
 			{ email: email(),
+			  force_staging: forceStaging(),
 			  template: selectedTemplate() } )
 		.then( function() {
 		    viblio.notify( 'Email Sent', 'success' );
