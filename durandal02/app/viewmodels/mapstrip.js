@@ -109,7 +109,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio'], function(app,router,vib
 	// A point was clicked on.  Could popup a dialog to display
 	// metadata (title, description, captured on date, length, etc)
 	// and a play/cancel function maybe.  Or just go to player screen.
-	router.navigate( '#/new_player?mid=' + point.uuid );
+	router.navigate( 'new_player?mid=' + point.uuid );
     };
 
     return Map;

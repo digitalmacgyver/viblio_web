@@ -34,7 +34,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 			// after a successful login.
 			if ( instruction.config.route != 'login' )
 			    viblio.setLastAttempt( instruction.config.route );
-			dfd.resolve('#/login');
+			dfd.resolve('login');
 		    }
 		    else {
 			// Its ok (authenticated and user is logged in)
@@ -56,7 +56,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 
 	    if ( instruction.config.route == '' && 
 		 ( viblio.getUser() && viblio.getUser().uuid ) ) {
-		return('#/home');
+		return('home');
 	    }
 	    if ( instruction.config.route == '' ||
 		 instruction.config.route == 'landing' ) {
@@ -73,7 +73,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
     //
     function logout() {
 	viblio.scheduleLogout();
-	router.navigate( '#/loggedOut' );
+	router.navigate( 'loggedOut' );
     }
     // Most will call this logout() function by triggering an event.
     //
@@ -160,7 +160,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	    router.on('router:route:not-found', function( fragment ) {
 		viblio._why = { error: 'Route not found: ' + fragment,
 				reason: 'No such route installed' };
-		router.navigate( '#/oops' );
+		router.navigate( 'oops' );
 	    });
 
 	    return system.defer( function( dfd ) {

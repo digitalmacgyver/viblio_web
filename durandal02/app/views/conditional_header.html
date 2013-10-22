@@ -1,6 +1,6 @@
 <div id="page-header" data-bind="visible: user().uuid">
   <div class="navbar navbar-fixed-top">
-    <a class="brand" href="#/landing">
+    <a class="brand" href="/signup/">
       <img src="css/images/viblioWhite.png" />
     </a>
     <ul class="nav" data-bind="foreach: router.navigationModel">
@@ -30,7 +30,7 @@
 
 <div id="landing-header" data-bind="visible: user().uuid == null">
   <div class="navbar navbar-fixed-top darkBlueBG">
-    <a class="brand" href="#/landing">
+    <a class="brand" href="/signup/">
       <img src="css/images/viblioWhite.png" />
     </a>
     <div class="loader pull-right" data-bind="css: { active: router.isNavigating }">

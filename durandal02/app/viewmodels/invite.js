@@ -22,7 +22,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
           var user = json.user;
           viblio.setUser( user );
           dialog.showMessage( 'Thanks!' );
-          router.navigate( '#/home' );
+          router.navigate( 'home' );
        });
     }
 

@@ -69,8 +69,8 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 		viblio.api( '/services/na/media_shared', { mid: self.mid }, errorHandler ).then( function(json) {
 		    if ( json.auth_required ) {
 			// This is a private share and you are not logged in.
-			viblio.setLastAttempt( '#/web_player?mid=' + self.mid );
-			router.navigate( '#/login?orsignup=true' );
+			viblio.setLastAttempt( 'web_player?mid=' + self.mid );
+			router.navigate( 'login?orsignup=true' );
 		    }
 		    else {
 			var mf = json.media;

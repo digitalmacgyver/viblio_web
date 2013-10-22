@@ -70,7 +70,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	// Play a mediafile clip.  This uses the query parameter
 	// passing technique to pass in the mediafile to play.
 	m.on( 'mediafile:play', function( m ) {
-	    router.navigate( '#/new_player?mid=' + m.media().uuid );
+	    router.navigate( 'new_player?mid=' + m.media().uuid );
 	});
 
         m.on( 'mediafile:composed', function() {
@@ -140,7 +140,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     };
 
     FScroll.prototype.seeAll = function() {
-	router.navigate( '#/videosof?uuid=' + this.contact_id );
+	router.navigate( 'videosof?uuid=' + this.contact_id );
     };
 
     FScroll.prototype.attached = function( view ) {
