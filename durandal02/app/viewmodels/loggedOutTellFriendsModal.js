@@ -33,6 +33,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
         system.log( list, message );
 
 	viblio.api( '/services/user/tell_a_friend', { list: list, message: message } ).then( function() {
+	    viblio.notify( 'Email sent', 'success' );
 	    self.closeModal();
 	});
     };

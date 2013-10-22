@@ -103,6 +103,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 			  // log it to google analytics
 			  viblio.gaSocial( self.private(), 'share', self.mediafile.media().uuid );
 			  viblio.gaEvent(  'share', self.private(), 'social' );
+			  viblio.notify( 'Share email sent', 'success' );
 		      });
 	self.closeModal();
     };
