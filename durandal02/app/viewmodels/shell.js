@@ -107,7 +107,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'upload',             moduleId: 'nginx',              title: 'UPLOAD',
 	      nav: true,    authenticated: true,   header: page_header },
 	    
-            { route: 'faces',              moduleId: 'faces',              title: 'Faces',
+            { route: 'faces',              moduleId: 'faces',              title: 'FACES',
 	      nav: true,    authenticated: true,   header: page_header },
 	    
             { route: 'raw',                moduleId: 'raw',                title: 'Raw Upload',
