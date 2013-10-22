@@ -76,7 +76,7 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	// Play a face clip.  This uses the query parameter
 	// passing technique to pass in the face to play.
 	m.on( 'face:play', function( m ) {
-	    router.navigate( '#/new_player?mid=' + m.face().uuid );
+	    router.navigate( 'new_player?mid=' + m.face().uuid );
 	});
 
         m.on( 'face:composed', function() {

@@ -4,7 +4,7 @@
 
   The way to play a video is to
 
-  router.navigate( '#/player?mid=uuid' );
+  router.navigate( 'player?mid=uuid' );
 
   Where uuid is a mediafile uuid.  The mediafile is
   actually fetched from the server to play.  We do it
@@ -201,7 +201,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
             provider: 'rtmp'
         });
 	// push it onto history
-	//router.navigate( '#/player?mid=' + m.media().uuid, false);
+	//router.navigate( 'player?mid=' + m.media().uuid, false);
     }
 
     // Store the disable_prev/next as observables so
@@ -388,7 +388,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    query(args);
 
 	    if ( ! query() ) {
-		router.navigate( '#/home' );
+		router.navigate( 'home' );
 	    }
 
 	    var mid = query().mid;
@@ -404,7 +404,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    //
 	    if ( ! mid ) {
 		return dialog.showMessage( 'No video to play!' ).then( function() {
-		    router.navigate( '#/home' );
+		    router.navigate( 'home' );
 		});
 	    }
 
