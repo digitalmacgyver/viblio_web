@@ -1,4 +1,4 @@
-define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','viewmodels/conditional_header','lib/viblio','lib/customDialogs','facebook','purl'], function (router, app, system, page_header, landing_header, conditional_header, viblio, customDialogs) {
+define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','viewmodels/conditional_header','lib/viblio','lib/customDialogs','viewmodels/emailtest','facebook','purl'], function (router, app, system, page_header, landing_header, conditional_header, viblio, customDialogs,emailtest) {
 
     var header = ko.observable( );
 
@@ -34,7 +34,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 			// after a successful login.
 			if ( instruction.config.route != 'login' )
 			    viblio.setLastAttempt( instruction.config.route );
-			dfd.resolve('#/login');
+			dfd.resolve('login');
 		    }
 		    else {
 			// Its ok (authenticated and user is logged in)
@@ -56,7 +56,12 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 
 	    if ( instruction.config.route == '' && 
 		 ( viblio.getUser() && viblio.getUser().uuid ) ) {
-		return('#/home');
+		return('home');
+	    }
+	    if ( instruction.config.route == '' ||
+		 instruction.config.route == 'landing' ) {
+		console.log( 'redirecting to /signup' );
+		window.location = '/signup/';
 	    }
             return({});
         }
@@ -68,7 +73,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
     //
     function logout() {
 	viblio.scheduleLogout();
-	router.navigate( '#/loggedOut' );
+	router.navigate( 'loggedOut' );
     }
     // Most will call this logout() function by triggering an event.
     //
@@ -106,7 +111,10 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      nav: true,    authenticated: true,   header: page_header },
 	    
             { route: 'raw',                moduleId: 'raw',                title: 'Raw Upload',
-	      nav: true,    authenticated: true,   header: page_header },
+	      nav: false,    authenticated: true,   header: page_header },
+	    
+            { route: 'emailtest',          moduleId: 'emailtest',          title: 'Email Test',
+	      nav: false,    authenticated: true,   header: page_header },
 	    
             { route: 'new_player',             moduleId: 'new_player',     title: 'Video Player',
 	      nav: false,   authenticated: true,   header: page_header },
@@ -123,9 +131,6 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'settings',           moduleId: 'settings',           title: 'User Settings',
 	      nav: false,   authenticated: true,   header: page_header },
 
-            { route: 'incoming',           moduleId: 'incoming',           title: 'Incoming Message',
-	      nav: false,   authenticated: true,   header: page_header },
-          
             { route: 'web_player',         moduleId: 'web_player',         title: 'Video Player',
 	      nav: false,   authenticated: false,   header: conditional_header },
           
@@ -155,7 +160,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	    router.on('router:route:not-found', function( fragment ) {
 		viblio._why = { error: 'Route not found: ' + fragment,
 				reason: 'No such route installed' };
-		router.navigate( '#/oops' );
+		router.navigate( 'oops' );
 	    });
 
 	    return system.defer( function( dfd ) {

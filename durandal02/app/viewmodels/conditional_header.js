@@ -32,7 +32,7 @@ define( ['plugins/router', 'durandal/app', 'lib/viblio'], function(router, app, 
 	    app.trigger( 'system:logout' );
 	},
         signin: function() {
-            router.navigate( '#/login' );
+            router.navigate( 'login' );
         }        
     };
 });

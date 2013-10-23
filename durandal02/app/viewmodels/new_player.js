@@ -4,7 +4,7 @@
 
   The way to play a video is to
 
-  router.navigate( '#/player?mid=uuid' );
+  router.navigate( 'player?mid=uuid' );
 
   Where uuid is a mediafile uuid.  The mediafile is
   actually fetched from the server to play.  We do it
@@ -160,14 +160,18 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    total += 1;
 		    var F = {
 			url: face.url,
-			appears_in: 1
+			appears_in: 1,
+			contact_name: null,
+			contact_email: null
 		    };
 		    if ( face.contact ) {
 			ident += 1;
 			F.contact_name = face.contact.contact_name;
-			F.id           = face.contact_id;
+			F.contact_email = face.contact.contact_email;
+			F.id = face.contact.contact_id;
+			F.uuid = face.contact.uuid;
 		    }
-		    faces.push( new Face( F ) );
+		    faces.push( new Face( F, { allow_changes: true } ) );
 		}
 		finfo( 'Starring' );
 	    }
@@ -197,7 +201,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
             provider: 'rtmp'
         });
 	// push it onto history
-	//router.navigate( '#/player?mid=' + m.media().uuid, false);
+	//router.navigate( 'player?mid=' + m.media().uuid, false);
     }
 
     // Store the disable_prev/next as observables so
@@ -384,7 +388,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    query(args);
 
 	    if ( ! query() ) {
-		router.navigate( '#/home' );
+		router.navigate( 'home' );
 	    }
 
 	    var mid = query().mid;
@@ -400,7 +404,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    //
 	    if ( ! mid ) {
 		return dialog.showMessage( 'No video to play!' ).then( function() {
-		    router.navigate( '#/home' );
+		    router.navigate( 'home' );
 		});
 	    }
 

@@ -20,13 +20,13 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
                     // code to disable the viblio API error called out in viblio.js
                 };
                 dialog.showMessage( 'A request has been sent. Please check your email shortly.', 'Thanks!' ).then(function() {
-                    router.navigate( '#/login' );
+                    router.navigate( 'login' );
                 });
             });
     };
 
     function cancel() {
-        router.navigate( '#/login' );
+        router.navigate( 'login' );
     };
 
     return {

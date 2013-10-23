@@ -6,7 +6,7 @@ define(['plugins/router', 'lib/viblio'], function( router, viblio ) {
 	error: error,
 	reason: reason,
 	outtahere: function() {
-	    router.navigate( '#/home' );
+	    router.navigate( 'home' );
 	}
     };
 });

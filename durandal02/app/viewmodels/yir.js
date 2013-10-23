@@ -56,7 +56,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     };
     
     YIR.prototype.goToUpload = function() {
-        router.navigate( '#/upload' );
+        router.navigate( 'upload' );
     };
 
     // Toggle edit mode.  This will put all of media
@@ -88,7 +88,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 		month.data.forEach( function( mf ) {
 		    var m = new Mediafile( mf );
 		    m.on( 'mediafile:play', function( m ) {
-			router.navigate( '#/new_player?mid=' + m.media().uuid );
+			router.navigate( 'new_player?mid=' + m.media().uuid );
 		    });
 		    m.on( 'mediafile:delete', function( m ) {
 			viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function() {

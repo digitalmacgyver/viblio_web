@@ -2,8 +2,7 @@
    Application wide dialogs.  For now, just use Durandal standard.
    Later we'll do different things like slide downs and such.
 */
-define( ['durandal/app', 'durandal/system', 'plugins/dialog', 'viewmodels/incoming', 'viewmodels/loading', 'viewmodels/change_password', 'viewmodels/imap','viewmodels/magictag','viewmodels/contactcard', 'viewmodels/shareVidModal'], function( app, system, dialog, Incoming, Loading, ChangePassword, IMap, MagicTag, ContactCard, ShareVid ) {
-    var incoming = null;
+define( ['durandal/app', 'durandal/system', 'plugins/dialog', 'viewmodels/loading', 'viewmodels/change_password', 'viewmodels/imap','viewmodels/magictag','viewmodels/contactcard', 'viewmodels/shareVidModal'], function( app, system, dialog, Loading, ChangePassword, IMap, MagicTag, ContactCard, ShareVid ) {
     var loading  = null;
     return {
 	showMessage: function( msg, title, options ) {
@@ -25,18 +24,6 @@ define( ['durandal/app', 'durandal/system', 'plugins/dialog', 'viewmodels/incomi
 	showModal: function( obj, activationData, context ) {
 	    // return app.showDialog( obj, activationData, context );
 	    return dialog.showAnimated( obj, activationData );
-	},
-	showIncoming: function( messages ) {
-	    // Incoming dialog is a little special.  If its already showing,
-	    // we want to update the information on the screen.
-	    if ( incoming ) {
-		incoming.update( messages );
-	    }
-	    else {
-		incoming = new Incoming( messages, function() { incoming = null; } );
-		// return app.showDialog( incoming );
-		return dialog.showAnimated( incoming );
-	    }
 	},
 	showLoading: function() {
 	    if ( loading == null ) {
