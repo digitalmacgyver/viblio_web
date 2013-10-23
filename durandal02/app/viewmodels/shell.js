@@ -61,7 +61,10 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	    if ( instruction.config.route == '' ||
 		 instruction.config.route == 'landing' ) {
 		console.log( 'redirecting to /signup' );
-		window.location = '/signup/';
+		setTimeout( function() {
+		    window.location = '/signup/';
+		}, 1);
+		return( false );
 	    }
             return({});
         }
@@ -154,7 +157,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             //You can add custom options too. Also, it returns a promise for the user's response.
             app.showMessage('Search not yet implemented...');
         },
-        activate: function () {
+        activate: function ( args ) {
 	    /* Application Entry
 	       Check with the main server if this user is logged in.  If not, take them to
 	       login screen.  If they already have an open session, take them to the landing
