@@ -24,6 +24,12 @@ define( function() {
 	'http://prod.viblio.com': 'JQRKUZQYADSCHG5NJQ5P',
 	'https://prod.viblio.com': 'JQRKUZQYADSCHG5NJQ5P'
     };
+    var cf_domains = {
+	'http://staging.viblio.com': 's2gdj4u4bxrah6.cloudfront.net',
+	'https://staging.viblio.com': 's2gdj4u4bxrah6.cloudfront.net',
+	'http://prod.viblio.com': 's3vrmtwctzbu8n.cloudfront.net',
+	'https://prod.viblio.com': 's3vrmtwctzbu8n.cloudfront.net'
+    };
     var myLocation = '//' + window.location.hostname;
     if ( window.location.port )
 	myLocation += ':' + window.location.port;
@@ -56,6 +62,12 @@ define( function() {
 	cloudsponge_appid: function() {
 	    return csponge[window.location.protocol + myLocation];
 	},
-	geoLocationOfVideoAnalytics: "37.451269,-122.158495"
+	geoLocationOfVideoAnalytics: "37.451269,-122.158495",
+	cf_domain: function() {
+	    var domain = cf_domains[ window.location.protocol + myLocation];
+	    if ( ! domain ) 
+		domain = cf_domains['http://staging.viblio.com'];
+	    return domain;
+	}
     };
 });

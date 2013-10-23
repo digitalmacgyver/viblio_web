@@ -188,7 +188,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	setupFaces( m.media() );
 	near( m.media() );
 	flowplayer().play({
-            url: 'mp4:' + m.media().views.main.uri.replace(".mp4",""),
+            url: 'mp4:' + m.media().views.main.cf_url,
             ipadUrl: encodeURIComponent(m.media().views.main.url),
             // URL for sharing on FB, etc.
             pageUrl: config.site_server + '/s/p/' + m.media().views.main.uuid,
@@ -450,7 +450,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    $("#tv").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
 		ratio: 9/16,
                 clip: {
-                    url: 'mp4:' + mf.views.main.uri.replace(".mp4",""),
+                    url: 'mp4:' + mf.views.main.cf_url,
                     ipadUrl: encodeURIComponent(mf.views.main.url),
                     // URL for sharing on FB, etc.
                     pageUrl: config.site_server + '/s/p/' + mf.views.main.uuid,
@@ -483,44 +483,11 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 
                 },
                 plugins: {
-		    // Wowza stuff
+		    // Cloudfront
                     rtmp: {
                         url: 'lib/flowplayer/flowplayer.rtmp-3.2.12.swf',
-                        netConnectionUrl: 'rtmp://s21xrz3atlg0ot.cloudfront.net/cfx/st'
-                    },
-		    // Google Analytics
-		    /** USES THE OLDER ga.js, but we use analytics.js 
-		    gatracker: {
-			url: 'lib/flowplayer/flowplayer.analytics-3.2.8.swf',
-			events: {
-			    all: true,
-			    finish: 'Finish',
-			    mute: false,
-			    unmute: false
-			},
-			debug: true,
-			accountId: "UA-42975225-1"
-		    },
-		    **/
-		    // Sharing stuff
-		    /**
-                    viral: {
-                        url: 'lib/flowplayer/flowplayer.viralvideos-3.2.13.swf',
-                        share: { 
-                            description: 'Video highlight by Viblio',
-                            facebook: true,
-                            twitter: true,
-                            myspace: false,
-                            livespaces: true,
-                            digg: false,
-                            orkut: false,
-                            stumbleupon: false,
-                            bebo: false
-                        },
-                        embed: false,
-                        email: false
+                        netConnectionUrl: 'rtmp://' + config.cf_domain() + '/cfx/st'
                     }
-		    **/
                 },
                 canvas: {
                     backgroundColor:'#254558',
