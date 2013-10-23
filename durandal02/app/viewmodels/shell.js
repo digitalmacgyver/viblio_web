@@ -138,7 +138,10 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      nav: false,   authenticated: true,   header: landing_header },
 
             { route: 'register',           moduleId: 'register',           title: 'Registration',
-	      nav: false,   authenticated: false,   header: landing_header }
+	      nav: false,   authenticated: false,   header: landing_header },
+            
+            { route: 'web_player2',         moduleId: 'web_player2',         title: 'Video Player',
+	      nav: false,   authenticated: false,   header: conditional_header },
 
         ]).buildNavigationModel();
     }
