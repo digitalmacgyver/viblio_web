@@ -1,6 +1,125 @@
 <div id="webplayer-page">
-  <div class="page-wrapper">
-    <div class="player"></div>
+  <div id="nplayer-page">
+    <!--<div class="player"></div>-->
+    <div data-bind="text: shareType()"></div>
+    <table id="main-table">
+        <tr>
+            <td id="playerCommentsNavTable-Wrap">
+                <table id="playerCommentsNavTable">
+                    
+                    <td id="left-arrow-column" data-bind="visible: shareType() == 'private' ">
+                        <div class="player-control lightBlueBG bottomBorder-Thin" id="left-arrow">
+                            <img src="css/images/arrowLeft.png" />
+                        </div>
+                    </td>
+                    
+                    <td id="left-side" class="boxShadowed">
+                        <div id="webPlayer" class="player">
+                        </div>
+                        <table id="info-table">
+                            <tr>
+                                <td id="comment-column" class="babyBlueBG">
+                                    <div id="title-desc">
+                                        <h3 data-bind="text: title()"></h3>
+                                        <p data-bind="text: description() || 'This video has no description.'"></p>
+                                    </div>
+                                    <div id="comments">
+                                        <!-- ko if: shareType() == 'private' -->
+                                            <div class="comments-header lightBlueFont">
+                                                <div class="views pull-right">
+                                                  <img src="css/images/viewsEye.png" />
+                                                  <span data-bind="html: eyes()"></span>
+                                                </div>
+                                                <p class="todays-date pull-right">Today</p>
+                                                <div class="observer">
+                                                  <img class="boxShadowed" src="/services/user/avatar?uid=-&y=36" />
+                                                </div>
+                                                <p>by <span class="heavyWeightFont" data-bind="html: user().displayname"></span></p>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <div class="comment-editor" data-bind="liveEditor: usercomment">
+                                                <p class="view vidDescription" data-bind="click: usercomment.edit, text:'Comment on this video...'"></p>
+                                                <textarea class="edit editDescription" 
+                                                          data-bind="value:usercomment,
+                                                                   hasFocus: usercomment.editting,
+                                                                   event: { blur: function() { usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment') } }"></textarea>
+                                            </div>
+                                        <!-- /ko -->
+                                        <!-- ko if: shareType() != 'public' -->
+                                        <div class="all-comments">
+                                            <p class="lightBlueFont" data-bind="visible: comments().length"><span data-bind="text: comments().length"></span>&nbsp;Comments</p>
+                                            <p class="lightBlueFont" data-bind="visible: !comments().length">There are no comments to display for this video.</p>
+                                            <!-- ko foreach: comments -->
+                                            <div class="comment" data-bind="visible: comment != '' ">
+                                                <p class="comment-text bottomBorder-Thin" data-bind="html: comment"></p>
+                                                <div class="comment-footer lightBlueFont">
+                                                    <p class="when pull-right" data-bind="text: when"></p>
+                                                    <p>by&nbsp;<span class="who heavyWeightFont" data-bind="text: who"></span></p>
+                                                </div>
+                                            </div>
+                                          <!-- /ko -->
+                                        </div>
+                                        <!-- /ko -->
+                                        <p class="lightBlueFont" data-bind="visible: shareType() == 'public'">Comments for this video have been hidden.</p>
+                                    </div>
+                                </td>
+                                
+                                <td id="faces-column" class="lightBlueBG">
+                                    <!-- ko if: shareType() != 'public' -->
+                                    <div class="orangeBG bottomBorder-Thin" id="faces">
+                                        <span class="textShadowed" data-bind="text: finfo"></span>
+                                        <ul class="clearfix">
+                                            <!-- ko foreach: faces -->
+                                            <li data-bind="compose: $data"></li>
+                                            <!-- /ko -->
+                                            <li class="clearfix"></li>
+                                        </ul>
+                                    </div>
+                                    <!-- /ko -->
+                                    
+                                    <!-- ko if: shareType() == 'public' -->
+                                    <div class="orangeBG bottomBorder-Thin" id="faces">
+                                        <span class="textShadowed">Faces have been hidden.</span>
+                                    </div>
+                                    <!-- /ko -->
+                                    
+                                    <div id="geo">
+                                        <div id="geo-title" class="textShadowed">
+                                            <span data-bind="visible: isNear() != 'Find in map' "></span><span data-bind="text: isNear()"></span>
+                                        </div>
+                                        <div style="position: relative">
+                                            <div id="geo-map" class="map boxShadowed" ></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                
+                            </tr>
+                        </table><!-- info-table -->
+                    </td>
+                    
+                    <td id="right-arrow-column" data-bind="visible: shareType() == 'private' ">
+                        <div class="player-control lightBlueBG bottomBorder-Thin" id="right-arrow">
+                            <img src="css/images/arrowRight.png"  />
+                        </div>
+                    </td>
+                    
+                </table>
+            </td>
+
+            <!--<td id="right-side" class="lightBlueBG bottomBorder-Thin" >
+                <div class="orangeBG bottomBorder-Thin" id="share-video-block">
+                  <a class="shareButton btn" href="#" data-bind="click: showShareVidModal">
+                      <img src="css/images/share.png"/> Upload your videos
+                  </a>
+                </div>
+                <div id="related-videos-block">
+                    <p id="relatedVideosTitle" class="textShadowed">Related Videos</p>
+                    <div class="media-area" data-bind="compose: related"></div>
+                </div>
+            </td>-->
+            
+        </tr>
+    </table><!-- main-table -->
     <div class="message" data-bind="visible: showMessage">
       <h2>Viblio Web Player</h2>
       <p>This content will be displayed until there is a video to be played.  If there

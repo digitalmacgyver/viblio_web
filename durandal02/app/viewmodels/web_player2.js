@@ -431,7 +431,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    setupFaces( mf );
 
 		    // Get related vids
-		    vstrip = new Strip( 'title', 'subtile' );
+		    vstrip = new Strip( 'title', 'subtitle' );
 
 		    // This async routine is the long pole.  Let it do the promise() resolution to
 		    // pause the system until we have all the data.
