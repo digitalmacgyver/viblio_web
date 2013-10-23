@@ -13,28 +13,28 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     function facebookLink() {
 	var server = window.location.protocol + config.site_server;
 	// Override for testing
-	server = 'http://staging.viblio.com';
+	// server = 'http://staging.viblio.com';
 	return encodeURIComponent( server + '/s/x' );
     }
 
     function twitterLink() {
 	var server = window.location.protocol + config.site_server;
 	// Override for testing
-	server = 'http://staging.viblio.com';
+	// server = 'http://staging.viblio.com';
 	return encodeURIComponent( server + '/s/x' );
     }
 
     function googleLink() {
 	var server = window.location.protocol + config.site_server;
 	// Override for testing
-	server = 'http://staging.viblio.com';
+	// server = 'http://staging.viblio.com';
 	return encodeURIComponent( server + '/s/x' );
     }
 
     function tumblrLink() {
 	var server = window.location.protocol + config.site_server;
 	// Override for testing
-	server = 'http://staging.viblio.com';
+	// server = 'http://staging.viblio.com';
 
 	var thumbnail = encodeURIComponent( server + '/css/images/logo-106.png' );
 	var caption   = encodeURIComponent( 'Viblio is a new video platform that stores, sorts and allows you to privately share your personal videos all in a secure cloud location.  Try it out by signing up at www.viblio.com.' );
