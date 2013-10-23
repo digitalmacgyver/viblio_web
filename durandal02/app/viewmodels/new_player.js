@@ -192,13 +192,8 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	setupFaces( m.media() );
 	near( m.media() );
 	flowplayer().play({
-            url: 'mp4:' + m.media().views.main.cf_url,
-            ipadUrl: encodeURIComponent(m.media().views.main.url),
-            // URL for sharing on FB, etc.
-            pageUrl: config.site_server + '/s/p/' + m.media().views.main.uuid,
-            //scaling: 'fit',
-            //splash: true,
-            provider: 'rtmp'
+	    url: 'mp4:' + m.media().views.main.cf_url,
+	    ipadUrl: encodeURIComponent(m.media().views.main.url)
         });
 	// push it onto history
 	//router.navigate( 'player?mid=' + m.media().uuid, false);
@@ -451,18 +446,16 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
             title( playing().media().title || 'Click to add a title.' );
             description( playing().media().description || 'Click to add a description.' );
 	    // Instanciate the main flowplayer
+
+	    console.log( 'switching to', 'mp4:' + mf.views.main.cf_url );
+
 	    $("#tv").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
 		ratio: 9/16,
                 clip: {
                     url: 'mp4:' + mf.views.main.cf_url,
                     ipadUrl: encodeURIComponent(mf.views.main.url),
-                    // URL for sharing on FB, etc.
-                    pageUrl: config.site_server + '/s/p/' + mf.views.main.uuid,
                     scaling: 'fit',
-                    //ratio: 9/16,
-                    //splash: true,
                     provider: 'rtmp',
-
 		    // Google Analytics
 		    onStart: function( clip ) {
 			//console.log( 'Tracking start ...', clip.url );
@@ -484,7 +477,6 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 			//console.log( 'Tracking finish ...', clip.url );
 			viblio.gaEvent( 'PrivatePlay', 'Finish', clip.url );
 		    }
-
                 },
                 plugins: {
 		    // Cloudfront
