@@ -4,10 +4,12 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 
 	options = $.extend( {
 	    allow_changes: false,
-	    show_name: true }, options || {} );
+	    show_name: true,
+            selectable: true }, options || {} );
 
 	this.allow_changes = ko.observable( options.allow_changes );
 	this.show_name = ko.observable( options.show_name );
+        this.selectable = ko.observable( options.selectable );
 
 	this.url = ko.observable( data.url );
 	this.name = ko.observable( data.contact_name ? data.contact_name : 'unknown' );
@@ -38,7 +40,7 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
         
 	Events.includeIn( this );
     };
-
+    
     Face.prototype.select = function(f, e) {
 	var self = this;
 	self.trigger( 'face:selected', self );
