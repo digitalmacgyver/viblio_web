@@ -44,7 +44,9 @@ input[type="color"],
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     border-color: rgba(0,0,0,.3);
-    height: 30px;
+     box-sizing: border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+    height: 40px;
     font-size: 17px;
 }
 
@@ -83,18 +85,22 @@ input[type="color"],
     box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
 }
 
-.btn-primary.disabled, .btn-primary[disabled] {
-    color: white;
-    background-color: rgba(239,85,65,1);
-}
-
-.btn-primary.disabled, .btn-primary[disabled]:hover {
-    color: white;
-    background-color: rgba(239,85,65,1);
-}
-
 .btn-primary {
     background-color: rgba(239,85,65,1);
+}
+
+.btn-primary.disabled, .btn-primary[disabled], .btn-primary[disabled]:hover {
+    color: white;
+    background-color: rgba(239,85,65,1);
+}
+
+.btn-primary.disabled,
+.btn-primary[disabled],
+.btn-secondary.disabled,
+.btn-secondary[disabled],
+.btn.disabled,
+.btn[disabled] {
+    box-shadow: none;
 }
 
 .btn-primary:focus,
@@ -111,7 +117,9 @@ input[type="color"],
 .btn-secondary:focus,
 .btn-secondary:active,
 .btn-secondary.active,
-.btn-secondary:hover {
+.btn-secondary:hover,
+.btn-secondary.disabled,
+.btn-secondary[disabled] {
     background-color: rgba(179,179,179,1);
     color: white;
 }
@@ -123,7 +131,9 @@ input[type="color"],
 .btn-blue:focus,
 .btn-blue:active,
 .btn-blue.active,
-.btn-blue:hover {
+.btn-blue:hover,
+.btn-blue.disabled,
+.btn-blue[disabled] {
     background-color: rgba(28,184,209,1);
     color: white;
 }
@@ -325,6 +335,18 @@ input:-moz-placeholder {
     cursor: pointer;
 }
 
+.turquoiseFont {
+    color: rgba(28,184,209,1);
+}
+
+.turquoiseFont:hover {
+    color: rgba(28,184,209,1);
+}
+
+.lightGreyFont {
+    color: rgba(0,0,0,.5);
+}
+
 /********************  Page Header Section  *****************************/
 
 #page-header .navbar {
@@ -333,7 +355,23 @@ input:-moz-placeholder {
 }
 
 .navbar .brand {
-    padding: 5px 14px 7px;
+    padding: 2px 14px 7px;
+}
+
+#page-header .navbar .pagesNav > li > a {
+    padding: 20px 27px 8px 27px;
+    margin: 0 2px;
+    font-size: 18px;
+    color: white;
+    -moz-text-shadow: 2px 2px rgba(0,0,0,.2);
+    -webkit-text-shadow: 2px 2px rgba(0,0,0,.2);
+    text-shadow: 2px 2px rgba(0,0,0,.2);
+}
+
+#page-header .navbar .pagesNav > li > a:hover,
+#page-header .navbar .pagesNav > li > a:focus {
+    background-color: rgba(28,184,209,1);
+    border-bottom: 3px solid #137089;
 }
 
 #page-header .navbar .nav > .active > a,
@@ -342,15 +380,6 @@ input:-moz-placeholder {
     background-color: rgba(28,184,209,1);
     border-bottom: 3px solid #137089;
     font-weight: 400;
-}
-
-#page-header .navbar .nav > li > a {
-    padding: 20px 27px 8px 27px;
-    font-size: 18px;
-    -moz-text-shadow: 2px 2px rgba(0,0,0,.2);
-    -webkit-text-shadow: 2px 2px rgba(0,0,0,.2);
-    text-shadow: 2px 2px rgba(0,0,0,.2);
-    font-weight: 100;
 }
 
 .avatar {
@@ -587,17 +616,16 @@ input:-moz-placeholder {
 
 #loginArea form div input {
     display: block;
-    width: 97%;
+    width: 100%;
     margin-bottom: 22px;
 }
 
-#loginArea form a {
+#forgotPasswordLink {
     display: inline-block;
     text-decoration: none;
     cursor: pointer;
     font-size: 16px;
     margin: 6px 0 20px;
-    color: rgba(28,184,209,1);
     font-weight: 600;
 }
 
@@ -626,7 +654,7 @@ input:-moz-placeholder {
     margin-bottom: 0;
 }
 
-#noAccount p {
+.loginHeader {
     font-size: 24px;
     color: rgba(0,0,0,.5);
     margin: 10px 0 30px;
@@ -640,6 +668,39 @@ input:-moz-placeholder {
 
 #noAccount button {
     margin-bottom: 10px;
+}
+
+/********************  viblioAppDownload Section  *****************************/
+
+#viblioAppDownload-Wrap {
+    margin-top: 30px;
+}
+
+#viblioAppDownload-Wrap span {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+#downloadViblioBtn {
+    margin-top: 10px;
+}
+
+/********************  Enroll Form Section  *****************************/
+
+#enroll input[type='email'],
+#enroll input[type='text'] {
+    width: 100%;    
+}
+
+#enroll input[type='password'] {
+    width: 49%;
+    display: inline-block;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#enroll input:nth-of-type(3) {
+    margin-left: 2%;
 }
 
 /******************** Forgot Password Page Section  *****************************/
