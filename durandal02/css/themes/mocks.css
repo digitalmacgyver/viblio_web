@@ -5,6 +5,12 @@ body {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
+@media (max-width: 979px) {
+    body {
+        padding-top: 0px;
+    }
+}
+
 #innerPadding {
     margin: 0;
 }
@@ -488,7 +494,8 @@ input:-moz-placeholder {
 }
 
 .landingHeaderTitle {
-    padding: 70px;
+    line-height: 1;
+    padding: 57px 20px;
     font-size: 45px;
     color: white;
     margin: 0;
@@ -513,7 +520,8 @@ input:-moz-placeholder {
 
 #login-page .content-Wrap {
     padding-top: 50px;
-    width: 600px;
+    width: 100%;
+    max-width: 600px;
 }
 
 #loginArea form {
@@ -582,7 +590,6 @@ input:-moz-placeholder {
 
 #loginArea form div {
     width: 100%;
-    overflow: auto;
 }
 
 #loginArea form div input {
