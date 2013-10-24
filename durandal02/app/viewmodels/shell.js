@@ -110,7 +110,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'upload',             moduleId: 'nginx',              title: 'UPLOAD',
 	      nav: true,    authenticated: true,   header: page_header },
 	    
-            { route: 'faces',              moduleId: 'faces',              title: 'Faces',
+            { route: 'faces',              moduleId: 'faces',              title: 'FACES',
 	      nav: true,    authenticated: true,   header: page_header },
 	    
             { route: 'raw',                moduleId: 'raw',                title: 'Raw Upload',
@@ -141,7 +141,10 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      nav: false,   authenticated: true,   header: landing_header },
 
             { route: 'register',           moduleId: 'register',           title: 'Registration',
-	      nav: false,   authenticated: false,   header: landing_header }
+	      nav: false,   authenticated: false,   header: landing_header },
+            
+            { route: 'web_player2',         moduleId: 'web_player2',         title: 'Video Player',
+	      nav: false,   authenticated: false,   header: conditional_header },
 
         ]).buildNavigationModel();
     }

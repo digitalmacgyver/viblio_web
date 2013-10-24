@@ -4,8 +4,15 @@
             <img class="star" data-bind="visible: star, attr: { src: starColor }"/>
             <span class="starRank textShadowed" data-bind="visible: star, html: star_power() "></span>
         </div>
-        <img data-bind="attr:{src:url}, click: select" />
+        <!-- ko if:  selectable()-->
+        <img class='selectable' data-bind="attr:{src:url}, click: select" />
+        <!-- /ko -->
+        <!-- ko if:  !selectable()-->
+        <img data-bind="attr:{src:url}" />
+        <!-- /ko -->
+        <!-- ko if:  show_name()-->
         <div class="name" data-bind="text: name"></div>
+        <!-- /ko -->
     </div>
 </div>
 

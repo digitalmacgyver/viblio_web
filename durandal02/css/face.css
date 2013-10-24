@@ -1,5 +1,8 @@
 .face img {
     width: 260px; height: 180px;
+}
+
+.selectable {
     cursor: pointer;
 }
 

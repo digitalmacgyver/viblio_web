@@ -1,34 +1,31 @@
-<div id="webplayer-page">
-  <div id="nplayer-page">
-    <!--<div class="player"></div>-->
-    <div data-bind="text: shareType()"></div>
+<div id="nplayer-page">
     <table id="main-table">
         <tr>
             <td id="playerCommentsNavTable-Wrap">
                 <table id="playerCommentsNavTable">
                     
-                    <td id="left-arrow-column" data-bind="visible: shareType() == 'private' ">
+                    <td id="left-arrow-column" data-bind="visible: shareType == 'private' ">
                         <div class="player-control lightBlueBG bottomBorder-Thin" id="left-arrow">
-                            <img src="css/images/arrowLeft.png" />
+                            <img src="css/images/arrowLeft.png" data-bind="click: previousRelated, css: {disabled: disable_prev()}" />
                         </div>
                     </td>
                     
                     <td id="left-side" class="boxShadowed">
-                        <div id="webPlayer" class="player">
+                        <div id="webPlayer">
                         </div>
                         <table id="info-table">
                             <tr>
                                 <td id="comment-column" class="babyBlueBG">
                                     <div id="title-desc">
-                                        <h3 data-bind="text: title()"></h3>
+                                        <h3 data-bind="text: playing().title() || 'This video has no Title.'"></h3>
                                         <p data-bind="text: description() || 'This video has no description.'"></p>
                                     </div>
                                     <div id="comments">
-                                        <!-- ko if: shareType() == 'private' -->
+                                        <!-- ko if: shareType == 'private' -->
                                             <div class="comments-header lightBlueFont">
                                                 <div class="views pull-right">
                                                   <img src="css/images/viewsEye.png" />
-                                                  <span data-bind="html: eyes()"></span>
+                                                  <span data-bind="html: playing().media().eyes"></span>
                                                 </div>
                                                 <p class="todays-date pull-right">Today</p>
                                                 <div class="observer">
@@ -45,10 +42,8 @@
                                                                    event: { blur: function() { usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment') } }"></textarea>
                                             </div>
                                         <!-- /ko -->
-                                        <!-- ko if: shareType() != 'public' -->
                                         <div class="all-comments">
                                             <p class="lightBlueFont" data-bind="visible: comments().length"><span data-bind="text: comments().length"></span>&nbsp;Comments</p>
-                                            <p class="lightBlueFont" data-bind="visible: !comments().length">There are no comments to display for this video.</p>
                                             <!-- ko foreach: comments -->
                                             <div class="comment" data-bind="visible: comment != '' ">
                                                 <p class="comment-text bottomBorder-Thin" data-bind="html: comment"></p>
@@ -59,13 +54,10 @@
                                             </div>
                                           <!-- /ko -->
                                         </div>
-                                        <!-- /ko -->
-                                        <p class="lightBlueFont" data-bind="visible: shareType() == 'public'">Comments for this video have been hidden.</p>
                                     </div>
                                 </td>
                                 
                                 <td id="faces-column" class="lightBlueBG">
-                                    <!-- ko if: shareType() != 'public' -->
                                     <div class="orangeBG bottomBorder-Thin" id="faces">
                                         <span class="textShadowed" data-bind="text: finfo"></span>
                                         <ul class="clearfix">
@@ -75,13 +67,6 @@
                                             <li class="clearfix"></li>
                                         </ul>
                                     </div>
-                                    <!-- /ko -->
-                                    
-                                    <!-- ko if: shareType() == 'public' -->
-                                    <div class="orangeBG bottomBorder-Thin" id="faces">
-                                        <span class="textShadowed">Faces have been hidden.</span>
-                                    </div>
-                                    <!-- /ko -->
                                     
                                     <div id="geo">
                                         <div id="geo-title" class="textShadowed">
@@ -97,16 +82,16 @@
                         </table><!-- info-table -->
                     </td>
                     
-                    <td id="right-arrow-column" data-bind="visible: shareType() == 'private' ">
+                    <td id="right-arrow-column" data-bind="visible: shareType == 'private' ">
                         <div class="player-control lightBlueBG bottomBorder-Thin" id="right-arrow">
-                            <img src="css/images/arrowRight.png"  />
+                            <img src="css/images/arrowRight.png"  data-bind="click: nextRelated, css: {disabled: disable_next()}"/>
                         </div>
                     </td>
                     
                 </table>
             </td>
 
-            <!--<td id="right-side" class="lightBlueBG bottomBorder-Thin" >
+            <td id="right-side" class="lightBlueBG bottomBorder-Thin" >
                 <div class="orangeBG bottomBorder-Thin" id="share-video-block">
                   <a class="shareButton btn" href="#" data-bind="click: showShareVidModal">
                       <img src="css/images/share.png"/> Upload your videos
@@ -116,19 +101,8 @@
                     <p id="relatedVideosTitle" class="textShadowed">Related Videos</p>
                     <div class="media-area" data-bind="compose: related"></div>
                 </div>
-            </td>-->
+            </td>
             
         </tr>
     </table><!-- main-table -->
-    <div class="message" data-bind="visible: showMessage">
-      <h2>Viblio Web Player</h2>
-      <p>This content will be displayed until there is a video to be played.  If there
-	is an error, this message will remain on the screen.
-      </p>
-    </div>
-    <div class="alert alert-error" data-bind="visible: showError">
-      <h4 data-bind="text: errorMessage"></h4>
-      <p data-bind="text: errorDetail"></p>
-    </div>
-  </div>
 </div>
