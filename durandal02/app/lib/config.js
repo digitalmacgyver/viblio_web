@@ -5,6 +5,43 @@ define( function() {
     // In development, the Facebook appids are dependent on the
     // environment in which we are running this application.
     //
+    var site = {
+	'staging.viblio.com': {
+	    facebook: '153462094815829',
+	    csponge: 'VPP8BMSQ5AK6JLNRPKCV',
+	    cloudfront: 's2gdj4u4bxrah6.cloudfront.net',
+	    email: 'support-staging.viblio.com'
+	},
+	'prod.viblio.com': {
+	    facebook: '538791729508064',
+	    csponge: 'JQRKUZQYADSCHG5NJQ5P',
+	    cloudfront: 's3vrmtwctzbu8n.cloudfront.net',
+	    email: 'support-prod.viblio.com'
+	},
+	'192.168.1.35': {
+	    facebook: '566096966734454',
+	    csponge: 'FD7C6RP5SE8ERDMB3RHR'
+	},
+	'localhost': {
+	    csponge: 'VXKUHY8HEWA3TSXSXQL6'
+	}
+    };
+
+    // Given the host we are accessing, and a service, return
+    // the pertainent host-specific info we're looking for.
+    // If the host is not in our struct, or it is but does
+    // not have the service defined, (which will be the case
+    // when using development machines) then fallback to staging.viblio.com.
+    //
+    function service( host, svc ) {
+	var the_host = host;
+	if ( ! site[the_host] ) the_host = 'staging.viblio.com';
+	var the_svc = svc;
+	if ( ! site[the_host][the_svc] ) the_host = 'staging.viblio.com';
+	return site[the_host][the_svc];
+    }
+
+    // NO LONGER USED, BUT LEFT IN AS A REFERENCE UNTIL FULLY DEBUGGED
     var fbInfo = {
 	'http://192.168.1.21': '566096966734454',
 	'http://192.168.1.35': '566096966734454',
@@ -44,14 +81,15 @@ define( function() {
 	    login: 'login',
 	    landing: 'welcome',
 	    channel: 'channel',
-	    player: 'player'
+	    player: 'new_player'
 	},
 
 	site_server: myLocation,
 
 	// Facebook params.
 	facebook_appid: function() {
-	    return fbInfo[window.location.protocol + myLocation];
+	    // return fbInfo[window.location.protocol + myLocation];
+	    return service( window.location.hostname, 'facebook' );
 	},
 	facebook_channel: function() {
 	    return myLocation + '/Content/channel.html';
@@ -60,14 +98,19 @@ define( function() {
 	    return 'email,user_photos,user_videos,read_friendlists,friends_photos,friends_videos';
 	},
 	cloudsponge_appid: function() {
-	    return csponge[window.location.protocol + myLocation];
+	    // return csponge[window.location.protocol + myLocation];
+	    return service( window.location.hostname, 'csponge' );
 	},
 	geoLocationOfVideoAnalytics: "37.451269,-122.158495",
 	cf_domain: function() {
-	    var domain = cf_domains[ window.location.protocol + myLocation];
-	    if ( ! domain ) 
-		domain = cf_domains['http://staging.viblio.com'];
-	    return domain;
+	    //var domain = cf_domains[ window.location.protocol + myLocation];
+	    //if ( ! domain ) 
+		//domain = cf_domains['http://staging.viblio.com'];
+	    //return domain;
+	    return service( window.location.hostname, 'cloudfront' );
+	},
+	email_domain: function() {
+	    return service( window.location.hostname, 'email' );
 	}
     };
 });
