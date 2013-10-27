@@ -152,7 +152,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
     return {
         router: router,
 	header: header,
-	feedback_email: ko.observable( 'mailto: feedback@' + config.email_domain() ),
+	feedback_email: ko.observable( 'mailto:feedback@' + config.email_domain() ),
         search: function() {
             //It's really easy to show a message box.
             //You can add custom options too. Also, it returns a promise for the user's response.
