@@ -34,7 +34,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
     var errorMessage = ko.observable();
     var errorDetail = ko.observable();
     
-    var shareType = ko.observable('hidden');
+    var shareType = ko.observable('public');
     
     // Comments associated with currently playing video
     var comments = ko.observableArray([]);

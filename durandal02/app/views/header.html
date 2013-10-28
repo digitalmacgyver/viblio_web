@@ -1,31 +1,42 @@
 <div id="page-header">
-  <div class="navbar navbar-fixed-top">
-<!--    <div class="navbar-inner"> -->
-      <a class="brand" href="/signup/">
-	<img src="css/images/viblioLogo-WhiteWText.png" />
-      </a>
-      <ul class="nav pagesNav" data-bind="foreach: router.navigationModel">
-          <li data-bind="css: { active: isActive }">
-              <a data-bind="attr: { href: hash }, html: title"></a>
-          </li>
-      </ul>
-      <ul id='userNamePicNav' class="nav pull-right">
-	<li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <div class="nav avatar">
-                    <img style="display: block;" src="/services/user/avatar?uid=-&y=37" />
-                </div>
-                <div id='userNameText-Wrap'>
-                    <span class='textShadowed'>Welcome, </span><span class='textShadowed' data-bind="html: user().displayname.slice(0,user().displayname.indexOf(' ') )">anonymous</span><img src='css/images/chevron-down2.png'/>
-                </div>
-            </a>
-	  <ul class="dropdown-menu">
-	    <li><a href="#settings">Settings</a></li>
-	    <li><a href="#">Get the App</a></li>
-	    <li><a href="#" data-bind="click: testNewVideo">Test New Video</a></li>
-	    <li><a href="#" data-bind="click: logout">Log Out</a></li>
-	  </ul>
-      </ul>
-<!--     </div> -->
-  </div>
+    <div class="navbar navbar-fixed-top">
+        
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        
+        <a class="brand" href="/signup/">
+            <img src="css/images/viblioLogo-WhiteWText.png" />
+        </a>
+        <div class="nav-collapse collapse">
+            <ul class="nav pagesNav" data-bind="foreach: router.navigationModel">
+                <li data-bind="css: { active: isActive }">
+                    <a data-bind="attr: { href: hash }, html: title"></a>
+                </li>
+            </ul>
+            <ul id='userNamePicNav' class="nav pull-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <div class="avatar">
+                            <img style="display: block;" src="/services/user/avatar?uid=-&y=37" />
+                        </div>
+                        <div id='userNameText-Wrap'>
+                            <span class='textShadowed'>Welcome, </span><span class='textShadowed' data-bind="html: user().displayname.slice(0,user().displayname.indexOf(' ') )">anonymous</span><img src='css/images/chevron-down2.png'/>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#settings">Settings</a></li>
+                        <li><a href="#">Get the App</a></li>
+                        <li><a href="#" data-bind="click: testNewVideo">Test New Video</a></li>
+                        <li><a href="#" data-bind="click: logout">Log Out</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="clearfix"></div>
+    </div>
 </div>

@@ -74,7 +74,6 @@ input[type="color"],
     border-color: transparent;
     border: none;
     color: white;
-    height: 40px;
     -moz-text-shadow: 2px 2px rgba(0,0,0,.2);
     -webkit-text-shadow: 2px 2px rgba(0,0,0,.2);
     text-shadow: 2px 2px rgba(0,0,0,.2);
@@ -253,6 +252,14 @@ input:-moz-placeholder {
     cursor: pointer;
 }
 
+/* Styling for callapsible navbar - override bootstrap */
+.nav-collapse .nav > li > a,
+.nav-collapse .dropdown-menu a {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
 /*********************  Utility Classes  ******************************/
 
 /* change 0px to a higher number (like 2px for example) to increase spread of shadow and make it softer */
@@ -356,12 +363,21 @@ input:-moz-placeholder {
 /********************  Page Header Section  *****************************/
 
 #page-header .navbar {
-    height: 57px;
+    height: auto;
     border-bottom: 3px solid black;
+    padding-left: 20px;
+}
+
+.navbar-fixed-top {
+    margin: 0;
 }
 
 .navbar .brand {
-    padding: 2px 14px 7px;
+    padding: 2px 14px 7px 0;
+}
+
+#page-header .btn-navbar {
+    margin: 18px 20px 0 0;
 }
 
 #page-header .navbar .pagesNav > li > a {
@@ -396,8 +412,57 @@ input:-moz-placeholder {
     outline: none;
 }
 
-#page-header .navbar .nav li.dropdown.open {
-    border-left: 3px solid rgba(0,0,0,.5);
+/* When nav bar is NOT collapsed */
+@media (min-width: 979px) {
+    #page-header .navbar .nav li.dropdown.open {
+        border-left: 3px solid rgba(0,0,0,.5);
+    }
+}
+
+/* When nav bar is collapsed */
+@media (max-width: 979px) {
+    #page-header .navbar .pagesNav > li {
+        min-height: 33px;
+    }
+    
+    #page-header .navbar .nav-collapse {
+        margin-right: 20px;
+    }
+
+    #page-header .navbar .nav-collapse .pagesNav > li > a {
+        padding: 5px;
+        margin-bottom: 2px;
+        font-size: 16px;
+    }
+    
+    .nav-collapse .dropdown-menu {
+        color: rgba(0,0,0,.5);
+        background-color: #ffffff;
+    }
+    
+    .nav-collapse .dropdown-menu {
+        margin: 0;
+        -webkit-transition: height 0.35s ease;
+        -moz-transition: height 0.35s ease;
+        -o-transition: height 0.35s ease;
+        transition: height 0.35s ease;
+    }
+    
+    .nav-collapse .dropdown-menu > li {
+        border-bottom: 1px solid rgba(0,0,0,.5);
+    }
+    
+    .nav-collapse .dropdown-menu > li > a:hover,
+    .nav-collapse .dropdown-menu > li > a:focus,
+    .nav-collapse .dropdown-submenu:hover > a,
+    .nav-collapse .dropdown-submenu:focus > a {
+        color: rgba(0,0,0,.5);
+        text-decoration: none;
+        background-color: rgba(232,248,250,1);
+        background-image: none;
+        background-repeat: no-repeat;
+        filter: none;
+    }
 }
 
 #page-header .navbar .nav li.dropdown.open > .dropdown-toggle,
@@ -410,6 +475,7 @@ input:-moz-placeholder {
 }
 
 #page-header .avatar {
+    float: left;
     margin-top: -4px;
     margin-right: 12px;
     -moz-box-shadow: 1px 1px 0px 1px rgba(0,0,0,.5); /* Firefox */
@@ -501,7 +567,9 @@ input:-moz-placeholder {
     white-space: nowrap;
 }
 
-.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:hover > a, .dropdown-submenu:focus > a {
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus,
+.dropdown-submenu:hover > a,
+.dropdown-submenu:focus > a {
     color: rgba(0,0,0,.5);
     text-decoration: none;
     background-color: rgba(232,248,250,1);
@@ -547,10 +615,13 @@ input:-moz-placeholder {
     margin-top: 0;
 }
 
+.content-Wrap {
+    width: 94%;
+    max-width: 600px;
+}
+
 #login-page .content-Wrap {
     padding-top: 50px;
-    width: 100%;
-    max-width: 600px;
 }
 
 #loginArea form {
@@ -558,7 +629,7 @@ input:-moz-placeholder {
 }
 
 #fbBtn-Wrap {
-    padding: 60px;
+    padding: 60px 0;
 }
 
 #facebookLoginBtn {
@@ -714,7 +785,6 @@ input:-moz-placeholder {
 
 #forgotPassword-Wrap .content-Wrap {
     margin-top: 46px;
-    width: 600px;
 }
 
 #forgotPassword-Wrap .content-Wrap .paddedDiv:first-of-type {
@@ -1599,7 +1669,6 @@ li.token-input-token-facebook {
 /********************  Settings Page Section  *****************************/
 
 #settings-page .content-Wrap {
-    width: 600px;
     margin: 0 auto 100px;
 }
 
@@ -1651,7 +1720,6 @@ li.token-input-token-facebook {
 
 #loggedOut-page .content-Wrap {
     margin-top: 46px;
-    width: 600px;
 }
 
 #loggedOut-page .content-Wrap p {

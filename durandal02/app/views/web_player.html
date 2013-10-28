@@ -106,7 +106,7 @@
                 </table>
             </td>
 
-            <!--<td id="right-side" class="lightBlueBG bottomBorder-Thin" >
+           <td id="right-side" class="lightBlueBG bottomBorder-Thin" data-bind="visible: shareType() == 'private' ">
                 <div class="orangeBG bottomBorder-Thin" id="share-video-block">
                   <a class="shareButton btn" href="#" data-bind="click: showShareVidModal">
                       <img src="css/images/share.png"/> Upload your videos
@@ -116,7 +116,7 @@
                     <p id="relatedVideosTitle" class="textShadowed">Related Videos</p>
                     <div class="media-area" data-bind="compose: related"></div>
                 </div>
-            </td>-->
+            </td>
             
         </tr>
     </table><!-- main-table -->
