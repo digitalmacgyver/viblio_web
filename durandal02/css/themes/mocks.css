@@ -1406,7 +1406,7 @@ div.map div.title {
 #nplayer-page #main-table #info-table #faces-column #geo {
     padding: 30px;
     width: 306px;
-   /* height: auto;*/
+    height: auto;
 }
 
 #geo-map {
