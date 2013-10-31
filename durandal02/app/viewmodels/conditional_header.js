@@ -33,7 +33,18 @@ define( ['plugins/router', 'durandal/app', 'lib/viblio'], function(router, app, 
 	},
         signin: function() {
             router.navigate( 'login' );
-        }        
+        },
+        // fix for dropdown menu not working on mobile
+        attached: function() {
+            $('.dropdown-toggle').click(function(e) {
+              e.preventDefault();
+              setTimeout($.proxy(function() {
+                if ('ontouchstart' in document.documentElement) {
+                  $(this).siblings('.dropdown-backdrop').off().remove();
+                }
+              }, this), 0);
+            });
+	}
     };
 });
 
