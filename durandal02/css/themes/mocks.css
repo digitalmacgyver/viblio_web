@@ -1834,3 +1834,27 @@ p.uitoken-input ul.token-input-list-facebook {
     -moz-box-shadow: none;
     box-shadow: none;
 }
+
+/* .feedback-* is the small feedback emailer that
+   slides up on each page.
+*/
+.feedback-slide {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 200px;
+    height: 60px;
+}
+
+.feedback-inner {
+    color: white;
+    background: black;
+    padding: 3px;
+    margin-top: 34px;
+    opacity: 0.5;
+}
+
+.feedback-inner a, .feedback-inner a:visited, .feedback-inner a:hover {
+    color: white;
+    text-decoration: none;
+}

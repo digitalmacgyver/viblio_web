@@ -274,7 +274,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 			    $(".player").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
 				ratio: 9/16,
 				clip: {
-				    url: 'mp4:amazons3/' + s3bucket( mf.views.main.url ) + '/' + mf.views.main.uri,
+				    url: 'mp4:' + mf.views.main.cf_url,
 				    ipadUrl: encodeURIComponent(mf.views.main.url),
 				    // URL for sharing on FB, etc.
 				    pageUrl: config.site_server + '/s/p/' + mf.views.main.uuid,
@@ -309,7 +309,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 				    // Wowza stuff
 				    rtmp: {
 					url: 'lib/flowplayer/flowplayer.rtmp-3.2.12.swf',
-					netConnectionUrl: 'rtmp://ec2-54-214-160-185.us-west-2.compute.amazonaws.com/vods3'
+					netConnectionUrl: 'rtmp://' + config.cf_domain() + '/cfx/st'
 				    },
 				},
 				canvas: {

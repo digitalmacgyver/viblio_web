@@ -1,4 +1,4 @@
-define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','viewmodels/conditional_header','lib/viblio','lib/customDialogs','viewmodels/emailtest','facebook','purl'], function (router, app, system, page_header, landing_header, conditional_header, viblio, customDialogs,emailtest) {
+define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','viewmodels/conditional_header','lib/viblio','lib/customDialogs','viewmodels/emailtest','lib/config','facebook','purl'], function (router, app, system, page_header, landing_header, conditional_header, viblio, customDialogs,emailtest,config) {
 
     var header = ko.observable( );
 
@@ -152,6 +152,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
     return {
         router: router,
 	header: header,
+	feedback_email: ko.observable( 'mailto:feedback@' + config.email_domain() ),
         search: function() {
             //It's really easy to show a message box.
             //You can add custom options too. Also, it returns a promise for the user's response.
@@ -182,6 +183,14 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	    }).promise();
 
 	    return router.activate();
-        }
+        },
+	compositionComplete: function( view ) {
+	    // This is the small feedback tab that slides up on each page.
+	    $(view).find( ".feedback-inner" ).hover( function() {
+		$(view).find( ".feedback-inner" ).animate( { 'margin-top': "14px", opacity: 1 }, 500 ); 
+	    }, function() {
+		$(view).find( ".feedback-inner" ).animate( { 'margin-top': "34px", opacity: 0.5 }, 500 ); 
+	    });
+	}
     };
 });
