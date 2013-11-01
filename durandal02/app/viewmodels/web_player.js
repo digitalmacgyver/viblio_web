@@ -234,6 +234,11 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
         getCountry: getCountry,
         isNullOrWhitespace: isNullOrWhitespace,
         near: near,
+
+	showShareVidModal: function() {
+	    // Jesse, you reference this function in a data-bind, but
+	    // didn't define it...
+	},
         
 	activate: function( args ) {
 	    this.mid = args.mid;
