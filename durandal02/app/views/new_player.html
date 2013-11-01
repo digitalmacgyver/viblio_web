@@ -20,7 +20,7 @@
                                         <div data-bind="liveEditor: title">
                                             <h3 class="view vidTitle" data-bind="click: title.edit, text: playing().title() || 'Click to edit title'"></h3>
                                             <div class="editTitle-Wrap">
-                                                <input class="edit" data-bind="value: title, 
+                                                <input type="text" class="edit" data-bind="value: title, 
                                                   hasFocus: title.editing, 
                                                   event: { blur: function() { title.stopEditing(); title.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }" />
                                             </div>  

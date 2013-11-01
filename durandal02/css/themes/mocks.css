@@ -1544,8 +1544,13 @@ div.map div.title {
 
 .edit { 
     display: none; 
-} 
+}
 
+input.edit {
+    display: none;
+}
+
+.editing .edit:focus,
 .editing .edit { 
     display: block;
     margin: 12px 6px;
@@ -1575,6 +1580,7 @@ div.map div.title {
 
 #title-desc textarea {
     height: 100%;
+    min-height: 100%;
     margin: 12px 5px;
     font-size: 14px;
     line-height: 20px;
@@ -1592,11 +1598,15 @@ div.map div.title {
     margin: 0 0 0 6px;
     width: 75%;
     max-width: 75%;
+    height: 20px;
+    font-size: 16px;
 }
 
 /* Player page related video titles */
 .vstrip .information .editing .edit {
     margin-top: 0;
+    margin-left: 10px;
+    font-size: 14px;
 }
 
 .editing .view { 
@@ -1777,13 +1787,13 @@ li.token-input-token-facebook {
 
 #loggedOutTellFriendsModal input,
 #loggedOutTellFriendsModal textarea {
-    width: 97%;
+    width: 100%;
     margin-bottom: 20px;
 }
 
 #loggedOutTellFriendsModal textarea {
     height: 60px;
-    max-width: 97%;
+    max-width: 100%;
 }
 
 /** Make Horizontal Stips a bit more generic **/
