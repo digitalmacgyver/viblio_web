@@ -36,7 +36,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 		    var contact = data.contact;
 		    contactPhoto( contact.url );
 		    contactName( contact.contact_name );
-		    $.when( hh('Box Office Hits', contactName().slice( 0, contactName().indexOf(' ') ) + '\'s most popular videos', 
+		    $.when( hh('Box Office Hits', contactName() + '\'s most popular videos', 
 			       { search_api: function() {
 				   return( { api: '/services/faces/media_face_appears_in', args: { contact_uuid: contact_id } } );
 			       }}), 
