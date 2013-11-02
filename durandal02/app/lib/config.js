@@ -6,6 +6,12 @@ define( function() {
     // environment in which we are running this application.
     //
     var site = {
+	'viblio.com': {
+	    facebook: '613586332021367',
+	    csponge: 'VPP8BMSQ5AK6JLNRPKCV',
+	    cloudfront: 's2gdj4u4bxrah6.cloudfront.net',
+	    email: 'support.viblio.com'
+	},
 	'staging.viblio.com': {
 	    facebook: '153462094815829',
 	    csponge: 'VPP8BMSQ5AK6JLNRPKCV',
