@@ -8,7 +8,7 @@ define( function() {
     var site = {
 	'viblio.com': {
 	    facebook: '613586332021367',
-	    csponge: 'JQRKUZQYADSCHG5NJQ5P',
+	    csponge: '24DEYTURHGHAP7XL5ARS',
 	    cloudfront: 's3vrmtwctzbu8n.cloudfront.net',
 	    email: 'support.viblio.com'
 	},
