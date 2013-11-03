@@ -38,8 +38,9 @@ define(['lib/viblio','lib/config','lib/customDialogs'], function(viblio,config,c
     var overall_size = ko.observable('0 / 0');
  
     // A container to hold all of the upload data objects.
-    files = [];
- 
+    var files = [];
+    var in_progress = 0;
+
     /*
      * A simple method to calculate the progress for an individual file upload.
      */
@@ -86,6 +87,7 @@ define(['lib/viblio','lib/config','lib/customDialogs'], function(viblio,config,c
 		xhr.send();
 	    }
 	    // $(files[index].context).remove();
+	    in_progress -= 1;
 	}
     };
  
@@ -190,7 +192,10 @@ define(['lib/viblio','lib/config','lib/customDialogs'], function(viblio,config,c
 	},
 
 	canDeactivate: function() {
-	    return customDialogs.showMessage('Any uploads in progress will be interrupted and lost.  Are you sure you want to leave this page?', 'Leave this page?', ['Yes', 'No']);
+	    if ( in_progress > 0 )
+		return customDialogs.showMessage('Any uploads in progress will be interrupted and lost.  Are you sure you want to leave this page?', 'Leave this page?', ['Yes', 'No']);
+	    else
+		return true;
 	},
 
 	compositionComplete: function( el ) {
@@ -217,6 +222,7 @@ define(['lib/viblio','lib/config','lib/customDialogs'], function(viblio,config,c
                     minFileSize: 'File is too small'
 		},
 		add: function(e, data) {
+		    in_progress += 1;
 		    var that = this;
 		    // Collect some basic information about the file.
 		    data.process().done(function() {
@@ -297,6 +303,7 @@ define(['lib/viblio','lib/config','lib/customDialogs'], function(viblio,config,c
 		 * bar we've been using with the path to the uploaded file on the server.
 		 */
 		done: function(e, data) {
+		    in_progress -= 1;
 		    // data.context.find(".progress").html(uploadedFilePath(data));
 		    data.context.find(".progress").html('Done!');
 		    data.context.find(".progress").addClass( 'done' );
@@ -411,6 +418,7 @@ define(['lib/viblio','lib/config','lib/customDialogs'], function(viblio,config,c
 		    } else {
 			// We've met our retry limit. Indicate that this upload has failed.
 			row.find(".progress").html("<label>Upload failed</label>");
+			in_progress -= 1;
 		    }
 		}
 	    });
@@ -429,6 +437,7 @@ define(['lib/viblio','lib/config','lib/customDialogs'], function(viblio,config,c
 	     */
 	    $("#stop_uploads").click(function() {
 		cancelAllUploads();
+		in_progress = 0;
 	    });
 	    
 	}
