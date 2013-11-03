@@ -2,7 +2,7 @@
    with api to deal with Brewtus protocol.  Supports multiple, parallel uploads and
    even drag and drop!
 */
-define(['lib/viblio','lib/customDialogs'], function(viblio,customDialogs) {
+define(['lib/viblio','lib/config','lib/customDialogs'], function(viblio,config,customDialogs) {
     var calculateProgress, cancelAllUploads, cancelUpload, createProgressBar, 
     fileName, files, maxChunkSize, startAllUploads, startUpload, uploadedFilePath, view;
 
@@ -11,7 +11,7 @@ define(['lib/viblio','lib/customDialogs'], function(viblio,customDialogs) {
        server to communicate with brewtus.
     */
     var protocol = ko.observable( location.protocol );
-    var server   = ko.observable( (location.hostname == 'prod.viblio.com' ? 'upload.viblio.com' : location.hostname ) );
+    var server   = ko.observable( config.uploader() );
     var localhost = ko.observable( location.hostname );
 
     var port = ko.computed( function() {

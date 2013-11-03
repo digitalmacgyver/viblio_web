@@ -10,19 +10,22 @@ define( function() {
 	    facebook: '613586332021367',
 	    csponge: '24DEYTURHGHAP7XL5ARS',
 	    cloudfront: 's3vrmtwctzbu8n.cloudfront.net',
-	    email: 'support.viblio.com'
+	    email: 'support.viblio.com',
+	    uploader: 'upload.viblio.com'
 	},
 	'staging.viblio.com': {
 	    facebook: '153462094815829',
 	    csponge: 'VPP8BMSQ5AK6JLNRPKCV',
 	    cloudfront: 's2gdj4u4bxrah6.cloudfront.net',
-	    email: 'support-staging.viblio.com'
+	    email: 'support-staging.viblio.com',
+	    uploader: 'staging.viblio.com'
 	},
 	'prod.viblio.com': {
 	    facebook: '538791729508064',
 	    csponge: 'JQRKUZQYADSCHG5NJQ5P',
 	    cloudfront: 's3vrmtwctzbu8n.cloudfront.net',
-	    email: 'support-prod.viblio.com'
+	    email: 'support-prod.viblio.com',
+	    uploader: 'upload.viblio.com'
 	},
 	'192.168.1.35': {
 	    facebook: '566096966734454',
@@ -85,6 +88,13 @@ define( function() {
 	},
 	email_domain: function() {
 	    return service( window.location.hostname, 'email' );
+	},
+	uploader: function() {
+	    var the_host = window.location.hostname;
+	    var the_svc = 'uploader';
+	    if ( ! site[the_host] ) return the_host;
+	    if ( ! site[the_host][the_svc] ) return the_host;
+	    return site[the_host][the_svc];
 	}
     };
 });
