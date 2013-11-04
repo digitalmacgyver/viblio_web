@@ -1747,7 +1747,7 @@ li.token-input-token-facebook {
     color: rgba(28,184,209,1);
     font-size: 16px;
     margin-top: 5px;
-    display: block;
+    display: inline-block;
 }
 
 .email-password input {
@@ -1764,10 +1764,6 @@ li.token-input-token-facebook {
     width: 120px;
     box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
-}
-
-.fileinput-button input {
-    width: 100px;     
 }
 
 /********************  Change Password Modal  *****************************/
