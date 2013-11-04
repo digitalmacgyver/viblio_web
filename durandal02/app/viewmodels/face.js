@@ -65,6 +65,8 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 			email: self.email(),
 			name: self.name()
 		    };
+		    var viblio = require( 'lib/viblio' );
+		    viblio.mpEvent( 'manage_face' );
 		    self.trigger( 'face:changed', self, data );
 		});
 	    }
@@ -77,6 +79,8 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 			email: self.email(),
 			name: self.name()
 		    };
+		    var viblio = require( 'lib/viblio' );
+		    viblio.mpEvent( 'tag_face' );
 		    self.trigger( 'face:changed', self, data );
 		});
 	    }

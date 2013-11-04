@@ -39,6 +39,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio'],function(app, Events, v
 			{ mid: self.media().uuid,
 			  title: self.title(),
 			  description: self.description()
+			}).then( function() {
+			    viblio.mpEvent( 'title_description_changed' );
 			});
 	});
 

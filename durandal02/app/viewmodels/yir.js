@@ -92,6 +92,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 		    });
 		    m.on( 'mediafile:delete', function( m ) {
 			viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function() {
+			    viblio.mpEvent( 'delete_video' );
 			    self.months().forEach( function( month ) {
 				month.media.remove( m );
 			    });
@@ -110,6 +111,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	});
 	year.selected( true );
 	self.editLabel( 'Edit' );
+	viblio.mpEvent( 'yir' );
 	self.fetch( year.label );
     };
 

@@ -30,7 +30,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 	    var self = this;
 	    contact_id = args.uuid;
 	    self.strips.removeAll();
-            
+            viblio.mpEvent( 'videos_of_actor' );
 	    return system.defer( function( dfd ) {
 		viblio.api( '/services/faces/contact', { cid: contact_id }).then( function( data ) {
 		    var contact = data.contact;

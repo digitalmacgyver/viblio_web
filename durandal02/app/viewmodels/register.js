@@ -136,6 +136,7 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system'], fu
 						   password: password(),
 						   displayname: email() }, handleLoginFailure )
 		.then( function() {
+		    viblio.mpEvent( 'registered_via_share' );
 		    router.navigate( viblio.getLastAttempt() || url || 'home' );
 		});
 	}

@@ -207,6 +207,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 			hash['who'] = c.who || 'anonymous'; 
 			hash['when'] = prettyWhen( new Date(), new Date() );
 			comments.unshift( hash );
+			viblio.mpEvent( 'comment' );
 		    });
     });
     
@@ -291,23 +292,28 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 				    // Google Analytics
 				    onStart: function( clip ) {
 					//console.log( 'Tracking start ...', clip.url );
-					viblio.gaEvent( 'WebPlay', 'Play', clip.url );
+					//viblio.gaEvent( 'WebPlay', 'Play', clip.url );
+					viblio.mpEvent( 'web_play', { action: 'play' } );
 				    },
 				    onPause: function( clip ) {
 					//console.log( 'Tracking pause ...', clip.url, parseInt(this.getTime()) );
-					viblio.gaEvent( 'WebPlay', 'Pause', clip.url, parseInt(this.getTime()) );
+					//viblio.gaEvent( 'WebPlay', 'Pause', clip.url, parseInt(this.getTime()) );
+					viblio.mpEvent( 'web_play', { action: 'pause' } );
 				    },
 				    onResume: function( clip ) {
 					//console.log( 'Tracking resume ...', clip.url );
-					viblio.gaEvent( 'WebPlay', 'Resume', clip.url );
+					//viblio.gaEvent( 'WebPlay', 'Resume', clip.url );
+					viblio.mpEvent( 'web_play', { action: 'resume' } );
 				    },
 				    onStop: function( clip ) {		    
 					//console.log( 'Tracking stop ...', clip.url, parseInt(this.getTime()) );
-					viblio.gaEvent( 'WebPlay', 'Stop', clip.url, parseInt(this.getTime()) );
+					//viblio.gaEvent( 'WebPlay', 'Stop', clip.url, parseInt(this.getTime()) );
+					viblio.mpEvent( 'web_play', { action: 'stop' } );
 				    },
 				    onFinish: function( clip ) {
 					//console.log( 'Tracking finish ...', clip.url );
-					viblio.gaEvent( 'WebPlay', 'Finish', clip.url );
+					//viblio.gaEvent( 'WebPlay', 'Finish', clip.url );
+					viblio.mpEvent( 'web_play', { action: 'finish' } );
 				    }
 				},
 				plugins: {

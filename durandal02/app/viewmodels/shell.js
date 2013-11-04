@@ -21,7 +21,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
     //
     router.guardRoute = function( instance, instruction ) {
 	// Log it to analytics
-	viblio.gaPage( instruction.config.title, '/' + instruction.config.route ); 
+	viblio.mpPage( instruction.config.title, '/' + instruction.config.route ); 
 	if ( instruction.config.authenticated ) {
 	    // If the route is marked authenticated, then do a server
 	    // round trip to make sure we have a session.  If we do
@@ -141,10 +141,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      nav: false,   authenticated: true,   header: landing_header },
 
             { route: 'register',           moduleId: 'register',           title: 'Registration',
-	      nav: false,   authenticated: false,   header: landing_header },
-            
-            { route: 'web_player2',         moduleId: 'web_player2',         title: 'Video Player',
-	      nav: false,   authenticated: false,   header: conditional_header },
+	      nav: false,   authenticated: false,   header: landing_header }
 
         ]).buildNavigationModel();
     }

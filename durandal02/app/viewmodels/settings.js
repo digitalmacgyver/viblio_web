@@ -29,6 +29,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 		    customDialogs.showError( json.message );
 		    email( profile().email );
 		}
+		viblio.mpEvent( 'change_email' );
 	    });
     }
 
@@ -41,6 +42,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 		}
 		else {
 		    viblio.setUser( json.user );
+		    viblio.mpEvent( 'change_displayname' );
 		}
 	    });
     }
@@ -84,6 +86,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 			      customDialogs.showMessage( 'Your Facebook account has been successfully linked!', 'Congradulations!' );
 			      links().facebook = json.user.link;
 			      linkedFacebook( true );
+			      viblio.mpEvent( 'facebook_link' );
 			  });
 	    }
 	},{scope: config.facebook_ask_features()});
@@ -92,6 +95,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
     function unlinkFacebookAccount() {
 	viblio.api( '/services/user/unlink_facebook_account' ).then( function() {
 	    linkedFacebook( false );
+	    viblio.mpEvent( 'facebook_unlink' );
 	    customDialogs.showMessage( 'Your Facebook account has been successfully disconnected.', 'Linked Accounts' );
 	});
     }
@@ -150,10 +154,12 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	changeAvatar: function() {
 	    //app.showDialog('viewmodels/avatar_upload');
 	    customDialogs.showModal('viewmodels/avatar_upload');
+	    viblio.mpEvent( 'avatar' );
 	},        
 
 	changePassword: function() {
 	    customDialogs.showPassword();
+	    viblio.mpEvent( 'change_password' );
 	},
                 
 	activate: function( view ) {

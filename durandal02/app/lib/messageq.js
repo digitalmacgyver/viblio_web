@@ -25,6 +25,8 @@ define(['lib/config','durandal/system','durandal/app'], function( config, system
 				data: { uid: uuid },
 				dataType: 'jsonp',
 				success: function( data ) {
+				    var viblio = require( 'lib/viblio' );
+				    viblio.mpEvent( 'upload' );
 				    if ( callback ) {
 					callback( data );
 				    }

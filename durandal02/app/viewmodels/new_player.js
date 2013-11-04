@@ -195,6 +195,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    url: 'mp4:' + m.media().views.main.cf_url,
 	    ipadUrl: encodeURIComponent(m.media().views.main.url)
         });
+	viblio.mpEvent( 'related_video' );
 	// push it onto history
 	//router.navigate( 'player?mid=' + m.media().uuid, false);
     }
@@ -331,6 +332,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 			hash['who'] = c.who || 'anonymous'; 
 			hash['when'] = prettyWhen( new Date(), new Date() );
 			comments.unshift( hash );
+			viblio.mpEvent( 'comment' );
 		    });
     });
 
@@ -367,6 +369,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    });
 	},
 	relocate: function() {
+	    viblio.mpEvent( 'change_location' );
 	    customDialogs.showInteractiveMap( playing().media, {
 		relocate: true,
 		disableMapDrag: false,
@@ -459,23 +462,28 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    // Google Analytics
 		    onStart: function( clip ) {
 			//console.log( 'Tracking start ...', clip.url );
-			viblio.gaEvent( 'PrivatePlay', 'Play', clip.url );
+			//viblio.gaEvent( 'PrivatePlay', 'Play', clip.url );
+			viblio.mpEvent( 'play', { action: 'play' } );
 		    },
 		    onPause: function( clip ) {
 			//console.log( 'Tracking pause ...', clip.url, parseInt(this.getTime()) );
-			viblio.gaEvent( 'PrivatePlay', 'Pause', clip.url, parseInt(this.getTime()) );
+			//viblio.gaEvent( 'PrivatePlay', 'Pause', clip.url, parseInt(this.getTime()) );
+			viblio.mpEvent( 'play', { action: 'pause' } );
 		    },
 		    onResume: function( clip ) {
 			//console.log( 'Tracking resume ...', clip.url );
-			viblio.gaEvent( 'PrivatePlay', 'Resume', clip.url );
+			//viblio.gaEvent( 'PrivatePlay', 'Resume', clip.url );
+			viblio.mpEvent( 'play', { action: 'resume' } );
 		    },
 		    onStop: function( clip ) {		    
 			//console.log( 'Tracking stop ...', clip.url, parseInt(this.getTime()) );
-			viblio.gaEvent( 'PrivatePlay', 'Stop', clip.url, parseInt(this.getTime()) );
+			//viblio.gaEvent( 'PrivatePlay', 'Stop', clip.url, parseInt(this.getTime()) );
+			viblio.mpEvent( 'play', { action: 'stop' } );
 		    },
 		    onFinish: function( clip ) {
 			//console.log( 'Tracking finish ...', clip.url );
-			viblio.gaEvent( 'PrivatePlay', 'Finish', clip.url );
+			//viblio.gaEvent( 'PrivatePlay', 'Finish', clip.url );
+			viblio.mpEvent( 'play', { action: 'finish' } );
 		    }
                 },
                 plugins: {

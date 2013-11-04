@@ -11,7 +11,7 @@
             <h3>Your friends can be in on this too!</h3>
             <ul class='shareIconList' data-bind="foreach: shareNetworks">
                 <li>
-                    <a data-bind="attr: { href: url, class: 'shareIcon pop ' + addClass, title: 'Share this page on ' + name }" >
+                    <a data-bind="click: $parent.liked, attr: { href: url, class: 'shareIcon pop ' + addClass, title: 'Share this page on ' + name }" >
                         <img data-bind="attr: { src: 'css/images/shareIcons/' + imgName}"/>
                     </a>
                     <label data-bind="text: name"></label>

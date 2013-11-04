@@ -56,6 +56,12 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
                 
         closeModal: closeModal,
         showBetaReservedModal: showBetaReservedModal,
+
+	liked: function( el ) {
+	    var viblio = require( "lib/viblio" );
+	    viblio.mpEvent( 'shared_from_beta', { network: el.name } );
+	    return true;
+	},
         
         attached: function( view, parent ) {
             
