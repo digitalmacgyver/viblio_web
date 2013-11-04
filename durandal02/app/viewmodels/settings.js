@@ -26,9 +26,10 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	$.get( '/services/user/change_email_or_displayname', { email: addr } ).then(
 	    function( json ) {
 		if ( json.error ) {
-		    dialog.showError( json.message );
+		    customDialogs.showError( json.message );
 		    email( profile().email );
 		}
+		viblio.mpEvent( 'change_email' );
 	    });
     }
 
@@ -36,11 +37,12 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	$.get( '/services/user/change_email_or_displayname', { displayname: name } ).then(
 	    function( json ) {
 		if ( json.error ) {
-		    dialog.showError( json.message );
+		    customDialogs.showError( json.message );
 		    displayname( profile().displayname );
 		}
 		else {
 		    viblio.setUser( json.user );
+		    viblio.mpEvent( 'change_displayname' );
 		}
 	    });
     }
@@ -64,7 +66,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	var fb_channel = config.facebook_channel();
 
 	if ( ! fb_appid ) {
-	    dialog.showMessage( 'In development, Facebook login will not work.' );
+	    customDialogs.showMessage( 'In development, Facebook login will not work.' );
 	    return;
 	}
 
@@ -81,9 +83,10 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 		viblio.api( '/services/user/link_facebook_account',
 			    { access_token: response.authResponse.accessToken }
 			  ).then( function( json ) {
-			      dialog.showMessage( 'Your Facebook account has been successfully linked!', 'Congradulations!' );
+			      customDialogs.showMessage( 'Your Facebook account has been successfully linked!', 'Congradulations!' );
 			      links().facebook = json.user.link;
 			      linkedFacebook( true );
+			      viblio.mpEvent( 'facebook_link' );
 			  });
 	    }
 	},{scope: config.facebook_ask_features()});
@@ -92,7 +95,8 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
     function unlinkFacebookAccount() {
 	viblio.api( '/services/user/unlink_facebook_account' ).then( function() {
 	    linkedFacebook( false );
-	    dialog.showMessage( 'Your Facebook account has been successfully disconnected.', 'Linked Accounts' );
+	    viblio.mpEvent( 'facebook_unlink' );
+	    customDialogs.showMessage( 'Your Facebook account has been successfully disconnected.', 'Linked Accounts' );
 	});
     }
 
@@ -148,11 +152,14 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	},
                 
 	changeAvatar: function() {
-	    app.showDialog('viewmodels/avatar_upload');
+	    //app.showDialog('viewmodels/avatar_upload');
+	    customDialogs.showModal('viewmodels/avatar_upload');
+	    viblio.mpEvent( 'avatar' );
 	},        
 
 	changePassword: function() {
 	    customDialogs.showPassword();
+	    viblio.mpEvent( 'change_password' );
 	},
                 
 	activate: function( view ) {

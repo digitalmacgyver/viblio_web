@@ -82,6 +82,8 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 				     self.features.search( face.data.uuid );
 				     self.features.setTitle( face.data.appears_in + ' ' + videoOrVideos +' with ' + face.data.contact_name );
 				     self.features.show( pos );
+				     var viblio = require( 'lib/viblio' );
+				     viblio.mpEvent( 'videos_for_actor' );
 				 }
 			     });
 

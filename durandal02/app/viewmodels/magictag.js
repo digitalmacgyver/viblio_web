@@ -40,16 +40,28 @@ define(['plugins/dialog'], function(dialog) {
 	// the name
 	var contact_name = $(self.view).find("#cname").val();
 
-	var ret = { uuid: self.face.data.uuid, 
-		    cid: cid,
-		    new_uri: self.new_uri,
-		    contact_name: contact_name };
-
+	// The user could have typed in a name that matched a current
+	// contact, and just didn't select the name from the pull down.
+	// This is a GUI gaff and should not be possible, but until we
+	// change the gui, lets not let that happen.  So go back to
+	// the server and see if this name already exists and if it does,
+	// assume the user *meant* to choose.
 	var viblio = require( 'lib/viblio' );
-	viblio.api( '/services/faces/tag', ret ).then( function() {
-	    self.face.name( contact_name );
-	    self.data = ret;
-	    self.dismiss();
+	viblio.api( '/services/faces/all_contacts', { term: contact_name } ).then(function(arr) {
+	    for( var i=0; i<arr.length; i++ )
+		if ( arr[i].label == contact_name )
+		    cid = arr[i].cid;
+
+	    var ret = { uuid: self.face.data.uuid, 
+			cid: cid,
+			new_uri: self.new_uri,
+			contact_name: contact_name };
+
+	    viblio.api( '/services/faces/tag', ret ).then( function() {
+		self.face.name( contact_name );
+		self.data = ret;
+		self.dismiss();
+	    });
 	});
     };
 
@@ -102,7 +114,6 @@ define(['plugins/dialog'], function(dialog) {
 	}).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
 	    // Extend this jQuery Autocomplete widget to render not only the
 	    // label, but also the picture, if there is one
-	    console.log( 'In custom _renderItem' );
 	    var image = 'css/images/nopic-red-90.png';
 	    if ( item.url ) image = item.url;
 	    return $("<li>")

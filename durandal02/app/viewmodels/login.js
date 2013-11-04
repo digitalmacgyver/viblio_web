@@ -30,6 +30,9 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     });
 
     function loginSuccessful( user ) {
+	// mixpanel event
+	viblio.mpEvent( 'login' );
+
 	// Save the logged in user info to the viblio object,
 	// which serves as a global exchange
 	//
@@ -154,6 +157,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
                     // Something went wrong, do something to notify the user. maybe alert(data.msg);
                     dialog.showMessage( data.msg, 'Beta Signup' );
                 } else {
+		    viblio.mpEvent( 'register_for_beta' );
                     showBetaReservedModal();
                 }
             }
@@ -202,6 +206,11 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
         register: register,
         showBetaReservedModal: showBetaReservedModal,
 	signup: signup,
+
+	download_viblio: function() {
+	    viblio.mpEvent( 'download_viblio' );
+	    return true;
+	},
 
 	activate: function( args ) {
 	    if ( args && args.orsignup ) {

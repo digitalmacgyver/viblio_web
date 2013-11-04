@@ -26,6 +26,8 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     };
     
     S.prototype.cimport = function() {
+	var viblio = require( 'lib/viblio' );
+	viblio.mpEvent( 'address_book_import' );
 	cloudsponge.launch({
 	});
     };
@@ -33,9 +35,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     S.prototype.addPublicShare = function( self, network ) {
 	var viblio = require( 'lib/viblio' );
 	viblio.api( '/services/mediafile/add_share', { mid: self.mediafile.media().uuid } ).then( function() {
-	    // log it to google analytics
-	    viblio.gaSocial( network.toLowerCase(), 'share', self.mediafile.media().uuid );
-	    viblio.gaEvent(  'share', network.toLowerCase(), 'social' );
+	    viblio.mpEvent( 'public_share', { network: network } );
 	});
 	return true; // let the href do its thing too!
     };
@@ -101,8 +101,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 		      body: message, 
 		      private: self.private() } ).then( function() {
 			  // log it to google analytics
-			  viblio.gaSocial( self.private(), 'share', self.mediafile.media().uuid );
-			  viblio.gaEvent(  'share', self.private(), 'social' );
+			  viblio.mpEvent( 'private_share' );
 			  viblio.notify( 'Share email sent', 'success' );
 		      });
 	self.closeModal();
@@ -152,15 +151,16 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
             });
         
 	// This is the copy-to-clipboard support
+	var viblio = require( 'lib/viblio' );
+
 	ZeroClipboard.setMoviePath( 'lib/zeroclipboard/ZeroClipboard11.swf' );	
 	self.clip = new ZeroClipboard.Client();
-	//self.clip.addEventListener( 'complete', function( client, text ) {
-	//    console.log( 'Copied to Clipboard' );
-	//});
+	self.clip.addEventListener( 'complete', function( client, text ) {
+	    viblio.mpEvent( 'hidden_share' );
+	});
 	self.clip.setText( '' );
 	self.clip.glue( 'copyShareLink', 'shareVidModal' );
 	
-	var viblio = require( 'lib/viblio' );
 	viblio.api( '/services/mediafile/add_share',
 		    { mid: self.mediafile.media().uuid,
 		      private: 'potential'

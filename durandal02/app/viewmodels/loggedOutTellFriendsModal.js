@@ -13,6 +13,8 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     };
 
     function cimport() {
+	var viblio = require( 'lib/viblio' );
+	viblio.mpEvent( 'address_book_import' );
 	cloudsponge.launch({
 	});
     };
@@ -34,6 +36,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 
 	viblio.api( '/services/user/tell_a_friend', { list: list, message: message } ).then( function() {
 	    viblio.notify( 'Email sent', 'success' );
+	    viblio.mpEvent( 'tell_a_friend' );
 	    self.closeModal();
 	});
     };

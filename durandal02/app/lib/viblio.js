@@ -101,13 +101,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 	    return user().uuid;
 	},
 
-	// Log a google analytics page view
-	gaPage: function( title, page ) {
-	    ga( 'send', 'pageview', {
-		title: title, page: page });
-	    mixpanel.track_pageview( page );
-	},
-
 	// Log a google analytics event.  This function automatically
 	// attaches the "page" (or route) that was active when this
 	// call was made.
@@ -119,36 +112,26 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 		ga( 'send', 'event', category, action, label, { 'page': page } );
 	    else 
 		ga( 'send', 'event', category, action, { 'page': page } );
-	    mixpanel.track( category, { action: action,
-					label: label,
-					value: value,
-					page: page });
 	},
 
-	// Log a google analytics "social" event
-	gaSocial: function( network, action, target ) {
-	    var page = '/' + ( router.activeInstruction().fragment || 'unknown' );
-	    target = target || 'no_target_specified';
-	    ga( 'send', 'social', network, action, target, { 'page': page } );
-	    mixpanel.track( 'social', { network: network,
-					action: action,
-					target: target,
-					page: page });
+	// Mixpanel Page View
+	mpPage: function( title, page ) {
+	    mixpanel.track_pageview( page );
+	    ga( 'send', 'pageview', {
+		title: title, page: page });
 	},
 
-	// Log a timed event to google analytics.  This is a report of
-	// how long something took to complete.
-	gaTime: function( category, variable, value, label ) {
-	    var page = '/' + ( router.activeInstruction().fragment || 'unknown' );
-	    if ( label )
-		ga( 'send', 'timing', category, variable, value, label, { 'page': page } );
-	    else
-		ga( 'send', 'timing', category, variable, value, { 'page': page } );
-
-	    mixpanel.track( 'timing', { category: category,
-					variable: variable,
-					value: value,
-					page: page });
+	// Mixpanel Event log
+	// The current page fragment gets added automatically.
+	mpEvent: function( event, options ) {
+	    if ( ! options )
+		options = {};
+	    if ( router && router.activeInstruction && router.activeInstruction().fragment )
+		options['page'] = '/' + router.activeInstruction().fragment;
+	    else 
+		options['page'] = '/unknown';
+	    mixpanel.track( event, options );
+	    ga( 'send', 'event', event, 'interact', { 'page': options['page'] } );
 	},
 
 	api: function( url, data, errorCallback ) {
@@ -179,6 +162,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 			// authentication failure; redirect back to login page
 			if ( data.detail && ( data.detail.indexOf( 'NOLOGIN' ) == 0 ) ) {
 			    // I am already on the login page!
+			    self.mpEvent( 'loginFailed', { reason: data.detail } );
 			    if ( errorCallback )
 				errorCallback({message: 'Authentication Failure',
 					       detail: data.message, 
@@ -193,6 +177,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 			}
 		    }
 		    else if ( data.detail && data.detail.match( /NOLOGIN_/g ) ) {
+			self.mpEvent( 'loginFailed', { reason: data.detail } );
 			if ( errorCallback )
 			    errorCallback({message: 'Authentication Failure',
 					   detail: data.message, 
@@ -201,6 +186,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 			    dialogs.showMessage( data.message, 'Authentication Failure' );
 		    }
 		    else {
+			self.mpEvent( 'serverError', { reason: 'bad request' } );
 			if ( errorCallback ) {
 			    errorCallback({message: data.message,
 					   detail: data.detail });
@@ -215,6 +201,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 		    deferred.reject( x, 'error' );
 		}
 		else if ( data && data.error ) {
+		    self.mpEvent( 'serverError', { reason: 'server exception' } );
 		    if ( errorCallback ) {
 			errorCallback({message: data.message,
 				       detail: data.detail });
