@@ -1133,15 +1133,14 @@ input:-moz-placeholder {
 .face .name {
     width: 100%;
     height: 36px;
-    background-color: white;
     padding: 8px 5px;
     position: relative;
     text-align: center;
     box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
-    font-weight: 600;
-    font-size: 16px;
-    color: rgba(0,0,0,.5);
+    font-weight: 200;
+    font-size: 14px;
+    color: white;
 }
 
 .face .information .aux {
@@ -1296,6 +1295,35 @@ div.map div.title {
     width: 100%;
 }
 
+#webPlayer-Wrap {
+    position: relative;
+}
+
+#videoOverlay {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(50,53,68,.8);
+    position: absolute;
+    color: white;
+    text-align: center;
+    display: block;
+}
+
+#videoOverlay .bottomBorder-Thin {
+    border-bottom: 1px solid lightgrey;
+}
+
+#videoOverlay .paddedDiv {
+    padding: 2% 0 4%;
+}
+
+#videoOverlay .landingHeaderTitle {
+    border: none;
+    font-size: 32px;
+    padding: 0 15%;
+    margin-bottom: 5%; 
+}
+
 /*************** Player Comments ****************/
 
 #comments p {
@@ -1396,21 +1424,20 @@ div.map div.title {
     margin-bottom: 0;
 }
 
-#faces li:nth-last-of-type(2) {
+#faces li:last-of-type() {
     margin-bottom: 0;
 }
 
-#faces li:nth-of-type(2n) {
+#faces li:not(first-of-type) {
     margin-left: 25px;
 }
 
-
 #faces-column .face {
-    width: 140px;
+    width: 64px;
 }
 
 #faces-column .face img {
-    height: 140px;
+    height: 64px;
 }
 
 #faces-column .face .star {

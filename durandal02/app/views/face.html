@@ -1,14 +1,14 @@
 <div class="face">
-    <div class="boxShadowed">
+    <div>
         <div data-bind="if: hasStarPower()">
             <img class="star" data-bind="visible: star, attr: { src: starColor }"/>
             <span class="starRank textShadowed" data-bind="visible: star, html: star_power() "></span>
         </div>
         <!-- ko if:  selectable()-->
-        <img class='selectable' data-bind="attr:{src:url}, click: select" />
+        <img class='selectable boxShadowed' data-bind="attr:{src:url}, click: select" />
         <!-- /ko -->
         <!-- ko if:  !selectable()-->
-        <img data-bind="attr:{src:url}" />
+        <img class="boxShadowed" data-bind="attr:{src:url}" />
         <!-- /ko -->
         <!-- ko if:  show_name()-->
         <div class="name" data-bind="text: name"></div>
