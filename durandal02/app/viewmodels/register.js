@@ -15,7 +15,8 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
     });
     var media = ko.observable();
     var agreeTOS = ko.observable(false);
-    
+    var avatar = ko.observable(null);
+
     fb_appid   = config.facebook_appid();
     fb_channel = config.facebook_channel();
 
@@ -103,6 +104,7 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
         agreeTOS: agreeTOS,
 	labelShowHide: labelShowHide,
         facebookAuthenticate: facebookAuthenticate,
+	avatar: avatar,
 
 	not_correct: function() {
 	    email(null);
@@ -150,6 +152,7 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
 	},
 
 	activate: function( args ) {
+	    var testing = 0;
 	    if ( args ) {
 		if ( args.email ) {
 		    email( args.email );
@@ -157,15 +160,20 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
 		if ( args.url ) {
 		    url = args.url;
 		}
+		if ( args.test ) {
+		    testing = 1;
+		}
 	    }
 	    return viblio.api( 
 		'/services/na/find_share_info_for_pending',
-		{ email: email() } ).then( function( json ) {
+		{ email: email(), test: testing } ).then( function( json ) {
 		    if ( json.owner ) {
 			displayname( json.owner.displayname );
+			avatar( '/services/na/avatar?uid=' + json.owner.uuid + '&y=37' );
 		    }
 		    else {
 			displayname( 'Someone' );
+			avatar( '/services/na/avatar?uid=' + '' + '&y=37' );
 		    }
 		    // We also have the mediafile (json.media ) and so
 		    // could display the poster, et. al. here.
