@@ -1,30 +1,61 @@
 <div id="register-page">
-  <h2>Welcome to Viblio <span data-bind="text: email"></span>!</h2>
+    <p class="landingHeaderTitle darkBlueBG">Almost there! <span>Create your Viblio Account:</span></p>
+    <div class="orangeBG-Header bottomBorder-Thin"></div>
+    <div class="content-Wrap centeredEl">
+    
+        <div id="register-Wrap" class='centeredEl'>
+           <div id="videoPoster-Wrap" class='bottomBorder-Thick'>    
+                <div id="shareFrom">
+                    <img>
+                    <p><strong><span data-bind="text: displayname()"></span></strong> shared a Video with you!</p>
+                </div>
+                <div class="mediafile" data-bind="attr:{id:media().uuid}">
+                    <div class="boxShadowed">
+                        <div>
+                            <img data-bind="{attr:{src:media().views.poster.url}}" />
+                        </div>
+                        <div class="information">
+                            <div class="aux pull-right muted"><img src='css/images/viewsEye.png'/><span data-bind="html: media().eyes">0</span></div>
+                            <div data-bind="liveEditor: title">
+                                <div class="view vidTitle title truncate" data-bind="text: media().title || 'Unnamed video'"></div>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p>
+                    Please take a moment to create your <strong>free</strong> account before watching. This helps ensure <span data-bind="text: displayname()"></span>'s Video is only seen by people who were invited.
+                </p>
+            </div>
 
-  <div data-bind="if: correct">
-    <p>
-      If you are not <span data-bind="text: email"></span>, click <a href="#" data-bind="click: not_correct">here</a> to
-      create your own Viblio account.
-    </p>
-  </div>
-  <div data-bind="ifnot: correct">
-    <label for="email">Your Email Address:</label>
-    <input type="email" name="email" placeholder="Email" data-bind="value: email" />
-  </div>
-
-  <span data-bind="text: displayname"></span> has invited you to watch a video.  To protect
-  your privacy, please create a password first:
-  <div>
-    <input type="password" name="password" data-bind="value: password" placeholder="Password" />
-    <a href="#" data-bind="click: toggleShowHide, text: labelShowHide"></a>
-  </div>
-
-  <div>
-    I agree with the <a href="#" data-bind="click: displayTerms">terms</a> of using the Viblio service.
-  </div>
-
-  <div class="done">
-    <button class="btn btn-primary" data-bind="enable: validated, click: done">Watch the Video</button>
-  </div>
-
+            <div id="loginArea" class="mocksWhiteBG centeredEl">
+              <div id="fbBtn-Wrap" class="bottomBorder">
+                <a id="facebookLoginBtn" class="centeredEl" data-bind="click: facebookAuthenticate"><img src="css/images/FBf.png" /> Connect with Facebook </a>
+              </div>
+              <div id='or-Wrap'>
+                <p>or</p>
+              </div>
+              <form class='bottomBorder-Thick'>
+                <div class="centeredEl">
+                    <div id="registerForm-Wrap">
+                        <input type="email" name="email" data-bind="value: email, enable: false" />
+                        <input id="loginPassword" type="password" name="pword" class="text" data-bind="value: password, valueUpdate: 'afterkeydown'" placeholder="Choose a password" />
+                        <div class="password-helper">
+                            <p> Your password must be at least 6 characters. </p>
+                        </div>
+                        <label class="checkbox">
+                            <input name="agreeTOS" data-bind="checked: agreeTOS" type="checkbox"> I agree to the Viblio <span class="turquoiseFont" data-bind="click: displayTerms">Terms of Service</span>
+                        </label>
+                        <button class="btn btn-primary" data-bind="enable: agreeTOS && validPassword">
+                            Watch Video
+                        </button>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+              </form>
+            </div>
+            <div class='clearfix'></div>
+        </div>    
+        <p id='toLogin'>Already a member? <a class="turquoiseFont" href="/#login">Log In &raquo;</a></p>
+    </div>
+    
 </div>
