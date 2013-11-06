@@ -86,7 +86,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
         }
     });
     var showRelated = ko.computed(function(){
-        if( loggedIn() && shareType() != 'public' ) {
+        if( loggedIn() && ( shareType() == 'private' || shareType() == 'owned_by_user' ) ) {
             return true;
         } else {
             return false;
@@ -150,7 +150,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
     // Get the comments
     function setupComments( m ) {
 	comments.removeAll();
-	viblio.api( '/services/mediafile/comments', { mid: m.uuid } ).then( function( data ) {
+	viblio.api( '/services/na/media_comments', { mid: m.uuid } ).then( function( data ) {
 	    if ( data.comments && data.comments.length ) {
                 numComments = data.comments.length;
 		var now = new Date();
@@ -168,7 +168,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
     var finfo = ko.observable();
     var faces = ko.observableArray([]);
     function setupFaces( m ) {
-	viblio.api( '/services/faces/faces_in_mediafile', { mid: m.uuid } ).then( function( data ) {
+	viblio.api( '/services/na/faces_in_mediafile', { mid: m.uuid } ).then( function( data ) {
 	    faces.removeAll();
 	    if ( data.faces && data.faces.length ) {
 		var total = 0, ident = 0,
@@ -405,32 +405,36 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
             });
             
             return system.defer( function( dfd ) {
-		viblio.api( '/services/mediafile/get', { mid: args.mid, include_contact_info: 1 } ).then( function( json ) {
-		    var mf = json.media;
-		    // Set now playing
-                    //playingMid( json.media );
-		    playing( new Mediafile( mf ) );
-		    next_available_clip( 0 );
-
-		    setupComments( mf );
-		    setupFaces( mf );
-
-		    // Get related vids
-		    vstrip = new Strip( 'title', 'subtile' );
-
-		    // This async routine is the long pole.  Let it do the promise() resolution to
-		    // pause the system until we have all the data.
-		    //
-		    vstrip.search().then( function() {
-			// Get all of the geo locations of the related media
+		viblio.api( '/services/na/media_shared', { mid: args.mid } ).then( function( json ) {
+		    shareType( json.share_type );
+		    console.log( shareType() );
+		    if ( json.auth_required ) {
 			dfd.resolve();
-		    });
-		    vstrip.on( 'mediavstrip:play', function( m ) {
-			// When the user selects a related video to play, play it
-			playRelated( m );
-		    });
-		    // make it observable for the composure
-		    related( vstrip );
+			return;
+		    }
+		    if ( showRelated() ) {
+			var mf = json.media;
+
+			// Get related vids
+			vstrip = new Strip( 'title', 'subtile' );
+
+			// This async routine is the long pole.  Let it do the promise() resolution to
+			// pause the system until we have all the data.
+			//
+			vstrip.search().then( function() {
+			    // Get all of the geo locations of the related media
+			    dfd.resolve();
+			});
+			vstrip.on( 'mediavstrip:play', function( m ) {
+			    // When the user selects a related video to play, play it
+			    playRelated( m );
+			});
+			// make it observable for the composure
+			related( vstrip );
+		    }
+		    else {
+			dfd.resolve();
+		    }
 		});
 	    }).promise();
 	},
@@ -448,7 +452,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 		return;
 	    }
 		viblio.api( '/services/na/media_shared', { mid: self.mid }, errorHandler ).then( function(json) {
-                    //shareType( json.share_type );
+                    shareType( json.share_type );
 		    if ( json.auth_required ) {
 			// This is a private share and you are not logged in.
 			viblio.setLastAttempt( 'web_player?mid=' + self.mid );
@@ -532,7 +536,8 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
                             
                             // resize height of related video seciton based on page height
                             relatedVidHeight();
-                            vstrip.updateScroller();
+			    if ( vstrip )
+				vstrip.updateScroller();
 			}
 		    }
 		});
