@@ -54,16 +54,18 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
     var showPlayerOverlay = ko.observable(false);
     
     function hidePlayerOverlay() {
-        console.log('clicked!');
-        console.log(showPlayerOverlay());
         showPlayerOverlay(false);
     }
     
     var playingMid = ko.observable();
     
     function playAgain() {
-        console.log('playAgain clicked!')
-        playing( new Mediafile( playingMid() ) );
+        console.log('playAgain clicked!');
+        flowplayer().play({
+            url: 'mp4:' + playingMid().media().views.main.cf_url,
+            ipadUrl: encodeURIComponent(playingMid().media().views.main.url)
+        });
+        //playing( new Mediafile( playingMid() ) );
     }
     
     var eyes = ko.observable();
@@ -208,6 +210,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
     //
     function playVid( m ) {
         playing( m );
+        playingMid( m );
 	title( playing().title() || 'Click to add a title.' );
 	description( playing().description() || 'Click to add a description.' );
         setupComments( m.media() );
@@ -357,6 +360,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
         vstrip: vstrip,
         showPlayerOverlay: showPlayerOverlay,
         hidePlayerOverlay: hidePlayerOverlay,
+        playingMid: playingMid,
         playAgain: playAgain,
         related: related,
         loggedIn: loggedIn,
@@ -404,7 +408,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 		viblio.api( '/services/mediafile/get', { mid: args.mid, include_contact_info: 1 } ).then( function( json ) {
 		    var mf = json.media;
 		    // Set now playing
-                    playingMid( json.media );
+                    //playingMid( json.media );
 		    playing( new Mediafile( mf ) );
 		    next_available_clip( 0 );
 
@@ -453,6 +457,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 		    else {
 			var mf = json.media;
 			playing( new Mediafile( mf ) );
+                        playingMid( playing() );
 			if ( playing() ) {
 			    var mf = playing().media();
                             eyes( playing().media().eyes );

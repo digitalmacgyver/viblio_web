@@ -1431,7 +1431,7 @@ div.map div.title {
 /******************** Player Faces **********************/
 
 #nplayer-page #main-table #info-table #faces-column #faces {
-    padding: 30px;
+    padding: 30px 30px 0;
     width: 306px;
     padding-top: 25px;
     height: auto;

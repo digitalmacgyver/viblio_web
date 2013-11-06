@@ -1,7 +1,8 @@
 <div id="webplayer-page">
   <div id="nplayer-page">
     <!--<div class="player"></div>-->
-    <div data-bind="text: shareType()"></div>
+    <div data-bind="text: playingMid()"></div>
+    
     <table id="main-table">
         <tr>
             <td id="playerCommentsNavTable-Wrap">
@@ -15,7 +16,7 @@
                     
                     <td id="left-side" class="boxShadowed">
                         <div id="webPlayer-Wrap">
-                            <!-- ko if: showPlayerOverlay() == true -->
+                            <!-- ko if: showPlayerOverlay() == true && showRelated() == false -->
                             <div id="videoOverlay" data-bind="click: hidePlayerOverlay">
                                 <div class="paddedDiv bottomBorder-Thin">
                                     <div id="cloudImage"></div>
