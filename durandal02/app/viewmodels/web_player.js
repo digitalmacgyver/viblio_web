@@ -84,7 +84,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
         }
     });
     var showRelated = ko.computed(function(){
-        if( loggedIn() && shareType() != 'private' ) {
+        if( loggedIn() && shareType() != 'public' ) {
             return true;
         } else {
             return false;

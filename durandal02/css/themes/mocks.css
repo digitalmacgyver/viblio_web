@@ -1309,12 +1309,29 @@ div.map div.title {
     display: block;
 }
 
+#cloud {
+    max-width: 100%;
+    height: auto;
+    width: auto\9; /* ie8 */
+}
+
+#cloudImage {
+    background-image: url("/css/images/cloud.png");
+    background-repeat: no-repeat;
+    padding: 5%;
+    background-size: contain;
+    max-width: 800px;
+    margin: 0 auto;
+    background-position: center;
+}
+
 #videoOverlay .bottomBorder-Thin {
     border-bottom: 1px solid lightgrey;
 }
 
 #videoOverlay .paddedDiv {
     padding: 2% 0 4%;
+    height: 64%;
 }
 
 #videoOverlay .landingHeaderTitle {
@@ -1322,6 +1339,16 @@ div.map div.title {
     font-size: 32px;
     padding: 0 15%;
     margin-bottom: 5%; 
+}
+
+#videoOverlay .button-Wrap {
+    margin-top: 5%;
+}
+
+@media (max-width: 650px) {
+    #videoOverlay .landingHeaderTitle {
+        font-size: 30px;
+    }
 }
 
 /*************** Player Comments ****************/

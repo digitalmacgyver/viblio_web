@@ -18,14 +18,14 @@
                             <!-- ko if: showPlayerOverlay() == true -->
                             <div id="videoOverlay" data-bind="click: hidePlayerOverlay">
                                 <div class="paddedDiv bottomBorder-Thin">
-                                    <img/>
+                                    <div id="cloudImage"></div>
                                     <p class="landingHeaderTitle"><span>Add and </span>Share your Videos securely <span>from the cloud!</span></p>
                                     <a class="btn btn-blue" href="/services/na/download_trayapp">
                                         Get the App &raquo;
                                     </a>
                                 </div>
-                                <div>
-                                    <button class="btn btn-primary" data-bind="click: playAgain">
+                                <div class="button-Wrap">
+                                    <button class="btn btn-primary" data-bind="click: playAgain, clickBubble: false">
                                         <i class="icon-repeat"></i>  Watch this Video again
                                     </button>
                                 </div>
