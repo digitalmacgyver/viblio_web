@@ -77,7 +77,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
     var errorMessage = ko.observable();
     var errorDetail = ko.observable();
     
-    var shareType = ko.observable('public');
+    var shareType = ko.observable();
     var loggedIn = ko.computed(function(){
         if( user ) {
             return true;
