@@ -6,7 +6,7 @@
         <div id="register-Wrap" class='centeredEl'>
            <div id="videoPoster-Wrap" class='bottomBorder-Thick'>    
                 <div id="shareFrom">
-                    <img data-bind="{attr:{src:avatar}}" />
+                    <img class="boxShadowed" data-bind="{attr:{src:avatar}}" />
                     <p><strong><span data-bind="text: displayname()"></span></strong> shared a Video with you!</p>
                 </div>
                 <div class="mediafile" data-bind="attr:{id:media().uuid}">
@@ -38,7 +38,7 @@
                 <div class="centeredEl">
                     <div id="registerForm-Wrap">
                         <input type="email" name="email" data-bind="value: email, enable: false" />
-                        <input id="loginPassword" type="password" name="pword" class="text" data-bind="value: password, valueUpdate: 'afterkeydown'" placeholder="Choose a password" />
+                        <input id="loginPassword" type="password" name="pword" class="text" data-bind="value: password, valueUpdate: 'afterkeydown'" placeholder="Choose a password" required/>
                         <div class="password-helper">
                             <p> Your password must be at least 6 characters. </p>
                         </div>
