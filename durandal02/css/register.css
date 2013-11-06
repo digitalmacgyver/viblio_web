@@ -33,6 +33,14 @@
     font-size: 16px;
 }
 
+#shareFrom img {
+    width: 36px;
+    height: 36px;
+    margin-right: 10px;
+    float: left;
+}
+
+
 #register-page .mediafile img {
     border: none;
     height: 152px;
