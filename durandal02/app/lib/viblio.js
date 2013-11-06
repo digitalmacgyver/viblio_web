@@ -148,6 +148,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 		else {
 		}
 
+		self.mpEvent( 'serverError', { reason: 'cannot connect' } );
 		self.notify( 'Server communication failure!', 'error' );
 
 		if ( errorCallback )
@@ -186,12 +187,12 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 			    dialogs.showMessage( data.message, 'Authentication Failure' );
 		    }
 		    else {
-			self.mpEvent( 'serverError', { reason: 'bad request' } );
 			if ( errorCallback ) {
 			    errorCallback({message: data.message,
 					   detail: data.detail });
 			}
 			else {
+			    self.mpEvent( 'serverError', { reason: 'bad request' } );
 			    self.notify( data.message, 'error' );
 			    console.log( 'API (bad request) ERROR' );
 			    console.log( data.message );
@@ -201,12 +202,12 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 		    deferred.reject( x, 'error' );
 		}
 		else if ( data && data.error ) {
-		    self.mpEvent( 'serverError', { reason: 'server exception' } );
 		    if ( errorCallback ) {
 			errorCallback({message: data.message,
 				       detail: data.detail });
 		    }
 		    else {
+			self.mpEvent( 'serverError', { reason: 'server exception' } );
 			self.notify( 'Server exception', 'error' );
 			console.log( 'API (exception) ERROR' );
 			console.log( data.message );
