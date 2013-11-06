@@ -35,7 +35,22 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
     var view;
 
     var correct = ko.observable( true );
-    
+
+    function loginSuccessful( user ) {
+	// mixpanel event
+	viblio.mpEvent( 'login' );
+
+	// Save the logged in user info to the viblio object,
+	// which serves as a global exchange
+	//
+	viblio.setUser( user );
+	
+	// either go to the personal channel page, or
+	// do a pass thru to the page the user was
+	// trying to get to.
+	router.navigate( viblio.getLastAttempt() || 'home' );
+    };
+
     function facebookAuthenticate() {
 	if ( ! fb_appid )
 	    dialog.showMessage( 'In development, Facebook login will not work.' );
