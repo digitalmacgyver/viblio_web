@@ -176,7 +176,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		finfo( 'Starring' );
 	    }
 	    else {
-		finfo( 'No faces detected' );
+		finfo( '' );
 	    }
 	});
     }
