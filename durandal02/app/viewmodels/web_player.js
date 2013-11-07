@@ -1,4 +1,4 @@
-define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/viblio','lib/customDialogs','viewmodels/mediafile', 'viewmodels/face',], function( app,system,router,config,viblio,customDialogs,Mediafile,Face) {
+define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/viblio','lib/customDialogs','viewmodels/mediafile','viewmodels/mediavstrip','viewmodels/face',], function( app,system,router,config,viblio,customDialogs,Mediafile,Strip,Face) {
 
     function s3bucket( s3url ) {
         var host = $.url( s3url ).attr( 'host' );
@@ -7,6 +7,15 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 
     function resizePlayer() {
         $(".player, .player video").height( ($(".player").width()*9) / 16 );
+    }
+    
+    function relatedVidHeight() {
+        if( showRelated()) {
+            var newHeight = $('#playerCommentsNavTable').height() + 18;
+        
+            $('#related-videos-block').find('.vstrip .media-container').css( 'height', newHeight );
+            vstrip.updateScroller();
+        }
     }
 
     // Used by flowplayer, to decide if we're on a platform that
@@ -21,9 +30,42 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
             !!(videoel.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"').replace(/no/, ''));
         return simulate;
     }
+    
+    var user = viblio.user;
+    
+    // Make the page query params observable (for the
+    // heck of it, probably not required).
+    var query = ko.observable({});
+
+    // Index of the next clip to play on nextRelated/previousRelated
+    var next_available_clip = ko.observable( 0 );
 
     // Currently playing mediafile.  This is the JSON struct, not a view model
     var playing = ko.observable();
+    
+    var vstrip;
+    
+    // This observable will contain the vstrip when it is
+    // created in attached.  Its a view model and is
+    // composed into the main view.
+    //
+    var related = ko.observable();
+    
+    var showPlayerOverlay = ko.observable(false);
+    
+    function hidePlayerOverlay() {
+        showPlayerOverlay(false);
+    }
+    
+    var playingMid = ko.observable();
+    
+    function playAgain() {
+        flowplayer().play({
+            url: 'mp4:' + playingMid().media().views.main.cf_url,
+            ipadUrl: encodeURIComponent(playingMid().media().views.main.url)
+        });
+        //playing( new Mediafile( playingMid() ) );
+    }
     
     var eyes = ko.observable();
     var title = ko.observable();
@@ -34,11 +76,38 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
     var errorMessage = ko.observable();
     var errorDetail = ko.observable();
     
-    var shareType = ko.observable('public');
+    var shareType = ko.observable();
+    var loggedIn = ko.computed(function(){
+        if( user() && user().uuid != null ) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+
+    var hasRelated  = ko.observable(true);
+    var showRelated = ko.computed(function(){
+        if( loggedIn() && ( shareType() == 'private' || shareType() == 'owned_by_user' ) && hasRelated() ) {
+            return true;
+        } else {
+            return false;
+        }
+    });
     
     // Comments associated with currently playing video
     var comments = ko.observableArray([]);
-    
+    var numComments = 0;
+    comments.subscribe(function () {
+        if( comments().length != 0 ) {
+            if(comments().length == numComments) {
+                relatedVidHeight();
+            }
+        } else {
+            setTimeout(function() {
+                relatedVidHeight();
+            }, 300);
+        }    
+    });
     // The user comment
     var usercomment = ko.observable('');
     
@@ -82,7 +151,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
     // Get the comments
     function setupComments( m ) {
 	comments.removeAll();
-	viblio.api( '/services/mediafile/comments', { mid: m.uuid } ).then( function( data ) {
+	viblio.api( '/services/na/media_comments', { mid: m.uuid } ).then( function( data ) {
 	    if ( data.comments && data.comments.length ) {
                 numComments = data.comments.length;
 		var now = new Date();
@@ -100,7 +169,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
     var finfo = ko.observable();
     var faces = ko.observableArray([]);
     function setupFaces( m ) {
-	viblio.api( '/services/faces/faces_in_mediafile', { mid: m.uuid } ).then( function( data ) {
+	viblio.api( '/services/na/faces_in_mediafile', { mid: m.uuid } ).then( function( data ) {
 	    faces.removeAll();
 	    if ( data.faces && data.faces.length ) {
 		var total = 0, ident = 0,
@@ -123,14 +192,87 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 			F.id = face.contact.contact_id;
 			F.uuid = face.contact.uuid;
 		    }
-		    faces.push( new Face( F, { allow_changes: false, show_name: false, selectable: false } ) );
+                    if (shareType() == 'public') {
+                        faces.push( new Face( F, { allow_changes: false, show_name: false, selectable: false } ) );
+                    } else {
+                        faces.push( new Face( F, { allow_changes: false, show_name: true, selectable: false } ) );
+                    }
 		}
 		finfo( 'Starring' );
 	    }
 	    else {
-		finfo( 'No faces detected' );
+		finfo( '' );
 	    }
 	});
+    }
+    
+    // Play a new video.  Used after the main player is created in
+    // attached.  This reuses the player to play a different clip.
+    //
+    function playVid( m ) {
+        playing( m );
+        playingMid( m );
+	title( playing().title() || 'Click to add a title.' );
+	description( playing().description() || 'Click to add a description.' );
+        setupComments( m.media() );
+	setupFaces( m.media() );
+	near( m.media() );
+	flowplayer().play({
+	    url: 'mp4:' + m.media().views.main.cf_url,
+	    ipadUrl: encodeURIComponent(m.media().views.main.url)
+        });
+	viblio.mpEvent( 'related_video' );
+	// push it onto history
+	//router.navigate( 'player?mid=' + m.media().uuid, false);
+    }
+    
+    // Store the disable_prev/next as observables so
+    // we can monkey with the buttons in the GUI
+    var disable_prev = ko.observable( true );
+    var disable_next = ko.observable( false );
+
+    // Play next related video
+    function nextRelated() {
+	// We need to ask the vstrip if the next available clip is 
+	// actually available.  
+	if ( related().isClipAvailable( next_available_clip() ) ) {
+	    disable_prev( false );
+	    related().scrollTo( related().mediafiles()[ next_available_clip() ] );
+	    playVid( related().mediafiles()[ next_available_clip() ] );
+	    next_available_clip( next_available_clip() + 1 );
+	    if ( ! related().isClipAvailable( next_available_clip() ) )
+		 disable_next( true );
+	}
+	else {
+	    disable_next( true );
+	}
+    }
+
+    // Play previous related video
+    function previousRelated() {
+	var p = next_available_clip() - 2;
+	if ( p < 0 ) {
+	    disable_prev( true );
+	}
+	else {
+	    if ( p == 0 ) {
+		// We've transitioned to 0.  Play it but disable prev
+		disable_prev( true );
+	    }
+	    next_available_clip( p );
+	    related().scrollTo( related().mediafiles()[ next_available_clip() ] );
+	    playVid( related().mediafiles()[ next_available_clip() ] );
+	    next_available_clip( p + 1 );
+	    disable_next( false );
+	}
+    }
+
+    // User can directly select a related video and
+    // play it.
+    function playRelated( m ) {
+	var index = related().mediafiles.indexOf( m );
+	next_available_clip( index + 1 );
+	playVid( m );
     }
     
     // Extracts an address from the structure returned from
@@ -169,7 +311,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
         if ( shareType() && shareType() != 'public') {
             // map.disableSetLocation(); 
             if ( m.lat ) {
-                viblio.api( '/services/geo/location', { lat: m.lat, lng: m.lng } ).then( function( res ) {
+                viblio.api( '/services/na/geo_loc', { lat: m.lat, lng: m.lng } ).then( function( res ) {
                     if ( res && res.length ) {
                         nolocation( false );
                         isNear( "Near " + getCountry( res ) );
@@ -212,7 +354,23 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
     });
     
     return {
-	user: viblio.user,
+        relatedVidHeight: relatedVidHeight,
+	user: user,
+        query: query,
+        next_available_clip: next_available_clip,
+        vstrip: vstrip,
+        showPlayerOverlay: showPlayerOverlay,
+        hidePlayerOverlay: hidePlayerOverlay,
+        playingMid: playingMid,
+        playAgain: playAgain,
+        related: related,
+        loggedIn: loggedIn,
+        showRelated: showRelated,
+        disable_prev: disable_prev,
+        disable_next: disable_next,
+        nextRelated: nextRelated,
+        previousRelated: previousRelated,
+        playRelated: playRelated,
 	playing: playing,
         eyes: eyes,
         title: title,
@@ -232,20 +390,58 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
         finfo: finfo,
         faces: faces,
         setupFaces: setupFaces,
+        playVid: playVid,
         getCountry: getCountry,
         isNullOrWhitespace: isNullOrWhitespace,
         near: near,
 
 	showShareVidModal: function() {
-	    // Jesse, you reference this function in a data-bind, but
-	    // didn't define it...
-	},
+            customDialogs.showShareVidModal( playing() );
+        },
         
 	activate: function( args ) {
 	    this.mid = args.mid;
 	    $(window).bind('resize', function() {
                 resizePlayer();
             });
+            return system.defer( function( dfd ) {
+		// preview==1 means do not count this endpoint call as a view_count, because
+		// we are going to make this call "for real" during compositionComplete.
+		viblio.api( '/services/na/media_shared', { mid: args.mid, preview: 1 } ).then( function( json ) {
+		    shareType( json.share_type );
+		    if ( json.auth_required ) {
+			dfd.resolve();
+			return;
+		    }
+		    if ( showRelated() ) {
+			var mf = json.media;
+
+			// Get related vids
+			vstrip = new Strip( 'title', 'subtile' );
+
+			// This async routine is the long pole.  Let it do the promise() resolution to
+			// pause the system until we have all the data.
+			//
+			vstrip.search().then( function() {
+			    // Get all of the geo locations of the related media
+			    if ( vstrip.mediafiles().length == 0 ) {
+				hasRelated( false );
+			    }
+			    dfd.resolve();
+			});
+
+			vstrip.on( 'mediavstrip:play', function( m ) {
+			    // When the user selects a related video to play, play it
+			    playRelated( m );
+			});
+			// make it observable for the composure
+			related( vstrip );
+		    }
+		    else {
+			dfd.resolve();
+		    }
+		});
+	    }).promise();
 	},
 	detached: function () {
             $(window).unbind( 'resizePlayer', resizePlayer );
@@ -253,6 +449,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
             if(flowplayer()){
                 flowplayer().unload();
             }
+            if ( map ) map.destroy();
 	},
 	compositionComplete: function(view, parent) {
 	    var self = this;
@@ -260,7 +457,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 		return;
 	    }
 		viblio.api( '/services/na/media_shared', { mid: self.mid }, errorHandler ).then( function(json) {
-                    //shareType( json.share_type );
+                    shareType( json.share_type );
 		    if ( json.auth_required ) {
 			// This is a private share and you are not logged in.
 			viblio.setLastAttempt( 'web_player?mid=' + self.mid );
@@ -269,6 +466,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 		    else {
 			var mf = json.media;
 			playing( new Mediafile( mf ) );
+                        playingMid( playing() );
 			if ( playing() ) {
 			    var mf = playing().media();
                             eyes( playing().media().eyes );
@@ -277,47 +475,35 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
                             setupComments( mf );
                             setupFaces( mf );
 			    self.showMessage( false );
+
 			    $(".player").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
 				ratio: 9/16,
 				clip: {
 				    url: 'mp4:' + mf.views.main.cf_url,
 				    ipadUrl: encodeURIComponent(mf.views.main.url),
-				    // URL for sharing on FB, etc.
-				    pageUrl: config.site_server + '/s/p/' + mf.views.main.uuid,
 				    scaling: 'fit',
-				    //ratio: 9/16,
-				    //splash: true,
 				    provider: 'rtmp',
 
-				    // Google Analytics
 				    onStart: function( clip ) {
-					//console.log( 'Tracking start ...', clip.url );
-					//viblio.gaEvent( 'WebPlay', 'Play', clip.url );
 					viblio.mpEvent( 'web_play', { action: 'play' } );
+                                        hidePlayerOverlay();
 				    },
 				    onPause: function( clip ) {
-					//console.log( 'Tracking pause ...', clip.url, parseInt(this.getTime()) );
-					//viblio.gaEvent( 'WebPlay', 'Pause', clip.url, parseInt(this.getTime()) );
 					viblio.mpEvent( 'web_play', { action: 'pause' } );
+                                        showPlayerOverlay(true);
 				    },
 				    onResume: function( clip ) {
-					//console.log( 'Tracking resume ...', clip.url );
-					//viblio.gaEvent( 'WebPlay', 'Resume', clip.url );
 					viblio.mpEvent( 'web_play', { action: 'resume' } );
 				    },
 				    onStop: function( clip ) {		    
-					//console.log( 'Tracking stop ...', clip.url, parseInt(this.getTime()) );
-					//viblio.gaEvent( 'WebPlay', 'Stop', clip.url, parseInt(this.getTime()) );
 					viblio.mpEvent( 'web_play', { action: 'stop' } );
 				    },
 				    onFinish: function( clip ) {
-					//console.log( 'Tracking finish ...', clip.url );
-					//viblio.gaEvent( 'WebPlay', 'Finish', clip.url );
 					viblio.mpEvent( 'web_play', { action: 'finish' } );
+                                        showPlayerOverlay(true);
 				    }
 				},
 				plugins: {
-				    // Wowza stuff
 				    rtmp: {
 					url: 'lib/flowplayer/flowplayer.rtmp-3.2.12.swf',
 					netConnectionUrl: 'rtmp://' + config.cf_domain() + '/cfx/st'
@@ -328,6 +514,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 				    backgroundGradient: [0.1, 0]
 				}
 			    }).flowplayer().ipad({simulateiDevice: should_simulate()});
+
 			    resizePlayer();
                             
                             // create the map
@@ -337,6 +524,11 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 
                             // center/zoom to media file location
                             near( mf );
+                            
+                            // resize height of related video seciton based on page height
+                            relatedVidHeight();
+			    if ( vstrip )
+				vstrip.updateScroller();
 			}
 		    }
 		});

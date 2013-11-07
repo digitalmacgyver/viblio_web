@@ -15,13 +15,13 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	self.cid = cid;
         
         self.name = ko.observable(name);
-        self.firstName = ko.computed(function() {
+        /*self.firstName = ko.computed(function() {
             if ( name ) {
                 return name.slice( 0, name.indexOf(' ') );
             } else {
                 return null;
             }
-        });
+        });*/
         self.hits = ko.observable();
         self.hasCID = ko.computed(function() {
             if (self.cid) {

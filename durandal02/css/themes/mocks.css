@@ -5,6 +5,13 @@ body {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
+@media (min-width: 680px) {
+    .alertify {
+        width: 600px;
+        margin-left: -300px;
+    }
+}
+
 @media (max-width: 979px) {
     body {
         padding-top: 0px;
@@ -50,7 +57,7 @@ input[type="color"],
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     border-color: rgba(0,0,0,.3);
-     box-sizing: border-box;
+    box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
     height: 40px;
     font-size: 17px;
@@ -349,16 +356,18 @@ input:-moz-placeholder {
     cursor: pointer;
 }
 
-.turquoiseFont {
-    color: rgba(28,184,209,1);
-}
-
+.turquoiseFont,
 .turquoiseFont:hover {
     color: rgba(28,184,209,1);
 }
 
 .lightGreyFont {
     color: rgba(0,0,0,.5);
+}
+
+.tomatoFont,
+.tomatoFont:hover {
+    color: rgba(239,85,65,1);
 }
 
 /********************  Page Header Section  *****************************/
@@ -848,7 +857,7 @@ input:-moz-placeholder {
 
 .shareIconList li label {
     margin-bottom: -32px;
-    font-size: 16px;
+    font-size: 14px;
     color: rgba(0,0,0,.5);
     visibility: hidden;
 }
@@ -1124,15 +1133,14 @@ input:-moz-placeholder {
 .face .name {
     width: 100%;
     height: 36px;
-    background-color: white;
     padding: 8px 5px;
     position: relative;
     text-align: center;
     box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
-    font-weight: 600;
-    font-size: 16px;
-    color: rgba(0,0,0,.5);
+    font-weight: 200;
+    font-size: 14px;
+    color: white;
 }
 
 .face .information .aux {
@@ -1287,6 +1295,62 @@ div.map div.title {
     width: 100%;
 }
 
+#webPlayer-Wrap {
+    position: relative;
+}
+
+#videoOverlay {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(50,53,68,.8);
+    position: absolute;
+    color: white;
+    text-align: center;
+    display: block;
+}
+
+#cloud {
+    max-width: 100%;
+    height: auto;
+    width: auto\9; /* ie8 */
+}
+
+#cloudImage {
+    background-image: url("/css/images/cloud.png");
+    background-repeat: no-repeat;
+    padding: 5%;
+    background-size: contain;
+    max-width: 800px;
+    margin: 0 auto;
+    background-position: center;
+}
+
+#videoOverlay .bottomBorder-Thin {
+    border-bottom: 1px solid lightgrey;
+}
+
+#videoOverlay .paddedDiv {
+    padding: 2% 0 4%;
+    height: 64%;
+}
+
+#videoOverlay .landingHeaderTitle {
+    border: none;
+    font-size: 32px;
+    padding: 0 15%;
+    margin-bottom: 5%; 
+}
+
+#videoOverlay .button-Wrap {
+    margin-top: 5%;
+}
+
+@media (max-width: 650px) {
+    #videoOverlay .landingHeaderTitle {
+        font-size: 30px;
+    }
+}
+
 /*************** Player Comments ****************/
 
 #comments p {
@@ -1313,6 +1377,13 @@ div.map div.title {
 
 .comment-editor textarea.edit {
     margin: 0;
+}
+
+.comment-editor textarea.edit.editDescription {
+    height: 50px;
+    padding: 0 12px;
+    width: 100%;
+    margin: 8px 0 0;
 }
 
 .all-comments > p {
@@ -1360,7 +1431,7 @@ div.map div.title {
 /******************** Player Faces **********************/
 
 #nplayer-page #main-table #info-table #faces-column #faces {
-    padding: 30px;
+    padding: 30px 30px 0;
     width: 306px;
     padding-top: 25px;
     height: auto;
@@ -1380,21 +1451,20 @@ div.map div.title {
     margin-bottom: 0;
 }
 
-#faces li:nth-last-of-type(2) {
+#faces li:last-of-type() {
     margin-bottom: 0;
 }
 
-#faces li:nth-of-type(2n) {
+#faces li:not(first-of-type) {
     margin-left: 25px;
 }
 
-
 #faces-column .face {
-    width: 140px;
+    width: 64px;
 }
 
 #faces-column .face img {
-    height: 140px;
+    height: 64px;
 }
 
 #faces-column .face .star {
@@ -1544,8 +1614,13 @@ div.map div.title {
 
 .edit { 
     display: none; 
-} 
+}
 
+input.edit {
+    display: none;
+}
+
+.editing .edit:focus,
 .editing .edit { 
     display: block;
     margin: 12px 6px;
@@ -1575,6 +1650,7 @@ div.map div.title {
 
 #title-desc textarea {
     height: 100%;
+    min-height: 100%;
     margin: 12px 5px;
     font-size: 14px;
     line-height: 20px;
@@ -1592,11 +1668,15 @@ div.map div.title {
     margin: 0 0 0 6px;
     width: 75%;
     max-width: 75%;
+    height: 20px;
+    font-size: 16px;
 }
 
 /* Player page related video titles */
 .vstrip .information .editing .edit {
     margin-top: 0;
+    margin-left: 10px;
+    font-size: 14px;
 }
 
 .editing .view { 
@@ -1606,16 +1686,25 @@ div.map div.title {
 /********************  Share Video Modal Section  *************************/
 
 #shareVidModal {
-    width: 600px;
+    width: 100%;
     position: relative;
 }
 
-#shareVidModal .paddedDiv {
-    padding: 40px 50px 48px;
+#sharingDiv {
+    padding: 40px 50px 20px;
 }
 
 #shareVidModal .bigTitle {
     margin-bottom: 30px;
+}
+
+#sendVidEmail .bigTitle {
+    display: inline-block
+}
+
+#sendVidEmail .cimport {
+    display: inline-block;
+    float: right;   
 }
 
 #shareVidModal form {
@@ -1624,12 +1713,12 @@ div.map div.title {
 
 #sendVidEmail .uitoken-input,
 #sendVidEmail textarea {
-    width: 486px;
+    width: 100%;
     margin-bottom: 18px;
 }
 
 #sendVidEmail .uitoken-input {
-    width: 498px;
+    width: 100%;
 }
 
 .uitoken-input input[type="text"]:focus {
@@ -1655,21 +1744,31 @@ li.token-input-token-facebook {
 #shareVidLink .bigTitle {
     display: inline-block;
     margin-bottom: 0;
+    margin-right: 20px;
 }
 
-#shareVidLink input {
+#shareLink-Wrap {
     position: relative;
-    width: 336px;
+    display: inline-block;
+    border: 1px solid rgba(0,0,0,.3);
+    width: 290px;
+}
+
+#shareLink {
+    font-size: 15px;
+    color: rgba(0,0,0,.5);
+    width: 218px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: none;
     margin-bottom: 0;
-    margin-left: 20px;
-    top: -5px;
-    padding-right: 5px;
 }
 
 #copyShareLink {
     position: absolute;
-    right: 54px;
-    bottom: 39px;
+    right: 5px;
+    bottom: 4px;
     border: none;
     color: white;
     background-color: rgba(152,154,160,1);
@@ -1702,7 +1801,7 @@ li.token-input-token-facebook {
     color: rgba(28,184,209,1);
     font-size: 16px;
     margin-top: 5px;
-    display: block;
+    display: inline-block;
 }
 
 .email-password input {
@@ -1777,13 +1876,13 @@ li.token-input-token-facebook {
 
 #loggedOutTellFriendsModal input,
 #loggedOutTellFriendsModal textarea {
-    width: 97%;
+    width: 100%;
     margin-bottom: 20px;
 }
 
 #loggedOutTellFriendsModal textarea {
     height: 60px;
-    max-width: 97%;
+    max-width: 100%;
 }
 
 /** Make Horizontal Stips a bit more generic **/
@@ -1821,6 +1920,8 @@ li.token-input-token-facebook {
 p.uitoken-input ul.token-input-list-facebook {
     border: 1px solid rgba(0,0,0,.3);
     width: inherit;
+    box-sizing: border-box;
+    -moz-box-sizing:border-box; /* Firefox */
 }
 
 #loggedOutTellFriendsModal p.uitoken-input input[type="text"] {

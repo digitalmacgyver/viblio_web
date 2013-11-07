@@ -20,7 +20,7 @@
                                         <div data-bind="liveEditor: title">
                                             <h3 class="view vidTitle" data-bind="click: title.edit, text: playing().title() || 'Click to edit title'"></h3>
                                             <div class="editTitle-Wrap">
-                                                <input class="edit" data-bind="value: title, 
+                                                <input type="text" class="edit" data-bind="value: title, 
                                                   hasFocus: title.editing, 
                                                   event: { blur: function() { title.stopEditing(); title.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }" />
                                             </div>  
@@ -49,13 +49,13 @@
                                             <p class="view vidDescription" data-bind="click: usercomment.edit, text:'Comment on this video...'"></p>
                                             <textarea class="edit editDescription" 
                                                       data-bind="value:usercomment,
-                                                               hasFocus: usercomment.editting,
+                                                               hasFocus: usercomment.editing,
                                                                event: { blur: function() { usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment') } }"></textarea>
                                         </div>
                                         <div class="all-comments">
-                                            <p class="lightBlueFont" data-bind="visible: comments().length"><span data-bind="text: comments().length"></span>&nbsp;Comments</p>
+                                            <p class="lightBlueFont" data-bind="visible: comments().length"><span data-bind="text: comments().length ==1 ? '1 Comment' : comments().length + ' Comments'"></span></p>
                                             <!-- ko foreach: comments -->
-                                            <div class="comment" data-bind="visible: comment != '' ">
+                                            <div class="comment" data-bind="if: comment.indexOf(' ') != -1 && comment != '' ">
                                                 <p class="comment-text bottomBorder-Thin" data-bind="html: comment"></p>
                                                 <div class="comment-footer lightBlueFont">
                                                     <p class="when pull-right" data-bind="text: when"></p>
@@ -68,7 +68,7 @@
                                 </td>
                                 
                                 <td id="faces-column" class="lightBlueBG">
-                                    <div class="orangeBG bottomBorder-Thin" id="faces">
+                                    <div class="darkBlueBG bottomBorder-Thin" id="faces">
                                         <span class="textShadowed" data-bind="text: finfo"></span>
                                         <ul class="clearfix">
                                             <!-- ko foreach: faces -->

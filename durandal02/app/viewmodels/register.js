@@ -1,10 +1,31 @@
-define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system'], function( router, viblio, dialog, system ) {
+define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'lib/config',], function( router, viblio, dialog, system, config ) {
 
     var email = ko.observable();
-    var password = ko.observable();
+    var password = ko.observable("");
+    var validPassword = ko.computed(function(){
+        if ( password().length >= 6 ) {
+            return true;
+        } else {
+            return false;
+        }
+    })
     var displayname = ko.observable();
     var validated = ko.computed( function() {
 	return email() && password();
+    });
+    var media = ko.observable();
+    var agreeTOS = ko.observable(false);
+    var avatar = ko.observable(null);
+
+    fb_appid   = config.facebook_appid();
+    fb_channel = config.facebook_channel();
+
+    FB.init({
+	appId: fb_appid,
+	channelUrl: fb_channel,
+	status: true,
+	cookie: true,
+	xfbml: true
     });
 
     var url;
@@ -14,6 +35,38 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system'], fu
     var view;
 
     var correct = ko.observable( true );
+
+    function loginSuccessful( user ) {
+	// mixpanel event
+	viblio.mpEvent( 'login' );
+
+	// Save the logged in user info to the viblio object,
+	// which serves as a global exchange
+	//
+	viblio.setUser( user );
+	
+	// either go to the personal channel page, or
+	// do a pass thru to the page the user was
+	// trying to get to.
+	router.navigate( viblio.getLastAttempt() || 'home' );
+    };
+
+    function facebookAuthenticate() {
+	if ( ! fb_appid )
+	    dialog.showMessage( 'In development, Facebook login will not work.' );
+
+	FB.login(function(response) {
+            if (response.authResponse) {
+		viblio.api( '/services/na/authenticate',
+			    { realm: 'facebook',
+                              access_token: response.authResponse.accessToken },
+			    handleLoginFailure
+			  ).then( function( json ) {
+			      loginSuccessful( json.user );
+			  });
+	    }
+	},{scope: config.facebook_ask_features()});
+    };
 
     function handleLoginFailure( json ) {
 	var code = json.code;
@@ -59,9 +112,14 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system'], fu
 	email: email,
 	correct: correct,
 	password: password,
+        validPassword: validPassword,
 	displayname: displayname,
 	validated: validated,
+        media: media,
+        agreeTOS: agreeTOS,
 	labelShowHide: labelShowHide,
+        facebookAuthenticate: facebookAuthenticate,
+	avatar: avatar,
 
 	not_correct: function() {
 	    email(null);
@@ -109,6 +167,7 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system'], fu
 	},
 
 	activate: function( args ) {
+	    var testing = 0;
 	    if ( args ) {
 		if ( args.email ) {
 		    email( args.email );
@@ -116,18 +175,24 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system'], fu
 		if ( args.url ) {
 		    url = args.url;
 		}
+		if ( args.test ) {
+		    testing = 1;
+		}
 	    }
 	    return viblio.api( 
 		'/services/na/find_share_info_for_pending',
-		{ email: email() } ).then( function( json ) {
+		{ email: email(), test: testing } ).then( function( json ) {
 		    if ( json.owner ) {
 			displayname( json.owner.displayname );
+			avatar( '/services/na/avatar?uid=' + json.owner.uuid + '&y=37' );
 		    }
 		    else {
 			displayname( 'Someone' );
+			avatar( '/services/na/avatar?uid=' + '' + '&y=37' );
 		    }
 		    // We also have the mediafile (json.media ) and so
 		    // could display the poster, et. al. here.
+                    media(json.media);
 		});
 	},
 

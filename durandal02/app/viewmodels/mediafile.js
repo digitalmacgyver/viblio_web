@@ -20,7 +20,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio'],function(app, Events, v
     var Video = function( data ) {
 	//data.title = data.filename;
 	//data.description = 'no description',
-	data.eyes = randomFromInterval( 3, 199 );
+	data.eyes = data.view_count || 0;
         
 	this.media    = ko.observable( data );
 	this.selected = ko.observable( false );
