@@ -45,7 +45,7 @@
                         <label class="checkbox">
                             <input name="agreeTOS" data-bind="checked: agreeTOS" type="checkbox"> I agree to the Viblio <span class="turquoiseFont" data-bind="click: displayTerms">Terms of Service</span>
                         </label>
-                        <button class="btn btn-primary" data-bind="enable: agreeTOS && validPassword">
+                        <button class="btn btn-primary" data-bind="click:done,enable: agreeTOS() && validPassword()">
                             Watch Video
                         </button>
                         <div class="clearfix"></div>

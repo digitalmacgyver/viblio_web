@@ -60,7 +60,6 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
     var playingMid = ko.observable();
     
     function playAgain() {
-        console.log('playAgain clicked!');
         flowplayer().play({
             url: 'mp4:' + playingMid().media().views.main.cf_url,
             ipadUrl: encodeURIComponent(playingMid().media().views.main.url)
@@ -79,14 +78,16 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
     
     var shareType = ko.observable();
     var loggedIn = ko.computed(function(){
-        if( user ) {
+        if( user() && user().uuid != null ) {
             return true;
         } else {
             return false;
         }
     });
+
+    var hasRelated  = ko.observable(true);
     var showRelated = ko.computed(function(){
-        if( loggedIn() && ( shareType() == 'private' || shareType() == 'owned_by_user' ) ) {
+        if( loggedIn() && ( shareType() == 'private' || shareType() == 'owned_by_user' ) && hasRelated() ) {
             return true;
         } else {
             return false;
@@ -191,10 +192,10 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 			F.id = face.contact.contact_id;
 			F.uuid = face.contact.uuid;
 		    }
-                    if (shareType() == 'private') {
-                        faces.push( new Face( F, { allow_changes: false, show_name: true, selectable: false } ) );
-                    } else {
+                    if (shareType() == 'public') {
                         faces.push( new Face( F, { allow_changes: false, show_name: false, selectable: false } ) );
+                    } else {
+                        faces.push( new Face( F, { allow_changes: false, show_name: true, selectable: false } ) );
                     }
 		}
 		finfo( 'Starring' );
@@ -310,7 +311,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
         if ( shareType() && shareType() != 'public') {
             // map.disableSetLocation(); 
             if ( m.lat ) {
-                viblio.api( '/services/geo/location', { lat: m.lat, lng: m.lng } ).then( function( res ) {
+                viblio.api( '/services/na/geo_loc', { lat: m.lat, lng: m.lng } ).then( function( res ) {
                     if ( res && res.length ) {
                         nolocation( false );
                         isNear( "Near " + getCountry( res ) );
@@ -403,11 +404,11 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 	    $(window).bind('resize', function() {
                 resizePlayer();
             });
-            
             return system.defer( function( dfd ) {
-		viblio.api( '/services/na/media_shared', { mid: args.mid } ).then( function( json ) {
+		// preview==1 means do not count this endpoint call as a view_count, because
+		// we are going to make this call "for real" during compositionComplete.
+		viblio.api( '/services/na/media_shared', { mid: args.mid, preview: 1 } ).then( function( json ) {
 		    shareType( json.share_type );
-		    console.log( shareType() );
 		    if ( json.auth_required ) {
 			dfd.resolve();
 			return;
@@ -423,8 +424,12 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 			//
 			vstrip.search().then( function() {
 			    // Get all of the geo locations of the related media
+			    if ( vstrip.mediafiles().length == 0 ) {
+				hasRelated( false );
+			    }
 			    dfd.resolve();
 			});
+
 			vstrip.on( 'mediavstrip:play', function( m ) {
 			    // When the user selects a related video to play, play it
 			    playRelated( m );
@@ -470,50 +475,35 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
                             setupComments( mf );
                             setupFaces( mf );
 			    self.showMessage( false );
+
 			    $(".player").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
 				ratio: 9/16,
 				clip: {
 				    url: 'mp4:' + mf.views.main.cf_url,
 				    ipadUrl: encodeURIComponent(mf.views.main.url),
-				    // URL for sharing on FB, etc.
-				    pageUrl: config.site_server + '/s/p/' + mf.views.main.uuid,
 				    scaling: 'fit',
-				    //ratio: 9/16,
-				    //splash: true,
 				    provider: 'rtmp',
 
-				    // Google Analytics
 				    onStart: function( clip ) {
-					//console.log( 'Tracking start ...', clip.url );
-					//viblio.gaEvent( 'WebPlay', 'Play', clip.url );
 					viblio.mpEvent( 'web_play', { action: 'play' } );
                                         hidePlayerOverlay();
 				    },
 				    onPause: function( clip ) {
-					//console.log( 'Tracking pause ...', clip.url, parseInt(this.getTime()) );
-					//viblio.gaEvent( 'WebPlay', 'Pause', clip.url, parseInt(this.getTime()) );
 					viblio.mpEvent( 'web_play', { action: 'pause' } );
                                         showPlayerOverlay(true);
 				    },
 				    onResume: function( clip ) {
-					//console.log( 'Tracking resume ...', clip.url );
-					//viblio.gaEvent( 'WebPlay', 'Resume', clip.url );
 					viblio.mpEvent( 'web_play', { action: 'resume' } );
 				    },
 				    onStop: function( clip ) {		    
-					//console.log( 'Tracking stop ...', clip.url, parseInt(this.getTime()) );
-					//viblio.gaEvent( 'WebPlay', 'Stop', clip.url, parseInt(this.getTime()) );
 					viblio.mpEvent( 'web_play', { action: 'stop' } );
 				    },
 				    onFinish: function( clip ) {
-					//console.log( 'Tracking finish ...', clip.url );
-					//viblio.gaEvent( 'WebPlay', 'Finish', clip.url );
 					viblio.mpEvent( 'web_play', { action: 'finish' } );
                                         showPlayerOverlay(true);
 				    }
 				},
 				plugins: {
-				    // Wowza stuff
 				    rtmp: {
 					url: 'lib/flowplayer/flowplayer.rtmp-3.2.12.swf',
 					netConnectionUrl: 'rtmp://' + config.cf_domain() + '/cfx/st'
@@ -524,6 +514,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 				    backgroundGradient: [0.1, 0]
 				}
 			    }).flowplayer().ipad({simulateiDevice: should_simulate()});
+
 			    resizePlayer();
                             
                             // create the map
