@@ -169,10 +169,29 @@ mixpanel.init("404b9a0b96b8147b5050c165dfc809b3");mixpanel.set_config({track_pag
 
     <!-- stuff to copy text to clipboard -->
     <script src="lib/zeroclipboard/ZeroClipboard.js"></script>
+
+    <!-- client side templates -->
+    <script src="lib/ICanHaz.min.js"></script>
     
+    <!-- Message Queue -->
     <script src="/mq/faye.js"></script>
 
     <script src="lib/require/require.js" data-main="app/main"></script>
+
+    <!-- icanhaz templates, for alertify notifcations, etc -->
+    <script id="new_video" type="text/html">
+      <div class="notity-new-video">
+	<img src="{{ poster }}" width="80" height="45" style="vertical-align: text-top; margin-right: 3px;" />
+	New video available!
+      </div>
+    </script>
+
+    <script id="new_comment" type="text/html">
+      <div class="notify-new-comment">
+	<img src="{{ poster }}" width="80" height="45" style="vertical-align: text-top; margin-right: 3px;" />
+	{{ name }} has left a comment!
+      </div>
+    </script>
 
   </body>
 </html>

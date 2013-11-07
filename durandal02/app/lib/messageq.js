@@ -1,4 +1,4 @@
-define(['lib/config','durandal/system','durandal/app'], function( config, system, app) {
+define(['lib/config','durandal/system','durandal/app', 'lib/notify'], function( config, system, app, notify) {
     var mq = null;
     var subscribed = false;
     var last_uuid = null;
@@ -25,22 +25,35 @@ define(['lib/config','durandal/system','durandal/app'], function( config, system
 				data: { uid: uuid },
 				dataType: 'jsonp',
 				success: function( data ) {
-				    var viblio = require( 'lib/viblio' );
-				    viblio.mpEvent( 'upload' );
 				    if ( callback ) {
 					callback( data );
 				    }
 				    else {
 					var messages = data.messages;
 					system.log( "=> received " + messages.length + " messages" );
+					// In the general case, there can be multiple message types,
+					// and each type may have muliple messages.  Gather this up
+					// into a hash keyed by type.
+					var db = {};
 					for( var i=0; i<messages.length; i++ ) {
-					    app.trigger( 'mediafile:ready', messages[i].media );
+					    if ( ! db[messages[i].type] ) {
+						db[messages[i].type] = new Array;
+						db[messages[i].type].push( messages[i] );
+					    }
+					    else {
+						db[messages[i].type].push( messages[i] );
+					    }
 					}
-					var img = '<img src="' + messages[0].media.views.poster.url + 
-					    '" width="80" height="45" style="vertical-align: text-top; margin-right: 3px;"/>';
-					var txt = 'New video available!';
-					var viblio = require( 'lib/viblio' );
-					viblio.notify( img + txt );
+					// Now send them to the right notify function
+					for( var type in db ) {
+					    // log the event in mixpanel/ga
+					    var viblio = require( 'lib/viblio' );
+					    viblio.mpEvent( type );
+					    if ( notify[type] ) 
+						notify[type]( db[type] );
+					    else
+						notify.notify( type, db[type] );
+					}
 				    }
 				},
 				error: function( x, t, e ) {
