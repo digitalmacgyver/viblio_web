@@ -407,7 +407,14 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
             return system.defer( function( dfd ) {
 		// preview==1 means do not count this endpoint call as a view_count, because
 		// we are going to make this call "for real" during compositionComplete.
-		viblio.api( '/services/na/media_shared', { mid: args.mid, preview: 1 } ).then( function( json ) {
+		viblio.api( '/services/na/media_shared', { mid: args.mid, preview: 1 }, 
+			    function errorHandler( data ) {
+				errorMessage( data.message );
+				errorDetail( data.detail );
+				showError( true );
+				dfd.resolve();
+			    }
+			  ).then( function( json ) {
 		    shareType( json.share_type );
 		    if ( json.auth_required ) {
 			dfd.resolve();
