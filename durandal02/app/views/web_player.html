@@ -138,5 +138,13 @@
       <h4 data-bind="text: errorMessage"></h4>
       <p data-bind="text: errorDetail"></p>
     </div>
+    <div data-bind="visible: showError">
+      <div data-bind="if: loggedIn() == true">
+	<a href="#home"   class="btn btn-primary" >Return to Viblio</a>
+      </div>
+      <div data-bind="if: loggedIn() == false">
+	<a href="/signup/" class="btn btn-primary">Login or Signup</a>
+      </div>
+    </div>
   </div>
 </div>
