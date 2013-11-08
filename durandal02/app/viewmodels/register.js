@@ -139,6 +139,7 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
 	},
 
 	displayTerms: function() {
+            router.navigate('TOS?showTOS=true');
 	},
 
 	attached: function( el ) {

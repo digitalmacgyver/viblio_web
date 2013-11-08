@@ -36,10 +36,12 @@
                         <table id="info-table">
                             <tr>
                                 <td id="comment-column" class="babyBlueBG">
-                                    <div id="title-desc">
-                                        <h3 data-bind="text: title()"></h3>
-                                        <p data-bind="text: description() || 'This video has no description.'"></p>
-                                    </div>
+                                    <!-- ko if: title() || description()  -->
+                                        <div id="title-desc">
+                                            <h3 data-bind="text: title()"></h3>
+                                            <p data-bind="text: description()"></p>
+                                        </div>
+                                    <!-- /ko -->
                                     <div id="comments">
                                         <!-- ko if: shareType() != 'public' && loggedIn() -->
                                             <div class="comments-header lightBlueFont">
@@ -66,7 +68,7 @@
                                             <p class="lightBlueFont" data-bind="visible: comments().length"><span data-bind="text: comments().length ==1 ? '1 Comment' : comments().length + ' Comments'"></span></p>
                                             <p class="lightBlueFont" data-bind="visible: !comments().length">There are no comments to display for this video.</p>
                                             <!-- ko foreach: comments -->
-                                            <div class="comment" data-bind="visible: comment != '' ">
+                                            <div class="comment" data-bind="if: comment.indexOf(' ') != -1 && comment != '' ">
                                                 <p class="comment-text bottomBorder-Thin" data-bind="html: comment"></p>
                                                 <div class="comment-footer lightBlueFont">
                                                     <p class="when pull-right" data-bind="text: when"></p>
@@ -81,7 +83,7 @@
                                 <td id="faces-column" class="lightBlueBG">
                                     <div class="darkBlueBG bottomBorder-Thin" id="faces">
                                         <span class="textShadowed" data-bind="text: finfo"></span>
-                                        <ul class="clearfix">
+                                        <ul class="clearfix playerfaces">
                                             <!-- ko foreach: faces -->
                                             <li data-bind="compose: $data"></li>
                                             <!-- /ko -->
