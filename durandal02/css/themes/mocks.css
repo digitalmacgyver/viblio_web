@@ -1080,6 +1080,8 @@ input:-moz-placeholder {
     margin-bottom: 0;
 }
 
+/***************************************/
+
 .sd-pscroll .scrollWrapper .face {
     width: 160px;
     margin-right: 20px;
@@ -1093,6 +1095,12 @@ input:-moz-placeholder {
     position: relative;
 }
 
+.face > div {
+    -moz-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2); /* Firefox */
+    -webkit-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2);
+    box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2); 
+}
+
 .face.selected img {
     border: none;
 }
@@ -1101,7 +1109,7 @@ input:-moz-placeholder {
     background: rgba(239,85,65,1);
 }
 
-.face.selected .boxShadowed {
+.face.selected > div {
     -moz-box-shadow: none; /* Firefox */
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -1133,14 +1141,15 @@ input:-moz-placeholder {
 .face .name {
     width: 100%;
     height: 36px;
+    background-color: white;
     padding: 8px 5px;
     position: relative;
     text-align: center;
     box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
-    font-weight: 200;
-    font-size: 14px;
-    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    color: rgba(0,0,0,.5);
 }
 
 .face .information .aux {
@@ -1157,6 +1166,33 @@ input:-moz-placeholder {
 
 .face .information .title {
     color: rgba(64,66,79,.75);
+}
+
+/**************************************/
+
+.playerfaces .face img {
+    -moz-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2); /* Firefox */
+    -webkit-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2);
+    box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2);
+}
+
+.playerfaces .face > div {
+    -moz-box-shadow: none; /* Firefox */
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.playerfaces .face.selected .boxShadowed {
+    -moz-box-shadow: none; /* Firefox */
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.playerfaces .face .name {
+    background-color: transparent;
+    font-weight: 200;
+    font-size: 14px;
+    color: white;
 }
 
 /*/\/\/\/\/\/\/\/\/\/\ SmoothDivScroll /\/\/\/\/\/\/\/\/\/\*/
@@ -1958,4 +1994,39 @@ p.uitoken-input ul.token-input-list-facebook {
 .feedback-inner a, .feedback-inner a:visited, .feedback-inner a:hover {
     color: white;
     text-decoration: none;
+}
+
+/********************  TOS/PP Section  *****************************/
+
+.p1 {
+    font-size: 30px;
+    margin: 0 0 20px 0;
+}
+
+.p2 {
+    font-size: 20px;
+    margin: 30px 0;
+}
+
+.TOS-PP-header a {
+    font-weight: 200;
+    color: white;
+    margin: 0 25px;
+}
+
+.TOS-PP-header a.current {
+    font-weight: 600;
+}
+
+#TOS-page .content-Wrap {
+    max-width: 960px; 
+}
+
+.TOS-PP {
+    font-size: 16px;
+    color: rgba(0,0,0,.6);
+}
+
+#TOS-page .mocksWhiteBG {
+    padding: 50px; 
 }
