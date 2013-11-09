@@ -31,7 +31,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
         // the first fetch works.
         self.pager = {
             next_page: 1,
-            entries_per_page: 5,
+            entries_per_page: 15,
             total_entries: -1 /* currently unknown */
         };
 
