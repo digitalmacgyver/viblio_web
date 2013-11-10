@@ -1,6 +1,6 @@
 ROOT ?= /deploy
 LVL  ?= staging
-APP   = web-clients
+APPNAME   = web-clients
 
 # This picks up only files under revision control
 FILES = $(shell git ls-tree -r master --name-only)
@@ -19,11 +19,11 @@ package:
 # This target is called by the sw installer on the target machine.  Does
 # what is required to install the new software and activate it.
 install:
-	mkdir $(ROOT)/$(LVL)/$(APP).next
-	tar zxf package.tar.gz -C $(ROOT)/$(LVL)/$(APP).next
-	-rm -rf $(ROOT)/$(LVL)/$(APP).pre
-	-mv $(ROOT)/$(LVL)/$(APP) $(ROOT)/$(LVL)/$(APP).pre
-	-mv $(ROOT)/$(LVL)/$(APP).next $(ROOT)/$(LVL)/$(APP)
+	mkdir $(ROOT)/$(LVL)/$(APPNAME).next
+	tar zxf package.tar.gz -C $(ROOT)/$(LVL)/$(APPNAME).next
+	-rm -rf $(ROOT)/$(LVL)/$(APPNAME).pre
+	-mv $(ROOT)/$(LVL)/$(APPNAME) $(ROOT)/$(LVL)/$(APPNAME).pre
+	-mv $(ROOT)/$(LVL)/$(APPNAME).next $(ROOT)/$(LVL)/$(APPNAME)
 
 # bump:
 # This will actually run upgrade.pl to initiate a software upgrade.  You must
@@ -32,3 +32,8 @@ install:
 # database.
 bump:
 	upgrade.pl -db $(LVL) -app webgui -bump -f package.tar.gz
+
+# versions:
+# List cureent versions
+versions:
+	upgrade.pl -db $(LVL) -app webgui -check
