@@ -1,5 +1,9 @@
 ROOT ?= /deploy
 LVL  ?= local
+APP   = web-clients
+
+# This picks up only files under revision control
+FILES = $(shell git ls-tree -r master --name-only)
 
 # package:
 # Build the tar file suitable for upgrade.pl.  Called package.tar.gz, 
@@ -9,20 +13,17 @@ LVL  ?= local
 # For the package target to work, you must be able to
 # git-clone without a password
 package:
-	mkdir -p package
-	( cd package; git clone git@github.com:viblio/web-clients.git )
-	( cd package/web-clients; tar --exclude .git -zcf ../../package.tar.gz . )
-	rm -rf package
+	tar zcf package.tar.gz $(FILES)
 
 # install:
 # This target is called by the sw installer on the target machine.  Does
 # what is required to install the new software and activate it.
 install:
-	-rm -rf $(ROOT)/$(LVL)/web-clients.PRE
-	-mv $(ROOT)/$(LVL)/web-clients $(ROOT)/$(LVL)/web-clients.PRE
-	mkdir $(ROOT)/$(LVL)/web-clients
-	tar zxf package.tar.gz -C $(ROOT)/$(LVL)/web-clients
-	/etc/init.d/nginx restart
+	mkdir $(ROOT)/$(LVL)/$(APP).next
+	tar zxf package.tar.gz -C $(ROOT)/$(LVL)/$(APP).next
+	-rm -rf $(ROOT)/$(LVL)/$(APP).pre
+	-mv $(ROOT)/$(LVL)/$(APP) $(ROOT)/$(LVL)/$(APP).pre
+	-mv $(ROOT)/$(LVL)/$(APP).next $(ROOT)/$(LVL)/$(APP)
 
 # bump:
 # This will actually run upgrade.pl to initiate a software upgrade.  You must
