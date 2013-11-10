@@ -1,5 +1,5 @@
 ROOT ?= /deploy
-LVL  ?= local
+LVL  ?= staging
 APP   = web-clients
 
 # This picks up only files under revision control
