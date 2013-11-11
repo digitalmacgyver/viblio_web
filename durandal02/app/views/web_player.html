@@ -2,7 +2,7 @@
   <div id="nplayer-page">
     <!--<div class="player"></div>-->
     
-    <table id="main-table">
+    <table id="main-table" data-bind="visible: showError() == false" >
         <tr>
             <td id="playerCommentsNavTable-Wrap">
                 <table id="playerCommentsNavTable">
@@ -139,6 +139,14 @@
     <div class="alert alert-error" data-bind="visible: showError">
       <h4 data-bind="text: errorMessage"></h4>
       <p data-bind="text: errorDetail"></p>
+    </div>
+    <div data-bind="visible: showError">
+      <div data-bind="if: loggedIn() == true">
+	<a href="#home"   class="btn btn-primary" >Return to Viblio</a>
+      </div>
+      <div data-bind="if: loggedIn() == false">
+	<a href="/signup/" class="btn btn-primary">Login or Signup</a>
+      </div>
     </div>
   </div>
 </div>

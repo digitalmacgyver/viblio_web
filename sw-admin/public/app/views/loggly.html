@@ -1,0 +1,30 @@
+<div style="width: 80%;" class="modal loggly-modal">
+
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-bind="click: dismiss">&times;</button>
+    <h3>Upgrade Status ... <i class="icon-spinner icon-spin active"></i></h3>
+  </div>
+
+  <div class="modal-body">
+    <div class="scrollable">
+      <table class="table table-striped">
+	<tr>
+	  <th>Host</th><th>Severity</th><th>Time</th><th>Message</th>
+	</tr>
+	<!-- ko foreach: events -->
+	<tr>
+	  <td valign="top" data-bind="text: host"></td>
+	  <td valign="top" data-bind="text: severity"></td>
+	  <td valign="top" data-bind="text: timestamp"></td>
+	  <td valign="top" data-bind="text: msg"></td>
+	</tr>
+	<!-- /ko -->
+      </table>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary" data-bind="click: dismiss">Dismiss</a>
+  </div>
+
+</div>

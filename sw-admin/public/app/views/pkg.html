@@ -1,0 +1,107 @@
+﻿<section>
+    <table width="100%">
+      <tr>
+	<td valign="top" width="50%">
+	  <h2 class="domain-name">Upload and Release</h2>
+	  <form class="form-horizontal" enctype="multipart/form-data">
+
+	    <div class="control-group">
+	      <label class="control-label" for="app">Application</label>
+	      <div class="controls">
+		<select name="app" data-bind="options: apps, optionsCaption: 'Select...', value: app"></select>
+	      </div>
+	    </div>
+
+	    <div class="control-group">
+	      <label class="control-label" for="newapp">(or new)</label>
+	      <div class="controls">
+		<input type="text" name="newapp" placeholder="application name" data-bind="value: newapp" />
+	      </div>
+	    </div>
+
+	    <div class="control-group">
+	      <label class="control-label" for="version">Version</label>
+	      <div class="controls">
+		<input type="text" name="version" placeholder="new version" data-bind="value: version" />
+	      </div>
+	    </div>
+
+	    <div class="control-group">
+	      <label class="control-label" for="bump">(or bump)</label>
+	      <div class="controls">
+		<input type="checkbox" name="bump" data-bind="checked: bump_ver" /> <em>auto increment current version</em>
+	      </div>
+	    </div>
+
+	    <div class="control-group">
+	      <label class="control-label" for="downgrade">(or downgrade)</label>
+	      <div class="controls">
+		<input type="checkbox" name="downgrade" data-bind="checked: downgrade" /> <em>requires version field</em>
+	      </div>
+	    </div>
+
+	    <div class="control-group">
+	      <label class="control-label">Release TO</label>
+	      <div class="controls">
+		<label class="radio">
+		  <input type="radio" id="db_staging" name="db" value="staging" data-bind="checked: db"/>Release to Staging
+		</label>
+		<label class="radio">
+		  <input type="radio" id="db_prod"    name="db" value="prod" data-bind="checked: db"/>Release to Production
+		</label>
+	      </div>
+	    </div>
+
+	    <div class="control-group">
+	      <label class="control-label" for="upload">Image File</label>
+	      <div class="controls">
+		<input type="file" name="upload" id="upload"/>
+	      </div>
+	    </div>	    
+
+	     <div class="control-group">
+	       <div class="controls">
+		 <button class="btn btn-primary" data-bind="click: release, enable: valid">Release!</button>
+	       </div>
+	     </div>
+
+	  </form>
+	</td>
+	<td valign="top" width="50%">
+	  <button class="btn" data-bind="click: status_only" style="display: block; margin-right: auto; margin-left: auto; margin-top: 200px;">Loggly Status without Releasing...</button>
+	</td>
+      </tr>
+      <tr>
+	<td valign="top" width="50%">
+	  <h2 class="domain-name">Staging</h2>
+	  <table class="table table-striped">
+	    <tr>
+	      <th>Application</th><th>Group</th><th>Version</th>
+	    </tr>
+	    <!-- ko foreach: staging -->
+	    <tr>
+	      <td valign="top" data-bind="html: app"></td>
+	      <td valign="top" data-bind="html: group"></td>
+	      <td valign="top" data-bind="html: version_string"></td>
+	    </tr>
+	    <!-- /ko -->
+	  </table>
+	</td>
+	<td valign="top" width="50%">
+	  <h2 class="domain-name">Production</h2>
+	  <table class="table table-striped">
+	    <tr>
+	      <th>Application</th><th>Group</th><th>Version</th>
+	    </tr>
+	    <!-- ko foreach: staging -->
+	    <tr>
+	      <td valign="top" data-bind="html: app"></td>
+	      <td valign="top" data-bind="html: group"></td>
+	      <td valign="top" data-bind="html: version_string"></td>
+	    </tr>
+	    <!-- /ko -->
+	  </table>
+	</td>
+      </tr>
+    </table>
+</section>

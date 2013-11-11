@@ -75,7 +75,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
     var showError = ko.observable( false );
     var errorMessage = ko.observable();
     var errorDetail = ko.observable();
-    
+
     var shareType = ko.observable();
     var loggedIn = ko.computed(function(){
         if( user() && user().uuid != null ) {
@@ -407,7 +407,14 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
             return system.defer( function( dfd ) {
 		// preview==1 means do not count this endpoint call as a view_count, because
 		// we are going to make this call "for real" during compositionComplete.
-		viblio.api( '/services/na/media_shared', { mid: args.mid, preview: 1 } ).then( function( json ) {
+		viblio.api( '/services/na/media_shared', { mid: args.mid, preview: 1 }, 
+			    function errorHandler( data ) {
+				errorMessage( data.message );
+				errorDetail( data.detail );
+				showError( true );
+				dfd.resolve();
+			    }
+			  ).then( function( json ) {
 		    shareType( json.share_type );
 		    if ( json.auth_required ) {
 			dfd.resolve();
@@ -461,7 +468,10 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 		    if ( json.auth_required ) {
 			// This is a private share and you are not logged in.
 			viblio.setLastAttempt( 'web_player?mid=' + self.mid );
-			router.navigate( 'login?orsignup=true' );
+			errorHandler({
+			    message: 'This is a privately shared video.',
+			    detail: 'You must be logged into your Viblio account to view it.  If you do not yet have an account, sign up today!'
+			});
 		    }
 		    else {
 			var mf = json.media;
