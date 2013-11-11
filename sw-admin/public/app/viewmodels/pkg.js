@@ -1,4 +1,4 @@
-﻿define(['knockout', 'jquery'], function(ko) {
+﻿define(['plugins/dialog','viewmodels/loggly','knockout', 'jquery'], function(dialog, loggly, ko) {
     var staging = ko.observableArray();
     var prod    = ko.observableArray();
 
@@ -49,11 +49,16 @@
 	activate: function() {
 	    $.getJSON( '/domains' ).then( function( domains ) {
 		console.log( domains );
-		staging( domains.staging );
-		prod( domains.prod );
-		domains.staging.forEach( function( d ) {
-		    apps.push( d.app );
-		});
+		if ( domains.error ) {
+		    dialog.showMessage( domains.staging + domains.prod, "Error" );
+		}
+		else {
+		    staging( domains.staging );
+		    prod( domains.prod );
+		    domains.staging.forEach( function( d ) {
+			apps.push( d.app );
+		    });
+		}
 	    });
 	},
 
@@ -66,6 +71,10 @@
 		var file = this.files[0];
 		image( file.size > 0 );
 	    });
+	},
+
+	status_only: function() {
+	    dialog.show( new loggly() );
 	},
 
 	release: function() {
@@ -84,38 +93,25 @@
 		    contentType: false,
 		    processData: false,
 
-		    success: function() {
+		    success: function( r ) {
 			// alert( 'success' );
 			// refetch domains and start grabbing status from loggly
-
-			$.getJSON( '/domains' ).then( function( domains ) {
-			    console.log( domains );
-			    staging( domains.staging );
-			    prod( domains.prod );
-			});
-
-			// Initiate the search
-			$.getJSON( '/start_search' ).then( function( res ) {
-			    console.log( res );
-			    var id = res.rsid.id;
-			    $.getJSON( '/search', { id: id } ).then( function( data ) {
-				console.log( 'data: ', data );
-				if ( data.total_events ) {
-				    events([]);
-				    data.events.forEach( function( ev ) {
-					console.log( 'message', ev );
-					var e = {
-					    host: ev.event.syslog.host,
-					    severity: ev.event.syslog.severity,
-					    timestamp: ev.event.syslog.timestamp,
-					    msg: ev.logmsg
-					};
-					events.push( e );
-				    });
+			if ( r.error ) {
+			    dialog.showMessage( r.message, "Release Error" );
+			}
+			else {
+			    $.getJSON( '/domains' ).then( function( domains ) {
+				console.log( domains );
+				if ( domains.error ) {
+				    dialog.showMessage( domains.staging + domains.prod, "Error" );
+				}
+				else {
+				    staging( domains.staging );
+				    prod( domains.prod );
 				}
 			    });
-			});
-
+			    dialog.show( new loggly() );
+			}
 		    },
 		    error: function( err ) {
 			alert( err );

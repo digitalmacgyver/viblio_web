@@ -68,25 +68,13 @@
 	  </form>
 	</td>
 	<td valign="top" width="50%">
-	  <h2 class="domain-name">Status ...</h2>
-	  <table class="table">
-	    <tr>
-	      <th>Host</th><th>Severity</th><th>Message</th>
-	    </tr>
-	    <!-- ko foreach: events -->
-	    <tr>
-	      <td valign="top" data-bind="text: host"></td>
-	      <td valign="top" data-bind="text: severity"></td>
-	      <td valign="top" data-bind="text: msg"></td>
-	    </tr>
-	    <!-- /ko -->
-	  </table>
+	  <button class="btn" data-bind="click: status_only" style="display: block; margin-right: auto; margin-left: auto; margin-top: 200px;">Loggly Status without Releasing...</button>
 	</td>
       </tr>
       <tr>
 	<td valign="top" width="50%">
 	  <h2 class="domain-name">Staging</h2>
-	  <table class="table">
+	  <table class="table table-striped">
 	    <tr>
 	      <th>Application</th><th>Group</th><th>Version</th>
 	    </tr>
@@ -101,7 +89,7 @@
 	</td>
 	<td valign="top" width="50%">
 	  <h2 class="domain-name">Production</h2>
-	  <table class="table">
+	  <table class="table table-striped">
 	    <tr>
 	      <th>Application</th><th>Group</th><th>Version</th>
 	    </tr>

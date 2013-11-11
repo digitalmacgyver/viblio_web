@@ -9,6 +9,7 @@
         "ejs": "0.8.x",
         "konphyg": "1.2.x",
 	"formidable": "latest",
-	"request": "latest"
+	"request": "latest",
+	"winston": "latest"
     }
 }
