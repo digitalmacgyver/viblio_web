@@ -144,7 +144,11 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      nav: false,   authenticated: false,   header: landing_header },
           
             { route: 'TOS',           moduleId: 'TOS',           title: 'Viblio Terms of Service',
-	      nav: false,   authenticated: false,   header: conditional_header }
+	      nav: false,   authenticated: false,   header: conditional_header },
+          
+            
+            { route: 'howToUpload',           moduleId: 'howToUpload',     title: 'How to Upload Videos to Viblio',
+	      nav: false,   authenticated: true,   header: page_header }
 
         ]).buildNavigationModel();
     }

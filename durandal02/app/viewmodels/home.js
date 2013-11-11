@@ -52,7 +52,7 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 	    if ( args && args.advanced )
 		advanced = true;
 
-	    return $.when( hh('Box Office Hits', 'Your most popular videos', { advanced: advanced }), 
+	    return $.when( hh('Recent Uploads', 'Your most recent videos', { advanced: advanced }), 
 			   pp('Top Actors', 'Who\'s who in your videos'),
 			   ff('n Videos with Anonymous', '' ),
 			   mm(),

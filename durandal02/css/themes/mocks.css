@@ -2030,3 +2030,42 @@ p.uitoken-input ul.token-input-list-facebook {
 #TOS-page .mocksWhiteBG {
     padding: 50px; 
 }
+
+/********************  howToUpload Section  *****************************/
+
+#howToUpload-page .content-Wrap {
+    color: rgba(0,0,0,.6);
+    margin-bottom: 200px;
+}
+
+#howToUpload-page .content-Wrap > div {
+    margin-bottom: 0;
+}
+
+#howToUpload-page h3 {
+    margin-bottom: 20px;
+}
+
+#macButton-Wrap {
+    display: inline-table;
+}
+
+#macButton-Wrap label {
+    text-align: center;
+    margin: 10px 0 0;
+}
+
+#howToUpload-page a:first-of-type,
+#howToUpload-page button:first-of-type {
+   margin-right: 10px; 
+}
+
+#howToUpload-page button {
+   margin-bottom: 20px; 
+}
+
+.howToVideo {
+    width: 500px;
+    height: 300px;
+    background-color: lightgrey;
+}
