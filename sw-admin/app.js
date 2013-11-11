@@ -38,7 +38,11 @@ app.configure('production', function( ){
     app.use(express.errorHandler());
 });
 
-app.get( '/', function( req, res, next ) {
+var auth = express.basicAuth( function( user, password ) {
+    return( user=='admin@viblio.com' && password=='Viblio2013' );
+}, 'Credencials, Please...' );
+
+app.get( '/', auth, function( req, res, next ) {
     res.render( 'index', {} );
 });
 
