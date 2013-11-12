@@ -225,7 +225,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	    return system.defer( function( dfd ) {
 		viblio.api( '/services/na/account_confirm', {uuid: args.uuid}, function() { dfd.resolve({ redirect: 'login' }); } ).then( function( data ) {
 		    email( data.user.email );
-		    dfd.resolve();
+		    dfd.resolve(true);
 		});
 	    }).promise();
 	}
