@@ -10,7 +10,9 @@ define(['lib/viblio'],function(viblio) {
 	'newVideos.tt',
 	'tellAFriend.tt',
 	'videosSharedWithYou.tt',
-	'weeklyDigest.tt'
+	'weeklyDigest.tt',
+        'referAFriend.tt',
+        'newAlphaUserWelcomeEmail.tt'
     ]);
     var forceStaging = ko.observable( true );
 
