@@ -313,7 +313,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
     // map.
     function near( m ) {
 	map.removeAllMarkers();
-        if ( shareType() && shareType() != 'public') {
+        if ( shareType() && shareType() == 'private') {
             // map.disableSetLocation(); 
             if ( m.lat ) {
                 viblio.api( '/services/na/geo_loc', { lat: m.lat, lng: m.lng } ).then( function( res ) {
