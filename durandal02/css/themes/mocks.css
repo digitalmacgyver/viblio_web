@@ -648,7 +648,7 @@ input:-moz-placeholder {
 }
 
 #fbBtn-Wrap {
-    padding: 50px 0;
+    padding: 48px 0;
 }
 
 #facebookLoginBtn {
@@ -727,7 +727,7 @@ input:-moz-placeholder {
 }
 
 #loginArea form {
-    padding: 30px 52px 50px;
+    padding: 20px 52px 40px;
 }
 
 #loginArea form button {
@@ -2033,39 +2033,56 @@ p.uitoken-input ul.token-input-list-facebook {
 
 /********************  howToUpload Section  *****************************/
 
-#howToUpload-page .content-Wrap {
-    color: rgba(0,0,0,.6);
-    margin-bottom: 200px;
+.instructionsPages {
+    margin-bottom: 200px
 }
 
-#howToUpload-page .content-Wrap > div {
+.instructionsPages .content-Wrap {
+    color: rgba(0,0,0,.6);
+    margin-bottom: 30px;
+}
+
+.instructionsPages .content-Wrap > div {
     margin-bottom: 0;
 }
 
-#howToUpload-page h3 {
+.instructionsPages h3 {
     margin-bottom: 20px;
 }
 
-#macButton-Wrap {
+.macButton-Wrap {
     display: inline-table;
 }
 
-#macButton-Wrap label {
+.macButton-Wrap label {
     text-align: center;
     margin: 10px 0 0;
+    cursor: default;
 }
 
 #howToUpload-page a:first-of-type,
-#howToUpload-page button:first-of-type {
+#howToUpload-page button:first-of-type,
+#getApp-page button:first-of-type {
    margin-right: 10px; 
 }
 
-#howToUpload-page button {
+.instructionsPages button {
    margin-bottom: 20px; 
+}
+
+.howToPic {
+    margin-bottom: 30px;
 }
 
 .howToVideo {
     width: 500px;
     height: 300px;
     background-color: lightgrey;
+}
+
+/********************  getApp Section  *****************************/
+
+#getApp-page .downloadTitle {
+    display: inline-block;
+    margin: 0;
 }

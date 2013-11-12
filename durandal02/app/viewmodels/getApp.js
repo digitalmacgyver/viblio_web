@@ -1,6 +1,6 @@
 define(['plugins/router'], function( router ) {
     
-    var seeMac = ko.observable(false);
+     var seeMac = ko.observable(false);
     var seePC = ko.observable(false);
     
     showMac = function() {

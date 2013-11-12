@@ -9,7 +9,7 @@ define( ['plugins/router', 'durandal/app', 'lib/viblio', 'lib/config'], function
 	// Show details about the user
 	user: viblio.user,
 	feedback_email: ko.observable( 'mailto:feedback@' + config.email_domain() ),
-        download_link: ko.observable( config.site_server + '/services/na/download_trayapp' ),
+        download_link: ko.observable( config.site_server + '/#getApp' ),
 
 	sent_feedback: function() {
 	    viblio.mpEvent( 'feedback' );

@@ -61,7 +61,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	else if ( code == "NOLOGIN_EMAIL_NOT_FOUND" ) {
 	    msg  = "We do not have an account set up for " + email() + ".  If this is your ";
 	    msg += "first time creating a Viblio account, start by downloading the ";
-	    msg += '<a href="/services/na/download_trayapp">VIBLIO APP</a>.  ';
+	    msg += '<a href="/#getApp">VIBLIO APP</a>.  ';
 	    msg += "Otherwise, please re-enter the correct account information.";
 	}
 	else if ( code == "NOLOGIN_PASSWORD_MISMATCH" ) {

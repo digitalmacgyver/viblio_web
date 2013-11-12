@@ -57,6 +57,11 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
         showPlayerOverlay(false);
     }
     
+    function getApp() {
+        showPlayerOverlay(false);
+        router.navigate('/getApp');
+    }
+    
     var playingMid = ko.observable();
     
     function playAgain() {
@@ -361,6 +366,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
         vstrip: vstrip,
         showPlayerOverlay: showPlayerOverlay,
         hidePlayerOverlay: hidePlayerOverlay,
+        getApp: getApp,
         playingMid: playingMid,
         playAgain: playAgain,
         related: related,
