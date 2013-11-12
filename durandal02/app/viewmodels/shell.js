@@ -104,6 +104,9 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'login',              moduleId: 'login',              title: 'Log in to your Viblio account',
 	      nav: false,   authenticated: false,  header: landing_header },
 
+            { route: 'confirmed',          moduleId: 'confirmed',          title: 'Account Confirmation',
+	      nav: false,   authenticated: false,  header: landing_header },
+
             { route: 'settings',           moduleId: 'settings',           title: 'User Settings',
 	      nav: false,   authenticated: true,   header: page_header },
 

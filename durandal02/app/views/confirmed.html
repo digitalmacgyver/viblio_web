@@ -1,0 +1,38 @@
+<div id="login-page">
+  <p class="landingHeaderTitle darkBlueBG"><span>Your</span> Email <span>has been</span> Confirmed</p>
+  <div class="orangeBG-Header bottomBorder-Thin"></div>
+  <div class="content-Wrap centeredEl">
+        
+    <div id="loginArea" class="mocksWhiteBG centeredEl">
+      <div id="fbBtn-Wrap" class="bottomBorder">
+        <a id="facebookLoginBtn" class="centeredEl" data-bind="click: facebookAuthenticate"><img src="css/images/FBf.png" /> Log in with Facebook </a>
+      </div>
+      <div id='or-Wrap'>
+        <p>or</p>
+      </div>
+      <form class="bottomBorder-Thick">
+        <div class="centeredEl">
+          <span data-bind="css: { error: email_entry_error() }">
+            <input id="loginEmail" type="email" name="email" class="text" data-bind="value: email" placeholder="Email address" />
+          </span>
+          <span data-bind="css: { error: password_entry_error() }">
+            <input id="loginPassword" type="password" name="pword" class="text" data-bind="value: password" placeholder="Password" />
+          </span>
+          <a id='forgotPasswordLink' class='turquoiseFont' href="#forgotPassword">Forgot Password?</a>
+          <button class="btn btn-primary" data-bind="click: nativeAuthenticate">
+            Log In
+          </button>
+        </div>
+
+	<div id='viblioAppDownload-Wrap'>
+	  <span class='lightGreyFont'>If you don't have the Viblio App on your computer ... </span>
+	  <a id='downloadViblioBtn' 
+	     href="/services/na/download_trayapp" 
+	     data-bind="click: download_viblio"
+	     class="btn btn-primary">Download Viblio Free!</a>
+	</div>
+
+      </form>
+    </div>
+  </div>          
+</div>
