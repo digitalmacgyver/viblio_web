@@ -59,7 +59,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
     
     function getApp() {
         showPlayerOverlay(false);
-        router.navigate('/getApp');
+        router.navigate('getApp?from=web_player');
     }
     
     var playingMid = ko.observable();

@@ -12,13 +12,21 @@ define(['plugins/router','lib/viblio'], function( router,viblio ) {
         seeMac(false);
         seePC(true);
     };
-    
+
     return {
         seeMac: seeMac,
         seePC: seePC,
+
+	activate: function( args ) {
+	    if ( args && args.from )
+		this.from = args.from;
+	},
         
         download_viblio: function() {
-	    viblio.mpEvent( 'download_viblio' );
+	    var options = {};
+	    if ( this.from ) 
+		options.page = '/' + this.from;
+	    viblio.mpEvent( 'download_viblio', options );
 	    return true;
 	}
     };

@@ -276,7 +276,7 @@ var dtLocal={"passText":"To view this protected post, enter the password below:"
 <script type='text/javascript' src='//corp.viblio.com/wp-content/plugins/pricing-table/js/site/jquery.tipTip.minified.js?ver=3.6'></script>
 
 	<script src="//stats.wordpress.com/e-201344.js" type="text/javascript"></script>
-	<script type="text/javascript">st_go({v:'ext',j:'1:2.3.5',blog:'59271255',post:'18',tz:'-7'});var load_cmc=function(){linktracker_init(59271255,18,2);};if(typeof addLoadEvent!='undefined')addLoadEvent(load_cmc);else load_cmc();</script><link rel="stylesheet" type="text/css" href="//corp.viblio.com/wordpress/wp-content/themes/dt-presscore-new/css/popup.css"/><script type="text/javascript" src="//corp.viblio.com/wordpress/wp-content/themes/dt-presscore-new/js/jquery.fancybox.js?v=2.1.5"></script><link rel="stylesheet" type="text/css" href="//corp.viblio.com/wordpress/wp-content/themes/dt-presscore-new/css/jquery.fancybox.css?v=2.1.5" media="screen"/><script type="text/javascript">jQuery(document).ready(function(){jQuery('.fancybox').attr('rel','gallery').fancybox({type:'inline',title:false,autoSize:false,beforeLoad:function(){this.width=600;this.height=173;}});setTimeout(function(){jQuery("#phantom").css('display','none');console.log("here");},200);jQuery("#social-icon a img").hover(function(){var cls=jQuery(this).attr('id');jQuery("."+cls).css('display','block');},function(){var cls=jQuery(this).attr('id');jQuery("."+cls).css('display','none');});});</script>
+	<script type="text/javascript">st_go({v:'ext',j:'1:2.3.5',blog:'59271255',post:'18',tz:'-7'});var load_cmc=function(){linktracker_init(59271255,18,2);};if(typeof addLoadEvent!='undefined')addLoadEvent(load_cmc);else load_cmc();</script><link rel="stylesheet" type="text/css" href="//corp.viblio.com/wordpress/wp-content/themes/dt-presscore-new/css/popup.css"/><script type="text/javascript" src="//corp.viblio.com/wordpress/wp-content/themes/dt-presscore-new/js/jquery.fancybox.js?v=2.1.5"></script><link rel="stylesheet" type="text/css" href="//corp.viblio.com/wordpress/wp-content/themes/dt-presscore-new/css/jquery.fancybox.css?v=2.1.5" media="screen"/><script type="text/javascript">jQuery(document).ready(function(){jQuery('.fancybox').attr('rel','gallery').fancybox({type:'inline',title:false,autoSize:false,beforeLoad:function(){this.width=600;this.height=173;}});setTimeout(function(){jQuery("#phantom").css('display','none');},200);jQuery("#social-icon a img").hover(function(){var cls=jQuery(this).attr('id');jQuery("."+cls).css('display','block');},function(){var cls=jQuery(this).attr('id');jQuery("."+cls).css('display','none');});});</script>
 
 <a class="fancybox" href="#mainDiv" id="clickHere" style="display:none">click here</a>
 <div style="display:none">	
@@ -323,6 +323,11 @@ var dtLocal={"passText":"To view this protected post, enter the password below:"
 	</div>
 </div>
 
+<!-- start Mixpanel --><script type="text/javascript">(function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src=("https:"===e.location.protocol?"https:":"http:")+'//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f);b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==
+typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");for(g=0;g<i.length;g++)f(c,i[g]);
+b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
+mixpanel.init("404b9a0b96b8147b5050c165dfc809b3");</script><!-- end Mixpanel -->
+
 <script type="text/javascript">jQuery(document).ready(function(){jQuery('.pop').click(function(){window.open(jQuery(this).attr('href'),'t','toolbar=0,resizable=1,status=0,width=640,height=528');return false;});});</script>
 
 <script type="text/javascript">
@@ -337,6 +342,13 @@ var dtLocal={"passText":"To view this protected post, enter the password below:"
   jQuery("a.fancybox").click();
   });
   });
+  if ( window.location.search ) {
+  var s = window.location.search.replace('?','');
+  var a = s.split('=');
+  if ( a.length == 2 && a[0] == 'from' ) {
+  mixpanel.track( 'signup', { page: '/' + a[1] } );
+  }
+  }
   });
 </script>
 
