@@ -60,7 +60,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	    }
 	    if ( instruction.config.route == '' ||
 		 instruction.config.route == 'landing' ) {
-		console.log( 'redirecting to /signup' );
+		// Redirect to signup.
 		setTimeout( function() {
 		    window.location = '/signup/';
 		}, 1);

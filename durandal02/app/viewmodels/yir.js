@@ -56,7 +56,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     };
     
     YIR.prototype.goToUpload = function() {
-        router.navigate( 'howToUpload' );
+        router.navigate( 'howToUpload?from=yir' );
     };
 
     // Toggle edit mode.  This will put all of media

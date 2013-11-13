@@ -133,10 +133,12 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 	mpEvent: function( event, options ) {
 	    if ( ! options )
 		options = {};
-	    if ( router && router.activeInstruction && router.activeInstruction().fragment )
-		options['page'] = '/' + router.activeInstruction().fragment;
-	    else 
-		options['page'] = '/unknown';
+	    if ( ! options['page'] ) {
+		if ( router && router.activeInstruction && router.activeInstruction().fragment )
+		    options['page'] = '/' + router.activeInstruction().fragment;
+		else 
+		    options['page'] = '/unknown';
+	    }
 	    mixpanel.track( event, options );
 	    ga( 'send', 'event', event, 'interact', { 'page': options['page'] } );
 	},
