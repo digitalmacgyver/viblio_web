@@ -1,6 +1,6 @@
-define(['plugins/router'], function( router ) {
+define(['plugins/router','lib/viblio'], function( router,viblio ) {
     
-     var seeMac = ko.observable(false);
+    var seeMac = ko.observable(false);
     var seePC = ko.observable(false);
     
     showMac = function() {
@@ -18,8 +18,8 @@ define(['plugins/router'], function( router ) {
         seePC: seePC,
         
         download_viblio: function() {
-	    /*viblio.mpEvent( 'download_viblio' );
-	    return true;*/
+	    viblio.mpEvent( 'download_viblio' );
+	    return true;
 	}
     };
 });
