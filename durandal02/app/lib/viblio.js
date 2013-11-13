@@ -10,6 +10,13 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 		user( u );
 		// subscribe to the async message queue
 		messageq.subscribe( u.uuid );
+		// Add this identity to mixpanel
+		mixpanel.identify( u.uuid );
+		mixpanel.people.set({
+		    "$email": u.email,
+		    "$last_login": new Date(),
+		    "$created": u.created_date
+		});
 	    }
 	    if ( u.displayname != user().displayname ) {
 		user( u );
