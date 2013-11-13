@@ -159,12 +159,23 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 	viblio.api( '/services/na/media_comments', { mid: m.uuid } ).then( function( data ) {
 	    if ( data.comments && data.comments.length ) {
                 numComments = data.comments.length;
-		var now = new Date();
+		// returns now in UTC time
+		var now = new Date().getTime();
 		data.comments.forEach( function( c ) {
 		    var hash = { comment: c.comment };
-		    hash['who'] = c.who || 'anonymous'; 
-		    hash['when'] = prettyWhen( now, new Date( c.created_date + ' GMT' ) );
+		    hash['who'] = c.who || 'anonymous';
+                    // create a date format that is usable
+                    var temp = c.created_date.replace(/-/g,',').replace(/ /g, ",").replace(/:/g, ",");
+                    var array = temp.split(',');
+                    for (a in array ) {
+                        array[a] = parseInt(array[a], 10);
+                    }
+                    // take one from the month to get correct month based on 0 index
+                    array[1] = array[1] - 1;
+                    // get difference between now and when comment was created both in UTC time
+                    hash['when'] = prettyWhen( now, new Date(Date.UTC(array[0], array[1], array[2], array[3], array[4], array[5])) );
 		    comments.push( hash );
+                    
 		});
             }
         });

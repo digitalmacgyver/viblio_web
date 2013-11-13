@@ -133,11 +133,12 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	viblio.api( '/services/mediafile/comments', { mid: m.uuid } ).then( function( data ) {
 	    if ( data.comments && data.comments.length ) {
                 numComments = data.comments.length;
-		var now = new Date();
+                // returns now in UTC time
+		var now = new Date().getTime();
 		data.comments.forEach( function( c ) {
 		    var hash = { comment: c.comment };
 		    hash['who'] = c.who || 'anonymous';
-                    // create a date that is usable
+                    // create a date format that is usable
                     var temp = c.created_date.replace(/-/g,',').replace(/ /g, ",").replace(/:/g, ",");
                     var array = temp.split(',');
                     for (a in array ) {
@@ -145,15 +146,9 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
                     }
                     // take one from the month to get correct month based on 0 index
                     array[1] = array[1] - 1;
-                    // get difference between now and when comment was created
-                    hash['when'] = prettyWhen( now, new Date( array[0], array[1], array[2], array[3], array[4], array[5] ) );
+                    // get difference between now and when comment was created both in UTC time
+                    hash['when'] = prettyWhen( now, new Date(Date.UTC(array[0], array[1], array[2], array[3], array[4], array[5])) );
 		    comments.push( hash );
-                    
-                    console.log('now: ' + new Date() );
-                    console.log('c.created_date: ' + c.created_date);
-                    console.log('new Date(c.created_date): ' + new Date( array[0], array[1], array[2], array[3], array[4], array[5] ) );
-                    console.log( "difference: " + ( new Date() - new Date( array[0], array[1], array[2], array[3], array[4], array[5] ) ) );
-                    console.log( "Usable string: " + array );
                     
 		});
             }
