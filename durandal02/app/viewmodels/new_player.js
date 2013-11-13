@@ -136,9 +136,25 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		var now = new Date();
 		data.comments.forEach( function( c ) {
 		    var hash = { comment: c.comment };
-		    hash['who'] = c.who || 'anonymous'; 
-		    hash['when'] = prettyWhen( now, new Date( c.created_date + ' GMT' ) );
+		    hash['who'] = c.who || 'anonymous';
+                    // create a date that is usable
+                    var temp = c.created_date.replace(/-/g,',').replace(/ /g, ",").replace(/:/g, ",");
+                    var array = temp.split(',');
+                    for (a in array ) {
+                        array[a] = parseInt(array[a], 10);
+                    }
+                    // take one from the month to get correct month based on 0 index
+                    array[1] = array[1] - 1;
+                    // get difference between now and when comment was created
+                    hash['when'] = prettyWhen( now, new Date( array[0], array[1], array[2], array[3], array[4], array[5] ) );
 		    comments.push( hash );
+                    
+                    console.log('now: ' + new Date() );
+                    console.log('c.created_date: ' + c.created_date);
+                    console.log('new Date(c.created_date): ' + new Date( array[0], array[1], array[2], array[3], array[4], array[5] ) );
+                    console.log( "difference: " + ( new Date() - new Date( array[0], array[1], array[2], array[3], array[4], array[5] ) ) );
+                    console.log( "Usable string: " + array );
+                    
 		});
             }
         });
