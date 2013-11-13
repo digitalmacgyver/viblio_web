@@ -18,8 +18,8 @@ define(['plugins/router'], function( router ) {
         seePC: seePC,
         
         download_viblio: function() {
-	    /*viblio.mpEvent( 'download_viblio' );
-	    return true;*/
+	    /*viblio.mpEvent( 'download_viblio' );*/
+	    return true;
 	}
     };
 });
