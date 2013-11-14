@@ -149,10 +149,6 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'TOS',           moduleId: 'TOS',           title: 'Viblio Terms of Service',
 	      nav: false,   authenticated: false,   header: conditional_header },
           
-            
-            { route: 'howToUpload',           moduleId: 'howToUpload',     title: 'How to Upload Videos to Viblio',
-	      nav: false,   authenticated: false,   header: conditional_header },
-          
             { route: 'getApp',           moduleId: 'getApp',     title: 'Download Viblio',
                 nav: false,   authenticated: false,   header: conditional_header }
 
