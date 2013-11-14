@@ -1,7 +1,14 @@
 define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDialogs','plugins/dialog','facebook'],function(app,router,viblio,config,customDialogs,dialog) {
     var profile = ko.observable({});
     var email   = ko.observable();
-    var displayname   = ko.observable();
+    var displayname   = ko.observable('');
+    var validDisplayname = ko.computed(function(){
+        if ( displayname().length > 32 ||  displayname()[0] == ' ' || displayname() == '' ) {
+            return false;
+        } else {
+            return true;
+        }
+    });
     var links   = ko.observable({});
     var linkedFacebook = ko.observable( false );
 
@@ -54,7 +61,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
     });
 
     displayname.subscribe( function( v ) {
-	if ( v && profile().displayname && ( v != profile().displayname ) ) {
+	if ( v && profile().displayname && ( v != profile().displayname ) && validDisplayname() ) {
 	    newDisplayname( v );
 	}
 	if ( v ) 
@@ -83,7 +90,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 		viblio.api( '/services/user/link_facebook_account',
 			    { access_token: response.authResponse.accessToken }
 			  ).then( function( json ) {
-			      customDialogs.showMessage( 'Your Facebook account has been successfully linked!', 'Congradulations!' );
+			      customDialogs.showMessage( 'Your Facebook account has been successfully linked!', 'Congratulations!' );
 			      links().facebook = json.user.link;
 			      linkedFacebook( true );
 			      viblio.mpEvent( 'facebook_link' );
@@ -112,6 +119,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	profile: profile,
 	email: email,
 	displayname: displayname,
+        validDisplayname: validDisplayname,
 	links: links,
 	linkedFacebook: linkedFacebook,
 
@@ -148,7 +156,19 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	    });
 	},
 	cancel: function() {
-	    router.navigateBack();
+            if( !validDisplayname() ) {
+                if( displayname()[0] == ' ' ) {
+                    app.showMessage('Your display name cannot start with an empty space.', 'Display Name Error');
+                }
+                if( displayname() == '' ) {
+                    app.showMessage('Please enter a display name.', 'Display Name Error');
+                }
+                if( displayname().length > 32 ) {
+                    app.showMessage('Your display must be fewer than 32 characters long.', 'Display Name Error');
+                }
+            } else {
+                router.navigateBack();
+            }
 	},
                 
 	changeAvatar: function() {

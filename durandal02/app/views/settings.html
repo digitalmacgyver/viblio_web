@@ -22,6 +22,7 @@
 	      <form>
 		<fieldset>
 		  <label for="displayname">Display Name</label>
+                  <span data-bind="text: validDisplayname()"></span>
 		  <input type="text" name="displayname" data-bind="value: displayname" required />
 		</fieldset>
 		<fieldset>
