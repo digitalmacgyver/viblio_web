@@ -135,26 +135,6 @@
     text-shadow: 2px 2px rgba(0,0,0,.2);
 }
 
-#nplayer-page .player-control {
-    width: 55px;
-    margin-top: 200px;
-    color: white;
-    font-size: 28px;
-    text-align: center;
-    padding-top: 23px;
-    padding-bottom: 23px;
-    cursor: pointer;
-}
-
-#nplayer-page .player-control i {
-}
-
-#right-arrow {
-}
-
-#left-arrow {
-}
-
 #share-video-block {
     height: 100px;
     width: 280px;
