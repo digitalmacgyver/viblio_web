@@ -1,0 +1,160 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 14, 2013, 12:11:12 PM
+    Author     : Jesse
+*/
+
+/*Removes small space between main page and footer*/
+.home #main {
+    padding-bottom: 0px;
+}
+
+.bxslider {
+    visibility: hidden;
+    max-height: 100%;
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+}
+
+.bx-wrapper {
+    margin-bottom: 0;
+}
+
+.bx-wrapper .bx-viewport {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: none;
+    left: 0px;
+    background: rgb(240, 85, 65);
+    padding-bottom: 1.5%;
+}
+
+.bxslider li {
+    background-color: rgb(240, 85, 65);
+}
+
+.tagline {
+    background-color: rgb(50, 53, 68);
+    padding: 2% 0;
+    border-bottom: 4px solid rgb(0, 0, 0);
+    margin-bottom: 3%;
+}
+
+.bxslider img {
+    margin: 0 auto;
+}
+
+.bx-wrapper .bx-pager.bx-default-pager a {
+    background: white;
+}
+
+.bx-wrapper .bx-pager.bx-default-pager a:hover, .bx-wrapper .bx-pager.bx-default-pager a.active {
+    background: lightgrey;
+}
+
+.bx-wrapper .bx-controls-direction a {
+    background-color: rgb(50, 53, 68);
+    position: absolute;
+    top: 60%;
+    margin-top: -16px;
+    outline: 0;
+    max-width: 7.5%;
+    width: 54px;
+    max-height: 20%;
+    height: 90px;
+    border-bottom: 3px solid black;
+    text-indent: -9999px;
+    z-index: 9999;
+    cursor: pointer;
+}
+
+.bx-wrapper .bx-prev,
+.bx-wrapper .bx-prev:hover {
+    left: 0;
+    background: url(images/arrowLeft.png) no-repeat center;
+    background-color: rgb(50, 53, 68);
+}
+
+.bx-wrapper .bx-next,
+.bx-wrapper .bx-next:hover {
+    right: 0;
+    background: url(images/arrowRight.png) no-repeat center;
+    background-color: rgb(50, 53, 68);
+}
+
+.mcform-wrap form {
+    margin-top: 2%;
+}
+
+.MailChimp {
+    max-width: 100%;
+}
+
+@media (max-width: 800px) {
+    .MailChimp > div {
+        float: none;
+    }
+    .MailChimp input {
+        max-width: 100%;
+        display: block;
+        margin: 5px auto;
+    }
+}
+
+.wf-wrap {
+    max-width: 100%;
+    padding: 0;
+    margin: 0 auto;
+}
+
+.stripe {
+    width: 100%;
+    padding: 20px 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.stripe.stripe-style-1, .stripe.stripe-style-2, .stripe.stripe-style-3 {
+    border-bottom: 3px inset rgba(0,0,0,.2);
+}
+
+.stripe:last-of-type {
+    border: none;
+}
+
+#main .column-wrap h2 {
+    -moz-text-shadow: 1px 1px rgba(0,0,0,.2);
+    -webkit-text-shadow: 1px 1px rgba(0,0,0,.2);
+    text-shadow: 1px 1px rgba(0,0,0,.2);
+}
+
+#bottom-bar {
+    background-color: rgb(239, 239, 232);
+}
+
+.footer-wrap {
+    width: 1000px;
+}
+
+.column-wrap {
+    width: 1000px;
+    margin: 40px auto 0;
+}
+
+@media (max-width: 1000px) {
+    .column-wrap{
+        width: 90%;
+        margin: 40px auto 0;
+    }
+    .footer-wrap {
+        width: 90%;
+    }
+}
+
+
