@@ -21,9 +21,10 @@ define(['lib/viblio','lib/config','lib/customDialogs'], function(viblio,config,c
 	    return 80;
     }, this );
 
-    var CREATE_ENDPT = ko.computed( function() {
-	return protocol() + '//' + server() + ':' + port() + '/files';
-    }, this );
+    //var CREATE_ENDPT = ko.computed( function() {
+//	return protocol() + '//' + server() + ':' + port() + '/files';
+  //  }, this );
+    var CREATE_ENDPT = ko.observable( '/files' );
 
     // When overrides change, notify the widget
     CREATE_ENDPT.subscribe( function( value ) {
