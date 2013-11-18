@@ -116,6 +116,9 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'faces',              moduleId: 'faces',              title: 'PEOPLE',
 	      nav: true,    authenticated: true,   header: page_header },
 	    
+            { route: 'shared',             moduleId: 'shared',             title: 'SHARED',
+	      nav: true,    authenticated: true,   header: page_header },
+	    
             { route: 'raw',                moduleId: 'raw',                title: 'Raw Upload',
 	      nav: false,    authenticated: true,   header: page_header },
 	    
