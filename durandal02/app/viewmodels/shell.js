@@ -134,9 +134,6 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'invite',             moduleId: 'invite',             title: 'Viblio Invite',
 	      nav: false,   authenticated: false,  header: landing_header },
 
-            { route: 'settings',           moduleId: 'settings',           title: 'User Settings',
-	      nav: false,   authenticated: true,   header: page_header },
-
             { route: 'web_player',         moduleId: 'web_player',         title: 'Video Player',
 	      nav: false,   authenticated: false,   header: conditional_header },
           
