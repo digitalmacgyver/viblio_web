@@ -2107,3 +2107,18 @@ p.uitoken-input ul.token-input-list-facebook {
     display: inline-block;
     margin: 0;
 }
+
+/******** Shared Videos Page *******/
+.shared-page .shared-page-wrap {
+    margin-left: 40px;
+}
+
+.shared-page .avatar {
+    margin-right: 3px;
+    vertical-align: middle;
+    margin-top: 0;
+}
+
+.shared-page .edit-button {
+    margin-right: 60px;
+}
