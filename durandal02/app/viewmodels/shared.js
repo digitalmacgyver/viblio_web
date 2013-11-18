@@ -1,15 +1,32 @@
-define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', 'durandal/events'], function( router,viblio, Mediafile, app, events ) {
+define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', 'durandal/events', 'plugins/dialog',], function( router,viblio, Mediafile, app, events, dialog ) {
 
     var sections = ko.observableArray([]);
     var editLabel = ko.observable( 'Edit' );
-
+    var vidsToShow = ko.observable(false);
+    
+    function showLoggedOutTellFriendsModal() {
+        var args = {};
+        args.placeholder = "I discovered Viblio, a great way to privately organize and share videos.  I'd love it if you signed up and shared some of your videos with me.";
+        args.logout = false;
+        dialog.show('viewmodels/loggedOutTellFriendsModal', args);
+    };
+    
     return {
 	sections: sections,
 	editLabel: editLabel,
-
+        vidsToShow: vidsToShow,
+        showLoggedOutTellFriendsModal:showLoggedOutTellFriendsModal,
+        
 	activate: function() {
 	    return viblio.api( '/services/mediafile/all_shared' ).then( function( data ) {
 		var shared = data.shared;
+                
+               if( shared.length > 3 ) {
+                    vidsToShow(true);
+                } else {
+                    vidsToShow(false);
+                }
+                
 		sections.removeAll();
 		shared.forEach( function( share ) {
 		    var mediafiles = ko.observableArray([]);
