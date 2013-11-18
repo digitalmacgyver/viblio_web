@@ -2,7 +2,8 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 
     var sections = ko.observableArray([]);
     var editLabel = ko.observable( 'Edit' );
-    var vidsToShow = ko.observable(false);
+    var numVids = ko.observable();
+    var showShareBtn = ko.observable(false);
     
     function showLoggedOutTellFriendsModal() {
         var args = {};
@@ -14,17 +15,20 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     return {
 	sections: sections,
 	editLabel: editLabel,
-        vidsToShow: vidsToShow,
+        numVids: numVids,
+        showShareBtn: showShareBtn,
         showLoggedOutTellFriendsModal:showLoggedOutTellFriendsModal,
         
 	activate: function() {
 	    return viblio.api( '/services/mediafile/all_shared' ).then( function( data ) {
 		var shared = data.shared;
                 
-               if( shared.length > 3 ) {
-                    vidsToShow(true);
+                numVids(shared.length);
+                
+               if( numVids() < 3 ) {
+                    showShareBtn(true);
                 } else {
-                    vidsToShow(false);
+                    showShareBtn(false);
                 }
                 
 		sections.removeAll();
