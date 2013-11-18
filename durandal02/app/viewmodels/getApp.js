@@ -1,7 +1,7 @@
 define(['plugins/router','lib/viblio'], function( router,viblio ) {
     
     var seeMac = ko.observable(false);
-    var seePC = ko.observable(false);
+    var seePC = ko.observable(true);
     
     showMac = function() {
         seePC(false);
