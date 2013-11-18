@@ -12,7 +12,7 @@ body {
     }
 }
 
-@media (max-width: 979px) {
+@media (max-width: 900px) {
     body {
         padding-top: 0px;
     }
@@ -421,6 +421,12 @@ input:-moz-placeholder {
     text-shadow: 2px 2px rgba(0,0,0,.2);
 }
 
+@media (max-width: 979px) {
+    #page-header .navbar .pagesNav > li > a {
+        padding: 20px 10px 8px 10px;
+    }
+}
+
 #page-header .navbar .pagesNav > li > a:hover,
 #page-header .navbar .pagesNav > li > a:focus {
     background-color: rgba(28,184,209,1);
@@ -444,14 +450,14 @@ input:-moz-placeholder {
 }
 
 /* When nav bar is NOT collapsed */
-@media (min-width: 979px) {
+@media (min-width: 900px) {
     #page-header .navbar .nav li.dropdown.open {
         border-left: 3px solid rgba(0,0,0,.5);
     }
 }
 
 /* When nav bar is collapsed */
-@media (max-width: 979px) {
+@media (max-width: 900px) {
     #page-header .navbar .pagesNav > li {
         min-height: 33px;
     }
