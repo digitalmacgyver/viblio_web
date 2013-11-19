@@ -185,22 +185,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	activate: function( view ) {
 	    var self = this;
 	    self.view = view;
-
-	    // jqueryFileUpload
-	    $(self.view).find("#fileupload").fileupload({
-		dataType: 'json',
-		start: function() {
-		    $(self.view).find(".avatar div i").css( 'visibility', 'visible' );
-		},
-		done: function(e, data) {
-		    //$(self.view).find("#apic").attr('src',"/services/user/avatar?uid=-&y=70");
-		    $('<img>').load( function() {
-			$(self.view).find(".avatar img").replaceWith( $(this) );
-			$(self.view).find(".avatar div i").css( 'visibility', 'hidden' );
-		    }).attr( 'src', "/services/user/avatar?uid=-&y=70" );
-		}
-	    });
-
+            
 	    customDialogs.showLoading();
             
 	    return viblio.api( '/services/user/profile' ).then( function( json ) {
@@ -237,6 +222,23 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 
 		linkedFacebook( links().facebook ? true : false );
 	    });
-	}
+	},
+        
+        compositionComplete: function(view) {
+	    // jqueryFileUpload
+	    $("#fileupload").fileupload({
+		dataType: 'json',
+		start: function() {
+		    $(".avatar div i").css( 'visibility', 'visible' );
+		},
+		done: function(e, data) {
+		    $('<img class="newPic">').load( function() {
+			$(".avatar img").replaceWith( $(this) );
+			$(".avatar div i").css( 'visibility', 'hidden' );
+		    }).attr( 'src', "/services/user/avatar?uid=-&y=120" );
+		}
+	    });
+        }
+        
     };
 });

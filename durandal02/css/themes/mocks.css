@@ -1873,6 +1873,10 @@ li.token-input-token-facebook {
     width: 332px;
 }
 
+.newPic {
+    max-width: 120px;
+}
+
 #apic {
     width: 120px;
 }
