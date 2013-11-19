@@ -624,12 +624,12 @@ input:-moz-placeholder {
 /********************  Landing Page Header Section  *****************************/
 
 #landing-header .navbar {
-    height: 57px;
+    min-height: 57px;
 }
 
 .landingBrand {
-    margin: 11px;
-    display: inline-block;
+    padding: 0;
+    margin: 11px 0 0;
 }
 
 #landingLogo {
@@ -679,6 +679,7 @@ input:-moz-placeholder {
 }
 
 #facebookLoginBtn {
+    max-width: 100%;
     display: block;
     background: none;
     filter: none;
@@ -786,6 +787,7 @@ input:-moz-placeholder {
 }
 
 #noAccount input[type="email"] {
+    max-width: 100%;
     width: 336px;
     margin-right: 8px;
 }

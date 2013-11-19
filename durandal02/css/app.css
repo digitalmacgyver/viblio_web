@@ -717,15 +717,28 @@ p.text-center {
 *
 *********************************************/
 
-/*
-  Landing Header
-*/
 #landing-header .brand {
     margin-left: 15px;
 }
-#landing-header a {
+
+#landing-header .navbar-fixed-top {
+    height: auto;
+}
+
+.navbar .nav > li > a {
+    text-shadow: none;
+}
+
+#landing-header .nav-collapse ul > li > a {
+    padding-top: 20px;
+    color: rgb(133, 136, 143);
     cursor: pointer;
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+#landing-header .nav-collapse ul > li > a:hover {
+    text-decoration: underline;
 }
 
 
@@ -734,6 +747,7 @@ p.text-center {
 *               magictag.css
 *
 *********************************************/
+
 #magicTagModal .magic-face {
     vertical-align: top;
     width: 100px;

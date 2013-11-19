@@ -43,15 +43,33 @@
 </div>
 
 <div id="landing-header" data-bind="visible: user().uuid == null">
-  <div class="navbar navbar-fixed-top darkBlueBG">
-    <a class="brand" href="/signup/">
-      <img src="css/images/viblioLogo-WhiteWText.png" />
-    </a>
-    <div class="loader pull-right" data-bind="css: { active: router.isNavigating }">
-      <i class="icon-spinner icon-2x icon-spin"></i>
-    </div>
-    <p class="navbar-text pull-right">
-      <a data-bind="click: signin">Log In</a>
-    </p>
+    <div class="navbar navbar-fixed-top darkBlueBG">
+      <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        
+        <a class="landingBrand brand" href="/signup/">
+            <img id="landingLogo" src="css/images/viblioLogo-WhiteWText.png" />
+        </a>
+      
+        <div class="nav-collapse collapse">
+            <ul class="nav pagesNav pull-right">
+                <li>
+                    <a class="textShadowed" data-bind="click: signin">Log In</a>
+                </li>
+                <li>
+                    <a class="textShadowed" href="//corp.viblio.com/viblio-blog/">Viblio Blog</a>
+                </li>
+                <li>
+                    <a class="textShadowed" href="//corp.viblio.com/who-we-are/">Who We Are</a>
+                </li>
+            </ul> 
+        </div>
+        
+        <div class="clearfix"></div>
+      
   </div>
 </div>
