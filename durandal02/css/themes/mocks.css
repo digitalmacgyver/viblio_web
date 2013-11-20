@@ -2159,6 +2159,12 @@ p.uitoken-input ul.token-input-list-facebook {
     margin-bottom: 200px;
 }
 
+.leaflet-popup-tip {
+    -moz-box-shadow: 3px 1px 0px 1px rgba(0,0,0,.2); /* Firefox */
+    -webkit-box-shadow: 1px 3px 0px 1px rgba(0,0,0,.2);
+    box-shadow: 3px 1px 0px 1px rgba(0,0,0,.2);
+}
+
 .leaflet-popup-content-wrapper {
     width: 272px;
     height: 193px;
