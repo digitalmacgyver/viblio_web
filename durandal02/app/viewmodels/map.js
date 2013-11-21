@@ -8,6 +8,18 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
 	// to the map.
 	var self = this;
 	app.on( 'mediafile:ready', function( m ) {
+            
+            function shareVid(e){
+                e.stopPropagation();
+                viblio.api( '/services/mediafile/get', { mid: $(this).parent()[0].id, include_contact_info: 1 } ).then(function( json ){
+                    customDialogs.showShareVidModal( new Mediafile( json.media ) );
+                });
+            }
+
+            function playVid(){
+                router.navigate( 'new_player?mid=' + this.id );
+            }
+            
 	    if ( m.lat && m.lng ) {
 		var p = {
 		    lat: m.lat,
@@ -20,27 +32,32 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
 		};
 		self.points.push( p );
 		if ( self.map ) {
-		    var m = self.map.addMarker( p.lat, p.lng, p );
-		    m.bindPopup( '<div class="pointer thumb-wrap" data-bind="click: sayhi">\n\
-                                        <img src="' + p.url + '" />\n\
-                                    </div>\n\
-                                   <div class="information">\n\
-                                        <div class="aux pull-right muted">\n\
-                                            <img src="css/images/viewsEye.png"/><br>\n\
-                                            <span>' + p.eyes + '</span>\n\
-                                        </div>\n\
-                                        <div data-bind="liveEditor: title, ifnot: ro">\n\
-                                            <div class="view vidTitle title truncate" data-bind="click: title.edit">' + p.title + '</div>\n\
-                                            <div class="editTitle-Wrap">\n\
-                                                <input type="text" class="edit" data-bind="value: title,hasFocus: title.editing, event: { blur: function() { title.stopEditing(); title.save( $data, media(), \'mediaFile:TitleDescChanged\' ) } }" />\n\
+		    var popupContent = $('<div />');
+                        popupContent.on('click', '.shareFromMap', shareVid);
+                        popupContent.on('click', '.thumb-wrap', playVid);
+                        popupContent.html('<div title="Click to watch this video" id="' + p.uuid + '" class="pointer thumb-wrap">\n\
+                                                <div title="Click to share this video" class="shareFromMap btn btn-primary"><img src="css/images/share.png"/></div>\n\
+                                                <img src="' + p.url + '" />\n\
                                             </div>\n\
-                                        </div>\n\
-                                        <div data-bind="if: ro">\n\
-                                          <div class="view title truncate" data-bind="text: title() || \'no title\' "></div>\n\
-                                        </div>\n\
-                                    </div>' )
-                    .openPopup();
-		    self.map.fitBounds();
+                                           <div class="information">\n\
+                                                <div class="aux pull-right muted">\n\
+                                                    <img src="css/images/viewsEye.png"/><br>\n\
+                                                    <span>' + p.eyes + '</span>\n\
+                                                </div>\n\
+                                                <div data-bind="liveEditor: title, ifnot: ro">\n\
+                                                    <div class="view vidTitle title truncate" data-bind="click: title.edit">' + p.title() + '</div>\n\
+                                                    <div class="editTitle-Wrap">\n\
+                                                        <input type="text" class="edit" data-bind="value: title,hasFocus: title.editing, event: { blur: function() { title.stopEditing(); title.save( $data, media(), \'mediaFile:TitleDescChanged\' ) } }" />\n\
+                                                    </div>\n\
+                                                </div>\n\
+                                                <div data-bind="if: ro">\n\
+                                                  <div class="view title truncate" data-bind="text: title() || \'no title\' "></div>\n\
+                                                </div>\n\
+                                         </div>');
+
+                    m.bindPopup(popupContent[0],{
+                        closeButton: false
+                    });
 		}
 	    }
 	});
@@ -88,7 +105,6 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
     Map.prototype.compositionComplete = function( view, parent ) {
 	var self = this;
 	self.view = view;
-        var vidToShare = ko.observable();
 	// Create the map, enable mouse wheel and touch interaction
 	self.map = $('.map-wrap').vibliomap({
 	    /*markerClickCallback: function( mapper, data ) {
@@ -115,8 +131,8 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
             var popupContent = $('<div />');
                 popupContent.on('click', '.shareFromMap', shareVid);
                 popupContent.on('click', '.thumb-wrap', playVid);
-                popupContent.html('<div id="' + p.uuid + '" class="pointer thumb-wrap">\n\
-                                        <div class="shareFromMap btn btn-primary"><img src="css/images/share.png"/></div>\n\
+                popupContent.html('<div title="Click to watch this video" id="' + p.uuid + '" class="pointer thumb-wrap">\n\
+                                        <div title="Click to share this video" class="shareFromMap btn btn-primary"><img src="css/images/share.png"/></div>\n\
                                         <img src="' + p.url + '" />\n\
                                     </div>\n\
                                    <div class="information">\n\
