@@ -72,8 +72,14 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
 	//
 	return viblio.api( '/services/geo/all' ).then( function( json ) {
             console.log(json);
+            var eyes;
 	    json.locations.forEach( function( m ) {
 		if ( m.lat && m.lng ) {
+                    if( m.view_count && m.view_count!= 'undefined') {
+                        eyes = m.view_count;
+                    } else {
+                        eyes = 0;
+                    }
 		    self.points.push({
 			lat: m.lat,
 			lng: m.lng,
@@ -81,7 +87,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
 			uuid: m.uuid,
 			title: m.title,
 			url: m.url,
-                        eyes: m.view_count
+                        eyes: eyes
 		    });
 		}
 	    });
@@ -109,13 +115,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
 	self.map = $('.map-wrap').vibliomap({
             disableMapMouseZoom: true,
 	    disableMapTouchZoom: false,
-	    disableMapClickZoom: false,
-            // Default center and zoom
-            centerDefault: function() {
-                var self = $(this);
-                va = new L.LatLng( 39.82, 98.57 );
-                self.data( 'map' ).setView( va, 16 );
-            }
+	    disableMapClickZoom: false
 	});
         
         function shareVid(e){
