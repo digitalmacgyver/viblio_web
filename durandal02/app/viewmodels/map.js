@@ -79,7 +79,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
 			lng: m.lng,
 			location: m.lat.toString() + ',' + m.lng.toString(),
 			uuid: m.uuid,
-			title: ko.observable(m.title),
+			title: m.title,
 			url: m.url,
                         eyes: m.view_count
 		    });
@@ -107,9 +107,15 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
 	self.view = view;
 	// Create the map, enable mouse wheel and touch interaction
 	self.map = $('.map-wrap').vibliomap({
-	    /*markerClickCallback: function( mapper, data ) {
-		self.play( data );
-	    }*/
+            disableMapMouseZoom: true,
+	    disableMapTouchZoom: false,
+	    disableMapClickZoom: false,
+            // Default center and zoom
+            centerDefault: function() {
+                var self = $(this);
+                va = new L.LatLng( 39.82, 98.57 );
+                self.data( 'map' ).setView( va, 16 );
+            }
 	});
         
         function shareVid(e){
@@ -141,7 +147,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
                                             <span>' + p.eyes + '</span>\n\
                                         </div>\n\
                                         <div data-bind="liveEditor: title, ifnot: ro">\n\
-                                            <div class="view vidTitle title truncate" data-bind="click: title.edit">' + p.title() + '</div>\n\
+                                            <div class="view vidTitle title truncate" data-bind="click: title.edit">' + p.title + '</div>\n\
                                             <div class="editTitle-Wrap">\n\
                                                 <input type="text" class="edit" data-bind="value: title,hasFocus: title.editing, event: { blur: function() { title.stopEditing(); title.save( $data, media(), \'mediaFile:TitleDescChanged\' ) } }" />\n\
                                             </div>\n\
@@ -158,7 +164,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
 	if ( self.points.length > 0 )
 	    self.map.fitBounds();
 	else
-	    self.map.centerDefault();
+	    self.map.centerDefault( { 'loc': new L.LatLng( 37, 265 ), 'zoom': 5 } );
     };
 
     Map.prototype.enableDetails = function(marker) {
