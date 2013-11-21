@@ -2223,9 +2223,9 @@ p.uitoken-input ul.token-input-list-facebook {
 .shareFromMap {
     position: absolute;
     right: -1px;
-    padding: 2px 5px;
+    padding: 6px;
 }
 
 .leaflet-popup-content .thumb-wrap .shareFromMap img{
-    width: 30px;
+    width: 27px;
 }

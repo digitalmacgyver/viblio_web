@@ -36,7 +36,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
                         popupContent.on('click', '.shareFromMap', shareVid);
                         popupContent.on('click', '.thumb-wrap', playVid);
                         popupContent.html('<div title="Click to watch this video" id="' + p.uuid + '" class="pointer thumb-wrap">\n\
-                                                <div title="Click to share this video" class="shareFromMap btn btn-primary"><img src="css/images/share.png"/></div>\n\
+                                                <div title="Click to share this video" class="shareFromMap btn btn-primary"><img src="css/images/share-white.png"/></div>\n\
                                                 <img src="' + p.url + '" />\n\
                                             </div>\n\
                                            <div class="information">\n\
@@ -132,7 +132,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
                 popupContent.on('click', '.shareFromMap', shareVid);
                 popupContent.on('click', '.thumb-wrap', playVid);
                 popupContent.html('<div title="Click to watch this video" id="' + p.uuid + '" class="pointer thumb-wrap">\n\
-                                        <div title="Click to share this video" class="shareFromMap btn btn-primary"><img src="css/images/share.png"/></div>\n\
+                                        <div title="Click to share this video" class="shareFromMap btn btn-primary"><img src="css/images/share-white.png"/></div>\n\
                                         <img src="' + p.url + '" />\n\
                                     </div>\n\
                                    <div class="information">\n\
