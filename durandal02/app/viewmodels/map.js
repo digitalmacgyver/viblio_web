@@ -164,7 +164,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
 	if ( self.points.length > 0 )
 	    self.map.fitBounds();
 	else
-	    self.map.centerDefault( { 'loc': new L.LatLng( 37, 265 ), 'zoom': 5 } );
+	    self.map.centerDefault( { 'loc': new L.LatLng( 37, -95 ), 'zoom': 5 } );
     };
 
     Map.prototype.enableDetails = function(marker) {
