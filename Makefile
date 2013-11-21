@@ -19,7 +19,7 @@ package:
 # This target is called by the sw installer on the target machine.  Does
 # what is required to install the new software and activate it.
 install:
-	mkdir $(ROOT)/$(LVL)/$(APPNAME).next
+	mkdir -p $(ROOT)/$(LVL)/$(APPNAME).next
 	tar zxf package.tar.gz -C $(ROOT)/$(LVL)/$(APPNAME).next
 	-rm -rf $(ROOT)/$(LVL)/$(APPNAME).pre
 	-mv $(ROOT)/$(LVL)/$(APPNAME) $(ROOT)/$(LVL)/$(APPNAME).pre
