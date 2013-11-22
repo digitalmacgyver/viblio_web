@@ -169,3 +169,1678 @@ font-family: 'Limelight', serif; /* google font */
 .modalHost {
     top: 20%;
 }*/
+
+/*********************************************
+*
+*               contactcard.css 
+*
+*********************************************/
+
+#contactcardModal {
+    position: relative;
+}
+
+#contactcardModal .magic-face {
+    vertical-align: top;
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+}
+
+#contactcardModal div.scrollingHotSpotRight,
+#contactcardModal div.scrollingHotSpotLeft {
+    min-width: 10%;
+}
+
+#contactcardModal td {
+    vertical-align: top;
+    align: left;
+}
+
+#contactcardModal .is-same-as img {
+    width: 40px;
+    height: 40px;
+    position: relative;
+    float: left;
+}
+
+#contactcardModal .wrapper {
+    width: 220px;
+    position: relative;
+}
+
+#contactcardModal .is-same-as {
+    width: 100%;
+    height: 40px;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+#contactcardModal .modal-body .cvalues {
+    display: inline;
+}
+/*********************************************
+*
+*               face.css 
+*
+*********************************************/
+
+.face img {
+    width: 260px; height: 180px;
+}
+
+.selectable {
+    cursor: pointer;
+}
+
+.face {
+    width: 260px;
+}
+
+.face img {
+    border: 1px solid white;
+}
+
+.face.selected img {
+    border: 1px solid red;
+}
+
+.face .information {
+    text-align: left;
+}
+
+.face .information .title {
+    margin-left: 6px;
+}
+
+.face .information .aux {
+    margin-right: 6px;
+}
+
+.face .icon-certificate {
+    position: absolute;
+    z-index: 1000;
+    top: 2px;
+    right: -9px;
+    font-size: 31px;
+    color: orange;
+    -moz-text-shadow: 2px 2px rgba(0,0,0,.2);
+    -webkit-text-shadow: 2px 2px rgba(0,0,0,.2);
+    text-shadow: 2px 2px rgba(0,0,0,.2);
+}
+
+.face .appears-in {
+    position: absolute;
+    z-index: 1000;
+    top: 7px;
+    right: 1px;
+    color: white;
+    font-size: 14px;
+}
+
+/*********************************************
+*
+*               faces.css 
+*
+*********************************************/
+
+#faces-page .face {
+    width: 128px;
+    float: left;
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+
+#faces-page .face.selected img {
+    border: none;
+}
+
+#faces-page .item-container .face.selected {
+    background: rgba(239,85,65,1);
+}
+
+#faces-page .face.selected .boxShadowed {
+    -moz-box-shadow: none; /* Firefox */
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+#faces-page .face img {
+    height: 128px;
+    width: 128px;
+}
+
+#faces-page .face div.name {
+    width: 128;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/*********************************************
+*
+*               fscroll.css 
+*
+*********************************************/
+
+.fstrip {
+    position: relative;
+}
+
+.fstrip .arrow {
+    position: absolute;
+    width: 45px;
+    height: 20px;
+    background-image: url(images/arrow.png);
+    top: -20px;
+    left: 200px;
+}
+
+.fstrip {
+    position: relative;
+}
+
+
+.sd-fscroll {
+    height: 251px;
+    width: 100%;
+    position: relative;
+}
+
+.sd-fscroll .mediafile {
+    position: relative;
+    float: left;
+    display: block;
+}
+
+/*********************************************
+*
+*               header.css 
+*
+*********************************************/
+
+/*
+  Standard page header 
+*/
+#page-header .navbar {
+    background-color: white;
+}
+#page-header .brand {
+    margin-left: 2px;
+}
+#page-header a {
+    cursor: pointer;
+}
+
+#page-header .avatar {
+    background-color: white;
+    margin-top: 8px;
+}
+
+
+/*********************************************
+*
+*               home.css 
+*
+*********************************************/
+
+.smooth-div-scrollable
+{
+    width:100%;
+    height: 134px;
+    position: relative;
+}
+
+.smooth-div-scrollable div.media-file
+{
+    width: 128px;
+    position: relative;
+    float: left;
+    margin: 0;
+    padding: 2px;
+    /* If you don't want the images in the scroller to be selectable, try the following
+       block of code. It's just a nice feature that prevent the images from
+       accidentally becoming selected/inverted when the user interacts with the scroller. */
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+
+/*********************************************
+*
+*               hscroll.css 
+*
+*********************************************/
+
+
+.sd-scroll {
+    height: 256px;
+    position: relative;
+}
+
+.sd-scroll .mediafile {
+    position: relative;
+    float: left;
+    display: block;
+}
+
+
+/*********************************************
+*
+*               ie10mobile.css 
+*
+*********************************************/
+
+@-webkit-viewport {
+    width: device-width;
+}
+
+@-moz-viewport {
+    width: device-width;
+}
+
+@-ms-viewport {
+    width: device-width;
+}
+
+@-o-viewport {
+    width: device-width;
+}
+
+@viewport {
+    width: device-width;
+}
+
+/*********************************************
+*
+*               imap.css
+*
+*********************************************/
+
+#imapModal {
+    position: relative;
+}
+
+#imapModal .map {
+    width: 600px;
+    height: 400px;
+}
+
+#imapModal .ui-resizable-s {
+  bottom: 0;
+}
+
+#imapModal .ui-resizable-e {
+  right: 0;
+}
+
+#imapModal .modal-body {
+    max-height: none;
+    padding-top: 40px;
+}
+
+#imapModal .help {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 60px;
+    width: 400px;
+    height: 300px;
+    overflow: scroll;
+    background: white;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 8px;
+    -webkit-box-shadow:1px 1px 10px rgba(0,0,0,0.2); 
+    -moz-box-shadow:1px 1px 10px rgba(0,0,0,0.2); 
+    box-shadow:1px 1px 10px rgba(0,0,0,0.2);
+}
+
+#imapModal .help .emph {
+    font-weight: bold;
+    font-size: 120%;
+    margin-right: 0.5em;
+}
+
+#imapModal .is-near div {
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+}
+
+
+/*********************************************
+*
+*               incoming.css 
+*
+*********************************************/
+
+#incoming .modal-body {
+    max-height: 800px;
+    max-width: 500px;
+}
+
+#incoming .thumbnail img {
+    width: 64px;
+    height: 64px;
+}
+#incoming #wrapper {
+    width: 530px;
+    padding: 30px;
+    background-color: #373b49;
+    margin-right: auto;
+    margin-left: auto;
+}
+#incoming #w2 {
+    background-color: white;
+    color: #71707d;
+}
+#incoming a, #incoming a:hover, #incoming a:active {
+    color: #f57f75;
+    text-decoration: none;
+}
+
+#incoming #top, #incoming #middle, #incoming #bottom {
+    margin: 30px;
+}
+
+#incoming h2, #incoming h3, #incoming p, #incoming ul {
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#incoming ul {
+    margin-bottom: 20px;
+}
+
+#incoming ul li {
+    display: inline;
+    list-style-type: none;
+    padding-right: 20px;
+    float: left;
+}
+
+#incoming .poster {
+    position: relative;
+}
+
+#incoming .poster .mplay-icon {
+    left: 220px;
+}
+
+#incoming .poster .mplay-icon i {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#incoming .poster a img {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#incoming #name-btn {
+}
+    
+#incoming #name-btn a {
+    margin-right: auto;
+    margin-left: auto;
+    background-color: #f57f75;
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+}
+
+#incoming .thumbnail {
+    width: 64px;
+}
+
+#incoming .thumbnail .name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/*********************************************
+*
+*               invision.css 
+*
+*********************************************/
+
+body {
+    background-color: #f5f5f5;
+    color: #4d5d72;
+}
+
+.navbar .brand {
+    padding: 7px 20px 7px;
+}
+
+.iv-box, .btn-primary {
+    background: #5f728b; /* Old browsers */
+    background: -moz-linear-gradient(top,  #5f728b 0%, #475568 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5f728b), color-stop(100%,#475568)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #5f728b 0%,#475568 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #5f728b 0%,#475568 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #5f728b 0%,#475568 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #5f728b 0%,#475568 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5f728b', endColorstr='#475568',GradientType=0 ); /* IE6-9 */
+    border-color: 0 0 0;
+}
+
+.iv-bg {
+    background-color: #f5f5f5;
+}
+
+.iv-bg-brown {
+    background-color: #e6e6e6;
+}
+
+.iv-bg-blue {
+    background-color: #637082;
+}
+
+.iv-bg-gray {
+    background-color: #98a1ab;
+}
+
+.iv-box-outline {
+    border: #d0d0d0;
+}
+
+.iv-text-color {
+    color: #4d5d72;
+}
+
+p.text-center {
+    text-align: center;
+}
+
+
+/*********************************************
+*
+*               landing.css
+*
+*********************************************/
+
+#landing-page #headline {
+    line-height: 1.45;
+    vertical-align: top;
+    text-shadow: 1px 1px 2px #cccccc;
+    text-align: center;
+    font-size: 400%;
+    margin-bottom: 60px;
+}
+
+#landing-page button {
+    margin: 80px 0;
+    font-size: 22px;
+    padding: 15px 60px;
+}
+
+#landing-page {
+    margin-top: 150px;
+}
+
+.landingImage-Container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.landingImage {
+    width: 260px;
+    height: 260px;
+    color: white;
+    margin: 0 auto 20px;
+}
+
+.landingImage-Wrap {
+    width: 33%;
+    display: inline-table;
+}
+
+.landingImage-Container p {
+    font-size: 22px
+}
+
+
+/*********************************************
+*
+*               landing_header.css 
+*
+*********************************************/
+
+#landing-header .brand {
+    margin-left: 15px;
+}
+
+#landing-header .navbar-fixed-top {
+    height: auto;
+}
+
+.navbar .nav > li > a {
+    text-shadow: none;
+}
+
+#landing-header .nav-collapse ul > li > a {
+    padding-top: 20px;
+    color: rgb(133, 136, 143);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+#landing-header .nav-collapse ul > li > a:hover {
+    text-decoration: underline;
+}
+
+
+/*********************************************
+*
+*               magictag.css
+*
+*********************************************/
+
+#magicTagModal .magic-face {
+    vertical-align: top;
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+}
+
+#magicTagModal div.scrollingHotSpotRight,
+#magicTagModal div.scrollingHotSpotLeft {
+    min-width: 10%;
+}
+
+#magicTagModal td {
+    vertical-align: top;
+    align: left;
+}
+
+.ui-autocomplete { z-index:2147483647; }
+
+#magicTagModal .is-same-as img {
+    width: 40px;
+    height: 40px;
+    position: relative;
+    float: left;
+}
+
+#magicTagModal .wrapper {
+    width: 220px;
+    position: relative;
+}
+
+#magicTagModal .is-same-as {
+    width: 100%;
+    height: 40px;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+
+/*********************************************
+*
+*               map.css 
+*
+*********************************************/
+
+div.map {
+    background: #eee;
+    height: 300px;
+    /* position: relative; */
+}
+
+div.map div.title {
+    z-index: 10000;
+}
+
+div.map .viblio-map-popup button {
+    display: block;
+    width: 180px;
+}
+
+div.map .controls {
+    position: absolute;
+    z-index: 99;
+    left: 4px;
+    top: 4px;
+}
+
+div.map .controls button {
+    cursor: pointer;
+    font-weight: bold;
+
+    color: white;
+    background-color: black;
+    border: 1px solid white;
+    border: 1px solid rgba(255,255,255,.3);
+
+    line-height: 1.5em;
+    margin: 0;
+}
+
+div.map .marker {
+    display: inline-block;
+}
+
+div.map .marker a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: bold;
+    color: #fff;
+    background: #f00;
+    padding: 5px;
+}
+
+div.map .marker i {
+    font-size: 20px;
+    color: red;
+    cursor: pointer;
+    -moz-text-shadow: 2px 2px rgba(0,0,0,.2);
+    -webkit-text-shadow: 2px 2px rgba(0,0,0,.2);
+    text-shadow: 2px 2px rgba(0,0,0,.2);
+}
+
+.map .popover {
+    width: 180px;
+}
+
+.map .popover .popover-title {
+}
+
+.map .popover-content {
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.map .popover-img {
+}
+
+.map .marker-display {
+    width: 120px;
+    visibility: hidden;
+}
+
+.map .marker-display .marker-image img {
+    width: 120px;
+    height: 68px;
+}
+
+.map .marker-display .marker-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/*********************************************
+*
+*               mediafile.css
+*
+*********************************************/
+
+/**
+.media-file {
+    width: 128px;
+    height: 128px;
+    margin-left: 24px;
+    margin-bottom: 24px;
+}
+
+.mplay-icon, .mplay-icon:hover, .mplay-icon:visited {
+    position: absolute;
+    z-index: 100;
+    border: 0;
+    text-decoration: none;
+    opacity: .8;
+    top: 48px;
+    left: 48px;
+}
+
+.mplay-icon i {
+    color: white;
+    font-size: 40px;
+}
+
+.media-file .icon-ok-sign {
+    position: absolute;
+    z-index: 100;
+    border: 0;
+    text-decoration: none;
+    top: 48px;
+    left: 48px;
+    display: none;
+    color: white;
+    font-size: 40px;
+}
+
+.selected .icon-ok-sign {
+    display: block;
+}
+**/
+
+.fancybox-wrap {
+  width: 80% !important;
+}
+
+#player {
+    height: 480px;
+}
+
+.mediafile img {
+    width: 260px; height: 180px;
+}
+
+.mediafile {
+    width: 260px;
+}
+
+.mediafile img {
+    border: 1px solid white;
+}
+
+.mediafile.selected img {
+    border: 1px solid red;
+}
+
+.mediafile .information {
+    text-align: left;
+}
+
+.mediafile .information .title {
+    margin-left: 6px;
+}
+
+.mediafile .information .aux {
+    margin-right: 6px;
+}
+
+/**/
+
+.mplay-icon, .mplay-icon:hover, .mplay-icon:visited {
+    position: absolute;
+    z-index: 100;
+    border: 0;
+    text-decoration: none;
+    opacity: .6;
+    top: 50px;
+    left: 90px;
+}
+
+.mplay-icon i {
+    color: white;
+    font-size: 80px;
+}
+
+.mediafile .icon-ok-sign {
+    position: absolute;
+    z-index: 100;
+    border: 0;
+    text-decoration: none;
+    top: 50px;
+    left: 90px;
+    display: none;
+    color: white;
+    font-size: 80px;
+}
+/*
+.selected .icon-ok-sign {
+    display: block;
+}
+*/
+
+.dbtn {
+    position: absolute;
+    display: none;
+    z-index: 100;
+    top: 10px;
+    right: 8px;
+}
+
+
+/*********************************************
+*
+*               mediavstrip.css
+*
+*********************************************/
+
+.vstrip .media-container {
+    overflow: auto;
+    position: relative;
+}
+
+
+/*********************************************
+*
+*               new_player.css
+*
+*********************************************/
+
+#nplayer-page {
+}
+
+#nplayer-page tr, #nplayer-page td {
+    vertical-align: top;
+}
+
+
+#main-table {
+}
+
+#left-arrow-column {
+    width: 40px;
+}
+
+#right-arrow-column {
+    width: 40px;
+}
+
+#left-side {
+    width: 100%;
+}
+
+#right-side {
+    width: 280px;
+}
+
+#info-table {
+    width: 100%;
+}
+
+#comment-column {
+    width: 100%;
+}
+
+#title-desc {
+    padding: 18px;
+    background-color: white;
+}
+
+#comments {
+    padding: 24px;
+}
+
+#faces-column {
+    width: 340px;
+}
+
+#faces {
+    width: 340px;
+    padding-top: 10px;
+}
+
+#faces span {
+    margin-left: 25px;
+    color: white;
+    font-size: 25px;
+}
+
+#faces ul {
+    list-style-type:none;
+    margin-left: 25px;
+    margin-top: 10px;
+    padding:0;
+}
+
+#faces li {
+    float: left;
+    margin-bottom: 25px;
+}
+
+#geo {
+    width: 340px;
+    height: 255px;
+}
+
+#geo-map, #geo-nomap {
+    width: 100%;
+    height: 180px;
+    margin-right: auto;
+    margin-left: auto;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+#geo-nomap {
+    position: absolute;
+}
+
+
+#geo-nomap img {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    cursor: pointer;
+}
+
+#geo-title p {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    display: block;
+    padding-top: 20px;
+    padding-bottom: 3px;
+    font-size: 20px;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#geo-title p span {
+    font-weight: 100;
+}
+
+#geo-map .marker {
+    display: inline-block;
+}
+
+#geo-map .marker a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: bold;
+    color: #fff;
+    background: #f00;
+    padding: 5px;
+}
+
+#geo-map .marker i {
+    z-index: 100000;
+    font-size: 20px;
+    color: red;
+    cursor: pointer;
+    -moz-text-shadow: 2px 2px rgba(0,0,0,.2);
+    -webkit-text-shadow: 2px 2px rgba(0,0,0,.2);
+    text-shadow: 2px 2px rgba(0,0,0,.2);
+}
+
+#share-video-block {
+    height: 100px;
+    width: 280px;
+}
+
+#share-video-block div {
+    padding-top: 20px;
+    padding-left: 22px;
+}
+
+#share-video-block div a {
+    color: #666;
+    font-size: 20px;
+    padding-top: 21px;
+}
+
+#share-video-block div a.btn {
+    background-color: white;
+}
+
+#related-videos-block {
+    /*height: 650px;*/
+    width: 280px;
+}
+
+/*#related-videos-block .media-container {
+    height: 200px;
+}
+
+#related-videos-block .media-container-inner {
+    height: 100px;
+}*/
+
+#related-videos-block p {
+    text-align: center;
+    font-size: 25px;
+    margin-top: 6px;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#nplayer-page .vstrip .media-area {
+    /*height: 600px;*/
+    overflow: auto;
+}
+
+#nplayer-page .vstrip div {
+    margin: 0 auto;
+}
+
+#nplayer-page .vstrip div.mediafile {
+    position: relative;
+}
+
+#tv {
+    height: 529px;
+    background-color: white;
+}
+
+#tv object {
+    width  : 100%;
+    height : 100%;
+}
+
+#tv img {
+    display: block;
+    margin: 0 auto;
+    padding-top: 200px;
+}
+
+#nplayer-page .comments-header .views {
+    width: 40px;
+    height: 40px;
+    color: rgba(82,152,189,1);
+    text-align: center;
+}
+
+#nplayer-page .comments-header .views img {
+    display: block;
+    text-align: center;
+    margin: 2px auto -4px;
+}
+
+.observer {
+    display: inline;
+}
+.comments-header p {
+    display: inline;
+}
+
+.comment {
+}
+
+.comment .comment-text {
+    background-color: white;
+    padding: 12px;
+    margin-top: 10px;
+   /* max-height: 50px;
+    overflow: auto;*/
+}
+
+.comment .comment-footer {
+}
+
+.comment-editor {
+    background-color: white;
+    padding: 12px;
+    padding-bottom: 1px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(82,152,189,.7);
+}
+
+.comment-editor textarea.edit {
+    height: 60px;
+}
+
+#nplayer-page #geo-map-reloc {
+    width: 100%;
+}
+
+#nplayer-page #geo-map-reloc button {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 6px;
+}
+
+
+/*********************************************
+*
+*               nginx.css
+*
+*********************************************/
+
+#nginx {
+    padding: 35px;
+    background: white;
+}
+
+#nginx table {
+    width: 100%;
+    border: 0;
+    color: #888;
+    margin-top: 20px;
+    padding: 10px 0px 10px 0px;
+}
+ 
+#nginx tr {
+    height: 30px;
+}
+ 
+#nginx td.filename {
+    width: 25%;
+}
+ 
+#nginx .bar {
+    background-color: green;
+    display: block;
+    text-align: center;
+}
+ 
+#nginx td.progress {
+    width: 20%;
+    border: 1px solid #ccc;
+    padding: 0px;
+    color: #fff;
+    font-weight: bold;
+}
+
+#nginx td.done {
+    background: rgb(74, 170, 170);
+    text-align: center;
+}
+ 
+#nginx td.start-cancel {
+    padding-left: 8px;
+}
+
+#nginx th { 
+    text-align: left;
+}
+
+#nginx span.file-input-name {
+    display: none;
+}
+
+#nginx #total_progress {
+    font-weight: bold;
+}
+
+#nginx .alert {
+    visibility: hidden;
+}
+
+#nginx .data-point {
+    text-align: left;
+    font-size: 30px;
+}
+#nginx .data-title {
+    text-align: left;
+}
+
+#nginx #stats table {
+    width: 100%;
+}
+#nginx #stats table td {
+    width: 33%;
+}
+
+
+/*********************************************
+*
+*               player.css
+*
+*********************************************/
+
+#player-page {
+    margin-top: 20px;
+}
+
+#player-page #right-column {
+    width: 320px;
+    float: left;
+}
+
+#player-page #share-wrapper {
+    background-color: #ccc;
+    height: 60px;
+    width: 100%;
+    padding-top: 30px;
+}
+
+#player-page #share-wrapper > div {
+    display: table;
+    margin: 0 auto;
+}
+
+#player-page #related-wrapper {
+    min-height: 600px;
+    margin-top: 3px;
+    background-color: #ccc;
+}
+
+#player-page #related-wrapper p {
+    text-align: center;
+    font-size: 25px;
+    margin-top: 6px;
+}
+
+/***** MAIN LAYOUT ****/
+
+#player-page #main {
+    /*position: absolute;*/
+    width:  1040px;
+    float: left;
+}
+
+@media (max-width: 767px) {
+    #player-page #right-column {
+        width: 100%;
+    }
+}
+
+#container {
+  padding-left: 50px;   /* LC width */
+  padding-right: 50px;  /* RC width */
+}
+#container .column {
+  position: relative;
+  float: left;
+}
+#center {
+  width: 100%;
+}
+#left {
+  width: 50px;          /* LC width */
+  right: 50px;          /* LC width */
+  margin-left: -100%;
+}
+#right {
+  width: 50px;          /* RC width */
+  margin-right: -50px;  /* RC width */
+}
+
+/*** IE6 Fix ***/
+* html #left {
+  left: 50px;           /* RC width */
+}
+
+/*********** GUTS ****************/*
+
+
+/*
+#left a i, #right a i {
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 150px;
+    width: 100%;
+    font-size: 35px;
+}
+*/
+
+#left a, #right a {
+    margin-left: 9px;
+    margin-top: 100px;
+}
+
+#left a:hover, #right a:hover {
+    text-decoration: none;
+}
+
+#tv {
+    height: 529px;
+    background-color: white;
+}
+
+#tv object {
+    width  : 100%;
+    height : 100%;
+}
+
+#tv img {
+    display: block;
+    margin: 0 auto;
+    padding-top: 200px;
+}
+
+#info {
+    height: 100px;
+    background-color: #eee;
+}
+
+/**
+#comments {
+    height: 50px;
+    background-color: black;
+}
+**/
+
+#player-page .vstrip .media-area {
+    height: 600px;
+    overflow: auto;
+}
+
+#player-page .vstrip div {
+    margin: 0 auto;
+}
+
+#player-page .vstrip div.mediafile {
+    position: relative;
+}
+
+
+/*********************************************
+*
+*               pscroll.css
+*
+*********************************************/
+
+
+.sd-pscroll {
+    height: 208px;
+    width: 100%;
+    position: relative;
+}
+
+.sd-pscroll .face {
+    position: relative;
+    float: left;
+    display: block;
+    width: 170px;
+    margin-right: 25px;
+}
+
+.sd-pscroll .face {
+    display: block;
+    float: left;
+    margin: 0 5px;
+    border: none;
+    padding: 5px;
+    background: rgba(0,0,0,0.3);
+    -webkit-box-shadow: 1px 1px 10px rgba(0,0,0,0.2);
+    -moz-box-shadow: 1px 1px 10px rgba(0,0,0,0.2);
+    box-shadow: 1px 1px 10px rgba(0,0,0,0.2);
+}
+
+
+/*********************************************
+*
+*               register.css
+*
+*********************************************/
+
+#register-page .content-Wrap {
+    padding-top: 45px;
+    max-width: 842px;
+    width: 842px;
+}
+
+#register-Wrap {
+    width: 842px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border: 1px solid lightgrey;
+    color: #7a7e87;
+}
+
+#register-Wrap #loginArea form {
+    padding-bottom: 38px;
+}
+
+#loginArea form div input[type="checkbox"] {
+    display: inline-block;
+    width:  auto;
+    margin-bottom: 22px;
+}
+
+#videoPoster-Wrap {
+    background-color: rgba(255,255,255,.2);
+    width: 340px;
+    float: left;
+    padding: 40px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 476px;
+    font-size: 16px;
+}
+
+#shareFrom img {
+    width: 36px;
+    height: 36px;
+    margin-right: 10px;
+    float: left;
+}
+
+
+#register-page .mediafile img {
+    border: none;
+    height: 152px;
+    width: 100%;
+}
+
+#register-page .mediafile {
+    margin: 20px 0;
+}
+
+#register-page .mediafile .information {
+    width: 100%;
+    height: 40px;
+    background-color: white;
+    padding: 10px 5px;
+    position: relative;
+    box-sizing: border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+    text-align: left;
+}
+
+#register-page .mediafile .information .title {
+    margin: 0 0 0 10px;
+    font-weight: 600;
+}
+
+#register-page .mediafile .information .aux {
+    background-color: rgba(211,246,253,1);
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    color: rgba(82,152,189,1);
+    text-align: center;
+}
+
+#register-page .mediafile .information .aux img {
+    width: 30px;
+    height: 22px;
+    display: block;
+    text-align: center;
+    margin: 2px auto -4px;
+    border: none;
+}
+
+#register-page #loginArea  {
+    width: 500px;
+    float: left;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border: none;
+    border-left: 1px solid lightgrey;
+}
+
+.password-helper {
+    text-align: center;
+    background-color: rgba(239,239,232,1);
+    padding: 8px 0;
+    margin-top: -21px;
+    font-size: 15px;
+    margin-bottom: 12px;
+}
+
+.password-helper p {
+    margin: 0;
+}
+
+#register-page .checkbox {
+    font-size: 16px;
+}
+
+#toLogin {
+    text-align: center;
+    font-weight: 600;
+    font-size: 22px;
+    color: #7a7e87;
+    margin: 50px 0 200px
+}
+
+#register-page .terms {
+    max-height: 200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+#register-page .vmsg {
+    color: red;
+}
+
+#register-page .vmsg.valid {
+    color: green;
+}
+
+
+/*********************************************
+*
+*               settings.css
+*
+*********************************************/
+
+#settings-page .igreyBottomBrdr {
+    padding: 10px;
+}
+#settings-page i {
+    font-size: 20px;
+    margin-right: 8px;
+}
+#settings-page .avatar a {
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+}
+#settings-page .account-info {
+    border: 0;
+}
+#settings-page .account-info td {
+    vertical-align: top;
+}
+#settings-page .account-info td.email-password {
+    padding-left: 30px;
+}
+
+#settings-page .file-input-wrapper {
+    width: 200px;
+    height: 40px;
+    overflow: hidden;
+    position: relative;
+}
+#settings-page .file-input-wrapper > input[type="file"] {
+    font-size: 200px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
+}
+#settings-page .file-input-wrapper > .btn-file-input {
+    display: inline-block;
+    width: 200px;
+    height: 40px;
+}
+
+#settings-page .avatar i {
+    visibility: hidden;
+}
+
+
+/*********************************************
+*
+*               videosof.css
+*
+*********************************************/
+
+#videosof-page .pstrip > img {
+    width: 65px;
+    height: 65px;
+    margin-left: 45px;
+    margin-right: 20px;
+    margin-top: -13px;
+}
+
+#videosof-page .pstrip span {
+    padding-top: 21px;
+    display: inline-block;
+    color: white;
+    font-size: 32px;
+}
+
+
+/*********************************************
+*
+*               web_player.css
+*
+*********************************************/
+
+#webplayer-page .page-wrapper  {
+    padding-left: 45px;
+    padding-right: 45px;
+}
+
+
+/*********************************************
+*
+*               yir.css
+*
+*********************************************/
+
+.yir {
+    padding: 35px 0 10px 45px;
+    background-color: #d3d1c8;
+}
+
+.yir .title h2 {
+    display: inline;
+}
+
+.yir .title button {
+    margin-right: 45px;
+}
+
+.yir .title ul {
+    display: inline;
+}
+
+.yir .title ul li {
+    display: inline;
+    list-style-type: none;
+    padding-right: 20px;
+}
+
+.yir .media-list {
+    position: relative;
+}
+
+.yir .media-list .mediafile {
+    float: left;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.yir .month-heading {
+    margin-bottom: 10px;
+}
+
+.yir .month-heading .month-name {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.yir .title span {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.yir .title span.sel {
+    font-weight: bold;
+}

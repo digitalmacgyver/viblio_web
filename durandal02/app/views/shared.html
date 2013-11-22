@@ -1,0 +1,31 @@
+<div class="shared-page">
+  <div class="title-Wrap turquoiseBG bottomBorder-Thin whiteText textShadowed">
+    <h2 class="">
+      Videos Shared With You
+    </h2>    
+  </div>
+
+  <div class="shared-page-wrap mainVidSection yir">
+    <!-- ko if: numVids() > 0 -->
+        <button class="btn btn-primary pull-right edit-button" data-bind="click: toggleEditMode, text: editLabel"></button>
+    <!-- /ko -->
+    <!-- ko foreach: sections -->
+        <div class="month-heading textShadowed">
+            <img class="boxShadowed avatar" data-bind="attr:{src:$data.owner.avatar}" />
+            <span class="month-name heavyWeightFont" data-bind="text: $data.owner.displayname"></span>
+            <span class="num-videos" data-bind="text: '(' + $data.media().length + ( $data.media().length == 1 ? ' video)' : ' videos)' )"></span>
+        </div>
+        <div class="media-list" data-bind="foreach: { data: $data.media, as: 'm' }">
+            <!-- ko compose: m --><!-- /ko -->
+        </div>
+        <div class="clearfix"></div>
+    <!-- /ko -->
+         
+    <!-- ko if: showShareBtn() -->
+        <button class="btn btn-primary" data-bind="click: showLoggedOutTellFriendsModal">
+            Invite a friend to share
+        </button>
+    <!-- /ko --> 
+  </div>
+
+</div>

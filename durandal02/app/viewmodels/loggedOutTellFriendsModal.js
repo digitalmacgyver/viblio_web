@@ -2,6 +2,8 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     
     var friendsEmailsValid = ko.observable(false);
     var tellFriendsMessage = ko.observable();
+    var placeholderText = ko.observable();
+    var shouldBeLoggedOut = ko.observable();;
     
     function showLoggedOutTellFriendsModal() {
         dialog.show('viewmodels/loggedOutTellFriendsModal');
@@ -9,7 +11,9 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     
     function closeModal() {
         dialog.close(this);
-	viblio.cancelScheduledLogoutAndLogout();
+        if( shouldBeLoggedOut() ) {
+            viblio.cancelScheduledLogoutAndLogout();
+        }
     };
 
     function cimport() {
@@ -30,7 +34,9 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	    message = $('#tellFriendsMessage').val();
 
 	// Give the api call time to process
-	viblio.rescheduleLogout( 60 );
+        if( shouldBeLoggedOut() ) {
+            viblio.rescheduleLogout( 60 );
+        }
 	var list = $(self.view).find( "#friendsEmails" ).val();
         system.log( list, message );
 
@@ -44,7 +50,16 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     return {
         friendsEmailsValid: friendsEmailsValid,
         tellFriendsMessage: tellFriendsMessage,
+        placeholderText: placeholderText,
 	cimport: cimport,
+        
+        // when called from other viewmodel, the placeholder text is set and sent along
+        activate: function( args ) {
+            // reset value in case user shared already during their session
+            friendsEmailsValid(false);
+            placeholderText(args.placeholder);
+            shouldBeLoggedOut(args.logout);
+        },
 	compositionComplete: function( view ) {
 	    var self = this;
 	    self.view = view;

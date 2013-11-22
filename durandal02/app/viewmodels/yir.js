@@ -43,13 +43,11 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	var args = {};
 	if ( self.cid ) {
             viblio.api('/services/faces/contact_mediafile_count?cid=' + self.cid).then( function( data ) {
-                console.log( "getHits data with cid:  " + JSON.stringify( data ) );
                 self.hits(data.count);
             });
         } else {
             // can send a user uuid in args to get number of videos for specific user: {uid: uuid}
             viblio.api( '/services/mediafile/count', args ).then( function( data ) {
-                console.log( "getHits data:  " + JSON.stringify(data) );
                 self.hits(data.count);
             });
         }

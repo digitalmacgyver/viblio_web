@@ -25,6 +25,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio'],function(app, Events, v
 	this.media    = ko.observable( data );
 	this.selected = ko.observable( false );
 	this.edittable = ko.observable( false );
+	this.ro       = ko.observable( false );  // If true, then cannot edit title
 
 	this.title = ko.observable( data.title );
 	this.description = ko.observable( data.description );

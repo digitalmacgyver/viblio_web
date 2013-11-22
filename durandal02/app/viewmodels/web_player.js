@@ -482,9 +482,9 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 	    }
 		viblio.api( '/services/na/media_shared', { mid: self.mid }, errorHandler ).then( function(json) {
                     shareType( json.share_type );
+		    viblio.setLastAttempt( 'web_player?mid=' + self.mid );
 		    if ( json.auth_required ) {
 			// This is a private share and you are not logged in.
-			viblio.setLastAttempt( 'web_player?mid=' + self.mid );
 			errorHandler({
 			    message: 'This is a privately shared video.',
 			    detail: 'You must be logged into your Viblio account to view it.  If you do not yet have an account, sign up today!'

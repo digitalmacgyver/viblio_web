@@ -11,7 +11,7 @@
         </div>
         <div class="information">
             <div class="aux pull-right muted"><img src='css/images/viewsEye.png'/><span data-bind="html: media().eyes">0</span></div>
-            <div data-bind="liveEditor: title">
+            <div data-bind="liveEditor: title, ifnot: ro">
                 <div class="view vidTitle title truncate" data-bind="click: title.edit, text: title() || 'Click to edit title'"></div>
                 <div class="editTitle-Wrap">
                     <input type="text" class="edit" data-bind="value: title, 
@@ -19,6 +19,9 @@
                                          event: { blur: function() { title.stopEditing(); title.save( $data, media(), 'mediaFile:TitleDescChanged' ) } }" />
                 </div>  
             </div>
+	    <div data-bind="if: ro">
+	      <div class="view title truncate" data-bind="text: title() || 'no title'"></div>
+	    </div>
         </div>
     </div>
 </div>

@@ -8,7 +8,7 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
         } else {
             return false;
         }
-    })
+    });
     var displayname = ko.observable();
     var validated = ko.computed( function() {
 	return email() && password();
