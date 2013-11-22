@@ -3,21 +3,21 @@
     <div class="yir-inner" data-bind="if: hits() <= 2">
         <div class="yirHeading-Wrap" data-bind="if: hasCID">
             <p class="mainTitle textShadowed">Got any more videos of <span data-bind="text: name()"></span>?</p>
-            <p>We noticed there 
+            <p class="marginL45 font18">We noticed there 
                 <span data-bind="text: hits() == 1 ? 'is ' : ' are '"></span>only 
                 <span data-bind="text: hits() == 1 ? 'one ' : ' two '"></span><span data-bind="text: hits() == 1 ? 'video ' : ' videos'"></span> of <span data-bind="text: name()"></span>. 
                 If you have other videos starring <span data-bind="text: name()"></span>, why not add them to Viblio!
             </p>
-            <button class="btn btn-primary" data-bind="click: goToUpload">Upload more videos &raquo;</button>
+            <button class="btn btn-primary marginL45" data-bind="click: goToUpload">Upload more videos &raquo;</button>
         </div>
         <div class="yirHeading-Wrap" data-bind="if: !hasCID()">
             <p class="mainTitle textShadowed">Got any more videos?</p>
-            <p>We noticed you 
+            <p class="marginL45 font18">We noticed you 
                 <span data-bind="if: hits() == 0 ">don't have any videos yet</span>
                 <span data-bind="if: hits() != 0 "><span data-bind="text: hits() == 1 ? 'only have one ' : 'only have two '"></span><span data-bind="text: hits() == 1 ? 'video ' : ' videos'"></span></span>. 
                 If you have other videos, why not add them to Viblio!
             </p>
-            <button class="btn btn-primary" data-bind="click: goToUpload">Upload more videos &raquo;</button>
+            <button class="btn btn-primary marginL45" data-bind="click: goToUpload">Upload more videos &raquo;</button>
         </div>
     </div>
     

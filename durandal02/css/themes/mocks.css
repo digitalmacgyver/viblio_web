@@ -1,6 +1,6 @@
 body {
     background-color: rgba(239,239,232,1);
-    color: rgba(50,53,68,1);
+    color: rgba(117,117,128,1);
     padding-top: 57px; /* match header height */
     font-family: 'Source Sans Pro', sans-serif;
 }
@@ -391,6 +391,14 @@ input:-moz-placeholder {
     color: rgba(239,85,65,1);
 }
 
+.marginL45 {
+    margin-left: 45px;
+}
+
+.font18 {
+    font-size: 18px;
+}
+
 /********************  Page Header Section  *****************************/
 
 #page-header .navbar {
@@ -512,7 +520,6 @@ input:-moz-placeholder {
 }
 
 #page-header .avatar {
-    float: left;
     margin-top: -4px;
     margin-right: 12px;
     -moz-box-shadow: 1px 1px 0px 1px rgba(0,0,0,.5); /* Firefox */
@@ -537,6 +544,7 @@ input:-moz-placeholder {
     display: inline-block;
 }
 
+#userNamePicNav,
 .navbar .nav.pull-right.dropdown-toggle {
     padding: 0;
 }
@@ -549,10 +557,6 @@ input:-moz-placeholder {
 #page-header .navbar .dropdown-toggle span:last-of-type {
     font-size: 16px;
     font-weight: 600;
-}
-
-#userNamePicNav {
-    padding: 0;    
 }
 
 #userNameText-Wrap {
@@ -569,7 +573,6 @@ input:-moz-placeholder {
     left: 0;
     z-index: 1000;
     display: none;
-    float: left;
     min-width: 100%;
     padding: 0;
     margin: 0;
@@ -585,10 +588,7 @@ input:-moz-placeholder {
     border-left: 3px solid rgba(0,0,0,.5);
 }
 
-.navbar .nav > li > .dropdown-menu:after {
-    display: none;
-}
-
+.navbar .nav > li > .dropdown-menu:afte,
 .navbar .nav > li > .dropdown-menu:before {
     display: none;
 }
@@ -756,11 +756,6 @@ input:-moz-placeholder {
 
 #loginArea form {
     padding: 20px 52px 40px;
-}
-
-#loginArea form button {
-    float: right;
-    clear: both;
 }
 
 #noAccount a {
@@ -973,28 +968,26 @@ input:-moz-placeholder {
     border: none;
 }
 
-.mainVidSection .mediafile .information {
+.mediafile .information {
     width: 100%;
-    height: 54px;
     background-color: white;
-    padding: 17px 5px;
     position: relative;
     box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
 }
 
-.mainVidSection .mplay-icon {
-    left: 145px;
+.mainVidSection .mediafile .information {
+    height: 54px;
+    padding: 17px 5px;
 }
 
+.mainVidSection .mplay-icon,
 .mainVidSection .mplay-icon:hover {
     left: 145px;
 }
 
-.mainVidSection .mediafile .information .aux {
+.mediafile .information .aux {
     background-color: rgba(211,246,253,1);
-    width: 54px;
-    height: 54px;
     position: absolute;
     top: 0;
     right: 0;
@@ -1004,11 +997,19 @@ input:-moz-placeholder {
     text-align: center;
 }
 
+.mainVidSection .mediafile .information .aux {
+    width: 54px;
+    height: 54px;
+}
+
+.mediafile .information .aux img {
+    display: block;
+    text-align: center;
+}
+
 .mainVidSection .mediafile .information .aux img {
     width: 40px;
     height: 30px;
-    display: block;
-    text-align: center;
     margin: 4px auto -4px;
 }
 
@@ -1017,7 +1018,7 @@ input:-moz-placeholder {
 }
 
 .mediafile .information .title {
-    color: rgba(64,66,79,.75);
+    color: rgba(94,95,105,1);
 }
 
 /************************** hstrip *******************************/
@@ -1039,11 +1040,7 @@ input:-moz-placeholder {
     position: relative;
     display: block;
     float: left;
-    margin: 0;
     border: none;
-    padding-right: 20px;
-    padding-left: 5px;
-    padding-bottom: 5px;
     background: transparent;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -1056,12 +1053,7 @@ input:-moz-placeholder {
     padding: 35px 0 40px 0;
 }
 
-.fstrip .title h2 {
-    color: white;
-    display: inline;
-}
-
-.fstrip .title .btn {
+.fstrip .btn-primary {
     margin-left: 35px;
 }
 
@@ -1069,6 +1061,7 @@ input:-moz-placeholder {
     padding-bottom: 5px;
 }
 
+.hstrip .scrollWrapper .mediafile,
 .sd-fscroll .scrollableArea .mediafile {
     margin: 0;
     padding-right: 20px;
@@ -1085,13 +1078,7 @@ input:-moz-placeholder {
 
 .pstrip {
     padding: 25px 0 33px 0;
-    background-color: #24b8d1;
-}
-
-.pstrip .title h2 {
-    color: white;
-    display: inline;
-}
+} 
 
 .sd-pscroll .scrollWrapper {
     padding-top: 5px;
@@ -1171,7 +1158,7 @@ input:-moz-placeholder {
     -moz-box-sizing:border-box; /* Firefox */
     font-weight: 600;
     font-size: 16px;
-    color: rgba(117,117,128,1);
+    color: rgba(94,95,105,1);
 }
 
 .face .information .aux {
@@ -1198,12 +1185,7 @@ input:-moz-placeholder {
     box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2);
 }
 
-.playerfaces .face > div {
-    -moz-box-shadow: none; /* Firefox */
-    -webkit-box-shadow: none;
-    box-shadow: none;
-}
-
+.playerfaces .face > div,
 .playerfaces .face.selected .boxShadowed {
     -moz-box-shadow: none; /* Firefox */
     -webkit-box-shadow: none;
@@ -1248,17 +1230,10 @@ input:-moz-placeholder {
 
 /********************  Map Strip  *****************************/
 
-.map > .title {
+.map .mainTitle {
     position: absolute;
     top: 25px;
-}
-
-.map > .title > h2 {
-    font-weight: 300;
-}
-
-div.map div.title {
-    z-index: 1000;
+    z-index: 1000
 }
 
 /********************  YIR Section  *****************************/
@@ -1266,25 +1241,15 @@ div.map div.title {
 .yir {
     padding: 35px 0 100px 0;
     background-color: rgba(239,239,232,1);
-}
-
-.yirHeading-Wrap {
-    padding-left: 45px;
-}
-
-.yirHeading-Wrap h2,
-.yirHeading-Wrap p {
     color: rgba(117,117,128,1);
 }
 
-.yirHeading-Wrap p {
-    font-size: 18px;
-    margin: 15px 0 25px;
+.yir .font18 {
+    margin-bottom: 25px;
 }
 
 .yir-inner > .title,
 .yir-inner .month-heading {
-    color: rgba(117,117,128,1);
     font-weight: 300;
 }
 .yir .month-heading .month-name {
@@ -1333,7 +1298,6 @@ div.map div.title {
 }
 
 #videosof-page .shareButton {
-    float: right;
     margin-top: 18px;
     margin-right: 26px;
     clear: both;
@@ -1421,18 +1385,16 @@ div.map div.title {
     font-size: 16px;
 }
 
-#comments .comment-editor > p {
-    margin: 0;
-}
-
 #comments .comment-editor {
     padding: 8px;
 }
 
+#info-table td,
 #comments .comment-editor.editing {
     padding: 0;
 }
 
+#comments .comment-editor > p,
 .comment-editor textarea.edit {
     margin: 0;
 }
@@ -1445,7 +1407,6 @@ div.map div.title {
 }
 
 .all-comments > p {
-    font-size: 18px;
     margin: 25px 0;
 }
 
@@ -1461,6 +1422,7 @@ div.map div.title {
     margin-bottom: 34px;
 }
 
+.all-comments > p,
 .comments-header > p {
     font-size: 18px;
 }
@@ -1476,10 +1438,6 @@ div.map div.title {
 
 .comments-header p {
     margin-left: 15px;
-}
-
-#info-table td {
-    padding: 0;
 }
 
 .comment-text.bottomBorder-Thin {
@@ -1567,7 +1525,7 @@ div.map div.title {
     padding: 20px;
 }
 
-#nplayer-page #share-video-block {
+#share-video-block {
     height: 100px;
     width: 280px;
     margin-left: -4px;
@@ -1584,7 +1542,7 @@ div.map div.title {
     margin-top: 16px;
 }
 
-#nplayer-page #related-videos-block p {
+#related-videos-block p {
     margin-top: 0;
     margin-left: 3px;
     font-weight: 100;
@@ -1612,12 +1570,7 @@ div.map div.title {
 #related-videos-block .mediafile .information {
     width: 100%;
     height: 40px;
-    background-color: white;
     padding: 10px 5px;
-    position: relative;
-    box-sizing: border-box;
-    -moz-box-sizing:border-box; /* Firefox */
-    text-align: left;
 }
 
 #related-videos-block .mediafile .information .title {
@@ -1626,25 +1579,14 @@ div.map div.title {
 }
 
 #related-videos-block .mediafile .information .aux {
-    background-color: rgba(211,246,253,1);
     width: 40px;
     height: 40px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    padding: 0;
-    color: rgba(82,152,189,1);
-    text-align: center;
 }
 
 #related-videos-block .mediafile .information .aux img {
     width: 30px;
     height: 22px;
-    display: block;
-    text-align: center;
     margin: 2px auto -4px;
-    border: none;
 }
 
 /********************  Video Title and Description Section  *****************************/
@@ -1655,11 +1597,9 @@ div.map div.title {
     background-color: rgba(246,248,209,1); 
 }
 
-.edit { 
-    display: none; 
-}
-
-input.edit {
+.edit,
+input.edit,
+.editing .view {
     display: none;
 }
 
@@ -1722,10 +1662,6 @@ input.edit {
     font-size: 14px;
 }
 
-.editing .view { 
-    display: none; 
-}
-
 /********************  Share Video Modal Section  *************************/
 
 #shareVidModal {
@@ -1743,11 +1679,6 @@ input.edit {
 
 #sendVidEmail .bigTitle {
     display: inline-block
-}
-
-#sendVidEmail .cimport {
-    display: inline-block;
-    float: right;   
 }
 
 #shareVidModal form {
@@ -1932,25 +1863,10 @@ li.token-input-token-facebook {
     max-width: 100%;
 }
 
-/** Make Horizontal Stips a bit more generic **/
+/** Make Horizontal Strips a bit more generic **/
 
 .horizontalStrip {
     padding: 29px 0 14px 0;
-}
-
-.horizontalStrip .title {
-    margin-left: 45px;
-    margin-bottom: 22px;
-}
-
-.horizontalStrip .title h2 {
-    color: white;
-    display: inline;
-}
-
-.horizontalStrip .cinematic {
-    font-weight: 100;
-    font-family: inherit;
 }
 
 .horizontalStrip .item-container {
@@ -2061,8 +1977,6 @@ p.uitoken-input ul.token-input-list-facebook {
     cursor: default;
 }
 
-#howToUpload-page a:first-of-type,
-#howToUpload-page button:first-of-type,
 #getApp-page button:first-of-type {
    margin-right: 10px; 
 }
