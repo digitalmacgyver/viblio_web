@@ -199,7 +199,7 @@ input[type="color"],
     text-shadow: none;
     font-size: 24px;
     font-weight: 600;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
 }
 
 .shareButton:hover {
@@ -342,7 +342,7 @@ input:-moz-placeholder {
 }
 
 .bigTitle {
-    color: rgba(0,0,0,.6);
+    color: rgba(117,117,128,1);
     font-size: 23px;
     font-weight: 600;
 }
@@ -383,7 +383,7 @@ input:-moz-placeholder {
 }
 
 .lightGreyFont {
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
 }
 
 .tomatoFont,
@@ -445,7 +445,7 @@ input:-moz-placeholder {
     margin-top: 10px;
 }
 
-#page-header .navbar .nav li.dropdown {
+#page-header .navbar .nav li.dropdown:focus {
     outline: none;
 }
 
@@ -473,7 +473,7 @@ input:-moz-placeholder {
     }
     
     .nav-collapse .dropdown-menu {
-        color: rgba(0,0,0,.5);
+        color: rgba(117,117,128,1);
         background-color: #ffffff;
     }
     
@@ -493,7 +493,7 @@ input:-moz-placeholder {
     .nav-collapse .dropdown-menu > li > a:focus,
     .nav-collapse .dropdown-submenu:hover > a,
     .nav-collapse .dropdown-submenu:focus > a {
-        color: rgba(0,0,0,.5);
+        color: rgba(117,117,128,1);
         text-decoration: none;
         background-color: rgba(232,248,250,1);
         background-image: none;
@@ -599,7 +599,7 @@ input:-moz-placeholder {
     clear: both;
     font-weight: 600;
     line-height: 20px;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
     font-size: 16px;
     white-space: nowrap;
 }
@@ -607,7 +607,7 @@ input:-moz-placeholder {
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus,
 .dropdown-submenu:hover > a,
 .dropdown-submenu:focus > a {
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
     text-decoration: none;
     background-color: rgba(232,248,250,1);
     background-image: none;
@@ -732,7 +732,7 @@ input:-moz-placeholder {
     text-align: center;
     font-size: 25px;
     font-weight: bold;
-    color: rgba(0,0,0,.6);
+    color: rgba(117,117,128,1);
 }
 
 #loginArea form div {
@@ -763,10 +763,6 @@ input:-moz-placeholder {
     clear: both;
 }
 
-#noAccount h3 {
-    display: inline-block;
-}
-
 #noAccount a {
     text-decoration: underline;
     font-size: 17px;
@@ -781,7 +777,7 @@ input:-moz-placeholder {
 
 .loginHeader {
     font-size: 24px;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
     margin: 10px 0 30px;
     font-weight: 600;
 }
@@ -846,7 +842,7 @@ input:-moz-placeholder {
 
 #forgotPassword-Wrap .content-Wrap p {
     font-size: 18px;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
     margin-bottom: 24px;
 }
 
@@ -862,7 +858,7 @@ input:-moz-placeholder {
 
 #betaReservedModal {
     position: relative;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
 }
 
 #betaReservedModal p {
@@ -887,7 +883,7 @@ input:-moz-placeholder {
 .shareIconList li label {
     margin-bottom: -32px;
     font-size: 14px;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
     visibility: hidden;
 }
 
@@ -903,7 +899,7 @@ input:-moz-placeholder {
     padding-top: 20px;
     display: block;
     font-size: 16px;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
 }
 
 .shareIcon {
@@ -942,22 +938,24 @@ input:-moz-placeholder {
 }
 
 .mainVidSection .title {
-    margin-bottom: 27px;
-    margin-left: 45px;
     font-size: 16px;
     font-weight: 600;
 }
 
-.title span {
+.subtitle {
     color: rgba(0,0,0,.5);
     margin-left: 40px;
     font-size: 18px;
     font-weight: 400;
 }
 
-.cinematic {
+.mainTitle {
+    font-size: 32px;
+    line-height: 40px;
     font-weight: 100;
     font-family: inherit;
+    display: inline-block;
+    margin: 0 0 27px 45px;
 }
 
 .mainVidSection .portfolio {
@@ -1067,11 +1065,6 @@ input:-moz-placeholder {
     margin-left: 35px;
 }
 
-.fstrip .title span {
-    color: rgba(0,0,0,.5);
-    margin-left: 10px;
-}
-
 .sd-fscroll .scrollWrapper {
     padding-bottom: 5px;
 }
@@ -1178,7 +1171,7 @@ input:-moz-placeholder {
     -moz-box-sizing:border-box; /* Firefox */
     font-weight: 600;
     font-size: 16px;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
 }
 
 .face .information .aux {
@@ -1281,7 +1274,7 @@ div.map div.title {
 
 .yirHeading-Wrap h2,
 .yirHeading-Wrap p {
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
 }
 
 .yirHeading-Wrap p {
@@ -1291,7 +1284,7 @@ div.map div.title {
 
 .yir-inner > .title,
 .yir-inner .month-heading {
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
     font-weight: 300;
 }
 .yir .month-heading .month-name {
@@ -1495,7 +1488,7 @@ div.map div.title {
 
 /******************** Player Faces **********************/
 
-#nplayer-page #main-table #info-table #faces-column #faces {
+#faces {
     padding: 30px 30px 0;
     width: 306px;
     padding-top: 25px;
@@ -1511,7 +1504,7 @@ div.map div.title {
     display: block;
 }
 
-#nplayer-page #main-table #info-table #faces-column #faces ul {
+#faces ul {
     margin-left: 0;
     margin-bottom: 0;
 }
@@ -1538,7 +1531,7 @@ div.map div.title {
 
 /********************** Player Map ***********************/
 
-#nplayer-page #main-table #info-table #faces-column #geo {
+#geo {
     padding: 30px;
     width: 306px;
     height: auto;
@@ -1561,7 +1554,7 @@ div.map div.title {
 /********************* Player Comments ************************/
 
 #comment-column {
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
 }
 
 /****************** Player Right Column ************************/
@@ -1590,17 +1583,6 @@ div.map div.title {
     margin-left: 4px;
     margin-top: 16px;
 }
-
-#nplayer-page #related-videos-block {
-    /*height: auto;*/
-}
-
-/*
-#nplayer-page .vstrip .media-area {
-    max-height: 1277px;
-    overflow: auto;
-}
-*/
 
 #nplayer-page #related-videos-block p {
     margin-top: 0;
@@ -1671,10 +1653,6 @@ div.map div.title {
 .vidDescription:hover {
     cursor: pointer;
     background-color: rgba(246,248,209,1); 
-}
-
-.editTitle-Wrap {
-    /*height: 40px;*/
 }
 
 .edit { 
@@ -1821,7 +1799,7 @@ li.token-input-token-facebook {
 
 #shareLink {
     font-size: 15px;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
     width: 218px;
     white-space: nowrap;
     overflow: hidden;
@@ -1904,7 +1882,7 @@ li.token-input-token-facebook {
 #loggedOut-page .content-Wrap p {
     margin: 0;
     font-size: 18px;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
 }
 
 #loggedOut-page .bottomBorder.paddedDiv {
@@ -1968,12 +1946,6 @@ li.token-input-token-facebook {
 .horizontalStrip .title h2 {
     color: white;
     display: inline;
-}
-
-.horizontalStrip .title span {
-    color: rgba(0,0,0,.5);
-    margin-left: 40px;
-    font-size: 18px;
 }
 
 .horizontalStrip .cinematic {
@@ -2057,7 +2029,7 @@ p.uitoken-input ul.token-input-list-facebook {
 
 .TOS-PP {
     font-size: 16px;
-    color: rgba(0,0,0,.6);
+    color: rgba(117,117,128,1);
 }
 
 #TOS-page .mocksWhiteBG {
@@ -2071,16 +2043,12 @@ p.uitoken-input ul.token-input-list-facebook {
 }
 
 .instructionsPages .content-Wrap {
-    color: rgba(0,0,0,.6);
+    color: rgba(117,117,128,1);
     margin-bottom: 30px;
 }
 
 .instructionsPages .content-Wrap > div {
     margin-bottom: 0;
-}
-
-.instructionsPages h3 {
-    margin-bottom: 20px;
 }
 
 .macButton-Wrap {

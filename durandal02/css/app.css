@@ -123,10 +123,6 @@ font-family: 'Source Sans Pro', serif; /* google font */
     }
 }
 
-.cinematic {
-font-family: 'Limelight', serif; /* google font */
-}
-
 /*.container-fluid {
     overflow: auto;
     padding: 0ex;
@@ -528,7 +524,7 @@ font-family: 'Limelight', serif; /* google font */
     width: 64px;
     height: 64px;
 }
-#incoming #wrapper {
+#wrapper {
     width: 530px;
     padding: 30px;
     background-color: #373b49;
@@ -584,11 +580,8 @@ font-family: 'Limelight', serif; /* google font */
     margin-right: auto;
     margin-left: auto;
 }
-
-#incoming #name-btn {
-}
-    
-#incoming #name-btn a {
+  
+#name-btn a {
     margin-right: auto;
     margin-left: auto;
     background-color: #f57f75;
@@ -659,7 +652,7 @@ body {
     color: #4d5d72;
 }
 
-p.text-center {
+.text-center {
     text-align: center;
 }
 
@@ -833,7 +826,6 @@ div.map .marker {
 }
 
 div.map .marker a {
-    color: inherit;
     text-decoration: none;
     font-weight: bold;
     color: #fff;
@@ -854,16 +846,10 @@ div.map .marker i {
     width: 180px;
 }
 
-.map .popover .popover-title {
-}
-
 .map .popover-content {
     text-align: center;
     margin-right: auto;
     margin-left: auto;
-}
-
-.map .popover-img {
 }
 
 .map .marker-display {
@@ -1026,15 +1012,8 @@ div.map .marker i {
 *
 *********************************************/
 
-#nplayer-page {
-}
-
 #nplayer-page tr, #nplayer-page td {
     vertical-align: top;
-}
-
-
-#main-table {
 }
 
 #left-arrow-column {
@@ -1145,7 +1124,6 @@ div.map .marker i {
 }
 
 #geo-map .marker a {
-    color: inherit;
     text-decoration: none;
     font-weight: bold;
     color: #fff;
@@ -1254,18 +1232,12 @@ div.map .marker i {
     display: inline;
 }
 
-.comment {
-}
-
 .comment .comment-text {
     background-color: white;
     padding: 12px;
     margin-top: 10px;
    /* max-height: 50px;
     overflow: auto;*/
-}
-
-.comment .comment-footer {
 }
 
 .comment-editor {
@@ -1315,7 +1287,7 @@ div.map .marker i {
     height: 30px;
 }
  
-#nginx td.filename {
+#nginx .filename {
     width: 25%;
 }
  
@@ -1325,7 +1297,7 @@ div.map .marker i {
     text-align: center;
 }
  
-#nginx td.progress {
+#nginx .progress {
     width: 20%;
     border: 1px solid #ccc;
     padding: 0px;
@@ -1333,12 +1305,12 @@ div.map .marker i {
     font-weight: bold;
 }
 
-#nginx td.done {
+#nginx .done {
     background: rgb(74, 170, 170);
     text-align: center;
 }
  
-#nginx td.start-cancel {
+#nginx .start-cancel {
     padding-left: 8px;
 }
 
@@ -1346,11 +1318,11 @@ div.map .marker i {
     text-align: left;
 }
 
-#nginx span.file-input-name {
+#nginx .file-input-name {
     display: none;
 }
 
-#nginx #total_progress {
+#total_progress {
     font-weight: bold;
 }
 
@@ -1366,10 +1338,10 @@ div.map .marker i {
     text-align: left;
 }
 
-#nginx #stats table {
+#stats table {
     width: 100%;
 }
-#nginx #stats table td {
+#stats table td {
     width: 33%;
 }
 
@@ -1841,6 +1813,6 @@ div.map .marker i {
     cursor: pointer;
 }
 
-.yir .title span.sel {
+.yir .title .sel {
     font-weight: bold;
 }
