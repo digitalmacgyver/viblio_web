@@ -1,5 +1,5 @@
 define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'lib/customDialogs'], function (router, app, system, messageq, dialogs) {
-
+    $.ajaxSetup({cache:false});
     // The currently logged in user
     var user = ko.observable();
     var setUser = function( u ) {
