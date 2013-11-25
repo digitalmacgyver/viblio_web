@@ -43,7 +43,9 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
     
     Face.prototype.select = function(f, e) {
 	var self = this;
-	self.trigger( 'face:selected', self );
+
+	self.trigger( 'face:selected', self, $(e.target).parents('.face') );
+
         if ( $(e.target).parents('.face').hasClass('selected') ) {
             $(e.target).parents('.face').removeClass('selected');
         } else {
