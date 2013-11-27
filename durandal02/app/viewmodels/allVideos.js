@@ -1,4 +1,4 @@
-define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', 'durandal/events'], function( router,viblio, Mediafile, app, events ) {
+define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', 'durandal/events', 'durandal/system'], function( router,viblio, Mediafile, app, events, system ) {
 
     var allVids = function( cid, name ) {
 	var self = this;
@@ -8,7 +8,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.monthsLabels = ko.observableArray([]);
         self.videos = ko.observableArray([]);
         self.shouldBeVisible = ko.computed(function() {
-            if(self.months().length >= 1) {
+            if(self.videos().length >= 1) {
                 return true;
             } else {
                 return false;
@@ -19,13 +19,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.getVidsData = ko.observable();
         
         self.name = ko.observable(name);
-        /*self.firstName = ko.computed(function() {
-            if ( name ) {
-                return name.slice( 0, name.indexOf(' ') );
-            } else {
-                return null;
-            }
-        });*/
         self.hits = ko.observable();
         self.hasCID = ko.computed(function() {
             if (self.cid) {
@@ -34,9 +27,22 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 return false;
             }
         });
+        self.aMonthIsSelected = false;
+        self.isActiveFlag = false;
+        
+        // Hold the pager data back from server
+	// media queries.  Initialize it here so
+	// the first fetch works.
+	self.pager = {
+	    next_page: 1,
+	    entries_per_page: 3,
+	    total_entries: -1 /* currently unknown */
+	};
 	
 	// An edit/done label to use on the GUI
-	self.editLabel = ko.observable( 'Edit' );  
+	self.editLabel = ko.observable( 'Edit' ); 
+        
+        events.includeIn( this );
     };
     
     // Get the number of mediafiles so the allVids style can be decided on.
@@ -71,46 +77,11 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	else
 	    self.editLabel( 'Edit' );
 
-	self.months().forEach( function( month ) {
-	    month.media().forEach( function( mf ) {
-		mf.toggleEditMode();
-	    });
-	});
+	self.videos().forEach( function( mf ) {
+            mf.toggleEditMode();
+        });
     };
-
-    allVids.prototype.fetch = function( year, month ) {
-	var self = this;
-        var theMonth = month;
-	var args = { year: year };
-	if ( self.cid ) args['cid'] = self.cid;
-	viblio.api( '/services/yir/videos_for_year', args ).then( function( data ) {
-	    self.months.removeAll();
-            data.media.forEach( function( month ) {
-                var mediafiles = ko.observableArray([]);
-                if(month.month == theMonth) {
-                    self.videos([]);
-                    month.data.forEach( function( mf ) {
-                        var m = new Mediafile( mf );
-                        m.on( 'mediafile:play', function( m ) {
-                            router.navigate( 'new_player?mid=' + m.media().uuid );
-                        });
-                        m.on( 'mediafile:delete', function( m ) {
-                            viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function() {
-                                viblio.mpEvent( 'delete_video' );
-                                self.months().forEach( function( month ) {
-                                    month.media.remove( m );
-                                });
-                            });
-                        });
-                        mediafiles.push( m );
-                        self.videos.push(m);
-                    });
-                    self.months.push({month: month.month, media: mediafiles});
-                }
-            });    
-	});
-    };
-    
+ 
    allVids.prototype.monthSelected = function( self, month ) {
 	self.monthsLabels().forEach( function( m ) {
 	    m.selected( false );
@@ -118,21 +89,8 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	month.selected( true );
 	self.editLabel( 'Edit' );
 	//viblio.mpEvent( 'yir' );
-        console.log(month);
 	self.getVids( month.label );
-    };
-    
-    allVids.prototype.getMonths = function( cid ) {
-        var self = this;
-        var args = "";
-        if( cid ) {
-            args = "?cid=" + cid;
-        }
-        viblio.api( '/services/yir/months', args ).then( function(data) {
-            data.months.forEach( function( month ) {
-                self.monthsLabels.push( { "label": month, "selected": ko.observable(false) } );
-            });
-        });
+        self.aMonthIsSelected = true;
     };
     
     allVids.prototype.getVids = function( month, year, cid ) {
@@ -155,7 +113,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 m.on( 'mediafile:delete', function( m ) {
                     viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function() {
                         viblio.mpEvent( 'delete_video' );
-                        self.videos().remove( m );
+                        self.videos.remove( m );
                     });
                 });
                 self.videos.push(m);
@@ -163,33 +121,139 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	});
     };
 
-    allVids.prototype.activate = function() {
+    allVids.prototype.activate = function( cid ) {
 	var self = this;
 	var args = {};
+        if( cid ) {
+            args = "?cid=" + cid;
+        }
+        // get total number of videos
         self.getHits();
-        self.getMonths();
-        /*
-	if ( self.cid ) args['cid'] = self.cid;
-	return viblio.api( '/services/yir/years', args ).then( function( data ) {
-            console.log(ko.toJSON(data));
-	    /*var arr = [];
-	    data.years.forEach( function( year ) {
-		arr.push({ label: year, selected: ko.observable(false) });
-	    });
-	    self.years( arr );
-	    // self.years.push({ label: '2012', selected: ko.observable(false) }); // TEST DATA
-	    if ( data.years.length >= 1 ) {
-		self.years()[0].selected( true );
-		self.fetch( self.years()[0].label );
+        
+        // get months and create labels to use as selectors
+        viblio.api( '/services/yir/months', args ).then( function(data) {
+            data.months.forEach( function( month ) {
+                self.monthsLabels.push( { "label": month, "selected": ko.observable(false) } );
+            });   
+        });     
+    };
+    
+    // Add a new mediafile to our managed list of mediafiles
+    allVids.prototype.addMediaFile = function( mf ) {
+	var self = this;
+
+	// Create a new Mediafile with the data from the server
+	var m = new Mediafile( mf );
+
+	// Register a callback for when a Mediafile is selected.
+	// This is so we can deselect the previous one to create
+	// a radio behavior.
+	m.on( 'mediafile:selected',  function( sel ) {
+	    self.mediaSelected( sel );
+	});
+
+	// Proxy the mediafile play event and send it along to
+	// our parent.
+	m.on( 'mediafile:play', function( m ) {
+	    router.navigate( 'new_player?mid=' + m.media().uuid );
+	});
+
+	// Add it to the list
+	self.videos.push( m );
+    };
+    
+    allVids.prototype.search = function() {
+	var self = this;
+	return system.defer( function( dfd ) {
+	    if ( self.pager.next_page )   {
+		viblio.api( '/services/mediafile/list', 
+			    { 
+			      page: self.pager.next_page, 
+			      rows: self.pager.entries_per_page } )
+		    .then( function( json ) {
+			self.pager = json.pager;
+			json.media.forEach( function( mf ) {
+			    if ( mf.views.main.location == 's3' || mf.views.main.location == 'us' ) {
+				self.addMediaFile( mf );
+			    }
+			});
+			dfd.resolve();
+                        self.isActiveFlag = false;
+		    });
 	    }
-            
-            data.years.forEach(function(y){
-                console.log(y);
-                self.getVids(y);
-                
-            });
-            
-	});*/
+	    else {
+		dfd.resolve();
+                self.isActiveFlag = false;
+	    }
+	}).promise();
+    };
+    
+    allVids.prototype.isClipAvailable = function( idx ) {
+	var self = this;
+	if ( self.pager.total_entries == -1 )
+	    return false
+	return( idx >= 0 && idx < self.pager.total_entries );
+    };
+    
+    // Scroll to the mediafile specified.
+    allVids.prototype.scrollTo = function( m ) {
+	var self = this;
+	var scroller = $(self.element).find(".media-container");
+	var item = scroller.find('#'+m.media().uuid);
+	scroller.scrollTop( item.position().top + scroller.scrollTop() );
+    };
+    
+    // If the item container is shorter than the scroller, and there
+    // is more data on the server, then fetch more data.  We either
+    // want enough data to enable the scrollbar, or all the data
+    //
+    allVids.prototype.updateScroller = function() {
+        var self = this;
+        var rows = Math.ceil( self.pager.entries_per_page / ( ($(document).width()-90)*.9 / 352 ) );
+        var item_height = 256; //Math.ceil( $(window).height() / rows ); // each item height
+        var total_rows  = Math.ceil( $(document).height() / item_height );
+        var need_rows = (total_rows - rows) + 1; // this is how many more we need to fetch
+        var fetches = Math.ceil( need_rows / rows ); // how many search()s
+        
+        if ( $(window).scrollTop() + $(window).height() <= $(document).height() ) {
+           if ( self.pager.next_page ) {
+               // There is more data on the server and we have room to display it.
+               // Will fetching 'rows' cover what we need, or do we need to do multiple
+               // fetches? (computed above)
+               
+               // This code *should* queue up N searches to run in serial.
+               for( var i=0; i<fetches; i++ ) {
+                   $('body').queue(function() {
+                        self.search().then( function() {
+                            $('body').dequeue();
+                        });
+                    });
+                } 
+            }
+        }
+    };
+
+    // In attached, attach the mCustomScrollbar we're presently
+    // employing for this purpose.
+    allVids.prototype.compositionComplete = function( view ) {
+	var self = this;
+	self.element = view;
+        
+        // bind to scroll() event and when scroll is 150px or less from bottom fetch more data.
+        // Uses flag to determine if fetch is already in process, if so a new one will not be made 
+        $(window).scroll(function() {
+            // do not bind if a month is selected.
+            if( !self.aMonthIsSelected ) {
+                if( !self.isActiveFlag && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
+                    self.isActiveFlag = true;
+                    self.search();
+                }
+            }
+         });
+         
+        // At this point (and only at this point!) we have an accurate
+	// height dimension for the scroll area and its item container.
+	self.updateScroller();
     };
     
     // Animation callbacks

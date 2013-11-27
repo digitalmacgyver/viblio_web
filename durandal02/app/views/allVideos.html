@@ -1,13 +1,12 @@
-<div class="bottomBorder-Thin">
+<div id="allVidsPage" class="padding45">
     
-    <h2 class="cinematic textShadowed">You have <span data-bind="text: hits()"></span><span data-bind="text: hits() == 1 ? 'video ' : ' videos'"></span> in your private Viblio Library.</h2>
-    <button class="btn btn-small btn-secondary" data-bind="click: toggleEditMode, text: editLabel"></button>
-    
-    <div data-bind="text: videos()"></div>
+    <p class="mainTitle textShadowed">You have <span data-bind="text: hits()"></span><span data-bind="text: hits() == 1 ? 'video ' : ' videos'"></span> in your private Viblio Library.</p>
+    <button class="btn btn-small btn-secondary pull-right" data-bind="click: toggleEditMode, text: editLabel"></button>
+    <div class="clearfix"></div>
     
     <div class="" data-bind="if: hits() <= 2">
         <div class="yirHeading-Wrap" data-bind="if: !hasCID()">
-            <h2 class="cinematic textShadowed">Got any more videos?</h2>
+            <p class="mainTitle textShadowed">Got any more videos?</p>
             <p>We noticed you 
                 <span data-bind="if: hits() == 0 ">don't have any videos yet</span>
                 <span data-bind="if: hits() != 0 "><span data-bind="text: hits() == 1 ? 'only have one ' : 'only have two '"></span><span data-bind="text: hits() == 1 ? 'video ' : ' videos'"></span></span>. 
@@ -16,55 +15,25 @@
             <button class="btn btn-primary" data-bind="click: goToUpload">Upload more videos &raquo;</button>
         </div>
     </div>
-    
-    <div class="" data-bind="if: hits() > 2">
-        <div id="years" class="title">
+
+    <div data-bind="if: hits() > 2">
+        <div id="months" class="pull-right">
             <div>
-                <ul data-bind="foreach: monthsLabels">
+                <ul class="monthLabels" data-bind="foreach: monthsLabels">
                     <li>
                         <span class="textShadowed" data-bind="click: $parent.monthSelected.bind( $data, $parent ), 
-                                         text: $data.label, 
+                                         text: $data.label.slice(0,3) + ' ' + $data.label.slice($data.label.length-4), 
                                          css:{sel: $data.selected()}"></span>
                     </li>
                 </ul>
             </div>
-        </div>
-        
+        </div> <!-- end months -->
         <div id="allVidsWrap">
-            <div data-bind="highlightChange: shouldBeVisible()">
-                <!-- ko foreach: videos -->
-                
-                <div class="mediafile" data-bind="attr:{id:$data.media().uuid}">
-                    <div class="boxShadowed">
-                        <button class="dbtn btn btn-danger btn-mini" data-bind="click:mfdelete">delete</button>
-                        <a class="mplay-icon pointer" data-bind="click:play">
-                            <i class="icon-play-circle"></i> 
-                        </a>
-                        <i class="icon-ok-sign"></i>
-                        <div class='pointer' data-bind="click:play">
-                            <img data-bind="{attr:{src:$data.media().views.poster.url}}" />
-                        </div>
-                        <div class="information">
-                            <div class="aux pull-right muted"><img src='css/images/viewsEye.png'/><span data-bind="html: media().eyes">0</span></div>
-                            <div data-bind="liveEditor: title, ifnot: ro">
-                                <div class="view vidTitle title truncate" data-bind="click: title.edit, text: title() || 'Click to edit title'"></div>
-                                <div class="editTitle-Wrap">
-                                    <input type="text" class="edit" data-bind="value: title, 
-                                                         hasFocus: title.editing, 
-                                                         event: { blur: function() { title.stopEditing(); title.save( $data, media(), 'mediaFile:TitleDescChanged' ) } }" />
-                                </div>  
-                            </div>
-                            <div data-bind="if: ro">
-                              <div class="view title truncate" data-bind="text: title() || 'no title'"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <img data-bind="{attr:{src:$data.media().views.poster.url}}" />
-                
-                <!-- /ko -->
+            <div >
+                    <!-- ko foreach: videos -->
+                        <!-- ko compose: $data --><!--/ko-->
+                    <!-- /ko -->
             </div>
         </div>
-    </div>
-    
+    </div> 
 </div>

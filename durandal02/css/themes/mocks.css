@@ -395,8 +395,16 @@ input:-moz-placeholder {
     margin-left: 45px;
 }
 
+.marginR45 {
+    margin-right: 45px;
+}
+
 .font18 {
     font-size: 18px;
+}
+
+.padding45 {
+    padding: 45px;
 }
 
 /********************  Page Header Section  *****************************/
@@ -950,7 +958,7 @@ input:-moz-placeholder {
     font-weight: 100;
     font-family: inherit;
     display: inline-block;
-    margin: 0 0 27px 45px;
+    margin-bottom: 27px;
 }
 
 .mainVidSection .portfolio {
@@ -966,6 +974,10 @@ input:-moz-placeholder {
     width: 100%;
     height: 197px;
     border: none;
+}
+
+.mediafile {
+    position: relative;
 }
 
 .mediafile .information {
@@ -1748,6 +1760,117 @@ li.token-input-token-facebook {
     background-color: rgba(152,154,160,1);
     padding: 6px 13px;
     font-size: 16px;
+}
+
+/********************  All Videos Page Section  *****************************/
+
+#allVidsPage {
+    padding-top: 30px;
+}
+
+#months {
+    width: 10%;
+    min-width: 70px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.monthLabels {
+    list-style: none;
+    text-align: right;
+    font-weight: 100;
+    font-size: 18px;
+    margin: 0;
+}
+
+.monthLabels li {
+    cursor: pointer;
+}
+
+#allVidsWrap {
+    width: 89%;
+    display: inline-block;
+}
+
+#allVidsPage .media-container {
+    height: 600px;
+    overflow: auto;
+    position: relative;
+}
+
+#allVidsPage .sel {
+    font-weight: 600;
+}
+    
+#allVidsPage .mediafile {
+    width: 350px;
+    margin: 0 25px 25px 0;
+    float: left;
+}
+
+#allVidsPage .mediafile img {
+    width: 100%;
+    height: 197px;
+    border: none;
+}
+
+#allVidsPage .mediafile .information {
+    height: 54px;
+    padding: 17px 5px;
+}
+
+#allVidsPage .mplay-icon,
+#allVidsPage .mplay-icon:hover {
+    left: 145px;
+}
+
+#allVidsPage .mediafile .information .aux {
+    width: 54px;
+    height: 54px;
+}
+
+#allVidsPage .mediafile .information .aux img {
+    width: 40px;
+    height: 30px;
+    margin: 4px auto -4px;
+}
+
+@media (max-width: 935px) {
+    #allVidsPage > .btn {
+        float: none;
+        margin-bottom: 20px;
+    }
+    
+    #allVidsWrap {
+        width: 100%;
+    }
+    
+    #months {
+        width: 100%;    
+    }
+    
+    .monthLabels {
+        text-align: left;
+        margin-bottom: 20px;
+    }
+    
+    .monthLabels li {
+        display: inline-block;
+        margin-right: 10px;
+        text-align: left;
+    }
+    
+   /* #allVidsPage .mediafile {
+        width: 100%;
+    }
+    
+    #allVidsPage .mediafile img {
+        height: auto;
+    }
+    
+    #allVidsPage .mplay-icon {
+        display: none;
+    } */
 }
 
 /********************  Settings Page Section  *****************************/
