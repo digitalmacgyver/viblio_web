@@ -157,6 +157,13 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	m.on( 'mediafile:play', function( m ) {
 	    router.navigate( 'new_player?mid=' + m.media().uuid );
 	});
+        
+        m.on( 'mediafile:delete', function( m ) {
+                    viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function() {
+                        viblio.mpEvent( 'delete_video' );
+                        self.videos.remove( m );
+                    });
+                });
 
 	// Add it to the list
 	self.videos.push( m );
