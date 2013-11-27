@@ -69,8 +69,8 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	// Register a callback for when a Face is selected.
 	// This is so we can deselect the previous one to create
 	// a radio behavior.
-	m.on( 'face:selected',  function( sel, pos ) {
-	    self.faceSelected( sel, pos );
+	m.on( 'face:selected',  function( sel, el ) {
+	    self.faceSelected( sel, el.offset().left + Math.round( el.width() / 2 ) );
 	});
 
 	// Play a face clip.  This uses the query parameter

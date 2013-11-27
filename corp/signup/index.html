@@ -202,7 +202,24 @@
                                             <p style="text-align: center; font-family: 'open sans';">Easily share your videos in small groups or privately – no more slow downloads.</p>
                                         </div>
                                     </div>
-                                    <h2 style="text-align: center; font-size: 24px; padding-top: 50px; color: #1cb8d1; font-family: 'open sans';">If only the rest of your digital life could be this organized!</h2>
+                                    <div class="share-wrap">
+                                        <h2 style="text-align: center; font-size: 24px; padding-top: 50px; color: #1cb8d1; font-family: 'open sans';">If only the rest of your digital life could be this organized!</h2>
+                                        <!-- AddThis Button BEGIN -->
+                                        <div class="addthis_toolbox addthis_default_style ">
+                                            <a class="addthis_button_preferred_1"></a>
+                                            <a class="addthis_button_preferred_2"></a>
+                                            <a class="addthis_button_preferred_3"></a>
+                                            <a class="addthis_button_preferred_4"></a>
+                                            <a class="addthis_button_compact"></a>
+                                            <a class="addthis_counter addthis_bubble_style"></a>
+                                        </div>
+                                        <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+                                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5286a0092faf264c"></script>
+                                        <!-- AddThis Button END -->
+                                        <!--<button class="btn btn-primary fancybox" href="#loggedOutTellFriendsModal">
+                                            Tell a friend about Viblio
+                                        </button> -->
+                                    </div>
                                 </div>
                         </div><!-- #content -->
                     </div><!-- .wf-container -->
@@ -306,10 +323,31 @@ var dtLocal={"passText":"To view this protected post, enter the password below:"
 	</div>
 </div>
 
+<!--<a class="fancybox" href="#loggedOutTellFriendsModal" id="clickHere" style="display:none">click here</a>
+<div style="display:none"></div>
+<div id='loggedOutTellFriendsModal' class='mocksWhiteBG centeredEl' style="height: auto; background-color: #fff!important; position: relative!important; width: 565px!important; float: left!important;">
+    <div class='closeX btn btn-primary' onclick="jQuery.fancybox.close();"><img src='wp-content/images/closeX.png'/></div>
+    
+            <div class="bottomBorder paddedDiv">
+                <p class='bigTitle'>Tell friends about Viblio</p>
+                <p class="uitoken-input"><input id='friendsEmails' type="text" placeholder="Email address" /></p>
+                <textarea id='tellFriendsMessage' data-bind="value: tellFriendsMessage, attr: {placeholder: placeholderText}"></textarea>
+            </div>
+
+            <div class="paddedDiv bottomBorder-Thick">
+                <button class="btn btn-primary" data-bind="click: tellFriends, enable: friendsEmailsValid">
+                    Send
+                </button>
+            </div>
+ 
+</div> -->
+
 <!-- start Mixpanel --><script type="text/javascript">(function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src=("https:"===e.location.protocol?"https:":"http:")+'//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f);b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==
 typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");for(g=0;g<i.length;g++)f(c,i[g]);
 b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
 mixpanel.init("404b9a0b96b8147b5050c165dfc809b3");</script><!-- end Mixpanel -->
+
+<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/2.3.0/knockout-min.js'></script>
 
 <script type="text/javascript">
   jQuery(document).ready( function() {
@@ -342,6 +380,36 @@ mixpanel.init("404b9a0b96b8147b5050c165dfc809b3");</script><!-- end Mixpanel -->
               jQuery('.bxslider').css("visibility","visible");
           }
       });
+      
+        var viewModel = {
+            friendsEmailsValid: ko.observable(false),
+            tellFriendsMessage: ko.observable(),
+            placeholderText: ko.observable('Check out Viblio! If you join we can share videos privately and easily!'),
+            
+            tellFriends: function() {
+                var $ = jQuery;
+                console.log('clicked');
+                var self = this;
+                if( ! this.tellFriendsMessage() ) {
+                    $('#tellFriendsMessage').val( $('#tellFriendsMessage').attr('placeholder') );
+                };
+
+                var message = this.tellFriendsMessage();
+                if ( ! message ) 
+                    message = $('#tellFriendsMessage').val();
+
+                var list = $(self.view).find( "#friendsEmails" ).val();
+                console.log( list, message );
+                
+                /*viblio.api( '/services/user/tell_a_friend', { list: list, message: message } ).then( function() {
+                    viblio.notify( 'Email sent', 'success' );
+                    viblio.mpEvent( 'tell_a_friend' );
+                    self.closeModal();
+                });*/
+            }
+        };
+        
+        ko.applyBindings(viewModel);
   });
 </script>
 
