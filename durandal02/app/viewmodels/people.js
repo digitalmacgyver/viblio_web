@@ -26,6 +26,10 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 	});
     }
 
+    function setKeyFrame( af ) {
+	console.log( 'setKeyFrame', af );
+    }
+
     function person_selected( f ) {
 	if ( clipboard.indexOf( f ) != -1 ) {
 	    // its selected, so deselect it
@@ -51,7 +55,16 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 			appears_in: f.appears_in(),
 			tag_state: 'accept'
 		    };
-		    var alt_face = new Face( data, { clickable: false, show_name: false, show_tag1: true } );
+		    var alt_face = new Face( data, { 
+			clickable: false,
+			rightBadgeImg: 'css/images/gold-star.png',
+			rightBadgeClick: setKeyFrame,
+			rightBadgeMode: 'hover',
+			leftBadgeImg: 'css/images/silver-star.png',
+			leftBadgeClick: setKeyFrame,
+			leftBadgeMode: 'static',
+			show_name: false, 
+			show_tag1: true } );
 		    alt_face.on( 'person:state_change', function( af, new_state ) {
 			af.data.tag_state = new_state;
 			if ( new_state == 'reject' )

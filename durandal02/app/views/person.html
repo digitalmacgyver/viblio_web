@@ -1,18 +1,24 @@
 <div class="person">
-    <div>
-        <div data-bind="if: hasStarPower()">
-            <img class="star" data-bind="visible: star, attr: { src: starColor }"/>
-            <span class="starRank textShadowed" data-bind="visible: star, html: star_power() "></span>
-        </div>
-	<div data-bind="css:{pointer:clickable()}, click:select">
-          <img data-bind="attr:{src:url}" />
-          <!-- ko if:  show_name()-->
-          <div class="name" data-bind="text: name"></div>
-          <!-- /ko -->
-          <!-- ko if:  show_tag1()-->
-          <div class="name" data-bind="tag1:{name: name, changed: changed}, text: name"></div>
-          <!-- /ko -->
-	</div>
+  <div>
+    <div data-bind="if: hasStarPower()">
+      <img class="star" data-bind="visible: star, attr: { src: starColor }"/>
+      <span class="starRank textShadowed" data-bind="visible: star, html: star_power() "></span>
     </div>
+    <div data-bind="if: rightBadgeOn()">
+      <img class="right-badge" data-bind="click:rightBadgeClick,attr:{src:rightBadgeImg}"/>
+    </div>
+    <div data-bind="if: leftBadgeOn()">
+      <img class="left-badge" data-bind="click:leftBadgeClick,attr:{src:leftBadgeImg}"/>
+    </div>
+    <div data-bind="css:{pointer:clickable()}, click:select">
+      <img class="person-img" data-bind="attr:{src:url}" />
+      <!-- ko if:  show_name()-->
+      <div class="name" data-bind="text: name"></div>
+      <!-- /ko -->
+      <!-- ko if:  show_tag1()-->
+      <div class="name" data-bind="tag1:{name: name, changed: tag1_changed}, text: name"></div>
+      <!-- /ko -->
+    </div>
+  </div>
 </div>
 

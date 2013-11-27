@@ -5,16 +5,31 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 	options = $.extend( {
 	    clickable: true,
 	    click: null,
-	    allow_changes: false,
+
 	    show_name: true,
-	    show_tag1: false }, options || {} );
+	    show_tag1: false,
+
+	    rightBadgeMode: 'hidden', // static, hover
+	    rightBadgeImg: null,
+	    rightBadgeClick: null,
+
+	    leftBadgeMode: 'hidden',
+	    leftBadgeImg: null,
+	    leftBadgeClick: null
+	}, options || {} );
 
 	this.options = options;
 
 	this.clickable = ko.observable( options.clickable );
-	this.allow_changes = ko.observable( options.allow_changes );
+
 	this.show_name = ko.observable( options.show_name );
 	this.show_tag1 = ko.observable( options.show_tag1 );
+
+	this.rightBadgeImg = ko.observable( options.rightBadgeImg );
+	this.rightBadgeOn  = ko.observable( options.rightBadgeMode == 'static' );
+
+	this.leftBadgeImg = ko.observable( options.leftBadgeImg );
+	this.leftBadgeOn  = ko.observable( options.leftBadgeMode == 'static' );
 
 	this.url = ko.observable( data.url );
 	this.name = ko.observable( data.contact_name ? data.contact_name : 'unknown' );
@@ -46,8 +61,18 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 	Events.includeIn( this );
     };
 
-    Person.prototype.changed = function( new_state ) {
+    Person.prototype.tag1_changed = function( new_state ) {
 	this.trigger( 'person:state_change', this, new_state );
+    };
+
+    Person.prototype.rightBadgeClick = function() {
+	if ( this.options.rightBadgeClick )
+	    this.options.rightBadgeClick( this );
+    };
+    
+    Person.prototype.leftBadgeClick = function() {
+	if ( this.options.leftBadgeClick )
+	    this.options.leftBadgeClick( this );
     };
     
     Person.prototype.select = function(f, e) {
@@ -61,50 +86,6 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 		self.trigger( 'person:selected', self );
 	    }
 	}
-
-	if ( 0 ) {
-            if ( $(e.target).parents('.person').hasClass('selected') ) {
-		$(e.target).parents('.person').removeClass('selected');
-            } else {
-		$(e.target).parents('.person').siblings('.person').removeClass('selected');
-		$(e.target).parents('.person').addClass('selected');
-            }
-	    if ( self.allow_changes() ) {
-		var previous = {
-		    url: self.url(),
-		    email: self.email(),
-		    name: self.name()
-		};
-		if ( self.name() && self.name() != 'unknown' ) {
-		    // This is a known contact
-		    customDialogs.showContactCard( self ).then( function( data ) {
-			data.previous = previous;
-			data.current  = {
-			    url: self.url(),
-			    email: self.email(),
-			    name: self.name()
-			};
-			var viblio = require( 'lib/viblio' );
-			viblio.mpEvent( 'manage_face' );
-			self.trigger( 'person:changed', self, data );
-		    });
-		}
-		else {
-		    // This is an unidentified person
-		    customDialogs.showMagicTag( self ).then( function( data ) {
-			data.previous = previous;
-			data.current  = {
-			    url: self.url(),
-			    email: self.email(),
-			    name: self.name()
-			};
-			var viblio = require( 'lib/viblio' );
-			viblio.mpEvent( 'tag_face' );
-			self.trigger( 'person:changed', self, data );
-		    });
-		}
-	    }
-	}
     };
 
     Person.prototype.attached = function( view ) {
@@ -113,8 +94,35 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
     };
 
     Person.prototype.compositionComplete = function( view ) {
-        this.view = view;
-        this.trigger( 'person:composed', this );
+	var self = this;
+
+        self.view = view;
+
+	if ( self.options.leftBadgeImg ) {
+	    if ( self.options.leftBadgeMode == 'hover' ) {
+		$(self.view).find(".person-img").hover( 
+		    function() {
+			self.leftBadgeOn( true );
+		    },
+		    function() {
+			self.leftBadgeOn( false );
+		    });
+	    }
+	}
+
+	if ( self.options.rightBadgeImg ) {
+	    if ( self.options.rightBadgeMode == 'hover' ) {
+		$(self.view).hover( 
+		    function() {
+			self.rightBadgeOn( true );
+		    },
+		    function() {
+			self.rightBadgeOn( false );
+		    });
+	    }
+	}
+
+        self.trigger( 'person:composed', self );
     };
     
     return Person;
