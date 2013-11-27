@@ -5,10 +5,10 @@
       <span class="starRank textShadowed" data-bind="visible: star, html: star_power() "></span>
     </div>
     <div data-bind="if: rightBadgeOn()">
-      <img class="right-badge" data-bind="click:rightBadgeClick,attr:{src:rightBadgeImg}"/>
+      <i class="right-badge" data-bind="css:rightBadgeIcon,click:rightBadgeClick"></i>
     </div>
     <div data-bind="if: leftBadgeOn()">
-      <img class="left-badge" data-bind="click:leftBadgeClick,attr:{src:leftBadgeImg}"/>
+      <i class="left-badge" data-bind="css:leftBadgeIcon,click:leftBadgeClick"></i>
     </div>
     <div data-bind="css:{pointer:clickable()}, click:select">
       <img class="person-img" data-bind="attr:{src:url}" />

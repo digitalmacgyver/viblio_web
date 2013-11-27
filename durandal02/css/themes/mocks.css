@@ -206,6 +206,14 @@ input[type="color"],
     width: 40px;
     right: -10px;
     top: -5px;
+
+    color: white;
+    font-size: 40px;
+
+    -moz-text-shadow: 1px 1px rgba(0,0,0,.2);
+    -webkit-text-shadow: 1px 1px rgba(0,0,0,.2);
+    text-shadow: 1px 1px rgba(0,0,0,.2);
+
 }
 
 .person .left-badge {
@@ -214,6 +222,14 @@ input[type="color"],
     width: 40px;
     right: 102px;
     top: -5px;
+
+    color: white;
+    font-size: 40px;
+
+    -moz-text-shadow: 1px 1px rgba(0,0,0,.2);
+    -webkit-text-shadow: 1px 1px rgba(0,0,0,.2);
+    text-shadow: 1px 1px rgba(0,0,0,.2);
+
 }
 
 .person .star {
@@ -2377,3 +2393,6 @@ p.uitoken-input ul.token-input-list-facebook {
     cursor: pointer;
 }
 
+#people-page .person i.icon-camera {
+    color: rgb(80,184,71);
+}

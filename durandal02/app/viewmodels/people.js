@@ -27,7 +27,8 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
     }
 
     function setKeyFrame( af ) {
-	console.log( 'setKeyFrame', af );
+	selected().url( af.url() );
+	viblio.api( '/services/faces/change_contact', { uuid: selected().data.uuid, new_uri: af.data.uri } );
     }
 
     function person_selected( f ) {
@@ -49,6 +50,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 		photos.forEach( function( p ) {
 		    var data = {
 			url: p.url,
+			uri: p.uri,
 			alt_id: p.id,
 			contact_name: f.name(),
 			contact_email: f.email(),
@@ -57,12 +59,9 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 		    };
 		    var alt_face = new Face( data, { 
 			clickable: false,
-			rightBadgeImg: 'css/images/gold-star.png',
+			rightBadgeIcon: 'icon-camera',
 			rightBadgeClick: setKeyFrame,
 			rightBadgeMode: 'hover',
-			leftBadgeImg: 'css/images/silver-star.png',
-			leftBadgeClick: setKeyFrame,
-			leftBadgeMode: 'static',
 			show_name: false, 
 			show_tag1: true } );
 		    alt_face.on( 'person:state_change', function( af, new_state ) {

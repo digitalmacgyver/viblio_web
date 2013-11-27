@@ -10,11 +10,11 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 	    show_tag1: false,
 
 	    rightBadgeMode: 'hidden', // static, hover
-	    rightBadgeImg: null,
+	    rightBadgeIcon: null,
 	    rightBadgeClick: null,
 
 	    leftBadgeMode: 'hidden',
-	    leftBadgeImg: null,
+	    leftBadgeIcon: null,
 	    leftBadgeClick: null
 	}, options || {} );
 
@@ -25,10 +25,10 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 	this.show_name = ko.observable( options.show_name );
 	this.show_tag1 = ko.observable( options.show_tag1 );
 
-	this.rightBadgeImg = ko.observable( options.rightBadgeImg );
+	this.rightBadgeIcon = ko.observable( options.rightBadgeIcon );
 	this.rightBadgeOn  = ko.observable( options.rightBadgeMode == 'static' );
 
-	this.leftBadgeImg = ko.observable( options.leftBadgeImg );
+	this.leftBadgeIcon = ko.observable( options.leftBadgeIcon );
 	this.leftBadgeOn  = ko.observable( options.leftBadgeMode == 'static' );
 
 	this.url = ko.observable( data.url );
@@ -98,7 +98,7 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 
         self.view = view;
 
-	if ( self.options.leftBadgeImg ) {
+	if ( self.options.leftBadgeIcon ) {
 	    if ( self.options.leftBadgeMode == 'hover' ) {
 		$(self.view).find(".person-img").hover( 
 		    function() {
@@ -110,7 +110,7 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 	    }
 	}
 
-	if ( self.options.rightBadgeImg ) {
+	if ( self.options.rightBadgeIcon ) {
 	    if ( self.options.rightBadgeMode == 'hover' ) {
 		$(self.view).hover( 
 		    function() {
