@@ -19,6 +19,32 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 	}
     });
 
+    // Needed to keep the value of the inline editable up to date
+    // with the knockout valiable.
+    selected_name.subscribe( function( v ) {
+	$(view).find( '.inline-editable' ).editable( 'setValue', v );
+    });
+
+    selected.subscribe( function( v ) {
+	if ( v != null ) {
+	    console.log( 'new', v.name() );
+	    unknown_faces().forEach( function( f ) {
+		f.name( v.name() );
+		f.show_tag1( false );
+		f.show_name( false );
+		f.show_tag2( true );
+	    });
+	}
+	else {
+	    unknown_faces().forEach( function( f ) {
+		f.name( 'unknown' );
+		f.show_tag1( false );
+		f.show_tag2( false );
+		f.show_name( true );
+	    });
+	}
+    });
+
     function deselectAll() {
 	var all = clipboard.removeAll();
 	all.forEach( function( f ) {
@@ -29,6 +55,36 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
     function setKeyFrame( af ) {
 	selected().url( af.url() );
 	viblio.api( '/services/faces/change_contact', { uuid: selected().data.uuid, new_uri: af.data.uri } );
+    }
+
+    function addto_faces_unknown( contact ) {
+	var f = new Face( contact, { clickable: false, show_name: true } );
+	unknown_faces.push( f );
+	f.on( 'person:tag2_changed', function( v ) {
+	    //
+	    // UNKNOWN TO KNOWN!!!
+	    //
+	    unknown_faces.remove( f );
+	    addto_faces_for( f.data );
+	});
+    }
+
+    function addto_faces_for( contact ) {
+	var alt_face = new Face( contact, { 
+	    clickable: false,
+	    rightBadgeIcon: 'icon-camera',
+	    rightBadgeClick: setKeyFrame,
+	    rightBadgeMode: 'hover',
+	    show_name: false, 
+	    show_tag1: true } );
+	alt_face.on( 'person:tag1_changed', function( af, new_state ) {
+	    af.data.tag_state = new_state;
+	    if ( new_state == 'reject' )
+		pending_changes += 1;
+	    else
+		pending_changes -= 1;
+	});
+	faces_for.push( alt_face );
     }
 
     function person_selected( f ) {
@@ -64,7 +120,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 			rightBadgeMode: 'hover',
 			show_name: false, 
 			show_tag1: true } );
-		    alt_face.on( 'person:state_change', function( af, new_state ) {
+		    alt_face.on( 'person:tag1_changed', function( af, new_state ) {
 			af.data.tag_state = new_state;
 			if ( new_state == 'reject' )
 			    pending_changes += 1;
@@ -118,8 +174,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 			known_faces.push( face );
 		    }
 		    else {
-			face = new Face( contact, { clickable: false, show_name: true } );
-			unknown_faces.push( face );
+			addto_faces_unknown( contact );
 		    }
 		});
 	    });
@@ -168,6 +223,18 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
             });
 	    $(self.view).find( ".horizontal-scroller").smoothDivScroll("recalculateScrollableArea");
 	    $(self.view).find( ".horizontal-scroller").smoothDivScroll("redoHotSpots");
+
+	    $(self.view).find( '.inline-editable' ).editable({
+		mode: 'inline',
+		type: 'text',
+		success: function( res, newvalue ) {
+		    selected().name( newvalue );
+		    faces_for().forEach( function( af ) {
+			af.name( newvalue );
+		    });
+		    viblio.api( '/services/faces/change_contact', { uuid: selected().data.uuid, contact_name: newvalue } );
+		}
+	    });
 	}
     };
 }); 

@@ -75,7 +75,11 @@ define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip
             ko.utils.extend(tag1, value);
 
 	    tag1.orig = tag1.name();
-	    $element.addClass( 'tag1-accepted' );
+
+	    if ( tag1.state == 'accept' ) 
+		$element.addClass( 'tag1-accepted' );
+	    else
+		$element.addClass( 'tag1-rejected' );
 
 	    $element.on( 'mouseover', function( e ) {
 		$element.removeClass( 'tag1-accepted' );
@@ -121,6 +125,50 @@ define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip
 	    });
 	}
 
+    };
+
+    ko.bindingHandlers.tag2 = {
+	init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+	    var $element = $(element);
+            var value = ko.utils.unwrapObservable(valueAccessor()) || {};
+	    var tag2 = { state: 'accept' };
+	    //build a new object that has the global options with overrides from the binding
+            $.extend(true, tag2, ko.bindingHandlers.tag2);
+            if (value.options && tag2.options) {
+                ko.utils.extend(tag2.options, value.options);
+                delete value.options;
+            }
+            ko.utils.extend(tag2, value);
+
+	    //var del_btn = $("<i/>").addClass( 'icon-remove-circle pull-right');
+	    var ok_btn  = $("<i/>").addClass( 'icon-thumbs-up pull-right' );
+	    var span    = $("<span/>").text( tag2.name() );
+	    $element.empty();
+	    $element.append( ok_btn ).append( span );
+	    $element.addClass( 'tag2-query' );
+
+	    if ( tag2.changed ) {
+		//del_btn.on( 'click', function() {
+		//    tag2.changed.call( bindingContext['$data'], 'no' );
+		//});
+		ok_btn.on( 'click', function() {
+		    tag2.changed.call( bindingContext['$data'], 'yes' );
+		});
+	    }
+	},
+	update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+	    var $element = $(element);
+            var value = ko.utils.unwrapObservable(valueAccessor()) || {};
+	    var tag2 = { state: 'accept' };
+	    //build a new object that has the global options with overrides from the binding
+            $.extend(true, tag2, ko.bindingHandlers.tag2);
+            if (value.options && tag2.options) {
+                ko.utils.extend(tag2.options, value.options);
+                delete value.options;
+            }
+            ko.utils.extend(tag2, value);
+	    $element.find( 'span' ).text( tag2.name() );
+	}
     };
 
     return({});

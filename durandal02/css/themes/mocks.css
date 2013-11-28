@@ -296,14 +296,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', end
 
 .person .name.tag1-accepted {
    background-color: green;
-background: #b4e391; /* Old browsers */
-background: -moz-linear-gradient(top,  #b4e391 0%, #61c419 50%, #b4e391 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b4e391), color-stop(50%,#61c419), color-stop(100%,#b4e391)); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top,  #b4e391 0%,#61c419 50%,#b4e391 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  #b4e391 0%,#61c419 50%,#b4e391 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  #b4e391 0%,#61c419 50%,#b4e391 100%); /* IE10+ */
-background: linear-gradient(to bottom,  #b4e391 0%,#61c419 50%,#b4e391 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', endColorstr='#b4e391',GradientType=0 ); /* IE6-9 */
+background: #7ff213; /* Old browsers */
+background: -moz-linear-gradient(top,  #7ff213 0%, #299a0b 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7ff213), color-stop(100%,#299a0b)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #7ff213 0%,#299a0b 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #7ff213 0%,#299a0b 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #7ff213 0%,#299a0b 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #7ff213 0%,#299a0b 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7ff213', endColorstr='#299a0b',GradientType=0 ); /* IE6-9 */
    color: white;
    cursor: pointer;
 }
@@ -321,6 +321,23 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', end
    color: white;
    cursor: pointer;
 }
+
+.person .name.tag2-query {
+background: #00b7ea; /* Old browsers */
+background: -moz-linear-gradient(top,  #00b7ea 0%, #009ec3 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#00b7ea), color-stop(100%,#009ec3)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #00b7ea 0%,#009ec3 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #00b7ea 0%,#009ec3 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #00b7ea 0%,#009ec3 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #00b7ea 0%,#009ec3 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', endColorstr='#009ec3',GradientType=0 ); /* IE6-9 */
+    color: white;
+}
+
+.person .name.tag2-query i {
+    cursor: pointer;
+}
+
 
 /* .horizontal-scroller should be used for all horizontal
  * scrollers.  See views/people and viewmodels/people for
@@ -385,6 +402,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', end
     font-weight: 100;
     font-size: 31.5px;
     margin-left: 0px;
+}
+
+button.btn.editable-cancel {
+    margin-right: 0;
 }
 
 /***************** END OF MORE GENERAL CSS CLASSES **************************/
@@ -2381,7 +2402,7 @@ p.uitoken-input ul.token-input-list-facebook {
     left: 200px;
 }
 
-#people-page .faces-for-face .title button {
+#people-page .faces-for-face .title button.pull-right {
     margin-right: 50px;
 }
 

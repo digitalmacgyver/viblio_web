@@ -8,6 +8,7 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 
 	    show_name: true,
 	    show_tag1: false,
+	    show_tag2: false,
 
 	    rightBadgeMode: 'hidden', // static, hover
 	    rightBadgeIcon: null,
@@ -24,6 +25,7 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 
 	this.show_name = ko.observable( options.show_name );
 	this.show_tag1 = ko.observable( options.show_tag1 );
+	this.show_tag2 = ko.observable( options.show_tag2 );
 
 	this.rightBadgeIcon = ko.observable( options.rightBadgeIcon );
 	this.rightBadgeOn  = ko.observable( options.rightBadgeMode == 'static' );
@@ -34,6 +36,18 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 	this.url = ko.observable( data.url );
 	this.name = ko.observable( data.contact_name ? data.contact_name : 'unknown' );
 	this.email = ko.observable( data.contact_email );
+
+	this.url.subscribe( function( v ) {
+	    data.url = v;
+	});
+
+	this.name.subscribe( function( v ) {
+	    data.contact_name = v;
+	});
+
+	this.email.subscribe( function( v ) {
+	    data.contact_email = v;
+	});
 
 	this.appears_in = ko.observable( data.appears_in );
         this.hasStarPower = ko.computed( function() {
@@ -62,7 +76,11 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
     };
 
     Person.prototype.tag1_changed = function( new_state ) {
-	this.trigger( 'person:state_change', this, new_state );
+	this.trigger( 'person:tag1_changed', this, new_state );
+    };
+
+    Person.prototype.tag2_changed = function( new_state ) {
+	this.trigger( 'person:tag2_changed', this, new_state );
     };
 
     Person.prototype.rightBadgeClick = function() {
