@@ -338,6 +338,19 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
     cursor: pointer;
 }
 
+.person .name.tag3-editable {
+    cursor: pointer;
+}
+
+.person .editableform input[type="text"] {
+    font-size: 14px;
+    height: auto;
+    width: 120px;
+}
+
+.person .editableform .editable-buttons {
+    font-size: 14px;
+}
 
 /* .horizontal-scroller should be used for all horizontal
  * scrollers.  See views/people and viewmodels/people for
@@ -406,6 +419,27 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 
 button.btn.editable-cancel {
     margin-right: 0;
+}
+
+.editable-buttons .btn-group > .btn:first-child,
+.editable-buttons .btn-group > .btn:last-child,
+.editable-buttons .btn-group > .dropdown-toggle,
+.editable-buttons .btn-group > .btn,
+.editable-buttons .btn {
+padding: 0;
+width: 40px;
+height: 40px;
+}
+
+.person .editable-buttons .btn-group > .btn:first-child,
+.person .editable-buttons .btn-group > .btn:last-child,
+.person .editable-buttons .btn-group > .dropdown-toggle,
+.person .editable-buttons .btn-group > .btn,
+.person .editable-buttons .btn {
+padding: 0;
+width: 30px;
+height: 30px;
+font-size: 14px;
 }
 
 /***************** END OF MORE GENERAL CSS CLASSES **************************/

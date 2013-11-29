@@ -171,5 +171,60 @@ define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip
 	}
     };
 
+    ko.bindingHandlers.tag3 = {
+	init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+	    var $element = $(element);
+            var value = ko.utils.unwrapObservable(valueAccessor()) || {};
+	    var tag3 = { state: 'accept' };
+	    //build a new object that has the global options with overrides from the binding
+            $.extend(true, tag3, ko.bindingHandlers.tag3);
+            if (value.options && tag3.options) {
+                ko.utils.extend(tag3.options, value.options);
+                delete value.options;
+            }
+            ko.utils.extend(tag3, value);
+	    $element.addClass( 'tag3-editable' );
+	    $element.editable({
+		mode: 'popup',
+		type: 'typeahead',
+		source: '/services/faces/all_contacts',
+		sourceCache: false,
+		sourceError: 'Sorry, we encountered an error.',
+		sourceOptions: {
+		    data: { editable: 1 }
+		},
+		typeahead: {
+		    minLength: 2,
+		    highlighter: function( item ) {
+			var src;
+			$.ajax({
+			    url: '/services/faces/avatar_for_name',
+			    data: { contact_name: item.text },
+			    async: false,
+			    success: function( data ) {
+				src = data.url;
+			    }
+			});
+			return '<img style="width: 30px; height: 30px; margin-right: 3px;" src="' + src + '"/><strong>' + item.text + '</strong>';
+		    }
+		},
+		validate: function( value ) {
+		    var v = $.trim(value);
+		    if ( v == '' ) {
+			return 'Please input a name.';
+		    }
+		    else {
+			return { newValue: v };
+		    }
+		},
+		success: function( res, newvalue ) {
+		    tag3.name( newvalue );
+		    if ( tag3.changed )
+			tag3.changed.call( bindingContext['$data'], newvalue );
+		}
+	    });
+	}
+    };
+
     return({});
 });

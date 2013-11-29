@@ -30,17 +30,13 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 	    console.log( 'new', v.name() );
 	    unknown_faces().forEach( function( f ) {
 		f.name( v.name() );
-		f.show_tag1( false );
-		f.show_name( false );
 		f.show_tag2( true );
 	    });
 	}
 	else {
 	    unknown_faces().forEach( function( f ) {
 		f.name( 'unknown' );
-		f.show_tag1( false );
-		f.show_tag2( false );
-		f.show_name( true );
+		f.show_tag3( true );
 	    });
 	}
     });
@@ -57,15 +53,33 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 	viblio.api( '/services/faces/change_contact', { uuid: selected().data.uuid, new_uri: af.data.uri } );
     }
 
+    function removeUnknown( f ) {
+	console.log( 'Removing', f );
+	unknown_faces.remove( f );
+    }
+
     function addto_faces_unknown( contact ) {
-	var f = new Face( contact, { clickable: false, show_name: true } );
+	var f = new Face( contact, { 
+	    clickable: false, 
+	    rightBadgeIcon: 'icon-remove-circle',
+	    rightBadgeClick: removeUnknown,
+	    rightBadgeMode: 'hover',
+	    show_name: false, 
+	    show_tag3: true,
+	});
 	unknown_faces.push( f );
 	f.on( 'person:tag2_changed', function( v ) {
 	    //
 	    // UNKNOWN TO KNOWN!!!
 	    //
 	    unknown_faces.remove( f );
+	    f.data.added = true;
+	    pending_changes += 1;
 	    addto_faces_for( f.data );
+	});
+	f.on( 'person:tag3_changed', function( v, name ) {
+	    // Uknown named, or identified same as
+	    console.log( 'Unknown just identified', name );
 	});
     }
 
@@ -188,7 +202,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 
 	    if ( pending_changes ) {
 		faces_for().forEach( function( f ) {
-		    console.log( f.name(), f.data.alt_id, f.data.tag_state );
+		    console.log( f.name(), f.data.alt_id, f.data.tag_state, f.data.added );
 		});
 	    }
 

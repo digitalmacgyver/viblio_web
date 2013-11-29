@@ -9,6 +9,7 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 	    show_name: true,
 	    show_tag1: false,
 	    show_tag2: false,
+	    show_tag3: false,
 
 	    rightBadgeMode: 'hidden', // static, hover
 	    rightBadgeIcon: null,
@@ -26,6 +27,7 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 	this.show_name = ko.observable( options.show_name );
 	this.show_tag1 = ko.observable( options.show_tag1 );
 	this.show_tag2 = ko.observable( options.show_tag2 );
+	this.show_tag3 = ko.observable( options.show_tag3 );
 
 	this.rightBadgeIcon = ko.observable( options.rightBadgeIcon );
 	this.rightBadgeOn  = ko.observable( options.rightBadgeMode == 'static' );
@@ -48,6 +50,38 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 	this.email.subscribe( function( v ) {
 	    data.contact_email = v;
 	});
+
+	this.show_name.subscribe( function( v ) {
+	    if ( v ) {
+		this.show_tag1( false );
+		this.show_tag2( false );
+		this.show_tag3( false );
+	    }
+	}, this);
+
+	this.show_tag1.subscribe( function( v ) {
+	    if ( v ) {
+		this.show_name( false );
+		this.show_tag2( false );
+		this.show_tag3( false );
+	    }
+	}, this);
+
+	this.show_tag2.subscribe( function( v ) {
+	    if ( v ) {
+		this.show_name( false );
+		this.show_tag1( false );
+		this.show_tag3( false );
+	    }
+	}, this);
+
+	this.show_tag3.subscribe( function( v ) {
+	    if ( v ) {
+		this.show_name( false );
+		this.show_tag2( false );
+		this.show_tag1( false );
+	    }
+	}, this);
 
 	this.appears_in = ko.observable( data.appears_in );
         this.hasStarPower = ko.computed( function() {
@@ -83,6 +117,10 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 	this.trigger( 'person:tag2_changed', this, new_state );
     };
 
+    Person.prototype.tag3_changed = function( new_state ) {
+	this.trigger( 'person:tag3_changed', this, new_state );
+    };
+
     Person.prototype.rightBadgeClick = function() {
 	if ( this.options.rightBadgeClick )
 	    this.options.rightBadgeClick( this );
@@ -103,6 +141,9 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 	    else {
 		self.trigger( 'person:selected', self );
 	    }
+	}
+	else {
+	    return true;
 	}
     };
 
