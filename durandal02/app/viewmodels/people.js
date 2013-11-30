@@ -52,6 +52,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
     //
     function setKeyFrame( af ) {
 	selected().url( af.url() );
+	viblio.mpEvent( 'face_change_keyframe' );
 	viblio.api( '/services/faces/change_contact', { uuid: selected().data.uuid, new_uri: af.data.uri } );
     }
 
@@ -59,8 +60,27 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
     //
     function removeUnknown( f ) {
 	// Delete this contact from the database.
+	viblio.mpEvent( 'face_delete_unidentified_contact' );
 	viblio.api( '/services/faces/delete', { cid: f.data.uuid } ).then( function() {
 	    unknown_faces.remove( f );
+	});
+    }
+
+    function removeKnown( f ) {
+	customDialogs.showMessage( 'This will delete ' + f.name() + ' from your set of identified faces.  Are you sure you want to do that?', 'Please Confirm', ['Yes', 'No'] ).then( function( res ) {
+	    if ( res == 'Yes' ) {
+		viblio.mpEvent( 'face_delete_identified_contact' );
+		viblio.api( '/services/faces/delete', { cid: f.data.uuid } ).then( function() {
+		    unknown_faces.remove( f );
+		});
+		known_faces.remove( f );
+		if ( faces_for_visible() && ( selected() == f ) ) {
+		    faces_for_visible( false );
+		}
+		if ( selected() == f ) {
+		    selected( null );
+		}
+	    }
 	});
     }
 
@@ -68,6 +88,9 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
     //
     function addto_faces_known( contact, order ) {
 	var face = new Face( contact, { 
+	    rightBadgeIcon: 'icon-remove-circle',
+	    rightBadgeClick: removeKnown,
+	    rightBadgeMode: 'hover',
 	    show_name: true,
 	    clickable: true,
 	    click: function( f ) {
@@ -145,6 +168,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 		});
 
 		// and establish the tag in the database
+		viblio.mpEvent( 'face_tag_unidentified' );
 		viblio.api( '/services/faces/tag', {
 		    uuid: v.data.uuid,
 		    cid: selected().data.uuid } ).then( function() {
@@ -163,6 +187,11 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 		    match = f;
 		}
 	    });
+
+	    if ( match )
+		viblio.mpEvent( 'face_tag_identified' );
+	    else
+		viblio.mpEvent( 'face_tag_unidentified' );
 
 	    // establish the tag in the database
 	    viblio.api( '/services/faces/tag', {
@@ -205,7 +234,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 	return alt_face;
     }
 
-    function person_selected( f ) {
+    function person_selected( f, append ) {
 	if ( clipboard.indexOf( f ) != -1 ) {
 	    // its selected, so deselect it
 	    clipboard.remove( f );
@@ -220,7 +249,8 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 	    $(f.view).addClass( 'selected' );
 	    selected( f );
 	    viblio.api( '/services/faces/photos_of', { cid: f.data.uuid } ).then( function( photos ) {
-		faces_for.removeAll();
+		if ( ! append )
+		    faces_for.removeAll();
 		photos.forEach( function( p ) {
 		    var data = {
 			url: p.url,
@@ -282,6 +312,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 			addto_faces_unknown( f.data );
 		    }
 		});
+		viblio.mpEvent( 'face_remove_false_positives' );
 		viblio.api( '/services/faces/remove_false_positives',
 			    { ids: ids } );
 	    }
@@ -332,10 +363,9 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 		    $(self.view).find( ".horizontal-scroller").smoothDivScroll("nomoredata");
 		}
             });
-	    //$(self.view).find( ".horizontal-scroller").smoothDivScroll("recalculateScrollableArea");
-	    //$(self.view).find( ".horizontal-scroller").smoothDivScroll("redoHotSpots");
 	    $(self.view).find( ".horizontal-scroller").trigger( 'initialize' );
 
+	    /** THIS IS THE ORIGINAL ONE THAT DOES NOT ALLOW MERGING WITH AN EXISTING IDENTIFIED CONTACT
 	    $(self.view).find( '.inline-editable' ).editable({
 		mode: 'inline',
 		type: 'text',
@@ -344,7 +374,67 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 		    faces_for().forEach( function( af ) {
 			af.name( newvalue );
 		    });
+		    viblio.mpEvent( 'face_name_change' );
 		    viblio.api( '/services/faces/change_contact', { uuid: selected().data.uuid, contact_name: newvalue } );
+		}
+	    });
+	    **/
+	    $(self.view).find( '.inline-editable' ).editable({
+		mode: 'inline',
+		type: 'typeahead',
+		source: '/services/faces/all_contacts',
+                sourceCache: false,
+                sourceError: 'Sorry, we encountered an error.',
+                sourceOptions: {
+                    data: { editable: 1 }
+                },
+                typeahead: {
+                    minLength: 2,
+                    highlighter: function( item ) {
+                        var src;
+                        $.ajax({
+                            url: '/services/faces/avatar_for_name',
+                            data: { contact_name: item.text },
+                            async: false,
+                            success: function( data ) {
+                                src = data.url;
+                            }
+                        });
+                        return '<img style="width: 30px; height: 30px; margin-right: 3px;" src="' + src + '"/><strong>' + item.text + '</strong>';
+                    }
+                },
+                validate: function( value ) {
+                    var v = $.trim(value);
+                    if ( v == '' ) {
+                        return 'Please input a name.';
+                    }
+                    else {
+                        return { newValue: v };
+                    }
+                },
+                success: function( res, newvalue ) {
+		    var same_as = null;
+		    known_faces().forEach( function( f ) {
+			if ( f.name() == newvalue ) {
+			    same_as = f;
+			}
+		    });
+		    if ( same_as ) {
+			// merge of two identified faces
+			known_faces.remove( selected() );
+			person_selected( same_as, true );
+			// SEND THE VIBLIO EVENT
+			viblio.mpEvent( 'face_merge' );
+		    }
+		    else {
+			// just changing the name
+			selected().name( newvalue );
+			faces_for().forEach( function( af ) {
+			    af.name( newvalue );
+			});
+			viblio.mpEvent( 'face_name_change' );
+			viblio.api( '/services/faces/change_contact', { uuid: selected().data.uuid, contact_name: newvalue } );
+		    }
 		}
 	    });
 	}
