@@ -168,7 +168,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 		});
 
 		// and establish the tag in the database
-		viblio.mpEvent( 'face_tag_unidentified' );
+		viblio.mpEvent( 'face_tag_to_new' );
 		viblio.api( '/services/faces/tag', {
 		    uuid: v.data.uuid,
 		    cid: selected().data.uuid } ).then( function() {
@@ -301,22 +301,50 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 	    var self = this;
 	    deselectAll();
 	    self.faces_for_visible( false );
-
+	    var new_url;
+	    var num_faces_for = faces_for().length;
 	    if ( pending_changes ) {
 		var ids = [];
 		faces_for().forEach( function( f ) {
 		    if ( f.data.tag_state == 'reject' ) {
 			ids.push( f.data.alt_id );
+			f.data.contact_name = 'unknown';
 			addto_faces_unknown( f.data );
+			num_faces_for -= 1;
 		    }
 		});
+
 		viblio.mpEvent( 'face_remove_false_positives' );
 		viblio.api( '/services/faces/remove_false_positives',
-			    { ids: ids } );
-	    }
+			    { ids: ids } ).then( function( data ) {
+				if ( data.contact && data.contact.url && selected() ) {
+				    selected().url( data.contact.url );
+				}
+				if ( num_faces_for <= 0 ) {
+				    known_faces.remove( selected() );
+				}
 
-	    selected(null);
-	    pending_changes = 0;
+				if ( data.newids ) {
+				    data.newids.forEach( function( info ) {
+					unknown_faces().forEach( function( face ) {
+					    if ( face.data.alt_id == info.id ) {
+						face.data.alt_id = info.c_id;
+						face.data.uuid   = info.c_uuid;
+					    }
+					});
+				    });
+				}
+
+				selected(null);
+				pending_changes = 0;
+			    });
+	    }
+	    else {
+		if ( faces_for().length == 0 ) {
+		    known_faces.remove( selected() );
+		}
+		selected(null);
+	    }
 	},
 
 	attached: function( v ) {

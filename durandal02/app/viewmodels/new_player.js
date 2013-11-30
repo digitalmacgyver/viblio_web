@@ -191,12 +191,35 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 			show_tag3: true,
 		    });
 		    face.on( 'person:tag3_changed', function( f, newname, oldname ) {
-			if ( oldname == 'unknown' ) {
-			    // Unidentifed to identified
-			}
-			else if ( oldname != newname ) {
-			    // Merge identified
-			}
+			// Have to see if newname is an existing contact...
+			viblio.api( '/services/faces/contact_for_name', { contact_name: newname } ).then( function( data ) {
+			    if ( data.contact ) {
+				if ( oldname == 'unknown' ) {
+				    // Unidentifed to identified
+				    viblio.mpEvent( 'face_tag_to_new' );
+				}
+				else {
+				    // Merge identified
+				    viblio.mpEvent( 'face_merge' );
+				}
+				viblio.api( '/services/faces/tag', {
+				    uuid: f.data.uuid,
+				    cid:  data.contact.uuid } ).then( function() {
+					// If this face is already displayed, remove it.
+					faces().forEach( function( ex ) {
+					    if ( ex.name() == newname && ex != f ) {
+						faces.remove( ex );
+					    }
+					});
+				    });
+			    }
+			    else {
+				viblio.mpEvent( 'face_tag_to_identified' );
+				viblio.api( '/services/faces/tag', {
+				    uuid: f.data.uuid,
+				    contact_name: newname } );
+			    }
+			});
 		    });
 		    faces.push( face );
 		}

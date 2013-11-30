@@ -2456,6 +2456,10 @@ p.uitoken-input ul.token-input-list-facebook {
     color: rgb(80,184,71);
 }
 
+#people-page .no-faces-for {
+    color: white;
+}
+
 /* new stuff for new-player page */
 #faces-column .person {
     width: 64px;
