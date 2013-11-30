@@ -209,6 +209,12 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     }
 
     function removePerson( face ) {
+	viblio.api( '/services/faces/remove_from_video', { 
+	    cid: face.data.uuid, 
+	    mid: playing().media().uuid } ).then( function( data ) {
+		viblio.mpEvent( 'face_removed_from_video' );
+		faces.remove( face );
+	    });
     }
 
     // Play a new video.  Used after the main player is created in
