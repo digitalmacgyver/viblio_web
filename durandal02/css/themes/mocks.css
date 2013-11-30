@@ -2380,6 +2380,10 @@ p.uitoken-input ul.token-input-list-facebook {
     margin-bottom: 30px;
 }
 
+.howToPic > img {
+    width: 100%;
+}
+
 .howToVideo {
     width: 500px;
     height: 300px;

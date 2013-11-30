@@ -1,6 +1,11 @@
 define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','viewmodels/conditional_header','lib/viblio','lib/customDialogs','viewmodels/emailtest','lib/config','facebook','purl'], function (router, app, system, page_header, landing_header, conditional_header, viblio, customDialogs,emailtest,config) {
 
     var header = ko.observable( );
+    
+    // scroll to top of page before new view has loaded
+    router.on('router:navigation:attached').then(function(){
+        $(document).scrollTop(0);
+    });
 
     router.on('router:navigation:complete').then(function(instance, instruction, router) {
         if (app.title) {
