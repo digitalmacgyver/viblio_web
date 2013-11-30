@@ -226,6 +226,8 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
     // attached.  This reuses the player to play a different clip.
     //
     function playVid( m ) {
+        // Scroll to top of page
+        $(document).scrollTop(0);
         playing( m );
         playingMid( m );
 	title( playing().title() || 'Click to add a title.' );

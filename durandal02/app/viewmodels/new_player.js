@@ -196,6 +196,8 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     // attached.  This reuses the player to play a different clip.
     //
     function playVid( m ) {
+        // Scroll to top of page
+        $(document).scrollTop(0);
         playing( m );
 	title( playing().title() || 'Click to add a title.' );
 	description( playing().description() || 'Click to add a description.' );
