@@ -11,7 +11,7 @@
   this way in case we use this page as a link to shared
   videos.
 */
-define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','viewmodels/face','viewmodels/mediafile','lib/customDialogs'], function(app,system,router,dialog,config,viblio,Strip,Face,Mediafile,customDialogs) {
+define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','viewmodels/person','viewmodels/mediafile','lib/customDialogs'], function(app,system,router,dialog,config,viblio,Strip,Face,Mediafile,customDialogs) {
     // Given a S3 url, parse out and return the bucket name.  Needed for
     // Wowza urls.
     //
@@ -172,7 +172,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    var F = {
 			url: face.url,
 			appears_in: 1,
-			contact_name: null,
+			contact_name: 'unknown',
 			contact_email: null
 		    };
 		    if ( face.contact ) {
@@ -182,7 +182,23 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 			F.id = face.contact.contact_id;
 			F.uuid = face.contact.uuid;
 		    }
-		    faces.push( new Face( F, { allow_changes: true } ) );
+		    var face = new Face( F, { 
+			clickable: false, 
+			leftBadgeIcon: 'icon-remove-circle',
+			leftBadgeClick: removePerson,
+			leftBadgeMode: 'hover',
+			show_name: false, 
+			show_tag3: true,
+		    });
+		    face.on( 'person:tag3_changed', function( f, newname, oldname ) {
+			if ( oldname == 'unknown' ) {
+			    // Unidentifed to identified
+			}
+			else if ( oldname != newname ) {
+			    // Merge identified
+			}
+		    });
+		    faces.push( face );
 		}
 		finfo( 'Starring' );
 	    }
@@ -190,6 +206,9 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		finfo( '' );
 	    }
 	});
+    }
+
+    function removePerson( face ) {
     }
 
     // Play a new video.  Used after the main player is created in

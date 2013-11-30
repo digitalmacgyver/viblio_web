@@ -125,8 +125,8 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 	this.trigger( 'person:tag2_changed', this, new_state );
     };
 
-    Person.prototype.tag3_changed = function( new_state ) {
-	this.trigger( 'person:tag3_changed', this, new_state );
+    Person.prototype.tag3_changed = function( newname, oldname ) {
+	this.trigger( 'person:tag3_changed', this, newname, oldname );
     };
 
     Person.prototype.rightBadgeClick = function() {
@@ -167,7 +167,7 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 
 	if ( self.options.leftBadgeIcon ) {
 	    if ( self.options.leftBadgeMode == 'hover' ) {
-		$(self.view).find(".person-img").hover( 
+		$(self.view).hover( 
 		    function() {
 			self.leftBadgeOn( true );
 		    },

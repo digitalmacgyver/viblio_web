@@ -88,9 +88,9 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
     //
     function addto_faces_known( contact, order ) {
 	var face = new Face( contact, { 
-	    rightBadgeIcon: 'icon-remove-circle',
-	    rightBadgeClick: removeKnown,
-	    rightBadgeMode: 'hover',
+	    leftBadgeIcon: 'icon-remove-circle',
+	    leftBadgeClick: removeKnown,
+	    leftBadgeMode: 'hover',
 	    show_name: true,
 	    clickable: true,
 	    click: function( f ) {

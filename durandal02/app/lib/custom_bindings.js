@@ -173,7 +173,7 @@ define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip
 	init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
 	    var $element = $(element);
             var value = ko.utils.unwrapObservable(valueAccessor()) || {};
-	    var tag3 = { state: 'accept' };
+	    var tag3 = {};
 	    //build a new object that has the global options with overrides from the binding
             $.extend(true, tag3, ko.bindingHandlers.tag3);
             if (value.options && tag3.options) {
@@ -185,6 +185,7 @@ define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip
 	    $element.editable({
 		mode: 'popup',
 		type: 'typeahead',
+		value: ( tag3.name() == 'unknown' ? null : tag3.name() ),
 		source: '/services/faces/all_contacts',
 		sourceCache: false,
 		sourceError: 'Sorry, we encountered an error.',
@@ -216,9 +217,10 @@ define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip
 		    }
 		},
 		success: function( res, newvalue ) {
+		    var oldvalue = tag3.name();
 		    tag3.name( newvalue );
 		    if ( tag3.changed )
-			tag3.changed.call( bindingContext['$data'], newvalue );
+			tag3.changed.call( bindingContext['$data'], newvalue, oldvalue );
 		}
 	    });
 	}

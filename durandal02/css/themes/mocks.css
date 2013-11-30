@@ -2455,3 +2455,33 @@ p.uitoken-input ul.token-input-list-facebook {
 #people-page .person i.icon-camera {
     color: rgb(80,184,71);
 }
+
+/* new stuff for new-player page */
+#faces-column .person {
+    width: 64px;
+}
+
+#faces-column .person img {
+    height: 64px;
+}
+
+#faces-column .person .name {
+    font-size: 12px;
+    padding: 0;
+    height: 20px;
+}
+
+#faces-column .person i {
+    font-size: 20px;
+    width: 20px; height: 20px;
+}
+
+#faces-column .person .left-badge {
+    cursor: pointer;
+    right: 50px;
+    top: -1px;
+}
+
+#faces-column .person .right-badge {
+    cursor: pointer;
+}
