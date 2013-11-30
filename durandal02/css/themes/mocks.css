@@ -334,7 +334,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
     color: white;
 }
 
-.person .name.tag2-query i {
+.person .name.tag2-query {
     cursor: pointer;
 }
 

@@ -109,6 +109,14 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 	Events.includeIn( this );
     };
 
+    Person.prototype.mouseover = function(d, e) {
+	this.trigger( 'person:mouseover', this );
+    };
+
+    Person.prototype.mouseleave = function(d, e) {
+	this.trigger( 'person:mouseleave', this );
+    };
+
     Person.prototype.tag1_changed = function( new_state ) {
 	this.trigger( 'person:tag1_changed', this, new_state );
     };

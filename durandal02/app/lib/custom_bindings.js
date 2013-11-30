@@ -141,17 +141,15 @@ define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip
             ko.utils.extend(tag2, value);
 
 	    //var del_btn = $("<i/>").addClass( 'icon-remove-circle pull-right');
-	    var ok_btn  = $("<i/>").addClass( 'icon-thumbs-up pull-right' );
-	    var span    = $("<span/>").text( tag2.name() );
+	    var div     = $("<div></div>");
+	    var ok_btn  = $("<i/>").addClass( 'icon-thumbs-up pull-right' ).appendTo(div);
+	    var span    = $("<span/>").text( tag2.name() ).appendTo(div);
 	    $element.empty();
-	    $element.append( ok_btn ).append( span );
+	    $element.append( div );
 	    $element.addClass( 'tag2-query' );
 
 	    if ( tag2.changed ) {
-		//del_btn.on( 'click', function() {
-		//    tag2.changed.call( bindingContext['$data'], 'no' );
-		//});
-		ok_btn.on( 'click', function() {
+		div.on( 'click', function() {
 		    tag2.changed.call( bindingContext['$data'], 'yes' );
 		});
 	    }

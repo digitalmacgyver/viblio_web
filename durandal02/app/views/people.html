@@ -5,8 +5,8 @@
 
   <div class="known_faces-container horizontalStrip orangeBG bottomBorder-Thin">
     <div class="title">
-      <h2 class="cinematic textShadowed">Identified Faces</h2>
-      <span class="muted">Faces you've identified in your videos</span>
+      <h2 class="cinematic textShadowed">Identified People</h2>
+      <span class="muted">People you've identified in your videos. Click on a face to manage.</span>
     </div>
     <div class="horizontal-scroller faces-container">
       <button class="btn btn-small fwd btn-nav mCSB_buttonRight"><img src="css/images/arrowRight.png"/></button>
@@ -21,6 +21,7 @@
     <div class="title">
       <button class="btn btn-primary pull-right" data-bind="click:done">Done</button>
       <span class="inline-editable cinematic textShadowed" data-bind="html: selected_name">placeholder</span>
+      <i style="font-size: 20px; color: white; margin-left: 10px; opacity: 0.7;" class="icon-arrow-left"></i><span style="color: white; font-style: italic; font-size: 16px; margin-left: 8px; opacity: 0.7;">Click to change name</span>
     </div>
     <div class="margined-content-wrapper">
       <!-- ko foreach: faces_for -->
@@ -33,8 +34,8 @@
 
   <div class="unknown_faces-container horizontalStrip lightBlueBG bottomBorder-Thin">
     <div class="title">
-      <h2 class="cinematic textShadowed">Unknown Faces</h2>
-      <span class="muted">Click on a face to identify it</span>
+      <h2 class="cinematic textShadowed">Unknown People</h2>
+      <span class="muted">Click on a person's name to identify them.</span>
     </div>
     <div class="margined-content-wrapper faces-container">
       <!-- ko foreach: unknown_faces -->
