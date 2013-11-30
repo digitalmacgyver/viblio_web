@@ -61,7 +61,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
     function removeUnknown( f ) {
 	// Delete this contact from the database.
 	viblio.mpEvent( 'face_delete_unidentified_contact' );
-	viblio.api( '/services/faces/delete', { cid: f.data.uuid } ).then( function() {
+	viblio.api( '/services/faces/delete_contact', { cid: f.data.uuid } ).then( function() {
 	    unknown_faces.remove( f );
 	});
     }
@@ -70,7 +70,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 	customDialogs.showMessage( 'This will delete ' + f.name() + ' from your set of identified faces.  Are you sure you want to do that?', 'Please Confirm', ['Yes', 'No'] ).then( function( res ) {
 	    if ( res == 'Yes' ) {
 		viblio.mpEvent( 'face_delete_identified_contact' );
-		viblio.api( '/services/faces/delete', { cid: f.data.uuid } ).then( function() {
+		viblio.api( '/services/faces/delete_contact', { cid: f.data.uuid } ).then( function() {
 		    unknown_faces.remove( f );
 		});
 		known_faces.remove( f );
@@ -137,9 +137,9 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
     function addto_faces_unknown( contact ) {
 	var f = new Face( contact, { 
 	    clickable: false, 
-	    rightBadgeIcon: 'icon-remove-circle',
-	    rightBadgeClick: removeUnknown,
-	    rightBadgeMode: 'hover',
+	    leftBadgeIcon: 'icon-remove-circle',
+	    leftBadgeClick: removeUnknown,
+	    leftBadgeMode: 'hover',
 	    show_name: false, 
 	    show_tag3: true,
 	});
