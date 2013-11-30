@@ -189,9 +189,9 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 	    });
 
 	    if ( match )
-		viblio.mpEvent( 'face_tag_identified' );
+		viblio.mpEvent( 'face_tag_to_identified' );
 	    else
-		viblio.mpEvent( 'face_tag_unidentified' );
+		viblio.mpEvent( 'face_tag_to_new' );
 
 	    // establish the tag in the database
 	    viblio.api( '/services/faces/tag', {
@@ -305,9 +305,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 	    if ( pending_changes ) {
 		var ids = [];
 		faces_for().forEach( function( f ) {
-		    //console.log( f.name(), f.data.alt_id, f.data.tag_state, f.data.added );
 		    if ( f.data.tag_state == 'reject' ) {
-			console.log( f.data );
 			ids.push( f.data.alt_id );
 			addto_faces_unknown( f.data );
 		    }
@@ -422,9 +420,13 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 		    if ( same_as ) {
 			// merge of two identified faces
 			known_faces.remove( selected() );
-			person_selected( same_as, true );
 			// SEND THE VIBLIO EVENT
 			viblio.mpEvent( 'face_merge' );
+			viblio.api( '/services/faces/tag', {
+			    uuid: selected().data.uuid,
+			    cid: same_as.data.uuid } ).then( function() {
+				person_selected( same_as, true );
+			    });
 		    }
 		    else {
 			// just changing the name
