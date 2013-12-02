@@ -342,6 +342,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
     cursor: pointer;
 }
 
+.person .name.tag3-editable:hover {
+    text-decoration: underline;
+}
+
+.editable-click, a.editable-click, a.editable-click:hover {
+    border-bottom: 0;
+}
+
 .person .editableform input[type="text"] {
     font-size: 14px;
     height: auto;
