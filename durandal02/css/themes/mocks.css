@@ -1787,6 +1787,10 @@ li.token-input-token-facebook {
     cursor: pointer;
 }
 
+.monthLabels li:hover {
+    font-weight: 600;
+}
+
 #allVidsWrap {
     width: 89%;
     display: inline-block;

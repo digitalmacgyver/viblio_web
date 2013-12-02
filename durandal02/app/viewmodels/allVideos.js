@@ -33,7 +33,13 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         // Hold the pager data back from server
 	// media queries.  Initialize it here so
 	// the first fetch works.
-	self.pager = {
+	self.allVidsPager = {
+	    next_page: 1,
+	    entries_per_page: 3,
+	    total_entries: -1 /* currently unknown */
+	};
+        
+        self.monthPager = {
 	    next_page: 1,
 	    entries_per_page: 3,
 	    total_entries: -1 /* currently unknown */
@@ -104,6 +110,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         }
 	viblio.api( '/services/yir/videos_for_month' + args ).then( function( data ) {
             self.getVidsData(data);
+            console.log(self.getVidsData());
 	    self.videos.removeAll();
 	    data.media.forEach( function( mf ) {
                 var m = new Mediafile( mf );
@@ -172,13 +179,13 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     allVids.prototype.search = function() {
 	var self = this;
 	return system.defer( function( dfd ) {
-	    if ( self.pager.next_page )   {
+	    if ( self.allVidsPager.next_page )   {
 		viblio.api( '/services/mediafile/list', 
 			    { 
-			      page: self.pager.next_page, 
-			      rows: self.pager.entries_per_page } )
+			      page: self.allVidsPager.next_page, 
+			      rows: self.allVidsPager.entries_per_page } )
 		    .then( function( json ) {
-			self.pager = json.pager;
+			self.allVidsPager = json.pager;
 			json.media.forEach( function( mf ) {
 			    if ( mf.views.main.location == 's3' || mf.views.main.location == 'us' ) {
 				self.addMediaFile( mf );
@@ -197,9 +204,9 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     
     allVids.prototype.isClipAvailable = function( idx ) {
 	var self = this;
-	if ( self.pager.total_entries == -1 )
-	    return false
-	return( idx >= 0 && idx < self.pager.total_entries );
+	if ( self.allVidsager.total_entries == -1 )
+	    return false;
+	return( idx >= 0 && idx < self.allVidsPager.total_entries );
     };
     
     // Scroll to the mediafile specified.
@@ -216,14 +223,14 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     //
     allVids.prototype.updateScroller = function() {
         var self = this;
-        var rows = Math.ceil( self.pager.entries_per_page / ( ($(document).width()-90)*.9 / 352 ) );
+        var rows = Math.ceil( self.allVidsPager.entries_per_page / ( ($(document).width()-90)*.9 / 352 ) );
         var item_height = 256; //Math.ceil( $(window).height() / rows ); // each item height
         var total_rows  = Math.ceil( $(document).height() / item_height );
         var need_rows = (total_rows - rows) + 1; // this is how many more we need to fetch
         var fetches = Math.ceil( need_rows / rows ); // how many search()s
         
         if ( $(window).scrollTop() + $(window).height() <= $(document).height() ) {
-           if ( self.pager.next_page ) {
+           if ( self.allVidsPager.next_page ) {
                // There is more data on the server and we have room to display it.
                // Will fetching 'rows' cover what we need, or do we need to do multiple
                // fetches? (computed above)
