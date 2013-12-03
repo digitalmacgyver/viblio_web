@@ -1,6 +1,11 @@
 <div id="allVidsPage" class="padding45">
     
-    <p class="mainTitle textShadowed">You have <span data-bind="text: hits()"></span><span data-bind="text: hits() == 1 ? 'video ' : ' videos'"></span> in your private Viblio Library.</p>
+    <!-- ko if: !aMonthIsSelected() -->
+    <p class="mainTitle textShadowed">You have <span data-bind="text: hits"></span><span data-bind="text: hits() == 1 ? 'video ' : ' videos'"></span> in your private Viblio Library.</p>
+    <!-- /ko -->
+    <!-- ko if: aMonthIsSelected() -->
+    <p class="mainTitle textShadowed">You have <span data-bind="text: vidsInSelectedMonth"></span><span data-bind="text: vidsInSelectedMonth() == 1 ? ' video ' : ' videos'"></span> from <span data-bind="text: selectedMonth"></span>.</p>
+    <!-- /ko -->
     <button class="btn btn-small btn-secondary pull-right" data-bind="click: toggleEditMode, text: editLabel"></button>
     <div class="clearfix"></div>
     
@@ -19,11 +24,16 @@
     <div data-bind="if: hits() > 2">
         <div id="months" class="pull-right">
             <div>
-                <ul class="monthLabels" data-bind="foreach: monthsLabels">
+                <ul class="monthLabels">
+                    <!-- ko foreach: monthsLabels -->
                     <li>
                         <span class="textShadowed" data-bind="click: $parent.monthSelected.bind( $data, $parent ), 
                                          text: $data.label.slice(0,3) + ' ' + $data.label.slice($data.label.length-4), 
                                          css:{sel: $data.selected()}"></span>
+                    </li>
+                    <!-- /ko -->
+                    <li>
+                        <span id="allVids" class="textShadowed" data-bind="click: showAllVideos, css:{sel: allVidsIsSelected()}">All Videos</span>
                     </li>
                 </ul>
             </div>

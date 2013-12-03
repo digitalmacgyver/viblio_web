@@ -27,7 +27,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 return false;
             }
         });
-        self.aMonthIsSelected = false;
+        self.allVidsIsSelected = ko.observable( true );
+        self.aMonthIsSelected = ko.observable(false);
+        self.selectedMonth = ko.observable();
+        self.vidsInSelectedMonth = ko.observable();
         self.isActiveFlag = false;
         
         // Hold the pager data back from server
@@ -35,13 +38,13 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	// the first fetch works.
 	self.allVidsPager = {
 	    next_page: 1,
-	    entries_per_page: 3,
+	    entries_per_page: 20,
 	    total_entries: -1 /* currently unknown */
 	};
         
         self.monthPager = {
 	    next_page: 1,
-	    entries_per_page: 3,
+	    entries_per_page: 20,
 	    total_entries: -1 /* currently unknown */
 	};
 	
@@ -94,38 +97,60 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	});
 	month.selected( true );
 	self.editLabel( 'Edit' );
-	//viblio.mpEvent( 'yir' );
-	self.getVids( month.label );
-        self.aMonthIsSelected = true;
+        self.videos.removeAll();
+        // reset pager
+        self.monthPager = {
+	    next_page: 1,
+	    entries_per_page: 20,
+	    total_entries: -1 /* currently unknown */
+	};
+        self.selectedMonth( month.label );
+	self.monthVidsSearch( self.selectedMonth() );
+        self.aMonthIsSelected(true);
+        self.allVidsIsSelected(false);
+        // get number of videos in selected month
+        viblio.api( '/services/yir/videos_for_month', { 'month': self.selectedMonth() } )
+                .then(function(data){
+                    self.vidsInSelectedMonth( data.media.length );
+                });
     };
     
-    allVids.prototype.getVids = function( month, year, cid ) {
+    allVids.prototype.monthVidsSearch = function( month, year, cid ) {
 	var self = this;
-	var args = "?month=" + month;
-        if ( year ) {
-            args += "?year=" + year;
+        var args = {
+            month: month,
+            year: year,
+            cid: cid
         }
-	if ( cid ) {
-            args += "?cid=" + cid;
-        }
-	viblio.api( '/services/yir/videos_for_month' + args ).then( function( data ) {
-            self.getVidsData(data);
-            console.log(self.getVidsData());
-	    self.videos.removeAll();
-	    data.media.forEach( function( mf ) {
-                var m = new Mediafile( mf );
-                m.on( 'mediafile:play', function( m ) {
-                    router.navigate( 'new_player?mid=' + m.media().uuid );
-                });
-                m.on( 'mediafile:delete', function( m ) {
-                    viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function() {
-                        viblio.mpEvent( 'delete_video' );
-                        self.videos.remove( m );
-                    });
-                });
-                self.videos.push(m);
-	    });
-	});
+	return system.defer( function( dfd ) {
+	    if ( self.monthPager.next_page )   {
+                args.page = self.monthPager.next_page;
+                args.rows = self.monthPager.entries_per_page;
+		viblio.api( '/services/yir/videos_for_month', args )
+		    .then( function( json ) {
+			self.monthPager = json.pager;
+                        json.media.forEach( function( mf ) {
+                            var m = new Mediafile( mf );
+                            m.on( 'mediafile:play', function( m ) {
+                                router.navigate( 'new_player?mid=' + m.media().uuid );
+                            });
+                            m.on( 'mediafile:delete', function( m ) {
+                                viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function() {
+                                    viblio.mpEvent( 'delete_video' );
+                                    self.videos.remove( m );
+                                });
+                            });
+                            self.videos.push(m);
+                        });
+			dfd.resolve();
+                        self.isActiveFlag = false;
+		    });
+	    }
+	    else {
+		dfd.resolve();
+                self.isActiveFlag = false;
+	    }
+	}).promise();
     };
 
     allVids.prototype.activate = function( cid ) {
@@ -185,6 +210,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 			      page: self.allVidsPager.next_page, 
 			      rows: self.allVidsPager.entries_per_page } )
 		    .then( function( json ) {
+                        console.log(json);
 			self.allVidsPager = json.pager;
 			json.media.forEach( function( mf ) {
 			    if ( mf.views.main.location == 's3' || mf.views.main.location == 'us' ) {
@@ -221,7 +247,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     // is more data on the server, then fetch more data.  We either
     // want enough data to enable the scrollbar, or all the data
     //
-    allVids.prototype.updateScroller = function() {
+    /*allVids.prototype.updateScroller = function() {
         var self = this;
         var rows = Math.ceil( self.allVidsPager.entries_per_page / ( ($(document).width()-90)*.9 / 352 ) );
         var item_height = 256; //Math.ceil( $(window).height() / rows ); // each item height
@@ -245,6 +271,23 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 } 
             }
         }
+    };*/
+    
+    allVids.prototype.showAllVideos = function() {
+        var self = this;
+        self.monthsLabels().forEach( function( m ) {
+	    m.selected( false );
+	});
+        self.aMonthIsSelected(false);
+        self.allVidsIsSelected(true);
+        self.videos.removeAll();
+        // reset pager
+        self.allVidsPager = {
+	    next_page: 1,
+	    entries_per_page: 20,
+	    total_entries: -1 /* currently unknown */
+	};
+        self.search();
     };
 
     // In attached, attach the mCustomScrollbar we're presently
@@ -256,18 +299,23 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         // bind to scroll() event and when scroll is 150px or less from bottom fetch more data.
         // Uses flag to determine if fetch is already in process, if so a new one will not be made 
         $(window).scroll(function() {
-            // do not bind if a month is selected.
-            if( !self.aMonthIsSelected ) {
+            // If a month is not selected use the search function, else use monthVidsSearch
+            if( !self.aMonthIsSelected() ) {
                 if( !self.isActiveFlag && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
                     self.isActiveFlag = true;
                     self.search();
+                }
+            } else {
+                if( !self.isActiveFlag && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
+                    self.isActiveFlag = true;
+                    self.monthVidsSearch( self.selectedMonth() );
                 }
             }
          });
          
         // At this point (and only at this point!) we have an accurate
 	// height dimension for the scroll area and its item container.
-	self.updateScroller();
+	self.search();
     };
     
     // Animation callbacks
