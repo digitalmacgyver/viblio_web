@@ -1,11 +1,6 @@
 <div id="allVidsPage" class="padding45">
     
-    <!-- ko if: !aMonthIsSelected() -->
-        <p class="mainTitle textShadowed">You have <span data-bind="text: hits()"></span><span data-bind="text: hits() == 1 ? 'video ' : ' videos'"></span> in your private Viblio Library.</p>
-    <!-- /ko -->
-    <!-- ko if: aMonthIsSelected() -->
-        <p class="mainTitle textShadowed">You have <span data-bind="text: videosInMonth()"></span><span data-bind="text: videosInMonth() == 1 ? ' video ' : ' videos'"></span> from <span data-bind="text: selectedMonth()"></span>.</p>
-    <!-- /ko -->
+    <p class="mainTitle textShadowed">You have <span data-bind="text: hits()"></span><span data-bind="text: hits() == 1 ? 'video ' : ' videos'"></span> in your private Viblio Library.</p>
     <button class="btn btn-small btn-secondary pull-right" data-bind="click: toggleEditMode, text: editLabel"></button>
     <div class="clearfix"></div>
     

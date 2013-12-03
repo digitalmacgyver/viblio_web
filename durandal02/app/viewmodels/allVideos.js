@@ -27,9 +27,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 return false;
             }
         });
-        self.aMonthIsSelected = ko.observable(false);
-        self.selectedMonth = ko.observable();
-        self.videosInMonth = ko.observable();
+        self.aMonthIsSelected = false;
         self.isActiveFlag = false;
         
         // Hold the pager data back from server
@@ -98,58 +96,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	self.editLabel( 'Edit' );
 	//viblio.mpEvent( 'yir' );
 	self.getVids( month.label );
-        self.aMonthIsSelected( true );
-        self.selectedMonth( month.label );
+        self.aMonthIsSelected = true;
     };
     
     allVids.prototype.getVids = function( month, year, cid ) {
-	var self = this;
-	var args = "?month=" + month;
-        if ( year ) {
-            args += "?year=" + year;
-        }
-	if ( cid ) {
-            args += "?cid=" + cid;
-        }
-        viblio.api( '/services/yir/videos_for_month' + args ).then( function( data ) {
-            self.videosInMonth( data.media.length );
-        });
-	return system.defer( function( dfd ) {
-	    if ( self.monthPager.next_page )   {
-                args += "?page=" + self.monthPager.next_page;
-                args += "&rows" + self.monthPager.entries_per_page;
-                console.log(args);
-		viblio.api( '/services/yir/videos_for_month' + args)
-		    .then( function( json ) {
-                        console.log(json.pager);
-                        self.getVidsData(json);
-			self.monthPager = json.pager;
-                        self.videos.removeAll();
-			json.media.forEach( function( mf ) {
-			    var m = new Mediafile( mf );
-                            m.on( 'mediafile:play', function( m ) {
-                                router.navigate( 'new_player?mid=' + m.media().uuid );
-                            });
-                            m.on( 'mediafile:delete', function( m ) {
-                                viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function() {
-                                    viblio.mpEvent( 'delete_video' );
-                                    self.videos.remove( m );
-                                });
-                            });
-                            self.videos.push(m);
-			});
-			dfd.resolve();
-                        self.isActiveFlag = false;
-		    });
-	    }
-	    else {
-		dfd.resolve();
-                self.isActiveFlag = false;
-	    }
-	}).promise();
-    };
-    
-    /*allVids.prototype.getVids = function( month, year, cid ) {
 	var self = this;
 	var args = "?month=" + month;
         if ( year ) {
@@ -176,7 +126,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 self.videos.push(m);
 	    });
 	});
-    };*/
+    };
 
     allVids.prototype.activate = function( cid ) {
 	var self = this;
@@ -254,7 +204,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     
     allVids.prototype.isClipAvailable = function( idx ) {
 	var self = this;
-	if ( self.allVidsPager.total_entries == -1 )
+	if ( self.allVidsager.total_entries == -1 )
 	    return false;
 	return( idx >= 0 && idx < self.allVidsPager.total_entries );
     };
