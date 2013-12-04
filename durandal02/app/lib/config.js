@@ -11,7 +11,14 @@ define( function() {
 	    csponge: '24DEYTURHGHAP7XL5ARS',
 	    cloudfront: 's3vrmtwctzbu8n.cloudfront.net',
 	    email: 'support.viblio.com',
-	    uploader: 'upload.viblio.com'
+	    uploader: 'viblio.com'
+	},
+	'cat.viblio.com': {
+	    facebook: '613586332021367',
+	    csponge: '24DEYTURHGHAP7XL5ARS',
+	    cloudfront: 's3vrmtwctzbu8n.cloudfront.net',
+	    email: 'support.viblio.com',
+	    uploader: 'cat.viblio.com'
 	},
 	'staging.viblio.com': {
 	    facebook: '153462094815829',
@@ -25,7 +32,7 @@ define( function() {
 	    csponge: 'JQRKUZQYADSCHG5NJQ5P',
 	    cloudfront: 's3vrmtwctzbu8n.cloudfront.net',
 	    email: 'support-prod.viblio.com',
-	    uploader: 'upload.viblio.com'
+	    uploader: 'prod.viblio.com'
 	},
 	'192.168.1.35': {
 	    facebook: '566096966734454',
