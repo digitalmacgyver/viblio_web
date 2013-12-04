@@ -123,10 +123,6 @@ font-family: 'Source Sans Pro', serif; /* google font */
     }
 }
 
-.cinematic {
-font-family: 'Limelight', serif; /* google font */
-}
-
 /*.container-fluid {
     overflow: auto;
     padding: 0ex;
@@ -242,11 +238,6 @@ font-family: 'Limelight', serif; /* google font */
     top: -20px;
     left: 200px;
 }
-
-.fstrip {
-    position: relative;
-}
-
 
 .sd-fscroll {
     height: 251px;
@@ -435,7 +426,7 @@ font-family: 'Limelight', serif; /* google font */
     width: 64px;
     height: 64px;
 }
-#incoming #wrapper {
+#wrapper {
     width: 530px;
     padding: 30px;
     background-color: #373b49;
@@ -480,22 +471,14 @@ font-family: 'Limelight', serif; /* google font */
     left: 220px;
 }
 
+#incoming .poster a img,
 #incoming .poster .mplay-icon i {
     display: block;
     margin-right: auto;
     margin-left: auto;
 }
-
-#incoming .poster a img {
-    display: block;
-    margin-right: auto;
-    margin-left: auto;
-}
-
-#incoming #name-btn {
-}
-    
-#incoming #name-btn a {
+  
+#name-btn a {
     margin-right: auto;
     margin-left: auto;
     background-color: #f57f75;
@@ -566,7 +549,7 @@ body {
     color: #4d5d72;
 }
 
-p.text-center {
+.text-center {
     text-align: center;
 }
 
@@ -703,7 +686,6 @@ p.text-center {
 div.map {
     background: #eee;
     height: 300px;
-    /* position: relative; */
 }
 
 div.map div.title {
@@ -740,7 +722,6 @@ div.map .marker {
 }
 
 div.map .marker a {
-    color: inherit;
     text-decoration: none;
     font-weight: bold;
     color: #fff;
@@ -761,16 +742,10 @@ div.map .marker i {
     width: 180px;
 }
 
-.map .popover .popover-title {
-}
-
 .map .popover-content {
     text-align: center;
     margin-right: auto;
     margin-left: auto;
-}
-
-.map .popover-img {
 }
 
 .map .marker-display {
@@ -796,46 +771,6 @@ div.map .marker i {
 *
 *********************************************/
 
-/**
-.media-file {
-    width: 128px;
-    height: 128px;
-    margin-left: 24px;
-    margin-bottom: 24px;
-}
-
-.mplay-icon, .mplay-icon:hover, .mplay-icon:visited {
-    position: absolute;
-    z-index: 100;
-    border: 0;
-    text-decoration: none;
-    opacity: .8;
-    top: 48px;
-    left: 48px;
-}
-
-.mplay-icon i {
-    color: white;
-    font-size: 40px;
-}
-
-.media-file .icon-ok-sign {
-    position: absolute;
-    z-index: 100;
-    border: 0;
-    text-decoration: none;
-    top: 48px;
-    left: 48px;
-    display: none;
-    color: white;
-    font-size: 40px;
-}
-
-.selected .icon-ok-sign {
-    display: block;
-}
-**/
-
 .fancybox-wrap {
   width: 80% !important;
 }
@@ -845,7 +780,8 @@ div.map .marker i {
 }
 
 .mediafile img {
-    width: 260px; height: 180px;
+    width: 260px;
+    height: 180px;
 }
 
 .mediafile {
@@ -900,11 +836,6 @@ div.map .marker i {
     color: white;
     font-size: 80px;
 }
-/*
-.selected .icon-ok-sign {
-    display: block;
-}
-*/
 
 .dbtn {
     position: absolute;
@@ -933,39 +864,24 @@ div.map .marker i {
 *
 *********************************************/
 
-#nplayer-page {
-}
-
-#nplayer-page tr, #nplayer-page td {
+#nplayer-page tr,
+#nplayer-page td {
     vertical-align: top;
 }
 
-
-#main-table {
-}
-
-#left-arrow-column {
-    width: 40px;
-}
-
+#left-arrow-column,
 #right-arrow-column {
     width: 40px;
 }
 
-#left-side {
+#left-side,
+#info-table,
+#comment-column {
     width: 100%;
 }
 
 #right-side {
     width: 280px;
-}
-
-#info-table {
-    width: 100%;
-}
-
-#comment-column {
-    width: 100%;
 }
 
 #title-desc {
@@ -977,12 +893,12 @@ div.map .marker i {
     padding: 24px;
 }
 
-#faces-column {
+#faces-column,
+#faces {
     width: 340px;
 }
 
 #faces {
-    width: 340px;
     padding-top: 10px;
 }
 
@@ -1009,7 +925,8 @@ div.map .marker i {
     height: 255px;
 }
 
-#geo-map, #geo-nomap {
+#geo-map,
+#geo-nomap {
     width: 100%;
     height: 180px;
     margin-right: auto;
@@ -1052,7 +969,6 @@ div.map .marker i {
 }
 
 #geo-map .marker a {
-    color: inherit;
     text-decoration: none;
     font-weight: bold;
     color: #fff;
@@ -1091,17 +1007,8 @@ div.map .marker i {
 }
 
 #related-videos-block {
-    /*height: 650px;*/
     width: 280px;
 }
-
-/*#related-videos-block .media-container {
-    height: 200px;
-}
-
-#related-videos-block .media-container-inner {
-    height: 100px;
-}*/
 
 #related-videos-block p {
     text-align: center;
@@ -1113,7 +1020,6 @@ div.map .marker i {
 }
 
 #nplayer-page .vstrip .media-area {
-    /*height: 600px;*/
     overflow: auto;
 }
 
@@ -1154,25 +1060,15 @@ div.map .marker i {
     margin: 2px auto -4px;
 }
 
-.observer {
-    display: inline;
-}
+.observer,
 .comments-header p {
     display: inline;
-}
-
-.comment {
 }
 
 .comment .comment-text {
     background-color: white;
     padding: 12px;
     margin-top: 10px;
-   /* max-height: 50px;
-    overflow: auto;*/
-}
-
-.comment .comment-footer {
 }
 
 .comment-editor {
@@ -1222,7 +1118,7 @@ div.map .marker i {
     height: 30px;
 }
  
-#nginx td.filename {
+#nginx .filename {
     width: 25%;
 }
  
@@ -1232,7 +1128,7 @@ div.map .marker i {
     text-align: center;
 }
  
-#nginx td.progress {
+#nginx .progress {
     width: 20%;
     border: 1px solid #ccc;
     padding: 0px;
@@ -1240,24 +1136,26 @@ div.map .marker i {
     font-weight: bold;
 }
 
-#nginx td.done {
+#nginx .done {
     background: rgb(74, 170, 170);
     text-align: center;
 }
  
-#nginx td.start-cancel {
+#nginx .start-cancel {
     padding-left: 8px;
 }
 
-#nginx th { 
+#nginx th,
+#nginx .data-title,
+#nginx .data-point { 
     text-align: left;
 }
 
-#nginx span.file-input-name {
+#nginx .file-input-name {
     display: none;
 }
 
-#nginx #total_progress {
+#total_progress {
     font-weight: bold;
 }
 
@@ -1266,17 +1164,13 @@ div.map .marker i {
 }
 
 #nginx .data-point {
-    text-align: left;
     font-size: 30px;
 }
-#nginx .data-title {
-    text-align: left;
-}
 
-#nginx #stats table {
+#stats table {
     width: 100%;
 }
-#nginx #stats table td {
+#stats table td {
     width: 33%;
 }
 
@@ -1322,14 +1216,13 @@ div.map .marker i {
 
 /***** MAIN LAYOUT ****/
 
-#player-page #main {
-    /*position: absolute;*/
+#main {
     width:  1040px;
     float: left;
 }
 
 @media (max-width: 767px) {
-    #player-page #right-column {
+    #right-column {
         width: 100%;
     }
 }
@@ -1362,23 +1255,14 @@ div.map .marker i {
 
 /*********** GUTS ****************/*
 
-
-/*
-#left a i, #right a i {
-    text-align: center;
-    margin: 0 auto;
-    margin-top: 150px;
-    width: 100%;
-    font-size: 35px;
-}
-*/
-
-#left a, #right a {
+#left a, 
+#right a {
     margin-left: 9px;
     margin-top: 100px;
 }
 
-#left a:hover, #right a:hover {
+#left a:hover,
+#right a:hover {
     text-decoration: none;
 }
 
@@ -1402,13 +1286,6 @@ div.map .marker i {
     height: 100px;
     background-color: #eee;
 }
-
-/**
-#comments {
-    height: 50px;
-    background-color: black;
-}
-**/
 
 #player-page .vstrip .media-area {
     height: 600px;
@@ -1685,16 +1562,13 @@ div.map .marker i {
     background-color: #d3d1c8;
 }
 
-.yir .title h2 {
+.yir .title h2 ,
+.yir .title ul {
     display: inline;
 }
 
 .yir .title button {
     margin-right: 45px;
-}
-
-.yir .title ul {
-    display: inline;
 }
 
 .yir .title ul li {
@@ -1727,6 +1601,6 @@ div.map .marker i {
     cursor: pointer;
 }
 
-.yir .title span.sel {
+.yir .title .sel {
     font-weight: bold;
 }
