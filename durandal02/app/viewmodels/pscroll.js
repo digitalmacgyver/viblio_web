@@ -1,4 +1,4 @@
-define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'viewmodels/face', 'lib/customDialogs'], function (Events, router, app, system, viblio, Face, dialogs) {
+define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'viewmodels/person', 'lib/customDialogs'], function (Events, router, app, system, viblio, Face, dialogs) {
 
     var Pscroll = function( title, subtitle ) {
 	var self = this;
@@ -13,16 +13,11 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	self.title = ko.observable(title);
 	self.subtitle = ko.observable(subtitle || '&nbsp;' );
 
-	// Will eventually pass in a query, somehow
-
 	// List of face view/models to manage
 	self.faces = ko.observableArray([]);
 
 	// Currently selected face (if we use)
 	self.currentSelection = null;
-
-	// An edit/done label to use on the GUI
-	self.editLabel = ko.observable( 'Edit' );
 
         // Hold the pager data back from server
         // face queries.  Initialize it here so
@@ -49,7 +44,6 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
     // this managed a radio-selection behavior.
     Pscroll.prototype.faceSelected = function( face, pos ) {
 	this.trigger( 'pscroll:faceSelected', face, pos );
-	// dialogs.showMessage( face.name(), 'Selected' );
 	if ( this.currentSelection ) {
 	    if ( this.currentSelection != face ) {
 		this.currentSelection.selected( false );
@@ -64,20 +58,25 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	var self = this;
 
 	// Create a new Face with the data from the server
-	var m = new Face( mf );
-
-	// Register a callback for when a Face is selected.
-	// This is so we can deselect the previous one to create
-	// a radio behavior.
-	m.on( 'face:selected',  function( sel, el ) {
-	    self.faceSelected( sel, el.offset().left + Math.round( el.width() / 2 ) );
+	var m = new Face( mf, {
+	    show_name: true,
+	    clickable: true,
+	    click: function( person ) {
+		var pos = $(person.view).offset().left + Math.round( $(person.view).width() / 2 );
+		if ( self.currentSelection && self.currentSelection != person )
+		    $(self.currentSelection.view).removeClass( 'selected' );
+		self.faceSelected( person, pos );
+	    }
 	});
 
-	// Play a face clip.  This uses the query parameter
-	// passing technique to pass in the face to play.
-	m.on( 'face:play', function( m ) {
-	    router.navigate( 'new_player?mid=' + m.face().uuid );
-	});
+        m.on( 'person:mouseover', function() {
+            $(m.view).addClass( 'selected' );
+        });
+
+        m.on( 'person:mouseleave', function() {
+            if ( m != self.currentSelection )
+                $(m.view).removeClass( 'selected' );
+        });
 
         m.on( 'face:composed', function() {
             if ( self.scroller_ready ) {
@@ -86,38 +85,10 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
             }
         });
 
-	// When a face wishes to be deleted
-	//
-	m.on( 'face:delete', function( m ) {
-	    viblio.api( '/services/faces/delete', { uuid: m.face().uuid } ).then( function() {
-		self.faces.remove( m );
-		$(self.view).smoothDivScroll("recalculateScrollableArea");
-	    });
-	});
-
 	return m;
     };
 
-    // Toggle edit mode.  This will put all of face
-    // files in the strip into/out of edit mode.  I'm thinking
-    // this will be the way user's can delete their face files
-    Pscroll.prototype.toggleEditMode = function() {
-	var self = this;
-	if ( self.editLabel() == 'Edit' )
-	    self.editLabel( 'Done' );
-	else
-	    self.editLabel( 'Edit' );
-
-	self.faces().forEach( function( mf ) {
-	    mf.toggleEditMode();
-	});
-    };
-
-    // This is how the strip is populated.  This is not
-    // very interesting at the moment.  In the future it
-    // needs to take some sort of search criterion to
-    // restrict the faces displayed.  It also needs
-    // to do paging to handle infinite scroll.
+    // This is how the strip is populated.
     Pscroll.prototype.search = function() {
 	var self = this;
 

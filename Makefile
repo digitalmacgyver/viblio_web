@@ -1,9 +1,10 @@
 ROOT ?= /deploy
 LVL  ?= staging
 APPNAME   = web-clients
+BRANCH ?= master
 
 # This picks up only files under revision control
-FILES = $(shell git ls-tree -r master --name-only)
+FILES = $(shell git ls-tree -r $(BRANCH) --name-only)
 
 # package:
 # Build the tar file suitable for upgrade.pl.  Called package.tar.gz, 

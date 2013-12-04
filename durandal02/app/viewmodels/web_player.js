@@ -1,4 +1,4 @@
-define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/viblio','lib/customDialogs','viewmodels/mediafile','viewmodels/mediavstrip','viewmodels/face',], function( app,system,router,config,viblio,customDialogs,Mediafile,Strip,Face) {
+define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/viblio','lib/customDialogs','viewmodels/mediafile','viewmodels/mediavstrip','viewmodels/person',], function( app,system,router,config,viblio,customDialogs,Mediafile,Strip,Face) {
 
     function s3bucket( s3url ) {
         var host = $.url( s3url ).attr( 'host' );
@@ -198,7 +198,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 		    var F = {
 			url: face.url,
 			appears_in: 1,
-			contact_name: null,
+			contact_name: 'unknown',
 			contact_email: null
 		    };
 		    if ( face.contact ) {
@@ -208,11 +208,56 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 			F.id = face.contact.contact_id;
 			F.uuid = face.contact.uuid;
 		    }
+		    var person;
                     if (shareType() == 'public') {
-                        faces.push( new Face( F, { allow_changes: false, show_name: false, selectable: false } ) );
+                        //faces.push( new Face( F, { allow_changes: false, show_name: false, selectable: false } ) );
+			person = new Face( F, { 
+                            clickable: false, 
+			    show_name: false
+			});
                     } else {
-                        faces.push( new Face( F, { allow_changes: false, show_name: true, selectable: false } ) );
+			//faces.push( new Face( F, { allow_changes: false, show_name: true, selectable: false } ) );
+			person = new Face( F, { 
+                            clickable: false, 
+                            leftBadgeIcon: 'icon-remove-circle',
+                            leftBadgeClick: removePerson,
+                            leftBadgeMode: 'hover',
+                            show_name: false, 
+                            show_tag3: true,
+			});
+			person.on( 'person:tag3_changed', function( f, newname, oldname ) {
+			    // Have to see if newname is an existing contact...
+                            viblio.api( '/services/faces/contact_for_name', { contact_name: newname } ).then( function( data ) {
+				if ( data.contact ) {
+                                    if ( oldname == 'unknown' ) {
+					// Unidentifed to identified
+					viblio.mpEvent( 'face_tag_to_new' );
+                                    }
+                                    else {
+					// Merge identified
+					viblio.mpEvent( 'face_merge' );
+                                    }
+                                    viblio.api( '/services/faces/tag', {
+					uuid: f.data.uuid,
+					cid:  data.contact.uuid } ).then( function() {
+                                            // If this face is already displayed, remove it.
+                                            faces().forEach( function( ex ) {
+						if ( ex.name() == newname && ex != f ) {
+                                                    faces.remove( ex );
+						}
+                                            });
+					});
+				}
+				else {
+                                    viblio.mpEvent( 'face_tag_to_identified' );
+                                    viblio.api( '/services/faces/tag', {
+					uuid: f.data.uuid,
+					contact_name: newname } );
+				}
+                            });
+			});
                     }
+		    faces.push( person );
 		}
 		finfo( 'Starring' );
 	    }
@@ -220,6 +265,15 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 		finfo( '' );
 	    }
 	});
+    }
+
+    function removePerson( face ) {
+        viblio.api( '/services/faces/remove_from_video', { 
+            cid: face.data.uuid, 
+            mid: playing().media().uuid } ).then( function( data ) {
+                viblio.mpEvent( 'face_removed_from_video' );
+                faces.remove( face );
+            });
     }
     
     // Play a new video.  Used after the main player is created in

@@ -215,102 +215,9 @@ font-family: 'Source Sans Pro', serif; /* google font */
 #contactcardModal .modal-body .cvalues {
     display: inline;
 }
-/*********************************************
-*
-*               face.css 
-*
-*********************************************/
-
-.face img {
-    width: 260px; height: 180px;
-}
 
 .selectable {
     cursor: pointer;
-}
-
-.face {
-    width: 260px;
-}
-
-.face img {
-    border: 1px solid white;
-}
-
-.face.selected img {
-    border: 1px solid red;
-}
-
-.face .information {
-    text-align: left;
-}
-
-.face .information .title {
-    margin-left: 6px;
-}
-
-.face .information .aux {
-    margin-right: 6px;
-}
-
-.face .icon-certificate {
-    position: absolute;
-    z-index: 1000;
-    top: 2px;
-    right: -9px;
-    font-size: 31px;
-    color: orange;
-    -moz-text-shadow: 2px 2px rgba(0,0,0,.2);
-    -webkit-text-shadow: 2px 2px rgba(0,0,0,.2);
-    text-shadow: 2px 2px rgba(0,0,0,.2);
-}
-
-.face .appears-in {
-    position: absolute;
-    z-index: 1000;
-    top: 7px;
-    right: 1px;
-    color: white;
-    font-size: 14px;
-}
-
-/*********************************************
-*
-*               faces.css 
-*
-*********************************************/
-
-#faces-page .face {
-    width: 128px;
-    float: left;
-    margin-right: 15px;
-    margin-bottom: 10px;
-}
-
-#faces-page .face.selected img {
-    border: none;
-}
-
-#faces-page .item-container .face.selected {
-    background: rgba(239,85,65,1);
-}
-
-#faces-page .face.selected .boxShadowed {
-    -moz-box-shadow: none; /* Firefox */
-    -webkit-box-shadow: none;
-    box-shadow: none;
-}
-
-#faces-page .face img {
-    height: 128px;
-    width: 128px;
-}
-
-#faces-page .face div.name {
-    width: 128;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 /*********************************************
@@ -1407,6 +1314,7 @@ div.map .marker i {
     position: relative;
 }
 
+<<<<<<< HEAD
 .sd-pscroll .face {
     position: relative;
     display: block;
@@ -1421,6 +1329,8 @@ div.map .marker i {
 }
 
 
+=======
+>>>>>>> master
 /*********************************************
 *
 *               register.css

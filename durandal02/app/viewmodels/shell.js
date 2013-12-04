@@ -118,7 +118,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'upload',             moduleId: 'nginx',              title: 'UPLOAD',
 	      nav: false,    authenticated: true,   header: page_header },
 	    
-            { route: 'faces',              moduleId: 'faces',              title: 'PEOPLE',
+            { route: 'people',             moduleId: 'people',             title: 'PEOPLE',
 	      nav: true,    authenticated: true,   header: page_header },
 	    
             { route: 'shared',             moduleId: 'shared',             title: 'SHARED',

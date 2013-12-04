@@ -1,0 +1,51 @@
+<style>
+</style>
+
+<div id="people-page">
+
+  <div class="known_faces-container horizontalStrip orangeBG bottomBorder-Thin">
+    <div class="title">
+      <h2 class="cinematic textShadowed">Identified People</h2>
+      <span class="muted">People you've identified in your videos. Click on a face to manage.</span>
+    </div>
+    <div class="horizontal-scroller faces-container">
+      <button class="btn btn-small fwd btn-nav mCSB_buttonRight"><img src="css/images/arrowRight.png"/></button>
+      <button class="btn btn-small back btn-nav mCSB_buttonLeft"><img src="css/images/arrowLeft.png"/></button>
+      <!-- ko foreach: known_faces -->
+      <!-- ko compose: $data --><!-- /ko -->
+      <!-- /ko -->
+    </div>
+  </div>
+
+  <div class="darkBlueBG horizontal-strip bottomBorder-Thin faces-for-face" data-bind="visible: faces_for_visible()" >
+    <div class="title">
+      <button class="btn btn-primary pull-right" data-bind="click:done">Done</button>
+      <span class="inline-editable cinematic textShadowed" data-bind="html: selected_name">placeholder</span>
+      <i style="font-size: 20px; color: white; margin-left: 10px; opacity: 0.7;" class="icon-arrow-left"></i><span style="color: white; font-style: italic; font-size: 16px; margin-left: 8px; opacity: 0.7;">Click to change name</span>
+    </div>
+    <div class="margined-content-wrapper">
+      <div class="no-faces-for" data-bind="if: faces_for().length==0">
+	<span data-bind="text: selected_name"></span> does not appear in any of your videos.</span>
+      </div>
+      <!-- ko foreach: faces_for -->
+      <!-- ko compose: $data --><!-- /ko -->
+      <!-- /ko -->
+      <div class="clearfix"></div>
+    </div>
+    <div class="arrow"></div>
+  </div>
+
+  <div class="unknown_faces-container horizontalStrip lightBlueBG bottomBorder-Thin">
+    <div class="title">
+      <h2 class="cinematic textShadowed">Unknown People</h2>
+      <span class="muted">Click on a person's name to identify them.</span>
+    </div>
+    <div class="margined-content-wrapper faces-container">
+      <!-- ko foreach: unknown_faces -->
+      <!-- ko compose: $data --><!-- /ko -->
+      <!-- /ko -->
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+</div>
