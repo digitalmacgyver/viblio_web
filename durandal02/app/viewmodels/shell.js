@@ -152,6 +152,9 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      nav: false,   authenticated: false,   header: conditional_header },
           
             { route: 'getApp',           moduleId: 'getApp',     title: 'Download Viblio',
+                nav: false,   authenticated: false,   header: conditional_header },
+            
+            { route: 'faq',           moduleId: 'faq',     title: 'Viblio FAQ',
                 nav: false,   authenticated: false,   header: conditional_header }
 
         ]).buildNavigationModel();

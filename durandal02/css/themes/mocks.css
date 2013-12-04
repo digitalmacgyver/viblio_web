@@ -672,6 +672,10 @@ input:-moz-placeholder {
     color: rgba(239,85,65,1);
 }
 
+.doubleSpaced {
+    line-height: 1.5;
+}
+
 /********************  Page Header Section  *****************************/
 
 #page-header .navbar {
@@ -2374,4 +2378,22 @@ p.uitoken-input ul.token-input-list-facebook {
 
 #faces-column .person .right-badge {
     cursor: pointer;
+}
+
+/************** FAQ page ********************/
+
+#faq-page p {
+    margin-bottom: 0;
+}
+
+#faq-page form p {
+    margin-bottom: 20px;
+}
+
+#mc-embedded-subscribe-form {
+    margin-bottom: 0;
+}
+
+#mc-embedded-subscribe-form input {
+    width: 100%;
 }
