@@ -672,10 +672,10 @@ input:-moz-placeholder {
     color: rgba(239,85,65,1);
 }
 
-<<<<<<< HEAD
 .doubleSpaced {
     line-height: 1.5;
-=======
+}
+
 .marginL45 {
     margin-left: 45px;
 }
@@ -690,7 +690,6 @@ input:-moz-placeholder {
 
 .padding45 {
     padding: 45px;
->>>>>>> master
 }
 
 /********************  Page Header Section  *****************************/
