@@ -20,13 +20,13 @@
 #
 NODE = /usr/local/bin/node
 NPM  = /usr/local/bin/npm
-WEYLAND = /usr/local/bin/weyland
+WEYLAND = node_modules/weyland/bin/cli.js
 RJS = /usr/local/lib/node_modules/weyland/node_modules/.bin/r.js
 NODE_MINIFY = node_modules/node-minify
 
 optimize: $(WEYLAND) $(NODE_MINIFY)
 	$(RM) -rf build app/main-built.js
-	$(NODE) $(WEYLAND) build
+	$(NODE) $(WEYLAND) build 
 	# Copy the css, image, font and other resources
 	tar zcf - `find . -name "*.css" \
 		-o -name "*.png" \
@@ -42,12 +42,7 @@ optimize: $(WEYLAND) $(NODE_MINIFY)
 	$(NODE) vendor-opt.js
 
 $(WEYLAND):
-	@if [ `id -u -n` != 'root' ]; then \
-	  echo You must be root to install weyland. ;\
-	  echo Please run: sudo make $(WEYLAND) ;\
-	  exit 1 ;\
-	fi
-	$(NPM) install -g weyland
+	$(NPM) install weyland
 
 $(NODE_MINIFY): 
 	$(NPM) install node-minify

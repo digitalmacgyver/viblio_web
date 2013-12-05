@@ -14,7 +14,8 @@ FILES = $(shell git ls-tree -r $(BRANCH) --name-only)
 # For the package target to work, you must be able to
 # git-clone without a password
 package:
-	tar zcf package.tar.gz $(FILES)
+	( cd durandal02; make )
+	tar zcf package.tar.gz $(FILES) durandal02/build
 
 # install:
 # This target is called by the sw installer on the target machine.  Does
@@ -25,12 +26,6 @@ install:
 	-rm -rf $(ROOT)/$(LVL)/$(APPNAME).pre
 	-mv $(ROOT)/$(LVL)/$(APPNAME) $(ROOT)/$(LVL)/$(APPNAME).pre
 	-mv $(ROOT)/$(LVL)/$(APPNAME).next $(ROOT)/$(LVL)/$(APPNAME)
-	if [ $(LVL) = 'prod' ]; then \
-	  (cd $(ROOT)/$(LVL)/$(APPNAME)/durandal02; make) ;\
-	fi
-	if [ $(LVL) = 'staging' ]; then \
-	  (cd $(ROOT)/$(LVL)/$(APPNAME)/durandal02; make) ;\
-	fi
 
 # bump:
 # This will actually run upgrade.pl to initiate a software upgrade.  You must
