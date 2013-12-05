@@ -25,6 +25,9 @@ install:
 	-rm -rf $(ROOT)/$(LVL)/$(APPNAME).pre
 	-mv $(ROOT)/$(LVL)/$(APPNAME) $(ROOT)/$(LVL)/$(APPNAME).pre
 	-mv $(ROOT)/$(LVL)/$(APPNAME).next $(ROOT)/$(LVL)/$(APPNAME)
+	if [ $(LVL) = 'prod' ]; then \
+	  (cd $(ROOT)/$(LVL)/$(APPNAME)/durandal02; make) ;\
+	fi
 
 # bump:
 # This will actually run upgrade.pl to initiate a software upgrade.  You must

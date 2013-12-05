@@ -1,10 +1,5 @@
 define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/viblio','lib/customDialogs','viewmodels/mediafile','viewmodels/mediavstrip','viewmodels/person',], function( app,system,router,config,viblio,customDialogs,Mediafile,Strip,Face) {
 
-    function s3bucket( s3url ) {
-        var host = $.url( s3url ).attr( 'host' );
-        return host.split(".")[0];
-    }
-
     function resizePlayer() {
         $(".player, .player video").height( ($(".player").width()*9) / 16 );
     }

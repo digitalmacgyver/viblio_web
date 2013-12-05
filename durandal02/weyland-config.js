@@ -1,7 +1,13 @@
 exports.config = function(weyland) {
     weyland.build('main')
         .task.jshint({
-            include:'app/**/*.js'
+            include:'app/**/*.js',
+	    jshint: {
+		options: {
+		    '-W099': true,
+		    '-W069': true
+		}
+	    }
         })
         .task.uglifyjs({
             include:['app/**/*.js', 'lib/durandal/**/*.js']
@@ -21,9 +27,10 @@ exports.config = function(weyland) {
                     'durandal':'../lib/durandal/js',
                     'plugins' : '../lib/durandal/js/plugins',
                     'transitions' : '../lib/durandal/js/transitions',
-                    'knockout': '../lib/knockout/knockout-2.3.0',
-                    'bootstrap': '../lib/bootstrap/js/bootstrap',
-                    'jquery': '../lib/jquery/jquery-1.9.1'
+		    'jquery' : 'empty:',
+		    'knockout': 'empty:',
+		    'facebook': '../lib/cdn/all',
+		    'cloudsponge': '../lib/cdn/address_books'
                 },
                 inlineText: true,
                 optimize : 'none',

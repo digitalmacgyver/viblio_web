@@ -12,14 +12,6 @@
   videos.
 */
 define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','viewmodels/person','viewmodels/mediafile','lib/customDialogs'], function(app,system,router,dialog,config,viblio,Strip,Face,Mediafile,customDialogs) {
-    // Given a S3 url, parse out and return the bucket name.  Needed for
-    // Wowza urls.
-    //
-    function s3bucket( s3url ) {
-	var host = $.url( s3url ).attr( 'host' );
-	return host.split(".")[0];
-    }
-
     function resizePlayer() {
 	$("#tv, #tv video").height( ($("#tv").width()*9) / 16 );
     }
