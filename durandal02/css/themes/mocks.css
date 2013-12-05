@@ -1,6 +1,6 @@
 body {
     background-color: rgba(239,239,232,1);
-    color: rgba(50,53,68,1);
+    color: rgba(117,117,128,1);
     padding-top: 57px; /* match header height */
     font-family: 'Source Sans Pro', sans-serif;
 }
@@ -171,6 +171,287 @@ input[type="color"],
     outline: none;
 }
 
+/***************** START OF MORE GENERAL CSS CLASSES **************************/
+
+
+/* .person is the new .face, and should be used with views/person and views/face
+ * should be factored out.
+ */
+.person {
+    width: 128px;
+    position: relative;
+
+    margin-right: 15px;
+    margin-bottom: 10px;
+
+    padding: 3px;
+    background: transparent;
+}
+
+.person > div {
+    -moz-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2); /* Firefox */
+    -webkit-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2);
+    box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2); 
+}
+
+.person.selected > div {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.person .right-badge {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    right: -10px;
+    top: -5px;
+
+    color: white;
+    font-size: 40px;
+
+    -moz-text-shadow: 1px 1px rgba(0,0,0,.2);
+    -webkit-text-shadow: 1px 1px rgba(0,0,0,.2);
+    text-shadow: 1px 1px rgba(0,0,0,.2);
+
+}
+
+.person .left-badge {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    right: 102px;
+    top: -5px;
+
+    color: white;
+    font-size: 40px;
+
+    -moz-text-shadow: 1px 1px rgba(0,0,0,.2);
+    -webkit-text-shadow: 1px 1px rgba(0,0,0,.2);
+    text-shadow: 1px 1px rgba(0,0,0,.2);
+
+}
+
+.person .star {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    right: -10px;
+    top: -5px;
+}
+
+.person .starRank {
+    position: absolute;
+    z-index: 1000;
+    top: 3px;
+    right: 6px;
+    color: white;
+    font-size: 21px;
+}
+
+.person.selected img {
+    border: none;
+}
+
+.person.selected {
+    background: rgba(239,85,65,1);
+}
+
+.person img {
+    height: 128px;
+    width: 128px;
+}
+
+.person .name {
+    width: 100%;
+    height: 36px;
+    background-color: white;
+    padding: 8px 5px;
+    position: relative;
+    text-align: center;
+    box-sizing: border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+    font-weight: 600;
+    font-size: 16px;
+    color: rgba(0,0,0,.5);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.person .name.tag1-hover {
+   background-color: black;
+background: #4c4c4c; /* Old browsers */
+background: -moz-linear-gradient(top, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2c2c2c 50%, #000000 51%, #111111 60%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4c4c4c), color-stop(12%,#595959), color-stop(25%,#666666), color-stop(39%,#474747), color-stop(50%,#2c2c2c), color-stop(51%,#000000), color-stop(60%,#111111), color-stop(76%,#2b2b2b), color-stop(91%,#1c1c1c), color-stop(100%,#131313)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #4c4c4c 0%,#595959 12%,#666666 25%,#474747 39%,#2c2c2c 50%,#000000 51%,#111111 60%,#2b2b2b 76%,#1c1c1c 91%,#131313 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #4c4c4c 0%,#595959 12%,#666666 25%,#474747 39%,#2c2c2c 50%,#000000 51%,#111111 60%,#2b2b2b 76%,#1c1c1c 91%,#131313 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, #4c4c4c 0%,#595959 12%,#666666 25%,#474747 39%,#2c2c2c 50%,#000000 51%,#111111 60%,#2b2b2b 76%,#1c1c1c 91%,#131313 100%); /* IE10+ */
+background: linear-gradient(to bottom, #4c4c4c 0%,#595959 12%,#666666 25%,#474747 39%,#2c2c2c 50%,#000000 51%,#111111 60%,#2b2b2b 76%,#1c1c1c 91%,#131313 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313',GradientType=0 ); /* IE6-9 */
+   color: white;
+   cursor: pointer;
+}
+
+.person .name.tag1-accepted {
+   background-color: green;
+background: #7ff213; /* Old browsers */
+background: -moz-linear-gradient(top,  #7ff213 0%, #299a0b 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7ff213), color-stop(100%,#299a0b)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #7ff213 0%,#299a0b 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #7ff213 0%,#299a0b 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #7ff213 0%,#299a0b 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #7ff213 0%,#299a0b 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7ff213', endColorstr='#299a0b',GradientType=0 ); /* IE6-9 */
+   color: white;
+   cursor: pointer;
+}
+
+.person .name.tag1-rejected {
+   background-color: red;
+background: #a90329; /* Old browsers */
+background: -moz-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a90329), color-stop(44%,#8f0222), color-stop(100%,#6d0019)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #a90329 0%,#8f0222 44%,#6d0019 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #a90329 0%,#8f0222 44%,#6d0019 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, #a90329 0%,#8f0222 44%,#6d0019 100%); /* IE10+ */
+background: linear-gradient(to bottom, #a90329 0%,#8f0222 44%,#6d0019 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', endColorstr='#6d0019',GradientType=0 ); /* IE6-9 */
+   color: white;
+   cursor: pointer;
+}
+
+.person .name.tag2-query {
+background: #00b7ea; /* Old browsers */
+background: -moz-linear-gradient(top,  #00b7ea 0%, #009ec3 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#00b7ea), color-stop(100%,#009ec3)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #00b7ea 0%,#009ec3 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #00b7ea 0%,#009ec3 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #00b7ea 0%,#009ec3 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #00b7ea 0%,#009ec3 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', endColorstr='#009ec3',GradientType=0 ); /* IE6-9 */
+    color: white;
+}
+
+.person .name.tag2-query {
+    cursor: pointer;
+}
+
+.person .name.tag3-editable {
+    cursor: pointer;
+}
+
+.person .name.tag3-editable:hover {
+    text-decoration: underline;
+}
+
+.editable-click, a.editable-click, a.editable-click:hover {
+    border-bottom: 0;
+}
+
+.person .editableform input[type="text"] {
+    font-size: 14px;
+    height: auto;
+    width: 120px;
+}
+
+.person .editableform .editable-buttons {
+    font-size: 14px;
+}
+
+/* .horizontal-scroller should be used for all horizontal
+ * scrollers.  See views/people and viewmodels/people for
+ * examples.  All other horizontal scrollers should be 
+ * refactored to use this model.
+ */
+.horizontal-scroller .scrollWrapper {
+    padding-top: 5px;
+    margin-bottom: 0;
+}
+
+.horizontal-scroller .mCSB_horizontal>.mCSB_container {
+    margin-bottom: 0;
+}
+
+.horizontal-scroller .scrollableArea:first-child {
+    margin-left: 40px;
+}
+
+.horizontal-scroller {
+    height: 208px;
+    width: 100%;
+    position: relative;
+}
+
+.horizontal-scroller .fwd {
+    top: 40%;
+    right: 0;
+    padding-left: 10px;
+    display: none;
+}
+
+.horizontal-scroller .back {
+    display: none;
+}
+
+.horizontal-scroller .btn-nav {
+    position: absolute;
+    top: 24%;
+    z-index: 1000;
+}
+
+/* For page content
+ */
+.margined-content-wrapper {
+    margin-left: 45px;
+}
+
+/* Trying to get a universal strip
+ */
+.horizontal-strip {
+    padding: 35px 0 40px 0;
+}
+
+.horizontal-strip .title {
+    margin-left: 45px;
+    margin-bottom: 22px;
+}
+
+.horizontal-strip .title span {
+    color: white;
+    font-weight: 100;
+    font-size: 31.5px;
+    margin-left: 0px;
+}
+
+button.btn.editable-cancel {
+    margin-right: 0;
+}
+
+.editable-buttons .btn-group > .btn:first-child,
+.editable-buttons .btn-group > .btn:last-child,
+.editable-buttons .btn-group > .dropdown-toggle,
+.editable-buttons .btn-group > .btn,
+.editable-buttons .btn {
+padding: 0;
+width: 40px;
+height: 40px;
+}
+
+.person .editable-buttons .btn-group > .btn:first-child,
+.person .editable-buttons .btn-group > .btn:last-child,
+.person .editable-buttons .btn-group > .dropdown-toggle,
+.person .editable-buttons .btn-group > .btn,
+.person .editable-buttons .btn {
+padding: 0;
+width: 30px;
+height: 30px;
+font-size: 14px;
+}
+
+/***************** END OF MORE GENERAL CSS CLASSES **************************/
+
 .player-control:hover {
     box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
 }
@@ -199,7 +480,7 @@ input[type="color"],
     text-shadow: none;
     font-size: 24px;
     font-weight: 600;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
 }
 
 .shareButton:hover {
@@ -342,7 +623,7 @@ input:-moz-placeholder {
 }
 
 .bigTitle {
-    color: rgba(0,0,0,.6);
+    color: rgba(117,117,128,1);
     font-size: 23px;
     font-weight: 600;
 }
@@ -383,12 +664,28 @@ input:-moz-placeholder {
 }
 
 .lightGreyFont {
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
 }
 
 .tomatoFont,
 .tomatoFont:hover {
     color: rgba(239,85,65,1);
+}
+
+.marginL45 {
+    margin-left: 45px;
+}
+
+.marginR45 {
+    margin-right: 45px;
+}
+
+.font18 {
+    font-size: 18px;
+}
+
+.padding45 {
+    padding: 45px;
 }
 
 /********************  Page Header Section  *****************************/
@@ -445,7 +742,7 @@ input:-moz-placeholder {
     margin-top: 10px;
 }
 
-#page-header .navbar .nav li.dropdown {
+#page-header .navbar .nav li.dropdown:focus {
     outline: none;
 }
 
@@ -473,7 +770,7 @@ input:-moz-placeholder {
     }
     
     .nav-collapse .dropdown-menu {
-        color: rgba(0,0,0,.5);
+        color: rgba(117,117,128,1);
         background-color: #ffffff;
     }
     
@@ -493,7 +790,7 @@ input:-moz-placeholder {
     .nav-collapse .dropdown-menu > li > a:focus,
     .nav-collapse .dropdown-submenu:hover > a,
     .nav-collapse .dropdown-submenu:focus > a {
-        color: rgba(0,0,0,.5);
+        color: rgba(117,117,128,1);
         text-decoration: none;
         background-color: rgba(232,248,250,1);
         background-image: none;
@@ -512,7 +809,6 @@ input:-moz-placeholder {
 }
 
 #page-header .avatar {
-    float: left;
     margin-top: -4px;
     margin-right: 12px;
     -moz-box-shadow: 1px 1px 0px 1px rgba(0,0,0,.5); /* Firefox */
@@ -537,6 +833,7 @@ input:-moz-placeholder {
     display: inline-block;
 }
 
+#userNamePicNav,
 .navbar .nav.pull-right.dropdown-toggle {
     padding: 0;
 }
@@ -549,10 +846,6 @@ input:-moz-placeholder {
 #page-header .navbar .dropdown-toggle span:last-of-type {
     font-size: 16px;
     font-weight: 600;
-}
-
-#userNamePicNav {
-    padding: 0;    
 }
 
 #userNameText-Wrap {
@@ -569,7 +862,6 @@ input:-moz-placeholder {
     left: 0;
     z-index: 1000;
     display: none;
-    float: left;
     min-width: 100%;
     padding: 0;
     margin: 0;
@@ -585,10 +877,7 @@ input:-moz-placeholder {
     border-left: 3px solid rgba(0,0,0,.5);
 }
 
-.navbar .nav > li > .dropdown-menu:after {
-    display: none;
-}
-
+.navbar .nav > li > .dropdown-menu:afte,
 .navbar .nav > li > .dropdown-menu:before {
     display: none;
 }
@@ -599,7 +888,7 @@ input:-moz-placeholder {
     clear: both;
     font-weight: 600;
     line-height: 20px;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
     font-size: 16px;
     white-space: nowrap;
 }
@@ -607,7 +896,7 @@ input:-moz-placeholder {
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus,
 .dropdown-submenu:hover > a,
 .dropdown-submenu:focus > a {
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
     text-decoration: none;
     background-color: rgba(232,248,250,1);
     background-image: none;
@@ -732,7 +1021,7 @@ input:-moz-placeholder {
     text-align: center;
     font-size: 25px;
     font-weight: bold;
-    color: rgba(0,0,0,.6);
+    color: rgba(117,117,128,1);
 }
 
 #loginArea form div {
@@ -758,15 +1047,6 @@ input:-moz-placeholder {
     padding: 20px 52px 40px;
 }
 
-#loginArea form button {
-    float: right;
-    clear: both;
-}
-
-#noAccount h3 {
-    display: inline-block;
-}
-
 #noAccount a {
     text-decoration: underline;
     font-size: 17px;
@@ -781,7 +1061,7 @@ input:-moz-placeholder {
 
 .loginHeader {
     font-size: 24px;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
     margin: 10px 0 30px;
     font-weight: 600;
 }
@@ -846,7 +1126,7 @@ input:-moz-placeholder {
 
 #forgotPassword-Wrap .content-Wrap p {
     font-size: 18px;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
     margin-bottom: 24px;
 }
 
@@ -862,7 +1142,7 @@ input:-moz-placeholder {
 
 #betaReservedModal {
     position: relative;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
 }
 
 #betaReservedModal p {
@@ -887,7 +1167,7 @@ input:-moz-placeholder {
 .shareIconList li label {
     margin-bottom: -32px;
     font-size: 14px;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
     visibility: hidden;
 }
 
@@ -903,7 +1183,7 @@ input:-moz-placeholder {
     padding-top: 20px;
     display: block;
     font-size: 16px;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
 }
 
 .shareIcon {
@@ -942,22 +1222,24 @@ input:-moz-placeholder {
 }
 
 .mainVidSection .title {
-    margin-bottom: 27px;
-    margin-left: 45px;
     font-size: 16px;
     font-weight: 600;
 }
 
-.title span {
+.subtitle {
     color: rgba(0,0,0,.5);
     margin-left: 40px;
     font-size: 18px;
     font-weight: 400;
 }
 
-.cinematic {
+.mainTitle {
+    font-size: 32px;
+    line-height: 40px;
     font-weight: 100;
     font-family: inherit;
+    display: inline-block;
+    margin-bottom: 27px;
 }
 
 .mainVidSection .portfolio {
@@ -975,28 +1257,30 @@ input:-moz-placeholder {
     border: none;
 }
 
-.mainVidSection .mediafile .information {
+.mediafile {
+    position: relative;
+}
+
+.mediafile .information {
     width: 100%;
-    height: 54px;
     background-color: white;
-    padding: 17px 5px;
     position: relative;
     box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
 }
 
-.mainVidSection .mplay-icon {
-    left: 145px;
+.mainVidSection .mediafile .information {
+    height: 54px;
+    padding: 17px 5px;
 }
 
+.mainVidSection .mplay-icon,
 .mainVidSection .mplay-icon:hover {
     left: 145px;
 }
 
-.mainVidSection .mediafile .information .aux {
+.mediafile .information .aux {
     background-color: rgba(211,246,253,1);
-    width: 54px;
-    height: 54px;
     position: absolute;
     top: 0;
     right: 0;
@@ -1006,11 +1290,19 @@ input:-moz-placeholder {
     text-align: center;
 }
 
+.mainVidSection .mediafile .information .aux {
+    width: 54px;
+    height: 54px;
+}
+
+.mediafile .information .aux img {
+    display: block;
+    text-align: center;
+}
+
 .mainVidSection .mediafile .information .aux img {
     width: 40px;
     height: 30px;
-    display: block;
-    text-align: center;
     margin: 4px auto -4px;
 }
 
@@ -1019,7 +1311,7 @@ input:-moz-placeholder {
 }
 
 .mediafile .information .title {
-    color: rgba(64,66,79,.75);
+    color: rgba(94,95,105,1);
 }
 
 /************************** hstrip *******************************/
@@ -1041,11 +1333,7 @@ input:-moz-placeholder {
     position: relative;
     display: block;
     float: left;
-    margin: 0;
     border: none;
-    padding-right: 20px;
-    padding-left: 5px;
-    padding-bottom: 5px;
     background: transparent;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -1058,24 +1346,15 @@ input:-moz-placeholder {
     padding: 35px 0 40px 0;
 }
 
-.fstrip .title h2 {
-    color: white;
-    display: inline;
-}
-
-.fstrip .title .btn {
+.fstrip .btn-primary {
     margin-left: 35px;
-}
-
-.fstrip .title span {
-    color: rgba(0,0,0,.5);
-    margin-left: 10px;
 }
 
 .sd-fscroll .scrollWrapper {
     padding-bottom: 5px;
 }
 
+.hstrip .scrollWrapper .mediafile,
 .sd-fscroll .scrollableArea .mediafile {
     margin: 0;
     padding-right: 20px;
@@ -1092,13 +1371,7 @@ input:-moz-placeholder {
 
 .pstrip {
     padding: 25px 0 33px 0;
-    background-color: #24b8d1;
-}
-
-.pstrip .title h2 {
-    color: white;
-    display: inline;
-}
+} 
 
 .sd-pscroll .scrollWrapper {
     padding-top: 5px;
@@ -1107,121 +1380,6 @@ input:-moz-placeholder {
 
 .sd-pscroll .mCSB_horizontal>.mCSB_container {
     margin-bottom: 0;
-}
-
-/***************************************/
-
-.sd-pscroll .scrollWrapper .face {
-    width: 160px;
-    margin-right: 20px;
-    background: transparent;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-}
-
-.face {
-    position: relative;
-}
-
-.face > div {
-    -moz-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2); /* Firefox */
-    -webkit-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2);
-    box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2); 
-}
-
-.face.selected img {
-    border: none;
-}
-
-.sd-pscroll .scrollWrapper .face.selected {
-    background: rgba(239,85,65,1);
-}
-
-.face.selected > div {
-    -moz-box-shadow: none; /* Firefox */
-    -webkit-box-shadow: none;
-    box-shadow: none;
-}
-
-.face .star {
-    position: absolute;
-    height: 40px;
-    width: 40px;
-    right: -10px;
-    top: -5px;
-}
-
-.face .starRank {
-    position: absolute;
-    z-index: 1000;
-    top: 3px;
-    right: 6px;
-    color: white;
-    font-size: 21px;
-}
-
-.face img {
-    width: 100%;
-    height: 160px;
-    border: none;
-}
-
-.face .name {
-    width: 100%;
-    height: 36px;
-    background-color: white;
-    padding: 8px 5px;
-    position: relative;
-    text-align: center;
-    box-sizing: border-box;
-    -moz-box-sizing:border-box; /* Firefox */
-    font-weight: 600;
-    font-size: 16px;
-    color: rgba(0,0,0,.5);
-}
-
-.face .information .aux {
-    background-color: rgba(211,246,253,1);
-    width: 54px;
-    height: 54px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    padding: 0;
-    color: rgba(82,152,189,1);
-}
-
-.face .information .title {
-    color: rgba(64,66,79,.75);
-}
-
-/**************************************/
-
-.playerfaces .face img {
-    -moz-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2); /* Firefox */
-    -webkit-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2);
-    box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2);
-}
-
-.playerfaces .face > div {
-    -moz-box-shadow: none; /* Firefox */
-    -webkit-box-shadow: none;
-    box-shadow: none;
-}
-
-.playerfaces .face.selected .boxShadowed {
-    -moz-box-shadow: none; /* Firefox */
-    -webkit-box-shadow: none;
-    box-shadow: none;
-}
-
-.playerfaces .face .name {
-    background-color: transparent;
-    font-weight: 200;
-    font-size: 14px;
-    color: white;
 }
 
 /*/\/\/\/\/\/\/\/\/\/\ SmoothDivScroll /\/\/\/\/\/\/\/\/\/\*/
@@ -1255,17 +1413,10 @@ input:-moz-placeholder {
 
 /********************  Map Strip  *****************************/
 
-.map > .title {
+.map .mainTitle {
     position: absolute;
     top: 25px;
-}
-
-.map > .title > h2 {
-    font-weight: 300;
-}
-
-div.map div.title {
-    z-index: 1000;
+    z-index: 1000
 }
 
 /********************  YIR Section  *****************************/
@@ -1273,25 +1424,15 @@ div.map div.title {
 .yir {
     padding: 35px 0 100px 0;
     background-color: rgba(239,239,232,1);
+    color: rgba(117,117,128,1);
 }
 
-.yirHeading-Wrap {
-    padding-left: 45px;
-}
-
-.yirHeading-Wrap h2,
-.yirHeading-Wrap p {
-    color: rgba(0,0,0,.5);
-}
-
-.yirHeading-Wrap p {
-    font-size: 18px;
-    margin: 15px 0 25px;
+.yir .font18 {
+    margin-bottom: 25px;
 }
 
 .yir-inner > .title,
 .yir-inner .month-heading {
-    color: rgba(0,0,0,.5);
     font-weight: 300;
 }
 .yir .month-heading .month-name {
@@ -1340,7 +1481,6 @@ div.map div.title {
 }
 
 #videosof-page .shareButton {
-    float: right;
     margin-top: 18px;
     margin-right: 26px;
     clear: both;
@@ -1428,18 +1568,16 @@ div.map div.title {
     font-size: 16px;
 }
 
-#comments .comment-editor > p {
-    margin: 0;
-}
-
 #comments .comment-editor {
     padding: 8px;
 }
 
+#info-table td,
 #comments .comment-editor.editing {
     padding: 0;
 }
 
+#comments .comment-editor > p,
 .comment-editor textarea.edit {
     margin: 0;
 }
@@ -1452,7 +1590,6 @@ div.map div.title {
 }
 
 .all-comments > p {
-    font-size: 18px;
     margin: 25px 0;
 }
 
@@ -1468,6 +1605,7 @@ div.map div.title {
     margin-bottom: 34px;
 }
 
+.all-comments > p,
 .comments-header > p {
     font-size: 18px;
 }
@@ -1485,17 +1623,13 @@ div.map div.title {
     margin-left: 15px;
 }
 
-#info-table td {
-    padding: 0;
-}
-
 .comment-text.bottomBorder-Thin {
     border-bottom: 4px solid rgba(0,0,0,.05);
 }
 
 /******************** Player Faces **********************/
 
-#nplayer-page #main-table #info-table #faces-column #faces {
+#faces {
     padding: 30px 30px 0;
     width: 306px;
     padding-top: 25px;
@@ -1511,7 +1645,7 @@ div.map div.title {
     display: block;
 }
 
-#nplayer-page #main-table #info-table #faces-column #faces ul {
+#faces ul {
     margin-left: 0;
     margin-bottom: 0;
 }
@@ -1524,21 +1658,10 @@ div.map div.title {
     margin-left: 25px;
 }
 
-#faces-column .face {
-    width: 64px;
-}
-
-#faces-column .face img {
-    height: 64px;
-}
-
-#faces-column .face .star {
-    height: 40px;
-}
 
 /********************** Player Map ***********************/
 
-#nplayer-page #main-table #info-table #faces-column #geo {
+#geo {
     padding: 30px;
     width: 306px;
     height: auto;
@@ -1561,7 +1684,7 @@ div.map div.title {
 /********************* Player Comments ************************/
 
 #comment-column {
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
 }
 
 /****************** Player Right Column ************************/
@@ -1574,7 +1697,7 @@ div.map div.title {
     padding: 20px;
 }
 
-#nplayer-page #share-video-block {
+#share-video-block {
     height: 100px;
     width: 280px;
     margin-left: -4px;
@@ -1591,18 +1714,7 @@ div.map div.title {
     margin-top: 16px;
 }
 
-#nplayer-page #related-videos-block {
-    /*height: auto;*/
-}
-
-/*
-#nplayer-page .vstrip .media-area {
-    max-height: 1277px;
-    overflow: auto;
-}
-*/
-
-#nplayer-page #related-videos-block p {
+#related-videos-block p {
     margin-top: 0;
     margin-left: 3px;
     font-weight: 100;
@@ -1630,12 +1742,7 @@ div.map div.title {
 #related-videos-block .mediafile .information {
     width: 100%;
     height: 40px;
-    background-color: white;
     padding: 10px 5px;
-    position: relative;
-    box-sizing: border-box;
-    -moz-box-sizing:border-box; /* Firefox */
-    text-align: left;
 }
 
 #related-videos-block .mediafile .information .title {
@@ -1644,25 +1751,14 @@ div.map div.title {
 }
 
 #related-videos-block .mediafile .information .aux {
-    background-color: rgba(211,246,253,1);
     width: 40px;
     height: 40px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    padding: 0;
-    color: rgba(82,152,189,1);
-    text-align: center;
 }
 
 #related-videos-block .mediafile .information .aux img {
     width: 30px;
     height: 22px;
-    display: block;
-    text-align: center;
     margin: 2px auto -4px;
-    border: none;
 }
 
 /********************  Video Title and Description Section  *****************************/
@@ -1673,15 +1769,9 @@ div.map div.title {
     background-color: rgba(246,248,209,1); 
 }
 
-.editTitle-Wrap {
-    /*height: 40px;*/
-}
-
-.edit { 
-    display: none; 
-}
-
-input.edit {
+.edit,
+input.edit,
+.editing .view {
     display: none;
 }
 
@@ -1744,10 +1834,6 @@ input.edit {
     font-size: 14px;
 }
 
-.editing .view { 
-    display: none; 
-}
-
 /********************  Share Video Modal Section  *************************/
 
 #shareVidModal {
@@ -1765,11 +1851,6 @@ input.edit {
 
 #sendVidEmail .bigTitle {
     display: inline-block
-}
-
-#sendVidEmail .cimport {
-    display: inline-block;
-    float: right;   
 }
 
 #shareVidModal form {
@@ -1821,7 +1902,7 @@ li.token-input-token-facebook {
 
 #shareLink {
     font-size: 15px;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
     width: 218px;
     white-space: nowrap;
     overflow: hidden;
@@ -1839,6 +1920,121 @@ li.token-input-token-facebook {
     background-color: rgba(152,154,160,1);
     padding: 6px 13px;
     font-size: 16px;
+}
+
+/********************  All Videos Page Section  *****************************/
+
+#allVidsPage {
+    padding-top: 30px;
+}
+
+#months {
+    width: 10%;
+    min-width: 70px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.monthLabels {
+    list-style: none;
+    text-align: right;
+    font-weight: 100;
+    font-size: 18px;
+    margin: 0;
+}
+
+.monthLabels li {
+    cursor: pointer;
+}
+
+.monthLabels li:hover {
+    font-weight: 600;
+}
+
+#allVidsWrap {
+    width: 89%;
+    display: inline-block;
+}
+
+#allVidsPage .media-container {
+    height: 600px;
+    overflow: auto;
+    position: relative;
+}
+
+#allVidsPage .sel {
+    font-weight: 600;
+}
+    
+#allVidsPage .mediafile {
+    width: 350px;
+    margin: 0 25px 25px 0;
+    float: left;
+}
+
+#allVidsPage .mediafile img {
+    width: 100%;
+    height: 197px;
+    border: none;
+}
+
+#allVidsPage .mediafile .information {
+    height: 54px;
+    padding: 17px 5px;
+}
+
+#allVidsPage .mplay-icon,
+#allVidsPage .mplay-icon:hover {
+    left: 145px;
+}
+
+#allVidsPage .mediafile .information .aux {
+    width: 54px;
+    height: 54px;
+}
+
+#allVidsPage .mediafile .information .aux img {
+    width: 40px;
+    height: 30px;
+    margin: 4px auto -4px;
+}
+
+@media (max-width: 935px) {
+    #allVidsPage > .btn {
+        float: none;
+        margin-bottom: 20px;
+    }
+    
+    #allVidsWrap {
+        width: 100%;
+    }
+    
+    #months {
+        width: 100%;    
+    }
+    
+    .monthLabels {
+        text-align: left;
+        margin-bottom: 20px;
+    }
+    
+    .monthLabels li {
+        display: inline-block;
+        margin-right: 10px;
+        text-align: left;
+    }
+    
+   /* #allVidsPage .mediafile {
+        width: 100%;
+    }
+    
+    #allVidsPage .mediafile img {
+        height: auto;
+    }
+    
+    #allVidsPage .mplay-icon {
+        display: none;
+    } */
 }
 
 /********************  Settings Page Section  *****************************/
@@ -1904,7 +2100,7 @@ li.token-input-token-facebook {
 #loggedOut-page .content-Wrap p {
     margin: 0;
     font-size: 18px;
-    color: rgba(0,0,0,.5);
+    color: rgba(117,117,128,1);
 }
 
 #loggedOut-page .bottomBorder.paddedDiv {
@@ -1954,31 +2150,10 @@ li.token-input-token-facebook {
     max-width: 100%;
 }
 
-/** Make Horizontal Stips a bit more generic **/
+/** Make Horizontal Strips a bit more generic **/
 
 .horizontalStrip {
     padding: 29px 0 14px 0;
-}
-
-.horizontalStrip .title {
-    margin-left: 45px;
-    margin-bottom: 22px;
-}
-
-.horizontalStrip .title h2 {
-    color: white;
-    display: inline;
-}
-
-.horizontalStrip .title span {
-    color: rgba(0,0,0,.5);
-    margin-left: 40px;
-    font-size: 18px;
-}
-
-.horizontalStrip .cinematic {
-    font-weight: 100;
-    font-family: inherit;
 }
 
 .horizontalStrip .item-container {
@@ -2057,7 +2232,7 @@ p.uitoken-input ul.token-input-list-facebook {
 
 .TOS-PP {
     font-size: 16px;
-    color: rgba(0,0,0,.6);
+    color: rgba(117,117,128,1);
 }
 
 #TOS-page .mocksWhiteBG {
@@ -2071,16 +2246,12 @@ p.uitoken-input ul.token-input-list-facebook {
 }
 
 .instructionsPages .content-Wrap {
-    color: rgba(0,0,0,.6);
+    color: rgba(117,117,128,1);
     margin-bottom: 30px;
 }
 
 .instructionsPages .content-Wrap > div {
     margin-bottom: 0;
-}
-
-.instructionsPages h3 {
-    margin-bottom: 20px;
 }
 
 .macButton-Wrap {
@@ -2093,8 +2264,6 @@ p.uitoken-input ul.token-input-list-facebook {
     cursor: default;
 }
 
-#howToUpload-page a:first-of-type,
-#howToUpload-page button:first-of-type,
 #getApp-page button:first-of-type {
    margin-right: 10px; 
 }
@@ -2105,6 +2274,10 @@ p.uitoken-input ul.token-input-list-facebook {
 
 .howToPic {
     margin-bottom: 30px;
+}
+
+.howToPic > img {
+    width: 100%;
 }
 
 .howToVideo {
@@ -2135,91 +2308,71 @@ p.uitoken-input ul.token-input-list-facebook {
     margin-right: 60px;
 }
 
-/********************  map Section  *****************************/
+/* PEOPLE PAGE */
 
-.orangeTitle {
-    text-align: center;
-    padding: 18px 0 10px;
-    background-color: rgb(239, 85, 65);
-    border-bottom: 3px inset rgba(0, 0, 0, 0.2);
+.pstrip .person,
+#people-page .faces-container .person {
+    display: block;
+    float: left;
 }
 
-.orangeTitle h2 {
+#people-page .known_faces-container .person.selected {
+    background-color: #24b8d1;
+}
+
+#people-page .faces-for-face {
+  position: relative;
+}
+
+#people-page .faces-for-face .person {
+   float: left;
+}
+
+#people-page .faces-for-face .arrow {
+    position: absolute;
+    width: 75px;
+    height: 20px;
+    background-image: url(../images/arrowBlue.png);
+    top: -20px;
+    left: 200px;
+}
+
+#people-page .faces-for-face .title button.pull-right {
+    margin-right: 50px;
+}
+
+#people-page .person .right-badge {
+    cursor: pointer;
+}
+
+#people-page .person .left-badge {
+    cursor: pointer;
+}
+
+#people-page .person i.icon-camera {
+    color: rgb(80,184,71);
+}
+
+#people-page .no-faces-for {
     color: white;
-    margin: 0;
+}
+
+/* new stuff for new-player page */
+#faces-column .person {
+    width: 64px;
+}
+
+#faces-column .person img {
+    height: 64px;
+}
+
+#faces-column .person .name {
+    font-size: 12px;
     padding: 0;
-    font-weight: 100;
-    -moz-text-shadow: 1px 1px rgba(0,0,0,.2);
-    -webkit-text-shadow: 1px 1px rgba(0,0,0,.2);
-    text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+    height: 20px;
 }
 
-.map-wrap {
-    height: 800px;
-    margin-bottom: 200px;
-}
-
-.leaflet-popup-tip {
-    -moz-box-shadow: 3px 1px 0px 1px rgba(0,0,0,.2); /* Firefox */
-    -webkit-box-shadow: 1px 3px 0px 1px rgba(0,0,0,.2);
-    box-shadow: 3px 1px 0px 1px rgba(0,0,0,.2);
-}
-
-.leaflet-popup-content-wrapper {
-    width: 272px;
-    height: 193px;
-    padding: 0;
-    border-radius: 0;
-    -moz-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2); /* Firefox */
-    -webkit-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2);
-    box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2);
-}
-
-.leaflet-popup-content {
-    margin: 0;
-}
-
-.leaflet-popup-content .thumb-wrap {
-    width: 100%;
-    height: 152px;
-}
-
-.leaflet-popup-content .thumb-wrap img {
-    width: 100%;
-    height: 100%;
-}
-
-.leaflet-popup-content .information {
-    height: 41px;
-    position: relative;
-}
-
-.leaflet-popup-content .title {
-    color: rgba(64, 66, 79, 0.75);
-    position: absolute;
-    padding: 10px;
-    font-weight: 600;
-}
-
-.leaflet-popup-content .vidTitle:hover {
-    background-color: transparent;
-    cursor: default;
-}
-
-.leaflet-popup-content .aux {
-    position: absolute;
-    right: 0;
-    width: 41px;
-    height: 41px;
-    background-color: rgba(211,246,253,1);
-    text-align: center;
-    overflow: hidden;
-}
-
-.leaflet-popup-content .aux img {
-    width: 30px;
-}
-
+<<<<<<< HEAD
 .shareFromMap {
     position: absolute;
     right: -1px;
@@ -2235,3 +2388,19 @@ p.uitoken-input ul.token-input-list-facebook {
 #map-page .mediafile {
     
 }
+=======
+#faces-column .person i {
+    font-size: 20px;
+    width: 20px; height: 20px;
+}
+
+#faces-column .person .left-badge {
+    cursor: pointer;
+    right: 50px;
+    top: -1px;
+}
+
+#faces-column .person .right-badge {
+    cursor: pointer;
+}
+>>>>>>> master

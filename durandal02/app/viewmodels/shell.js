@@ -1,6 +1,11 @@
 define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','viewmodels/conditional_header','lib/viblio','lib/customDialogs','viewmodels/emailtest','lib/config','facebook','purl'], function (router, app, system, page_header, landing_header, conditional_header, viblio, customDialogs,emailtest,config) {
 
     var header = ko.observable( );
+    
+    // scroll to top of page before new view has loaded
+    router.on('router:navigation:attached').then(function(){
+        $(document).scrollTop(0);
+    });
 
     router.on('router:navigation:complete').then(function(instance, instruction, router) {
         if (app.title) {
@@ -113,7 +118,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'upload',             moduleId: 'nginx',              title: 'UPLOAD',
 	      nav: false,    authenticated: true,   header: page_header },
 	    
-            { route: 'faces',              moduleId: 'faces',              title: 'PEOPLE',
+            { route: 'people',             moduleId: 'people',             title: 'PEOPLE',
 	      nav: true,    authenticated: true,   header: page_header },
 	    
             { route: 'shared',             moduleId: 'shared',             title: 'SHARED',
@@ -149,8 +154,8 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'getApp',           moduleId: 'getApp',     title: 'Download Viblio',
                 nav: false,   authenticated: false,   header: conditional_header },
             
-            { route: 'map',           moduleId: 'map',     title: 'MAP',
-                nav: true,   authenticated: true,   header: page_header }
+            { route: 'allVideos',        moduleId: 'allVideos',     title: 'ALL VIDEOS',
+	      nav: true,   authenticated: true,   header: page_header }
 
         ]).buildNavigationModel();
     }
