@@ -2,7 +2,7 @@
   The channels page, which I think is the default page for an authenticated
   user.
 */
-define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscroll','viewmodels/fscroll','viewmodels/mapstrip','viewmodels/yir','lib/customDialogs'],function(app,system,HScroll,PScroll,FScroll,MapStrip,YIR,customDialogs) {
+define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscroll','viewmodels/fscroll','viewmodels/mapstrip','lib/customDialogs'],function(app,system,HScroll,PScroll,FScroll,MapStrip,customDialogs) {
     // A list of horizontal media display lists
     var strips = ko.observableArray([]);
 
@@ -35,12 +35,6 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
         } ).promise();
     }
 
-    function yy() {
-        return system.defer( function( dfd ) {
-            dfd.resolve( new YIR() );
-        } ).promise();
-    }
-
     return {
         displayName: 'Channels',
         strips: strips,
@@ -55,14 +49,12 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 	    return $.when( hh('Recent Uploads', 'Your most recent videos', { advanced: advanced }), 
 			   pp('Top Actors', 'Who\'s who in your videos'),
 			   ff('n Videos with Anonymous', '' ),
-			   mm(),
-			   yy()
-			 ).then( function( h1, h2, h3, h4, h5 ) {
+			   mm()
+			 ).then( function( h1, h2, h3, h4 ) {
 			     self.hits = h1;
 			     self.actors = h2;
 			     self.features = h3;
 			     self.map = h4;
-			     self.yir = h5;
 
 			     // When a face is selected, show the "features" strip and populate
 			     // it with videos that this person is in
@@ -91,7 +83,6 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 			     self.strips.push( h2 );
 			     self.strips.push( h3 );
 			     self.strips.push( h4 );
-			     self.strips.push( h5 );
 			 });
         },
 	attached: function() {
