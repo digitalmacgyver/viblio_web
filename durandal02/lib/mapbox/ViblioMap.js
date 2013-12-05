@@ -147,7 +147,7 @@
 
 	return m;
     };
-
+   
     // Default center and zoom
     $.fn.centerDefault = function(args) {
         var loc;
