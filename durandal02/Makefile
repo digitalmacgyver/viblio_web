@@ -22,8 +22,9 @@ NODE = /usr/local/bin/node
 NPM  = /usr/local/bin/npm
 WEYLAND = /usr/local/bin/weyland
 RJS = /usr/local/lib/node_modules/weyland/node_modules/.bin/r.js
+NODE_MINIFY = node_modules/node-minify
 
-optimize: $(WEYLAND)
+optimize: $(WEYLAND) $(NODE_MINIFY)
 	$(RM) -rf build app/main-built.js
 	$(NODE) $(WEYLAND) build
 	# Copy the css, image, font and other resources
@@ -37,6 +38,8 @@ optimize: $(WEYLAND)
 	cp -f index-opt.html build/index.html
 	# Optimize the styles.css file
 	$(RJS) -o opt-css.js
+	# Optimize the vendor javascript
+	$(NODE) vendor-opt.js
 
 $(WEYLAND):
 	@if [ `id -u -n` != 'root' ]; then \
@@ -45,3 +48,6 @@ $(WEYLAND):
 	  exit 1 ;\
 	fi
 	$(NPM) install -g weyland
+
+$(NODE_MINIFY): 
+	$(NPM) install node-minify

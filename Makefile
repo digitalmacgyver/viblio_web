@@ -28,6 +28,9 @@ install:
 	if [ $(LVL) = 'prod' ]; then \
 	  (cd $(ROOT)/$(LVL)/$(APPNAME)/durandal02; make) ;\
 	fi
+	if [ $(LVL) = 'staging' ]; then \
+	  (cd $(ROOT)/$(LVL)/$(APPNAME)/durandal02; make) ;\
+	fi
 
 # bump:
 # This will actually run upgrade.pl to initiate a software upgrade.  You must
