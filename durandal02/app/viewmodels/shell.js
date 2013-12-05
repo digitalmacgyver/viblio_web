@@ -155,6 +155,9 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
                 nav: false,   authenticated: false,   header: conditional_header },
             
             { route: 'allVideos',        moduleId: 'allVideos',     title: 'ALL VIDEOS',
+	      nav: true,   authenticated: true,   header: page_header },
+          
+            { route: 'map',        moduleId: 'map',     title: 'MAP',
 	      nav: true,   authenticated: true,   header: page_header }
 
         ]).buildNavigationModel();
