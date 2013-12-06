@@ -1,0 +1,16 @@
+{
+  "name": "myapp",
+  "title": "MyApp",
+  "description": "A generic web application",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "jshint": "latest",
+    "glob": "latest"
+  },
+  "jlintFiles": "app/**/*.js",
+  "jshintOptions": {
+    "-W099": true,
+    "-W069": true
+  }
+}

@@ -6,22 +6,21 @@
 # css files).  Styles.min.css is compressed from css/styles.css
 # using r.js manually.  The durandal app is compressed using
 # weylend (the durandal project optimizer) using weyland-config.js.
-# Note that vender javascript is NOT optimized in this flow. It
-# probably could be using r.js manually, but weyland has a very
-# difficult time combining vendor js with the app js.
-#
-# Weyland must be installed on your build machine.  You have to
-# do this as root:  sudo make /usr/local/bin/weyland.
+# The vender javascript is optimized using r.js sperately.
 #
 # index-opt.html is copied to build/index.html and will be
 # the production web page.  It is slighly different than
 # ./index.html in that it references the compressed javascript
 # and css files.
 #
-NODE = /usr/local/bin/node
-NPM  = /usr/local/bin/npm
+# The "lint" target runs a custom little script on our javascript
+# code and prints a report.  The make will fail if there are any
+# errors.  This tool (jlint) is configured with package.json.
+#
+NODE = node
+NPM  = npm
 WEYLAND = node_modules/weyland/bin/cli.js
-RJS = /usr/local/lib/node_modules/weyland/node_modules/.bin/r.js
+RJS = node_modules/weyland/node_modules/.bin/r.js
 NODE_MINIFY = node_modules/node-minify
 
 optimize: $(WEYLAND) $(NODE_MINIFY)
@@ -46,3 +45,9 @@ $(WEYLAND):
 
 $(NODE_MINIFY): 
 	$(NPM) install node-minify
+
+lint: node_modules/glob/glob.js
+	$(NODE) jlint 
+
+node_modules/glob/glob.js:
+	$(NPM) install

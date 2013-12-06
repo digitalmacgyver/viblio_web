@@ -1,14 +1,5 @@
 exports.config = function(weyland) {
     weyland.build('main')
-        .task.jshint({
-            include:'app/**/*.js',
-	    jshint: {
-		options: {
-		    '-W099': true,
-		    '-W069': true
-		}
-	    }
-        })
         .task.uglifyjs({
             include:['app/**/*.js', 'lib/durandal/**/*.js']
         })
