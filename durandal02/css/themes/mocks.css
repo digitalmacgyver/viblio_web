@@ -2426,7 +2426,7 @@ p.uitoken-input ul.token-input-list-facebook {
     box-shadow: 3px 1px 0px 1px rgba(0,0,0,.2);
 }
 
-.leaflet-popup-content-wrapper {
+#map-page .leaflet-popup-content-wrapper {
     width: 272px;
     height: 193px;
     padding: 0;
@@ -2481,9 +2481,28 @@ p.uitoken-input ul.token-input-list-facebook {
    width: 30px;
 }
 
+.mapSD-scroll .btn-nav {
+    position: absolute;
+    top: 11%;
+    z-index: 1000;
+}
+
+.mapSD-scroll .fwd {
+    right: 0;
+}
+
+#map-page .scrollWrapper {
+    padding: 5px 0 10px;
+}
+
+#map-page .mediafile:first-of-type {
+    margin-left: 45px;
+}
+
 #map-page .mediafile {
     width: 350px;
     margin-right: 25px;
+    float: left;
 }
 
 #map-page .mediafile img {

@@ -1,4 +1,4 @@
-define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 'lib/customDialogs'], function(app,router,viblio,Mediafile,customDialogs) {
+define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 'lib/customDialogs', 'viewmodels/hscroll', 'durandal/events',], function(app,router,viblio,Mediafile,customDialogs,HScroll, events) {
     var Map = function() {
         this.points = [];
         this.markerTitle = ko.observable();
@@ -8,11 +8,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
         this.selectedPoint = ko.observable();
         this.pointsInRange = ko.observableArray([]);
         
-        function hh(title, subtitle, options) {
-            return system.defer( function( dfd ) {
-                dfd.resolve( new HScroll(title, subtitle, options) );
-            } ).promise();
-        };
+        this.scroller_ready = false;
 
 	// When a new video appears in the system, add its location
 	// to the map.
@@ -41,7 +37,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
                     eyes: m.view_count
 		};
 		self.points.push( p );
-		if ( self.map ) {
+		/*if ( self.map ) {
 		    var popupContent = $('<div />');
                         popupContent.on('click', '.shareFromMap', shareVid);
                         popupContent.on('click', '.thumb-wrap', playVid);
@@ -67,7 +63,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
                     m.bindPopup(popupContent[0],{
                         closeButton: false
                     });
-		}
+		}*/
 	    }
 	});
     };
@@ -102,24 +98,11 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
 	    });
 	});
     };
-
-    Map.prototype.detached = function() {
-	this.map.destroy();
-	this.map = null;
-    };
-
-    Map.prototype.resize = function() {
-	var self = this;
-	if ( self.map ) {
-	    self.map.data( "map" ).invalidateSize();
-	    self.map.fitBounds();
-	}
-    };
-	
-
+        
     Map.prototype.compositionComplete = function( view, parent ) {
 	var self = this;
 	self.view = view;
+            
 	// Create the map, enable mouse wheel and touch interaction
 	self.map = $('.map-wrap').vibliomap({
             disableMapMouseZoom: true,
@@ -143,9 +126,9 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
             // clear out any previously exisitng elements
             self.pointsInRange.removeAll();
             // create a rectanlge around the point that is clicked to allow the creation of a list of other points in the same area
-            var myShapeBounds = [ [point.properties.lat - .10, point.properties.lng - .15], [point.properties.lat + .10, point.properties.lng + .15] ];
+            var myShapeBounds = [ [point.properties.lat - .005, point.properties.lng - .007], [point.properties.lat + .005, point.properties.lng + .007] ];
             
-            var myShape = L.rectangle(myShapeBounds, {color: "#ff7800", weight: 1}).addTo(self.map.data('map'));
+            var myShape = L.rectangle(myShapeBounds).addTo(self.map.data('map'));
             var bounds = myShape.getBounds();
             
             self.map.data('map').markerLayer.eachLayer(function(marker) {
@@ -156,7 +139,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
             });
             
             // removes the rectangle so it's not shown on the map
-            //self.map.data('map').removeLayer(myShape);
+            self.map.data('map').removeLayer(myShape);
         };
         
         self.settings = {
@@ -164,17 +147,6 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
 	    defaultMarkerIconSize: [ 26, 34 ],
 	    defaultMarkerIconAnchor: null
         };
-        
-        // Normal marker icon
-	self.mapIcon = L.icon({
-	    iconUrl: self.settings.defaultMarkerIconImage,
-	    iconSize: self.settings.defaultMarkerIconSize,
-	    iconAnchor: self.settings.defaultMarkerIconAnchor ||
-		[ Math.floor(self.settings.defaultMarkerIconSize[0] / 2),
-		  self.settings.defaultMarkerIconSize[1] - 1 ],
-	    popupAnchor: [ -1, 
-			   0 - self.settings.defaultMarkerIconSize[1] ]
-	});
         
 	// Create an array of Location objects to center the map
 	// around those points.
@@ -255,6 +227,10 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
             self.pointIsSelected(true);
             self.selectedPoint(e.feature);
             getClosePoints( e.layer.feature );
+            if ( self.scroller_ready ) {
+		$( ".mapSD-scroll").smoothDivScroll("recalculateScrollableArea");
+		$( ".mapSD-scroll").smoothDivScroll("redoHotSpots");
+	    }
         });
         // add popup closed callbacks
         self.map.data('map').markerLayer.on('popupclose', function(){
@@ -268,6 +244,23 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
         } else {
 	    self.map.data('map').centerDefault( { 'loc': new L.LatLng( 37, -95 ), 'zoom': 5 } );
         }
+        
+        $(".mapSD-scroll").smoothDivScroll({
+            scrollingHotSpotLeftClass: "mCSB_buttonLeft",
+            scrollingHotSpotRightClass: "mCSB_buttonRight",
+            hotSpotScrolling: true,
+            visibleHotSpotBackgrounds: 'always',
+            setupComplete: function() {
+                self.scroller_ready = true;
+            },
+            scrollerRightLimitReached: function() {
+                // Since we hacked the widget to remove flicker,
+                // we need to manually hide the right most arrow when
+                // we hit the end.
+                $(".mapSD-scroll").smoothDivScroll("nomoredata");
+            }
+        });
+        $(".mapSD-scroll").trigger( 'initialize' );
     };
 
     Map.prototype.enableDetails = function(marker) {
@@ -283,12 +276,26 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
     };
 
     Map.prototype.play = function( point ) {
+        console.log('Map.prototype.play triggered');
 	// A point was clicked on.  Could popup a dialog to display
 	// metadata (title, description, captured on date, length, etc)
 	// and a play/cancel function maybe.  Or just go to player screen.
 	router.navigate( 'new_player?mid=' + point.uuid );
     };
+    
+    Map.prototype.detached = function() {
+	this.map.destroy();
+	this.map = null;
+    };
 
+    Map.prototype.resize = function() {
+	var self = this;
+	if ( self.map ) {
+	    self.map.data( "map" ).invalidateSize();
+	    self.map.fitBounds();
+	}
+    };
+    
     return Map;
     
 });

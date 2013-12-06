@@ -2,9 +2,9 @@
     <div class="orangeTitle">
         <h2>Your Videos on the Map</h2>    
     </div>
-    <!-- ko if: pointIsSelected() -->
-    <div>
-        <!--<div data-bind="text: ko.toJSON( selectedPoint() )"></div> -->
+    <div data-bind="visible: pointIsSelected()" class="mapSD-scroll">
+        <button class="btn btn-small fwd btn-nav mCSB_buttonRight"><img src="css/images/arrowRight.png"/></button>
+        <button class="btn btn-small back btn-nav mCSB_buttonLeft"><img src="css/images/arrowLeft.png"/></button>
         <!-- ko foreach: pointsInRange -->
             <div class="mediafile" data-bind="attr:{id:$data.uuid}">
                 <div class="boxShadowed">
@@ -18,14 +18,13 @@
                     <div class="information">
                         <div class="aux pull-right muted"><img src='css/images/viewsEye.png'/><span data-bind="html: $data.eyes">0</span></div>
                         <div>
-                            <div class="view vidTitle title truncate" data-bind="text: $data.title || 'Click to edit title'"></div> 
+                            <div class="view title truncate" data-bind="text: $data.title || 'Click to edit title'"></div> 
                         </div>
                     </div>
                 </div>
             </div>
         <!-- /ko -->
-        <div data-bind="text: pointsInRange().length"></div>
     </div>
-    <!-- /ko -->
+    
     <div id="mapContainer" class="map-wrap bottomBorder-Thin"></div>
 </div>
