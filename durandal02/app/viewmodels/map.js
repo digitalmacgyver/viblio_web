@@ -248,6 +248,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
 	    }
             if (self.pointsInRange().length > 1) {
                 self.showVidStrip(true);
+                $( ".mapSD-scroll").smoothDivScroll("redoHotSpots");
             } else {
                 self.showVidStrip(false);
             }
