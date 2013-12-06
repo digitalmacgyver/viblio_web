@@ -1,12 +1,15 @@
 define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 'lib/customDialogs', 'viewmodels/hscroll', 'durandal/events',], function(app,router,viblio,Mediafile,customDialogs,HScroll, events) {
     var Map = function() {
-        this.points = [];
-        this.markerTitle = ko.observable();
-        this.markerImage = ko.observable();
+        var self = this;
+        self.points = [];
+        self.markerTitle = ko.observable();
+        self.markerImage = ko.observable();
         
-        this.pointIsSelected = ko.observable(false);
-        this.selectedPoint = ko.observable();
-        this.pointsInRange = ko.observableArray([]);
+        self.pointIsSelected = ko.observable(false);
+        self.selectedPoint = ko.observable();
+        self.pointsInRange = ko.observableArray([]);
+        
+        self.showVidStrip = ko.observable(false);
         
         this.scroller_ready = false;
 
@@ -222,19 +225,32 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
                 closeButton: false
             });
         });
+        // If the currently opened point is clicked then close it and hide the top section (based on self.pointIsSelected() )
+        self.map.data('map').markerLayer.on('click', function(e) {
+            if( self.selectedPoint() ==  e.layer.feature ) {
+                self.pointIsSelected(false);
+                self.showVidStrip(false);
+            }
+        });
+        // When the map is clicked (not a point) then close the top section
+        self.map.data('map').on('click', function(e) {
+            self.pointIsSelected(false);
+            self.showVidStrip(false);
+        });
         // add popup open callbacks
         self.map.data('map').markerLayer.on('popupopen', function(e){
             self.pointIsSelected(true);
-            self.selectedPoint(e.feature);
+            self.selectedPoint(e.layer.feature);
             getClosePoints( e.layer.feature );
             if ( self.scroller_ready ) {
 		$( ".mapSD-scroll").smoothDivScroll("recalculateScrollableArea");
 		$( ".mapSD-scroll").smoothDivScroll("redoHotSpots");
 	    }
-        });
-        // add popup closed callbacks
-        self.map.data('map').markerLayer.on('popupclose', function(){
-            self.pointIsSelected(false);
+            if (self.pointsInRange().length > 1) {
+                self.showVidStrip(true);
+            } else {
+                self.showVidStrip(false);
+            }
         });
         
         // Center map around points on markerLayer
