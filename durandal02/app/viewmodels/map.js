@@ -242,15 +242,18 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
             self.pointIsSelected(true);
             self.selectedPoint(e.layer.feature);
             getClosePoints( e.layer.feature );
+            // set up smooth div scroll
             if ( self.scroller_ready ) {
 		$( ".mapSD-scroll").smoothDivScroll("recalculateScrollableArea");
 		$( ".mapSD-scroll").smoothDivScroll("redoHotSpots");
 	    }
+            // If there are more than one videos near the selected point then show the videos in the top strip
             if (self.pointsInRange().length > 1) {
                 self.showVidStrip(true);
                 $( ".mapSD-scroll").smoothDivScroll("redoHotSpots");
             } else {
                 self.showVidStrip(false);
+                self.pointsInRange.removeAll();
             }
         });
         
