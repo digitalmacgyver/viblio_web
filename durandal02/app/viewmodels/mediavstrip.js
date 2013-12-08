@@ -41,7 +41,7 @@ define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile'
 
 	// Default criterion for searching related videos:
 	this.criterion = {
-	    by_date: false,
+	    by_date: true,
 	    by_faces: true,
 	    by_geo: true,
 	    geo_unit: 'meter',
