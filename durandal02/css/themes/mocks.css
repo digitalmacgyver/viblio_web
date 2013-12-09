@@ -1721,6 +1721,17 @@ input:-moz-placeholder {
     text-align: left;
 }
 
+.related-by {
+    color: white;
+    margin-top: 0;
+    margin-right: 12px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+#related-videos-block .media-area {
+    padding-top: 18px;
+}
+
 #related-videos-block .mediafile img {
     border: none;
     height: 152px;
@@ -2530,4 +2541,11 @@ p.uitoken-input ul.token-input-list-facebook {
     width: 40px;
     height: 30px;
     margin: 4px auto -4px;
+}
+
+.vstrip-query-in-progress i {
+    margin-left: 122px;
+    margin-bottom: 20px;
+    color: white;
+    font-size: 30px;
 }

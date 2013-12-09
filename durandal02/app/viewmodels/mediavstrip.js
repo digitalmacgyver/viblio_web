@@ -35,9 +35,21 @@ define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile'
 	// the first fetch works.
 	this.pager = {
 	    next_page: 1,
-	    entries_per_page: 6,
+	    entries_per_page: 16,
 	    total_entries: -1 /* currently unknown */
 	};
+
+	// Default criterion for searching related videos:
+	this.criterion = {
+	    by_date: true,
+	    by_faces: true,
+	    by_geo: true,
+	    geo_unit: 'meter',
+	    geo_distance: 100
+	};
+	
+	// A search is in progress
+	this.query_in_progress = ko.observable( false );
 
 	// We send a 'mediavstrip:play' event when
 	// we receive a mediafile:play event from
@@ -45,6 +57,14 @@ define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile'
 	// triggers on this to play a video in the
 	// player.
 	Events.includeIn( this );
+    };
+
+    // Reset the list to zero, possibly preparing for a new search
+    Strip.prototype.reset = function() {
+	this.currentSelection = null;
+	this.mediafiles.removeAll();
+	this.pager.next_page = 1;
+	this.pager.total_entries = -1;
     };
 
     // Left over from the mediahstrip, used to provide
@@ -97,26 +117,24 @@ define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile'
 	});
     };
 
-    // This is how the strip is populated.  This is not
-    // very interesting at the moment.  In the future it
-    // needs to take some sort of search criterion to
-    // restrict the mediafiles displayed.  It also needs
-    // to do paging to handle infinite scroll.
-    Strip.prototype.search = function() {
+    Strip.prototype.search = function(mid, options) {
 	var self = this;
+	if ( mid ) self.mid = mid;
+	var opts = $.extend( self.criterion, 
+			     { mid: self.mid, 
+			       page: self.pager.next_page, 
+			       rows: self.pager.entries_per_page }, 
+			     options );
 	return system.defer( function( dfd ) {
 	    if ( self.pager.next_page ) {
-		viblio.api( '/services/mediafile/list', 
-			    { 
-			      page: self.pager.next_page, 
-			      rows: self.pager.entries_per_page } )
+		self.query_in_progress( true );
+		viblio.api( '/services/mediafile/related', opts ) 
 		    .then( function( json ) {
 			self.pager = json.pager;
 			json.media.forEach( function( mf ) {
-			    if ( mf.views.main.location == 's3' || mf.views.main.location == 'us' ) {
-				self.addMediaFile( mf );
-			    }
+			    self.addMediaFile( mf );
 			});
+			self.query_in_progress( false );
 			dfd.resolve();
 		    });
 	    }
@@ -180,17 +198,20 @@ define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile'
 	self.element = view;
 
 	// Set up a scroll() handler for infinite scroll
-	$(self.element).find(".media-container").scroll( function() {
+	$(self.element).find(".media-container").scroll( $.throttle( 250, function() {
 	    var $this = $(this);
             var height = this.scrollHeight - $this.height(); // Get the height of the div
             var scroll = $this.scrollTop(); // Get the vertical scroll position
+
+	    if ( self.query_in_progress() ) return;
+	    if ( height == 0 && scroll == 0 ) return;
 
             var isScrolledToEnd = (scroll >= height);
 
             if (isScrolledToEnd) {
 		self.search();
             }
-	});
+	}));
 
 	// At this point (and only at this point!) we have an accurate
 	// height dimension for the scroll area and its item container.

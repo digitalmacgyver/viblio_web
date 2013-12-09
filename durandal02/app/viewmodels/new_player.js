@@ -360,7 +360,6 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     function comingSoon( m ) {
 	map.centerDefault();
 	map.enableSetLocation( function( latlng ) {
-	    console.log( 'new location: ', latlng );
 	    viblio.api( '/services/geo/change_latlng', 
 			{ mid: playing().media().uuid,
 			  lat: latlng.lat,
@@ -460,7 +459,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    }
 
 	    return system.defer( function( dfd ) {
-		viblio.api( '/services/mediafile/get', { mid: mid, include_contact_info: 1 } ).then( function( json ) {
+		viblio.api( '/services/mediafile/get', { mid: mid } ).then( function( json ) {
 		    var mf = json.media;
 		    // Set now playing
 		    playing( new Mediafile( mf ) );
@@ -475,10 +474,11 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    // This async routine is the long pole.  Let it do the promise() resolution to
 		    // pause the system until we have all the data.
 		    //
-		    vstrip.search().then( function() {
+		    vstrip.search(mid).then( function() {
 			// Get all of the geo locations of the related media
 			dfd.resolve();
 		    });
+
 		    vstrip.on( 'mediavstrip:play', function( m ) {
 			// When the user selects a related video to play, play it
 			playRelated( m );
@@ -497,13 +497,14 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    if ( map ) map.destroy();
 	},
         compositionComplete: function(view, parent) {
+	    var self = this;
+	    self.view = view;
+
 	    var mid = query().mid;
 	    var mf = playing().media();
             title( playing().media().title || 'Click to add a title.' );
             description( playing().media().description || 'Click to add a description.' );
 	    // Instanciate the main flowplayer
-
-	    console.log( 'switching to', 'mp4:' + mf.views.main.cf_url );
 
 	    $("#tv").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
 		ratio: 9/16,
@@ -564,7 +565,39 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
             // resize height of related video seciton based on page height
             relatedVidHeight();
             vstrip.updateScroller(); 
-            console.log('new_player comp complete');
+
+	    // Set up the inline editable for related by
+	    var defaultCriterion = [];
+	    if ( vstrip.criterion.by_date )  defaultCriterion.push( 'by_date' );
+	    if ( vstrip.criterion.by_faces ) defaultCriterion.push( 'by_faces' );
+	    if ( vstrip.criterion.by_geo )   defaultCriterion.push( 'by_geo' );
+	    $(self.view).find( '.related-by' ).editable({
+		mode: 'popup',
+		type: 'checklist',
+		placement: 'left',
+		emptytext: 'by...',
+		emptyclass: '',
+		source: [{value:'by_date',  text: 'by date'},
+			 {value:'by_faces', text: 'by people'},
+			 {value:'by_geo',   text: 'by location'}],
+		value: defaultCriterion,
+		validate: function( v ) {
+		    if ( v.length == 0 ) {
+			return({ newValue:defaultCriterion,
+				 msg: 'Select at least one criterion' });
+		    }
+		},
+		success: function( res, v) {
+		    vstrip.criterion.by_date  = false;
+		    vstrip.criterion.by_faces = false;
+		    vstrip.criterion.by_geo   = false;
+		    v.forEach( function( key ) {
+			vstrip.criterion[key] = true;
+		    });
+		    vstrip.reset();
+		    vstrip.search( query().mid );
+		}
+	    });
         }
     };
 });

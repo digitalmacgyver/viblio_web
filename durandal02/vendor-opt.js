@@ -31,6 +31,7 @@ new compressor.minify({
 	'lib/jqueryFileUpload/js/vendor/bootstrap.file-input.js',
 	'lib/zeroclipboard/ZeroClipboard.js',
 	'lib/ICanHaz.min.js',
+	'lib/jquery.ba-throttle-debounce.min.js'
     ],
     fileOut: 'build/lib/vendor.all.js',
     callback: function(err, min){
