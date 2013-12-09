@@ -8,7 +8,7 @@
         <!-- ko foreach: pointsInRange -->
             <div class="mediafile" data-bind="attr:{id:$data.uuid}">
                 <div class="boxShadowed">
-                    <a class="mplay-icon pointer">
+                    <a class="mplay-icon pointer" data-bind="click: $root.play">
                        <i class="icon-play-circle"></i> 
                     </a>
                     <i class="icon-ok-sign"></i>
