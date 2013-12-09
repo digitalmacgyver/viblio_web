@@ -2,7 +2,7 @@
   The channels page, which I think is the default page for an authenticated
   user.
 */
-define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscroll','viewmodels/fscroll','viewmodels/mapstrip','viewmodels/yir','lib/customDialogs'],function(app,system,HScroll,PScroll,FScroll,MapStrip,YIR,customDialogs) {
+define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscroll','viewmodels/fscroll','lib/customDialogs'],function(app,system,HScroll,PScroll,FScroll,customDialogs) {
     // A list of horizontal media display lists
     var strips = ko.observableArray([]);
 
@@ -29,18 +29,6 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
         } ).promise();
     }
 
-    function mm() {
-        return system.defer( function( dfd ) {
-            dfd.resolve( new MapStrip() );
-        } ).promise();
-    }
-
-    function yy() {
-        return system.defer( function( dfd ) {
-            dfd.resolve( new YIR() );
-        } ).promise();
-    }
-
     return {
         displayName: 'Channels',
         strips: strips,
@@ -54,16 +42,11 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 
 	    return $.when( hh('Recent Uploads', 'Your most recent videos', { advanced: advanced }), 
 			   pp('Top Actors', 'Who\'s who in your videos'),
-			   ff('n Videos with Anonymous', '' ),
-			   mm(),
-			   yy()
-			 ).then( function( h1, h2, h3, h4, h5 ) {
+			   ff('n Videos with Anonymous', '' )
+			 ).then( function( h1, h2, h3 ) {
 			     self.hits = h1;
 			     self.actors = h2;
 			     self.features = h3;
-			     self.map = h4;
-			     self.yir = h5;
-
 			     // When a face is selected, show the "features" strip and populate
 			     // it with videos that this person is in
 			     self.actors.on( 'pscroll:faceSelected', function( face, pos ) {
@@ -75,6 +58,7 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
                                  }
 				 if ( self.features.isvisible() && showing_videos_for == face.data.uuid ) {
 				     self.features.hide();
+				     self.actors.no_select();
 				 }
 				 else {
 				     showing_videos_for = face.data.uuid; 
@@ -90,8 +74,6 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 			     self.strips.push( h1 );
 			     self.strips.push( h2 );
 			     self.strips.push( h3 );
-			     self.strips.push( h4 );
-			     self.strips.push( h5 );
 			 });
         },
 	attached: function() {
@@ -106,7 +88,6 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 		self.strips()[0].ready( view, parent );
 		self.strips()[1].ready( view, parent );
 		self.strips()[2].ready( view, parent );
-		self.map.resize();
 		customDialogs.hideLoading();
 	    });
 	}

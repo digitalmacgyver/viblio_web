@@ -55,6 +55,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio'],function(app, Events, v
 
     // User clicked on play(), send an event.
     Video.prototype.play = function() {
+        console.log( this.media() );
 	this.trigger( 'mediafile:play', this );
     };
 

@@ -1,4 +1,4 @@
-define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','viewmodels/conditional_header','lib/viblio','lib/customDialogs','viewmodels/emailtest','lib/config','facebook','purl'], function (router, app, system, page_header, landing_header, conditional_header, viblio, customDialogs,emailtest,config) {
+define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','viewmodels/conditional_header','lib/viblio','lib/customDialogs','viewmodels/emailtest','lib/config','facebook'], function (router, app, system, page_header, landing_header, conditional_header, viblio, customDialogs,emailtest,config) {
 
     var header = ko.observable( );
     
@@ -158,7 +158,10 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      nav: true,   authenticated: true,   header: page_header },
             
             { route: 'faq',           moduleId: 'faq',     title: 'Viblio FAQ',
-                nav: false,   authenticated: false,   header: conditional_header } 
+                nav: false,   authenticated: false,   header: conditional_header }, 
+          
+            { route: 'map',        moduleId: 'map',     title: 'MAP',
+	      nav: true,   authenticated: true,   header: page_header }
 
         ]).buildNavigationModel();
     }

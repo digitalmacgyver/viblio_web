@@ -713,7 +713,7 @@ input:-moz-placeholder {
 }
 
 #page-header .navbar .pagesNav > li > a {
-    padding: 20px 27px 8px 27px;
+    padding: 20px 22px 8px 22px;
     margin: 0 2px;
     font-size: 18px;
     color: white;
@@ -1725,6 +1725,17 @@ input:-moz-placeholder {
     text-align: left;
 }
 
+.related-by {
+    color: white;
+    margin-top: 0;
+    margin-right: 12px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+#related-videos-block .media-area {
+    padding-top: 18px;
+}
+
 #related-videos-block .mediafile img {
     border: none;
     height: 152px;
@@ -2290,7 +2301,7 @@ p.uitoken-input ul.token-input-list-facebook {
     background-color: lightgrey;
 }
 
-/********************  getApp Section  *****************************/
+/******* getApp Section  ************/
 
 #getApp-page .downloadTitle {
     display: inline-block;
@@ -2407,4 +2418,156 @@ p.uitoken-input ul.token-input-list-facebook {
 
 #mc-embedded-subscribe-form input {
     width: 100%;
+}
+
+/**************** Map Page *******************/
+.shareFromMap {
+    position: absolute;
+    right: -1px;
+    padding: 6px;
+}
+
+.leaflet-popup-content .thumb-wrap .shareFromMap img{
+    width: 27px;
+}
+ 
+.orangeTitle {
+    text-align: center;
+    padding: 18px 0 10px;
+    background-color: rgb(239, 85, 65);
+    border-bottom: 3px inset rgba(0, 0, 0, 0.2);
+}
+
+.orangeTitle h2 {
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-weight: 100;
+    -moz-text-shadow: 1px 1px rgba(0,0,0,.2);
+    -webkit-text-shadow: 1px 1px rgba(0,0,0,.2);
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.map-wrap {
+    height: 800px;
+    margin-bottom: 200px;
+}
+
+.leaflet-popup-tip {
+    -moz-box-shadow: 3px 1px 0px 1px rgba(0,0,0,.2); /* Firefox */
+    -webkit-box-shadow: 1px 3px 0px 1px rgba(0,0,0,.2);
+    box-shadow: 3px 1px 0px 1px rgba(0,0,0,.2);
+}
+
+#map-page .leaflet-popup-content-wrapper {
+    width: 272px;
+    height: 193px;
+    padding: 0;
+    border-radius: 0;
+    -moz-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2); /* Firefox */
+    -webkit-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2);
+    box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2);
+}
+ 
+.leaflet-popup-content {
+    margin: 0;
+}
+ 
+.leaflet-popup-content .thumb-wrap {
+    width: 100%;
+    height: 152px;
+}
+ 
+.leaflet-popup-content .thumb-wrap img {
+    width: 100%;
+    height: 100%;
+}
+ 
+.leaflet-popup-content .information {
+    height: 41px;
+    position: relative;
+}
+ 
+.leaflet-popup-content .title {
+    color: rgba(64, 66, 79, 0.75);
+    position: absolute;
+    padding: 10px;
+    font-weight: 600;
+}
+ 
+.leaflet-popup-content .vidTitle:hover {
+    background-color: transparent;
+    cursor: default;
+}
+ 
+.leaflet-popup-content .aux {
+    position: absolute;
+    right: 0;
+    width: 41px;
+    height: 41px;
+    background-color: rgba(211,246,253,1);
+    text-align: center;
+    overflow: hidden;
+}
+ 
+.leaflet-popup-content .aux img {
+   width: 30px;
+}
+
+.mapSD-scroll .btn-nav {
+    position: absolute;
+    top: 11%;
+    z-index: 1000;
+}
+
+.mapSD-scroll .fwd {
+    right: 0;
+}
+
+#map-page .scrollWrapper {
+    padding: 5px 0 10px;
+}
+
+#map-page .mediafile:first-of-type {
+    margin-left: 45px;
+}
+
+#map-page .mediafile {
+    width: 350px;
+    margin-right: 25px;
+    float: left;
+}
+
+#map-page .mediafile img {
+    width: 100%;
+    height: 197px;
+    border: none;
+}
+
+#map-page .mediafile .information {
+    height: 54px;
+    padding: 17px 5px;
+}
+
+#map-page .mplay-icon,
+#map-page .mplay-icon:hover {
+    left: 145px;
+}
+
+#map-page .mediafile .information .aux {
+    width: 54px;
+    height: 54px;
+}
+
+#map-page .mediafile .information .aux img {
+    width: 40px;
+    height: 30px;
+    margin: 4px auto -4px;
+}
+
+.vstrip-query-in-progress i {
+    margin-left: 122px;
+    margin-bottom: 20px;
+    color: white;
+    font-size: 30px;
 }

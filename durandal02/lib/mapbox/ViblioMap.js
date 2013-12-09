@@ -147,11 +147,20 @@
 
 	return m;
     };
-
+   
     // Default center and zoom
-    $.fn.centerDefault = function() {
+    $.fn.centerDefault = function(args) {
+        var loc;
+        var zoom;
+        if (args) {
+            loc = args.loc;
+            zoom = args.zoom;
+        } else {
+            loc = va;
+            zoom = 14;
+        }
 	var self = $(this);
-	self.data( 'map' ).setView( va, 16 );
+	self.data( 'map' ).setView( loc, zoom );
     };
 
     // Zoom to fit current list or markers

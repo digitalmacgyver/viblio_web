@@ -1,10 +1,5 @@
 define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/viblio','lib/customDialogs','viewmodels/mediafile','viewmodels/mediavstrip','viewmodels/person',], function( app,system,router,config,viblio,customDialogs,Mediafile,Strip,Face) {
 
-    function s3bucket( s3url ) {
-        var host = $.url( s3url ).attr( 'host' );
-        return host.split(".")[0];
-    }
-
     function resizePlayer() {
         $(".player, .player video").height( ($(".player").width()*9) / 16 );
     }
@@ -502,7 +497,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 			// This async routine is the long pole.  Let it do the promise() resolution to
 			// pause the system until we have all the data.
 			//
-			vstrip.search().then( function() {
+			vstrip.search(args.mid).then( function() {
 			    // Get all of the geo locations of the related media
 			    if ( vstrip.mediafiles().length == 0 ) {
 				hasRelated( false );
@@ -533,6 +528,8 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 	},
 	compositionComplete: function(view, parent) {
 	    var self = this;
+	    self.view = view;
+
 	    if ( ! this.mid ) {
 		return;
 	    }
@@ -612,6 +609,40 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
                             relatedVidHeight();
 			    if ( vstrip )
 				vstrip.updateScroller();
+
+			    // Set up the inline editable for related by
+			    var defaultCriterion = [];
+			    if ( vstrip.criterion.by_date )  defaultCriterion.push( 'by_date' );
+			    if ( vstrip.criterion.by_faces ) defaultCriterion.push( 'by_faces' );
+			    if ( vstrip.criterion.by_geo )   defaultCriterion.push( 'by_geo' );
+			    $(self.view).find( '.related-by' ).editable({
+				mode: 'popup',
+				type: 'checklist',
+				placement: 'left',
+				emptytext: 'by...',
+				emptyclass: '',
+				source: [{value:'by_date',  text: 'by date'},
+					 {value:'by_faces', text: 'by people'},
+					 {value:'by_geo',   text: 'by location'}],
+				value: defaultCriterion,
+				validate: function( v ) {
+				    if ( v.length == 0 ) {
+					return({ newValue:defaultCriterion,
+						 msg: 'Select at least one criterion' });
+				    }
+				},
+				success: function( res, v) {
+				    vstrip.criterion.by_date  = false;
+				    vstrip.criterion.by_faces = false;
+				    vstrip.criterion.by_geo   = false;
+				    v.forEach( function( key ) {
+					vstrip.criterion[key] = true;
+				    });
+				    vstrip.reset();
+				    vstrip.search( query().mid );
+				}
+			    });
+			    
 			}
 		    }
 		});

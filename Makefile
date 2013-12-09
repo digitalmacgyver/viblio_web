@@ -14,7 +14,8 @@ FILES = $(shell git ls-tree -r $(BRANCH) --name-only)
 # For the package target to work, you must be able to
 # git-clone without a password
 package:
-	tar zcf package.tar.gz $(FILES)
+	( cd durandal02; make )
+	tar zcf package.tar.gz $(FILES) durandal02/build
 
 # install:
 # This target is called by the sw installer on the target machine.  Does

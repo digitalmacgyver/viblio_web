@@ -52,6 +52,11 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	this.currentSelection = face;
     };
 
+    Pscroll.prototype.no_select = function() {
+	if ( this.currentSelection )
+	    $(this.currentSelection.view).removeClass( 'selected' );
+    };
+
     // Add a face file to the collection.  The input
     // is a face json object returned from the server.
     Pscroll.prototype.addFace = function( mf ) {
