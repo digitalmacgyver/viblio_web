@@ -41,7 +41,7 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 		advanced = true;
 
 	    return $.when( hh('Recent Uploads', 'Your most recent videos', { advanced: advanced }), 
-			   pp('Top Actors', 'Who\'s who in your videos'),
+			   pp('People in your Videos', 'Click on a face to see videos of that person'),
 			   ff('n Videos with Anonymous', '' )
 			 ).then( function( h1, h2, h3 ) {
 			     self.hits = h1;
