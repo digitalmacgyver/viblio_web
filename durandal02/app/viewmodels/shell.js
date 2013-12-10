@@ -156,6 +156,9 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             
             { route: 'allVideos',        moduleId: 'allVideos',     title: 'ALL VIDEOS',
 	      nav: true,   authenticated: true,   header: page_header },
+            
+            { route: 'faq',           moduleId: 'faq',     title: 'Viblio FAQ',
+                nav: false,   authenticated: false,   header: conditional_header }, 
           
             { route: 'map',        moduleId: 'map',     title: 'MAP',
 	      nav: true,   authenticated: true,   header: page_header }
