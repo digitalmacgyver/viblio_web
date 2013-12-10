@@ -146,6 +146,8 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 	api: function( url, data, errorCallback ) {
 	    var self = this;
 
+	    console.log( '**', url, data );
+
 	    var deferred = $.Deferred();
 	    var promise  = deferred.promise();
 	    var x = $.getJSON( url, data );

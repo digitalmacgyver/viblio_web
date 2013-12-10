@@ -284,13 +284,28 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
         setupComments( m.media() );
 	setupFaces( m.media() );
 	near( m.media() );
-	flowplayer().play({
-	    url: 'mp4:' + m.media().views.main.cf_url,
-	    ipadUrl: encodeURIComponent(m.media().views.main.url)
-        });
+
+	// We don't nessesarily have the main urls needed to stream
+	// the video.  If we don't, go get them and save them in the
+	// related video structure.
+	if ( ! m.media().views.main ) {
+	    viblio.api( '/services/mediafile/cf', { mid: m.media().uuid } ).then( function( data ) {
+		if ( data && data.url && data.cf_url ) {
+		    m.media().views.main = { url: data.url, cf_url: data.cf_url };
+		    flowplayer().play({
+			url: 'mp4:' + m.media().views.main.cf_url,
+			ipadUrl: encodeURIComponent(m.media().views.main.url)
+		    });
+		}
+	    });
+	}
+	else {
+	    flowplayer().play({
+		url: 'mp4:' + m.media().views.main.cf_url,
+		ipadUrl: encodeURIComponent(m.media().views.main.url)
+            });
+	}
 	viblio.mpEvent( 'related_video' );
-	// push it onto history
-	//router.navigate( 'player?mid=' + m.media().uuid, false);
     }
     
     // Store the disable_prev/next as observables so

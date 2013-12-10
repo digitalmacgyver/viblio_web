@@ -183,6 +183,7 @@ define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile'
 		// This code *should* queue up N searches to run in serial.
 		for( var i=0; i<fetches; i++ )
 		    $('body').queue(function() {
+			console.log( 'VSTRIP SEARCH due to queue' );
 			self.search().then( function() {
 			    $('body').dequeue();
 			});
@@ -209,6 +210,7 @@ define( ['lib/viblio', 'durandal/app', 'durandal/system', 'viewmodels/mediafile'
             var isScrolledToEnd = (scroll >= height);
 
             if (isScrolledToEnd) {
+		console.log( 'VSTRIP SEARCH due to scroll-end' );
 		self.search();
             }
 	}));
