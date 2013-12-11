@@ -667,6 +667,10 @@ input:-moz-placeholder {
     color: rgba(117,117,128,1);
 }
 
+.alphaGreyFont {
+    color: rgba(0,0,0,.5);
+}
+
 .tomatoFont,
 .tomatoFont:hover {
     color: rgba(239,85,65,1);
@@ -688,8 +692,16 @@ input:-moz-placeholder {
     font-size: 18px;
 }
 
+.font20 {
+    font-size: 20px;
+}
+
 .padding45 {
     padding: 45px;
+}
+
+.centered {
+    text-align: center;
 }
 
 /********************  Page Header Section  *****************************/
@@ -1943,6 +1955,10 @@ li.token-input-token-facebook {
     padding-top: 30px;
 }
 
+#allVidsPage .btn-secondary {
+    margin-left: 10px;
+}
+
 #months {
     width: 10%;
     min-width: 70px;
@@ -1954,7 +1970,7 @@ li.token-input-token-facebook {
     list-style: none;
     text-align: right;
     font-weight: 100;
-    font-size: 18px;
+    font-size: 20px;
     margin: 0;
 }
 

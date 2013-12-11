@@ -1,15 +1,21 @@
 <div class="hstrip bottomBorder-Thin">
 
-  <div>
-    <p class="mainTitle marginL45 textShadowed whiteText" data-bind="html: title"></p>
-    <span class="subtitle" data-bind="html: subtitle"></span>
-  </div>
+    <div>
+        <p class="mainTitle marginL45 textShadowed whiteText" data-bind="html: title"></p>
+        <span class="subtitle" data-bind="html: subtitle"></span>
+    </div>
+  
+    <!-- ko if: mediafiles().length < 1 -->
+    <div class="marginL45">
+        <p class="font20 alphaGreyFont marginR45">&#9785; You haven’t uploaded any videos.  Get on it!  Our no fuss uploader makes it easy. <button class="btn btn-secondary" data-bind="click: getApp">Download it now &raquo;</button></p>
+    </div>
+    <!-- /ko -->
 
-  <div class="sd-scroll">
-    <button class="btn btn-small fwd btn-nav mCSB_buttonRight"><img src="css/images/arrowRight.png"/></button>
-    <button class="btn btn-small back btn-nav mCSB_buttonLeft"><img src="css/images/arrowLeft.png"/></button>
-    <!-- ko foreach: mediafiles -->
-    <!-- ko compose: $data --><!--/ko-->
-    <!--/ko-->
-  </div>
+    <div class="sd-scroll">
+        <button class="btn btn-small fwd btn-nav mCSB_buttonRight"><img src="css/images/arrowRight.png"/></button>
+        <button class="btn btn-small back btn-nav mCSB_buttonLeft"><img src="css/images/arrowLeft.png"/></button>
+        <!-- ko foreach: mediafiles -->
+        <!-- ko compose: $data --><!--/ko-->
+        <!--/ko-->
+    </div>
 </div>

@@ -1,4 +1,4 @@
-define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', 'durandal/events', 'durandal/system'], function( router,viblio, Mediafile, app, events, system ) {
+define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', 'durandal/events', 'durandal/system', 'plugins/dialog'], function( router,viblio, Mediafile, app, events, system, dialog ) {
 
     var allVids = function( cid, name ) {
 	var self = this;
@@ -27,6 +27,15 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 return false;
             }
         });
+        
+        //shared videos section
+        self.sharedLabel = ko.observable( 'Shared with me' );
+        self.showShared = ko.observable( false );
+        self.sections = ko.observableArray([]);
+        self.numVids = ko.observable(0);
+        self.showShareBtn = ko.observable(false);
+        self.sharedAlreadyFetched = false;
+        
         self.allVidsIsSelected = ko.observable( true );
         self.aMonthIsSelected = ko.observable(false);
         self.selectedMonth = ko.observable();
@@ -75,20 +84,86 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     allVids.prototype.goToUpload = function() {
         router.navigate( 'getApp?from=allVideos' );
     };
-
+    
+    allVids.prototype.showLoggedOutTellFriendsModal = function() {
+        var args = {};
+        args.placeholder = "I discovered Viblio, a great way to privately organize and share videos.  I'd love it if you signed up and shared some of your videos with me.";
+        args.logout = false;
+        dialog.show('viewmodels/loggedOutTellFriendsModal', args);
+    };
+    
+    allVids.prototype.getShared = function() {
+        var self = this;
+        return viblio.api( '/services/mediafile/all_shared' ).then( function( data ) {
+            var shared = data.shared;
+            
+            self.sections.removeAll();
+            shared.forEach( function( share ) {
+                self.numVids( self.numVids() + share.media.length );
+                var mediafiles = ko.observableArray([]);
+                share.media.forEach( function( mf ) {
+                    var m = new Mediafile( mf ); m.ro( true );
+                    m.on( 'mediafile:play', function( m ) {
+                        router.navigate( 'web_player?mid=' + m.media().uuid );
+                    });
+                    m.on( 'mediafile:delete', function( m ) {
+                        viblio.api( '/services/mediafile/delete_share', { mid: m.media().uuid } ).then( function( data ) {
+                            viblio.mpEvent( 'delete_share' );
+                            sections().forEach( function( section ) {
+                                section.media.remove( m );
+                            });
+                        });
+                    });
+                    mediafiles.push( m );
+                });
+                share.owner.avatar = "/services/na/avatar?uid=" + share.owner.uuid + "&y=36";
+                self.sections.push({ owner: share.owner, media: mediafiles });
+            });
+            self.sharedAlreadyFetched = true;
+            if( self.numVids() < 3 ) {
+                self.showShareBtn(true);
+            } else {
+                self.showShareBtn(false);
+            }
+        });
+    };
+    
+     allVids.prototype.toggleShared = function() {
+	var self = this;
+	if ( self.sharedLabel() === 'My Videos' ) {
+	    self.sharedLabel( 'Shared with me' );
+            self.showShared( false );
+        } else {
+	    self.sharedLabel( 'My Videos' )
+            self.showShared( true );
+            //only fetch the shared videos once
+            if(self.sharedAlreadyFetched === false) {
+                self.getShared();
+            }
+        }
+    };
+    
     // Toggle edit mode.  This will put all of media
     // files in the strip into/out of edit mode.  I'm thinking
     // this will be the way user's can delete their media files
     allVids.prototype.toggleEditMode = function() {
 	var self = this;
-	if ( self.editLabel() == 'Edit' )
+	if ( self.editLabel() === 'Edit' )
 	    self.editLabel( 'Done' );
 	else
 	    self.editLabel( 'Edit' );
-
-	self.videos().forEach( function( mf ) {
-            mf.toggleEditMode();
-        });
+        
+        if( self.sharedLabel() === 'My Videos' ) {
+            self.sections().forEach( function( section ) {
+		section.media().forEach( function( mf ) {
+                    mf.toggleEditMode();
+		});
+            });
+        } else {
+            self.videos().forEach( function( mf ) {
+                mf.toggleEditMode();
+            });
+        }
     };
  
    allVids.prototype.monthSelected = function( self, month ) {
