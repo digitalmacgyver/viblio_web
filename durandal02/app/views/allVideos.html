@@ -1,7 +1,7 @@
 <div id="allVidsPage" class="padding45">
     
     <!-- ko if: !aMonthIsSelected() -->
-    <p class="mainTitle textShadowed">You have <span data-bind="text: hits"></span><span data-bind="text: hits() == 1 ? 'video ' : ' videos'"></span> in your private Viblio Library.</p>
+    <p class="mainTitle textShadowed">You have <span data-bind="text: hits"></span><span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private Viblio Library.</p>
     <!-- /ko -->
     <!-- ko if: aMonthIsSelected() -->
     <p class="mainTitle textShadowed">You have <span data-bind="text: vidsInSelectedMonth"></span><span data-bind="text: vidsInSelectedMonth() == 1 ? ' video ' : ' videos'"></span> from <span data-bind="text: selectedMonth"></span>.</p>
@@ -9,19 +9,7 @@
     <button class="btn btn-small btn-secondary pull-right" data-bind="click: toggleEditMode, text: editLabel"></button>
     <div class="clearfix"></div>
     
-    <div class="" data-bind="if: hits() <= 2">
-        <div class="yirHeading-Wrap" data-bind="if: !hasCID()">
-            <p class="mainTitle textShadowed">Got any more videos?</p>
-            <p>We noticed you 
-                <span data-bind="if: hits() == 0 ">don't have any videos yet</span>
-                <span data-bind="if: hits() != 0 "><span data-bind="text: hits() == 1 ? 'only have one ' : 'only have two '"></span><span data-bind="text: hits() == 1 ? 'video ' : ' videos'"></span></span>. 
-                If you have other videos, why not add them to Viblio!
-            </p>
-            <button class="btn btn-primary" data-bind="click: goToUpload">Upload more videos &raquo;</button>
-        </div>
-    </div>
-
-    <div data-bind="if: hits() > 2">
+    <div>
         <div id="months" class="pull-right">
             <div>
                 <ul class="monthLabels">
@@ -45,5 +33,18 @@
                     <!-- /ko -->
             </div>
         </div>
-    </div> 
+    </div>
+    
+    <div class="" data-bind="if: hits() <= 2">
+        <div class="yirHeading-Wrap" data-bind="if: !hasCID()">
+            <p class="mainTitle textShadowed">Got any more videos?</p>
+            <p>We noticed you 
+                <span data-bind="if: hits() == 0 ">don't have any videos yet</span>
+                <span data-bind="if: hits() != 0 "><span data-bind="text: hits() == 1 ? 'only have one ' : 'only have two '"></span><span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span></span>. 
+                If you have other videos, why not add them to Viblio!
+            </p>
+            <button class="btn btn-primary" data-bind="click: goToUpload">Upload more videos &raquo;</button>
+        </div>
+    </div>
+ 
 </div>
