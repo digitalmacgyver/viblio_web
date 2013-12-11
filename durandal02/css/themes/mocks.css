@@ -2269,6 +2269,14 @@ p.uitoken-input ul.token-input-list-facebook {
     margin-bottom: 0;
 }
 
+.instructionsPages .paddedDiv:first-of-type {
+    padding: 27px 50px 13px;
+}
+
+#getApp-page a:first-of-type {
+    margin-bottom: 10px;
+}
+
 .macButton-Wrap {
     display: inline-table;
 }
