@@ -109,7 +109,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                     m.on( 'mediafile:delete', function( m ) {
                         viblio.api( '/services/mediafile/delete_share', { mid: m.media().uuid } ).then( function( data ) {
                             viblio.mpEvent( 'delete_share' );
-                            sections().forEach( function( section ) {
+                            self.sections().forEach( function( section ) {
                                 section.media.remove( m );
                             });
                         });
