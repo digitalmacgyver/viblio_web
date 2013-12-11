@@ -161,7 +161,10 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
                 nav: false,   authenticated: false,   header: conditional_header }, 
           
             { route: 'map',        moduleId: 'map',     title: 'MAP',
-	      nav: true,   authenticated: true,   header: page_header }
+	      nav: true,   authenticated: true,   header: page_header },
+          
+            { route: 'tutorial',        moduleId: 'tutorial',     title: 'Tray App Tutorial',
+	      nav: false,   authenticated: false,   header: conditional_header }
 
         ]).buildNavigationModel();
     }

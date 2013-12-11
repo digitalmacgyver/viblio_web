@@ -2571,3 +2571,79 @@ p.uitoken-input ul.token-input-list-facebook {
     color: white;
     font-size: 30px;
 }
+
+/************ Tutorial Page ***************/
+
+/** 
+ * Slideshow style rules.
+ */
+#slideshow {
+    margin:0 auto;
+    width:973px;
+    height:400px;
+    background:transparent url(../images/tutorial/bg_slideshow.jpg) no-repeat 0 0;
+    position:relative;
+}
+#slidesContainer {
+    margin:0 auto;
+    width:880px;
+    height:400px;
+    overflow:auto; /* allow scrollbar */
+    position:relative;
+}
+#slidesContainer .slide {
+    margin:0 auto;
+    width:850px; /* reduce by 20 pixels of #slidesContainer to avoid horizontal scroll */
+    height:380px;
+}
+
+/** 
+ * Slideshow controls style rules.
+ */
+#slideshow .control {
+    display:block;
+    width:39px;
+    height:500px;
+    text-indent:-10000px;
+    position:absolute;
+    cursor: pointer;
+}
+#leftControl {
+    top:0;
+    left:0;
+background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
+}
+#rightControl {
+    top:0;
+    right:0;
+    background:transparent url(../images/tutorial/control_right.jpg) no-repeat 0 0;
+}
+
+/** 
+ * Style rules for Demo page
+ */
+
+#slideshow a {
+    color: #fff;
+    font-weight:bold;
+    text-decoration:none;
+}
+#slideshow a:hover {
+    text-decoration:underline;
+}
+#pageContainer {
+    margin:0 auto;  
+    width:960px;
+}
+.slide h2, .slide p {
+    margin:30px;
+}
+.slide h2 {
+    //font:italic 36px Georgia, "Times New Roman", Times, serif;
+    color:#ccc;
+    letter-spacing:-1px;
+}
+.slide img {
+    float:center;
+    margin:0 15px;
+}
