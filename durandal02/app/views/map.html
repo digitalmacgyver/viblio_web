@@ -26,5 +26,24 @@
         <!-- /ko -->
     </div>
     
-    <div id="mapContainer" class="map-wrap bottomBorder-Thin"></div>
+    <div id="mapContainer" class="map-wrap bottomBorder-Thin">
+        <!-- ko if: points.length < 1 -->
+        <div id='noPointsOverlay' class='darkBlueOpaqueBG'>
+            <div class='content-Wrap centeredEl'>
+                <div class='paddedDiv whiteBG'>
+                    <p class='loginHeader'>You have no geotagged Videos yet!</p>
+                    <p class='font18'>Some cameras (and most smartphones) save the location where a video was taken. When we detect that location, we'll add the video to your map.</p>
+                    <p class='font18'>Right now, none of your videos have location data.</p>
+                </div>
+                <div class='turquoiseBG bottomBorder-Thick whiteText centered'>
+                    <img src='css/images/mapMarker-White.png' alt='map marker'>
+                    <div id='addToMap-Wrap'>
+                        <p class='font20 textShadowed lightWeightFont'>Coming soon:</p>
+                        <p class='heavyWeightFont font20 textShadowed'>Add to Map</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
 </div>
