@@ -1943,6 +1943,19 @@ li.token-input-token-facebook {
     padding-top: 30px;
 }
 
+#allVidsPage .mfLoader {
+    width: 350px;
+    height: 171px;
+    margin: 0 25px 25px 0;
+    float: left;
+    text-align: center;
+    padding-top: 80px;
+}
+
+#allVidsPage .mfLoader p {
+   margin-top: 10px; 
+}
+
 #months {
     width: 10%;
     min-width: 70px;

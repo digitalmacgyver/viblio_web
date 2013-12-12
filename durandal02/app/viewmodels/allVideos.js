@@ -31,7 +31,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.aMonthIsSelected = ko.observable(false);
         self.selectedMonth = ko.observable();
         self.vidsInSelectedMonth = ko.observable();
-        self.isActiveFlag = false;
+        self.isActiveFlag = ko.observable(false);
         
         // Hold the pager data back from server
 	// media queries.  Initialize it here so
@@ -121,7 +121,8 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             month: month,
             year: year,
             cid: cid
-        }
+        };
+        self.isActiveFlag(true);
 	return system.defer( function( dfd ) {
 	    if ( self.monthPager.next_page )   {
                 args.page = self.monthPager.next_page;
@@ -143,14 +144,14 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                             self.videos.push(m);
                         });
 			dfd.resolve();
-                        self.isActiveFlag = false;
 		    });
 	    }
 	    else {
 		dfd.resolve();
-                self.isActiveFlag = false;
 	    }
-	}).promise();
+	}).promise().then(function(){
+            self.isActiveFlag(false);
+        });
     };
 
     allVids.prototype.activate = function( cid ) {
@@ -203,6 +204,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     
     allVids.prototype.search = function() {
 	var self = this;
+        self.isActiveFlag(true);
 	return system.defer( function( dfd ) {
 	    if ( self.allVidsPager.next_page )   {
 		viblio.api( '/services/mediafile/list', 
@@ -218,14 +220,14 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 			    }
 			});
 			dfd.resolve();
-                        self.isActiveFlag = false;
 		    });
 	    }
 	    else {
 		dfd.resolve();
-                self.isActiveFlag = false;
 	    }
-	}).promise();
+	}).promise().then(function(){
+            self.isActiveFlag(false);
+        });
     };
     
     allVids.prototype.isClipAvailable = function( idx ) {
@@ -301,13 +303,11 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         $(window).scroll(function() {
             // If a month is not selected use the search function, else use monthVidsSearch
             if( !self.aMonthIsSelected() ) {
-                if( !self.isActiveFlag && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                    self.isActiveFlag = true;
+                if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
                     self.search();
                 }
             } else {
-                if( !self.isActiveFlag && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                    self.isActiveFlag = true;
+                if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
                     self.monthVidsSearch( self.selectedMonth() );
                 }
             }
