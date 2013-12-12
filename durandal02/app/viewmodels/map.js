@@ -262,7 +262,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
             var bounds = self.map.data('map').markerLayer.getBounds();
             self.map.data('map').fitBounds(bounds);
         } else {
-	    self.map.data('map').centerDefault( { 'loc': new L.LatLng( 37, -95 ), 'zoom': 5 } );
+            self.map.data('map').setView({ lat: 35, lon: -35 }, 3);
         }
         
         $(".mapSD-scroll").smoothDivScroll({

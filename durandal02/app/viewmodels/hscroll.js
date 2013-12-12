@@ -46,7 +46,11 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
         
         events.includeIn(HScroll);
     };
-
+    
+    HScroll.prototype.getApp = function( media ) {
+        router.navigate( 'getApp?from=hscroll' );
+    }
+    
     // We may not use selection in the GUI, but if we do,
     // this managed a radio-selection behavior.
     HScroll.prototype.mediaSelected = function( media ) {

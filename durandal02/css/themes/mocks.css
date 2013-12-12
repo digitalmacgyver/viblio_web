@@ -588,6 +588,10 @@ input:-moz-placeholder {
     background-color: rgba(50,53,68,1);
 }
 
+.darkBlueOpaqueBG {
+    background-color: rgba(50,53,68,.8);
+}
+
 .orangeBG {
     background-color: rgba(239,85,65,1);
 }
@@ -614,12 +618,20 @@ input:-moz-placeholder {
     border: 1px solid lightgrey;
 }
 
+.whiteBG {
+    background-color: white;
+}
+
 .lightBlueFont {
     color: rgba(82,152,189,.7);
 }
 
 .heavyWeightFont {
     font-weight: 600;
+}
+
+.lightWeightFont {
+    font-weight: 100;
 }
 
 .bigTitle {
@@ -667,6 +679,10 @@ input:-moz-placeholder {
     color: rgba(117,117,128,1);
 }
 
+.alphaGreyFont {
+    color: rgba(0,0,0,.5);
+}
+
 .tomatoFont,
 .tomatoFont:hover {
     color: rgba(239,85,65,1);
@@ -688,8 +704,16 @@ input:-moz-placeholder {
     font-size: 18px;
 }
 
+.font20 {
+    font-size: 20px;
+}
+
 .padding45 {
     padding: 45px;
+}
+
+.centered {
+    text-align: center;
 }
 
 /********************  Page Header Section  *****************************/
@@ -1943,6 +1967,23 @@ li.token-input-token-facebook {
     padding-top: 30px;
 }
 
+#allVidsPage .mfLoader {
+    width: 350px;
+    height: 171px;
+    margin: 0 25px 25px 0;
+    float: left;
+    text-align: center;
+    padding-top: 80px;
+}
+
+#allVidsPage .mfLoader p {
+   margin-top: 10px; 
+}
+
+#allVidsPage .btn-secondary {
+    margin-left: 10px;
+}
+
 #months {
     width: 10%;
     min-width: 70px;
@@ -1954,7 +1995,7 @@ li.token-input-token-facebook {
     list-style: none;
     text-align: right;
     font-weight: 100;
-    font-size: 18px;
+    font-size: 20px;
     margin: 0;
 }
 
@@ -2269,6 +2310,14 @@ p.uitoken-input ul.token-input-list-facebook {
     margin-bottom: 0;
 }
 
+.instructionsPages .paddedDiv:first-of-type {
+    padding: 27px 50px 13px;
+}
+
+#getApp-page a:first-of-type {
+    margin-bottom: 10px;
+}
+
 .macButton-Wrap {
     display: inline-table;
 }
@@ -2421,6 +2470,48 @@ p.uitoken-input ul.token-input-list-facebook {
 }
 
 /**************** Map Page *******************/
+
+/* start overlay */
+#noPointsOverlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#noPointsOverlay .paddedDiv {
+    padding: 20px 50px 30px;
+}
+
+#noPointsOverlay .content-Wrap {
+    margin-top: 7%;
+}
+
+#noPointsOverlay .content-Wrap > div {
+    margin-bottom: 0;
+}
+
+#noPointsOverlay img {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 10px;
+}
+
+#noPointsOverlay .turquoiseBG {
+    padding: 21px 0 28px;
+}
+
+#noPointsOverlay .turquoiseBG p {
+    margin: 0;
+}
+
+#addToMap-Wrap {
+    display: inline-block;
+    margin-top: 16px;
+    text-align: left;
+}
+/* end overlay */
+
 .shareFromMap {
     position: absolute;
     right: -1px;
@@ -2570,4 +2661,80 @@ p.uitoken-input ul.token-input-list-facebook {
     margin-bottom: 20px;
     color: white;
     font-size: 30px;
+}
+
+/************ Tutorial Page ***************/
+
+/** 
+ * Slideshow style rules.
+ */
+#slideshow {
+    margin:0 auto;
+    width:973px;
+    height:400px;
+    background:transparent url(../images/tutorial/bg_slideshow.jpg) no-repeat 0 0;
+    position:relative;
+}
+#slidesContainer {
+    margin:0 auto;
+    width:880px;
+    height:400px;
+    overflow:auto; /* allow scrollbar */
+    position:relative;
+}
+#slidesContainer .slide {
+    margin:0 auto;
+    width:850px; /* reduce by 20 pixels of #slidesContainer to avoid horizontal scroll */
+    height:380px;
+}
+
+/** 
+ * Slideshow controls style rules.
+ */
+#slideshow .control {
+    display:block;
+    width:39px;
+    height:500px;
+    text-indent:-10000px;
+    position:absolute;
+    cursor: pointer;
+}
+#leftControl {
+    top:0;
+    left:0;
+background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
+}
+#rightControl {
+    top:0;
+    right:0;
+    background:transparent url(../images/tutorial/control_right.jpg) no-repeat 0 0;
+}
+
+/** 
+ * Style rules for Demo page
+ */
+
+#slideshow a {
+    color: #fff;
+    font-weight:bold;
+    text-decoration:none;
+}
+#slideshow a:hover {
+    text-decoration:underline;
+}
+#pageContainer {
+    margin:0 auto;  
+    width:960px;
+}
+.slide h2, .slide p {
+    margin:30px;
+}
+.slide h2 {
+    //font:italic 36px Georgia, "Times New Roman", Times, serif;
+    color:#ccc;
+    letter-spacing:-1px;
+}
+.slide img {
+    float:center;
+    margin:0 15px;
 }
