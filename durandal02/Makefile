@@ -29,6 +29,7 @@ optimize: $(WEYLAND) $(NODE_MINIFY)
 	# Copy the css, image, font and other resources
 	tar zcf - `find . -name "*.css" \
 		-o -name "*.png" \
+		-o -name "*.jpg" \
 		-o -name "*.gif" \
 		-o -name "*.cur" \
 		-o -name "*.ttf" \
