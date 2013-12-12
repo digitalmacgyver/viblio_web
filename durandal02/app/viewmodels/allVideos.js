@@ -284,15 +284,14 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	    if ( self.allVidsPager.next_page )   {
 		viblio.api( '/services/mediafile/list', 
 			    { 
-			      page: self.allVidsPager.next_page, 
-			      rows: self.allVidsPager.entries_per_page } )
+				views: ['poster'],
+				page: self.allVidsPager.next_page, 
+				rows: self.allVidsPager.entries_per_page } )
 		    .then( function( json ) {
                         console.log(json);
 			self.allVidsPager = json.pager;
 			json.media.forEach( function( mf ) {
-			    if ( mf.views.main.location == 's3' || mf.views.main.location == 'us' ) {
-				self.addMediaFile( mf );
-			    }
+			    self.addMediaFile( mf );
 			});
 			dfd.resolve();
 		    });
