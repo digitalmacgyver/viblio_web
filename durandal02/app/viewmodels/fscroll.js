@@ -123,14 +123,13 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 
 	return viblio.api( '/services/faces/media_face_appears_in',
 			   { contact_uuid: contact_id,
+			     views: ['poster'],
 			     page: self.pager.next_page, 
 			     rows: self.pager.entries_per_page } )
 	    .then( function( json ) {
 		self.pager = json.pager;
 		json.media.forEach( function( mf ) {
-		    if ( mf.views.main.location == 's3' || mf.views.main.location == 'us' ) {
-			self.mediafiles.push( self.addMediaFile( mf ) );
-		    }
+		    self.mediafiles.push( self.addMediaFile( mf ) );
 		});
 	    });
     };

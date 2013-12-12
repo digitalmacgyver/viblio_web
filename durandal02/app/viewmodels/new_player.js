@@ -244,13 +244,28 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
         setupComments( m.media() );
 	setupFaces( m.media() );
 	near( m.media() );
-	flowplayer().play({
-	    url: 'mp4:' + m.media().views.main.cf_url,
-	    ipadUrl: encodeURIComponent(m.media().views.main.url)
-        });
+
+	// We don't nessesarily have the main urls needed to stream
+	// the video.  If we don't, go get them and save them in the
+	// related video structure.
+	if ( ! m.media().views.main ) {
+	    viblio.api( '/services/mediafile/cf', { mid: m.media().uuid } ).then( function( data ) {
+		if ( data && data.url && data.cf_url ) {
+		    m.media().views.main = { url: data.url, cf_url: data.cf_url };
+		    flowplayer().play({
+			url: 'mp4:' + m.media().views.main.cf_url,
+			ipadUrl: encodeURIComponent(m.media().views.main.url)
+		    });
+		}
+	    });
+	}
+	else {
+	    flowplayer().play({
+		url: 'mp4:' + m.media().views.main.cf_url,
+		ipadUrl: encodeURIComponent(m.media().views.main.url)
+            });
+	}
 	viblio.mpEvent( 'related_video' );
-	// push it onto history
-	//router.navigate( 'player?mid=' + m.media().uuid, false);
     }
 
     // Store the disable_prev/next as observables so
@@ -474,6 +489,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    // This async routine is the long pole.  Let it do the promise() resolution to
 		    // pause the system until we have all the data.
 		    //
+		    console.log( 'VSTRIP SEARCH due to new_player activate' );
 		    vstrip.search(mid).then( function() {
 			// Get all of the geo locations of the related media
 			dfd.resolve();
