@@ -117,11 +117,11 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 
             { route: 'upload',             moduleId: 'nginx',              title: 'UPLOAD',
 	      nav: false,    authenticated: true,   header: page_header },
+          
+            { route: 'videos',        moduleId: 'allVideos',     title: 'VIDEOS',
+	      nav: true,   authenticated: true,   header: page_header },
 	    
             { route: 'people',             moduleId: 'people',             title: 'PEOPLE',
-	      nav: true,    authenticated: true,   header: page_header },
-	    
-            { route: 'shared',             moduleId: 'shared',             title: 'SHARED',
 	      nav: true,    authenticated: true,   header: page_header },
 	    
             { route: 'raw',                moduleId: 'raw',                title: 'Raw Upload',
@@ -153,9 +153,6 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
           
             { route: 'getApp',           moduleId: 'getApp',     title: 'Download Viblio',
                 nav: false,   authenticated: false,   header: conditional_header },
-            
-            { route: 'allVideos',        moduleId: 'allVideos',     title: 'ALL VIDEOS',
-	      nav: true,   authenticated: true,   header: page_header },
             
             { route: 'faq',           moduleId: 'faq',     title: 'Viblio FAQ',
                 nav: false,   authenticated: false,   header: conditional_header }, 

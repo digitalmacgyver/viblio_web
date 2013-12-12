@@ -8,6 +8,15 @@
       <p class="mainTitle marginL45 textShadowed whiteText">Identified People</p>
       <span class="subtitle">People you've identified in your videos. Click on a face to manage.</span>
     </div>
+    <!-- ko if: known_faces().length < 1 -->
+    <div class="marginL45">
+        <div class="pull-left marginR45">
+            <img id='avatarImg' src="css/images/avatar.png" alt="avatar" >
+            <label for='avatarImg' class='centered alphaGreyFont font18'>Sophie</label>
+        </div>
+        <p class="font20 alphaGreyFont marginR45">This is where we'll show the faces you have tagged in your videos.  Now you'll be able to search videos by these faces.</p>
+    </div>
+    <!-- /ko -->  
     <div class="horizontal-scroller faces-container">
       <button class="btn btn-small fwd btn-nav mCSB_buttonRight"><img src="css/images/arrowRight.png"/></button>
       <button class="btn btn-small back btn-nav mCSB_buttonLeft"><img src="css/images/arrowLeft.png"/></button>
@@ -40,6 +49,15 @@
       <p class="mainTitle marginL45 textShadowed whiteText">Unknown People</p>
       <span class="subtitle">Click on a person's name to identify them.</span>
     </div>
+    <!-- ko if: unknown_faces().length < 1 -->
+    <div class="marginL45">
+        <div class="pull-left marginR45">
+            <img id='avatarImg' src="css/images/avatar.png" alt="avatar" >
+            <label for='avatarImg' class='centered alphaGreyFont font18'>?</label>
+        </div>
+        <p class="font20 alphaGreyFont marginR45">This is where you'll see the faces we found in the videos you store with us.  You'll get to name the ones you want to tag and delete the ones you never want to see again!</p>
+    </div>
+    <!-- /ko -->
     <div class="margined-content-wrapper faces-container">
       <!-- ko foreach: unknown_faces -->
       <!-- ko compose: $data --><!-- /ko -->

@@ -588,6 +588,10 @@ input:-moz-placeholder {
     background-color: rgba(50,53,68,1);
 }
 
+.darkBlueOpaqueBG {
+    background-color: rgba(50,53,68,.8);
+}
+
 .orangeBG {
     background-color: rgba(239,85,65,1);
 }
@@ -614,12 +618,20 @@ input:-moz-placeholder {
     border: 1px solid lightgrey;
 }
 
+.whiteBG {
+    background-color: white;
+}
+
 .lightBlueFont {
     color: rgba(82,152,189,.7);
 }
 
 .heavyWeightFont {
     font-weight: 600;
+}
+
+.lightWeightFont {
+    font-weight: 100;
 }
 
 .bigTitle {
@@ -667,6 +679,10 @@ input:-moz-placeholder {
     color: rgba(117,117,128,1);
 }
 
+.alphaGreyFont {
+    color: rgba(0,0,0,.5);
+}
+
 .tomatoFont,
 .tomatoFont:hover {
     color: rgba(239,85,65,1);
@@ -688,8 +704,16 @@ input:-moz-placeholder {
     font-size: 18px;
 }
 
+.font20 {
+    font-size: 20px;
+}
+
 .padding45 {
     padding: 45px;
+}
+
+.centered {
+    text-align: center;
 }
 
 /********************  Page Header Section  *****************************/
@@ -1954,6 +1978,9 @@ li.token-input-token-facebook {
 
 #allVidsPage .mfLoader p {
    margin-top: 10px; 
+
+#allVidsPage .btn-secondary {
+    margin-left: 10px;
 }
 
 #months {
@@ -1967,7 +1994,7 @@ li.token-input-token-facebook {
     list-style: none;
     text-align: right;
     font-weight: 100;
-    font-size: 18px;
+    font-size: 20px;
     margin: 0;
 }
 
@@ -2442,6 +2469,48 @@ p.uitoken-input ul.token-input-list-facebook {
 }
 
 /**************** Map Page *******************/
+
+/* start overlay */
+#noPointsOverlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#noPointsOverlay .paddedDiv {
+    padding: 20px 50px 30px;
+}
+
+#noPointsOverlay .content-Wrap {
+    margin-top: 7%;
+}
+
+#noPointsOverlay .content-Wrap > div {
+    margin-bottom: 0;
+}
+
+#noPointsOverlay img {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 10px;
+}
+
+#noPointsOverlay .turquoiseBG {
+    padding: 21px 0 28px;
+}
+
+#noPointsOverlay .turquoiseBG p {
+    margin: 0;
+}
+
+#addToMap-Wrap {
+    display: inline-block;
+    margin-top: 16px;
+    text-align: left;
+}
+/* end overlay */
+
 .shareFromMap {
     position: absolute;
     right: -1px;
