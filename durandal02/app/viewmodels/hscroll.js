@@ -121,7 +121,8 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     HScroll.prototype.search = function() {
 	var self = this;
 	var api = '/services/mediafile/list';
-	var args = { page: self.pager.next_page, 
+	var args = { views: ['poster'],
+		     page: self.pager.next_page, 
 		     rows: self.pager.entries_per_page };
 	if ( self.search_api ) {
 	    var proto = self.search_api();
@@ -138,9 +139,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	    .then( function( json ) {
 		self.pager = json.pager;
 		json.media.forEach( function( mf ) {
-		    if ( mf.views.main.location == 's3' || mf.views.main.location == 'us' ) {
-			self.mediafiles.push( self.addMediaFile( mf ) );
-		    }
+		    self.mediafiles.push( self.addMediaFile( mf ) );
 		});
 	    });
     };
