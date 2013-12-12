@@ -150,6 +150,14 @@ input[type="color"],
     color: white;
 }
 
+.btn-darkBlue,
+.btn-darkBlue:focus,
+.btn-darkBlue:active,
+.btn-darkBlue:hover{
+    background-color: rgba(50,53,68,1);
+    color: white;
+}
+
 .fwd,
 .back {
     background-color: rgba(50,53,68,1);
