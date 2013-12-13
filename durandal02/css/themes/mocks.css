@@ -716,6 +716,10 @@ input:-moz-placeholder {
     font-size: 20px;
 }
 
+.font24 {
+    font-size: 24px;
+}
+
 .padding45 {
     padding: 45px;
 }
@@ -2309,6 +2313,18 @@ p.uitoken-input ul.token-input-list-facebook {
     margin-bottom: 200px
 }
 
+.subheaderLink {
+    float: right;
+    margin-top: -45px;
+}
+
+@media (max-width: 1040px) {
+    .subheaderLink {
+        float: none;
+        margin-top: 0;
+    }    
+}
+
 .instructionsPages .content-Wrap {
     color: rgba(117,117,128,1);
     margin-bottom: 30px;
@@ -2320,10 +2336,6 @@ p.uitoken-input ul.token-input-list-facebook {
 
 .instructionsPages .paddedDiv:first-of-type {
     padding: 27px 50px 13px;
-}
-
-#getApp-page a:first-of-type {
-    margin-bottom: 10px;
 }
 
 .macButton-Wrap {
