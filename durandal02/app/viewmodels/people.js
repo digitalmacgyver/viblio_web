@@ -168,7 +168,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 		});
 
 		// and establish the tag in the database
-		viblio.mpEvent( 'face_tag_to_new' );
+		viblio.mpEvent( 'face_tag', { type: 'to_new' } );
 		viblio.api( '/services/faces/tag', {
 		    uuid: v.data.uuid,
 		    cid: selected().data.uuid } ).then( function() {
@@ -189,9 +189,9 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 	    });
 
 	    if ( match )
-		viblio.mpEvent( 'face_tag_to_identified' );
+		viblio.mpEvent( 'face_tag', { type: 'to_identified' } );
 	    else
-		viblio.mpEvent( 'face_tag_to_new' );
+		viblio.mpEvent( 'face_tag', { type: 'to_new' } );
 
 	    // establish the tag in the database
 	    viblio.api( '/services/faces/tag', {
@@ -449,7 +449,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 			// merge of two identified faces
 			known_faces.remove( selected() );
 			// SEND THE VIBLIO EVENT
-			viblio.mpEvent( 'face_merge' );
+			viblio.mpEvent( 'face_tag', { type: 'merge' } );
 			viblio.api( '/services/faces/tag', {
 			    uuid: selected().data.uuid,
 			    cid: same_as.data.uuid } ).then( function() {

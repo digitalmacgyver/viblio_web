@@ -2,6 +2,36 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
     $.ajaxSetup({cache:false});
     // The currently logged in user
     var user = ko.observable();
+
+    // This routine is used to filter out ourselves from mixpanel
+    // results.
+    //
+    // THIS IS DISABLED UNTIL BIDYUT AND ILYA AND MONA AGREE ON APPROACH
+    //
+    var optOut = function( email ) {
+	var us = [
+	    '@viblio.com$',
+	    'aqpeeb.*@gmail.com',
+	    '^bidyut@',
+	    '^bparruck@',
+	    'farzan.*@gmail.com',
+	    '.*benfranklin@',
+	    'idreytser.*@gmail.com',
+	    'ilya_dreytser.*@yahoo.com',
+	    'mjhayward.*@gmail.com',
+	    'monasnews@gmail.com',
+	    'secure.software.development@gmail.com',
+	    'viblio.smtesting@gmail.com',
+	    '@cognitiveclouds.com$'
+	];
+	for( var i=0; i<us.length; i++ ) {
+	    if ( email.match( new RegExp( us[i] ) ) ) {
+		return true;
+	    }
+	}
+	return false;
+    };
+
     var setUser = function( u ) {
 	if ( u ) {
 	    if ( u.uuid != user().uuid ) {
@@ -10,13 +40,20 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 		user( u );
 		// subscribe to the async message queue
 		messageq.subscribe( u.uuid );
-		// Add this identity to mixpanel
-		mixpanel.identify( u.uuid );
-		mixpanel.people.set({
-		    "$email": u.email,
-		    "$last_login": new Date(),
-		    "$created": u.created_date
-		});
+		if ( false ) {  // if ( optOut( u.email ) DISABLED FOR NOW SEE ABOVE
+		    // Ignore in Mixpanel
+		    mixpanel.register({"$ignore":"true"});
+		}
+		else {
+		    // Add this identity to mixpanel
+		    mixpanel.identify( u.uuid );  // unique key is user uuid
+		    mixpanel.register({ uuid: u.uuid }); // send user uuid on every event
+		    mixpanel.people.set({
+			"$email": u.email,
+			"$last_login": new Date(),
+			"$created": u.created_date
+		    });
+		}
 	    }
 	    if ( u.displayname != user().displayname ) {
 		user( u );
