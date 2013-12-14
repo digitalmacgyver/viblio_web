@@ -2688,13 +2688,14 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     background-color: #24b8d1;
 }
 
-.hstrip .scrollWrapper .mediafile {
+.scrollWrapper .mediafile {
     float: left;
 }
 
 .yir .media-list .mediafile {
     margin-right: 35px;
     margin-bottom: 35px;
+    float: left;
 }
 
 #nplayer-page .vstrip .mediafile {
