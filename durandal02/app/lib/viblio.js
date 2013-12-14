@@ -3,35 +3,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
     // The currently logged in user
     var user = ko.observable();
 
-    // This routine is used to filter out ourselves from mixpanel
-    // results.
-    //
-    // THIS IS DISABLED UNTIL BIDYUT AND ILYA AND MONA AGREE ON APPROACH
-    //
-    var optOut = function( email ) {
-	var us = [
-	    '@viblio.com$',
-	    'aqpeeb.*@gmail.com',
-	    '^bidyut@',
-	    '^bparruck@',
-	    'farzan.*@gmail.com',
-	    '.*benfranklin@',
-	    'idreytser.*@gmail.com',
-	    'ilya_dreytser.*@yahoo.com',
-	    'mjhayward.*@gmail.com',
-	    'monasnews@gmail.com',
-	    'secure.software.development@gmail.com',
-	    'viblio.smtesting@gmail.com',
-	    '@cognitiveclouds.com$'
-	];
-	for( var i=0; i<us.length; i++ ) {
-	    if ( email.match( new RegExp( us[i] ) ) ) {
-		return true;
-	    }
-	}
-	return false;
-    };
-
     var setUser = function( u ) {
 	if ( u ) {
 	    if ( u.uuid != user().uuid ) {
@@ -40,20 +11,14 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 		user( u );
 		// subscribe to the async message queue
 		messageq.subscribe( u.uuid );
-		if ( false ) {  // if ( optOut( u.email ) DISABLED FOR NOW SEE ABOVE
-		    // Ignore in Mixpanel
-		    mixpanel.register({"$ignore":"true"});
-		}
-		else {
-		    // Add this identity to mixpanel
-		    mixpanel.identify( u.uuid );  // unique key is user uuid
-		    mixpanel.register({ uuid: u.uuid }); // send user uuid on every event
-		    mixpanel.people.set({
-			"$email": u.email,
-			"$last_login": new Date(),
-			"$created": u.created_date
-		    });
-		}
+		// Add this identity to mixpanel
+		mixpanel.identify( u.uuid );  // unique key is user uuid
+		mixpanel.register({ uuid: u.uuid }); // send user uuid on every event
+		mixpanel.people.set({
+		    "$email": u.email,
+		    "$last_login": new Date(),
+		    "$created": u.created_date
+		});
 	    }
 	    if ( u.displayname != user().displayname ) {
 		user( u );
@@ -103,8 +68,8 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
     }
 
     return {
-	// log() and debug() should maybe use console.log
-	// during development, but then http://log4javascript.org/
+	// log() and debug() should maybe use 
+	//    http://log4javascript.org/
 	// for production
 	debug: function( msg ) {
 	    system.log( msg );
@@ -183,7 +148,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 	api: function( url, data, errorCallback ) {
 	    var self = this;
 
-	    console.log( '**', url, data );
+	    self.log( '**', url, data );
 
 	    var deferred = $.Deferred();
 	    var promise  = deferred.promise();
@@ -242,9 +207,9 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 			else {
 			    self.mpEvent( 'serverError', { reason: 'bad request' } );
 			    self.notify( data.message, 'error' );
-			    console.log( 'API (bad request) ERROR' );
-			    console.log( data.message );
-			    console.log( data.detail );
+			    self.log( 'API (bad request) ERROR' );
+			    self.log( data.message );
+			    self.log( data.detail );
 			}
 		    }
 		    deferred.reject( x, 'error' );
@@ -257,9 +222,9 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 		    else {
 			self.mpEvent( 'serverError', { reason: 'server exception' } );
 			self.notify( 'Server exception', 'error' );
-			console.log( 'API (exception) ERROR' );
-			console.log( data.message );
-			console.log( data.detail );
+			self.log( 'API (exception) ERROR' );
+			self.log( data.message );
+			self.log( data.detail );
 		    }
 		}
 		else {

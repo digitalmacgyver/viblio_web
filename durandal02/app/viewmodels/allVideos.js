@@ -288,7 +288,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 				page: self.allVidsPager.next_page, 
 				rows: self.allVidsPager.entries_per_page } )
 		    .then( function( json ) {
-                        console.log(json);
 			self.allVidsPager = json.pager;
 			json.media.forEach( function( mf ) {
 			    self.addMediaFile( mf );

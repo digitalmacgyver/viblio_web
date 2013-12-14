@@ -79,7 +79,6 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
 	// the marker is clicked on.
 	//
 	return viblio.api( '/services/geo/all' ).then( function( json ) {
-            console.log(json);
             var eyes;
 	    json.locations.forEach( function( m ) {
 		if ( m.lat && m.lng ) {
@@ -137,7 +136,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
             self.map.data('map').markerLayer.eachLayer(function(marker) {
                 if (bounds.contains(marker.getLatLng())) {
                     self.pointsInRange.push(marker.feature.properties);
-                    //console.log(self.pointsInRange());
+                    //viblio.log(self.pointsInRange());
                 }
             });
             
@@ -296,7 +295,6 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
     };
 
     Map.prototype.play = function( point ) {
-        console.log('Map.prototype.play triggered');
 	// A point was clicked on.  Could popup a dialog to display
 	// metadata (title, description, captured on date, length, etc)
 	// and a play/cancel function maybe.  Or just go to player screen.
