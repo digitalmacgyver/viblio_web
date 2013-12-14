@@ -71,16 +71,16 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 	// log() and debug() should maybe use 
 	//    http://log4javascript.org/
 	// for production
-	debug: function( msg ) {
-	    system.log( msg );
+	debug: function() {
+	    system.log.apply( null, arguments );
 	},
 
-	log: function( msg ) {
-	    system.log( msg );
+	log: function() {
+	    system.log.apply( null, arguments );
 	},
 
-	log_error: function( msg ) {
-	    system.log( msg );
+	log_error: function() {
+	    system.log.apply( null, arguments );
 	},
 
 	// Use alertify to notify the user with a small slideout
