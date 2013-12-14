@@ -238,7 +238,13 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     function playVid( m ) {
         // Scroll to top of page
         $(document).scrollTop(0);
+
+	if ( playing() )
+	    playing().unhighlight();
+
         playing( m );
+	playing().highlight();
+
 	title( playing().title() || 'Click to add a title.' );
 	description( playing().description() || 'Click to add a description.' );
         setupComments( m.media() );
