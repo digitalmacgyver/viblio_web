@@ -386,10 +386,29 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
     margin-left: 40px;
 }
 
+.mapSD-scroll.horizontal-scroller .scrollableArea:first-child {
+    margin-left: 0;
+}
+
 .horizontal-scroller {
-    height: 208px;
     width: 100%;
     position: relative;
+}
+
+.sd-scroll.horizontal-scroller {
+    height: 258px;
+}
+
+.sd-pscroll.horizontal-scroller {
+    height: 208px;
+}
+
+.sd-fscroll.horizontal-scroller {
+    height: 251px;
+}
+
+.faces-container.horizontal-scroller {
+    height: 208px;
 }
 
 .horizontal-scroller .fwd {
@@ -516,6 +535,7 @@ font-size: 14px;
     display: none;
 }
 
+.mapSD-scroll .fwd,
 .pstrip .fwd,
 .fstrip .fwd,
 .hstrip .fwd {
@@ -1344,11 +1364,6 @@ input:-moz-placeholder {
     top: 24%;
 }
 
-.sd-fscroll .scrollableArea:first-child,
-.sd-pscroll .scrollableArea:first-child,
-.sd-scroll .scrollableArea:first-child {
-    margin-left: 40px;
-}
 
 .mCSB_buttonLeft{
     /*  The first url is for Firefox and other browsers, the second is for Internet Explorer */
@@ -1358,10 +1373,6 @@ input:-moz-placeholder {
 .mCSB_buttonRight {
     /*  The first url is for Firefox and other browsers, the second is for Internet Explorer */
     cursor: url(/lib/smoothDivScroll/images/cursors/cursor_arrow_right.png), url(/lib/smoothDivScroll/images/cursors/cursor_arrow_right.cur),e-resize;
-}
-
-.sd-scroll {
-    overflow: hidden;
 }
 
 /********************  Map Strip  *****************************/
@@ -2434,16 +2445,6 @@ p.uitoken-input ul.token-input-list-facebook {
    width: 30px;
 }
 
-.mapSD-scroll .btn-nav {
-    position: absolute;
-    top: 11%;
-    z-index: 1000;
-}
-
-.mapSD-scroll .fwd {
-    right: 0;
-}
-
 #map-page .scrollWrapper {
     padding: 5px 0 10px;
 }
@@ -2709,7 +2710,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 #map-page .mediafile {
-    margin-right: 25px;
+    margin-right: 10px;
     float: left;
 }
 
@@ -2764,6 +2765,6 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 #map-page .mediafile:first-of-type {
-    margin-left: 45px;
+    margin-left: 0;
 }
 

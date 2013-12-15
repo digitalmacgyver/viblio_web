@@ -17,9 +17,7 @@
         <p class="font24 whiteText marginR45">This is where we'll show the faces you have tagged in your videos.  Now you'll be able to search videos by these faces.</p>
     </div>
     <!-- /ko -->  
-    <div class="horizontal-scroller faces-container">
-      <button class="btn btn-small fwd btn-nav mCSB_buttonRight"><img src="css/images/arrowRight.png"/></button>
-      <button class="btn btn-small back btn-nav mCSB_buttonLeft"><img src="css/images/arrowLeft.png"/></button>
+    <div class="faces-container" data-bind="hscroller:{}"> 
       <!-- ko foreach: known_faces -->
       <!-- ko compose: $data --><!-- /ko -->
       <!-- /ko -->

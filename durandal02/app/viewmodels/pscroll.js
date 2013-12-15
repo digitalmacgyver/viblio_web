@@ -6,9 +6,6 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	// The view element, used to manipulate the scroller mostly
 	self.view = null;
 
-	// When the scroller has been initialize
-	self.scroller_ready = false;
-
 	// Passed in title and subtitle
 	self.title = ko.observable(title);
 	self.subtitle = ko.observable(subtitle || '&nbsp;' );
@@ -33,8 +30,7 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	app.on( 'face:ready', function( mf ) {
 	    var m = self.addFace( mf );
 	    self.faces.unshift( m );
-	    if ( self.scroller_ready ) 
-		$(self.view).smoothDivScroll("recalculateScrollableArea");
+	    $(self.view).find( ".sd-pscroll").trigger( 'children-changed' );
 	});
 
 	Events.includeIn( this );
@@ -83,11 +79,8 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
                 $(m.view).removeClass( 'selected' );
         });
 
-        m.on( 'face:composed', function() {
-            if ( self.scroller_ready ) {
-                $(self.view).smoothDivScroll("recalculateScrollableArea");
-                $(self.view).smoothDivScroll("enable");
-            }
+        m.on( 'person:composed', function() {
+	    $(self.view).find( ".sd-pscroll").trigger( 'children-changed', { enable: true } );
         });
 
 	return m;
@@ -100,7 +93,7 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
         // pause is needed to temporarily turn off the timers that control
         // hover and mousedown scrolling, while we go off and fetch data
         // it will be re-enabled in mediafile:composed at the proper time
-        $(self.view).smoothDivScroll("pause");
+        $(self.view).find( ".sd-pscroll").smoothDivScroll("pause");
 
 	return viblio.api( '/services/faces/contacts',
 			   { page: self.pager.next_page, 
@@ -118,45 +111,26 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	return self.search();
     };
 
+    Pscroll.prototype.hLimitReached = function() {
+	var self = this;
+	if ( self.pager.next_page ) {
+	    self.search();
+	}
+	else {
+	    // Since we hacked the widget to remove flicker,
+	    // we need to manually hide the right most arrow when
+	    // we hit the end.
+	    $(self.view).find( ".sd-pscroll").smoothDivScroll("nomoredata");
+	}
+    },
+
     Pscroll.prototype.attached = function( view ) {
 	var self = this;
-	self.view = $(view).find(".sd-pscroll");
-        
-        $(self.view).smoothDivScroll({
-	    scrollingHotSpotLeftClass: "mCSB_buttonLeft",
-            scrollingHotSpotRightClass: "mCSB_buttonRight",
-	    hotSpotScrolling: true,
-	    visibleHotSpotBackgrounds: 'always',
-	    setupComplete: function() {
-		self.scroller_ready = true;
-	    },
-	    scrollerRightLimitReached: function() {
-		if ( self.pager.next_page ) {
-		    self.search();
-		}
-		else {
-		    // Since we hacked the widget to remove flicker,
-		    // we need to manually hide the right most arrow when
-		    // we hit the end.
-		    $(self.view).smoothDivScroll("nomoredata");
-		}
-	    }
-	});
-	
-    };
-
-    Pscroll.prototype.ready = function( parent ) {
-	var self = this;
-        
-        // This causes the widget to initialize, since it was originally
-	// designed to initialize on page load.
-	$(self.view).trigger( 'initialize' );
-	
+	self.view = view;
     };
 
     Pscroll.prototype.detached = function() {
-	$(this.view).smoothDivScroll("destroy");
-	this.scroller_ready = false;
+	$(this.view).find( ".sd-pscroll").smoothDivScroll("destroy");
     };
 
     return Pscroll;

@@ -6,9 +6,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	// The view element, used to manipulate the scroller mostly
 	self.view = null;
 
-	// When the scroller has been initialize
-	self.scroller_ready = false;
-
 	// Passed in title and subtitle
 	self.title = ko.observable(title);
 	self.subtitle = ko.observable(subtitle || '&nbsp;' );
@@ -74,10 +71,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	});
 
         m.on( 'mediafile:composed', function() {
-            if ( self.scroller_ready ) {
-                $(self.view).smoothDivScroll("recalculateScrollableArea");
-                $(self.view).smoothDivScroll("enable");
-            }
+	    $(self.view).find( ".sd-fscroll").trigger( 'children-changed', { enable: true } );
         });
 
 	// When a mediafile wishes to be deleted
@@ -85,7 +79,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	m.on( 'mediafile:delete', function( m ) {
 	    viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function() {
 		self.mediafiles.remove( m );
-		$(self.view).smoothDivScroll("recalculateScrollableArea");
+		$(self.view).find( ".sd-fscroll").trigger( 'children-changed' );
 	    });
 	});
 
@@ -119,7 +113,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
         // pause is needed to temporarily turn off the timers that control
         // hover and mousedown scrolling, while we go off and fetch data
         // it will be re-enabled in mediafile:composed at the proper time
-        $(self.view).smoothDivScroll("pause");
+        $(self.view).find( '.sd-fscroll').smoothDivScroll("pause");
 
 	return viblio.api( '/services/faces/media_face_appears_in',
 			   { contact_uuid: contact_id,
@@ -142,44 +136,27 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	router.navigate( 'videosof?uuid=' + this.contact_id );
     };
 
+    FScroll.prototype.hLimitReached = function() {
+	var self = this;
+	if ( self.pager.next_page ) {
+	    self.search( self.contact_id );
+	}
+	else {
+	    // Since we hacked the widget to remove flicker,
+	    // we need to manually hide the right most arrow when
+	    // we hit the end.
+	    $(self.view).find( '.sd-fscroll').smoothDivScroll("nomoredata");
+	}
+    },
+
     FScroll.prototype.attached = function( view ) {
 	var self = this;
-	self.view = $(view).find(".sd-fscroll");
+	self.view = view;
 	self.arrow = $(view).find(".arrow");
-        
-        $(self.view).smoothDivScroll({
-	    scrollingHotSpotLeftClass: "mCSB_buttonLeft",
-            scrollingHotSpotRightClass: "mCSB_buttonRight",
-	    hotSpotScrolling: true,
-	    visibleHotSpotBackgrounds: 'hover',
-	    setupComplete: function() {
-		self.scroller_ready = true;
-	    },
-	    scrollerRightLimitReached: function() {
-		if ( self.pager.next_page ) {
-		    self.search( self.contact_id );
-		}
-		else {
-		    // Since we hacked the widget to remove flicker,
-		    // we need to manually hide the right most arrow when
-		    // we hit the end.
-		    $(self.view).smoothDivScroll("nomoredata");
-		}
-	    }
-	});
-    };
-
-    FScroll.prototype.ready = function( parent ) {
-	var self = this;
-	
-	// This causes the widget to initialize, since it was originally
-	// designed to initialize on page load.
-	$(self.view).trigger( 'initialize' );
     };
 
     FScroll.prototype.detached = function() {
-	$(this.view).smoothDivScroll("destroy");
-	this.scroller_ready = false;
+	$(this.view).find( '.sd-fscroll').smoothDivScroll("destroy");
     };
 
     FScroll.prototype.clear = function() {
@@ -190,7 +167,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
             total_entries: -1 /* currently unknown */
         };
 	self.mediafiles.removeAll();
-	$(self.view).smoothDivScroll("recalculateScrollableArea");
+	$(self.view).find( ".sd-fscroll").trigger( 'children-changed' );
     };
 
     FScroll.prototype.show = function( pos ) {

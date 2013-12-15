@@ -220,12 +220,6 @@ font-family: 'Source Sans Pro', serif; /* google font */
     cursor: pointer;
 }
 
-/*********************************************
-*
-*               fscroll.css 
-*
-*********************************************/
-
 .fstrip {
     position: relative;
 }
@@ -239,11 +233,6 @@ font-family: 'Source Sans Pro', serif; /* google font */
     left: 200px;
 }
 
-.sd-fscroll {
-    height: 251px;
-    width: 100%;
-    position: relative;
-}
 
 /*********************************************
 *
@@ -269,18 +258,6 @@ font-family: 'Source Sans Pro', serif; /* google font */
     margin-top: 8px;
 }
 
-
-/*********************************************
-*
-*               hscroll.css 
-*
-*********************************************/
-
-
-.sd-scroll {
-    height: 258px;
-    position: relative;
-}
 
 /*********************************************
 *
@@ -1179,19 +1156,6 @@ div.map .marker i {
 
 #player-page .vstrip div {
     margin: 0 auto;
-}
-
-/*********************************************
-*
-*               pscroll.css
-*
-*********************************************/
-
-
-.sd-pscroll {
-    height: 208px;
-    width: 100%;
-    position: relative;
 }
 
 /*********************************************

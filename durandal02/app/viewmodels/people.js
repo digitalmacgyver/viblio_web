@@ -7,7 +7,6 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 
     var view;
     var pending_changes = 0;
-    var scroller_ready = false;
 
     var clipboard = ko.observableArray([]);
     var selected  = ko.observable();
@@ -74,6 +73,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 		    unknown_faces.remove( f );
 		});
 		known_faces.remove( f );
+		$(view).find( ".horizontal-scroller").trigger( 'children-changed' );
 		if ( faces_for_visible() && ( selected() == f ) ) {
 		    faces_for_visible( false );
 		}
@@ -110,11 +110,9 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 	    }
 	});
 
+	// Notify hscroller that its managed children count changed (so it can redraw)
 	face.on( 'person:composed', function() {
-	    if ( scroller_ready ) {
-		$(view).find( ".horizontal-scroller").smoothDivScroll("recalculateScrollableArea");
-		$(view).find( ".horizontal-scroller").smoothDivScroll("redoHotSpots");
-	    }
+	    $(view).find( ".horizontal-scroller").trigger( 'children-changed' );
 	});
 
 	face.on( 'person:mouseover', function() {
@@ -367,44 +365,12 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 	    $(self.view).find( ".horizontal-scroller").smoothDivScroll("destroy");
 	    clipboard.removeAll();
 	    selected( null );
-	    scroller_ready = false;
 	    pending_changes = 0;
 	    faces_for_visible( false );
 	},
 
 	compositionComplete: function() {
 	    var self = this;
-	    $(self.view).find( ".horizontal-scroller").smoothDivScroll({
-		scrollingHotSpotLeftClass: "mCSB_buttonLeft",
-		scrollingHotSpotRightClass: "mCSB_buttonRight",
-		hotSpotScrolling: true,
-		visibleHotSpotBackgrounds: 'always',
-		setupComplete: function() {
-                    scroller_ready = true;
-		},
-		scrollerRightLimitReached: function() {
-		    // Since we hacked the widget to remove flicker,
-		    // we need to manually hide the right most arrow when
-		    // we hit the end.
-		    $(self.view).find( ".horizontal-scroller").smoothDivScroll("nomoredata");
-		}
-            });
-	    $(self.view).find( ".horizontal-scroller").trigger( 'initialize' );
-
-	    /** THIS IS THE ORIGINAL ONE THAT DOES NOT ALLOW MERGING WITH AN EXISTING IDENTIFIED CONTACT
-	    $(self.view).find( '.inline-editable' ).editable({
-		mode: 'inline',
-		type: 'text',
-		success: function( res, newvalue ) {
-		    selected().name( newvalue );
-		    faces_for().forEach( function( af ) {
-			af.name( newvalue );
-		    });
-		    viblio.mpEvent( 'face_name_change' );
-		    viblio.api( '/services/faces/change_contact', { uuid: selected().data.uuid, contact_name: newvalue } );
-		}
-	    });
-	    **/
 	    $(self.view).find( '.inline-editable' ).editable({
 		mode: 'inline',
 		type: 'typeahead',

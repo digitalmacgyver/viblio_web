@@ -11,8 +11,6 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
         
         self.showVidStrip = ko.observable(false);
         
-        this.scroller_ready = false;
-
 	// When a new video appears in the system, add its location
 	// to the map.
 	var self = this;
@@ -100,7 +98,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
 	    });
 	});
     };
-        
+
     Map.prototype.compositionComplete = function( view, parent ) {
 	var self = this;
 	self.view = view;
@@ -241,15 +239,10 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
             self.pointIsSelected(true);
             self.selectedPoint(e.layer.feature);
             getClosePoints( e.layer.feature );
-            // set up smooth div scroll
-            if ( self.scroller_ready ) {
-		$( ".mapSD-scroll").smoothDivScroll("recalculateScrollableArea");
-		$( ".mapSD-scroll").smoothDivScroll("redoHotSpots");
-	    }
             // If there are more than one videos near the selected point then show the videos in the top strip
             if (self.pointsInRange().length > 1) {
                 self.showVidStrip(true);
-                $( ".mapSD-scroll").smoothDivScroll("redoHotSpots");
+		$(self.view).find( ".mapSD-scroll" ).trigger( 'children-changed' );
             } else {
                 self.showVidStrip(false);
                 self.pointsInRange.removeAll();
@@ -263,23 +256,6 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
         } else {
             self.map.data('map').setView({ lat: 35, lon: -35 }, 3);
         }
-        
-        $(".mapSD-scroll").smoothDivScroll({
-            scrollingHotSpotLeftClass: "mCSB_buttonLeft",
-            scrollingHotSpotRightClass: "mCSB_buttonRight",
-            hotSpotScrolling: true,
-            visibleHotSpotBackgrounds: 'always',
-            setupComplete: function() {
-                self.scroller_ready = true;
-            },
-            scrollerRightLimitReached: function() {
-                // Since we hacked the widget to remove flicker,
-                // we need to manually hide the right most arrow when
-                // we hit the end.
-                $(".mapSD-scroll").smoothDivScroll("nomoredata");
-            }
-        });
-        $(".mapSD-scroll").trigger( 'initialize' );
     };
 
     Map.prototype.enableDetails = function(marker) {
@@ -302,6 +278,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
     };
     
     Map.prototype.detached = function() {
+	$(this.view).find('.mapSD-scroll').smoothDivScroll("destroy");
 	this.map.destroy();
 	this.map = null;
     };
