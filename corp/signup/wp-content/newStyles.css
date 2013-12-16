@@ -10,7 +10,7 @@ and open the template in the editor.
 
 /*Removes small space between main page and footer*/
 .home #main {
-    padding-bottom: 0px;
+    padding: 0px;
 }
 
 .bxslider {
@@ -94,14 +94,57 @@ and open the template in the editor.
 
 .MailChimp {
     max-width: 100%;
+    width: 814px;
+    margin: 0 auto;
+}
+
+.mc4wp-form .MInput input[type="email"] {
+    width: 488px;
+    height: 64px;
+    font-size: 20px;
+    text-align: center;
+    float: left;
+    border: none;
+    border-bottom: 3px inset rgba(0,0,0,.2);
+}
+
+.mc4wp-form .DSubmit input[type="submit"] {
+    font-size: 20px;
+    padding: 0;
+    width: 310px;
+    height: 64px;
+    float: right;
+    border-radius: 0;
+    background-color: rgb(28,184,209);
+    border: none;
+    border-bottom: 3px inset rgba(0,0,0,.2);
+    text-shadow: none;
+    box-shadow: none;
 }
 
 @media (max-width: 800px) {
+    .mcform-wrap form {
+        margin: 2% 20px;
+    }
+    
     .MailChimp > div {
         float: none;
     }
+    
     .MailChimp input {
-        max-width: 100%;
+        width: 100%;
+        display: block;
+        margin: 5px auto;
+    }
+    
+    .mc4wp-form .DSubmit input[type="submit"] {
+        width: 100%;
+        display: block;
+        margin: 5px auto;    
+    }
+    
+    .mc4wp-form .MInput input[type="email"] {
+        width: 100%;
         display: block;
         margin: 5px auto;
     }
@@ -111,6 +154,14 @@ and open the template in the editor.
     max-width: 100%;
     padding: 0;
     margin: 0 auto;
+}
+
+.centered {
+    text-align: center;
+}
+
+.font22 {
+    font-size: 22px;
 }
 
 .stripe {
