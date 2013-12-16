@@ -1,11 +1,11 @@
-<div id="allVidsPage" class="padding45">
+<div class="allVidsPage padding45">
     
     <!-- ko if: !showShared() -->
     <!-- ko if: !aMonthIsSelected() -->
-    <p class="mainTitle textShadowed">You have <span data-bind="text: hits"></span><span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private Viblio Library.</p>
+    <p class="mainTitle textShadowed">You have <span data-bind="text: hits"></span><span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span><span data-bind="text: name() ? ' of ' + name() : '' "></span> in your private Viblio Library.</p>
     <!-- /ko -->
     <!-- ko if: aMonthIsSelected() -->
-    <p class="mainTitle textShadowed">You have <span data-bind="text: vidsInSelectedMonth"></span><span data-bind="text: vidsInSelectedMonth() == 1 ? ' video ' : ' videos'"></span> from <span data-bind="text: selectedMonth"></span>.</p>
+    <p class="mainTitle textShadowed">You have <span data-bind="text: vidsInSelectedMonth"></span><span data-bind="text: vidsInSelectedMonth() == 1 ? ' video ' : ' videos'"></span><span data-bind="text: name() ? ' of ' + name() : '' "></span> from <span data-bind="text: selectedMonth"></span>.</p>
     <!-- /ko -->
     <!-- /ko -->
     

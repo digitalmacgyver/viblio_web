@@ -1839,11 +1839,12 @@ li.token-input-token-facebook {
 
 /********************  All Videos Page Section  *****************************/
 
-#allVidsPage {
+.allVidsPage {
+    background-color: rgb(239, 239, 232);
     padding-top: 30px;
 }
 
-#allVidsPage .mfLoader {
+.allVidsPage .mfLoader {
     width: 350px;
     height: 171px;
     margin: 0 25px 25px 0;
@@ -1852,11 +1853,11 @@ li.token-input-token-facebook {
     padding-top: 80px;
 }
 
-#allVidsPage .mfLoader p {
+.allVidsPage .mfLoader p {
    margin-top: 10px; 
 }
 
-#allVidsPage .btn-secondary {
+.allVidsPage .btn-secondary {
     margin-left: 10px;
 }
 
@@ -1888,18 +1889,18 @@ li.token-input-token-facebook {
     display: inline-block;
 }
 
-#allVidsPage .media-container {
+.allVidsPage .media-container {
     height: 600px;
     overflow: auto;
     position: relative;
 }
 
-#allVidsPage .sel {
+.allVidsPage .sel {
     font-weight: 600;
 }
     
 @media (max-width: 935px) {
-    #allVidsPage > .btn {
+    .allVidsPage > .btn {
         float: none;
         margin-bottom: 20px;
     }
@@ -2704,7 +2705,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     width: 270px;
 }
 
-#allVidsPage .mediafile {
+.allVidsPage .mediafile {
     margin: 0 25px 25px 0;
     float: left;
 }

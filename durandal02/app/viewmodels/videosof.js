@@ -1,7 +1,7 @@
-define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'viewmodels/mediafile', 'viewmodels/hscroll', 'viewmodels/yir', 'lib/customDialogs' ], function (router, app, system, viblio, Mediafile, HScroll, YIR, customDialogs) {
+define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'viewmodels/mediafile', 'viewmodels/hscroll', 'viewmodels/yir', 'lib/customDialogs', 'viewmodels/allVideos', ], function (router, app, system, viblio, Mediafile, HScroll, YIR, customDialogs, allVideos) {
 
     var strips = ko.observableArray([]);
-    var hits, yir;
+    //var hits, yir;
     var contact_id;
     var contactPhoto = ko.observable();
     var contactName  = ko.observable();
@@ -17,7 +17,13 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
             dfd.resolve( new YIR( contact_id, contactName() ) );
         } ).promise();
     }
-
+    
+    function av( contact_id ) {
+        return system.defer( function( dfd ) {
+            dfd.resolve( new allVideos( contact_id, contactName() ) );
+        } ).promise();
+    }
+    
     return {
         showShareVidModal: function() {
 	    app.showMessage( 'Need a custom dialog for sharing this page.' );
@@ -40,12 +46,14 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 			       { search_api: function() {
 				   return( { api: '/services/faces/media_face_appears_in', args: { contact_uuid: contact_id } } );
 			       }}), 
-			    yy( contact_id )
-			 ).then( function( h1, h2 ) {
+			    yy( contact_id ),
+                            av( contact_id )
+			 ).then( function( h1, h2, h3 ) {
 			     self.hits = h1;
 			     self.yir  = h2;
 			     self.strips.push( h1 );
-			     self.strips.push( h2 );
+			     //self.strips.push( h2 );
+                             self.strips.push( h3 );
 			     dfd.resolve();
 			 });
 		});

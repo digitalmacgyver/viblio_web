@@ -184,7 +184,11 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.aMonthIsSelected(true);
         self.allVidsIsSelected(false);
         // get number of videos in selected month
-        viblio.api( '/services/yir/videos_for_month', { 'month': self.selectedMonth() } )
+        var args = {
+            month: self.selectedMonth(),
+            cid: self.cid
+        };
+        viblio.api( '/services/yir/videos_for_month', args )
                 .then(function(data){
                     self.vidsInSelectedMonth( data.media.length );
                 });
@@ -195,7 +199,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         var args = {
             month: month,
             year: year,
-            cid: cid
+            cid: self.cid
         };
         self.isActiveFlag(true);
 	return system.defer( function( dfd ) {
@@ -229,12 +233,12 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         });
     };
 
-    allVids.prototype.activate = function( cid ) {
+    allVids.prototype.activate = function() {
 	var self = this;
 	var args = {};
-        if( cid ) {
-            args = "?cid=" + cid;
-        }
+        args = {
+            cid: self.cid
+        };
         // get total number of videos
         self.getHits();
         
@@ -279,15 +283,24 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     
     allVids.prototype.search = function() {
 	var self = this;
+        var apiCall;
+        var args = {};
         self.isActiveFlag(true);
 	return system.defer( function( dfd ) {
 	    if ( self.allVidsPager.next_page )   {
-		viblio.api( '/services/mediafile/list', 
+                if( self.cid ) {
+                    args = {contact_uuid: self.cid,
+                            page: self.allVidsPager.next_page, 
+                            rows: self.allVidsPager.entries_per_page};
+                    apiCall = viblio.api( '/services/faces/media_face_appears_in', args );
+                } else {
+                    apiCall = viblio.api( '/services/mediafile/list', 
 			    { 
 				views: ['poster'],
 				page: self.allVidsPager.next_page, 
-				rows: self.allVidsPager.entries_per_page } )
-		    .then( function( json ) {
+				rows: self.allVidsPager.entries_per_page } );
+                }
+		apiCall.then( function( json ) {
 			self.allVidsPager = json.pager;
 			json.media.forEach( function( mf ) {
 			    self.addMediaFile( mf );
