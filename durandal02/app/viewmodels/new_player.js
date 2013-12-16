@@ -238,7 +238,13 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     function playVid( m ) {
         // Scroll to top of page
         $(document).scrollTop(0);
+
+	if ( playing() )
+	    playing().unhighlight();
+
         playing( m );
+	playing().highlight();
+
 	title( playing().title() || 'Click to add a title.' );
 	description( playing().description() || 'Click to add a description.' );
         setupComments( m.media() );
@@ -489,7 +495,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    // This async routine is the long pole.  Let it do the promise() resolution to
 		    // pause the system until we have all the data.
 		    //
-		    console.log( 'VSTRIP SEARCH due to new_player activate' );
+		    // viblio.log( 'VSTRIP SEARCH due to new_player activate' );
 		    vstrip.search(mid).then( function() {
 			// Get all of the geo locations of the related media
 			dfd.resolve();
@@ -531,27 +537,27 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
                     provider: 'rtmp',
 		    // Google Analytics
 		    onStart: function( clip ) {
-			//console.log( 'Tracking start ...', clip.url );
+			//viblio.log( 'Tracking start ...', clip.url );
 			//viblio.gaEvent( 'PrivatePlay', 'Play', clip.url );
 			viblio.mpEvent( 'play', { action: 'play' } );
 		    },
 		    onPause: function( clip ) {
-			//console.log( 'Tracking pause ...', clip.url, parseInt(this.getTime()) );
+			//viblio.log( 'Tracking pause ...', clip.url, parseInt(this.getTime()) );
 			//viblio.gaEvent( 'PrivatePlay', 'Pause', clip.url, parseInt(this.getTime()) );
 			viblio.mpEvent( 'play', { action: 'pause' } );
 		    },
 		    onResume: function( clip ) {
-			//console.log( 'Tracking resume ...', clip.url );
+			//viblio.log( 'Tracking resume ...', clip.url );
 			//viblio.gaEvent( 'PrivatePlay', 'Resume', clip.url );
 			viblio.mpEvent( 'play', { action: 'resume' } );
 		    },
 		    onStop: function( clip ) {		    
-			//console.log( 'Tracking stop ...', clip.url, parseInt(this.getTime()) );
+			//viblio.log( 'Tracking stop ...', clip.url, parseInt(this.getTime()) );
 			//viblio.gaEvent( 'PrivatePlay', 'Stop', clip.url, parseInt(this.getTime()) );
 			viblio.mpEvent( 'play', { action: 'stop' } );
 		    },
 		    onFinish: function( clip ) {
-			//console.log( 'Tracking finish ...', clip.url );
+			//viblio.log( 'Tracking finish ...', clip.url );
 			//viblio.gaEvent( 'PrivatePlay', 'Finish', clip.url );
 			viblio.mpEvent( 'play', { action: 'finish' } );
 		    }

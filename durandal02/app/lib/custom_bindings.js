@@ -240,5 +240,70 @@ define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip
 	}
     };
 
+    // smoothDivScroll
+    //
+    // Usage:  data-bind="hscroller:{ options }"
+    // where options can be zero or more of the following:
+    //   setupComplete: a function to call when the scroller has completed its setup.
+    //   rightLimmitReached: a function to call when the scroller hits the end of data on the right
+    //
+    // User's of this binding, if dynamically adding and/or removing elements, must call
+    //   $element.trigger( 'children-changed', [ { enable: true } ] )
+    //
+    // Which will cause the scroller to recalculate its geometry and display or hide its
+    // hot spots as needed.  { enable: true } can be passed to re-enable the scroller
+    // if it was paused in the parent during an infinite scroll data fetch.
+    //
+    ko.bindingHandlers.hscroller = {
+	init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+	    var $element = $(element);
+            var value = ko.utils.unwrapObservable(valueAccessor()) || {};
+	    var hscroller = {};
+	    //build a new object that has the global options with overrides from the binding
+            $.extend(true, hscroller, ko.bindingHandlers.hscroller);
+            if (value.options && hscroller.options) {
+                ko.utils.extend(hscroller.options, value.options);
+                delete value.options;
+            }
+            ko.utils.extend(hscroller, value);
+
+	    // Add a common class name for all such scrollers
+	    $element.addClass( "horizontal-scroller" );
+
+	    // Automatically add the hot spot overrides we use in viblio
+	    $('<button class="btn btn-small fwd btn-nav mCSB_buttonRight"><img src="css/images/arrowRight.png"/></button>').appendTo( $element );
+	    $('<button class="btn btn-small back btn-nav mCSB_buttonLeft"><img src="css/images/arrowLeft.png"/></button>').appendTo( $element );
+
+	    // Create the scroller
+	    $element.smoothDivScroll({
+		scrollingHotSpotLeftClass: "mCSB_buttonLeft",
+		scrollingHotSpotRightClass: "mCSB_buttonRight",
+		hotSpotScrolling: true,
+		visibleHotSpotBackgrounds: 'always',
+		setupComplete: function() {
+		    if ( hscroller.setupComplete )
+			hscroller.setupComplete.call( bindingContext['$data'] );
+		},
+		scrollerRightLimitReached: function() {
+		    if ( hscroller.rightLimitReached )
+			hscroller.rightLimitReached.call( bindingContext['$data'] );
+		    else 
+			// This hides the right fwd button when no data is left
+			$element.smoothDivScroll("nomoredata");
+		}
+            });
+	    // Initialize the scroller (viblio hack)
+	    $element.trigger( 'initialize' );
+
+	    // Set up the handler for children-changed, so we can redraw
+	    $element.on( 'children-changed', function( e, opts ) {
+		$element.smoothDivScroll("recalculateScrollableArea");
+		$element.smoothDivScroll("redoHotSpots");
+		if ( opts && opts.enable ) 
+		    $element.smoothDivScroll("enable" );
+	    });
+	}
+    };
+
     return({});
 });

@@ -60,7 +60,6 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 	compositionComplete: function( view, parent ) {
 	    var self = this;
 	    system.wait(1).then( function() {
-		self.strips()[0].ready( view, parent );
 		customDialogs.hideLoading();
 	    });
 	}

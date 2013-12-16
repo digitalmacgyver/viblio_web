@@ -47,6 +47,14 @@ define(['durandal/app', 'durandal/events', 'lib/viblio'],function(app, Events, v
 
     };
 
+    Video.prototype.highlight = function() {
+	$(this.view).addClass( 'selected' );
+    };
+
+    Video.prototype.unhighlight = function() {
+	$(this.view).removeClass( 'selected' );
+    };
+
     // Toggle selected state and send an event.
     Video.prototype.select = function() {
 	this.selected( this.selected() ? false : true );

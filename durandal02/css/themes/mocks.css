@@ -386,10 +386,29 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
     margin-left: 40px;
 }
 
+.mapSD-scroll.horizontal-scroller .scrollableArea:first-child {
+    margin-left: 0;
+}
+
 .horizontal-scroller {
-    height: 208px;
     width: 100%;
     position: relative;
+}
+
+.sd-scroll.horizontal-scroller {
+    height: 258px;
+}
+
+.sd-pscroll.horizontal-scroller {
+    height: 208px;
+}
+
+.sd-fscroll.horizontal-scroller {
+    height: 251px;
+}
+
+.faces-container.horizontal-scroller {
+    height: 208px;
 }
 
 .horizontal-scroller .fwd {
@@ -516,6 +535,7 @@ font-size: 14px;
     display: none;
 }
 
+.mapSD-scroll .fwd,
 .pstrip .fwd,
 .fstrip .fwd,
 .hstrip .fwd {
@@ -1286,74 +1306,6 @@ input:-moz-placeholder {
     margin-bottom: 10px;
 }
 
-.mainVidSection .mediafile {
-    width: 350px;
-    margin-right: 25px;
-}
-
-.mainVidSection .mediafile img {
-    width: 100%;
-    height: 197px;
-    border: none;
-}
-
-.mediafile {
-    position: relative;
-}
-
-.mediafile .information {
-    width: 100%;
-    background-color: white;
-    position: relative;
-    box-sizing: border-box;
-    -moz-box-sizing:border-box; /* Firefox */
-}
-
-.mainVidSection .mediafile .information {
-    height: 54px;
-    padding: 17px 5px;
-}
-
-.mainVidSection .mplay-icon,
-.mainVidSection .mplay-icon:hover {
-    left: 145px;
-}
-
-.mediafile .information .aux {
-    background-color: rgba(211,246,253,1);
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    padding: 0;
-    color: rgba(82,152,189,1);
-    text-align: center;
-}
-
-.mainVidSection .mediafile .information .aux {
-    width: 54px;
-    height: 54px;
-}
-
-.mediafile .information .aux img {
-    display: block;
-    text-align: center;
-}
-
-.mainVidSection .mediafile .information .aux img {
-    width: 40px;
-    height: 30px;
-    margin: 4px auto -4px;
-}
-
-.aux span {
-    font-weight: 300;
-}
-
-.mediafile .information .title {
-    color: rgba(94,95,105,1);
-}
-
 /************************** hstrip *******************************/
 
 .hstrip {
@@ -1369,17 +1321,6 @@ input:-moz-placeholder {
     margin-right: 35px;
 }
 
-.hstrip .scrollWrapper .mediafile {
-    position: relative;
-    display: block;
-    float: left;
-    border: none;
-    background: transparent;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-}
-
 /************************** fstrip *******************************/
 
 .fstrip {
@@ -1391,14 +1332,6 @@ input:-moz-placeholder {
 }
 
 .sd-fscroll .scrollWrapper {
-    padding-bottom: 5px;
-}
-
-.hstrip .scrollWrapper .mediafile,
-.sd-fscroll .scrollableArea .mediafile {
-    margin: 0;
-    padding-right: 20px;
-    padding-left: 5px;
     padding-bottom: 5px;
 }
 
@@ -1431,11 +1364,6 @@ input:-moz-placeholder {
     top: 24%;
 }
 
-.sd-fscroll .scrollableArea:first-child,
-.sd-pscroll .scrollableArea:first-child,
-.sd-scroll .scrollableArea:first-child {
-    margin-left: 40px;
-}
 
 .mCSB_buttonLeft{
     /*  The first url is for Firefox and other browsers, the second is for Internet Explorer */
@@ -1445,10 +1373,6 @@ input:-moz-placeholder {
 .mCSB_buttonRight {
     /*  The first url is for Firefox and other browsers, the second is for Internet Explorer */
     cursor: url(/lib/smoothDivScroll/images/cursors/cursor_arrow_right.png), url(/lib/smoothDivScroll/images/cursors/cursor_arrow_right.cur),e-resize;
-}
-
-.sd-scroll {
-    overflow: hidden;
 }
 
 /********************  Map Strip  *****************************/
@@ -1492,26 +1416,6 @@ input:-moz-placeholder {
 .yir .month-heading {
     margin-bottom: 20px;
     font-size: 22px;
-}
-
-.yir .media-list .mediafile {
-    width: 425px;
-    margin-right: 35px;
-    margin-bottom: 35px;
-}
-
-.yir .media-list .mediafile:last-of-type {
-    margin-right: 0px;
-}
-
-.yir .media-list .mediafile img {
-    height: 239px;
-}
-
-.yir .mplay-icon,
-.yir .mplay-icon:hover {
-    left: 177px;
-    top: 75px;
 }
 
 /********************  Videos Of Page Section  ***************************/
@@ -1772,46 +1676,6 @@ input:-moz-placeholder {
     padding-top: 18px;
 }
 
-#related-videos-block .mediafile img {
-    border: none;
-    height: 152px;
-    width: 100%;
-}
-
-#nplayer-page .vstrip .mediafile {
-    margin-bottom: 25px;
-    width: 270px;
-}
-
-#nplayer-page .vstrip .mediafile .mplay-icon,
-#nplayer-page .vstrip .mediafile .mplay-icon:hover,
-#nplayer-page .vstrip .mediafile .mplay-icon:visited {
-    top: 40px;
-    left: 101px;
-}
-
-#related-videos-block .mediafile .information {
-    width: 100%;
-    height: 40px;
-    padding: 10px 5px;
-}
-
-#related-videos-block .mediafile .information .title {
-    margin: 0 0 0 10px;
-    font-weight: 600;
-}
-
-#related-videos-block .mediafile .information .aux {
-    width: 40px;
-    height: 40px;
-}
-
-#related-videos-block .mediafile .information .aux img {
-    width: 30px;
-    height: 22px;
-    margin: 2px auto -4px;
-}
-
 /********************  Video Title and Description Section  *****************************/
 
 .vidTitle:hover,
@@ -2034,39 +1898,6 @@ li.token-input-token-facebook {
     font-weight: 600;
 }
     
-#allVidsPage .mediafile {
-    width: 350px;
-    margin: 0 25px 25px 0;
-    float: left;
-}
-
-#allVidsPage .mediafile img {
-    width: 100%;
-    height: 197px;
-    border: none;
-}
-
-#allVidsPage .mediafile .information {
-    height: 54px;
-    padding: 17px 5px;
-}
-
-#allVidsPage .mplay-icon,
-#allVidsPage .mplay-icon:hover {
-    left: 145px;
-}
-
-#allVidsPage .mediafile .information .aux {
-    width: 54px;
-    height: 54px;
-}
-
-#allVidsPage .mediafile .information .aux img {
-    width: 40px;
-    height: 30px;
-    margin: 4px auto -4px;
-}
-
 @media (max-width: 935px) {
     #allVidsPage > .btn {
         float: none;
@@ -2092,17 +1923,6 @@ li.token-input-token-facebook {
         text-align: left;
     }
     
-   /* #allVidsPage .mediafile {
-        width: 100%;
-    }
-    
-    #allVidsPage .mediafile img {
-        height: auto;
-    }
-    
-    #allVidsPage .mplay-icon {
-        display: none;
-    } */
 }
 
 /********************  Settings Page Section  *****************************/
@@ -2625,55 +2445,8 @@ p.uitoken-input ul.token-input-list-facebook {
    width: 30px;
 }
 
-.mapSD-scroll .btn-nav {
-    position: absolute;
-    top: 11%;
-    z-index: 1000;
-}
-
-.mapSD-scroll .fwd {
-    right: 0;
-}
-
 #map-page .scrollWrapper {
     padding: 5px 0 10px;
-}
-
-#map-page .mediafile:first-of-type {
-    margin-left: 45px;
-}
-
-#map-page .mediafile {
-    width: 350px;
-    margin-right: 25px;
-    float: left;
-}
-
-#map-page .mediafile img {
-    width: 100%;
-    height: 197px;
-    border: none;
-}
-
-#map-page .mediafile .information {
-    height: 54px;
-    padding: 17px 5px;
-}
-
-#map-page .mplay-icon,
-#map-page .mplay-icon:hover {
-    left: 145px;
-}
-
-#map-page .mediafile .information .aux {
-    width: 54px;
-    height: 54px;
-}
-
-#map-page .mediafile .information .aux img {
-    width: 40px;
-    height: 30px;
-    margin: 4px auto -4px;
 }
 
 .vstrip-query-in-progress i {
@@ -2758,3 +2531,240 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     float:center;
     margin:0 15px;
 }
+
+/* New mediafile CSS */
+
+.mediafile {
+    width: 350px;
+    position: relative;
+    display: block;
+
+    padding: 3px;
+    background: transparent;
+}
+
+.mediafile.selected {
+    background: rgba(239,85,65,1);
+}
+
+.mediafile > div {
+    -moz-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2); /* Firefox */
+    -webkit-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2);
+    box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2); 
+}
+
+.mediafile.selected > div {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.mediafile img {
+    height: 197px;
+    width: 100%;
+    border: none;
+}
+
+.mediafile .information {
+    width: 100%;
+    background-color: white;
+    position: relative;
+    box-sizing: border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+    padding: 17px 5px;
+    height: 54px;
+}
+
+.mediafile .mplay-icon,
+.mediafile .mplay-icon:hover,
+.mediafile .mplay-icon:visited {
+    position: absolute;
+    z-index: 100;
+    border: 0;
+    text-decoration: none;
+    opacity: .6;
+    top: 50px;
+    left: 145px;
+} 
+
+.mediafile .mplay-icon i {
+    color: white;
+    font-size: 80px;
+}
+
+.mediafile .icon-ok-sign {
+    position: absolute;
+    z-index: 100;
+    border: 0;
+    text-decoration: none;
+    top: 50px;
+    left: 90px;
+    display: none;
+    color: white;
+    font-size: 80px;
+}
+
+.mediafile .dbtn {
+    position: absolute;
+    display: none;
+    z-index: 100;
+    top: 10px;
+    right: 8px;
+}
+
+.mediafile .information .aux {
+    background-color: rgba(211,246,253,1);
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    color: rgba(82,152,189,1);
+    text-align: center;
+    width: 54px;
+    height: 54px;
+}
+
+.mediafile .information .aux img {
+    display: block;
+    text-align: center;
+    width: 40px;
+    height: 30px;
+    margin: 4px auto -4px;
+}
+
+.mediafile .information .aux span {
+    font-weight: 300;
+}
+
+.mediafile .information .title {
+    color: rgba(94,95,105,1);
+    margin-left: 5px;
+}
+/************/
+
+#register-page .mediafile {
+    width: 270px;
+}
+
+#register-page .mediafile img {
+    height: 152px;
+}
+
+#register-page .mediafile {
+    margin: 20px 0;
+}
+
+#register-page .mediafile .information {
+    height: 40px;
+    padding: 10px 5px;
+    text-align: left;
+}
+
+#register-page .mediafile .information .title {
+    margin: 0 0 0 10px;
+    font-weight: 600;
+}
+
+#register-page .mediafile .information .aux {
+    width: 40px;
+    height: 40px;
+}
+
+#register-page .mediafile .information .aux img {
+    width: 30px;
+    height: 22px;
+    margin: 2px auto -4px;
+    border: none;
+}
+
+
+/************/
+
+.mainVidSection .mediafile {
+    margin-right: 25px;
+}
+
+.mainVidSection .mediafile.selected {
+    background-color: #24b8d1;
+}
+
+.scrollWrapper .mediafile {
+    float: left;
+}
+
+.yir .media-list .mediafile {
+    margin-right: 35px;
+    margin-bottom: 35px;
+    float: left;
+}
+
+#nplayer-page .vstrip .mediafile {
+    margin-bottom: 25px;
+    width: 270px;
+}
+
+#allVidsPage .mediafile {
+    margin: 0 25px 25px 0;
+    float: left;
+}
+
+#map-page .mediafile {
+    margin-right: 10px;
+    float: left;
+}
+
+/*****************************/
+
+#related-videos-block .mediafile img {
+    height: 152px;
+}
+
+/*****************************/
+
+#related-videos-block .mediafile .information {
+    height: 40px;
+    padding: 10px 5px;
+}
+
+
+/***************************/
+
+#nplayer-page .vstrip .mediafile .mplay-icon,
+#nplayer-page .vstrip .mediafile .mplay-icon:hover,
+#nplayer-page .vstrip .mediafile .mplay-icon:visited {
+    top: 40px;
+    left: 101px;
+}
+
+/*********************************/
+
+#related-videos-block .mediafile .information .aux {
+    width: 40px;
+    height: 40px;
+}
+
+/***********************************/
+
+#related-videos-block .mediafile .information .aux img {
+    width: 30px;
+    height: 22px;
+    margin: 2px auto -4px;
+}
+
+    
+/**************************************/
+
+.yir .media-list .mediafile:last-of-type {
+    margin-right: 0px;
+}
+
+#related-videos-block .mediafile .information .title {
+    margin: 0 0 0 10px;
+    font-weight: 600;
+}
+
+#map-page .mediafile:first-of-type {
+    margin-left: 0;
+}
+

@@ -2,12 +2,10 @@
     <div class="orangeTitle">
         <h2>Your Videos on the Map</h2>    
     </div>
-    <div data-bind="slideVisible: showVidStrip" class="mapSD-scroll">
-        <button class="btn btn-small fwd btn-nav mCSB_buttonRight"><img src="css/images/arrowRight.png"/></button>
-        <button class="btn btn-small back btn-nav mCSB_buttonLeft"><img src="css/images/arrowLeft.png"/></button>
+    <div data-bind="slideVisible: showVidStrip, hscroller:{}" class="mapSD-scroll">
         <!-- ko foreach: pointsInRange -->
             <div class="mediafile" data-bind="attr:{id:$data.uuid}">
-                <div class="boxShadowed">
+                <div>
                     <a class="mplay-icon pointer" data-bind="click: $root.play">
                        <i class="icon-play-circle"></i> 
                     </a>

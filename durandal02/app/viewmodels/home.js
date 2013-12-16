@@ -76,6 +76,7 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 			     self.strips.push( h3 );
 			 });
         },
+	/**
 	attached: function() {
 	    return system.defer( function( dfd ) {
 		customDialogs.showLoading();
@@ -85,12 +86,13 @@ define(['durandal/app','durandal/system','viewmodels/hscroll','viewmodels/pscrol
 	compositionComplete: function( view, parent ) {
 	    var self = this;
 	    system.wait(1).then( function() {
-		self.strips()[0].ready( view, parent );
-		self.strips()[1].ready( view, parent );
-		self.strips()[2].ready( view, parent );
+		//self.strips()[0].ready( view, parent );
+		//self.strips()[1].ready( view, parent );
+		//self.strips()[2].ready( view, parent );
 		customDialogs.hideLoading();
 	    });
 	}
+	**/
     };
 
 });

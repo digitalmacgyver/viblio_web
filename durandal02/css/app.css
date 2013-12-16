@@ -220,12 +220,6 @@ font-family: 'Source Sans Pro', serif; /* google font */
     cursor: pointer;
 }
 
-/*********************************************
-*
-*               fscroll.css 
-*
-*********************************************/
-
 .fstrip {
     position: relative;
 }
@@ -239,17 +233,6 @@ font-family: 'Source Sans Pro', serif; /* google font */
     left: 200px;
 }
 
-.sd-fscroll {
-    height: 251px;
-    width: 100%;
-    position: relative;
-}
-
-.sd-fscroll .mediafile {
-    position: relative;
-    float: left;
-    display: block;
-}
 
 /*********************************************
 *
@@ -273,56 +256,6 @@ font-family: 'Source Sans Pro', serif; /* google font */
 #page-header .avatar {
     background-color: white;
     margin-top: 8px;
-}
-
-
-/*********************************************
-*
-*               home.css 
-*
-*********************************************/
-
-.smooth-div-scrollable
-{
-    width:100%;
-    height: 134px;
-    position: relative;
-}
-
-.smooth-div-scrollable div.media-file
-{
-    width: 128px;
-    position: relative;
-    float: left;
-    margin: 0;
-    padding: 2px;
-    /* If you don't want the images in the scroller to be selectable, try the following
-       block of code. It's just a nice feature that prevent the images from
-       accidentally becoming selected/inverted when the user interacts with the scroller. */
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-}
-
-
-/*********************************************
-*
-*               hscroll.css 
-*
-*********************************************/
-
-
-.sd-scroll {
-    height: 256px;
-    position: relative;
-}
-
-.sd-scroll .mediafile {
-    position: relative;
-    float: left;
-    display: block;
 }
 
 
@@ -779,73 +712,6 @@ div.map .marker i {
     height: 480px;
 }
 
-.mediafile img {
-    width: 260px;
-    height: 180px;
-}
-
-.mediafile {
-    width: 260px;
-}
-
-.mediafile img {
-    border: 1px solid white;
-}
-
-.mediafile.selected img {
-    border: 1px solid red;
-}
-
-.mediafile .information {
-    text-align: left;
-}
-
-.mediafile .information .title {
-    margin-left: 6px;
-}
-
-.mediafile .information .aux {
-    margin-right: 6px;
-}
-
-/**/
-
-.mplay-icon, .mplay-icon:hover, .mplay-icon:visited {
-    position: absolute;
-    z-index: 100;
-    border: 0;
-    text-decoration: none;
-    opacity: .6;
-    top: 50px;
-    left: 90px;
-}
-
-.mplay-icon i {
-    color: white;
-    font-size: 80px;
-}
-
-.mediafile .icon-ok-sign {
-    position: absolute;
-    z-index: 100;
-    border: 0;
-    text-decoration: none;
-    top: 50px;
-    left: 90px;
-    display: none;
-    color: white;
-    font-size: 80px;
-}
-
-.dbtn {
-    position: absolute;
-    display: none;
-    z-index: 100;
-    top: 10px;
-    right: 8px;
-}
-
-
 /*********************************************
 *
 *               mediavstrip.css
@@ -1025,10 +891,6 @@ div.map .marker i {
 
 #nplayer-page .vstrip div {
     margin: 0 auto;
-}
-
-#nplayer-page .vstrip div.mediafile {
-    position: relative;
 }
 
 #tv {
@@ -1296,24 +1158,6 @@ div.map .marker i {
     margin: 0 auto;
 }
 
-#player-page .vstrip div.mediafile {
-    position: relative;
-}
-
-
-/*********************************************
-*
-*               pscroll.css
-*
-*********************************************/
-
-
-.sd-pscroll {
-    height: 208px;
-    width: 100%;
-    position: relative;
-}
-
 /*********************************************
 *
 *               register.css
@@ -1362,54 +1206,6 @@ div.map .marker i {
     float: left;
 }
 
-
-#register-page .mediafile img {
-    border: none;
-    height: 152px;
-    width: 100%;
-}
-
-#register-page .mediafile {
-    margin: 20px 0;
-}
-
-#register-page .mediafile .information {
-    width: 100%;
-    height: 40px;
-    background-color: white;
-    padding: 10px 5px;
-    position: relative;
-    box-sizing: border-box;
-    -moz-box-sizing:border-box; /* Firefox */
-    text-align: left;
-}
-
-#register-page .mediafile .information .title {
-    margin: 0 0 0 10px;
-    font-weight: 600;
-}
-
-#register-page .mediafile .information .aux {
-    background-color: rgba(211,246,253,1);
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    padding: 0;
-    color: rgba(82,152,189,1);
-    text-align: center;
-}
-
-#register-page .mediafile .information .aux img {
-    width: 30px;
-    height: 22px;
-    display: block;
-    text-align: center;
-    margin: 2px auto -4px;
-    border: none;
-}
 
 #register-page #loginArea  {
     width: 500px;
@@ -1578,12 +1374,6 @@ div.map .marker i {
 }
 
 .yir .media-list {
-    position: relative;
-}
-
-.yir .media-list .mediafile {
-    float: left;
-    margin-bottom: 30px;
     position: relative;
 }
 

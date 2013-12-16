@@ -277,7 +277,13 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
     function playVid( m ) {
         // Scroll to top of page
         $(document).scrollTop(0);
+
+	if ( playing() )
+	    playing().unhighlight();
+
         playing( m );
+	playing().highlight();
+
         playingMid( m );
 	title( playing().title() || 'Click to add a title.' );
 	description( playing().description() || 'Click to add a description.' );
