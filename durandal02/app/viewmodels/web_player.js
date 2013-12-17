@@ -214,11 +214,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 			//faces.push( new Face( F, { allow_changes: false, show_name: true, selectable: false } ) );
 			person = new Face( F, { 
                             clickable: false, 
-                            leftBadgeIcon: 'icon-remove-circle',
-                            leftBadgeClick: removePerson,
-                            leftBadgeMode: 'hover',
-                            show_name: false, 
-                            show_tag3: true,
+                            show_name: true, 
 			});
 			person.on( 'person:tag3_changed', function( f, newname, oldname ) {
 			    // Have to see if newname is an existing contact...
