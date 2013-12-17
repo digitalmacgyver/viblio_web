@@ -5,6 +5,8 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
     // scroll to top of page before new view has loaded
     router.on('router:navigation:attached').then(function(){
         $(document).scrollTop(0);
+        // Sets up placeholder compatability for IE when needed
+        $('input, textarea').placeholder();
     });
 
     router.on('router:navigation:complete').then(function(instance, instruction, router) {
@@ -13,7 +15,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
         } else {
             document.title = instruction.config.title;
         }
-	header( instruction.config.header );
+	header( instruction.config.header );      
     });
 
     // This is how you "guard" routes; ie make conditional decisions
