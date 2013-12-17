@@ -33,7 +33,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.showShared = ko.observable( false );
         self.sections = ko.observableArray([]);
         self.numVids = ko.observable(0);
-        self.showShareBtn = ko.observable(false);
+        self.showShareBtn = ko.observable(true);
         self.sharedAlreadyFetched = false;
         
         self.allVidsIsSelected = ko.observable( true );
@@ -94,7 +94,13 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     
     allVids.prototype.getShared = function() {
         var self = this;
-        return viblio.api( '/services/mediafile/all_shared' ).then( function( data ) {
+        var args = {};
+        if(self.cid) {
+            args = {
+                cid: self.cid
+            };
+        }
+        return viblio.api( '/services/mediafile/all_shared', args ).then( function( data ) {
             var shared = data.shared;
             
             self.sections.removeAll();
@@ -120,11 +126,11 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 self.sections.push({ owner: share.owner, media: mediafiles });
             });
             self.sharedAlreadyFetched = true;
-            if( self.numVids() < 3 ) {
+            /*if( self.numVids() < 3 ) {
                 self.showShareBtn(true);
             } else {
                 self.showShareBtn(false);
-            }
+            }*/
         });
     };
     

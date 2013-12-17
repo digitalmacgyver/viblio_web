@@ -9,13 +9,19 @@
     <!-- /ko -->
     <!-- /ko -->
     
-    <!-- ko if: showShared() -->
+    <!-- ko if: showShared() && !name() -->
     <p class="mainTitle textShadowed">You have <span data-bind="text: numVids"></span><span data-bind="text: numVids() == 1 ? ' video that has ' : ' videos that have '"></span> been shared with you.</p>
+    <!-- /ko -->
+    
+    <!-- ko if: showShared() && name() -->
+    <p class="mainTitle textShadowed">You have <span data-bind="text: numVids"></span><span data-bind="text: numVids() == 1 ? ' video ' : ' videos '"></span><span data-bind="text: name() ? ' of ' + name() : '' "></span><span data-bind="text: numVids() == 1 ? ' that has ' : ' that have '"></span> been shared with you.</p>
     <!-- /ko -->
     
     <!-- ko if: hits() > 0 --> 
     <button class="btn btn-small btn-secondary pull-right" data-bind="click: toggleEditMode, text: editLabel"></button>
-    <button class="btn btn-small btn-blue pull-right" data-bind="click: toggleShared, text: sharedLabel"></button>
+        <!-- ko if: !name() -->
+        <button class="btn btn-small btn-blue pull-right" data-bind="click: toggleShared, text: sharedLabel"></button>
+        <!-- /ko -->
     <!-- /ko -->
     <div class="clearfix"></div>
     
