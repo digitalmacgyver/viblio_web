@@ -128,6 +128,11 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
         cloudsponge.init({
             domain_key:config.cloudsponge_appid(),
             textarea_id: null,
+
+	    selectionLimit: 20,  // limit the number of contacts that can be selected
+	    selectionLimitMessage: 'To prevent spam detection, please select 20 or less contacts at one time',
+	    displaySelectAllNone: false, // do not show the select all/nune links
+
             afterSubmitContacts: function( contacts, source, owner ) {
                 contacts.forEach( function( c ) {
                     $(view).find( "#shareVidEmail" ).tokenInput( "add", {

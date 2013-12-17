@@ -33,7 +33,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.showShared = ko.observable( false );
         self.sections = ko.observableArray([]);
         self.numVids = ko.observable(0);
-        self.showShareBtn = ko.observable(false);
+        self.showShareBtn = ko.observable(true);
         self.sharedAlreadyFetched = false;
         
         self.allVidsIsSelected = ko.observable( true );
@@ -94,7 +94,13 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     
     allVids.prototype.getShared = function() {
         var self = this;
-        return viblio.api( '/services/mediafile/all_shared' ).then( function( data ) {
+        var args = {};
+        if(self.cid) {
+            args = {
+                cid: self.cid
+            };
+        }
+        return viblio.api( '/services/mediafile/all_shared', args ).then( function( data ) {
             var shared = data.shared;
             
             self.sections.removeAll();
@@ -120,11 +126,11 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 self.sections.push({ owner: share.owner, media: mediafiles });
             });
             self.sharedAlreadyFetched = true;
-            if( self.numVids() < 3 ) {
+            /*if( self.numVids() < 3 ) {
                 self.showShareBtn(true);
             } else {
                 self.showShareBtn(false);
-            }
+            }*/
         });
     };
     
@@ -184,7 +190,11 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.aMonthIsSelected(true);
         self.allVidsIsSelected(false);
         // get number of videos in selected month
-        viblio.api( '/services/yir/videos_for_month', { 'month': self.selectedMonth() } )
+        var args = {
+            month: self.selectedMonth(),
+            cid: self.cid
+        };
+        viblio.api( '/services/yir/videos_for_month', args )
                 .then(function(data){
                     self.vidsInSelectedMonth( data.media.length );
                 });
@@ -195,7 +205,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         var args = {
             month: month,
             year: year,
-            cid: cid
+            cid: self.cid
         };
         self.isActiveFlag(true);
 	return system.defer( function( dfd ) {
@@ -229,12 +239,12 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         });
     };
 
-    allVids.prototype.activate = function( cid ) {
+    allVids.prototype.activate = function() {
 	var self = this;
 	var args = {};
-        if( cid ) {
-            args = "?cid=" + cid;
-        }
+        args = {
+            cid: self.cid
+        };
         // get total number of videos
         self.getHits();
         
@@ -279,15 +289,24 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     
     allVids.prototype.search = function() {
 	var self = this;
+        var apiCall;
+        var args = {};
         self.isActiveFlag(true);
 	return system.defer( function( dfd ) {
 	    if ( self.allVidsPager.next_page )   {
-		viblio.api( '/services/mediafile/list', 
+                if( self.cid ) {
+                    args = {contact_uuid: self.cid,
+                            page: self.allVidsPager.next_page, 
+                            rows: self.allVidsPager.entries_per_page};
+                    apiCall = viblio.api( '/services/faces/media_face_appears_in', args );
+                } else {
+                    apiCall = viblio.api( '/services/mediafile/list', 
 			    { 
 				views: ['poster'],
 				page: self.allVidsPager.next_page, 
-				rows: self.allVidsPager.entries_per_page } )
-		    .then( function( json ) {
+				rows: self.allVidsPager.entries_per_page } );
+                }
+		apiCall.then( function( json ) {
 			self.allVidsPager = json.pager;
 			json.media.forEach( function( mf ) {
 			    self.addMediaFile( mf );
