@@ -2057,6 +2057,11 @@ p.uitoken-input ul.token-input-list-facebook {
     -moz-box-sizing:border-box; /* Firefox */
 }
 
+ul.token-input-list-facebook {
+    max-height: 86px;
+    overflow-y: auto;
+}
+
 #loggedOutTellFriendsModal p.uitoken-input input[type="text"] {
     margin-bottom: 0;
     background-color: none;
