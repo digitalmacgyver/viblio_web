@@ -11,7 +11,13 @@
                     </td>
                     
                     <td id="left-side" class="boxShadowed">
-                        <div id="tv">
+                        <div id="tv-Wrap" class="playerOverlay-Wrap">
+                            <!-- ko if: showPlayerOverlay() == true -->
+                                <a class="shareButton btn" href="#" data-bind="click: showShareVidModal">
+                                    <img src="css/images/share.png"/> Share this Video!
+                                </a>
+                            <!-- /ko -->
+                            <div id="tv"></div>    
                         </div>
                         <table id="info-table">
                             <tr>
@@ -108,11 +114,11 @@
             </td>
 
             <td id="right-side" class="lightBlueBG bottomBorder-Thin">
-                <div class="orangeBG bottomBorder-Thin" id="share-video-block">
+                <!--<div class="orangeBG bottomBorder-Thin" id="share-video-block">
                   <a class="shareButton btn" href="#" data-bind="click: showShareVidModal">
                       <img src="css/images/share.png"/> Share this Video!
                   </a>
-                </div>
+                </div>-->
                 <div id="related-videos-block">
 		    <span class="related-by pull-right">by...</span>
                     <p id="relatedVideosTitle" class="textShadowed">Related Videos</p>

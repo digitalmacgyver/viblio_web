@@ -1444,11 +1444,17 @@ input:-moz-placeholder {
     width: 100%;
 }
 
-#webPlayer-Wrap {
+.playerOverlay-Wrap {
     position: relative;
 }
 
-#videoOverlay {
+#tv-Wrap .shareButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.videoOverlay {
     width: 100%;
     height: 100%;
     background-color: rgba(50,53,68,.8);
@@ -1474,28 +1480,28 @@ input:-moz-placeholder {
     background-position: center;
 }
 
-#videoOverlay .bottomBorder-Thin {
+.videoOverlay .bottomBorder-Thin {
     border-bottom: 1px solid lightgrey;
 }
 
-#videoOverlay .paddedDiv {
+.videoOverlay .paddedDiv {
     padding: 2% 0 4%;
     height: 64%;
 }
 
-#videoOverlay .landingHeaderTitle {
+.videoOverlay .landingHeaderTitle {
     border: none;
     font-size: 32px;
     padding: 0 15%;
     margin-bottom: 5%; 
 }
 
-#videoOverlay .button-Wrap {
+.videoOverlay .button-Wrap {
     margin-top: 5%;
 }
 
 @media (max-width: 650px) {
-    #videoOverlay .landingHeaderTitle {
+    .videoOverlay .landingHeaderTitle {
         font-size: 30px;
     }
 }
@@ -2055,6 +2061,11 @@ p.uitoken-input ul.token-input-list-facebook {
     width: inherit;
     box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
+}
+
+ul.token-input-list-facebook {
+    max-height: 86px;
+    overflow: auto;
 }
 
 #loggedOutTellFriendsModal p.uitoken-input input[type="text"] {
