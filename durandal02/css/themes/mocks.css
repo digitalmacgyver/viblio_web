@@ -501,17 +501,19 @@ font-size: 14px;
 }
 
 .shareButton {
-    padding: 25px 0 0;
-    width: 270px;
-    height: 70px;
+    opacity: .65;
+    padding: 15px 0 0;
+    width: 200px;
+    height: 50px;
     text-shadow: none;
-    font-size: 24px;
+    font-size: 17px;
     font-weight: 600;
     color: rgba(117,117,128,1);
 }
 
 .shareButton:hover {
     color: white;
+    opacity: 1;
 }
 
 .shareButton img {
