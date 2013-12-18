@@ -357,8 +357,12 @@ mixpanel.init("404b9a0b96b8147b5050c165dfc809b3");</script><!-- end Mixpanel -->
 
 <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/2.3.0/knockout-min.js'></script>
 
+<script type='text/javascript' src='lib/jquery.placeholder.js'></script>
+
 <script type="text/javascript">
   jQuery(document).ready( function() {
+      
+    jQuery('input, textarea').placeholder();
     
     jQuery('.fancybox').attr('rel','gallery').fancybox({type:'inline',title:false,autoSize:false,beforeLoad:function(){this.width=600;this.height=173;}});setTimeout(function(){jQuery("#phantom").css('display','none');},200);jQuery("#social-icon a img").hover(function(){var cls=jQuery(this).attr('id');jQuery("."+cls).css('display','block');},function(){var cls=jQuery(this).attr('id');jQuery("."+cls).css('display','none');});
     

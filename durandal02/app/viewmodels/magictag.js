@@ -91,7 +91,10 @@ define(['plugins/dialog'], function(dialog) {
     MagicTag.prototype.compositionComplete = function(view, parent) {
 	var self = this;
 	self.view = view;
-
+        
+        // Sets up placeholder compatability for IE when needed
+        $('input, textarea').placeholder();
+        
 	// The autocompleter
 	//
 	self.ac = $(self.view).find("#cname").autocomplete({

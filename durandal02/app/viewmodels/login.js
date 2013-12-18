@@ -219,6 +219,6 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	    else {
 		this.orsignup( false );
 	    }
-	}
+        }
     };
 });
