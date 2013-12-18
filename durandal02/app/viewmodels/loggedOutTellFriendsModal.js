@@ -80,6 +80,9 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 		    });
 		}
 	    });
+            
+            // Sets up placeholder compatability for IE when needed
+            $('input, textarea').placeholder();
 
 	    $(self.view).find( "#friendsEmails" ).tokenInput( 
 		'/services/faces/contact_emails',
