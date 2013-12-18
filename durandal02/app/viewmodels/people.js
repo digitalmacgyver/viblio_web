@@ -337,14 +337,14 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 				pending_changes = 0;
 			    });
 	    }
-	    // I THINK WE SHOULD NOT HAVE THE FOLLOWING CODE, IN CASE THERE are
-	    // actual contacts that do not appear in any video.
-	    //else {
+	    else {
+		// I THINK WE SHOULD NOT HAVE THE FOLLOWING CODE, IN CASE THERE are
+		// actual contacts that do not appear in any video.
 		//if ( faces_for().length == 0 ) {
-		  //  known_faces.remove( selected() );
+		//    known_faces.remove( selected() );
 		//}
-		//selected(null);
-	    //}
+		selected(null);
+	    }
 	},
 
 	attached: function( v ) {
