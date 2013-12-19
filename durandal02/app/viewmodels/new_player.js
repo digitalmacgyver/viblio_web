@@ -12,6 +12,9 @@
   videos.
 */
 define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','viewmodels/person','viewmodels/mediafile','lib/customDialogs'], function(app,system,router,dialog,config,viblio,Strip,Face,Mediafile,customDialogs) {
+
+    var main_view;
+
     function resizePlayer() {
 	$("#tv, #tv video").height( ($("#tv").width()*9) / 16 );
     }
@@ -72,6 +75,20 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     // Title and description - code to update/change is located in custom_bindings.js
     var title = ko.observable();
     var description = ko.observable();
+
+    var formatted_date = ko.computed( function() {
+	if ( playing() && playing().media() ) {
+	    var date;
+	    $(main_view).find(".recording-date").editable('setValue', playing().media().recording_date, true);
+	    if ( playing().media().recording_date == '1970-01-01 00:00:00' ) {
+		return 'click to add recording date';
+	    }
+	    else {
+		date = new Date( playing().media().recording_date );
+		return date.toDateString();
+	    }
+	}
+    });
     
     // The user comment
     var usercomment = ko.observable('');
@@ -419,6 +436,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	title: title,
 	nolocation: nolocation,
 	description: description,
+	formatted_date: formatted_date,
         vstrip: vstrip,
 	comments: comments,
 	usercomment: usercomment,
@@ -521,6 +539,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
         compositionComplete: function(view, parent) {
 	    var self = this;
 	    self.view = view;
+	    main_view = view;
 
 	    var mid = query().mid;
 	    var mf = playing().media();
@@ -618,6 +637,16 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    });
 		    vstrip.reset();
 		    vstrip.search( query().mid );
+		}
+	    });
+
+	    // The recording date
+	    $(self.view).find(".recording-date").editable({
+		mode: 'inline',
+		type: 'combodate',
+		showButtons: 'false',
+		success: function( res, v ) {
+		    console.log( v.format() );
 		}
 	    });
         }
