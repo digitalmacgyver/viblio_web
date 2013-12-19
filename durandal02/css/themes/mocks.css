@@ -1461,7 +1461,7 @@ input:-moz-placeholder {
 
 #tv-Wrap .shareButton {
     position: absolute;
-    top: 10px;
+    bottom: 35px;
     right: 10px;
 }
 
