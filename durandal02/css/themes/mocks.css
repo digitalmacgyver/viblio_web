@@ -184,6 +184,10 @@ input[type="color"],
     outline: none;
 }
 
+.popup {
+    z-index: 1031;
+}
+
 /***************** START OF MORE GENERAL CSS CLASSES **************************/
 
 
