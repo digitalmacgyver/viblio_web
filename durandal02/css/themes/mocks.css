@@ -2802,7 +2802,8 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 #footerFeedback textarea {
     //margin-bottom: 0;
     min-height: 50px;
-    min-width: 300px;
+    width: 100%;
+    max-width: 300px;
 }
 
 #footerFeedback .btn {
