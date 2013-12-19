@@ -944,7 +944,7 @@ input:-moz-placeholder {
     border-left: 3px solid rgba(0,0,0,.5);
 }
 
-.navbar .nav > li > .dropdown-menu:afte,
+.navbar .nav > li > .dropdown-menu:after,
 .navbar .nav > li > .dropdown-menu:before {
     display: none;
 }
