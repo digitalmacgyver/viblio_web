@@ -1,4 +1,4 @@
-define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','viewmodels/conditional_header','lib/viblio','lib/customDialogs','viewmodels/emailtest','lib/config','facebook'], function (router, app, system, page_header, landing_header, conditional_header, viblio, customDialogs,emailtest,config) {
+define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','viewmodels/conditional_header','lib/viblio','lib/customDialogs','viewmodels/emailtest','lib/config','viewmodels/footer','facebook'], function (router, app, system, page_header, landing_header, conditional_header, viblio, customDialogs,emailtest,config,footer) {
 
     var header = ko.observable( );
     
@@ -171,6 +171,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
     return {
         router: router,
 	header: header,
+        footer: footer,
 
         search: function() {
             //It's really easy to show a message box.
