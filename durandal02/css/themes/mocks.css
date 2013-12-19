@@ -90,6 +90,11 @@ input[type="color"],
     -moz-box-sizing:border-box; /* Firefox */
 }
 
+.btn-small {
+    padding: 2px 6px;
+    font-size: 14px;
+}
+
 .btn-primary:focus,
 .btn-primary:active,
 .btn:active,
