@@ -1862,9 +1862,7 @@ li.token-input-token-facebook {
 }
 
 #months {
-    width: 10%;
-    min-width: 70px;
-    display: inline-block;
+    display: table-cell;
     vertical-align: top;
 }
 
@@ -1885,8 +1883,7 @@ li.token-input-token-facebook {
 }
 
 #allVidsWrap {
-    width: 89%;
-    display: inline-block;
+    display: table-cell;
 }
 
 .allVidsPage .media-container {
