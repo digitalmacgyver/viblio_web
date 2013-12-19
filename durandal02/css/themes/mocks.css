@@ -5,6 +5,10 @@ body {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
+.page-host {
+    min-height: 800px;
+}
+
 @media (min-width: 680px) {
     .alertify {
         width: 600px;
