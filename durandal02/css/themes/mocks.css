@@ -471,6 +471,11 @@ width: 40px;
 height: 40px;
 }
 
+.recording-date-wrapper .editable-buttons .btn-group > .btn:first-child,
+.recording-date-wrapper .editable-buttons .btn-group > .btn:last-child,
+.recording-date-wrapper .editable-buttons .btn-group > .dropdown-toggle,
+.recording-date-wrapper .editable-buttons .btn-group > .btn,
+.recording-date-wrapper .editable-buttons .btn,
 .person .editable-buttons .btn-group > .btn:first-child,
 .person .editable-buttons .btn-group > .btn:last-child,
 .person .editable-buttons .btn-group > .dropdown-toggle,
@@ -1683,6 +1688,7 @@ input:-moz-placeholder {
 
 /********************  Video Title and Description Section  *****************************/
 
+.recording-date.editable:hover,
 .vidTitle:hover,
 .vidDescription:hover {
     cursor: pointer;

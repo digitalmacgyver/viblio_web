@@ -78,14 +78,13 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 
     var formatted_date = ko.computed( function() {
 	if ( playing() && playing().media() ) {
-	    var date;
-	    $(main_view).find(".recording-date").editable('setValue', playing().media().recording_date, true);
+	    var date = moment( playing().media().recording_date, 'YYYY-MM-DD HH:mm:ss' );
+	    //$(main_view).find(".recording-date").editable('setValue', date, false);
 	    if ( playing().media().recording_date == '1970-01-01 00:00:00' ) {
 		return 'click to add recording date';
 	    }
 	    else {
-		date = new Date( playing().media().recording_date );
-		return date.toDateString();
+		return date.format('MMM D, YYYY h:mm A');
 	    }
 	}
     });
@@ -644,11 +643,25 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	    $(self.view).find(".recording-date").editable({
 		mode: 'inline',
 		type: 'combodate',
-		showButtons: 'false',
+		unsavedclass: null,
+		highlight: null,
+		savenochange: true,
+		combodate: {
+		    smartDays: true,
+		    maxYear: new Date().getFullYear(),
+		    minYear: 1959,
+		},
+		template: 'MMM / D / YYYY H : mm',
+		format: 'MMM D, YYYY h:mm A',
 		success: function( res, v ) {
-		    console.log( v.format() );
+		    var dstring = v.format('YYYY-MM-DD HH:mm:ss');
+		    playing().media().recording_date = dstring;
+		    viblio.api( '/services/mediafile/change_recording_date', { mid: playing().media().uuid, date: dstring } ).then( function() {
+		    });
+		    return null;
 		}
 	    });
+	    $(main_view).find(".recording-date").editable('setValue', moment( playing().media().recording_date, 'YYYY-MM-DD HH:mm:ss' ), false);
         }
     };
 });
