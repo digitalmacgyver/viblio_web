@@ -19,14 +19,15 @@
 
         <!-- ko if: hits() > 0 --> 
         <button class="btn btn-small btn-secondary pull-right" data-bind="click: toggleEditMode, text: editLabel"></button>
-            <!-- ko if: !name() -->
-                <button class="btn btn-small btn-blue pull-right" data-bind="click: toggleShared, text: sharedLabel"></button>
-            <!-- /ko -->
+         <!-- /ko -->
+        <!-- ko if: !name() -->
+            <button class="btn btn-small btn-blue pull-right" data-bind="click: toggleShared, text: sharedLabel"></button>
         <!-- /ko -->
+       
         <div class="clearfix"></div>
 
         <div data-bind="if: hits() < 1">
-            <p class="font24 tomatoFont">C’mon!  Videos are the best way to capture those small moments that are your life!  Go take a few and let us be the keeper of your videochron!</p>
+            <p class="font24 tomatoFont doubleSpaced">C’mon!  Videos are the best way to capture those small moments that are your life!  Go take a few and let us be the keeper of your videochron!</p>
         </div>    
     </div>
     
@@ -76,7 +77,7 @@
 
             <!-- ko if: showShareBtn() -->
                 <button class="btn btn-primary" data-bind="click: showLoggedOutTellFriendsModal">
-                    Invite a friend to share
+                    Invite a friend to share &raquo;
                 </button>
             <!-- /ko --> 
             </div>
@@ -85,7 +86,7 @@
         <div class="" data-bind="if: hits() <= 2">
             <div class="yirHeading-Wrap" data-bind="if: !hasCID()">
                 <p class="mainTitle textShadowed">Got any more videos?</p>
-                <p class="font20">We noticed you 
+                <p class="font20 doubleSpaced">We noticed you 
                     <span data-bind="if: hits() == 0 ">don't have any videos yet. </span>
                     <span data-bind="if: hits() != 0 "><span data-bind="text: hits() == 1 ? 'only have one ' : 'only have two '"></span><span data-bind="text: hits() == 1 ? ' video. ' : ' videos. '"></span></span> 
                     If you have videos you haven’t uploaded to your private VIBLIO library yet, take a moment to start uploading them now.
