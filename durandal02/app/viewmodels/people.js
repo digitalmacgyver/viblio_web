@@ -348,19 +348,22 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 	},
 
 	detached: function() {
+	    var self = this;
 	    $(self.view).find( ".horizontal-scroller").smoothDivScroll("destroy");
 	    clipboard.removeAll();
 	    selected( null );
 	    pending_changes = 0;
 	    faces_for_visible( false );
+
+	    known_faces.removeAll();
+	    unknown_faces.removeAll();
+	    self.fetched( false );
 	},
 
 	compositionComplete: function() {
 	    var self = this;
 
  	    viblio.api( '/services/faces/all_contacts' ).then( function( data ) {
-		known_faces.removeAll();
-		unknown_faces.removeAll();
 		data.contacts.forEach( function( contact ) {
 		    if ( ! contact.url ) return;
 		    if ( contact.contact_name ) {
