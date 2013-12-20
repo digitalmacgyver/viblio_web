@@ -14,9 +14,9 @@
                     </td>
                     
                     <td id="left-side" class="boxShadowed">
-                        <div id="webPlayer-Wrap">
+                        <div id="webPlayer-Wrap" class="playerOverlay-Wrap">
                             <!-- ko if: showPlayerOverlay() == true && showRelated() == false -->
-                            <div id="videoOverlay" data-bind="click: hidePlayerOverlay">
+                            <div class="videoOverlay" data-bind="click: hidePlayerOverlay">
                                 <div class="paddedDiv bottomBorder-Thin">
                                     <div id="cloudImage"></div>
                                     <p class="landingHeaderTitle"><span>Create your own </span>VIBLIO Video Library</p>
@@ -40,6 +40,11 @@
                                         <div id="title-desc">
                                             <h3 data-bind="text: title()"></h3>
                                             <p data-bind="text: description()"></p>
+					    <div class="recording-date-wrapper pull-right">
+					      <div class="recording-date" data-bind="text: formatted_date"></div>
+					    </div>
+					    <div class="clearfix"></div>
+
                                         </div>
                                     <!-- /ko -->
                                     <div id="comments">

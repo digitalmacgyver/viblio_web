@@ -12,6 +12,9 @@
   videos.
 */
 define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','viewmodels/person','viewmodels/mediafile','lib/customDialogs'], function(app,system,router,dialog,config,viblio,Strip,Face,Mediafile,customDialogs) {
+
+    var main_view;
+
     function resizePlayer() {
 	$("#tv, #tv video").height( ($("#tv").width()*9) / 16 );
     }
@@ -68,10 +71,30 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     // composed into the main view.
     //
     var related = ko.observable();
+    
+    var showPlayerOverlay = ko.observable(false);
+    
+    function hidePlayerOverlay() {
+        system.log('overlay clicked');
+        showPlayerOverlay(false);
+    }
 
     // Title and description - code to update/change is located in custom_bindings.js
     var title = ko.observable();
     var description = ko.observable();
+
+    var formatted_date = ko.computed( function() {
+	if ( playing() && playing().media() ) {
+	    var date = moment( playing().media().recording_date, 'YYYY-MM-DD HH:mm:ss' );
+	    //$(main_view).find(".recording-date").editable('setValue', date, false);
+	    if ( playing().media().recording_date == '1970-01-01 00:00:00' ) {
+		return 'click to add recording date';
+	    }
+	    else {
+		return date.format('MMM D, YYYY h:mm A');
+	    }
+	}
+    });
     
     // The user comment
     var usercomment = ko.observable('');
@@ -419,6 +442,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	title: title,
 	nolocation: nolocation,
 	description: description,
+	formatted_date: formatted_date,
         vstrip: vstrip,
 	comments: comments,
 	usercomment: usercomment,
@@ -426,6 +450,8 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	isNear: isNear,
 	faces: faces,
 	related: related,
+        showPlayerOverlay: showPlayerOverlay,
+        hidePlayerOverlay: hidePlayerOverlay,
 	previousRelated: previousRelated,
 	nextRelated: nextRelated,
 	disable_prev: disable_prev,
@@ -521,6 +547,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
         compositionComplete: function(view, parent) {
 	    var self = this;
 	    self.view = view;
+	    main_view = view;
 
 	    var mid = query().mid;
 	    var mf = playing().media();
@@ -530,6 +557,15 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 
 	    $("#tv").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
 		ratio: 9/16,
+                onMouseOver: function() {
+                    showPlayerOverlay(true);
+                },
+                onMouseOut: function() {
+                    // only hide the button if the mouse exits the player and is NOT hovereing over the shareButton
+                    if ( $('.shareButton:hover').length == 0 ) {
+                        showPlayerOverlay(false);
+                    }
+                },
                 clip: {
                     url: 'mp4:' + mf.views.main.cf_url,
                     ipadUrl: encodeURIComponent(mf.views.main.url),
@@ -540,16 +576,20 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 			//viblio.log( 'Tracking start ...', clip.url );
 			//viblio.gaEvent( 'PrivatePlay', 'Play', clip.url );
 			viblio.mpEvent( 'play', { action: 'play' } );
+                        hidePlayerOverlay();
+                        
 		    },
 		    onPause: function( clip ) {
 			//viblio.log( 'Tracking pause ...', clip.url, parseInt(this.getTime()) );
 			//viblio.gaEvent( 'PrivatePlay', 'Pause', clip.url, parseInt(this.getTime()) );
 			viblio.mpEvent( 'play', { action: 'pause' } );
+                        showPlayerOverlay(true);
 		    },
 		    onResume: function( clip ) {
 			//viblio.log( 'Tracking resume ...', clip.url );
 			//viblio.gaEvent( 'PrivatePlay', 'Resume', clip.url );
 			viblio.mpEvent( 'play', { action: 'resume' } );
+                        hidePlayerOverlay();
 		    },
 		    onStop: function( clip ) {		    
 			//viblio.log( 'Tracking stop ...', clip.url, parseInt(this.getTime()) );
@@ -560,6 +600,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 			//viblio.log( 'Tracking finish ...', clip.url );
 			//viblio.gaEvent( 'PrivatePlay', 'Finish', clip.url );
 			viblio.mpEvent( 'play', { action: 'finish' } );
+                        showPlayerOverlay(true);
 		    }
                 },
                 plugins: {
@@ -620,6 +661,30 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    vstrip.search( query().mid );
 		}
 	    });
+
+	    // The recording date
+	    $(self.view).find(".recording-date").editable({
+		mode: 'inline',
+		type: 'combodate',
+		unsavedclass: null,
+		highlight: null,
+		savenochange: true,
+		combodate: {
+		    smartDays: true,
+		    maxYear: new Date().getFullYear(),
+		    minYear: 1959,
+		},
+		template: 'MMM / D / YYYY H : mm',
+		format: 'MMM D, YYYY h:mm A',
+		success: function( res, v ) {
+		    var dstring = v.format('YYYY-MM-DD HH:mm:ss');
+		    playing().media().recording_date = dstring;
+		    viblio.api( '/services/mediafile/change_recording_date', { mid: playing().media().uuid, date: dstring } ).then( function() {
+		    });
+		    return null;
+		}
+	    });
+	    $(main_view).find(".recording-date").editable('setValue', moment( playing().media().recording_date, 'YYYY-MM-DD HH:mm:ss' ), false);
         }
     };
 });
