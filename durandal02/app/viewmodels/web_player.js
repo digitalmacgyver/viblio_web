@@ -72,6 +72,18 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
     var description = ko.observable();
     var showMessage = ko.observable( true );
 
+    var formatted_date = ko.computed( function() {
+	if ( playing() && playing().media() ) {
+	    var date = moment( playing().media().recording_date, 'YYYY-MM-DD HH:mm:ss' );
+	    if ( playing().media().recording_date == '1970-01-01 00:00:00' ) {
+		return '';
+	    }
+	    else {
+		return date.format('MMM D, YYYY h:mm A');
+	    }
+	}
+    });
+
     var showError = ko.observable( false );
     var errorMessage = ko.observable();
     var errorDetail = ko.observable();
@@ -281,8 +293,8 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 	playing().highlight();
 
         playingMid( m );
-	title( playing().title() || 'Click to add a title.' );
-	description( playing().description() || 'Click to add a description.' );
+	title( playing().title() || 'Untitled' );
+	description( playing().description() || '' );
         setupComments( m.media() );
 	setupFaces( m.media() );
 	near( m.media() );
@@ -460,6 +472,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
         eyes: eyes,
         title: title,
         description: description,
+	formatted_date: formatted_date,
 	showMessage: showMessage,
 	showError: showError,
 	errorMessage: errorMessage,
@@ -551,119 +564,119 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 	    if ( ! this.mid ) {
 		return;
 	    }
-		viblio.api( '/services/na/media_shared', { mid: self.mid }, errorHandler ).then( function(json) {
-                    shareType( json.share_type );
-		    viblio.setLastAttempt( 'web_player?mid=' + self.mid );
-		    if ( json.auth_required ) {
-			// This is a private share and you are not logged in.
-			errorHandler({
-			    message: 'This is a privately shared video.',
-			    detail: 'You must be logged into your Viblio account to view it.  If you do not yet have an account, sign up today!'
+	    viblio.api( '/services/na/media_shared', { mid: self.mid }, errorHandler ).then( function(json) {
+                shareType( json.share_type );
+		viblio.setLastAttempt( 'web_player?mid=' + self.mid );
+		if ( json.auth_required ) {
+		    // This is a private share and you are not logged in.
+		    errorHandler({
+			message: 'This is a privately shared video.',
+			detail: 'You must be logged into your Viblio account to view it.  If you do not yet have an account, sign up today!'
+		    });
+		}
+		else {
+		    var mf = json.media;
+		    playing( new Mediafile( mf ) );
+                    playingMid( playing() );
+		    if ( playing() ) {
+			var mf = playing().media();
+                        eyes( playing().media().eyes );
+			title( playing().media().title );
+			description( playing().media().description );
+                        setupComments( mf );
+                        setupFaces( mf );
+			self.showMessage( false );
+			
+			$(".player").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
+			    ratio: 9/16,
+			    clip: {
+				url: 'mp4:' + mf.views.main.cf_url,
+				ipadUrl: encodeURIComponent(mf.views.main.url),
+				scaling: 'fit',
+				provider: 'rtmp',
+				
+				onStart: function( clip ) {
+				    viblio.mpEvent( 'web_play', { action: 'play' } );
+                                    hidePlayerOverlay();
+				},
+				onPause: function( clip ) {
+				    viblio.mpEvent( 'web_play', { action: 'pause' } );
+                                    showPlayerOverlay(true);
+				},
+				onResume: function( clip ) {
+				    viblio.mpEvent( 'web_play', { action: 'resume' } );
+				},
+				onStop: function( clip ) {		    
+				    viblio.mpEvent( 'web_play', { action: 'stop' } );
+				},
+				onFinish: function( clip ) {
+				    viblio.mpEvent( 'web_play', { action: 'finish' } );
+                                    showPlayerOverlay(true);
+				}
+			    },
+			    plugins: {
+				rtmp: {
+				    url: 'lib/flowplayer/flowplayer.rtmp-3.2.12.swf',
+				    netConnectionUrl: 'rtmp://' + config.cf_domain() + '/cfx/st'
+				},
+			    },
+			    canvas: {
+				backgroundColor:'#254558',
+				backgroundGradient: [0.1, 0]
+			    }
+			}).flowplayer().ipad({simulateiDevice: should_simulate()});
+			
+			resizePlayer();
+                        
+                        // create the map
+                        map = $("#geo-map").vibliomap({
+                            disableZoomControl: true
+                        });
+
+                        // center/zoom to media file location
+                        near( mf );
+                            
+                        // resize height of related video seciton based on page height
+                        relatedVidHeight();
+			if ( vstrip )
+			    vstrip.updateScroller();
+
+			// Set up the inline editable for related by
+			var defaultCriterion = [];
+			if ( vstrip.criterion.by_date )  defaultCriterion.push( 'by_date' );
+			if ( vstrip.criterion.by_faces ) defaultCriterion.push( 'by_faces' );
+			if ( vstrip.criterion.by_geo )   defaultCriterion.push( 'by_geo' );
+			$(self.view).find( '.related-by' ).editable({
+			    mode: 'popup',
+			    type: 'checklist',
+			    placement: 'left',
+			    emptytext: 'by...',
+			    emptyclass: '',
+			    source: [{value:'by_date',  text: 'by date'},
+				     {value:'by_faces', text: 'by people'},
+				     {value:'by_geo',   text: 'by location'}],
+			    value: defaultCriterion,
+			    validate: function( v ) {
+				if ( v.length == 0 ) {
+				    return({ newValue:defaultCriterion,
+					     msg: 'Select at least one criterion' });
+				}
+			    },
+			    success: function( res, v) {
+				vstrip.criterion.by_date  = false;
+				vstrip.criterion.by_faces = false;
+				vstrip.criterion.by_geo   = false;
+				v.forEach( function( key ) {
+				    vstrip.criterion[key] = true;
+				});
+				vstrip.reset();
+				vstrip.search( query().mid );
+			    }
 			});
-		    }
-		    else {
-			var mf = json.media;
-			playing( new Mediafile( mf ) );
-                        playingMid( playing() );
-			if ( playing() ) {
-			    var mf = playing().media();
-                            eyes( playing().media().eyes );
-			    title( playing().media().title );
-			    description( playing().media().description );
-                            setupComments( mf );
-                            setupFaces( mf );
-			    self.showMessage( false );
-
-			    $(".player").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
-				ratio: 9/16,
-				clip: {
-				    url: 'mp4:' + mf.views.main.cf_url,
-				    ipadUrl: encodeURIComponent(mf.views.main.url),
-				    scaling: 'fit',
-				    provider: 'rtmp',
-
-				    onStart: function( clip ) {
-					viblio.mpEvent( 'web_play', { action: 'play' } );
-                                        hidePlayerOverlay();
-				    },
-				    onPause: function( clip ) {
-					viblio.mpEvent( 'web_play', { action: 'pause' } );
-                                        showPlayerOverlay(true);
-				    },
-				    onResume: function( clip ) {
-					viblio.mpEvent( 'web_play', { action: 'resume' } );
-				    },
-				    onStop: function( clip ) {		    
-					viblio.mpEvent( 'web_play', { action: 'stop' } );
-				    },
-				    onFinish: function( clip ) {
-					viblio.mpEvent( 'web_play', { action: 'finish' } );
-                                        showPlayerOverlay(true);
-				    }
-				},
-				plugins: {
-				    rtmp: {
-					url: 'lib/flowplayer/flowplayer.rtmp-3.2.12.swf',
-					netConnectionUrl: 'rtmp://' + config.cf_domain() + '/cfx/st'
-				    },
-				},
-				canvas: {
-				    backgroundColor:'#254558',
-				    backgroundGradient: [0.1, 0]
-				}
-			    }).flowplayer().ipad({simulateiDevice: should_simulate()});
-
-			    resizePlayer();
-                            
-                            // create the map
-                            map = $("#geo-map").vibliomap({
-                                disableZoomControl: true
-                            });
-
-                            // center/zoom to media file location
-                            near( mf );
-                            
-                            // resize height of related video seciton based on page height
-                            relatedVidHeight();
-			    if ( vstrip )
-				vstrip.updateScroller();
-
-			    // Set up the inline editable for related by
-			    var defaultCriterion = [];
-			    if ( vstrip.criterion.by_date )  defaultCriterion.push( 'by_date' );
-			    if ( vstrip.criterion.by_faces ) defaultCriterion.push( 'by_faces' );
-			    if ( vstrip.criterion.by_geo )   defaultCriterion.push( 'by_geo' );
-			    $(self.view).find( '.related-by' ).editable({
-				mode: 'popup',
-				type: 'checklist',
-				placement: 'left',
-				emptytext: 'by...',
-				emptyclass: '',
-				source: [{value:'by_date',  text: 'by date'},
-					 {value:'by_faces', text: 'by people'},
-					 {value:'by_geo',   text: 'by location'}],
-				value: defaultCriterion,
-				validate: function( v ) {
-				    if ( v.length == 0 ) {
-					return({ newValue:defaultCriterion,
-						 msg: 'Select at least one criterion' });
-				    }
-				},
-				success: function( res, v) {
-				    vstrip.criterion.by_date  = false;
-				    vstrip.criterion.by_faces = false;
-				    vstrip.criterion.by_geo   = false;
-				    v.forEach( function( key ) {
-					vstrip.criterion[key] = true;
-				    });
-				    vstrip.reset();
-				    vstrip.search( query().mid );
-				}
-			    });
-			    
+			
 			}
-		    }
-		});
+		}
+	    });
 	}
     };
 });

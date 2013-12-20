@@ -17,6 +17,7 @@ new compressor.minify({
 	'lib/knockout/knockout-2.3.0.js',
 	'lib/bootstrap/js/bootstrap.js',
 	'lib/bootstrap/js/bootstrap-editable.js',
+	'lib/bootstrap/js/moment.min.js',
 	'lib/flowplayer/flowplayer-3.2.12.min.js',
 	'lib/flowplayer/plugins/flowplayer.ipad-3.2.12.min.js',
 	'lib/alertify/js/alertify.js',

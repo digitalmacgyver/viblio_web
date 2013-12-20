@@ -12,6 +12,9 @@
   videos.
 */
 define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib/config','lib/viblio','viewmodels/mediavstrip','viewmodels/person','viewmodels/mediafile','lib/customDialogs'], function(app,system,router,dialog,config,viblio,Strip,Face,Mediafile,customDialogs) {
+
+    var main_view;
+
     function resizePlayer() {
 	$("#tv, #tv video").height( ($("#tv").width()*9) / 16 );
     }
@@ -79,6 +82,19 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     // Title and description - code to update/change is located in custom_bindings.js
     var title = ko.observable();
     var description = ko.observable();
+
+    var formatted_date = ko.computed( function() {
+	if ( playing() && playing().media() ) {
+	    var date = moment( playing().media().recording_date, 'YYYY-MM-DD HH:mm:ss' );
+	    //$(main_view).find(".recording-date").editable('setValue', date, false);
+	    if ( playing().media().recording_date == '1970-01-01 00:00:00' ) {
+		return 'click to add recording date';
+	    }
+	    else {
+		return date.format('MMM D, YYYY h:mm A');
+	    }
+	}
+    });
     
     // The user comment
     var usercomment = ko.observable('');
@@ -426,6 +442,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	title: title,
 	nolocation: nolocation,
 	description: description,
+	formatted_date: formatted_date,
         vstrip: vstrip,
 	comments: comments,
 	usercomment: usercomment,
@@ -531,6 +548,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
         compositionComplete: function(view, parent) {
 	    var self = this;
 	    self.view = view;
+	    main_view = view;
 
 	    var mid = query().mid;
 	    var mf = playing().media();
@@ -644,6 +662,30 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		    vstrip.search( query().mid );
 		}
 	    });
+
+	    // The recording date
+	    $(self.view).find(".recording-date").editable({
+		mode: 'inline',
+		type: 'combodate',
+		unsavedclass: null,
+		highlight: null,
+		savenochange: true,
+		combodate: {
+		    smartDays: true,
+		    maxYear: new Date().getFullYear(),
+		    minYear: 1959,
+		},
+		template: 'MMM / D / YYYY H : mm',
+		format: 'MMM D, YYYY h:mm A',
+		success: function( res, v ) {
+		    var dstring = v.format('YYYY-MM-DD HH:mm:ss');
+		    playing().media().recording_date = dstring;
+		    viblio.api( '/services/mediafile/change_recording_date', { mid: playing().media().uuid, date: dstring } ).then( function() {
+		    });
+		    return null;
+		}
+	    });
+	    $(main_view).find(".recording-date").editable('setValue', moment( playing().media().recording_date, 'YYYY-MM-DD HH:mm:ss' ), false);
         }
     };
 });
