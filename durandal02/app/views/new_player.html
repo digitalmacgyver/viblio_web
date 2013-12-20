@@ -1,134 +1,135 @@
 <div id="nplayer-page">
-  <table id="main-table">
-    <tr>
-      <td id="playerCommentsNavTable-Wrap">
-        <table id="playerCommentsNavTable">
-          
-          <td id="left-arrow-column">
-            <div class="player-control lightBlueBG bottomBorder-Thin" 
-		 id="left-arrow" data-bind="click: previousRelated, css: {disabled: disable_prev()}">
-              <img src="css/images/arrowLeft.png"/>
-            </div>
-          </td>
+    <table id="main-table">
+        <tr>
+            <td id="playerCommentsNavTable-Wrap">
+                <table id="playerCommentsNavTable">
                     
-          <td id="left-side" class="boxShadowed">
-            <div id="tv">
-            </div>
-            <table id="info-table">
-              <tr>
-                <td id="comment-column" class="babyBlueBG">
-                  <div id="title-desc">
-                    <div data-bind="liveEditor: title">
-                      <h3 class="view vidTitle" 
-			  data-bind="click: title.edit, text: playing().title() || 'Click to edit title'"></h3>
-                      <div class="editTitle-Wrap">
-                        <input type="text" class="edit" 
-			       data-bind="value: title, 
-					  hasFocus: title.editing, 
-					  event: { blur: function() { title.stopEditing(); title.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }" />
-                      </div>  
-                    </div>
-                    <div data-bind="liveEditor: description">
-                      <p class="view vidDescription" data-bind="click: description.edit, text: description() || 'Click to edit description'"></p>
-                      <textarea class="edit editDescription" 
-				data-bind="value: description, 
-					   hasFocus: description.editing, 
-					   event: { blur: function() { description.stopEditing(); description.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }"></textarea>
-                    </div>
-		    <div class="recording-date-wrapper pull-right">
-		      <div class="recording-date" data-bind="text: formatted_date"></div>
-		    </div>
-		    <div class="clearfix"></div>
-                  </div>
-                  <div id="comments">
-                    <div class="comments-header lightBlueFont">
-                      <div class="views pull-right">
-                        <img src="css/images/viewsEye.png" />
-                        <span data-bind="html: playing().media().eyes"></span>
-                      </div>
-                      <p class="todays-date pull-right">Today</p>
-                      <div class="observer">
-                        <img class="boxShadowed" src="/services/user/avatar?uid=-&y=36" />
-                      </div>
-                      <p>by <span class="heavyWeightFont" data-bind="html: user().displayname"></span></p>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="comment-editor" data-bind="liveEditor: usercomment">
-                      <p class="view vidDescription" data-bind="click: usercomment.edit, text:'Comment on this video...'"></p>
-                      <textarea class="edit editDescription" 
-                                data-bind="value:usercomment,
-                                           hasFocus: usercomment.editing,
-                                           event: { blur: function() { usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment') } }"></textarea>
-                    </div>
-                    <div class="all-comments">
-                      <p class="lightBlueFont" data-bind="visible: comments().length"><span data-bind="text: comments().length ==1 ? '1 Comment' : comments().length + ' Comments'"></span></p>
-                      <!-- ko foreach: comments -->
-                      <div class="comment" data-bind="if: comment.indexOf(' ') != -1 && comment != '' ">
-                        <p class="comment-text bottomBorder-Thin" data-bind="html: comment"></p>
-                        <div class="comment-footer lightBlueFont">
-                          <p class="when pull-right" data-bind="text: when"></p>
-                          <p>by&nbsp;<span class="who heavyWeightFont" data-bind="text: who"></span></p>
+                    <td id="left-arrow-column">
+                        <div class="player-control lightBlueBG bottomBorder-Thin" id="left-arrow" data-bind="click: previousRelated, css: {disabled: disable_prev()}">
+                            <img src="css/images/arrowLeft.png"/>
                         </div>
-                      </div>
-                      <!-- /ko -->
-                    </div>
-                  </div>
-                </td>
-                
-                <td id="faces-column" class="lightBlueBG">
-                  <div class="darkBlueBG bottomBorder-Thin" id="faces">
-                    <span class="textShadowed" data-bind="text: finfo"></span>
-                    <ul class="clearfix playerfaces">
-                      <!-- ko foreach: faces -->
-                      <li data-bind="compose: $data"></li>
-                      <!-- /ko -->
-                      <li class="clearfix"></li>
-                    </ul>
-                  </div>
-                  
-                  <div id="geo">
-                    <div id="geo-title" class="textShadowed">
-                      <span data-bind="visible: isNear() != 'Find in map' ">Near&nbsp;</span><span data-bind="text: isNear()"></span>
-                    </div>
-                    <div style="position: relative">
-                      <div id="geo-map" class="map boxShadowed" data-bind="css:{hideme: nolocation() == true}"></div>
-		      <div id="geo-map-reloc" data-bind="css:{hideme: nolocation() == true}">
-			<button class="btn btn-primary" data-bind="click: relocate">Change Location</button>
-		      </div>
-                      <div id="geo-nomap" data-bind="css:{hideme: nolocation() == false}">
-                        <img src="css/images/mapMarker-Large.png" data-bind="click: showInteractiveMap" />
-                      </div>
-                    </div>
-                  </div>
-                </td>
+                    </td>
+                    
+                    <td id="left-side" class="boxShadowed">
+                        <div id="tv-Wrap" class="playerOverlay-Wrap">
+                            <!-- ko if: showPlayerOverlay() == true -->
+                                <a class="shareButton btn" href="#" data-bind="click: showShareVidModal">
+                                    <i class="icon-share"></i> Share this Video!
+                                </a>
+                            <!-- /ko -->
+                            <div id="tv"></div>    
+                        </div>
+                        <table id="info-table">
+                            <tr>
+                                <td id="comment-column" class="babyBlueBG">
+                                    <div id="title-desc">
+                                        <div data-bind="liveEditor: title">
+                                            <h3 class="view vidTitle" data-bind="click: title.edit, text: playing().title() || 'Click to edit title'"></h3>
+                                            <div class="editTitle-Wrap">
+                                                <input type="text" class="edit" data-bind="value: title, 
+                                                  hasFocus: title.editing, 
+                                                  event: { blur: function() { title.stopEditing(); title.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }" />
+                                            </div>  
+                                        </div>
+                                        <div data-bind="liveEditor: description">
+                                            <p class="view vidDescription" data-bind="click: description.edit, text: description() || 'Click to edit description'"></p>
+                                            <textarea class="edit editDescription" data-bind="value: description, 
+                                                hasFocus: description.editing, 
+                                                event: { blur: function() { description.stopEditing(); description.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }"></textarea>
+                                        </div>
+					<div class="recording-date-wrapper pull-right">
+					  <div class="recording-date" data-bind="text: formatted_date"></div>
+					</div>
+					<div class="clearfix"></div>
+                                    </div>
+                                    <div id="comments">
+                                        <div class="comments-header lightBlueFont">
+                                            <div class="views pull-right">
+                                              <img src="css/images/viewsEye.png" />
+                                              <span data-bind="html: playing().media().eyes"></span>
+                                            </div>
+                                            <p class="todays-date pull-right">Today</p>
+                                            <div class="observer">
+                                              <img class="boxShadowed" src="/services/user/avatar?uid=-&y=36" />
+                                            </div>
+                                            <p>by <span class="heavyWeightFont" data-bind="html: user().displayname"></span></p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="comment-editor" data-bind="liveEditor: usercomment">
+                                            <p class="view vidDescription" data-bind="click: usercomment.edit, text:'Comment on this video...'"></p>
+                                            <textarea class="edit editDescription" 
+                                                      data-bind="value:usercomment,
+                                                               hasFocus: usercomment.editing,
+                                                               event: { blur: function() { usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment') } }"></textarea>
+                                        </div>
+                                        <div class="all-comments">
+                                            <p class="lightBlueFont" data-bind="visible: comments().length"><span data-bind="text: comments().length ==1 ? '1 Comment' : comments().length + ' Comments'"></span></p>
+                                            <!-- ko foreach: comments -->
+                                            <div class="comment" data-bind="if: comment.indexOf(' ') != -1 && comment != '' ">
+                                                <p class="comment-text bottomBorder-Thin" data-bind="html: comment"></p>
+                                                <div class="comment-footer lightBlueFont">
+                                                    <p class="when pull-right" data-bind="text: when"></p>
+                                                    <p>by&nbsp;<span class="who heavyWeightFont" data-bind="text: who"></span></p>
+                                                </div>
+                                            </div>
+                                          <!-- /ko -->
+                                        </div>
+                                    </div>
+                                </td>
                                 
-              </tr>
-            </table><!-- info-table -->
-          </td>
-          
-          <td id="right-arrow-column">
-            <div class="player-control lightBlueBG bottomBorder-Thin" 
-		 id="right-arrow" data-bind="click: nextRelated, css: {disabled: disable_next()}">
-              <img src="css/images/arrowRight.png" />
-            </div>
-          </td>
-          
-        </table>
-      </td>
+                                <td id="faces-column" class="lightBlueBG">
+                                    <div class="darkBlueBG bottomBorder-Thin" id="faces">
+                                        <span class="textShadowed" data-bind="text: finfo"></span>
+                                        <ul class="clearfix playerfaces">
+                                            <!-- ko foreach: faces -->
+                                            <li data-bind="compose: $data"></li>
+                                            <!-- /ko -->
+                                            <li class="clearfix"></li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div id="geo">
+                                        <div id="geo-title" class="textShadowed">
+                                            <span data-bind="visible: isNear() != 'Find in map' ">Near&nbsp;</span><span data-bind="text: isNear()"></span>
+                                        </div>
+                                        <div style="position: relative">
+                                            <div id="geo-map" class="map boxShadowed" data-bind="css:{hideme: nolocation() == true}"></div>
+					    <div id="geo-map-reloc" data-bind="css:{hideme: nolocation() == true}">
+					      <button class="btn btn-primary" data-bind="click: relocate">Change Location</button>
+					    </div>
+                                            <div id="geo-nomap" data-bind="css:{hideme: nolocation() == false}">
+                                                <img src="css/images/mapMarker-Large.png" data-bind="click: showInteractiveMap" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                
+                            </tr>
+                        </table><!-- info-table -->
+                    </td>
+                    
+                    <td id="right-arrow-column">
+                        <div class="player-control lightBlueBG bottomBorder-Thin" id="right-arrow" data-bind="click: nextRelated, css: {disabled: disable_next()}">
+                            <img src="css/images/arrowRight.png" />
+                        </div>
+                    </td>
+                    
+                </table>
+            </td>
 
-      <td id="right-side" class="lightBlueBG bottomBorder-Thin">
-        <div class="orangeBG bottomBorder-Thin" id="share-video-block">
-          <a class="shareButton btn" href="#" data-bind="click: showShareVidModal">
-            <img src="css/images/share.png"/> Share this Video!
-          </a>
-        </div>
-        <div id="related-videos-block">
-	  <span class="related-by pull-right">by...</span>
-          <p id="relatedVideosTitle" class="textShadowed">Related Videos</p>
-          <div class="media-area" data-bind="compose: related"></div>
-        </div>
-      </td>
+            <td id="right-side" class="lightBlueBG bottomBorder-Thin">
+                <!--<div class="orangeBG bottomBorder-Thin" id="share-video-block">
+                  <a class="shareButton btn" href="#" data-bind="click: showShareVidModal">
+                      <img src="css/images/share.png"/> Share this Video!
+                  </a>
+                </div>-->
+                <div id="related-videos-block">
+		    <span class="related-by pull-right">by...</span>
+                    <p id="relatedVideosTitle" class="textShadowed">Related Videos</p>
+                    <div class="media-area" data-bind="compose: related"></div>
+                </div>
+            </td>
             
-    </tr>
-  </table><!-- main-table -->
+        </tr>
+    </table><!-- main-table -->
 </div>

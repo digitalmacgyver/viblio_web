@@ -71,6 +71,13 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     // composed into the main view.
     //
     var related = ko.observable();
+    
+    var showPlayerOverlay = ko.observable(false);
+    
+    function hidePlayerOverlay() {
+        system.log('overlay clicked');
+        showPlayerOverlay(false);
+    }
 
     // Title and description - code to update/change is located in custom_bindings.js
     var title = ko.observable();
@@ -443,6 +450,8 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 	isNear: isNear,
 	faces: faces,
 	related: related,
+        showPlayerOverlay: showPlayerOverlay,
+        hidePlayerOverlay: hidePlayerOverlay,
 	previousRelated: previousRelated,
 	nextRelated: nextRelated,
 	disable_prev: disable_prev,
@@ -548,6 +557,15 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 
 	    $("#tv").flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
 		ratio: 9/16,
+                onMouseOver: function() {
+                    showPlayerOverlay(true);
+                },
+                onMouseOut: function() {
+                    // only hide the button if the mouse exits the player and is NOT hovereing over the shareButton
+                    if ( $('.shareButton:hover').length == 0 ) {
+                        showPlayerOverlay(false);
+                    }
+                },
                 clip: {
                     url: 'mp4:' + mf.views.main.cf_url,
                     ipadUrl: encodeURIComponent(mf.views.main.url),
@@ -558,16 +576,20 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 			//viblio.log( 'Tracking start ...', clip.url );
 			//viblio.gaEvent( 'PrivatePlay', 'Play', clip.url );
 			viblio.mpEvent( 'play', { action: 'play' } );
+                        hidePlayerOverlay();
+                        
 		    },
 		    onPause: function( clip ) {
 			//viblio.log( 'Tracking pause ...', clip.url, parseInt(this.getTime()) );
 			//viblio.gaEvent( 'PrivatePlay', 'Pause', clip.url, parseInt(this.getTime()) );
 			viblio.mpEvent( 'play', { action: 'pause' } );
+                        showPlayerOverlay(true);
 		    },
 		    onResume: function( clip ) {
 			//viblio.log( 'Tracking resume ...', clip.url );
 			//viblio.gaEvent( 'PrivatePlay', 'Resume', clip.url );
 			viblio.mpEvent( 'play', { action: 'resume' } );
+                        hidePlayerOverlay();
 		    },
 		    onStop: function( clip ) {		    
 			//viblio.log( 'Tracking stop ...', clip.url, parseInt(this.getTime()) );
@@ -578,6 +600,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 			//viblio.log( 'Tracking finish ...', clip.url );
 			//viblio.gaEvent( 'PrivatePlay', 'Finish', clip.url );
 			viblio.mpEvent( 'play', { action: 'finish' } );
+                        showPlayerOverlay(true);
 		    }
                 },
                 plugins: {

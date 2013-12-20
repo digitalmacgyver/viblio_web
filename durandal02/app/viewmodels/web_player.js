@@ -76,7 +76,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 	if ( playing() && playing().media() ) {
 	    var date = moment( playing().media().recording_date, 'YYYY-MM-DD HH:mm:ss' );
 	    if ( playing().media().recording_date == '1970-01-01 00:00:00' ) {
-		return 'click to add recording date';
+		return '';
 	    }
 	    else {
 		return date.format('MMM D, YYYY h:mm A');
@@ -293,8 +293,8 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 	playing().highlight();
 
         playingMid( m );
-	title( playing().title() || 'Click to add a title.' );
-	description( playing().description() || 'Click to add a description.' );
+	title( playing().title() || 'Untitled' );
+	description( playing().description() || '' );
         setupComments( m.media() );
 	setupFaces( m.media() );
 	near( m.media() );
