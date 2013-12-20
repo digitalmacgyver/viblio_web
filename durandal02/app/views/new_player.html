@@ -37,6 +37,10 @@
                                                 hasFocus: description.editing, 
                                                 event: { blur: function() { description.stopEditing(); description.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }"></textarea>
                                         </div>
+					<div class="recording-date-wrapper pull-right">
+					  <div class="recording-date" data-bind="text: formatted_date"></div>
+					</div>
+					<div class="clearfix"></div>
                                     </div>
                                     <div id="comments">
                                         <div class="comments-header lightBlueFont">
