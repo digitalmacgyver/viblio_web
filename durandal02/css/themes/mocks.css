@@ -1653,6 +1653,7 @@ input:-moz-placeholder {
 
 #right-side {
     border-left: 4px inset rgba(0,0,0,.2);
+    padding-top: 30px;
 }
 
 #right-side > div {
