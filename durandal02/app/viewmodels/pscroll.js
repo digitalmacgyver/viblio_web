@@ -33,6 +33,10 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	    $(self.view).find( ".sd-pscroll").trigger( 'children-changed' );
 	});
 
+	// after the initial fetch of data, this is set to true.  Used in the 
+	// view to determine when to display UI for no data.
+	self.fetched = ko.observable( false );
+
 	Events.includeIn( this );
     };
 
@@ -106,9 +110,9 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	    });
     };
 
-    Pscroll.prototype.activate = function() {
+    Pscroll.prototype.compositionComplete = function() {
 	var self = this;
-	return self.search();
+	self.search().then( function() { self.fetched(true); });
     };
 
     Pscroll.prototype.hLimitReached = function() {

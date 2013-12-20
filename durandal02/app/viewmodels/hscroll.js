@@ -39,6 +39,10 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	    self.mediafiles.unshift( m );
 	    $(self.view).find( ".sd-scroll").trigger( 'children-changed' );
 	});
+
+	// after the initial fetch of data, this is set to true.  Used in the 
+	// view to determine when to display UI for no data.
+	self.fetched = ko.observable( false );
         
         events.includeIn(HScroll);
     };
@@ -141,9 +145,9 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	    });
     };
 
-    HScroll.prototype.activate = function() {
+    HScroll.prototype.compositionComplete = function() {
 	var self = this;
-	return self.search();
+	self.search().then( function() { self.fetched( true ); } );
     };
 
     // Used in the hscroller binding when it hits then end.  Go fetch

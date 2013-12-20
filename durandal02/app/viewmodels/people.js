@@ -276,23 +276,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 	faces_for: faces_for,
 	faces_for_visible: faces_for_visible,
 	selected_name: selected_name,
-
-	activate: function() {
-	    var self = this;
-	    return viblio.api( '/services/faces/all_contacts' ).then( function( data ) {
-		known_faces.removeAll();
-		unknown_faces.removeAll();
-		data.contacts.forEach( function( contact ) {
-		    if ( ! contact.url ) return;
-		    if ( contact.contact_name ) {
-			addto_faces_known( contact, true );
-		    }
-		    else {
-			addto_faces_unknown( contact );
-		    }
-		});
-	    });
-	},
+	fetched: ko.observable( false ),
 
 	// Done editing a person
 	done: function() {
@@ -373,6 +357,22 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 
 	compositionComplete: function() {
 	    var self = this;
+
+ 	    viblio.api( '/services/faces/all_contacts' ).then( function( data ) {
+		known_faces.removeAll();
+		unknown_faces.removeAll();
+		data.contacts.forEach( function( contact ) {
+		    if ( ! contact.url ) return;
+		    if ( contact.contact_name ) {
+			addto_faces_known( contact, true );
+		    }
+		    else {
+			addto_faces_unknown( contact );
+		    }
+		});
+		self.fetched( true );
+	    });
+
 	    $(self.view).find( '.inline-editable' ).editable({
 		mode: 'inline',
 		type: 'typeahead',

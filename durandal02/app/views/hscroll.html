@@ -5,13 +5,13 @@
         <span class="subtitle" data-bind="html: subtitle"></span>
     </div>
   
-    <!-- ko if: mediafiles().length < 1 -->
+    <!-- ko if: fetched() && mediafiles().length < 1 -->
     <div class="marginL45" >
         <p class="font24 whiteText marginR45 doubleSpaced">&#9785; You haven’t uploaded any videos.  Get on it!  Our no fuss uploader makes it easy. <button class="btn btn-secondary" data-bind="click: getApp">Download it now &raquo;</button></p>
     </div>
     <!-- /ko -->
 
-    <div class="sd-scroll" data-bind="hscroller:{rightLimitReached: hLimitReached}, style: {height: mediafiles().length < 1 ? '50px' : '258px' }">
+    <div class="sd-scroll" data-bind="hscroller:{rightLimitReached: hLimitReached}, style: {height: fetched() && mediafiles().length < 1 ? '50px' : '258px' }">
         <!-- ko foreach: mediafiles -->
         <!-- ko compose: $data --><!--/ko-->
         <!--/ko-->

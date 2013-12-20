@@ -5,7 +5,7 @@
     <span class="subtitle" data-bind="html: subtitle"></span>
   </div>
     
-    <!-- ko if: faces().length < 1 -->
+    <!-- ko if: fetched() && faces().length < 1 -->
     <div class="marginL45">
         <img src="css/images/avatar.png" alt="avatar" class="pull-left marginR45">
         <p class="font24 whiteText marginR45 doubleSpaced">Once you upload some more videos,  VIBLIO’s  Magic Tagging™ will find faces in your videos and help you create Memory Boxes of each person’s videos.</p>
