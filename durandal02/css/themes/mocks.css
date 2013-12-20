@@ -1437,6 +1437,11 @@ input:-moz-placeholder {
     font-size: 22px;
 }
 
+.yir .avatar {
+    margin-top: 0;
+    margin-right: 10px;
+}
+
 /********************  Videos Of Page Section  ***************************/
 
 #videosof-page .pstrip {
@@ -1879,6 +1884,10 @@ li.token-input-token-facebook {
 .allVidsPage {
     background-color: rgb(239, 239, 232);
     padding-top: 30px;
+}
+
+.allVidsPage .yir {
+    padding-top: 0;
 }
 
 .allVidsPage .mfLoader {
