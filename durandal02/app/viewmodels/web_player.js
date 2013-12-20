@@ -501,6 +501,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 	    this.mid = args.mid;
 	    $(window).bind('resize', function() {
                 resizePlayer();
+                relatedVidHeight();
             });
             return system.defer( function( dfd ) {
 		// preview==1 means do not count this endpoint call as a view_count, because

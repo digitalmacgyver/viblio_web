@@ -184,6 +184,10 @@ input[type="color"],
     outline: none;
 }
 
+.popover {
+    z-index: 1031;
+}
+
 /***************** START OF MORE GENERAL CSS CLASSES **************************/
 
 
@@ -511,14 +515,13 @@ font-size: 14px;
 }
 
 .shareButton {
-    opacity: .65;
-    padding: 15px 0 0;
-    width: 200px;
-    height: 50px;
+    padding: 25px 0 0;
+    width: 270px;
+    height: 70px;
     text-shadow: none;
-    font-size: 17px;
+    font-size: 24px;
     font-weight: 600;
-    color: rgba(117,117,128,1);
+    color: rgb(117, 117, 128);
 }
 
 .shareButton:hover {
@@ -1462,8 +1465,13 @@ input:-moz-placeholder {
 
 #tv-Wrap .shareButton {
     position: absolute;
-    top: 10px;
+    bottom: 35px;
     right: 10px;
+    opacity: .65;
+    padding: 15px 0 0;
+    width: 200px;
+    height: 50px;
+    font-size: 17px;
 }
 
 .videoOverlay {
@@ -1662,7 +1670,7 @@ input:-moz-placeholder {
 
 #share-video-block {
     height: 100px;
-    width: 280px;
+    width: 282px;
     margin-left: -4px;
     border-left: 4px inset rgba(0,0,0,.2);
 }

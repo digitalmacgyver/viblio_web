@@ -20,7 +20,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     }
 
     function relatedVidHeight() {
-        var newHeight = $('#playerCommentsNavTable').height() + 18;
+        var newHeight = $('#playerCommentsNavTable').height() + 160;
         
 	$('#related-videos-block').find('.vstrip .media-container').css( 'height', newHeight );
         vstrip.updateScroller();
@@ -492,6 +492,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 
 	    $(window).bind('resize', function() {
                 resizePlayer();
+                relatedVidHeight();
             });
 
 	    // Fetch the data we need from the server
