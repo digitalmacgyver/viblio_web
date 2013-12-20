@@ -75,7 +75,6 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     var showPlayerOverlay = ko.observable(false);
     
     function hidePlayerOverlay() {
-        system.log('overlay clicked');
         showPlayerOverlay(false);
     }
 
@@ -86,7 +85,6 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
     var formatted_date = ko.computed( function() {
 	if ( playing() && playing().media() ) {
 	    var date = moment( playing().media().recording_date, 'YYYY-MM-DD HH:mm:ss' );
-	    //$(main_view).find(".recording-date").editable('setValue', date, false);
 	    if ( playing().media().recording_date == '1970-01-01 00:00:00' ) {
 		return 'click to add recording date';
 	    }
@@ -686,6 +684,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		}
 	    });
 	    $(main_view).find(".recording-date").editable('setValue', moment( playing().media().recording_date, 'YYYY-MM-DD HH:mm:ss' ), false);
+	    playing( playing() );
         }
     };
 });

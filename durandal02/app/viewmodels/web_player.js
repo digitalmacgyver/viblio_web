@@ -674,7 +674,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 			    }
 			});
 			
-			}
+		    }
 		}
 	    });
 	}

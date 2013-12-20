@@ -1668,6 +1668,11 @@ input:-moz-placeholder {
     padding-top: 30px;
 }
 
+#webplayer-page #right-side {
+    border-left: 4px inset rgba(0,0,0,.2);
+    padding-top: 0px;
+}
+
 #right-side > div {
     padding: 20px;
 }
