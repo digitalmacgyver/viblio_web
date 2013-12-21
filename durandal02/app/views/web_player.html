@@ -73,7 +73,7 @@
                                             <p class="lightBlueFont" data-bind="visible: comments().length"><span data-bind="text: comments().length ==1 ? '1 Comment' : comments().length + ' Comments'"></span></p>
                                             <p class="lightBlueFont" data-bind="visible: !comments().length">There are no comments to display for this video.</p>
                                             <!-- ko foreach: comments -->
-                                            <div class="comment" data-bind="if: comment.indexOf(' ') != -1 && comment != '' ">
+                                            <div class="comment" data-bind="if: comment.indexOf(' ') != -1 && comment != '' || comment.length < 20">
                                                 <p class="comment-text bottomBorder-Thin" data-bind="html: comment"></p>
                                                 <div class="comment-footer lightBlueFont">
                                                     <p class="when pull-right" data-bind="text: when"></p>
