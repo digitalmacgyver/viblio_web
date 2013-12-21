@@ -37,10 +37,6 @@
                                                 hasFocus: description.editing, 
                                                 event: { blur: function() { description.stopEditing(); description.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }"></textarea>
                                         </div>
-					<div class="recording-date-wrapper pull-right">
-					  <div class="recording-date" data-bind="text: formatted_date"></div>
-					</div>
-					<div class="clearfix"></div>
                                     </div>
                                     <div id="comments">
                                         <div class="comments-header lightBlueFont">
@@ -48,7 +44,7 @@
                                               <img src="css/images/viewsEye.png" />
                                               <span data-bind="html: playing().media().eyes"></span>
                                             </div>
-                                            <p class="todays-date pull-right">Today</p>
+                                            <p class="todays-date recording-date pull-right" data-bind="text: formatted_date"></p>
                                             <div class="observer">
                                               <img class="boxShadowed" src="/services/user/avatar?uid=-&y=36" />
                                             </div>

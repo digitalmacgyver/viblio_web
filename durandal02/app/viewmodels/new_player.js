@@ -15,6 +15,23 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 
     var main_view;
 
+    // This function takes a recording date from the database, which is
+    // in PST (I think) and convert it into UTC so that it is displayed
+    // correctly in the popup calander UI.
+    //
+    function rd_to_Date( rd ) {
+	var lc = new Date( rd );
+	var d  = new Date();
+	d.setUTCDate( lc.getDate() );
+	d.setUTCFullYear( lc.getFullYear() );
+	d.setUTCMonth( lc.getMonth() );
+	d.setUTCHours( 0 );
+	d.setUTCMinutes( 0 );
+	d.setUTCSeconds( 0 );
+	d.setUTCMilliseconds( 0 );
+	return d;
+    }
+
     function resizePlayer() {
 	$("#tv, #tv video").height( ($("#tv").width()*9) / 16 );
     }
@@ -89,7 +106,7 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 		return 'click to add recording date';
 	    }
 	    else {
-		return date.format('MMM D, YYYY h:mm A');
+		return date.format('MMM D, YYYY');
 	    }
 	}
     });
@@ -663,27 +680,40 @@ define( ['durandal/app','durandal/system','plugins/router','plugins/dialog','lib
 
 	    // The recording date
 	    $(self.view).find(".recording-date").editable({
-		mode: 'inline',
-		type: 'combodate',
+		mode: 'popup',
+		type: 'date',
 		unsavedclass: null,
 		highlight: null,
 		savenochange: true,
-		combodate: {
-		    smartDays: true,
-		    maxYear: new Date().getFullYear(),
-		    minYear: 1959,
+		format: 'yyyy-mm-dd',
+		viewformat: 'M d, yyyy',
+		showbuttons: 'bottom',
+		datepicker: {
+		    todayHighlight: true
 		},
-		template: 'MMM / D / YYYY H : mm',
-		format: 'MMM D, YYYY h:mm A',
 		success: function( res, v ) {
-		    var dstring = v.format('YYYY-MM-DD HH:mm:ss');
+		    var m = moment( v );
+		    var dstring = m.format( 'YYYY-MM-DD HH:mm:ss' );
 		    playing().media().recording_date = dstring;
+
+		    // The calander displays UTC. So read it as UTC and
+		    // convert it into local time.  Really just makes
+		    // the calander look as though it is displaying
+		    // local time, I think!
+		    var utc = moment.utc( v );
+		    dstring = utc.format( 'YYYY-MM-DD HH:mm:ss' );
+
 		    viblio.api( '/services/mediafile/change_recording_date', { mid: playing().media().uuid, date: dstring } ).then( function() {
 		    });
 		    return null;
 		}
 	    });
-	    $(main_view).find(".recording-date").editable('setValue', moment( playing().media().recording_date, 'YYYY-MM-DD HH:mm:ss' ), false);
+	    if ( playing().media().recording_date == '1970-01-01 00:00:00' ) {
+		$(main_view).find(".recording-date").editable('setValue', new Date(), false);
+	    }
+	    else {
+		$(main_view).find(".recording-date").editable('setValue', rd_to_Date( playing().media().recording_date ), false);
+	    }
 	    playing( playing() );
         }
     };

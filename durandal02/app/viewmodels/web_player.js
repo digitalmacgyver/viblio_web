@@ -79,7 +79,7 @@ define( ['durandal/app','durandal/system','plugins/router','lib/config','lib/vib
 		return '';
 	    }
 	    else {
-		return date.format('MMM D, YYYY h:mm A');
+		return date.format('MMM D, YYYY');
 	    }
 	}
     });
