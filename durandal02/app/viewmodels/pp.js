@@ -13,6 +13,8 @@ define( [ 'viewmodels/person' ], function( Face ) {
 
     var playing = ko.observable();
     var map;
+    var isNear = ko.observable();
+    var nolocation = ko.observable( true );
 
     var disable_prev = ko.observable( true );
     var disable_next = ko.observable( false );
@@ -39,7 +41,7 @@ define( [ 'viewmodels/person' ], function( Face ) {
             }
         }
     });
-    var usercomment = ko.observable();
+    var usercomment = ko.observable('');
 
     var comments = ko.observableArray([]);
 
@@ -181,6 +183,92 @@ define( [ 'viewmodels/person' ], function( Face ) {
         });
     }
 
+    // This gets triggered when a new user comment has been entered.
+    //
+    app.on( 'player:newcomment', function( data ) {
+        viblio.api( '/services/mediafile/add_comment',
+                    { mid: playing().media().uuid,
+                      txt: usercomment(),
+                    } ).then( function( json ) {
+                        usercomment('');
+                        var c = json.comment;
+                        var hash = { comment: c.comment };
+                        hash['who'] = c.who || 'anonymous'; 
+                        hash['when'] = prettyWhen( new Date(), new Date() );
+                        comments.unshift( hash );
+                        viblio.mpEvent( 'comment' );
+                    });
+    });
+
+    // Extracts an address from the structure returned from
+    // a call on the server to http://maps.googleapis.com
+    //
+    function getCountry(results)
+    {
+        return results[0].formatted_address;
+        for (var i = 0; i < results[0].address_components.length; i++) {
+            var shortname = results[0].address_components[i].short_name;
+            var longname = results[0].address_components[i].long_name;
+            var type = results[0].address_components[i].types;
+            if (type.indexOf("country") != -1) {
+                if (!isNullOrWhitespace(shortname)) {
+                    return shortname;
+                }
+                else {
+                    return longname;
+                }
+            }
+        }
+    }
+    
+    function isNullOrWhitespace(text) {
+        if (text == null) {
+            return true;
+        }
+        return text.replace(/\s/gi, '').length < 1;
+    }
+
+    // A new video is beling played.  Fetch its approx. location (string
+    // address from http://maps.googleapis.com) and center/zoom to it on the
+    // map.
+    function near( m ) {
+        map.removeAllMarkers();
+        // map.disableSetLocation();
+        if ( m.lat ) {
+            viblio.api( '/services/geo/location', { lat: m.lat, lng: m.lng } ).then( function( res ) {
+                if ( res && res.length ) {
+                    nolocation( false );
+                    isNear( getCountry( res ) );
+                    map.addMarker( m.lat, m.lng, m, true );
+                }
+                else {
+                    isNear( 'Find in map' );
+                    // comingSoon(m);
+                    nolocation( true );
+                }
+            });
+        }
+        else {
+            isNear( 'Find in map' );
+            // comingSoon(m);
+            nolocation( true );
+        }
+    }
+
+    function comingSoon( m ) {
+        map.centerDefault();
+        map.enableSetLocation( function( latlng ) {
+            viblio.api( '/services/geo/change_latlng', 
+                        { mid: playing().media().uuid,
+                          lat: latlng.lat,
+                          lng: latlng.lng } ).then( function() {
+                              playing().media().lat = latlng.lat;
+                              playing().media().lng = latlng.lng;
+                              near( playing().media() );
+                          });
+        });
+    }
+
     return {
 	showShareVidModal: function() {
             customDialogs.showShareVidModal( playing() );
@@ -203,6 +291,35 @@ define( [ 'viewmodels/person' ], function( Face ) {
 	can_leave_comments: can_leave_comments,
 	show_comments: show_comments,
 	comments: comments,
+
+	nolocation: nolocation,
+	isNear: isNear,
+
+        showInteractiveMap: function() {
+            customDialogs.showInteractiveMap( playing().media, {
+                disableMapDrag: false,
+                disableMapMouseZoom: false,
+                disableMapTouchZoom: false,
+                disableMapClickZoom: true,
+                doneCallback: function( m ) {
+                    near( m );
+                }
+            });
+        },
+
+	relocate: function() {
+            viblio.mpEvent( 'change_location' );
+            customDialogs.showInteractiveMap( playing().media, {
+                relocate: true,
+                disableMapDrag: false,
+                disableMapMouseZoom: false,
+                disableMapTouchZoom: false,
+                disableMapClickZoom: true,
+                doneCallback: function( m ) {
+                    near( m );
+                }
+            });
+        },
 
 	attached: function( elem ) {
 	    view = elem;
@@ -234,6 +351,11 @@ define( [ 'viewmodels/person' ], function( Face ) {
 	compositionComplete: function() {
 	    setupFlowplayer( '.pp-tv', playing().media() );
 	    setupComments( playing().media() );
+	    map = $("#geo-map").vibliomap({
+                disableZoomControl: true
+            });
+	    // center/zoom to media file location
+            near( playing().media() );
 
 	    $(window).bind('resize', resizePlayer );
 

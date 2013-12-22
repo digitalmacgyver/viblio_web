@@ -67,17 +67,28 @@
       </div>
     </td>
 
-    <td class="pp-info-right-column">
+    <td class="pp-info-right-column lightBlueBG bottomBorder-Thin">
 
       <div class="pp-info-faces-wrapper darkBlueBG bottomBorder-Thin">
 	<div class="pp-info-faces">
 	</div>
       </div>
 
-
-      <div class="pp-info-map-wrapper lightBlueBG bottomBorder-Thin">
-	<div class="pp-info-map">
-	</div>
+      <div class="pp-info-map-wrapper">
+	<div id="geo">
+          <div id="geo-title" class="textShadowed">
+            <span data-bind="visible: isNear() != 'Find in map' ">Near&nbsp;</span><span data-bind="text: isNear()"></span>
+          </div>
+          <div style="position: relative">
+            <div id="geo-map" class="map boxShadowed" data-bind="css:{hideme: nolocation() == true}"></div>
+            <div id="geo-map-reloc" data-bind="css:{hideme: nolocation() == true}">
+              <button class="btn btn-primary" data-bind="click: relocate">Change Location</button>
+            </div>
+            <div id="geo-nomap" data-bind="css:{hideme: nolocation() == false}">
+              <img src="css/images/mapMarker-Large.png" data-bind="click: showInteractiveMap" />
+            </div>
+          </div>
+        </div>
       </div>
 
     </td>
