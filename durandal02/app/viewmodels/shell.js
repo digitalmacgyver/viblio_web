@@ -135,6 +135,9 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'new_player',             moduleId: 'new_player',     title: 'Video Player',
 	      nav: false,   authenticated: true,   header: page_header },
 
+            { route: 'pp',                 moduleId: 'pp',                 title: 'PP',
+	      nav: true,   authenticated: true,   header: page_header },
+
             { route: 'forgotPassword',     moduleId: 'forgotPassword',     title: 'Forgot your Password?',
 	      nav: false,   authenticated: false,  header: landing_header },
 

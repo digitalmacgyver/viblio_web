@@ -1,0 +1,86 @@
+<table>
+  <tr>
+
+    <td class="pp-info-left-column babyBlueBG bottomBorder-Thin">
+      
+      <div class="pp-info-title">
+	<div id="title-desc">
+	  <div data-bind="if: title_editable">
+	    <div data-bind="liveEditor: title">
+              <h3 class="view vidTitle" data-bind="click: title.edit, text: playing().title() || 'Click to edit title'"></h3>
+              <div class="editTitle-Wrap">
+                <input type="text" class="edit" data-bind="value: title, 
+							   hasFocus: title.editing, 
+							   event: { blur: function() { title.stopEditing(); title.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }" />
+              </div>  
+            </div>
+            <div data-bind="liveEditor: description">
+              <p class="view vidDescription" data-bind="click: description.edit, text: description() || 'Click to edit description'"></p>
+              <textarea class="edit editDescription" data-bind="value: description, 
+								hasFocus: description.editing, 
+								event: { blur: function() { description.stopEditing(); description.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }"></textarea>
+            </div>
+	  </div>
+	  <div data-bind="ifnot: title_editable">
+	    <h3 data-bind="text: title()"></h3>
+            <p data-bind="text: description()"></p>
+	  </div>
+	</div>
+      </div>
+
+      <div id="comments">
+	<div class="comments-header lightBlueFont">
+          <div class="views pull-right">
+            <img src="css/images/viewsEye.png" />
+            <span data-bind="html: playing().media().eyes"></span>
+          </div>
+          <p class="todays-date recording-date pull-right" data-bind="text: formatted_date"></p>
+          <div class="observer">
+            <img class="boxShadowed" src="/services/user/avatar?uid=-&y=36" />
+          </div>
+          <p>by <span class="heavyWeightFont" data-bind="html: user().displayname"></span></p>
+        </div>
+        <div class="clearfix"></div>
+        <div class="comment-editor" data-bind="visible: can_leave_comments, liveEditor: usercomment">
+          <p class="view vidDescription" data-bind="click: usercomment.edit, text:'Comment on this video...'"></p>
+          <textarea class="edit editDescription" 
+                    data-bind="value:usercomment,
+                               hasFocus: usercomment.editing,
+                               event: { blur: function() { usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment') } }"></textarea>
+        </div>
+	
+	<div class="all-comments" data-bind="visible: show_comments">
+	  <p class="lightBlueFont" data-bind="visible: comments().length">
+	    <span data-bind="text: comments().length ==1 ? '1 Comment' : comments().length + ' Comments'"></span>
+	  </p>
+          <!-- ko foreach: comments -->
+          <div class="comment" data-bind="if: comment.indexOf(' ') != -1 && comment != '' || comment.length < 20">
+            <p class="comment-text bottomBorder-Thin" data-bind="html: comment"></p>
+            <div class="comment-footer lightBlueFont">
+              <p class="when pull-right" data-bind="text: when"></p>
+              <p>by&nbsp;<span class="who heavyWeightFont" data-bind="text: who"></span></p>
+            </div>
+          </div>
+          <!-- /ko -->
+	</div>
+
+      </div>
+    </td>
+
+    <td class="pp-info-right-column">
+
+      <div class="pp-info-faces-wrapper darkBlueBG bottomBorder-Thin">
+	<div class="pp-info-faces">
+	</div>
+      </div>
+
+
+      <div class="pp-info-map-wrapper lightBlueBG bottomBorder-Thin">
+	<div class="pp-info-map">
+	</div>
+      </div>
+
+    </td>
+
+  </tr>
+</table>

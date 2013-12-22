@@ -1,0 +1,84 @@
+<style>
+.pp-main {
+    width: 100%;
+}
+.pp-main .pp-left-arrow-column {
+    width: 55px;
+    padding-left: 40px;
+    vertical-align: top;
+}
+.pp-main .pp-right-arrow-column {
+    width: 55px;
+    vertical-align: top;
+    padding-right: 40px;
+}
+.pp-main .pp-player-column {
+    padding-top: 50px;
+    vertical-align: top;
+}
+.pp-main .pp-related-column {
+    width: 326px;
+    border-left: 4px inset rgba(0,0,0,.2);
+    vertical-align: top;
+}
+
+.pp-info-map-wrapper,
+.pp-info-faces-wrapper,
+.pp-info-right-column {
+    width: 366px;
+}
+.pp-info-map-wrapper {
+    height: 320px;
+    min-height: 320px;
+}
+.pp-info-faces-wrapper {
+    min-height: 100px;
+}
+.pp-player-column table {
+    width: 100%;
+}
+
+.pp-tv-wrap .shareButton {
+    position: absolute;
+    bottom: 35px;
+    right: 10px;
+    opacity: .65;
+    padding: 15px 0 0;
+    width: 200px;
+    height: 50px;
+    font-size: 17px;
+}
+.pp-info-right-column,
+.pp-info-left-column {
+    vertical-align: top;
+}
+</style>
+<div class="pp">
+  <table class="pp-main">
+    <tr>
+
+      <td class="pp-left-arrow-column">
+	<div class="player-control left-arrow lightBlueBG bottomBorder-Thin" 
+	     data-bind="click: previousRelated, css: {disabled: disable_prev()}">
+          <img src="css/images/arrowLeft.png"/>
+        </div>
+      </td>
+
+      <td class="pp-player-column">
+	<!-- ko compose: "pp/pp-player-column.html" --><!-- /ko -->
+      </td>
+
+      <td class="pp-right-arrow-column">
+	<div class="player-control right-arrow lightBlueBG bottomBorder-Thin" 
+	     data-bind="click: nextRelated, css: {disabled: disable_next()}">
+          <img src="css/images/arrowRight.png" />
+        </div>
+      </td>
+
+      <td class="pp-related-column lightBlueBG bottomBorder-Thin" data-bind="visible: pp_related_column_visible">
+	<!-- ko compose: "pp/pp-related-column.html" --><!-- /ko -->
+      </td>
+
+    </tr>
+  </table>
+</div>
