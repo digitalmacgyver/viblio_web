@@ -1,11 +1,10 @@
-define( [ 'viewmodels/person' ], function( Face ) {
+define( [ 'viewmodels/person', 'lib/related_video' ], function( Face, Related ) {
     var app = require( 'durandal/app' );
     var system = require( 'durandal/system' );
     var router = require( 'plugins/router' );
     var config = require( 'lib/config' );
     var viblio = require( 'lib/viblio' );
     var Mediafile = require( 'viewmodels/mediafile' );
-    var Strip = require( 'viewmodels/mediavstrip' );
     var customDialogs = require( 'lib/customDialogs' );
 
     var incoming_mid;
@@ -27,6 +26,7 @@ define( [ 'viewmodels/person' ], function( Face ) {
     var pp_related_column_visible = ko.observable( true );
     var can_leave_comments = ko.observable( true );
     var show_comments = ko.observable( true );
+    var recording_date_editable = ko.observable( true );
 
     var title = ko.observable();
     var description = ko.observable();
@@ -55,10 +55,21 @@ define( [ 'viewmodels/person' ], function( Face ) {
         playing().description( v );
     });
 
+    var finfo = ko.observable();
+    var faces = ko.observableArray([]);
+
     var showPlayerOverlay = ko.observable(false);
     function hidePlayerOverlay() {
         showPlayerOverlay(false);
     }
+
+    // default search criterion for related videos.
+    var defaultCriterion = [ 'by_date',
+			     'by_faces',
+			     'by_geo' ];
+
+    var mediafiles = ko.observableArray([]);
+    var query_in_progress = ko.observable( false );
 
     // Play next related video
     function nextRelated() {
@@ -269,6 +280,87 @@ define( [ 'viewmodels/person' ], function( Face ) {
         });
     }
 
+    function setupFaces( m ) {
+	viblio.api( '/services/faces/faces_in_mediafile', { mid: m.uuid } ).then( function( data ) {
+	    faces.removeAll();
+	    if ( data.faces && data.faces.length ) {
+		var total = 0, ident = 0,
+		count = data.faces.length;
+		
+		for( var i=0; i<count; i++ ) {
+		    var face = data.faces[i];
+		    total += 1;
+		    var F = {
+			url: face.url,
+			appears_in: 1,
+			contact_name: 'unknown',
+			contact_email: null
+		    };
+		    if ( face.contact ) {
+			ident += 1;
+			F.contact_name = face.contact.contact_name;
+			F.contact_email = face.contact.contact_email;
+			F.id = face.contact.contact_id;
+			F.uuid = face.contact.uuid;
+		    }
+		    var face = new Face( F, { 
+			clickable: false, 
+			leftBadgeIcon: 'icon-remove-circle',
+			leftBadgeClick: removePerson,
+			leftBadgeMode: 'hover',
+			show_name: false, 
+			show_tag3: true,
+		    });
+		    face.on( 'person:tag3_changed', function( f, newname, oldname ) {
+			// Have to see if newname is an existing contact...
+			viblio.api( '/services/faces/contact_for_name', { contact_name: newname } ).then( function( data ) {
+			    if ( data.contact ) {
+				if ( oldname == 'unknown' ) {
+				    // Unidentifed to identified
+				    viblio.mpEvent( 'face_tag_to_new' );
+				}
+				else {
+				    // Merge identified
+				    viblio.mpEvent( 'face_merge' );
+				}
+				viblio.api( '/services/faces/tag', {
+				    uuid: f.data.uuid,
+				    cid:  data.contact.uuid } ).then( function() {
+					// If this face is already displayed, remove it.
+					faces().forEach( function( ex ) {
+					    if ( ex.name() == newname && ex != f ) {
+						faces.remove( ex );
+					    }
+					});
+				    });
+			    }
+			    else {
+				viblio.mpEvent( 'face_tag_to_identified' );
+				viblio.api( '/services/faces/tag', {
+				    uuid: f.data.uuid,
+				    contact_name: newname } );
+			    }
+			});
+		    });
+		    faces.push( face );
+		}
+		finfo( 'Starring' );
+	    }
+	    else {
+		finfo( '' );
+	    }
+	});
+    }
+
+    function removePerson( face ) {
+	viblio.api( '/services/faces/remove_from_video', { 
+	    cid: face.data.uuid, 
+	    mid: playing().media().uuid } ).then( function( data ) {
+		viblio.mpEvent( 'face_removed_from_video' );
+		faces.remove( face );
+	    });
+    }
+
     return {
 	showShareVidModal: function() {
             customDialogs.showShareVidModal( playing() );
@@ -294,6 +386,12 @@ define( [ 'viewmodels/person' ], function( Face ) {
 
 	nolocation: nolocation,
 	isNear: isNear,
+
+	finfo: finfo,
+	faces: faces,
+
+	mediafiles: mediafiles,
+	query_in_progress: query_in_progress,
 
         showInteractiveMap: function() {
             customDialogs.showInteractiveMap( playing().media, {
@@ -350,14 +448,86 @@ define( [ 'viewmodels/person' ], function( Face ) {
 
 	compositionComplete: function() {
 	    setupFlowplayer( '.pp-tv', playing().media() );
+	    setupFaces( playing().media() );
 	    setupComments( playing().media() );
 	    map = $("#geo-map").vibliomap({
                 disableZoomControl: true
             });
+
 	    // center/zoom to media file location
             near( playing().media() );
 
 	    $(window).bind('resize', resizePlayer );
+
+	    if ( pp_related_column_visible() ) {
+		Related.init( '.pp-related-column-related-videos', mediafiles, query_in_progress, function( m ) {
+		    // play a new video
+		});
+		Related.search( playing().media().uuid );
+	    }
+
+	    // related video search widget
+	    $(view).find( '.related-by' ).editable({
+                mode: 'popup',
+                type: 'checklist',
+                placement: 'left',
+                emptytext: 'by...',
+                emptyclass: '',
+                source: [{value:'by_date',  text: 'by date'},
+                         {value:'by_faces', text: 'by people'},
+                         {value:'by_geo',   text: 'by location'}],
+                value: defaultCriterion,
+                validate: function( v ) {
+                    if ( v.length == 0 ) {
+                        return({ newValue:defaultCriterion,
+                                 msg: 'Select at least one criterion' });
+                    }
+                },
+                success: function( res, v) {
+                    vstrip.criterion.by_date  = false;
+                    vstrip.criterion.by_faces = false;
+                    vstrip.criterion.by_geo   = false;
+                    v.forEach( function( key ) {
+                        vstrip.criterion[key] = true;
+                    });
+                    vstrip.reset();
+                    vstrip.search( query().mid );
+                }
+            });
+
+
+	    // recording date editable
+	    if ( recording_date_editable() ) {
+		$(view).find(".recording-date").editable({
+                    mode: 'popup',
+                    type: 'date',
+                    unsavedclass: null,
+                    highlight: null,
+                    savenochange: true,
+                    format: 'yyyy-mm-dd',
+                    viewformat: 'M d, yyyy',
+                    showbuttons: 'bottom',
+                    datepicker: {
+			todayHighlight: true
+                    },
+                    success: function( res, v ) {
+			var m = moment( v );
+			var dstring = m.format( 'YYYY-MM-DD HH:mm:ss' );
+			playing().media().recording_date = dstring;
+
+			// The calander displays UTC. So read it as UTC and
+			// convert it into local time.  Really just makes
+			// the calander look as though it is displaying
+			// local time, I think!
+			var utc = moment.utc( v );
+			dstring = utc.format( 'YYYY-MM-DD HH:mm:ss' );
+
+			viblio.api( '/services/mediafile/change_recording_date', { mid: playing().media().uuid, date: dstring } ).then( function() {
+			});
+			return null;
+                    }
+		});
+	    }
 
 	    playing( playing() ); // tickles formatted_date
 	}

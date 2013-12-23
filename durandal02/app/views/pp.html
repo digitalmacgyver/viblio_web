@@ -17,11 +17,20 @@
     vertical-align: top;
 }
 .pp-main .pp-related-column {
-    width: 326px;
+    width: 280px;
     border-left: 4px inset rgba(0,0,0,.2);
     vertical-align: top;
+    padding-right: 20px;
+    padding-left: 20px;
 }
 
+.pp-related-column-related-videos .mediafile {
+    width: 270px;
+    margin-bottom: 25px;
+}
+.pp-related-column-related-videos .mediafile img {
+    height: 152px;
+}
 .pp-info-map-wrapper,
 .pp-info-faces-wrapper,
 .pp-info-right-column {
@@ -53,7 +62,8 @@
     vertical-align: top;
 }
 .pp-info-left-column .all-comments {
-    max-height: 250px;
+    /* max-height: 250px; */
+    height: 100%;
     overflow: scroll;
 }
 #geo-map-reloc {
@@ -64,6 +74,41 @@
     margin-right: auto;
     margin-left: auto;
     margin-top: 6px;
+}
+.pp-info-faces-wrapper .person {
+    width: 100px;
+}
+.pp-info-faces-wrapper .person img {
+    height: 100px;
+}
+.pp-info-faces-wrapper .person .left-badge {
+    cursor: pointer;
+    right: 70px;
+    top: -5px;
+    font-size: 30px;
+}
+.pp-info-faces-wrapper .person .right-badge {
+    cursor: pointer;
+}
+.pp-related-column-header {
+    padding-top: 20px;
+}
+.pp-related-column-header span,
+.pp-related-column-header p {
+    margin-top: 0;
+    margin-left: 3px;
+    font-weight: 100;
+    text-align: left;
+    font-size: 25px;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.pp-related-column-header span {
+    font-size: 20px;
+}
+.pp-related-column-header .editable-checklist span {
+    color: black;
 }
 </style>
 <div class="pp">

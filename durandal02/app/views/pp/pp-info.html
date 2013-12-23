@@ -70,8 +70,15 @@
     <td class="pp-info-right-column lightBlueBG bottomBorder-Thin">
 
       <div class="pp-info-faces-wrapper darkBlueBG bottomBorder-Thin">
-	<div class="pp-info-faces">
-	</div>
+        <div id="faces">
+          <span class="textShadowed" data-bind="text: finfo"></span>
+          <ul class="clearfix playerfaces">
+            <!-- ko foreach: faces -->
+            <li data-bind="compose: $data"></li>
+            <!-- /ko -->
+            <li class="clearfix"></li>
+          </ul>
+        </div>
       </div>
 
       <div class="pp-info-map-wrapper">

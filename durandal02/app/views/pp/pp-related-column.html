@@ -2,9 +2,20 @@
   <div class="pp-related-column-share">
   </div>
   <div class="pp-related-column-header">
+    <span class="related-by pull-right">by...</span>
+    <p class="relatedVideosTitle" class="textShadowed">Related Videos</p>
   </div>
   <div class="pp-related-column-related">
     <div class="pp-related-column-related-videos">
+      <div class="no-related-videos" data-bind="if: mediafiles().length==0 && query_in_progress()==false">
+        There are no related videos.
+      </div>
+      <!-- ko foreach: mediafiles -->
+      <div data-bind="compose: $data"></div>
+      <!-- /ko -->
+      <div class="vstrip-query-in-progress" data-bind="visible: query_in_progress()">
+        <i class="icon-spinner icon-spin active"></i>
+      </div>
     </div>
   </div>
 </div>
