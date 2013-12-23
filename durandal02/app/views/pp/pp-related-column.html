@@ -6,7 +6,7 @@
     <p class="relatedVideosTitle" class="textShadowed">Related Videos</p>
   </div>
   <div class="pp-related-column-related">
-    <div class="pp-related-column-related-videos">
+    <div class="pp-related-column-related-videos" data-bind="vscroller: {}">
       <div class="no-related-videos" data-bind="if: mediafiles().length==0 && query_in_progress()==false">
         There are no related videos.
       </div>

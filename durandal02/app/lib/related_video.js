@@ -59,7 +59,8 @@ define( function() {
 				 options );
             if ( pager.next_page ) {
                 searching( true );
-                viblio.api( '/services/mediafile/related', opts ) 
+                //viblio.api( '/services/mediafile/related', opts ) 
+                viblio.api( '/services/mediafile/list', opts ) 
                     .then( function( json ) {
                         pager = json.pager;
                         json.media.forEach( function( mf ) {
