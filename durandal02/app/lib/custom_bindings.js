@@ -173,7 +173,7 @@ define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip
 	init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
 	    var $element = $(element);
             var value = ko.utils.unwrapObservable(valueAccessor()) || {};
-	    var tag3 = {};
+	    var tag3 = {mode: 'popup',display: null};
 	    //build a new object that has the global options with overrides from the binding
             $.extend(true, tag3, ko.bindingHandlers.tag3);
             if (value.options && tag3.options) {
@@ -183,7 +183,8 @@ define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip
             ko.utils.extend(tag3, value);
 	    $element.addClass( 'tag3-editable' );
 	    $element.editable({
-		mode: 'popup',
+		display: tag3.display,
+		mode: tag3.mode,
 		type: 'typeahead',
 		value: ( tag3.name() == 'unknown' ? null : tag3.name() ),
 		source: '/services/faces/all_contacts',
@@ -301,58 +302,6 @@ define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip
 		$element.smoothDivScroll("redoHotSpots");
 		if ( opts && opts.enable ) 
 		    $element.smoothDivScroll("enable" );
-	    });
-	}
-    };
-
-    ko.bindingHandlers.vscroller = {
-	init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-	    var $element = $(element);
-            var value = ko.utils.unwrapObservable(valueAccessor()) || {};
-	    var vscroller = {};
-	    //build a new object that has the global options with overrides from the binding
-            $.extend(true, vscroller, ko.bindingHandlers.vscroller);
-            if (value.options && vscroller.options) {
-                ko.utils.extend(vscroller.options, value.options);
-                delete value.options;
-            }
-            ko.utils.extend(vscroller, value);
-
-	    // Add a common class name for all such scrollers
-	    $element.addClass( "vertical-scroller" );
-
-	    // Automatically add the hot spot overrides we use in viblio
-	    //$('<button class="btn btn-small fwd btn-nav mCSB_buttonRight"><img src="css/images/arrowRight.png"/></button>').appendTo( $element );
-	    //$('<button class="btn btn-small back btn-nav mCSB_buttonLeft"><img src="css/images/arrowLeft.png"/></button>').appendTo( $element );
-
-	    // Create the scroller
-	    $element.smoothDivVScroll({
-		//scrollingHotSpotLeftClass: "mCSB_buttonLeft",
-		//scrollingHotSpotRightClass: "mCSB_buttonRight",
-		hotSpotScrolling: false,
-		mousewheelScrolling: 'allDirections',
-		//visibleHotSpotBackgrounds: 'always',
-		setupComplete: function() {
-		    if ( vscroller.setupComplete )
-			vscroller.setupComplete.call( bindingContext['$data'] );
-		},
-		scrollerRightLimitReached: function() {
-		    if ( vscroller.rightLimitReached )
-			vscroller.rightLimitReached.call( bindingContext['$data'] );
-		    else 
-			// This hides the right fwd button when no data is left
-			$element.smoothDivVScroll("nomoredata");
-		}
-            });
-	    // Initialize the scroller (viblio hack)
-	    $element.trigger( 'initialize' );
-
-	    // Set up the handler for children-changed, so we can redraw
-	    $element.on( 'children-changed', function( e, opts ) {
-		$element.smoothDivVScroll("recalculateScrollableArea");
-		//$element.smoothDivVScroll("redoHotSpots");
-		if ( opts && opts.enable ) 
-		    $element.smoothDivVScroll("enable" );
 	    });
 	}
     };

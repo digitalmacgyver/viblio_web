@@ -25,30 +25,34 @@
 	    <h3 data-bind="text: title()"></h3>
             <p data-bind="text: description()"></p>
 	  </div>
+
+	  <div class="comments-header lightBlueFont">
+            <div class="views pull-right">
+              <img src="css/images/viewsEye.png" />
+              <span data-bind="html: playing().media().eyes"></span>
+            </div>
+            <p class="todays-date recording-date pull-right" data-bind="text: formatted_date"></p>
+            <div class="observer">
+              <img class="boxShadowed" src="/services/user/avatar?uid=-&y=36" />
+            </div>
+            <p>by <span class="heavyWeightFont" data-bind="html: user().displayname"></span></p>
+          </div>
+          <div class="clearfix"></div>
+
 	</div>
       </div>
 
       <div id="comments">
-	<div class="comments-header lightBlueFont">
-          <div class="views pull-right">
-            <img src="css/images/viewsEye.png" />
-            <span data-bind="html: playing().media().eyes"></span>
+	<div class="comment-header-wrap">
+          <div class="comment-editor" data-bind="visible: can_leave_comments, liveEditor: usercomment">
+            <p class="view vidDescription" data-bind="click: usercomment.edit, text:'Comment on this video...'"></p>
+            <textarea class="edit editDescription" 
+                      data-bind="value:usercomment,
+				 hasFocus: usercomment.editing,
+				 event: { blur: function() { usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment') } }"></textarea>
           </div>
-          <p class="todays-date recording-date pull-right" data-bind="text: formatted_date"></p>
-          <div class="observer">
-            <img class="boxShadowed" src="/services/user/avatar?uid=-&y=36" />
-          </div>
-          <p>by <span class="heavyWeightFont" data-bind="html: user().displayname"></span></p>
-        </div>
-        <div class="clearfix"></div>
-        <div class="comment-editor" data-bind="visible: can_leave_comments, liveEditor: usercomment">
-          <p class="view vidDescription" data-bind="click: usercomment.edit, text:'Comment on this video...'"></p>
-          <textarea class="edit editDescription" 
-                    data-bind="value:usercomment,
-                               hasFocus: usercomment.editing,
-                               event: { blur: function() { usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment') } }"></textarea>
-        </div>
-	
+	</div>
+
 	<div class="all-comments" data-bind="visible: show_comments">
 	  <p class="lightBlueFont" data-bind="visible: comments().length">
 	    <span data-bind="text: comments().length ==1 ? '1 Comment' : comments().length + ' Comments'"></span>
@@ -69,34 +73,32 @@
 
     <td class="pp-info-right-column lightBlueBG bottomBorder-Thin">
 
-      <div class="pp-info-faces-wrapper darkBlueBG bottomBorder-Thin">
-        <div id="faces">
-          <span class="textShadowed" data-bind="text: finfo"></span>
-          <ul class="clearfix playerfaces">
-            <!-- ko foreach: faces -->
-            <li data-bind="compose: $data"></li>
-            <!-- /ko -->
-            <li class="clearfix"></li>
-          </ul>
+      <div class="pp-info-faces-wrapper">
+	<div class="pp-share">
+	  <a class="btn btn-primary" href="#" data-bind="click: showShareVidModal">
+            <i class="icon-share"></i> Share this Video!
+	  </a>
+	</div>
+        <div class="pp-faces-box">
+	  <!-- ko if: faces_fetched() && faces().length<1 -->
+	  <div class="pp-no-faces">
+	    <img src="css/images/avatar.png" alt="avatar" />
+	  </div>
+	  <!-- /ko -->
+	  <!-- ko if: faces_fetched() && faces().length>0 -->
+	  <!-- ko foreach: faces -->
+	  <!-- ko compose: $data --><!-- /ko -->
+	  <!-- /ko -->
+	  <div class="clearfix"></div>
+	  <!-- /ko -->
         </div>
+
+	<div class="pp-no-faces pp-new-face" data-bind="if: faces_fetched">
+	  <p class="textShadowed whiteText" data-bind="tag3:{mode:'inline',display:false,name:add_face_to_video,changed:add_face}, text:'Who else is in this video?'"></p>
+	</div>
+
       </div>
 
-      <div class="pp-info-map-wrapper">
-	<div id="geo">
-          <div id="geo-title" class="textShadowed">
-            <span data-bind="visible: isNear() != 'Find in map' ">Near&nbsp;</span><span data-bind="text: isNear()"></span>
-          </div>
-          <div style="position: relative">
-            <div id="geo-map" class="map boxShadowed" data-bind="css:{hideme: nolocation() == true}"></div>
-            <div id="geo-map-reloc" data-bind="css:{hideme: nolocation() == true}">
-              <button class="btn btn-primary" data-bind="click: relocate">Change Location</button>
-            </div>
-            <div id="geo-nomap" data-bind="css:{hideme: nolocation() == false}">
-              <img src="css/images/mapMarker-Large.png" data-bind="click: showInteractiveMap" />
-            </div>
-          </div>
-        </div>
-      </div>
 
     </td>
 

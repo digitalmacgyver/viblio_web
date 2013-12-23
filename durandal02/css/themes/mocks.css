@@ -1581,7 +1581,7 @@ input:-moz-placeholder {
 }
 
 .comments-header {
-    margin-bottom: 34px;
+    padding-top: 8px;
 }
 
 .all-comments > p,
@@ -1590,7 +1590,7 @@ input:-moz-placeholder {
 }
 
 .comments-header .views {
-    margin-top: -7px;
+    margin-top: 2px;
     margin-left: 40px;
 }
 
@@ -2781,6 +2781,13 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 #nplayer-page .vstrip .mediafile .mplay-icon,
 #nplayer-page .vstrip .mediafile .mplay-icon:hover,
 #nplayer-page .vstrip .mediafile .mplay-icon:visited {
+    top: 40px;
+    left: 101px;
+}
+
+.pp-related-column-related-videos .mediafile .mplay-icon,
+.pp-related-column-related-videos .mediafile .mplay-icon:hover,
+.pp-related-column-related-videos .mediafile .mplay-icon:visited {
     top: 40px;
     left: 101px;
 }

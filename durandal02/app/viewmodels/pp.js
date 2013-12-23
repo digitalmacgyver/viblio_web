@@ -57,6 +57,8 @@ define( [ 'viewmodels/person', 'lib/related_video' ], function( Face, Related ) 
 
     var finfo = ko.observable();
     var faces = ko.observableArray([]);
+    var faces_fetched = ko.observable( false );
+    var add_face_to_video = ko.observable();
 
     var showPlayerOverlay = ko.observable(false);
     function hidePlayerOverlay() {
@@ -70,17 +72,109 @@ define( [ 'viewmodels/person', 'lib/related_video' ], function( Face, Related ) 
 
     var mediafiles = ko.observableArray([]);
     var query_in_progress = ko.observable( false );
+    var next_available_clip = ko.observable( 0 );
+
+    // Play a new video.  Used after the main player is created in
+    // attached.  This reuses the player to play a different clip.
+    //
+    function playVid( m ) {
+        // Scroll to top of page
+        $(document).scrollTop(0);
+
+        if ( playing() )
+            playing().unhighlight();
+
+        playing( m );
+        playing().highlight();
+
+        title( playing().title() || 'Click to add a title.' );
+        description( playing().description() || 'Click to add a description.' );
+        setupComments( m.media() );
+        setupFaces( m.media() );
+        near( m.media() );
+
+        // We don't nessesarily have the main urls needed to stream
+        // the video.  If we don't, go get them and save them in the
+        // related video structure.
+        if ( ! m.media().views.main ) {
+            viblio.api( '/services/mediafile/cf', { mid: m.media().uuid } ).then( function( data ) {
+                if ( data && data.url && data.cf_url ) {
+                    m.media().views.main = { url: data.url, cf_url: data.cf_url };
+                    flowplayer().play({
+                        url: 'mp4:' + m.media().views.main.cf_url,
+                        ipadUrl: encodeURIComponent(m.media().views.main.url)
+                    });
+                }
+            });
+        }
+        else {
+            flowplayer().play({
+                url: 'mp4:' + m.media().views.main.cf_url,
+                ipadUrl: encodeURIComponent(m.media().views.main.url)
+            });
+        }
+        viblio.mpEvent( 'related_video' );
+    }
 
     // Play next related video
     function nextRelated() {
+        // We need to ask the vstrip if the next available clip is 
+        // actually available.  
+        if ( Related.isClipAvailable( next_available_clip() ) ) {
+            disable_prev( false );
+            Related.scrollTo( mediafiles()[ next_available_clip() ] );
+            playVid( mediafiles()[ next_available_clip() ] );
+            next_available_clip( next_available_clip() + 1 );
+            if ( ! Related.isClipAvailable( next_available_clip() ) )
+                 disable_next( true );
+        }
+        else {
+            disable_next( true );
+        }
     }
 
     // Play previous related video
     function previousRelated() {
+        var p = next_available_clip() - 2;
+        if ( p < 0 ) {
+            disable_prev( true );
+        }
+        else {
+            if ( p == 0 ) {
+                // We've transitioned to 0.  Play it but disable prev
+                disable_prev( true );
+            }
+            next_available_clip( p );
+            Related.scrollTo( mediafiles()[ next_available_clip() ] );
+            playVid( mediafiles()[ next_available_clip() ] );
+            next_available_clip( p + 1 );
+            disable_next( false );
+        }
+    }
+
+    // User can directly select a related video and
+    // play it.
+    function playRelated( m ) {
+        var index = mediafiles.indexOf( m );
+        next_available_clip( index + 1 );
+        playVid( m );
     }
 
     function resizePlayer() {
-	$(".pp-tv, .pp-tv video").height( ($(".pp-tv").width()*9) / 16 );
+	var player_height = ($(".pp-tv").width()*9) / 16;
+	$(".pp-tv, .pp-tv video").height( player_height );
+	resizeColumns();
+    }
+
+    function resizeColumns() {
+	var player_height = $('.pp-tv').height();
+	// The faces/map column dictates the height of the other columns
+	var faces_map_height = $('.pp-info-faces-wrapper').height();
+	var related_column_header = $('.pp-related-column-header').height() + $('.pp-related-column-share').height();
+	var comment_header_height = $('.comment-header-wrap').height();
+	var title_height = $('.pp-info-title').height();
+	$('.all-comments').height( faces_map_height - title_height - (comment_header_height+24+10+21));
+	$('.pp-related-column-related-videos').height( faces_map_height + (player_height + 50) - (related_column_header + 20) );
     }
 
     function should_simulate() {
@@ -281,8 +375,9 @@ define( [ 'viewmodels/person', 'lib/related_video' ], function( Face, Related ) 
     }
 
     function setupFaces( m ) {
+	faces_fetched( false );
+	faces.removeAll();
 	viblio.api( '/services/faces/faces_in_mediafile', { mid: m.uuid } ).then( function( data ) {
-	    faces.removeAll();
 	    if ( data.faces && data.faces.length ) {
 		var total = 0, ident = 0,
 		count = data.faces.length;
@@ -310,6 +405,9 @@ define( [ 'viewmodels/person', 'lib/related_video' ], function( Face, Related ) 
 			leftBadgeMode: 'hover',
 			show_name: false, 
 			show_tag3: true,
+		    });
+		    face.on( 'person:composed', function() {
+			resizeColumns();
 		    });
 		    face.on( 'person:tag3_changed', function( f, newname, oldname ) {
 			// Have to see if newname is an existing contact...
@@ -349,6 +447,7 @@ define( [ 'viewmodels/person', 'lib/related_video' ], function( Face, Related ) 
 	    else {
 		finfo( '' );
 	    }
+	    faces_fetched( true );
 	});
     }
 
@@ -389,9 +488,12 @@ define( [ 'viewmodels/person', 'lib/related_video' ], function( Face, Related ) 
 
 	finfo: finfo,
 	faces: faces,
+	faces_fetched: faces_fetched,
+	add_face_to_video: add_face_to_video,
 
 	mediafiles: mediafiles,
 	query_in_progress: query_in_progress,
+	next_available_clip: next_available_clip,
 
         showInteractiveMap: function() {
             customDialogs.showInteractiveMap( playing().media, {
@@ -418,6 +520,14 @@ define( [ 'viewmodels/person', 'lib/related_video' ], function( Face, Related ) 
                 }
             });
         },
+
+	add_face: function( f ) {
+	    viblio.log( f );
+	    add_face_to_video();
+	    //$('.pp-new-face p').text( 'Who else is in this video?' );
+	    //$('.pp-new-face p').editable( 'option', 'value', '' );
+	    //$('.pp-new-face').remove();
+	},
 
 	attached: function( elem ) {
 	    view = elem;
@@ -461,7 +571,7 @@ define( [ 'viewmodels/person', 'lib/related_video' ], function( Face, Related ) 
 
 	    if ( pp_related_column_visible() ) {
 		Related.init( '.pp-related-column-related-videos', mediafiles, query_in_progress, function( m ) {
-		    // play a new video
+		    playRelated( m );
 		});
 		Related.search( playing().media().uuid );
 	    }
@@ -484,14 +594,14 @@ define( [ 'viewmodels/person', 'lib/related_video' ], function( Face, Related ) 
                     }
                 },
                 success: function( res, v) {
-                    vstrip.criterion.by_date  = false;
-                    vstrip.criterion.by_faces = false;
-                    vstrip.criterion.by_geo   = false;
+                    Related.criterion.by_date  = false;
+                    Related.criterion.by_faces = false;
+                    Related.criterion.by_geo   = false;
                     v.forEach( function( key ) {
-                        vstrip.criterion[key] = true;
+                        Related.criterion[key] = true;
                     });
-                    vstrip.reset();
-                    vstrip.search( query().mid );
+                    Related.reset();
+                    Related.search( incoming_mid );
                 }
             });
 

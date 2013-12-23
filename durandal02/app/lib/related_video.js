@@ -37,11 +37,30 @@ define( function() {
     };
 
     return {
+	criterion: criterion,
 	init: function( elem, _mediafiles, _searching, _play_callback ) {
+	    var self = this;
+
 	    view = elem;
 	    mediafiles = _mediafiles;
 	    searching = _searching;
 	    play_callback = _play_callback;
+
+	    $(elem).scroll( $.throttle( 250, function() {
+		var $this = $(this);
+		var height = this.scrollHeight - $this.height(); // Get the height of the div
+		var scroll = $this.scrollTop(); // Get the vertical scroll position
+
+		if ( searching() ) return;
+		if ( height == 0 && scroll == 0 ) return;
+
+		var isScrolledToEnd = (scroll >= height);
+
+		if (isScrolledToEnd) {
+                    self.search();
+		}
+            }));
+
 	},
 
 	reset: function() {
@@ -59,8 +78,8 @@ define( function() {
 				 options );
             if ( pager.next_page ) {
                 searching( true );
-                //viblio.api( '/services/mediafile/related', opts ) 
-                viblio.api( '/services/mediafile/list', opts ) 
+                viblio.api( '/services/mediafile/related', opts ) 
+                //viblio.api( '/services/mediafile/list', opts ) 
                     .then( function( json ) {
                         pager = json.pager;
                         json.media.forEach( function( mf ) {
@@ -78,6 +97,23 @@ define( function() {
 	},
 
 	scrollTo: function( m ) {
+	    var self = this;
+            var scroller = $(view);
+            var item = scroller.find('#'+m.media().uuid);
+	    // If its already totally visible, do nothing, else scroll to make it visible
+
+	    var item_top = scroller.scrollTop() + item.position().top;
+	    var item_bot = item_top + item.height();
+
+	    var scroller_top = scroller.scrollTop();
+	    var scroller_bot = scroller_top + scroller.height();
+
+	    if ( item_top >= scroller_top && item_bot <= scroller_bot ) {
+		// do nothing
+	    }
+	    else {
+		scroller.scrollTop( item.position().top + scroller.scrollTop() );
+	    }
 	},
 
     };

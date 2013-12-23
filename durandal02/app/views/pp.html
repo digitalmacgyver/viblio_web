@@ -17,14 +17,21 @@
     vertical-align: top;
 }
 .pp-main .pp-related-column {
-    width: 280px;
+    width: 320px;
     border-left: 4px inset rgba(0,0,0,.2);
     vertical-align: top;
+    padding: 0;
+}
+
+.pp-related-column-header,
+.pp-related-column-related {
     padding-right: 20px;
     padding-left: 20px;
 }
+
 .pp-related-column-related-videos {
-    overflow: hidden;
+    overflow: scroll;
+    position: relative;
 }
 .pp-related-column-related-videos .mediafile {
     width: 270px;
@@ -33,7 +40,6 @@
 .pp-related-column-related-videos .mediafile img {
     height: 152px;
 }
-.pp-info-map-wrapper,
 .pp-info-faces-wrapper,
 .pp-info-right-column {
     width: 366px;
@@ -43,7 +49,7 @@
     min-height: 320px;
 }
 .pp-info-faces-wrapper {
-    min-height: 100px;
+    min-height: 600px;
 }
 .pp-player-column table {
     width: 100%;
@@ -111,6 +117,35 @@
 }
 .pp-related-column-header .editable-checklist span {
     color: black;
+}
+#geo {
+    width: 280px;
+    padding: 20px;
+    height: auto;
+}
+.pp-share a {
+    width: 100%;
+    font-size: 28px;
+    padding: 16px;
+}
+.pp-no-faces {
+    display: block;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 100;
+}
+.typeahead.dropdown-menu {
+    text-align: left;
+}
+.pp-faces-box {
+    padding: 10px;
+}
+.pp-faces-box .person {
+    float: left;
+    width: 94px;
+}
+.pp-faces-box .person img {
+    height: 94px;
 }
 </style>
 <div class="pp">
