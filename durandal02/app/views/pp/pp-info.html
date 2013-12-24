@@ -1,7 +1,7 @@
 <table>
   <tr>
 
-    <td class="pp-info-left-column babyBlueBG bottomBorder-Thin">
+    <td class="pp-info-left-column babyBlueBG">
       
       <div class="pp-info-title">
 	<div id="title-desc">
@@ -26,18 +26,13 @@
             <p data-bind="text: description()"></p>
 	  </div>
 
-	  <div class="comments-header lightBlueFont">
-            <div class="views pull-right">
-              <img src="css/images/viewsEye.png" />
-              <span data-bind="html: playing().media().eyes"></span>
-            </div>
-            <p class="todays-date recording-date pull-right" data-bind="text: formatted_date"></p>
-            <div class="observer">
+	  <div class="comments-header lightBlueFont table">
+            <div class="observer tableCell topAlign">
               <img class="boxShadowed" src="/services/user/avatar?uid=-&y=36" />
             </div>
-            <p>by <span class="heavyWeightFont" data-bind="html: user().displayname"></span></p>
+            <p class="tableCell midAlign">by <span class="heavyWeightFont" data-bind="html: user().displayname"></span></p>
+            <p class="todays-date recording-date pull-right tableCell midAlign" data-bind="text: formatted_date"></p>
           </div>
-          <div class="clearfix"></div>
 
 	</div>
       </div>
@@ -54,9 +49,13 @@
 	</div>
 
 	<div class="all-comments" data-bind="visible: show_comments">
-	  <p class="lightBlueFont" data-bind="visible: comments().length">
-	    <span data-bind="text: comments().length ==1 ? '1 Comment' : comments().length + ' Comments'"></span>
-	  </p>
+            <div class="comments-header lightBlueFont">
+                <span class="tableCell midAlign" data-bind="visible: comments().length, text: comments().length ==1 ? '1 Comment' : comments().length + ' Comments'"></span>
+                <div class="views pull-right centered tableCell topAlign">
+                    <img src="css/images/viewsEye.png" />
+                    <span data-bind="html: playing().media().eyes"></span>
+                </div>    
+            </div>
           <!-- ko foreach: comments -->
           <div class="comment" data-bind="if: comment.indexOf(' ') != -1 && comment != '' || comment.length < 20">
             <p class="comment-text bottomBorder-Thin" data-bind="html: comment"></p>
@@ -71,7 +70,7 @@
       </div>
     </td>
 
-    <td class="pp-info-right-column lightBlueBG bottomBorder-Thin">
+    <td class="pp-info-right-column lightBlueBG">
 
       <div class="pp-info-faces-wrapper">
 	<div class="pp-share">

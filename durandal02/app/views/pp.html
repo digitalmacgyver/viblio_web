@@ -29,6 +29,12 @@
     padding-left: 20px;
 }
 
+.pp-related-column-wrapper .orangeBG {
+    margin-left: -4px;
+    border-left: 4px inset rgba(0, 0, 0, 0.2);
+    padding-bottom: 20px;
+}
+
 .pp-related-column-related-videos {
     overflow: scroll;
     position: relative;
@@ -68,6 +74,22 @@
 .pp-info-right-column,
 .pp-info-left-column {
     vertical-align: top;
+}
+.pp .comments-header {
+    display: table;
+    width: 100%;
+}
+.tableCell {
+    display: table-cell;
+}
+.topAlign {
+    vertical-align: top;
+}
+.midAlign {
+    vertical-align: middle;
+}
+.pp .comments-header .views span{
+    display: block;
 }
 .pp-info-left-column .all-comments {
     /* max-height: 250px; */
@@ -161,6 +183,7 @@
 
       <td class="pp-player-column">
 	<!-- ko compose: "pp/pp-player-column.html" --><!-- /ko -->
+        <!-- ko compose: footer --><!-- /ko -->
       </td>
 
       <td class="pp-right-arrow-column">

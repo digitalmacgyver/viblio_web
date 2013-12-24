@@ -1,6 +1,18 @@
 define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','viewmodels/conditional_header','lib/viblio','lib/customDialogs','viewmodels/emailtest','lib/config','viewmodels/footer','facebook'], function (router, app, system, page_header, landing_header, conditional_header, viblio, customDialogs,emailtest,config,footer) {
 
     var header = ko.observable( );
+    var location = ko.observable();
+    var showFooter = ko.computed(function(){
+        if(location() == 'PP') {
+            return false;
+        } else {
+            return true;
+        }
+    });
+    
+    router.on('router:route:activating').then(function(instance, instruction, router){
+        location(instruction.config.title);
+    });
     
     // scroll to top of page before new view has loaded
     router.on('router:navigation:attached').then(function(){
@@ -175,6 +187,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
         router: router,
 	header: header,
         footer: footer,
+        showFooter: showFooter,
 
         search: function() {
             //It's really easy to show a message box.

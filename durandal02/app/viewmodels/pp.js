@@ -1,4 +1,4 @@
-define( [ 'viewmodels/person', 'lib/related_video' ], function( Face, Related ) {
+define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], function( Face, Related, footer ) {
     var app = require( 'durandal/app' );
     var system = require( 'durandal/system' );
     var router = require( 'plugins/router' );
@@ -174,7 +174,7 @@ define( [ 'viewmodels/person', 'lib/related_video' ], function( Face, Related ) 
 	var comment_header_height = $('.comment-header-wrap').height();
 	var title_height = $('.pp-info-title').height();
 	$('.all-comments').height( faces_map_height - title_height - (comment_header_height+24+10+21));
-	$('.pp-related-column-related-videos').height( faces_map_height + (player_height + 50) - (related_column_header + 20) );
+	$('.pp-related-column-related-videos').height( faces_map_height + (player_height + 50) - (related_column_header + 20) + 315 );
     }
 
     function should_simulate() {
@@ -464,6 +464,7 @@ define( [ 'viewmodels/person', 'lib/related_video' ], function( Face, Related ) 
 	showShareVidModal: function() {
             customDialogs.showShareVidModal( playing() );
         },
+        footer: footer,
 	user: viblio.user,
 	disable_next: disable_next,
 	disable_prev: disable_prev,
