@@ -3,7 +3,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
     var header = ko.observable( );
     var location = ko.observable();
     var showFooter = ko.computed(function(){
-        if(location() == 'PP') {
+        if(location() == 'Video Player') {
             return false;
         } else {
             return true;

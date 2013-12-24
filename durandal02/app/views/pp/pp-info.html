@@ -81,34 +81,34 @@
 	<div class="pp-faces-box-wrapper">
         <div class="pp-faces-box">
 	  <!-- ko if: faces_fetched() && faces().length<1 -->
-	  <div class="pp-no-faces">
-	    <img src="css/images/avatar.png" alt="avatar" />
-	  </div>
+            <div class="pp-no-faces">
+              <img src="css/images/avatar.png" alt="avatar" />
+            </div>
 	  <!-- /ko -->
+          
 	  <!-- ko if: faces_fetched() && faces().length>0 -->
-	  <!-- ko if: unknown_faces().length > 0 -->
-	  <p class="pp-faces-need-names whiteBG centered">These faces need names!</p>
-	  <!-- /ko -->
+          
+            <!-- ko if: unknown_faces().length > 0 -->
+                <div class="pp-face-container" data-bind="style: { bottomBorder: unknown_faces().length > 0 && known_faces().length > 0 ? '1px solid white' : 'none' }">
+                    <p class="pp-faces-need-names whiteBG centered">These faces need names!</p>
+                    <!-- ko foreach: unknown_faces -->
+                    <!-- ko compose: $data --><!-- /ko -->
+                    <!-- /ko -->
+                </div>
+            <!-- /ko -->
 
-	  <!-- ko foreach: unknown_faces -->
-	  <!-- ko compose: $data --><!-- /ko -->
+            <!-- ko if: known_faces().length > 0 -->
+                <div class="pp-face-container">
+                    <p class="pp-faces-starring whiteText centered font24 textShadowed lightWeightFont">Starring</p>
+                    <!-- ko foreach: known_faces -->
+                    <!-- ko compose: $data --><!-- /ko -->
+                    <!-- /ko -->
+                </div>
+            <!-- /ko -->
+            <div class="clearfix"></div>
+            
 	  <!-- /ko -->
-
-	  <!-- ko if: unknown_faces().length>0 -->
-	  <div class="clearfix"></div>
-	  <hr />
-	  <!-- /ko -->
-
-	  <!-- ko if: known_faces().length > 0 -->
-	  <p class="pp-faces-starring whiteText centered font24 textShadowed lightWeightFont">Starring</p>
-	  <!-- /ko -->
-
-	  <!-- ko foreach: known_faces -->
-	  <!-- ko compose: $data --><!-- /ko -->
-	  <!-- /ko -->
-	  <div class="clearfix"></div>
-
-	  <!-- /ko -->
+          
         </div>
 	</div>
 
