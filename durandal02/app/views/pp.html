@@ -112,7 +112,7 @@
     padding: 25px 20px 0;
     height: auto;
 }
-.needNamesLabel {
+.pp-faces-need-names {
     color: rgb(0,81,128);
     margin-bottom: 30px;
     padding: 12px 0;
@@ -124,7 +124,7 @@
     box-shadow: 0 2px 0 1px rgba(0, 0, 0, 0.3);
     position: relative;
 }
-.needNamesLabel::before {
+.pp-faces-need-names::before {
     border-top: 16px solid rgba(0, 0, 0, 0.2);
     border-left: 16px solid rgba(0, 0, 0, 0);
     border-right: 16px solid rgba(0, 0, 0, 0);
@@ -135,7 +135,7 @@
     bottom: -16px;
 }
 
-.needNamesLabel::after {
+.pp-faces-need-names::after {
     border-top: 14px solid rgb(255, 255, 255);
     border-left: 14px solid rgba(0, 0, 0, 0);
     border-right: 14px solid rgba(0, 0, 0, 0);
@@ -151,7 +151,7 @@
     margin-bottom: 25px;
     float: left;
 }
-.pp-faces-box .person:nth-of-type(3n) {
+.pp-faces-box .person:nth-of-type(3n + 2) {
     margin: 0 18px 25px;
 }
 .pp-info-faces-wrapper .person > div {
@@ -222,9 +222,33 @@
     font-size: 20px;
     font-weight: 100;
 }
+.pp-no-faces p {
+    cursor: pointer;
+    color: white;
+}
+.pp-no-faces:hover {
+    text-decoration: underline;
+}
 .typeahead.dropdown-menu {
     text-align: left;
 }
+/*
+.pp-faces-box {
+    padding: 10px;
+}
+.pp-faces-box-wrapper {
+    text-align: center;
+    vertical-align: top;
+}
+.pp-faces-box .person {
+    /* float: left; */
+   /* display: inline-block;
+    width: 94px;
+}
+.pp-faces-box .person img {
+    height: 94px;
+}*/
+
 </style>
 <div class="pp">
   <table class="pp-main">

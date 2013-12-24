@@ -173,7 +173,7 @@ define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip
 	init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
 	    var $element = $(element);
             var value = ko.utils.unwrapObservable(valueAccessor()) || {};
-	    var tag3 = {mode: 'popup',display: null};
+	    var tag3 = {mode: 'popup', display: null, only_known: false};
 	    //build a new object that has the global options with overrides from the binding
             $.extend(true, tag3, ko.bindingHandlers.tag3);
             if (value.options && tag3.options) {
@@ -214,7 +214,32 @@ define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip
 			return 'Please input a name.';
 		    }
 		    else {
-			return { newValue: v };
+			if ( tag3.only_known ) {
+			    var e = false;
+			    $.ajax({
+				url: '/services/faces/contact_for_name',
+				data: { contact_name: v },
+				async: false,
+				success: function( data ) {
+				    if ( data && data.contact && data.contact.picture_uri ) {
+					e = false;
+				    }
+				    else {
+					e = true;
+				    }
+				},
+				error: function() {
+				    e = true;
+				}
+			    });
+			    if ( e ) 
+				return 'Please choose an existing contact';
+			    else
+				return { newValue: v };
+			}
+			else {
+			    return { newValue: v };
+			}
 		    }
 		},
 		success: function( res, newvalue ) {
