@@ -1594,10 +1594,6 @@ input:-moz-placeholder {
     margin-left: 40px;
 }
 
-.comments-header .todays-date {
-    margin-top: 7px;
-}
-
 .comments-header p {
     margin-left: 15px;
 }
@@ -1609,8 +1605,8 @@ input:-moz-placeholder {
 /******************** Player Faces **********************/
 
 #faces {
-    padding: 30px 30px 0;
-    width: 306px;
+    padding: 30px 18px 0;
+    width: 326px;
     padding-top: 25px;
     height: auto;
 }

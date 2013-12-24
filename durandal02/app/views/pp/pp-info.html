@@ -30,8 +30,8 @@
             <div class="observer tableCell topAlign">
               <img class="boxShadowed" src="/services/user/avatar?uid=-&y=36" />
             </div>
-            <p class="tableCell midAlign">by <span class="heavyWeightFont" data-bind="html: user().displayname"></span></p>
-            <p class="todays-date recording-date pull-right tableCell midAlign" data-bind="text: formatted_date"></p>
+            <p class="tableCell midAlign lightWeightFont">by <span class="heavyWeightFont" data-bind="html: user().displayname"></span></p>
+            <p class="todays-date recording-date pull-right tableCell midAlign lightWeightFont" data-bind="text: formatted_date"></p>
           </div>
 
 	</div>
@@ -85,6 +85,10 @@
 	  </div>
 	  <!-- /ko -->
 	  <!-- ko if: faces_fetched() && faces().length>0 -->
+          <p class="whiteText centered font24 textShadowed lightWeightFont">Starring</p>
+          <div class="needNamesLabel whiteBG centered">
+              <span>These faces need names!</span>
+          </div>
 	  <!-- ko foreach: faces -->
 	  <!-- ko compose: $data --><!-- /ko -->
 	  <!-- /ko -->
