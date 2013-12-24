@@ -55,8 +55,9 @@ define( [ 'viewmodels/person', 'lib/related_video' ], function( Face, Related ) 
         playing().description( v );
     });
 
-    var finfo = ko.observable();
     var faces = ko.observableArray([]);
+    var unknown_faces = ko.observableArray([]);
+    var known_faces = ko.observableArray([]);
     var faces_fetched = ko.observable( false );
     var add_face_to_video = ko.observable();
 
@@ -374,78 +375,100 @@ define( [ 'viewmodels/person', 'lib/related_video' ], function( Face, Related ) 
         });
     }
 
+    function addFace( face ) {
+	var F = {
+	    url: face.url,
+	    uri: face.uri,
+	    appears_in: 1,
+	    contact_name: 'unknown',
+	    contact_email: null
+	};
+	if ( face.contact ) {
+	    F.contact_name = face.contact.contact_name;
+	    F.contact_email = face.contact.contact_email;
+	    F.id = face.contact.contact_id;
+	    F.uuid = face.contact.uuid;
+	}
+	var face = new Face( F, { 
+	    clickable: false, 
+	    leftBadgeIcon: 'icon-remove-circle',
+	    leftBadgeClick: removePerson,
+	    leftBadgeMode: 'hover',
+	    show_name: false, 
+	    show_tag3: true,
+	});
+	face.on( 'person:composed', function() {
+	    resizeColumns();
+	});
+	face.on( 'person:tag3_changed', function( f, newname, oldname ) {
+	    // Have to see if newname is an existing contact...
+	    viblio.api( '/services/faces/contact_for_name', { contact_name: newname } ).then( function( data ) {
+		if ( data.contact ) {
+		    if ( oldname == 'unknown' ) {
+			// Unidentifed to identified
+			viblio.mpEvent( 'face_tag_to_new' );
+		    }
+		    else {
+			// Merge identified
+			viblio.mpEvent( 'face_merge' );
+		    }
+		    
+		    // If we are adding a contact to this media file that does
+		    // not have a pitcure_uri, change the contact's picture_uri
+		    // to this instance of the user's picture.
+		    var tag_data = {
+			uuid: f.data.uuid,
+			cid:  data.contact.uuid };
+		    if ( ! data.contact.picture_uri ) 
+			tag_data.new_uri = f.data.uri
+
+		    viblio.api( '/services/faces/tag', tag_data ).then( function() {
+			if ( oldname == 'unknown' ) {
+			    unknown_faces.remove( f );
+			}
+			// If this face is already displayed, remove it.
+			var already_displayed = false;
+			known_faces().forEach( function( ex ) {
+			    if ( ex.name() == newname ) {
+				already_displayed = true;
+			    }
+			});
+			if ( ! already_displayed ) {
+			    known_faces.push( f );
+			}
+		    });
+		}
+		else {
+		    viblio.mpEvent( 'face_tag_to_identified' );
+		    viblio.api( '/services/faces/tag', {
+			uuid: f.data.uuid,
+			new_uri: f.data.uri,
+			contact_name: newname } ).then( function() {
+			    unknown_faces.remove( f );
+			    known_faces.push( f );
+			});
+		}
+	    });
+	});
+	faces.push( face );
+	if ( face.data.contact_name === null ) 
+	    unknown_faces.push( face );
+	else
+	    known_faces.push( face );
+    }
+
     function setupFaces( m ) {
 	faces_fetched( false );
 	faces.removeAll();
+	unknown_faces.removeAll();
+	known_faces.removeAll();
 	viblio.api( '/services/faces/faces_in_mediafile', { mid: m.uuid } ).then( function( data ) {
 	    if ( data.faces && data.faces.length ) {
-		var total = 0, ident = 0,
-		count = data.faces.length;
-		
+		var count = data.faces.length;
 		for( var i=0; i<count; i++ ) {
 		    var face = data.faces[i];
-		    total += 1;
-		    var F = {
-			url: face.url,
-			appears_in: 1,
-			contact_name: 'unknown',
-			contact_email: null
-		    };
-		    if ( face.contact ) {
-			ident += 1;
-			F.contact_name = face.contact.contact_name;
-			F.contact_email = face.contact.contact_email;
-			F.id = face.contact.contact_id;
-			F.uuid = face.contact.uuid;
-		    }
-		    var face = new Face( F, { 
-			clickable: false, 
-			leftBadgeIcon: 'icon-remove-circle',
-			leftBadgeClick: removePerson,
-			leftBadgeMode: 'hover',
-			show_name: false, 
-			show_tag3: true,
-		    });
-		    face.on( 'person:composed', function() {
-			resizeColumns();
-		    });
-		    face.on( 'person:tag3_changed', function( f, newname, oldname ) {
-			// Have to see if newname is an existing contact...
-			viblio.api( '/services/faces/contact_for_name', { contact_name: newname } ).then( function( data ) {
-			    if ( data.contact ) {
-				if ( oldname == 'unknown' ) {
-				    // Unidentifed to identified
-				    viblio.mpEvent( 'face_tag_to_new' );
-				}
-				else {
-				    // Merge identified
-				    viblio.mpEvent( 'face_merge' );
-				}
-				viblio.api( '/services/faces/tag', {
-				    uuid: f.data.uuid,
-				    cid:  data.contact.uuid } ).then( function() {
-					// If this face is already displayed, remove it.
-					faces().forEach( function( ex ) {
-					    if ( ex.name() == newname && ex != f ) {
-						faces.remove( ex );
-					    }
-					});
-				    });
-			    }
-			    else {
-				viblio.mpEvent( 'face_tag_to_identified' );
-				viblio.api( '/services/faces/tag', {
-				    uuid: f.data.uuid,
-				    contact_name: newname } );
-			    }
-			});
-		    });
-		    faces.push( face );
+		    addFace( face );
 		}
-		finfo( 'Starring' );
-	    }
-	    else {
-		finfo( '' );
 	    }
 	    faces_fetched( true );
 	});
@@ -457,6 +480,11 @@ define( [ 'viewmodels/person', 'lib/related_video' ], function( Face, Related ) 
 	    mid: playing().media().uuid } ).then( function( data ) {
 		viblio.mpEvent( 'face_removed_from_video' );
 		faces.remove( face );
+		if ( face.data.contact_name === null )
+		    unknown_faces.remove( face );
+		else
+		    known_faces.remove( face );
+		//resizeColumns();
 	    });
     }
 
@@ -486,8 +514,9 @@ define( [ 'viewmodels/person', 'lib/related_video' ], function( Face, Related ) 
 	nolocation: nolocation,
 	isNear: isNear,
 
-	finfo: finfo,
 	faces: faces,
+	unknown_faces: unknown_faces,
+	known_faces: known_faces,
 	faces_fetched: faces_fetched,
 	add_face_to_video: add_face_to_video,
 
@@ -523,10 +552,15 @@ define( [ 'viewmodels/person', 'lib/related_video' ], function( Face, Related ) 
 
 	add_face: function( f ) {
 	    viblio.log( f );
-	    add_face_to_video();
-	    //$('.pp-new-face p').text( 'Who else is in this video?' );
-	    //$('.pp-new-face p').editable( 'option', 'value', '' );
-	    //$('.pp-new-face').remove();
+	    viblio.api( '/services/faces/add_contact_to_mediafile', 
+			{ contact_name: f, mid: playing().media().uuid } ).then( function( data ) {
+			    var f = {
+				url: data.contact.picture_url,
+				uri: data.contact.picture_uri,
+				contact: data.contact };
+			    addFace( f );
+			    add_face_to_video(); // reset the observable name
+			});
 	},
 
 	attached: function( elem ) {

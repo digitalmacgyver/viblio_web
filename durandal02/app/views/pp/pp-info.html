@@ -79,6 +79,7 @@
             <i class="icon-share"></i> Share this Video!
 	  </a>
 	</div>
+	<div class="pp-faces-box-wrapper">
         <div class="pp-faces-box">
 	  <!-- ko if: faces_fetched() && faces().length<1 -->
 	  <div class="pp-no-faces">
@@ -86,15 +87,40 @@
 	  </div>
 	  <!-- /ko -->
 	  <!-- ko if: faces_fetched() && faces().length>0 -->
-	  <!-- ko foreach: faces -->
+
+	  <!-- ko if: unknown_faces().length > 0 -->
+	  <p class="pp-faces-need-names">These faces need names!</p>
+	  <!-- /ko -->
+
+	  <!-- ko foreach: unknown_faces -->
+	  <!-- ko compose: $data --><!-- /ko -->
+	  <!-- /ko -->
+
+	  <!-- ko if: unknown_faces().length>0 -->
+	  <div class="clearfix"></div>
+	  <hr />
+	  <!-- /ko -->
+
+	  <!-- ko if: known_faces().length > 0 -->
+	  <p class="pp-faces-starring">Starring</p>
+	  <!-- /ko -->
+
+	  <!-- ko foreach: known_faces -->
 	  <!-- ko compose: $data --><!-- /ko -->
 	  <!-- /ko -->
 	  <div class="clearfix"></div>
+
 	  <!-- /ko -->
         </div>
+	</div>
 
 	<div class="pp-no-faces pp-new-face" data-bind="if: faces_fetched">
-	  <p class="textShadowed whiteText" data-bind="tag3:{mode:'inline',display:false,name:add_face_to_video,changed:add_face}, text:'Who else is in this video?'"></p>
+	  <p class="textShadowed whiteText" data-bind="tag3:{mode:'inline',
+						             display:false,
+						             only_known:true,
+						             name:add_face_to_video,
+						             changed:add_face}, 
+						       text:'Who else is in this video?'"></p>
 	</div>
 
       </div>
