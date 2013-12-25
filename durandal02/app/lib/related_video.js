@@ -60,7 +60,7 @@ define( function() {
                     self.search();
 		}
             }));
-
+	    this.reset();
 	},
 
 	reset: function() {
