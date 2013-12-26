@@ -9,6 +9,7 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
 
     var incoming_mid;
     var view;
+    var route;
 
     var playing = ko.observable();
     var map;
@@ -552,7 +553,6 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
         },
 
 	add_face: function( f ) {
-	    viblio.log( f );
 	    viblio.api( '/services/faces/add_contact_to_mediafile', 
 			{ contact_name: f, mid: playing().media().uuid } ).then( function( data ) {
 			    var f = {
@@ -568,10 +568,47 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
 	    view = elem;
 	},
 
+	canActivate: function( args ) {
+	    // How did we get here?  route will be one of new_player or web_player
+	    route = router.activeInstruction().fragment;
+	    viblio.log( 'route: ', route );
+
+	    if ( args && args.mid ) {
+		if ( route == 'web_player' ) {
+		    return system.defer( function( dfd ) {
+			viblio.setLastAttempt( 'web_player?mid=' + args.mid );
+			viblio.api( '/services/na/media_shared', { mid: args.mid }, 
+				    function( error ) {
+					customDialogs.showWebPlayerError( "We're Sorry", error.message, error );
+					dfd.resolve(false);
+				    } ).then( function( data ) {
+					if ( data.auth_required ) {
+					    customDialogs.showWebPlayerError( 
+						"We're Sorry", 
+						'This is a privately shared video. You must be logged into your Viblio account to view it.  If you do not yet have an account, sign up today!', {} );
+					    dfd.resolve(false);
+					}
+					else {
+					    dfd.resolve( true );
+					}
+				    } );
+		    }).promise();
+		}
+		else {
+		    return true;
+		}
+	    }
+	    else {
+		customDialogs.showMessage( 'Navigating to this page requires an argument.', 'Navigation Error' );
+		return false;
+	    }
+	},
+
 	activate: function( args ) {
 	    if ( args ) 
 		incoming_mid = args.mid;
-	    if ( incoming_mid ) {
+
+	    if ( route == 'new_player' ) {
 		return viblio.api( '/services/mediafile/get', { mid: incoming_mid } ).then( function( json ) {
 		    var mf = json.media;
 		    // Set now playing
@@ -580,7 +617,8 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
 		    description( mf.description || 'Click to add a description' );
 		});
 	    }
-
+	    else if ( route == 'web_player' ) {
+	    }
 	},
 
 	detached: function () {

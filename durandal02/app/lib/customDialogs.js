@@ -2,7 +2,7 @@
    Application wide dialogs.  For now, just use Durandal standard.
    Later we'll do different things like slide downs and such.
 */
-define( ['durandal/app', 'durandal/system', 'plugins/dialog', 'viewmodels/loading', 'viewmodels/change_password', 'viewmodels/imap','viewmodels/magictag','viewmodels/contactcard', 'viewmodels/shareVidModal'], function( app, system, dialog, Loading, ChangePassword, IMap, MagicTag, ContactCard, ShareVid ) {
+define( ['durandal/app', 'durandal/system', 'plugins/dialog', 'viewmodels/loading', 'viewmodels/change_password', 'viewmodels/imap','viewmodels/magictag','viewmodels/contactcard', 'viewmodels/shareVidModal', 'viewmodels/webPlayerError'], function( app, system, dialog, Loading, ChangePassword, IMap, MagicTag, ContactCard, ShareVid, WebPlayerError ) {
     var loading  = null;
     return {
 	showMessage: function( msg, title, options ) {
@@ -54,6 +54,9 @@ define( ['durandal/app', 'durandal/system', 'plugins/dialog', 'viewmodels/loadin
 	showShareVidModal: function( mediafile ) {
             // return app.showDialog( new ShareVid( mediafile ) );
 	    return dialog.showAnimated( new ShareVid( mediafile ) );
+	},
+	showWebPlayerError: function( title, message, err ) {
+	    return dialog.showAnimated( new WebPlayerError( title, message, err ) );
 	}
     };
 });
