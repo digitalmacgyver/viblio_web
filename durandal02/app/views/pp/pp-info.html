@@ -31,7 +31,7 @@
               <img class="boxShadowed" src="/services/user/avatar?uid=-&y=36" />
             </div>
             <p class="tableCell midAlign lightWeightFont">by <span class="heavyWeightFont" data-bind="html: user().displayname"></span></p>
-            <p class="todays-date recording-date pull-right tableCell midAlign lightWeightFont" data-bind="text: formatted_date"></p>
+            <p class="todays-date recording-date lightWeightFont pull-right" data-bind="text: formatted_date"></p>
           </div>
 
 	</div>
@@ -50,8 +50,8 @@
 
 	<div class="all-comments" data-bind="visible: show_comments">
             <div class="comments-header lightBlueFont">
-                <span class="tableCell midAlign" data-bind="visible: comments().length, text: comments().length ==1 ? '1 Comment' : comments().length + ' Comments'"></span>
-                <div class="views pull-right centered tableCell topAlign">
+                <span class="tableCell midAlign font18 lightWeightFont" data-bind="text: comments().length ==1 ? '1 Comment' : comments().length + ' Comments'"></span>
+                <div class="views centered tableCell topAlign">
                     <img src="css/images/viewsEye.png" />
                     <span data-bind="html: playing().media().eyes"></span>
                 </div>    
@@ -89,7 +89,7 @@
 	  <!-- ko if: faces_fetched() && faces().length>0 -->
           
             <!-- ko if: unknown_faces().length > 0 -->
-                <div class="pp-face-container" data-bind="style: { bottomBorder: unknown_faces().length > 0 && known_faces().length > 0 ? '1px solid white' : 'none' }">
+                <div class="pp-face-container pp-unknown-faces-container" data-bind="style: { bottomBorder: unknown_faces().length > 0 && known_faces().length > 0 ? '1px solid white' : 'none' }">
                     <p class="pp-faces-need-names whiteBG centered">These faces need names!</p>
                     <!-- ko foreach: unknown_faces -->
                     <!-- ko compose: $data --><!-- /ko -->

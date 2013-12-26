@@ -922,11 +922,6 @@ div.map .marker i {
     margin: 2px auto -4px;
 }
 
-.observer,
-.comments-header p {
-    display: inline;
-}
-
 .comment .comment-text {
     background-color: white;
     padding: 12px;

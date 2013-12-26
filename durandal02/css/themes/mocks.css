@@ -670,7 +670,7 @@ input:-moz-placeholder {
 }
 
 .lightBlueFont {
-    color: rgba(82,152,189,.7);
+    color: rgba(82,152,189,1);
 }
 
 .heavyWeightFont {
@@ -1535,6 +1535,10 @@ input:-moz-placeholder {
     }
 }
 
+.comments-header .recording-date {
+    margin: 8px 0;
+}
+
 /*************** Player Comments ****************/
 
 #comments p {
@@ -1549,6 +1553,7 @@ input:-moz-placeholder {
 
 #comments .comment-editor {
     padding: 8px;
+    margin: 0;
 }
 
 #info-table td,
@@ -1586,16 +1591,13 @@ input:-moz-placeholder {
 
 .all-comments > p,
 .comments-header > p {
-    font-size: 18px;
+    font-size: 15px;
 }
 
 .comments-header .views {
     margin-top: 2px;
     margin-left: 40px;
-}
-
-.comments-header p {
-    margin-left: 15px;
+    width: 40px;
 }
 
 .comment-text.bottomBorder-Thin {
@@ -2766,6 +2768,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 /*****************************/
 
+.pp-related-column-related .mediafile .information,
 #related-videos-block .mediafile .information {
     height: 40px;
     padding: 10px 5px;
@@ -2790,6 +2793,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 /*********************************/
 
+.pp-related-column-related .mediafile .information .aux,
 #related-videos-block .mediafile .information .aux {
     width: 40px;
     height: 40px;
@@ -2797,6 +2801,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 /***********************************/
 
+.pp-related-column-related .mediafile .information .aux img,
 #related-videos-block .mediafile .information .aux img {
     width: 30px;
     height: 22px;
@@ -2810,6 +2815,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     margin-right: 0px;
 }
 
+.pp-related-column-related .mediafile .information .title,
 #related-videos-block .mediafile .information .title {
     margin: 0 0 0 10px;
     font-weight: 600;
