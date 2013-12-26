@@ -24,10 +24,29 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
     // was shared, and if the sharee is logging in)
     //
     var title_editable = ko.observable( true );
+    var recording_date_editable = ko.observable( true );
     var pp_related_column_visible = ko.observable( true );
     var can_leave_comments = ko.observable( true );
     var show_comments = ko.observable( true );
-    var recording_date_editable = ko.observable( true );
+
+    var faces_taggable = ko.observable( true );
+    var faces_identified_visible = ko.observable( true );
+    var faces_unidentified_visible = ko.observable( true );
+    var show_face_names = ko.observable( true );
+    var share_button_visible = ko.observable( true );
+    var get_the_app_button_visible = ko.observable( false );
+    var get_the_app_overlay_logic = ko.observable( false );
+    var map_location_editable = ko.observable( true );
+    var new_face_addable = ko.observable( true );
+    var user = viblio.user;
+    var loggedIn = ko.computed(function(){
+        if( user() && user().uuid != null ) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    var shareType = ko.observable();
 
     var title = ko.observable();
     var description = ko.observable();
@@ -494,7 +513,7 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
             customDialogs.showShareVidModal( playing() );
         },
         footer: footer,
-	user: viblio.user,
+	user: user,
 	disable_next: disable_next,
 	disable_prev: disable_prev,
 	nextRelated: nextRelated,
@@ -525,6 +544,18 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
 	mediafiles: mediafiles,
 	query_in_progress: query_in_progress,
 	next_available_clip: next_available_clip,
+
+	loggedIn: loggedIn,
+	shareType: shareType,
+	faces_taggable: faces_taggable,
+	faces_identified_visible: faces_identified_visible,
+	faces_unidentified_visible: faces_unidentified_visible,
+	show_face_names: show_face_names,
+	share_button_visible: share_button_visible,
+	get_the_app_button_visible: get_the_app_button_visible,
+	get_the_app_overlay_logic: get_the_app_overlay_logic,
+	map_location_editable: map_location_editable,
+	new_face_addable: new_face_addable,
 
         showInteractiveMap: function() {
             customDialogs.showInteractiveMap( playing().media, {
@@ -589,6 +620,65 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
 					    dfd.resolve(false);
 					}
 					else {
+					    var mf = data.media;
+					    // Set now playing
+					    playing( new Mediafile( mf ) );
+					    title( mf.title || 'Click to add a title' );
+					    description( mf.description || 'Click to add a description' );
+
+					    // THE SHARE MATRIX
+					    
+					    var share_type = data.share_type;
+					    if ( share_type == 'owned_by_user' ) 
+						share_type = 'private';
+					    shareType( share_type );
+
+					    // First of all, set all the things that are common on the
+					    // web player page despite how the user came in.  This is
+					    // essetially the public case.
+					    //
+					    title_editable( false );
+					    recording_date_editable( false );
+					    pp_related_column_visible( false );
+					    can_leave_comments( false );
+					    show_comments( true );
+					    faces_taggable( false );
+					    faces_identified_visible( true );
+					    faces_unidentified_visible( false );
+					    show_face_names( false );
+					    share_button_visible( false );
+					    get_the_app_button_visible( true );
+					    get_the_app_overlay_logic( true );
+					    map_location_editable( false );
+					    new_face_addable( false );
+
+					    if ( share_type == 'private' && loggedIn() ) {
+						pp_related_column_visible( true );
+						show_face_names( true );
+						can_leave_comments( true );
+					    }
+					    else if ( share_type == 'hidden' && loggedIn() ) {
+						pp_related_column_visible( true );
+						show_face_names( true );
+						can_leave_comments( true );
+					    }
+					    else if ( share_type == 'public' && loggedIn() ) {
+						// This is the default
+					    }
+					    else if ( share_type == 'private' && ! loggedIn() ) {
+						// This case is impossible, since user's are directed to the login or signup page,
+						// but just in case ...
+						customDialogs.showWebPlayerError( 
+						    "We're Sorry", 
+						    'This is a privately shared video. You must be logged into your Viblio account to view it.  If you do not yet have an account, sign up today!', {} );
+					    }
+					    else if ( share_type == 'hidden' && ! loggedIn() ) {
+						show_face_names( true );
+					    }
+					    else if ( share_type == 'public' && ! loggedIn() ) {
+						// This is the default
+					    }
+
 					    dfd.resolve( true );
 					}
 				    } );
