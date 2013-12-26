@@ -44,7 +44,8 @@
             <textarea class="edit editDescription" 
                       data-bind="value:usercomment,
 				 hasFocus: usercomment.editing,
-				 event: { blur: function() { usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment') } }"></textarea>
+				 event: { blur: function() { usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment') } },
+                                 returnKey: blur"></textarea>
           </div>
 	</div>
 
