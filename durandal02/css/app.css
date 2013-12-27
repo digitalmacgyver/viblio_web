@@ -730,60 +730,14 @@ div.map .marker i {
 *
 *********************************************/
 
-#nplayer-page tr,
-#nplayer-page td {
-    vertical-align: top;
-}
-
-#left-arrow-column,
-#right-arrow-column {
-    width: 40px;
-}
-
-#left-side,
-#info-table,
-#comment-column {
-    width: 100%;
-}
-
-#right-side {
-    width: 280px;
-}
-
 #title-desc {
     padding: 1px 24px;
     background-color: white;
 }
 
+
 #comments {
     padding: 24px;
-}
-
-#faces-column,
-#faces {
-    width: 340px;
-}
-
-#faces {
-    padding-top: 10px;
-}
-
-#faces span {
-    margin-left: 25px;
-    color: white;
-    font-size: 25px;
-}
-
-#faces ul {
-    list-style-type:none;
-    margin-left: 25px;
-    margin-top: 10px;
-    padding:0;
-}
-
-#faces li {
-    float: left;
-    margin-bottom: 25px;
 }
 
 #geo {
@@ -852,76 +806,6 @@ div.map .marker i {
     text-shadow: 2px 2px rgba(0,0,0,.2);
 }
 
-#share-video-block {
-    height: 100px;
-    width: 280px;
-}
-
-#share-video-block div {
-    padding-top: 20px;
-    padding-left: 22px;
-}
-
-#share-video-block div a {
-    color: #666;
-    font-size: 20px;
-    padding-top: 21px;
-}
-
-#share-video-block div a.btn {
-    background-color: white;
-}
-
-#related-videos-block {
-    width: 282px;
-}
-
-#related-videos-block p {
-    text-align: center;
-    font-size: 25px;
-    margin-top: 6px;
-    color: white;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-#nplayer-page .vstrip .media-area {
-    overflow: auto;
-}
-
-#nplayer-page .vstrip div {
-    margin: 0 auto;
-}
-
-#tv {
-    height: 529px;
-    background-color: white;
-}
-
-#tv object {
-    width  : 100%;
-    height : 100%;
-}
-
-#tv img {
-    display: block;
-    margin: 0 auto;
-    padding-top: 200px;
-}
-
-#nplayer-page .comments-header .views {
-    width: 40px;
-    height: 40px;
-    color: rgba(82,152,189,1);
-    text-align: center;
-}
-
-#nplayer-page .comments-header .views img {
-    display: block;
-    text-align: center;
-    margin: 2px auto -4px;
-}
-
 .comment .comment-text {
     background-color: white;
     padding: 12px;
@@ -939,18 +823,6 @@ div.map .marker i {
 .comment-editor textarea.edit {
     height: 60px;
 }
-
-#nplayer-page #geo-map-reloc {
-    width: 100%;
-}
-
-#nplayer-page #geo-map-reloc button {
-    display: block;
-    margin-right: auto;
-    margin-left: auto;
-    margin-top: 6px;
-}
-
 
 /*********************************************
 *
@@ -1328,19 +1200,6 @@ div.map .marker i {
     color: white;
     font-size: 32px;
 }
-
-
-/*********************************************
-*
-*               web_player.css
-*
-*********************************************/
-
-#webplayer-page .page-wrapper  {
-    padding-left: 45px;
-    padding-right: 45px;
-}
-
 
 /*********************************************
 *

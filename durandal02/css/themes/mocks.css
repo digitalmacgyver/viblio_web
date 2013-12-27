@@ -1604,38 +1604,6 @@ input:-moz-placeholder {
     border-bottom: 4px solid rgba(0,0,0,.05);
 }
 
-/******************** Player Faces **********************/
-
-#faces {
-    padding: 30px 18px 0;
-    width: 326px;
-    padding-top: 25px;
-    height: auto;
-}
-
-#faces > span {
-    margin-left: 0;
-    color: white;
-    font-size: 20px;
-    font-weight: 200;
-    margin-bottom: 25px;
-    display: block;
-}
-
-#faces ul {
-    margin-left: 0;
-    margin-bottom: 0;
-}
-
-#faces li:last-of-type() {
-    margin-bottom: 0;
-}
-
-#faces li:not(first-of-type) {
-    margin-left: 25px;
-}
-
-
 /********************** Player Map ***********************/
 
 #geo {
@@ -1664,55 +1632,12 @@ input:-moz-placeholder {
     color: rgba(117,117,128,1);
 }
 
-/****************** Player Right Column ************************/
-
-#right-side {
-    border-left: 4px inset rgba(0,0,0,.2);
-    padding-top: 30px;
-}
-
-#webplayer-page #right-side {
-    border-left: 4px inset rgba(0,0,0,.2);
-    padding-top: 0px;
-}
-
-#right-side > div {
-    padding: 20px;
-}
-
-#share-video-block {
-    height: 100px;
-    width: 282px;
-    margin-left: -4px;
-    border-left: 4px inset rgba(0,0,0,.2);
-}
-
-#share-video-block div {
-    padding-top: 15px;
-    padding-left: 5px;
-}
-
-#share-video-block .shareButton {
-    margin-left: 4px;
-    margin-top: 16px;
-}
-
-#related-videos-block p {
-    margin-top: 0;
-    margin-left: 3px;
-    font-weight: 100;
-    text-align: left;
-}
-
 .related-by {
     color: white;
     margin-top: 0;
     margin-right: 12px;
     cursor: pointer;
     text-decoration: underline;
-}
-#related-videos-block .media-area {
-    padding-top: 18px;
 }
 
 /********************  Video Title and Description Section  *****************************/
@@ -2745,11 +2670,6 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     float: left;
 }
 
-#nplayer-page .vstrip .mediafile {
-    margin-bottom: 25px;
-    width: 270px;
-}
-
 .allVidsPage .mediafile {
     margin: 0 25px 25px 0;
     float: left;
@@ -2762,27 +2682,13 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 /*****************************/
 
-#related-videos-block .mediafile img {
-    height: 152px;
-}
-
-/*****************************/
-
-.pp-related-column-related .mediafile .information,
-#related-videos-block .mediafile .information {
+.pp-related-column-related .mediafile .information {
     height: 40px;
     padding: 10px 5px;
 }
 
 
 /***************************/
-
-#nplayer-page .vstrip .mediafile .mplay-icon,
-#nplayer-page .vstrip .mediafile .mplay-icon:hover,
-#nplayer-page .vstrip .mediafile .mplay-icon:visited {
-    top: 40px;
-    left: 101px;
-}
 
 .pp-related-column-related-videos .mediafile .mplay-icon,
 .pp-related-column-related-videos .mediafile .mplay-icon:hover,
@@ -2793,16 +2699,14 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 /*********************************/
 
-.pp-related-column-related .mediafile .information .aux,
-#related-videos-block .mediafile .information .aux {
+.pp-related-column-related .mediafile .information .aux {
     width: 40px;
     height: 40px;
 }
 
 /***********************************/
 
-.pp-related-column-related .mediafile .information .aux img,
-#related-videos-block .mediafile .information .aux img {
+.pp-related-column-related .mediafile .information .aux img {
     width: 30px;
     height: 22px;
     margin: 2px auto -4px;
@@ -2815,8 +2719,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     margin-right: 0px;
 }
 
-.pp-related-column-related .mediafile .information .title,
-#related-videos-block .mediafile .information .title {
+.pp-related-column-related .mediafile .information .title {
     margin: 0 0 0 10px;
     font-weight: 600;
 }
@@ -2854,5 +2757,252 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 #footerFeedback .btn {
     display: block;
+}
+
+/************************* PLAYER PAGE *******************************/
+.pp-main {
+    width: 100%;
+}
+.pp-main .pp-left-arrow-column {
+    width: 55px;
+    padding-left: 40px;
+    vertical-align: top;
+}
+.pp-main .pp-right-arrow-column {
+    width: 55px;
+    vertical-align: top;
+    padding-right: 40px;
+}
+.pp-main .pp-player-column {
+    padding-top: 50px;
+    vertical-align: top;
+}
+.pp-main .pp-related-column {
+    width: 320px;
+    border-left: 4px inset rgba(0,0,0,.2);
+    vertical-align: top;
+    padding: 0;
+}
+
+.pp-related-column-header,
+.pp-related-column-related {
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.pp-related-column-wrapper .orangeBG {
+    margin-left: -4px;
+    border-left: 4px inset rgba(0, 0, 0, 0.2);
+    padding-bottom: 20px;
+}
+
+.pp-related-column-related-videos {
+    overflow: scroll;
+    position: relative;
+}
+.pp-related-column-related-videos .mediafile {
+    width: 270px;
+    margin-bottom: 25px;
+}
+.pp-related-column-related-videos .mediafile img {
+    height: 152px;
+}
+.pp-info-faces-wrapper,
+.pp-info-right-column {
+    width: 366px;
+}
+.pp-info-map-wrapper {
+    height: 320px;
+    min-height: 320px;
+}
+.pp-info-faces-wrapper {
+    min-height: 600px;
+}
+.pp-player-column table {
+    width: 100%;
+}
+
+.pp-tv-wrap .shareButton {
+    position: absolute;
+    bottom: 35px;
+    right: 10px;
+    opacity: .65;
+    padding: 15px 0 0;
+    width: 200px;
+    height: 50px;
+    font-size: 17px;
+}
+.pp-info-right-column,
+.pp-info-left-column {
+    vertical-align: top;
+}
+.pp .comments-header {
+    display: table;
+    width: 100%;
+}
+.pp .comments-header .observer {
+    width: 55px;
+}
+.tableCell {
+    display: table-cell;
+}
+.topAlign {
+    vertical-align: top;
+}
+.midAlign {
+    vertical-align: middle;
+}
+.pp .comments-header .views span{
+    display: block;
+}
+.pp-info-left-column .all-comments {
+    /* max-height: 250px; */
+    height: 100%;
+    overflow: scroll;
+}
+#geo-map-reloc {
+    width: 100%;
+}
+#geo-map-reloc .btn {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 6px;
+}
+.pp-faces-box {
+    padding: 25px 0 0;
+    height: auto;
+}
+.pp-face-container {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.pp-faces-need-names {
+    color: rgb(0,81,128);
+    margin-bottom: 30px;
+    padding: 12px 0;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 24px;
+    -moz-box-shadow: 0 2px 0 1px rgba(0,0,0,.2);
+    -webkit-box-shadow: 0 2px 0 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 0 1px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+.pp-faces-need-names::before {
+    border-top: 16px solid rgba(0, 0, 0, 0.2);
+    border-left: 16px solid rgba(0, 0, 0, 0);
+    border-right: 16px solid rgba(0, 0, 0, 0);
+    content: "";
+    display: inline-block;
+    left: 146px;
+    position: absolute;
+    bottom: -16px;
+}
+
+.pp-faces-need-names::after {
+    border-top: 14px solid rgb(255, 255, 255);
+    border-left: 14px solid rgba(0, 0, 0, 0);
+    border-right: 14px solid rgba(0, 0, 0, 0);
+    content: "";
+    display: inline-block;
+    left: 148px;
+    position: absolute;
+    bottom: -12px;
+}
+.pp-info-faces-wrapper .person {
+    width: 90px;
+    margin-right: 0;
+    margin-bottom: 25px;
+    display: inline-block;
+}
+.pp-faces-box .person:nth-of-type(3n + 2) {
+    margin: 0 18px 25px;
+}
+.pp-info-faces-wrapper .person > div {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.pp-info-faces-wrapper .person img {
+    height: 90px;
+    margin-bottom: 5px;
+    -moz-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2);
+    -webkit-box-shadow: 3px 3px 0px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 3px 3px 0px 1px rgba(0, 0, 0, 0.2);
+}
+.pp-info-faces-wrapper .person .name {
+    font-size: 14px;
+    padding: 0;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(255, 255, 255);
+    font-weight: 400;
+    -moz-text-shadow: 1px 1px rgba(0,0,0,.2);
+    -webkit-text-shadow: 1px 1px rgba(0,0,0,.2);
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+}
+.pp-unknown-faces-container .person .name {
+    color: rgb(0, 81, 128);
+    text-shadow: none;
+}
+.pp-info-faces-wrapper .person .left-badge {
+    cursor: pointer;
+    left: -8px;
+    top: -5px;
+    font-size: 30px;
+}
+.pp-info-faces-wrapper .person .right-badge {
+    cursor: pointer;
+}
+.pp-related-column-header {
+    padding-top: 20px;
+}
+.pp-related-column-header span,
+.pp-related-column-header p {
+    margin-top: 0;
+    margin-left: 3px;
+    font-weight: 100;
+    text-align: left;
+    font-size: 25px;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.pp-related-column-header span {
+    font-size: 20px;
+}
+.pp-related-column-header .editable-checklist span {
+    color: black;
+}
+#geo {
+    width: 280px;
+    padding: 20px;
+    height: auto;
+}
+.pp-share a {
+    width: 100%;
+    font-size: 28px;
+    padding: 16px;
+}
+.pp-no-faces {
+    display: block;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 100;
+}
+.pp-no-faces p {
+    cursor: pointer;
+    color: white;
+}
+.pp-no-faces:hover {
+    text-decoration: underline;
+}
+.typeahead.dropdown-menu {
+    text-align: left;
+}
+.pp-faces-box-wrapper {
+    text-align: center;
+    vertical-align: top;
 }
 
