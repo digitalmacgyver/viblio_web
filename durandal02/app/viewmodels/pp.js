@@ -28,7 +28,6 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
     var pp_related_column_visible = ko.observable( true );
     var can_leave_comments = ko.observable( true );
     var show_comments = ko.observable( true );
-
     var faces_taggable = ko.observable( true );
     var faces_identified_visible = ko.observable( true );
     var faces_unidentified_visible = ko.observable( true );
@@ -625,6 +624,11 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
 					    playing( new Mediafile( mf ) );
 					    title( mf.title || 'Click to add a title' );
 					    description( mf.description || 'Click to add a description' );
+
+					    if ( mf.lat )
+						nolocation( false );
+					    else
+						nolocation( true );
 
 					    // THE SHARE MATRIX
 					    

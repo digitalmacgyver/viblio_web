@@ -6,7 +6,6 @@
         'transitions' : '../lib/durandal/js/transitions',
 
 	'facebook': '//connect.facebook.net/en_US/all',
-	'cloudsponge': '//api.cloudsponge.com/address_books'
     },
     shim: {
         'facebook' : {

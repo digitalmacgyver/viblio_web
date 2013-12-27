@@ -1,4 +1,4 @@
-define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'plugins/dialog', 'cloudsponge'], function( router, app, system, config, viblio, dialog ) {
+define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'plugins/dialog'], function( router, app, system, config, viblio, dialog ) {
     
     var friendsEmailsValid = ko.observable(false);
     var tellFriendsMessage = ko.observable();
