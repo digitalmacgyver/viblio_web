@@ -23,20 +23,42 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
     // if this is a user video, or a shared video (and how it
     // was shared, and if the sharee is logging in)
     //
-    var title_editable = ko.observable( true );
-    var recording_date_editable = ko.observable( true );
-    var pp_related_column_visible = ko.observable( true );
-    var can_leave_comments = ko.observable( true );
-    var show_comments = ko.observable( true );
-    var faces_taggable = ko.observable( true );
-    var faces_identified_visible = ko.observable( true );
-    var faces_unidentified_visible = ko.observable( true );
-    var show_face_names = ko.observable( true );
-    var share_button_visible = ko.observable( true );
-    var get_the_app_button_visible = ko.observable( false );
-    var get_the_app_overlay_logic = ko.observable( false );
-    var map_location_editable = ko.observable( true );
-    var new_face_addable = ko.observable( true );
+    var title_editable = ko.observable();
+    var recording_date_editable = ko.observable();
+    var pp_related_column_visible = ko.observable();
+    var can_leave_comments = ko.observable();
+    var show_comments = ko.observable();
+    var faces_taggable = ko.observable();
+    var faces_identified_visible = ko.observable();
+    var faces_unidentified_visible = ko.observable();
+    var show_face_names = ko.observable();
+    var share_button_visible = ko.observable();
+    var get_the_app_button_visible = ko.observable();
+    var get_the_app_overlay_logic = ko.observable();
+    var map_location_editable = ko.observable();
+    var new_face_addable = ko.observable();
+
+    // Initialize all of the visibility/editable conditionals
+    // to a new_player configuration.
+    //
+    function initialize_conditionals() {
+	title_editable( true );
+	recording_date_editable( true );
+	pp_related_column_visible( true );
+	can_leave_comments( true );
+	show_comments( true );
+	faces_taggable( true );
+	faces_identified_visible( true );
+	faces_unidentified_visible( true );
+	show_face_names( true );
+	share_button_visible( true );
+	get_the_app_button_visible( false );
+	get_the_app_overlay_logic( false );
+	map_location_editable( true );
+	new_face_addable( true );
+    }
+    initialize_conditionals();
+
     var user = viblio.user;
     var loggedIn = ko.computed(function(){
         if( user() && user().uuid != null ) {
@@ -53,7 +75,10 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
         if ( playing() && playing().media() ) {
             var date = moment( playing().media().recording_date, 'YYYY-MM-DD HH:mm:ss' );
             if ( playing().media().recording_date == '1970-01-01 00:00:00' ) {
-                return 'click to add recording date';
+		if ( recording_date_editable() )
+                    return 'click to add recording date';
+		else
+		    return 'unknown date';
             }
             else {
                 return date.format('MMM D, YYYY');
@@ -107,8 +132,14 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
         playing( m );
         playing().highlight();
 
-        title( playing().title() || 'Click to add a title.' );
-        description( playing().description() || 'Click to add a description.' );
+	if ( title_editable() ) {
+            title( playing().title() || 'Click to add a title.' );
+            description( playing().description() || 'Click to add a description.' );
+	}
+	else {
+            title( playing().title() || 'Untitled' );
+            description( playing().description() || '' );
+	}
         setupComments( m.media() );
         setupFaces( m.media() );
         near( m.media() );
@@ -134,6 +165,18 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
             });
         }
         viblio.mpEvent( 'related_video' );
+    }
+
+    function playAgain() {
+        flowplayer().play({
+            url: 'mp4:' + playing().media().views.main.cf_url,
+            ipadUrl: encodeURIComponent(playing().media().views.main.url)
+        });
+    }
+
+    function getApp() {
+        showPlayerOverlay(false);
+        router.navigate('getApp?from=web_player');
     }
 
     // Play next related video
@@ -209,15 +252,6 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
     function setupFlowplayer( elem, mf ) {
 	$(elem).flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
             ratio: 9/16,
-            onMouseOver: function() {
-                showPlayerOverlay(true);
-            },
-            onMouseOut: function() {
-                // only hide the button if the mouse exits the player and is NOT hovereing over the shareButton
-                if ( $('.shareButton:hover').length == 0 ) {
-                    showPlayerOverlay(false);
-                }
-            },
             clip: {
                 url: 'mp4:' + mf.views.main.cf_url,
                 ipadUrl: encodeURIComponent(mf.views.main.url),
@@ -408,14 +442,30 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
 	    F.id = face.contact.contact_id;
 	    F.uuid = face.contact.uuid;
 	}
-	var face = new Face( F, { 
-	    clickable: false, 
-	    leftBadgeIcon: 'icon-remove-circle',
-	    leftBadgeClick: removePerson,
-	    leftBadgeMode: 'hover',
-	    show_name: false, 
-	    show_tag3: true,
-	});
+
+	var face_opts;
+	if ( faces_taggable() ) {
+	    face_opts = { 
+		clickable: false, 
+		leftBadgeIcon: 'icon-remove-circle',
+		leftBadgeClick: removePerson,
+		leftBadgeMode: 'hover',
+		show_name: false, 
+		show_tag3: true,
+	    };
+	}
+	else {
+	    face_opts = {
+		clickable: false,
+		show_name: show_face_names()
+	    };
+	}
+	var face = new Face( F, face_opts );
+
+	// If we are not going to display unidentified, dont even add them
+	if ( faces_unidentified_visible() == false && face.data.contact_name === null )
+	    return;
+
 	face.on( 'person:composed', function() {
 	    resizeColumns();
 	});
@@ -503,7 +553,6 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
 		    unknown_faces.remove( face );
 		else
 		    known_faces.remove( face );
-		//resizeColumns();
 	    });
     }
 
@@ -519,6 +568,9 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
 	previousRelated: previousRelated,
 	pp_related_column_visible: pp_related_column_visible,
 	showPlayerOverlay: showPlayerOverlay,
+	hidePlayerOverlay: hidePlayerOverlay,
+	playAgain: playAgain,
+	getApp: getApp,
 	playing: playing,
 
 	title: title,
@@ -601,13 +653,14 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
 	canActivate: function( args ) {
 	    // How did we get here?  route will be one of new_player or web_player
 	    route = router.activeInstruction().fragment;
-	    viblio.log( 'route: ', route );
+
+	    initialize_conditionals();
 
 	    if ( args && args.mid ) {
 		if ( route == 'web_player' ) {
 		    return system.defer( function( dfd ) {
 			viblio.setLastAttempt( 'web_player?mid=' + args.mid );
-			viblio.api( '/services/na/media_shared', { mid: args.mid }, 
+			viblio.api( '/services/na/media_shared', args, 
 				    function( error ) {
 					customDialogs.showWebPlayerError( "We're Sorry", error.message, error );
 					dfd.resolve(false);
@@ -622,8 +675,8 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
 					    var mf = data.media;
 					    // Set now playing
 					    playing( new Mediafile( mf ) );
-					    title( mf.title || 'Click to add a title' );
-					    description( mf.description || 'Click to add a description' );
+					    title( mf.title || 'Untitled' );
+					    description( mf.description || '' );
 
 					    if ( mf.lat )
 						nolocation( false );
@@ -635,6 +688,7 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
 					    var share_type = data.share_type;
 					    if ( share_type == 'owned_by_user' ) 
 						share_type = 'private';
+
 					    shareType( share_type );
 
 					    // First of all, set all the things that are common on the
@@ -710,8 +764,6 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
 		    title( mf.title || 'Click to add a title' );
 		    description( mf.description || 'Click to add a description' );
 		});
-	    }
-	    else if ( route == 'web_player' ) {
 	    }
 	},
 

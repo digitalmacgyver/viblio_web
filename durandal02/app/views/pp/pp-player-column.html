@@ -2,7 +2,23 @@
   <tr>
     <td class="pp-tv-td">
       <div class="pp-tv-wrap playerOverlay-Wrap">
-	<div class="pp-tv"></div>
+        <!-- ko if: showPlayerOverlay()==true && get_the_app_overlay_logic()==true -->
+        <div class="videoOverlay" data-bind="click: hidePlayerOverlay">
+          <div class="paddedDiv bottomBorder-Thin">
+            <div id="cloudImage"></div>
+            <p class="landingHeaderTitle"><span>Create your own </span>VIBLIO Video Library</p>
+            <a class="btn btn-blue" href="/#getApp?from=web_player_overlay" data-bind="click: getApp, clickBubble: false">
+              Get the VIBLIO app &raquo;
+            </a>
+          </div>
+          <div class="button-Wrap">
+            <button class="btn btn-primary" data-bind="click: playAgain, clickBubble: false">
+              <i class="icon-repeat"></i>  Watch this Video again
+            </button>
+          </div>
+        </div>
+        <!-- /ko -->
+	<div class="pp-tv player"></div>
       </div>
     </td>
   </tr>
