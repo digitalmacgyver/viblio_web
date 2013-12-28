@@ -28,9 +28,9 @@
 
 	  <div class="comments-header lightBlueFont table">
             <div class="observer tableCell topAlign">
-              <img class="boxShadowed" src="/services/na/avatar?uid=-&y=36" />
+              <img class="boxShadowed" data-bind="attr:{src:media_owner_avatar}" />
             </div>
-            <p class="tableCell midAlign lightWeightFont">by <span class="heavyWeightFont" data-bind="html: user().displayname"></span></p>
+            <p class="tableCell midAlign lightWeightFont">by <span class="heavyWeightFont" data-bind="text: media_owner_name"></span></p>
             <p class="todays-date recording-date lightWeightFont pull-right" data-bind="text: formatted_date"></p>
           </div>
 

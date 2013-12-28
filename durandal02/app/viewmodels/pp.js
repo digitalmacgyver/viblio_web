@@ -1,11 +1,14 @@
-define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], function( Face, Related, footer ) {
-    var app = require( 'durandal/app' );
-    var system = require( 'durandal/system' );
-    var router = require( 'plugins/router' );
-    var config = require( 'lib/config' );
-    var viblio = require( 'lib/viblio' );
-    var Mediafile = require( 'viewmodels/mediafile' );
-    var customDialogs = require( 'lib/customDialogs' );
+define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_video'], function( require ) {
+    var app = require( "durandal/app" );
+    var system = require( "durandal/system" );
+    var router = require( "plugins/router" );
+    var config = require( "lib/config" );
+    var viblio = require( "lib/viblio" );
+    var Mediafile = require( "viewmodels/mediafile" );
+    var customDialogs = require( "lib/customDialogs" );
+    var Face = require( "viewmodels/person" );
+    var Related = require( "lib/related_video" );
+    var footer = require( "viewmodels/footer" );
 
     var incoming_mid;
     var view;
@@ -85,8 +88,16 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
             }
         }
     });
-    var usercomment = ko.observable('');
 
+    var media_owner_name = ko.observable();
+    var media_owner_avatar = ko.observable();
+
+    function setOwner( owner ) {
+	media_owner_name( owner.displayname || data.owner.email );
+	media_owner_avatar( "/services/na/avatar?uid=" + owner.uuid + "&y=36" );
+    }
+
+    var usercomment = ko.observable('');
     var comments = ko.observableArray([]);
 
     // When title or description changes (due to inline edit),
@@ -319,6 +330,7 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
     function setupComments( m ) {
         comments.removeAll();
         viblio.api( '/services/na/media_comments', { mid: m.uuid } ).then( function( data ) {
+	    setOwner( data.owner );
             if ( data.comments && data.comments.length ) {
                 numComments = data.comments.length;
                 // returns now in UTC time
@@ -578,6 +590,9 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
 	title_editable: title_editable,
 	formatted_date: formatted_date,
 
+	media_owner_name: media_owner_name,
+	media_owner_avatar: media_owner_avatar,
+
 	usercomment: usercomment,
 	can_leave_comments: can_leave_comments,
 	show_comments: show_comments,
@@ -765,6 +780,7 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
 		    playing( new Mediafile( mf ) );
 		    title( mf.title || 'Click to add a title' );
 		    description( mf.description || 'Click to add a description' );
+		    setOwner( json.owner );
 		});
 	    }
 	},

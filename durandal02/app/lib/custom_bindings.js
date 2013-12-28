@@ -3,7 +3,7 @@
    General useage:
      <div data-bind="name: {}"></div>
 */
-define(['durandal/app', 'lib/config', 'durandal/system', 'viewmodels/mediavstrip'],function(app, config, system, vstrip) {
+define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, system) {
 
     // Used to edit the video title and description on Player Page
     ko.extenders.liveEditor = function (target) {
