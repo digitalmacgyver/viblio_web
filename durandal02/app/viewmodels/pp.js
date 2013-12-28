@@ -318,7 +318,7 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
 
     function setupComments( m ) {
         comments.removeAll();
-        viblio.api( '/services/mediafile/comments', { mid: m.uuid } ).then( function( data ) {
+        viblio.api( '/services/na/media_comments', { mid: m.uuid } ).then( function( data ) {
             if ( data.comments && data.comments.length ) {
                 numComments = data.comments.length;
                 // returns now in UTC time
@@ -394,7 +394,7 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
         map.removeAllMarkers();
         // map.disableSetLocation();
         if ( m.lat ) {
-            viblio.api( '/services/geo/location', { lat: m.lat, lng: m.lng } ).then( function( res ) {
+            viblio.api( '/services/na/geo_loc', { lat: m.lat, lng: m.lng } ).then( function( res ) {
                 if ( res && res.length ) {
                     nolocation( false );
                     isNear( getCountry( res ) );
@@ -531,7 +531,7 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
 	faces.removeAll();
 	unknown_faces.removeAll();
 	known_faces.removeAll();
-	viblio.api( '/services/faces/faces_in_mediafile', { mid: m.uuid } ).then( function( data ) {
+	viblio.api( '/services/na/faces_in_mediafile', { mid: m.uuid } ).then( function( data ) {
 	    if ( data.faces && data.faces.length ) {
 		var count = data.faces.length;
 		for( var i=0; i<count; i++ ) {
@@ -729,6 +729,8 @@ define( [ 'viewmodels/person', 'lib/related_video','viewmodels/footer' ], functi
 						customDialogs.showWebPlayerError( 
 						    "We're Sorry", 
 						    'This is a privately shared video. You must be logged into your Viblio account to view it.  If you do not yet have an account, sign up today!', {} );
+						dfd.resolve( false );
+						return;
 					    }
 					    else if ( share_type == 'hidden' && ! loggedIn() ) {
 						show_face_names( true );
