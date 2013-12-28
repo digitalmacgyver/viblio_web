@@ -76,7 +76,7 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
     var description = ko.observable();
     var formatted_date = ko.computed( function() {
         if ( playing() && playing().media() ) {
-            var date = moment( playing().media().recording_date, 'YYYY-MM-DD HH:mm:ss' );
+            //var date = moment.utc( playing().media().recording_date, 'YYYY-MM-DD HH:mm:ss' );
             if ( playing().media().recording_date == '1970-01-01 00:00:00' ) {
 		if ( recording_date_editable() )
                     return 'click to add recording date';
@@ -84,7 +84,10 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
 		    return 'unknown date';
             }
             else {
-                return date.format('MMM D, YYYY');
+		var date_utc = moment.utc(playing().media().recording_date).toDate();
+		var date_lc  = moment(playing().media().recording_date);
+		$(view).find(".recording-date").editable("setValue",date_utc,false)
+                return date_lc.format('MMM D, YYYY');
             }
         }
     });
@@ -858,18 +861,12 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
 			todayHighlight: true
                     },
                     success: function( res, v ) {
-			var m = moment( v );
-			var dstring = m.format( 'YYYY-MM-DD HH:mm:ss' );
+			// v is a Date in localtime, but what is displayed in the cal is UTC
+			var date_utc = moment.utc(v);
+			var dstring = date_utc.format( 'YYYY-MM-DD HH:mm:ss' );
 			playing().media().recording_date = dstring;
-
-			// The calander displays UTC. So read it as UTC and
-			// convert it into local time.  Really just makes
-			// the calander look as though it is displaying
-			// local time, I think!
-			var utc = moment.utc( v );
-			dstring = utc.format( 'YYYY-MM-DD HH:mm:ss' );
-
 			viblio.api( '/services/mediafile/change_recording_date', { mid: playing().media().uuid, date: dstring } ).then( function() {
+			    playing( playing() );
 			});
 			return null;
                     }
