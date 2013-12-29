@@ -201,8 +201,17 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
 	    viblio.api( '/services/na/new_user', { email: email(),
 						   password: password(),
 						   displayname: email() }, handleLoginFailure )
-		.then( function() {
+		.then( function( user ) {
+		    // Save the logged in user info to the viblio object,
+		    // which serves as a global exchange
+		    //
+		    viblio.setUser( user );
+	
+		    // mixpanel event
+
 		    viblio.mpEvent( 'registered_via_share' );
+		    viblio.mpEvent( 'login' );
+
 		    router.navigate( viblio.getLastAttempt() || url || 'home' );
 		});
 	}
