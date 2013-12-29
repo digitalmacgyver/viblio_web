@@ -165,27 +165,31 @@
 			SET UP EVENTS FOR TOUCH SCROLLING
 			*****************************************/
 			if (o.touchScrolling && el.data("enabled")) {
-				// Use jquery.kinetic.js for touch scrolling
-				// Vertical scrolling disabled
-				el.data("scrollWrapper").kinetic({
-					y: false,
-					moved: function (settings) {
-						if (o.manualContinuousScrolling) {
-							if (el.data("scrollWrapper").scrollLeft() <= 0) {
-								self._checkContinuousSwapLeft();
-							} else {
-								self._checkContinuousSwapRight();
-							}
-						}
-					},
-					stopped: function (settings) {
-						// Stop any ongoing animations
-						el.data("scrollWrapper").stop(true, false);
-
-						// Stop any ongoing auto scrolling
-						self.stopAutoScrolling();
+			    // Use jquery.kinetic.js for touch scrolling
+			    // Vertical scrolling disabled
+			    el.data("scrollWrapper").kinetic({
+				y: false,
+				moved: function (settings) {
+				    if (o.manualContinuousScrolling) {
+					if (el.data("scrollWrapper").scrollLeft() <= 0) {
+					    self._checkContinuousSwapLeft();
+					} else {
+					    self._checkContinuousSwapRight();
 					}
-				});
+				    }
+				},
+				stopped: $.debounce( 500, true, function (settings) {
+				    // Stop any ongoing animations
+				    el.data("scrollWrapper").stop(true, false);
+				    
+				    // Stop any ongoing auto scrolling
+				    self.stopAutoScrolling();
+				    
+				    if (el.data("scrollableAreaWidth") <= (el.data("scrollWrapper").innerWidth() + el.data("scrollWrapper").scrollLeft())) {
+					self._trigger("scrollerRightLimitReached");
+				    }
+				})
+			    });
 			}
 
 			/*****************************************

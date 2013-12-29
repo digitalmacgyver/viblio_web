@@ -110,7 +110,11 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
     };
 
     Person.prototype.mouseover = function(d, e) {
-	this.trigger( 'person:mouseover', this );
+	if ( head.mobile ) 
+	    // With touch, mouseover (apparently) trumps click
+	    this.select( d, e );
+	else
+	    this.trigger( 'person:mouseover', this );
     };
 
     Person.prototype.mouseleave = function(d, e) {
