@@ -11,6 +11,11 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
         var oldVal = ko.observable( null );
         
         target.edit = function () {
+            system.log( target() );
+            // if the target's value is the default value, then remove it when editing
+            if( target() === 'Click to add a title.' || 'Click to edit title' || 'Click to add a description.' || 'Click to edit description' || '' ) {
+                target('');
+            }
             target.editing(true);
             oldVal = target();
         };

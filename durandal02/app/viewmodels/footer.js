@@ -26,6 +26,7 @@ define( ['plugins/router', 'durandal/app', 'lib/viblio', 'lib/config', 'durandal
             viblio.api('/services/na/form_feedback', args).then(function(){
                 viblio.mpEvent( 'feedback' );
 		viblio.notify( 'Thank you for your feedback', 'success' );
+                feedback('');
             });
 	}
     };
