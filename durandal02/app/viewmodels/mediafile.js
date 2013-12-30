@@ -2,7 +2,7 @@
   The main mediafile view/model.  Represents a mediafile from the
   server.  Returns an instance factory.
 */
-define(['durandal/app', 'durandal/events', 'lib/viblio'],function(app, Events, viblio) {
+define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],function(app, Events, viblio, dialogs) {
 
     // Temporary.  Used to create random numbers to use for
     // number of video views, ratings, etc.  For GUI development
@@ -17,19 +17,26 @@ define(['durandal/app', 'durandal/events', 'lib/viblio'],function(app, Events, v
     // access from a model or view is:
     //   m.media().views.main.url
     //
-    var Video = function( data ) {
+    var Video = function( data, options ) {
 	//data.title = data.filename;
 	//data.description = 'no description',
 	data.eyes = data.view_count || 0;
+
+	this.options = $.extend({
+	    ro: false,
+	    show_share_badge: false,
+	    share_action: 'modal', // 'modal' to popup showShareVidModal, 'trigger' to trigger mediafile:share, function as a callback
+	}, options );
         
 	this.media    = ko.observable( data );
 	this.selected = ko.observable( false );
 	this.edittable = ko.observable( false );
-	this.ro       = ko.observable( false );  // If true, then cannot edit title
+	this.ro       = ko.observable( this.options.ro );  // If true, then cannot edit title
+	this.show_share_badge = ko.observable( this.options.show_share_badge );
 
 	this.title = ko.observable( data.title );
 	this.description = ko.observable( data.description );
-        
+
 	Events.includeIn( this );
 
 	// This will be triggered by a save on the liveEdit custom
@@ -70,15 +77,21 @@ define(['durandal/app', 'durandal/events', 'lib/viblio'],function(app, Events, v
     Video.prototype.mfdelete = function() {
 	this.trigger( 'mediafile:delete', this );
     };
+
+    Video.prototype.share = function() {
+	if ( typeof this.options.share_action == 'function' )
+	    this.options.share_action( this );
+	else if ( this.options.share_action == 'modal' )
+	    dialogs.showShareVidModal( this );
+	else if ( this.options.share_action == 'trigger' )
+	    this.trigger( 'mediafile:share', this );
+    };
     
-    // Method usually called from above; toggle
-    // the edittable observable.  Will affect the
-    // GUI state.
     Video.prototype.toggleEditMode = function() {
 	this.edittable( this.edittable() ? false : true );
-	if ( this.edittable ) {
-	    $(this.view).find( '.dbtn' ).toggle('slide', {direction: 'right'}, 300);
-	}
+	if ( this.show_share_badge() )
+	    $(this.view).find( '.media-share-badge' ).toggleClass( 'hideme' );
+	$(this.view).find( '.dbtn' ).toggle('slide', {direction: 'right'}, 300);
     };
 
     // Send an event, so those above can manage screen

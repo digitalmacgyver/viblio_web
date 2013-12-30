@@ -2583,6 +2583,16 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     right: 8px;
 }
 
+.mediafile .media-share-badge {
+    position: absolute;
+    right: 3px;
+    padding-top: 10px;
+    padding-bottom: 6px;
+    padding-right: 11px;
+    padding-left: 11px;
+    font-size: 30px;
+}
+
 .mediafile .information .aux {
     background-color: rgba(211,246,253,1);
     position: absolute;
