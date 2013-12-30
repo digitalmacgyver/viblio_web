@@ -90,9 +90,8 @@
         <div class="pp-faces-box">
 	  <!-- ko if: faces_fetched() && faces().length<1 -->
             <div class="pp-no-faces">
+	      <!-- ko if: new_face_addable() -->
               <img src="css/images/avatar.png" alt="avatar" />
-	      <!-- ko ifnot: new_face_addable() -->
-	      <p class="textShadowed whiteText" style="cursor: default; text-decoration: none">No faces where tagged in this video.</p>
 	      <!-- /ko -->
             </div>
 	  <!-- /ko -->
