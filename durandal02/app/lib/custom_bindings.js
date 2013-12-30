@@ -301,15 +301,18 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
 	    // Add a common class name for all such scrollers
 	    $element.addClass( "horizontal-scroller" );
 
-	    // Automatically add the hot spot overrides we use in viblio
-	    $('<button class="btn btn-small fwd btn-nav mCSB_buttonRight"><img src="css/images/arrowRight.png"/></button>').appendTo( $element );
-	    $('<button class="btn btn-small back btn-nav mCSB_buttonLeft"><img src="css/images/arrowLeft.png"/></button>').appendTo( $element );
+	    if ( ! head.mobile ) {
+		// Automatically add the hot spot overrides we use in viblio
+		$('<button class="btn btn-small fwd btn-nav mCSB_buttonRight"><img src="css/images/arrowRight.png"/></button>').appendTo( $element );
+		$('<button class="btn btn-small back btn-nav mCSB_buttonLeft"><img src="css/images/arrowLeft.png"/></button>').appendTo( $element );
+	    }
 
 	    // Create the scroller
 	    $element.smoothDivScroll({
 		scrollingHotSpotLeftClass: "mCSB_buttonLeft",
 		scrollingHotSpotRightClass: "mCSB_buttonRight",
-		hotSpotScrolling: true,
+		hotSpotScrolling: ( head.mobile ? false: true),
+		touchScrolling: ( head.mobile ? true : false ),
 		visibleHotSpotBackgrounds: 'always',
 		setupComplete: function() {
 		    if ( hscroller.setupComplete )
@@ -329,7 +332,8 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
 	    // Set up the handler for children-changed, so we can redraw
 	    $element.on( 'children-changed', function( e, opts ) {
 		$element.smoothDivScroll("recalculateScrollableArea");
-		$element.smoothDivScroll("redoHotSpots");
+		if ( ! head.mobile )
+		    $element.smoothDivScroll("redoHotSpots");
 		if ( opts && opts.enable ) 
 		    $element.smoothDivScroll("enable" );
 	    });

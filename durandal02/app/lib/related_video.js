@@ -60,6 +60,10 @@ define( function() {
                     self.search();
 		}
             }));
+	    // If its a mobile device, add a little surger
+	    if ( head.mobile ) 
+		$(elem).kinetic();
+
 	    this.reset();
 	},
 

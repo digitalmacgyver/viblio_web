@@ -108,7 +108,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 self.numVids( self.numVids() + share.media.length );
                 var mediafiles = ko.observableArray([]);
                 share.media.forEach( function( mf ) {
-                    var m = new Mediafile( mf ); m.ro( true );
+                    var m = new Mediafile( mf, { ro: true } ); //m.ro( true );
                     m.on( 'mediafile:play', function( m ) {
                         router.navigate( 'web_player?mid=' + m.media().uuid );
                     });
@@ -216,7 +216,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 		    .then( function( json ) {
 			self.monthPager = json.pager;
                         json.media.forEach( function( mf ) {
-                            var m = new Mediafile( mf );
+                            var m = new Mediafile( mf, { show_share_badge: true } );
                             m.on( 'mediafile:play', function( m ) {
                                 router.navigate( 'new_player?mid=' + m.media().uuid );
                             });
@@ -261,7 +261,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	var self = this;
 
 	// Create a new Mediafile with the data from the server
-	var m = new Mediafile( mf );
+	var m = new Mediafile( mf, { show_share_badge: true } );
 
 	// Register a callback for when a Mediafile is selected.
 	// This is so we can deselect the previous one to create
