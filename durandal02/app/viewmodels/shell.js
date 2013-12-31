@@ -70,7 +70,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	}
         else {
 	    // Not authenticated, so go!
-	    if ( instruction.config.route != 'login' )
+	    if ( instruction.config.route != 'login' && instruction.config.route != 'register' )
 		viblio.setLastAttempt( null );
 
 	    if ( instruction.config.route == '' && 

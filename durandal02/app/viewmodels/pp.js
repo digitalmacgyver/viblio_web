@@ -684,10 +684,14 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
 					dfd.resolve(false);
 				    } ).then( function( data ) {
 					if ( data.auth_required ) {
+					    /*
 					    customDialogs.showWebPlayerError( 
 						"We're Sorry", 
 						'This is a privately shared video. You must be logged into your Viblio account to view it.  If you do not yet have an account, sign up today!', {} );
 					    dfd.resolve(false);
+					    */
+					    /* Mona wants to auto-redirect to register page in this case */
+					    dfd.resolve({redirect:'register'});
 					}
 					else {
 					    var mf = data.media;
