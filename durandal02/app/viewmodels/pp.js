@@ -656,7 +656,7 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
 	    viblio.api( '/services/faces/add_contact_to_mediafile', 
 			{ contact_name: f, mid: playing().media().uuid } ).then( function( data ) {
 			    var f = {
-				url: data.contact.picture_url,
+				url: data.contact.picture_url || '/css/images/avatar-nobd.png',
 				uri: data.contact.picture_uri,
 				contact: data.contact };
 			    addFace( f );
