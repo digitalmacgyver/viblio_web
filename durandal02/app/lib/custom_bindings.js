@@ -11,6 +11,10 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
         var oldVal = ko.observable( null );
         
         target.edit = function () {
+            // if the target's value starts with 'Click to' then clear all before editing
+            if( target().slice(0,8) === 'Click to' ) {
+                target('');
+            }
             target.editing(true);
             oldVal = target();
         };

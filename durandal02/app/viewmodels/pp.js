@@ -656,7 +656,7 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
 	    viblio.api( '/services/faces/add_contact_to_mediafile', 
 			{ contact_name: f, mid: playing().media().uuid } ).then( function( data ) {
 			    var f = {
-				url: data.contact.picture_url,
+				url: data.contact.picture_url || '/css/images/avatar-nobd.png',
 				uri: data.contact.picture_uri,
 				contact: data.contact };
 			    addFace( f );
@@ -684,10 +684,14 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
 					dfd.resolve(false);
 				    } ).then( function( data ) {
 					if ( data.auth_required ) {
+					    /*
 					    customDialogs.showWebPlayerError( 
 						"We're Sorry", 
 						'This is a privately shared video. You must be logged into your Viblio account to view it.  If you do not yet have an account, sign up today!', {} );
 					    dfd.resolve(false);
+					    */
+					    /* Mona wants to auto-redirect to register page in this case */
+					    dfd.resolve({redirect:'register'});
 					}
 					else {
 					    var mf = data.media;
@@ -812,7 +816,7 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
 	    if ( pp_related_column_visible() ) {
 		Related.init( '.pp-related-column-related-videos', mediafiles, query_in_progress, function( m ) {
 		    playRelated( m );
-		});
+		}, ( route == 'web_player' ));
 		Related.search( playing().media().uuid );
 	    }
 

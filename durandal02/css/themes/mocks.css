@@ -2769,6 +2769,15 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     display: block;
 }
 
+/* Make the alertify messages a bit bigger */
+.alertify-log {
+    font-size: 18px;
+    padding: 18px;
+}
+.alertify-logs {
+    width: 350px;
+}
+
 /************************* PLAYER PAGE *******************************/
 .pp-main {
     width: 100%;
@@ -3015,4 +3024,3 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     text-align: center;
     vertical-align: top;
 }
-

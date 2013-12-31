@@ -363,8 +363,8 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 	compositionComplete: function() {
 	    var self = this;
 
- 	    viblio.api( '/services/faces/all_contacts' ).then( function( data ) {
-		data.contacts.forEach( function( contact ) {
+ 	    viblio.api( '/services/faces/contacts_present_in_videos' ).then( function( data ) {
+		data.faces.forEach( function( contact ) {
 		    if ( ! contact.url ) return;
 		    if ( contact.contact_name ) {
 			addto_faces_known( contact, true );

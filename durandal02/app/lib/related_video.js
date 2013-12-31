@@ -5,6 +5,7 @@ define( function() {
     var searching;
     var play_callback;
     var view;
+    var ro = false;
 
     var mid;
 
@@ -24,7 +25,7 @@ define( function() {
 
     function addMediaFile( mf ) {
         // Create a new Mediafile with the data from the server
-        var m = new Mediafile( mf );
+        var m = new Mediafile( mf, { ro: ro } );
 
         // Proxy the mediafile play event and send it along to
         // our parent.
@@ -38,13 +39,14 @@ define( function() {
 
     return {
 	criterion: criterion,
-	init: function( elem, _mediafiles, _searching, _play_callback ) {
+	init: function( elem, _mediafiles, _searching, _play_callback, _ro ) {
 	    var self = this;
 
 	    view = elem;
 	    mediafiles = _mediafiles;
 	    searching = _searching;
 	    play_callback = _play_callback;
+	    ro = _ro;
 
 	    $(elem).scroll( $.throttle( 250, function() {
 		var $this = $(this);
