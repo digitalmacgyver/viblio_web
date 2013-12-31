@@ -812,7 +812,7 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
 	    if ( pp_related_column_visible() ) {
 		Related.init( '.pp-related-column-related-videos', mediafiles, query_in_progress, function( m ) {
 		    playRelated( m );
-		});
+		}, ( route == 'web_player' ));
 		Related.search( playing().media().uuid );
 	    }
 
