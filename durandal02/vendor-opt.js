@@ -33,7 +33,8 @@ new compressor.minify({
 	'lib/zeroclipboard/ZeroClipboard.js',
 	'lib/ICanHaz.min.js',
 	'lib/jquery.ba-throttle-debounce.min.js',
-        'lib/jquery.placeholder.js'
+        'lib/jquery.placeholder.js',
+	'lib/jquery.autosize.min.js'
     ],
     fileOut: 'build/lib/vendor.all.js',
     callback: function(err, min){

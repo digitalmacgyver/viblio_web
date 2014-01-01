@@ -1661,6 +1661,11 @@ input:-moz-placeholder {
     background-color: rgba(246,248,209,1); 
 }
 
+p.vidDescription {
+    font-family: monospace;
+    white-space: pre-wrap;
+}
+
 .edit,
 input.edit,
 .editing .view {
