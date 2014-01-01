@@ -16,7 +16,8 @@
             </div>
             <div data-bind="liveEditor: description">
               <p class="view vidDescription" data-bind="click: description.edit, text: description() || 'Click to edit description'"></p>
-              <textarea class="edit editDescription" data-bind="value: description, 
+              <textarea class="edit editDescription" data-bind="jqAutoresize: {},
+                                                                value: description, 
 								hasFocus: description.editing, 
 								event: { blur: function() { description.stopEditing(); description.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }"></textarea>
             </div>
@@ -42,7 +43,8 @@
           <div class="comment-editor" data-bind="visible: can_leave_comments, liveEditor: usercomment">
             <p class="view vidDescription" data-bind="click: usercomment.edit, text:'Comment on this video...'"></p>
             <textarea class="edit editDescription" 
-                      data-bind="value:usercomment,
+                      data-bind="jqAutoresize: {},
+                                 value:usercomment,
 				 hasFocus: usercomment.editing,
 				 event: { blur: function() { usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment') } },
                                  returnKey: blur"></textarea>
