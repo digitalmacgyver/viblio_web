@@ -132,7 +132,12 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
     var mediafiles = ko.observableArray([]);
     var query_in_progress = ko.observable( false );
     var next_available_clip = ko.observable( 0 );
-
+    
+    
+    function fixHeight( fn, el1, el2 ) {
+        fn;
+        $(el1).height( $(el2).height() );
+    }
     // Play a new video.  Used after the main player is created in
     // attached.  This reuses the player to play a different clip.
     //
@@ -362,7 +367,7 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
     app.on( 'player:newcomment', function( data ) {
         viblio.api( '/services/mediafile/add_comment',
                     { mid: playing().media().uuid,
-                      txt: usercomment(),
+                      txt: usercomment()
                     } ).then( function( json ) {
                         usercomment('');
                         var c = json.comment;
@@ -572,6 +577,7 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
     }
 
     return {
+        fixHeight: fixHeight,
 	showShareVidModal: function() {
             customDialogs.showShareVidModal( playing() );
         },

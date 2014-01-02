@@ -698,14 +698,7 @@ div.map .marker i {
 
 .comment-editor {
     background-color: white;
-    padding: 12px;
-    padding-bottom: 1px;
-    margin-bottom: 10px;
     border: 1px solid rgba(82,152,189,.7);
-}
-
-.comment-editor textarea.edit {
-    height: 60px;
 }
 
 /*********************************************

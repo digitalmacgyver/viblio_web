@@ -1567,8 +1567,8 @@ input:-moz-placeholder {
 }
 
 .comment-editor textarea.edit.editDescription {
-    height: 28px;
-    padding: 0 12px;
+    height: 20px;
+    padding: 0 12px 8px;
     width: 100%;
     margin: 8px 0 0;
 }
@@ -1661,8 +1661,9 @@ input:-moz-placeholder {
     background-color: rgba(246,248,209,1); 
 }
 
+p.comment-text,
 p.vidDescription {
-    font-family: monospace;
+    //font-family: monospace;
     white-space: pre-wrap;
 }
 
@@ -1690,8 +1691,7 @@ input.edit,
 }
 
 #title-desc .editTitle-Wrap .edit {
-    height: 40px;
-    margin: 12px 5px;
+    height: auto;
     font-size: 24.5px;
     line-height: 40px;
     margin: 10px 0;
@@ -1701,8 +1701,7 @@ input.edit,
 }
 
 #title-desc textarea {
-    height: 20px;
-    margin: 12px 5px;
+    height: 14px;
     font-size: 14px;
     line-height: 20px;
     margin: 10px 0;
