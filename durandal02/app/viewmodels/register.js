@@ -198,7 +198,8 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
 	},
 
 	done: function() {
-	    viblio.api( '/services/na/new_user', { email: email(),
+	    viblio.api( '/services/na/new_user', { via: 'share',
+						   email: email(),
 						   password: password(),
 						   displayname: email() }, handleLoginFailure )
 		.then( function( user ) {

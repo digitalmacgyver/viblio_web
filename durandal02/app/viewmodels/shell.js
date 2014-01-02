@@ -150,9 +150,6 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'forgotPassword',     moduleId: 'forgotPassword',     title: 'Forgot your Password?',
 	      nav: false,   authenticated: false,  header: landing_header },
 
-            { route: 'invite',             moduleId: 'invite',             title: 'Viblio Invite',
-	      nav: false,   authenticated: false,  header: landing_header },
-
             { route: 'web_player',         moduleId: 'pp',         title: 'Video Player',
 	      nav: false,   authenticated: false,   header: conditional_header },
           
