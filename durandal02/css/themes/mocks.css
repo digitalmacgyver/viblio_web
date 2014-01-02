@@ -2888,7 +2888,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .pp-info-left-column .all-comments {
     /* max-height: 250px; */
     height: 100%;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 #geo-map-reloc {
     width: 100%;
