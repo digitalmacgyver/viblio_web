@@ -665,6 +665,10 @@ input:-moz-placeholder {
     border: 1px solid lightgrey;
 }
 
+.lightGreyBG {
+    background-color: rgb(239, 239, 232);
+}
+
 .whiteBG {
     background-color: white;
 }
@@ -3035,3 +3039,118 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     text-align: center;
     vertical-align: top;
 }
+
+/*** ALBUMS PAGE ******/
+
+.albums .a-table {
+    width: 100%;
+}
+
+.albums .a-wrapper {
+    padding: 40px;
+}
+
+.albums .a-left-header {
+    text-align: right;
+}
+
+.albums .a-table .a-table-td {
+    width: 50%;
+}
+
+.albums .a-content {
+    width: 100%;
+    overflow: scroll;
+    position: relative;
+}
+
+.albums .a-left-header ul {
+    display: inline;
+}
+
+.albums .a-left-header ul span {
+    cursor: pointer;
+}
+
+.albums .a-left-header ul span:hover,
+.albums .a-left-header ul span.sel {
+    font-weight: bold;
+}
+
+.albums .a-left-header ul li {
+    display: inline;
+    list-style-type: none;
+    padding-right: 20px;
+}
+
+.albums .mediafile {
+    width: 180px;
+    float: left;
+    margin-right: 15px;
+    margin-bottom: 15px;
+}
+
+.albums .mediafile img {
+    height: 101px;
+}
+
+.albums .mediafile a.mplay-icon {
+    visibility: hidden;
+}
+
+.albums .mediafile .information .aux {
+    visibility: hidden;
+}
+
+.albums .mediafile .information {
+    padding: 10px 5px;
+    height: 40px;
+}
+
+.a-drop-box {
+    width: 100%;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.a-drop-box .a-drop-name {
+    font-weight: bold;
+}
+
+.a-drop-box .a-drop {
+    /* width: 99%; */
+    height: 101px;
+    border: 1px dashed rgb(211, 246, 253);
+    opacity: 0.5;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.a-drop-box .a-drop.a-drop-about-to-drop {
+    opacity: 1.0;
+}
+
+.a-drop-box .a-drop .a-drop-wrapper {
+
+}
+
+.a-drop-box .a-drop .a-instruction {
+    position: absolute;
+    top: 34px;
+    left: 55px;
+    font-size: 25px;
+}
+
+.a-drop-box .a-drop .a-poster {
+    width: 180px;
+    height: 101px;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+}
+
+.a-drop-view {
+    cursor: pointer;
+}
+

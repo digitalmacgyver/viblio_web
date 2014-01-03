@@ -360,5 +360,29 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
         }           
     };
 
+    // Makes a container drop-on-able
+    ko.bindingHandlers.droponable = {
+	init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+	    var $element = $(element);
+            var value = ko.utils.unwrapObservable(valueAccessor()) || {};
+	    var droponable = {};
+	    //build a new object that has the global options with overrides from the binding
+            $.extend(true, droponable, ko.bindingHandlers.droponable);
+            if (value.options && droponable.options) {
+                ko.utils.extend(droponable.options, value.options);
+                delete value.options;
+            }
+            ko.utils.extend(droponable, value);
+
+	    $(element).droppable({
+		scope: droponable.scope,
+		hoverClass: droponable.hoverClass,
+		drop: function( event, ui ) {
+		    droponable.callback.call( bindingContext['$data'], ko.dataFor( $(ui.draggable).get(0) ) );
+		}
+	    });
+	}
+    };
+
     return({});
 });
