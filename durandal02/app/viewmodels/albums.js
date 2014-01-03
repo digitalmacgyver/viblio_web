@@ -55,6 +55,7 @@ define(['lib/viblio','lib/customDialogs','viewmodels/mediafile'], function( vibl
         });
     }
 
+    // For the album name prompt.  Verify that the user input is OK.
     function naVerify( response, prompt ) {
 	if ( response == 'OK' ) {
 	    if ( $.trim( prompt ) == '' ) {
@@ -63,7 +64,6 @@ define(['lib/viblio','lib/customDialogs','viewmodels/mediafile'], function( vibl
 	    else {
 		var inuse = false;
 		albums().forEach( function( a ) {
-		    viblio.log( a.name, $.trim( prompt ) );
 		    if ( a.name == $.trim( prompt ) ) {
 			inuse = true;
 		    }
