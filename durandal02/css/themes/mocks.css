@@ -364,7 +364,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 }
 
 .person .name.tag3-editable:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 .editable-click, a.editable-click, a.editable-click:hover {
@@ -2892,7 +2892,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .pp-info-left-column .all-comments {
     /* max-height: 250px; */
     height: 100%;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 #geo-map-reloc {
     width: 100%;
@@ -2907,6 +2907,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     padding: 25px 0 0;
     height: auto;
 }
+.pp-new-face,
 .pp-face-container {
     padding-left: 20px;
     padding-right: 20px;
@@ -3025,15 +3026,23 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     font-size: 20px;
     font-weight: 100;
 }
-.pp-no-faces p {
-    cursor: pointer;
-    color: white;
-}
-.pp-no-faces:hover {
-    text-decoration: underline;
-}
 .typeahead.dropdown-menu {
     text-align: left;
+}.typeahead.dropdown-menu li a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.pp-no-faces p {
+    font-size: 18px;
+    background-color: white;
+    padding: 8px;
+    border: 1px solid rgb(0, 81, 128);
+    text-align: left;
+    color: rgba(0,0,0,.4);
+    font-weight: 400;
+    cursor: pointer;
+    margin-bottom: 0;
 }
 .pp-faces-box-wrapper {
     text-align: center;

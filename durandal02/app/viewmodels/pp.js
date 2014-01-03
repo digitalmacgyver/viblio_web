@@ -365,7 +365,9 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
     // This gets triggered when a new user comment has been entered.
     //
     app.on( 'player:newcomment', function( data ) {
-        viblio.api( '/services/mediafile/add_comment',
+        var regexp1=new RegExp("[a-z|A-Z]|[0-9]");
+        if( regexp1.test( usercomment() ) ) {
+            viblio.api( '/services/mediafile/add_comment',
                     { mid: playing().media().uuid,
                       txt: usercomment()
                     } ).then( function( json ) {
@@ -377,6 +379,7 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
                         comments.unshift( hash );
                         viblio.mpEvent( 'comment' );
                     });
+        }
     });
 
     // Extracts an address from the structure returned from
