@@ -1,9 +1,10 @@
-define(['lib/viblio','lib/customDialogs','viewmodels/mediafile'], function( viblio, dialogs, Mediafile ) {
+define(['durandal/app','lib/viblio','lib/customDialogs','viewmodels/mediafile'], function( app, viblio, dialogs, Mediafile ) {
 
     var years  = ko.observableArray([]);
     var months = ko.observableArray([]);
     var albums = ko.observableArray([]);
     var drop_box_width = ko.observable('99%');
+    var no_albums = ko.observable(false);
 
     function resizeColumns() {
 	// The column heights fit the screen and are scrollable
@@ -17,6 +18,12 @@ define(['lib/viblio','lib/customDialogs','viewmodels/mediafile'], function( vibl
 	drop_box_width( columnw + 'px' );
     }
 
+    // User changed an album title
+    app.on( 'album:name_changed', function( album ) {
+	//viblio.log( 'new name', album.name() );
+    });
+
+    // fetch videos for given year
     function fetch( year ) {
         var args = { year: year };
         viblio.api( '/services/yir/videos_for_year', args ).then( function( data ) {
@@ -41,6 +48,7 @@ define(['lib/viblio','lib/customDialogs','viewmodels/mediafile'], function( vibl
         });
     }
 
+    // get the years to display in the year navigator
     function getYears() {
 	viblio.api( '/services/yir/years' ).then( function( data ) {
             var arr = [];
@@ -84,6 +92,7 @@ define(['lib/viblio','lib/customDialogs','viewmodels/mediafile'], function( vibl
 	years: years,
 	months: months,
 	albums: albums,
+	no_albums: no_albums,
 
 	yearSelected: function( self, year ) {
 	    years().forEach( function( y ) {
@@ -98,7 +107,7 @@ define(['lib/viblio','lib/customDialogs','viewmodels/mediafile'], function( vibl
 	    dialogs.showTextPrompt( 'Give this album a name.', 'New Album', { verify: naVerify, placeholder: 'Album Name', buttons: [ 'OK', 'Cancel' ] } ).then( function( r, p ) {
 		if ( r == 'OK' ) {
 		    var name = $.trim( p );
-		    albums.unshift({ name: name, media: ko.observableArray([]) });
+		    albums.unshift({ name: ko.observable(name), uuid: null, media: ko.observableArray([]) });
 		}
 	    });
 	},
@@ -111,6 +120,9 @@ define(['lib/viblio','lib/customDialogs','viewmodels/mediafile'], function( vibl
 		return dialogs.showError( 'This video is already present in this album!', 'Album' );
 	    }
 	    else {
+		// IF no_albums() == true, then we need to create a new album first, then add this
+		// video to it.  Otherwise its an exiting album. *** OR *** we can always do this, and
+		// NOT add a new album to the database in newAlbum().
 		album.media.unshift( mf );
 	    }
 	},
@@ -122,6 +134,10 @@ define(['lib/viblio','lib/customDialogs','viewmodels/mediafile'], function( vibl
 	compositionComplete: function() {
 	    resizeColumns();
 	    getYears();
+
+	    // Fetch albums.  If none, create an initial fake album
+	    no_albums( true );
+	    albums.unshift({ name: ko.observable('Your First Album'), uuid: null, media: ko.observableArray([]) });
 
 	    if ( head.mobile ) {
 		$(view).find( '.a-content' ).kinetic();

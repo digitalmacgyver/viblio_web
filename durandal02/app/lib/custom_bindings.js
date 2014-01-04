@@ -384,5 +384,24 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
 	}
     };
 
+    // Add a tooltip to an element. 
+    // data-bind="tooltip:{bootstrap-tooltip-options}"
+    // data-bind="tooltip:{title:'This is the tip'}"
+    ko.bindingHandlers.tooltip = {
+	init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+	    var $element = $(element);
+            var value = ko.utils.unwrapObservable(valueAccessor()) || {};
+	    var tooltip = {};
+	    //build a new object that has the global options with overrides from the binding
+            $.extend(true, tooltip, ko.bindingHandlers.tooltip);
+            if (value.options && tooltip.options) {
+                ko.utils.extend(tooltip.options, value.options);
+                delete value.options;
+            }
+            ko.utils.extend(tooltip, value);
+	    $(element).tooltip( tooltip );
+	}
+    };
+
     return({});
 });

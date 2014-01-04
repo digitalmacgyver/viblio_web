@@ -3200,3 +3200,14 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     cursor: pointer;
 }
 
+.no-albums-wrapper {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.no-albums-wrapper p {
+    color: white;
+    font-size: 25px;
+    line-height: 40px;
+    font-weight: 100;
+}
