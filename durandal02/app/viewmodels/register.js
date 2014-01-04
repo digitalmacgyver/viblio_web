@@ -37,14 +37,14 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
     var correct = ko.observable( true );
 
     function loginSuccessful( user ) {
-	// mixpanel event
-	viblio.mpEvent( 'login' );
-
 	// Save the logged in user info to the viblio object,
 	// which serves as a global exchange
 	//
 	viblio.setUser( user );
 	
+	// mixpanel event
+	viblio.mpEvent( 'login' );
+
 	// either go to the personal channel page, or
 	// do a pass thru to the page the user was
 	// trying to get to.
