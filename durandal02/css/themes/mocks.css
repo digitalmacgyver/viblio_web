@@ -2184,6 +2184,11 @@ ul.token-input-list-facebook {
    margin-right: 10px; 
 }
 
+.instructionsPages .content-Wrap h2,
+.instructionsPages .btn-primary {
+    margin-bottom: 30px;
+}
+
 .instructionsPages button {
    margin-bottom: 20px; 
 }

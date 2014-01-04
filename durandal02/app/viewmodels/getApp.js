@@ -1,21 +1,29 @@
 define(['plugins/router','lib/viblio'], function( router,viblio ) {
     
-    var seeMac = ko.observable(false);
-    var seePC = ko.observable(true);
+    var seeLearnMore = ko.observable(true);
+    var seeInstructions = ko.observable(false);
     
-    showMac = function() {
-        seePC(false);
-        seeMac(true);
+    showLearnMore = function() {
+        seeInstructions(false);
+        seeLearnMore(true);
     };
     
-    showPC = function() {
-        seeMac(false);
-        seePC(true);
+    showInstructions = function() {
+        seeLearnMore(false);
+        seeInstructions(true);
     };
+    
+    toggleInfo = function() {
+        if( seeLearnMore() ) {
+            showInstructions();
+        } else {
+            showLearnMore();
+        }
+    }
 
     return {
-        seeMac: seeMac,
-        seePC: seePC,
+        seeLearnMore: seeLearnMore,
+        seeInstructions: seeInstructions,
 
 	activate: function( args ) {
 	    if ( args && args.from )
