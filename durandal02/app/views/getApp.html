@@ -6,35 +6,52 @@
         </h2>
         <a href="#tutorial" class="btn btn-darkBlue subheaderLink">The VIBLIO App – a short tutorial</a>
     </div>
+    <h2 class="centered title-Wrap">VIBLIO is free up to 5 GB. Currently available for Windows with more devices coming soon.</h2>
     
     <div class="content-Wrap centeredEl mocksWhiteBG">
-        <div class="bottomBorder paddedDiv">
-            <h3 class="downloadTitle">Mac</h3>
-            <div class="macButton-Wrap pull-right">
-                <a href="" data-bind="click: download_viblio" class="btn btn-primary" disabled>Download Mac Version</a>
-                <label for="downloadMac">(Coming Soon)</label>
+        <div class="bottomBorder-Thick paddedDiv">
+            <a href="/services/na/download_trayapp" data-bind="click: download_viblio" class="btn btn-primary centered">Download Windows Version</a>
+            <div class="table">
+                <img src="css/images/instructions/memoriesInMotion.png"/>
             </div>
-            <div class='clearfix'></div>
-        </div>
-        <div class="bottomBorder-Thick paddedDiv">
-            <h3 class="downloadTitle">Windows</h3>
-            <a href="/services/na/download_trayapp" data-bind="click: download_viblio" class="btn btn-primary pull-right">Download Windows Version</a>
-            <div class='clearfix'></div>
-        </div> 
+        </div>   
     </div>
-    
+            
     <div class="content-Wrap centeredEl mocksWhiteBG">
         <div class="bottomBorder-Thick paddedDiv">
-            <h3>Instructions</h3>
-            <button class="btn btn-blue" data-bind="click: showMac" disabled>Mac</button>
-            <button class="btn btn-blue" data-bind="click: showPC">Windows</button>
-            <!-- ko if: seeMac() == true -->
-                <div class="howToPic">
-                
-                </div>
+            <button class="btn btn-blue" data-bind="click: toggleInfo, text: seeInstructions() ? 'Learn more about VIBLIO' : 'Download instructions' "></button>
+            <!-- ko if: seeLearnMore() == true -->
+                <h2>More about VIBLIO</h2>
+                <table class="centered">
+                    <tr>
+                        <td>
+                            <p class="font24 doubleSpaced">Collect your videos in one private location</p>
+                        </td>
+                        <td>
+                            <img src="css/images/instructions/uploadImg.png" alt="Upload Your files">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="css/images/instructions/magicTag.png" alt="Upload Your files">
+                        </td>
+                        <td>
+                            <p class="font24 doubleSpaced">Magic Tagging&trade; dynamically creates video albums</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class="font24 doubleSpaced">Enjoy and share from anywhere</p>
+                        </td>
+                        <td>
+                            <img src="css/images/instructions/shareImg.png" alt="Upload Your files">
+                        </td>
+                    </tr>
+                </table>
             <!-- /ko -->
             
-            <!-- ko if: seePC() == true -->
+            <!-- ko if: seeInstructions() == true -->
+                <h2>Download Instructions</h2>
                 <h3>Step 1: download the App</h3>
                 <hr>
                 <h3>Step 2: install the App</h3>
