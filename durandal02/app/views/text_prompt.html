@@ -14,6 +14,6 @@
   </div>
   <div class="modal-footer" data-bind="foreach: options().buttons">
     <button class="btn" data-bind="click: function () { $parent.selectOption($data); }, 
-				   text: $data, css: { 'btn-primary': $index() == 0 }"></button>
+				   text: $data, css: { 'btn-primary': $index() == 0, 'btn-white': $index() > 0 }"></button>
   </div>
 </div>

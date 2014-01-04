@@ -9,7 +9,7 @@
 	    <div>
 	      <ul data-bind="foreach: years">
 		<li>
-                  <span class="textShadowed" data-bind="click: $parent.yearSelected.bind( $data, $parent ), 
+                  <span class="textShadowed font24 lightWeightFont" data-bind="click: $parent.yearSelected.bind( $data, $parent ), 
 							text: $data.label, 
 							css:{sel: $data.selected()}"></span>
 		</li>
@@ -18,14 +18,14 @@
 	  </div>
 	  <div class="a-content a-left-content">
 	    <!-- ko foreach: months -->
-            <div class="month-heading textShadowed">
-              <span class="month-name heavyWeightFont" data-bind="text: $data.month"></span>
-              <span class="num-videos" data-bind="text: '(' + $data.media().length + ( $data.media().length == 1 ? ' video)' : ' videos)' )"></span>
+            <div class="month-heading textShadowed marginB10">
+              <span class="month-name heavyWeightFont font20" data-bind="text: $data.month"></span>
+              <span class="num-videos lightWeightFont font20" data-bind="text: '(' + $data.media().length + ( $data.media().length == 1 ? ' video)' : ' videos)' )"></span>
             </div>
             <div class="media-list" data-bind="foreach: { data: $data.media, as: 'm' }">
               <!-- ko compose: m --><!-- /ko -->
             </div>
-            <div class="clearfix"></div>
+            <div class="clearfix marginB20"></div>
             <!-- /ko -->
 	  </div>
 	</div>
@@ -34,24 +34,26 @@
       <td class="a-table-td a-table-right-td">
 	<div class="a-wrapper a-right-wrapper lightBlueBG">
 	  <div class="a-header a-right-header">
-	    <a class="btn pull-right" data-bind="click: newAlbum">
-	      <i class="icon-plus-sign"></i>New Album
+	    <a class="btn btn-white pull-right" data-bind="click: newAlbum">
+	      <i class="icon-plus-sign"></i> New Album
 	    </a>
 	    <p class="mainTitle textShadowed whiteText">Into Albums!</p>
 	  </div>
 	  <div class="a-content a-right-content">
 	    <!-- ko foreach: albums -->
 	    <div class="a-drop-box">
-	      <div class="a-drop-view pull-right">
-		<i class="icon-eye-open"></i>&nbsp;View
-	      </div>
-	      <span class="a-drop-name whiteText textShadowed" data-bind="text: name"></span>&nbsp;
-	      <span class="a-drop-number">(</span><span class="a-drop-number" data-bind="text: (media().length <= 0 ? '0' : media().length)"></span>
-	      <span class="a-drop-number">video</span><span class="a-drop-number" data-bind="if: media().length != 1">s</span><span class="a-drop-number">)</span>
+              <div class="marginB10">
+                  <div class="a-drop-view pull-right font20">
+                      <i class="icon-eye-open"></i>&nbsp;View
+                  </div>
+                  <span class="a-drop-name whiteText textShadowed font20" data-bind="text: name"></span>&nbsp;
+                  <span class="a-drop-number lightWeightFont font20">(</span><span class="a-drop-number lightWeightFont font20" data-bind="text: (media().length <= 0 ? '0' : media().length)"></span>
+                  <span class="a-drop-number lightWeightFont font20">video</span><span class="a-drop-number lightWeightFont font20" data-bind="if: media().length != 1">s</span><span class="a-drop-number lightWeightFont font20">)</span>    
+              </div>
 	      <div class="a-drop" data-bind="style:{width:$parent.drop_box_width},
 					     droponable:{scope:'mediafile',hoverClass:'a-drop-about-to-drop',callback:$parent.albumDrop}">
 
-		  <div class="a-instruction">
+		  <div class="a-instruction lightWeightFont">
 		    <i class="icon-share-alt"></i>&nbsp;Drop Videos Here
 		  </div>
 		  <!-- ko foreach: media -->
@@ -60,7 +62,7 @@
 		  </div>
 		  <!-- /ko -->
 		  <div class="clearfix"></div>
-		</div>
+	     </div>
 
 	    </div>
 	    <!-- /ko -->

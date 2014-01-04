@@ -93,7 +93,7 @@ define(['lib/viblio','lib/customDialogs','viewmodels/mediafile'], function( vibl
             //viblio.mpEvent( 'yir' );
             fetch( year.label );
 	},
-
+        
 	newAlbum: function() {
 	    dialogs.showTextPrompt( 'Give this album a name.', 'New Album', { verify: naVerify, placeholder: 'Album Name', buttons: [ 'OK', 'Cancel' ] } ).then( function( r, p ) {
 		if ( r == 'OK' ) {
@@ -125,8 +125,8 @@ define(['lib/viblio','lib/customDialogs','viewmodels/mediafile'], function( vibl
 
 	    if ( head.mobile ) {
 		$(view).find( '.a-content' ).kinetic();
-	    }
-
+	    } 
+            
 	    $(window).on( 'resize', resizeColumns );
 	    resizeColumns();
 	}

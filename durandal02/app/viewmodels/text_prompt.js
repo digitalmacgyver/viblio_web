@@ -14,9 +14,16 @@ define([ 'plugins/router', 'plugins/dialog' ], function( router, dialog ) {
     D.prototype.attached = function( view ) {
 	this.view = view;
     },
+    
+    D.prototype.focusInput = function() {
+        setTimeout(function(){
+            $('#prompt').focus();
+        },100);
+    },
 
     D.prototype.compositionComplete = function() {
 	this.focus( true );
+        this.focusInput();
     },
 
     D.prototype.clearError = function() {
