@@ -5,6 +5,13 @@ define(['durandal/app','lib/viblio','lib/customDialogs','viewmodels/mediafile'],
     var albums = ko.observableArray([]);
     var drop_box_width = ko.observable('99%');
     var no_albums = ko.observable(false);
+    var searching = ko.observable( false );
+
+    var pager = {
+        next_page: 1,
+        entries_per_page: 25,
+        total_entries: -1 /* currently unknown */
+    };
 
     function resizeColumns() {
 	// The column heights fit the screen and are scrollable
@@ -21,6 +28,8 @@ define(['durandal/app','lib/viblio','lib/customDialogs','viewmodels/mediafile'],
     // User changed an album title
     app.on( 'album:name_changed', function( album ) {
 	//viblio.log( 'new name', album.name() );
+	if ( album.uuid )
+	    viblio.api( '/services/album/change_title', { aid: album.uuid, title: album.name() } );
     });
 
     // fetch videos for given year
@@ -87,12 +96,39 @@ define(['durandal/app','lib/viblio','lib/customDialogs','viewmodels/mediafile'],
 	}
     }
 
+    function search() {
+	if ( pager.next_page ) {
+	    searching( true );
+	    viblio.api( '/services/album/list', { page: pager.next_page, rows: pager.entries_per_page } ).then( function( data ) {
+		pager = data.pager;
+		if ( data.albums.length >= 1 ) {
+		    no_albums( false );
+		    data.albums.forEach( function( album ) {
+			var media = ko.observableArray([]);
+			album.media.forEach( function( mf ) {
+			    media.push( new Mediafile( mf ) );
+			});
+			albums.unshift({ name: ko.observable( album.title ),
+					 uuid: album.uuid,
+					 media: media });
+		    });
+		}
+		else {
+		    no_albums( true );
+		    albums.unshift({ name: ko.observable('Your First Album'), uuid: null, media: ko.observableArray([]) });
+		}
+		searching( false );
+	    });
+	}
+    }
+
     return {
 	drop_box_width: drop_box_width,
 	years: years,
 	months: months,
 	albums: albums,
 	no_albums: no_albums,
+	searching: searching,
 
 	yearSelected: function( self, year ) {
 	    years().forEach( function( y ) {
@@ -103,6 +139,9 @@ define(['durandal/app','lib/viblio','lib/customDialogs','viewmodels/mediafile'],
             fetch( year.label );
 	},
         
+	// A new album is not committed to the database until the first
+	// mediafile is added to it.
+	//
 	newAlbum: function() {
 	    dialogs.showTextPrompt( 'Give this album a name.', 'New Album', { verify: naVerify, placeholder: 'Album Name', buttons: [ 'OK', 'Cancel' ] } ).then( function( r, p ) {
 		if ( r == 'OK' ) {
@@ -120,10 +159,19 @@ define(['durandal/app','lib/viblio','lib/customDialogs','viewmodels/mediafile'],
 		return dialogs.showError( 'This video is already present in this album!', 'Album' );
 	    }
 	    else {
-		// IF no_albums() == true, then we need to create a new album first, then add this
-		// video to it.  Otherwise its an exiting album. *** OR *** we can always do this, and
-		// NOT add a new album to the database in newAlbum().
-		album.media.unshift( mf );
+		if ( album.uuid ) { 
+		    // add media to an exiting album
+		    viblio.api( '/services/album/add_media', { aid: album.uuid, mid: mf.media().uuid } ).then( function() {
+			album.media.unshift( mf );
+		    });
+		}
+		else {
+		    // create a new album with this media file as initial media
+		    viblio.api( '/services/album/create', { name: album.name(), initial_mid: mf.media().uuid } ).then( function( data ) {
+			album.uuid = data.album.uuid;
+			album.media.unshift( mf );
+		    })
+		}
 	    }
 	},
 
@@ -131,13 +179,34 @@ define(['durandal/app','lib/viblio','lib/customDialogs','viewmodels/mediafile'],
 	    view = elem;
 	},
 
+	activate: function() {
+	    pager.next_page = 1;
+            pager.total_entries = -1;
+	    albums.removeAll();
+	},
+
 	compositionComplete: function() {
 	    resizeColumns();
 	    getYears();
 
 	    // Fetch albums.  If none, create an initial fake album
-	    no_albums( true );
-	    albums.unshift({ name: ko.observable('Your First Album'), uuid: null, media: ko.observableArray([]) });
+	    search();
+
+	    // Infinite scroll support
+	    $(view).find('.a-right-content').scroll( $.throttle( 250, function() {
+		var $this = $(this);
+		var height = this.scrollHeight - $this.height(); // Get the height of the div
+		var scroll = $this.scrollTop(); // Get the vertical scroll position
+
+		if ( searching() ) return;
+		if ( height == 0 && scroll == 0 ) return;
+
+		var isScrolledToEnd = (scroll >= height);
+
+		if (isScrolledToEnd) {
+                    search();
+		}
+            }));
 
 	    if ( head.mobile ) {
 		$(view).find( '.a-content' ).kinetic();

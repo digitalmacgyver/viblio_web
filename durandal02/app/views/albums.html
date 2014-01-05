@@ -32,7 +32,8 @@
       </td>
 
       <td class="a-table-td a-table-right-td">
-	<div class="a-wrapper a-right-wrapper lightBlueBG">
+	<div class="a-wrapper a-right-wrapper lightBlueBG" style="position: relative;">
+	  <img src="/css/images/dnd.png" style="position: absolute; top: 35px; left: -21px;" />
 	  <div class="a-header a-right-header">
 	    <a class="btn btn-white pull-right" data-bind="visible: no_albums()==false, click: newAlbum">
 	      <i class="icon-plus-sign"></i> New Album
@@ -49,41 +50,40 @@
 	    <!-- ko foreach: albums -->
 	    <div class="a-drop-box">
               <div class="marginB10">
-                  <div class="a-drop-view pull-right font20">
-                      <i class="icon-eye-open"></i>&nbsp;View
-                  </div>
-		  <!--
-                  <span class="a-drop-name whiteText textShadowed font20" data-bind="text: name"></span>&nbsp;
-		  -->
+                <div class="a-drop-view pull-right font20">
+                  <i class="icon-eye-open"></i>&nbsp;View
+                </div>
+		<span class="a-drop-name whiteText textShadowed font20" data-bind="liveEditor: name">
+		  <div class="view vidTitle title truncate" data-bind="click: name.edit, text: name(), tooltip:{title:'Click to edit name'}"></div>
+                  <div class="editTitle-Wrap">
+                    <input type="text" class="edit" data-bind="value: name, 
+							       hasFocus: name.editing, 
+							       event: { blur: function() { name.stopEditing(); name.save( null, $data, 'album:name_changed' ) } }" />
+                  </div>  
+		</span>
 
-		  <span class="a-drop-name whiteText textShadowed font20" data-bind="liveEditor: name">
-		    <div class="view vidTitle title truncate" data-bind="click: name.edit, text: name(), tooltip:{title:'Click to edit name'}"></div>
-                    <div class="editTitle-Wrap">
-                      <input type="text" class="edit" data-bind="value: name, 
-								 hasFocus: name.editing, 
-								 event: { blur: function() { name.stopEditing(); name.save( null, $data, 'album:name_changed' ) } }" />
-                    </div>  
-		  </span>
-
-                  <span class="a-drop-number lightWeightFont font20">(</span><span class="a-drop-number lightWeightFont font20" data-bind="text: (media().length <= 0 ? '0' : media().length)"></span>
-                  <span class="a-drop-number lightWeightFont font20">video</span><span class="a-drop-number lightWeightFont font20" data-bind="if: media().length != 1">s</span><span class="a-drop-number lightWeightFont font20">)</span>    
+                <span class="a-drop-number lightWeightFont font20">(</span><span class="a-drop-number lightWeightFont font20" data-bind="text: (media().length <= 0 ? '0' : media().length)"></span>
+                <span class="a-drop-number lightWeightFont font20">video</span><span class="a-drop-number lightWeightFont font20" data-bind="if: media().length != 1">s</span><span class="a-drop-number lightWeightFont font20">)</span>    
               </div>
 	      <div class="a-drop" data-bind="style:{width:$parent.drop_box_width},
 					     droponable:{scope:'mediafile',hoverClass:'a-drop-about-to-drop',callback:$parent.albumDrop}">
 
-		  <div class="a-instruction lightWeightFont">
-		    <i class="icon-share-alt"></i>&nbsp;Drop Videos Here
-		  </div>
-		  <!-- ko foreach: media -->
-		  <div class="a-poster">
-		    <img data-bind="attr:{src:media().views.poster.url}" />
-		  </div>
-		  <!-- /ko -->
-		  <div class="clearfix"></div>
-	     </div>
+		<div class="a-instruction lightWeightFont">
+		  <i class="icon-share-alt"></i>&nbsp;Drop Videos Here
+		</div>
+		<!-- ko foreach: media -->
+		<div class="a-poster">
+		  <img data-bind="attr:{src:media().views.poster.url}" />
+		</div>
+		<!-- /ko -->
+		<div class="clearfix"></div>
+	      </div>
 
 	    </div>
 	    <!-- /ko -->
+	    <div class="a-searching" data-bind="visible: searching">
+	      <i class="icon-spinner icon-spin active"></i>
+	    </div>
 	  </div>
 	</div>
       </td>

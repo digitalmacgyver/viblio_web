@@ -3211,3 +3211,11 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     line-height: 40px;
     font-weight: 100;
 }
+
+.a-searching {
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    color: white;
+    font-size: 30px;
+}
