@@ -352,6 +352,13 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
             });
         }
     };
+    
+    // resize textarea when text is added
+    ko.bindingHandlers.jqAutoresize = {
+        update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            $(element).autosize();
+        }           
+    };
 
     return({});
 });

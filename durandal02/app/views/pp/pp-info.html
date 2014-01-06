@@ -15,8 +15,9 @@
               </div>  
             </div>
             <div data-bind="liveEditor: description">
-              <p class="view vidDescription" data-bind="click: description.edit, text: description() || 'Click to edit description'"></p>
-              <textarea class="edit editDescription" data-bind="value: description, 
+              <p class="view vidDescription" data-bind="click: function(){ fixHeight( description.edit(), '.editVidDesc', '.vidDescription' ) }, text: description() || 'Click to edit description'"></p>
+              <textarea class="edit editDescription editVidDesc" data-bind="jqAutoresize: {},
+                                                                value: description, 
 								hasFocus: description.editing, 
 								event: { blur: function() { description.stopEditing(); description.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }"></textarea>
             </div>
@@ -40,23 +41,25 @@
       <div id="comments">
 	<div class="comment-header-wrap">
           <div class="comment-editor" data-bind="visible: can_leave_comments, liveEditor: usercomment">
-            <p class="view vidDescription" data-bind="click: usercomment.edit, text:'Comment on this video...'"></p>
-            <textarea class="edit editDescription" 
-                      data-bind="value:usercomment,
+            <p class="view vidDescription vidComment" data-bind="click: function(){ fixHeight( usercomment.edit(), '.editComment', '.vidComment' ) }, text:'Comment on this video...'"></p>
+            <textarea class="edit editDescription editComment" 
+                      data-bind="jqAutoresize: {},
+                                 value:usercomment,
 				 hasFocus: usercomment.editing,
-				 event: { blur: function() { usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment') } },
-                                 returnKey: blur"></textarea>
+				 event: { blur: function() { usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment') } }">                                   
+            </textarea>
           </div>
-	</div>
-
-	<div class="all-comments" data-bind="visible: show_comments">
-            <div class="comments-header lightBlueFont">
+          <span class="lightBlueFont" data-bind="if: usercomment.editing">To submit your comment, press tab or click anywhere outside of the input box.</span>
+          <div class="comments-header lightBlueFont">
                 <span class="tableCell midAlign font18 lightWeightFont" data-bind="text: comments().length ==1 ? '1 Comment' : comments().length + ' Comments'"></span>
                 <div class="views centered tableCell topAlign">
                     <img src="css/images/viewsEye.png" />
                     <span data-bind="html: playing().media().eyes"></span>
                 </div>    
-            </div>
+          </div>
+	</div>
+
+	<div class="all-comments" data-bind="visible: show_comments">
           <!-- ko foreach: comments -->
           <div class="comment" data-bind="if: comment.indexOf(' ') != -1 && comment != '' || comment.length < 20">
             <p class="comment-text bottomBorder-Thin" data-bind="html: comment"></p>
@@ -124,7 +127,7 @@
 
 	<div class="pp-no-faces pp-new-face" data-bind="if: faces_fetched">
 	  <!-- ko if: new_face_addable() -->
-	  <p class="textShadowed whiteText" data-bind="tag3:{mode:'inline',
+	  <p data-bind="tag3:{mode:'inline',
 						             display:false,
 						             name:add_face_to_video,
 						             changed:add_face}, 

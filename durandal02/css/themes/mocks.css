@@ -364,7 +364,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 }
 
 .person .name.tag3-editable:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 .editable-click, a.editable-click, a.editable-click:hover {
@@ -1567,8 +1567,8 @@ input:-moz-placeholder {
 }
 
 .comment-editor textarea.edit.editDescription {
-    height: 50px;
-    padding: 0 12px;
+    height: 20px;
+    padding: 0 12px 8px;
     width: 100%;
     margin: 8px 0 0;
 }
@@ -1626,6 +1626,18 @@ input:-moz-placeholder {
     font-weight: 200;
 }
 
+#geo-nomap {
+    cursor: pointer;
+    height: 30px;
+    width: 200px;
+    left: 36px;
+}
+
+#geo-nomap img {
+    height: 70px;
+    margin-right: 10px;
+}
+
 /********************* Player Comments ************************/
 
 #comment-column {
@@ -1647,6 +1659,12 @@ input:-moz-placeholder {
 .vidDescription:hover {
     cursor: pointer;
     background-color: rgba(246,248,209,1); 
+}
+
+p.comment-text,
+p.vidDescription {
+    //font-family: monospace;
+    white-space: pre-wrap;
 }
 
 .edit,
@@ -1673,8 +1691,7 @@ input.edit,
 }
 
 #title-desc .editTitle-Wrap .edit {
-    height: 40px;
-    margin: 12px 5px;
+    height: auto;
     font-size: 24.5px;
     line-height: 40px;
     margin: 10px 0;
@@ -1684,18 +1701,12 @@ input.edit,
 }
 
 #title-desc textarea {
-    height: 100%;
-    min-height: 100%;
-    margin: 12px 5px;
+    height: 14px;
     font-size: 14px;
     line-height: 20px;
     margin: 10px 0;
     font-family: inherit;
     text-rendering: optimizelegibility;
-}
-
-#title-desc textarea {
-    height: auto;
 }
 
 /* Home page video titles */
@@ -2142,6 +2153,11 @@ ul.token-input-list-facebook {
 
 #getApp-page button:first-of-type {
    margin-right: 10px; 
+}
+
+.instructionsPages .content-Wrap h2,
+.instructionsPages .btn-primary {
+    margin-bottom: 30px;
 }
 
 .instructionsPages button {
@@ -2830,10 +2846,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .pp-info-right-column {
     width: 366px;
 }
-.pp-info-map-wrapper {
+/*.pp-info-map-wrapper {
     height: 320px;
     min-height: 320px;
-}
+}*/
 .pp-info-faces-wrapper {
     min-height: 600px;
 }
@@ -2877,7 +2893,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .pp-info-left-column .all-comments {
     /* max-height: 250px; */
     height: 100%;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 #geo-map-reloc {
     width: 100%;
@@ -2892,6 +2908,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     padding: 25px 0 0;
     height: auto;
 }
+.pp-new-face,
 .pp-face-container {
     padding-left: 20px;
     padding-right: 20px;
@@ -3010,15 +3027,23 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     font-size: 20px;
     font-weight: 100;
 }
-.pp-no-faces p {
-    cursor: pointer;
-    color: white;
-}
-.pp-no-faces:hover {
-    text-decoration: underline;
-}
 .typeahead.dropdown-menu {
     text-align: left;
+}.typeahead.dropdown-menu li a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.pp-no-faces p {
+    font-size: 18px;
+    background-color: white;
+    padding: 8px;
+    border: 1px solid rgb(0, 81, 128);
+    text-align: left;
+    color: rgba(0,0,0,.4);
+    font-weight: 400;
+    cursor: pointer;
+    margin-bottom: 0;
 }
 .pp-faces-box-wrapper {
     text-align: center;

@@ -132,7 +132,12 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
     var mediafiles = ko.observableArray([]);
     var query_in_progress = ko.observable( false );
     var next_available_clip = ko.observable( 0 );
-
+    
+    
+    function fixHeight( fn, el1, el2 ) {
+        fn;
+        $(el1).height( $(el2).height() );
+    }
     // Play a new video.  Used after the main player is created in
     // attached.  This reuses the player to play a different clip.
     //
@@ -360,9 +365,11 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
     // This gets triggered when a new user comment has been entered.
     //
     app.on( 'player:newcomment', function( data ) {
-        viblio.api( '/services/mediafile/add_comment',
+        var regexp1=new RegExp("[a-z|A-Z]|[0-9]");
+        if( regexp1.test( usercomment() ) ) {
+            viblio.api( '/services/mediafile/add_comment',
                     { mid: playing().media().uuid,
-                      txt: usercomment(),
+                      txt: usercomment()
                     } ).then( function( json ) {
                         usercomment('');
                         var c = json.comment;
@@ -372,6 +379,7 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
                         comments.unshift( hash );
                         viblio.mpEvent( 'comment' );
                     });
+        }
     });
 
     // Extracts an address from the structure returned from
@@ -572,6 +580,7 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
     }
 
     return {
+        fixHeight: fixHeight,
 	showShareVidModal: function() {
             customDialogs.showShareVidModal( playing() );
         },

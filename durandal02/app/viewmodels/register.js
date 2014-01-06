@@ -37,14 +37,14 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
     var correct = ko.observable( true );
 
     function loginSuccessful( user ) {
-	// mixpanel event
-	viblio.mpEvent( 'login' );
-
 	// Save the logged in user info to the viblio object,
 	// which serves as a global exchange
 	//
 	viblio.setUser( user );
 	
+	// mixpanel event
+	viblio.mpEvent( 'login' );
+
 	// either go to the personal channel page, or
 	// do a pass thru to the page the user was
 	// trying to get to.
@@ -198,7 +198,8 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
 	},
 
 	done: function() {
-	    viblio.api( '/services/na/new_user', { email: email(),
+	    viblio.api( '/services/na/new_user', { via: 'share',
+						   email: email(),
 						   password: password(),
 						   displayname: email() }, handleLoginFailure )
 		.then( function( user ) {
