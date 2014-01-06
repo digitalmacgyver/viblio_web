@@ -3131,6 +3131,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     float: left;
     margin-right: 15px;
     margin-bottom: 15px;
+    z-index: 2;
 }
 
 .albums .mediafile img {
@@ -3149,6 +3150,11 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     padding: 5px 5px;
     height: 27px;
     font-weight: 600;
+    font-size: 14px;
+}
+
+.albums .mediafile .information input.edit {
+    font-size: 14px;
 }
 
 .a-drop-box {
@@ -3179,13 +3185,26 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 }
 
+.fadeIn {
+    transition: .25s ease-in-out;
+   -moz-transition: .25s ease-in-out;
+   -webkit-transition: .25s ease-in-out;
+}
+
 .a-drop-box .a-drop .a-instruction {
     position: absolute;
-    top: 38px;
+    top: 32px;
     left: 50%;
-    margin-left: -82px;
+    margin-left: -102px;
     font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    z-index: 1;
 }
+
+.a-drop-box:hover .a-drop .a-instruction {
+    background-color: rgba(50,53,68,.75);
+}    
 
 .a-drop-box .a-drop .a-poster {
     width: 180px;
@@ -3194,6 +3213,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     margin: 0;
     display: inline-block;
     opacity: .15;
+}
+
+.a-drop-box:hover .a-drop .a-poster {
+    opacity: .65;
 }
 
 .a-drop-view {
