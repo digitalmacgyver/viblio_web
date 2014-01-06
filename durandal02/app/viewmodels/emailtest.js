@@ -9,7 +9,6 @@ define(['lib/viblio'],function(viblio) {
         'commentsOnYourVid.tt',
 	'firstVideosUploaded.tt',
 	'forgotPassword.tt',
-        'newVideos.tt',
         'referAFriend.tt',
         'uploadSomeVideos.tt',
         'videosSharedWithYou.tt',
