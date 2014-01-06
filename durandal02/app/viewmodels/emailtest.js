@@ -2,23 +2,19 @@ define(['lib/viblio'],function(viblio) {
     var email = ko.observable();
     var selectedTemplate = ko.observable();
     var templates = ko.observableArray([
-	'accountCreationConfirmation.tt',
-	'firstVideosUploadedEmail.tt',
-	'forgotPasswordEmail.tt',
-	'newBetaUserWelcomeEmail.tt',
-	'newUserConfirmEmail.tt',
-	'newVideos.tt',
-	'tellAFriend.tt',
-	'videosSharedWithYou.tt',
-	'weeklyDigest.tt',
-        'referAFriend.tt',
-        'newAlphaUserWelcomeEmail.tt',
-        'commentsOnYourVid.tt',
+	'accountConfirmation.tt',
+        'accountCreated_ShareReferral.tt',
+        'accountCreated_trayApp.tt',
         'commentsOnVidSharedWYou.tt',
-        'youveGotVideos.tt',
-        'accountCreatedShareReferral.tt',
+        'commentsOnYourVid.tt',
+	'firstVideosUploaded.tt',
+	'forgotPassword.tt',
+        'referAFriend.tt',
+        'uploadSomeVideos.tt',
+        'videosSharedWithYou.tt',
         'videosWaitingToBeWatched.tt',
-        'uploadSomeVideos.tt'
+        'weeklyDigest.tt',
+        'youveGotVideos.tt' 
     ]);
     var forceStaging = ko.observable( true );
 
