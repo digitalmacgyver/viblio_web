@@ -2,7 +2,7 @@ define(['lib/viblio'],function(viblio) {
     var email = ko.observable();
     var selectedTemplate = ko.observable();
     var templates = ko.observableArray([
-	'accountCreationConfirmation.tt',
+	'accountConfirmation.tt',
 	'firstVideosUploadedEmail.tt',
 	'forgotPasswordEmail.tt',
 	'newBetaUserWelcomeEmail.tt',
