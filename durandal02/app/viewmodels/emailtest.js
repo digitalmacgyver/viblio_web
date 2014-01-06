@@ -7,6 +7,7 @@ define(['lib/viblio'],function(viblio) {
 	'forgotPasswordEmail.tt',
 	'newBetaUserWelcomeEmail.tt',
 	'newUserConfirmEmail.tt',
+	'newVideos.tt',
 	'tellAFriend.tt',
 	'videosSharedWithYou.tt',
 	'weeklyDigest.tt',
