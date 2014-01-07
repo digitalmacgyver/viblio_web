@@ -1,4 +1,4 @@
-define(['durandal/app','lib/viblio','lib/customDialogs','viewmodels/mediafile'], function( app, viblio, dialogs, Mediafile ) {
+define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmodels/mediafile'], function( app, router, viblio, dialogs, Mediafile ) {
 
     var years  = ko.observableArray([]);
     var months = ko.observableArray([]);
@@ -173,6 +173,10 @@ define(['durandal/app','lib/viblio','lib/customDialogs','viewmodels/mediafile'],
 		    })
 		}
 	    }
+	},
+
+	goToUpload: function() {
+            router.navigate( 'getApp?from=albums' );
 	},
 
 	attached: function( elem ) {
