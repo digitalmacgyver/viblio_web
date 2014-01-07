@@ -168,6 +168,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 		else {
 		    // create a new album with this media file as initial media
 		    viblio.api( '/services/album/create', { name: album.name(), initial_mid: mf.media().uuid } ).then( function( data ) {
+			no_albums( false );
 			album.uuid = data.album.uuid;
 			album.media.unshift( mf );
 		    })
