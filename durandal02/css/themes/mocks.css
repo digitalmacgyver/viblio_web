@@ -2295,7 +2295,8 @@ ul.token-input-list-facebook {
 
 #faces-column .person i {
     font-size: 20px;
-    width: 20px; height: 20px;
+    width: 20px;
+    height: 20px;
 }
 
 #faces-column .person .left-badge {
@@ -3163,17 +3164,24 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     margin-bottom: 50px;
 }
 
-.a-drop-box .editTitle-Wrap input.edit {
-    width: 100%;
+.inputMirror {
+    position: relative;
+    top: -999999px;
+    right: -9999999px;
+}
+
+.a-drop-box div.editTitle-Wrap input {
+    height: 24px;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0);
     margin: 0;
     padding: 0;
 }
 
-
-.a-drop-box div.editTitle-Wrap input,
-.a-drop-box div.editTitle-Wrap input .editing {
-    height: 24px;
-    width: 100%;
+.a-drop-box div.editTitle-Wrap input.edit {
+    margin: -24px 0 0 0;
+    padding: 0;
 }
 
 .a-drop-box .a-drop-name {
