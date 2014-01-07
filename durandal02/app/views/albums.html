@@ -6,6 +6,19 @@
 	<div class="a-wrapper a-left-wrapper lightGreyBG">
 	  <div class="a-header a-left-header">
 	    <p class="mainTitle textShadowed">Drag and Drop Videos</p>
+
+	    <div class="yir-inner" data-bind="if: years().length == 0">
+              <div class="yirHeading-Wrap">
+		<p class="mainTitle marginL45 textShadowed">Got any videos?</p>
+		<p class="marginL45 font18" style="text-align: left;">We noticed you 
+                  <span>don't have any videos yet.</span>&nbsp;
+                  If you have some videos, why not add them to Viblio!
+		</p>
+		<button class="btn btn-primary marginL45" data-bind="click: goToUpload">Upload more videos &raquo;</button>
+              </div>
+	    </div>
+	    
+
 	    <div>
 	      <ul data-bind="foreach: years">
 		<li>
@@ -43,7 +56,7 @@
 	  <div class="a-content a-right-content">
 
 	    <div class="no-albums-wrapper" data-bind="visible: no_albums">
-	      <img src="/css/images/avatar.png" />
+	      <img src="/css/images/vid-album.png" />
 	      <p class="textShadowed">Albums keep your Videos organized and make sharing easy!</p>
 	    </div>
 

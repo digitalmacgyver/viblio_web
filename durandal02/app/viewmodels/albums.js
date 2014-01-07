@@ -1,4 +1,4 @@
-define(['durandal/app','lib/viblio','lib/customDialogs','viewmodels/mediafile'], function( app, viblio, dialogs, Mediafile ) {
+define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmodels/mediafile'], function( app, router, viblio, dialogs, Mediafile ) {
 
     var years  = ko.observableArray([]);
     var months = ko.observableArray([]);
@@ -168,11 +168,16 @@ define(['durandal/app','lib/viblio','lib/customDialogs','viewmodels/mediafile'],
 		else {
 		    // create a new album with this media file as initial media
 		    viblio.api( '/services/album/create', { name: album.name(), initial_mid: mf.media().uuid } ).then( function( data ) {
+			no_albums( false );
 			album.uuid = data.album.uuid;
 			album.media.unshift( mf );
 		    })
 		}
 	    }
+	},
+
+	goToUpload: function() {
+            router.navigate( 'getApp?from=albums' );
 	},
 
 	attached: function( elem ) {
