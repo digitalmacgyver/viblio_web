@@ -3163,8 +3163,22 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     margin-bottom: 50px;
 }
 
+.a-drop-box .editTitle-Wrap input.edit {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+.a-drop-box div.editTitle-Wrap input,
+.a-drop-box div.editTitle-Wrap input .editing {
+    height: 24px;
+    width: 100%;
+}
+
 .a-drop-box .a-drop-name {
     font-weight: bold;
+    display: inline-block;
 }
 
 .a-drop-box .a-drop {
@@ -3191,7 +3205,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
    -webkit-transition: .25s ease-in-out;
 }
 
-.a-drop-box .a-drop .a-instruction {
+.a-drop-box .a-instruction {
     position: absolute;
     top: 32px;
     left: 50%;
@@ -3202,11 +3216,12 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     z-index: 1;
 }
 
-.a-drop-box:hover .a-drop .a-instruction {
+.a-drop-about-to-drop .a-instruction,
+.a-drop-box:hover .a-instruction {
     background-color: rgba(50,53,68,.75);
 }    
 
-.a-drop-box .a-drop .a-poster {
+.a-drop-box .a-poster {
     width: 180px;
     height: 101px;
     padding: 0;
@@ -3215,12 +3230,15 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     opacity: .15;
 }
 
-.a-drop-box:hover .a-drop .a-poster {
+.a-drop-about-to-drop .a-poster,
+.a-drop-box:hover .a-poster {
     opacity: .65;
 }
 
 .a-drop-view {
     cursor: pointer;
+    width: 180px;
+    text-align: right;
 }
 
 .no-albums-wrapper {

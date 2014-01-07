@@ -12,7 +12,7 @@ define(['durandal/app','lib/viblio','lib/customDialogs','viewmodels/mediafile'],
         entries_per_page: 25,
         total_entries: -1 /* currently unknown */
     };
-
+    
     function resizeColumns() {
 	// The column heights fit the screen and are scrollable
 	var h = $(window).height() - $(view).offset().top - $('#footer').height();
