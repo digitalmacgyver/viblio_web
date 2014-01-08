@@ -3224,6 +3224,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     z-index: 1;
 }
 
+.a-drop-box .highlight,
 .a-drop-about-to-drop .a-instruction,
 .a-drop-box:hover .a-instruction {
     background-color: rgba(50,53,68,.75);

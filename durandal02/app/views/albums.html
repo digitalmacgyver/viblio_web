@@ -56,7 +56,7 @@
 	  <div class="a-content a-right-content">
 
 	    <div class="no-albums-wrapper" data-bind="visible: no_albums">
-	      <img src="/css/images/vid-album.png" />
+	      <img src="/css/images/vidsToFolders.png" />
 	      <p class="textShadowed">Albums keep your Videos organized and make sharing easy!</p>
 	    </div>
 
@@ -83,7 +83,7 @@
 	      <div class="a-drop" data-bind="style:{width:$parent.drop_box_width},
 					     droponable:{scope:'mediafile',hoverClass:'a-drop-about-to-drop',callback:$parent.albumDrop}">
 
-		<div class="a-instruction lightWeightFont fadeIn">
+		<div data-bind="css: { highlight: $root.no_albums }" class="a-instruction lightWeightFont fadeIn">
 		  <i class="icon-share-alt"></i>&nbsp;Drop Videos Here
 		</div>
 		<!-- ko foreach: media -->
