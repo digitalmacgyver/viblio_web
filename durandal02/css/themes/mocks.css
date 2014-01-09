@@ -760,6 +760,10 @@ input:-moz-placeholder {
     margin-right: 45px;
 }
 
+.marginT15 {
+    margin-top: 15px;
+}
+
 .marginB10 {
     margin-bottom: 10px;
 }
@@ -3266,6 +3270,5 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     margin-right: auto;
     margin-left: auto;
     text-align: center;
-    color: white;
     font-size: 30px;
 }

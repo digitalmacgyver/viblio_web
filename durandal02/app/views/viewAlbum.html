@@ -1,0 +1,21 @@
+<div id="albumView-page">
+    <div class="pstrip bottomBorder-Thin turquoiseBG">
+        <!-- ko if: ownedByViewer -->
+        <a class="shareButton btn pull-right" href="#" data-bind="click: showShareVidModal">
+            <img src="css/images/share.png"/> Share this Album!
+        </a>
+        <!-- /ko -->
+        <!-- ko ifnot: ownedByViewer -->
+        <div class="pull-right" >
+            <img data-bind="attr:{src:ownerPhoto()}"/>
+            <span class="whiteText lightFontWeight">Album by </span><span class="whiteText heavyFontWeight" data-bind="text: ownerName"></span>
+        </div>
+        <!-- /ko -->
+        <img src="css/images/folderImage.png" />
+        <span class="textShadowed" data-bind="text: albumTitle"></span>
+    </div>
+    <div class="mainVidSection" data-bind="foreach: strips">
+        <div data-bind="compose: $data"></div>
+    </div>
+</div>
+

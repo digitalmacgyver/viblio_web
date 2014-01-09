@@ -6,6 +6,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
     var drop_box_width = ko.observable('99%');
     var no_albums = ko.observable(false);
     var searching = ko.observable( false );
+    var loading = ko.observable( false );
 
     var pager = {
         next_page: 1,
@@ -59,6 +60,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 
     // get the years to display in the year navigator
     function getYears() {
+        loading( true );
 	viblio.api( '/services/yir/years' ).then( function( data ) {
             var arr = [];
             data.years.forEach( function( year ) {
@@ -69,6 +71,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
                 years()[0].selected( true );
                 fetch( years()[0].label );
             }
+            loading( false );
         });
     }
 
@@ -129,6 +132,11 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	albums: albums,
 	no_albums: no_albums,
 	searching: searching,
+        loading: loading,
+        
+        viewAlbum: function($data) {
+            router.navigate('viewAlbum?uuid=' + $data.uuid);
+        },
 
 	yearSelected: function( self, year ) {
 	    years().forEach( function( y ) {

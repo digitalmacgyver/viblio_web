@@ -32,7 +32,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         });
 	
 	// An edit/done label to use on the GUI
-	self.editLabel = ko.observable( 'Edit' );  
+	self.editLabel = ko.observable( 'Edit contents...' );  
     };
     
     // Get the number of mediafiles so the YIR style can be decided on.
@@ -62,10 +62,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     // this will be the way user's can delete their media files
     YIR.prototype.toggleEditMode = function() {
 	var self = this;
-	if ( self.editLabel() == 'Edit' )
+	if ( self.editLabel() == 'Edit contents...' )
 	    self.editLabel( 'Done' );
 	else
-	    self.editLabel( 'Edit' );
+	    self.editLabel( 'Edit contents...' );
 
 	self.months().forEach( function( month ) {
 	    month.media().forEach( function( mf ) {
@@ -108,7 +108,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	    y.selected( false );
 	});
 	year.selected( true );
-	self.editLabel( 'Edit' );
+	self.editLabel( 'Edit contents...' );
 	viblio.mpEvent( 'yir' );
 	self.fetch( year.label );
     };
