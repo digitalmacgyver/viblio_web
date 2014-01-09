@@ -7,7 +7,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
     var no_albums = ko.observable(false);
     var searching = ko.observable( false );
     var loadingYears = ko.observable( true );
-    var yearIsSelected = ko.observable();
+    var yearIsSelected = null;
     
     var pager = {
         next_page: 1,
@@ -145,7 +145,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 		y.selected( false );
             });
             year.selected( true );
-            yearIsSelected( true );
+            yearIsSelected = true;
             //viblio.mpEvent( 'yir' );
             fetch( year.label );
 	},
@@ -200,7 +200,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
             pager.total_entries = -1;
 	    albums.removeAll();
             //prevents videos from reloading everytime a user navigates to the albums page - keeps the selected year
-            if( !yearIsSelected() ) {
+            if( !yearIsSelected ) {
                 years.removeAll();
                 getYears();
                 months.removeAll();
@@ -211,7 +211,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	    resizeColumns();
 
 	    // Fetch albums.  If none, create an initial fake album
-	    search();
+            search();
 
 	    // Infinite scroll support
 	    $(view).find('.a-right-content').scroll( $.throttle( 250, function() {
