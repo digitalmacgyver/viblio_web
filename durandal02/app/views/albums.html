@@ -7,11 +7,11 @@
 	  <div class="a-header a-left-header">
 	    <p class="mainTitle textShadowed">Drag and Drop Videos</p>
             
-            <div class="a-searching lightGreyFont" data-bind="visible: loading">
+            <div class="a-searching lightGreyFont" data-bind="visible: loadingYears">
 	      <i class="icon-spinner icon-spin active"></i>
 	    </div>
             
-	    <div class="yir-inner" data-bind="if: !loading() && years().length == 0">
+	    <div class="yir-inner" data-bind="if: !loadingYears() && years().length == 0">
               <div class="yirHeading-Wrap">
 		<p class="mainTitle marginL45 textShadowed">Got any videos?</p>
 		<p class="marginL45 font18" style="text-align: left;">We noticed you 
@@ -33,7 +33,7 @@
               </ul>
 	    </div>
 	  </div>
-	  <div class="a-content a-left-content">
+	  <div class="a-content a-left-content" data-bind="highlightChange: months().length > 0">
 	    <!-- ko foreach: months -->
             <div class="month-heading textShadowed marginB10">
               <span class="month-name heavyWeightFont font20" data-bind="text: $data.month"></span>
