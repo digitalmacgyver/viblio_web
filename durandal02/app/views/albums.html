@@ -23,7 +23,7 @@
 	    </div>
 	    
 
-	    <div>
+	    <div data-bind="highlightChange: years().length > 0">
 	      <ul data-bind="foreach: years">
 		<li>
                   <span class="textShadowed font24 lightWeightFont" data-bind="click: $parent.yearSelected.bind( $data, $parent ), 
@@ -65,7 +65,7 @@
 	    </div>
 
 	    <!-- ko foreach: albums -->
-	    <div class="a-drop-box">
+	    <div class="a-drop-box" data-bind="highlightChange: !$root.no_albums">
               <div class="marginB10">
                 <div class="a-drop-view pull-right font20" data-bind="click: $parent.viewAlbum">
                   <i class="icon-eye-open"></i>&nbsp;View

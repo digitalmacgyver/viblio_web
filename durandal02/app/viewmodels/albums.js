@@ -6,8 +6,9 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
     var drop_box_width = ko.observable('99%');
     var no_albums = ko.observable(false);
     var searching = ko.observable( false );
-    var loadingYears = ko.observable( false );
-
+    var loadingYears = ko.observable( true );
+    var yearIsSelected = ko.observable();
+    
     var pager = {
         next_page: 1,
         entries_per_page: 25,
@@ -133,6 +134,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	no_albums: no_albums,
 	searching: searching,
         loadingYears: loadingYears,
+        yearIsSelected: yearIsSelected,
         
         viewAlbum: function($data) {
             router.navigate('viewAlbum?uuid=' + $data.uuid);
@@ -143,6 +145,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 		y.selected( false );
             });
             year.selected( true );
+            yearIsSelected( true );
             //viblio.mpEvent( 'yir' );
             fetch( year.label );
 	},
@@ -196,11 +199,16 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	    pager.next_page = 1;
             pager.total_entries = -1;
 	    albums.removeAll();
+            //prevents videos from reloading everytime a user navigates to the albums page - keeps the selected year
+            if( !yearIsSelected() ) {
+                years.removeAll();
+                getYears();
+                months.removeAll();
+            }
 	},
 
 	compositionComplete: function() {
 	    resizeColumns();
-	    getYears();
 
 	    // Fetch albums.  If none, create an initial fake album
 	    search();
