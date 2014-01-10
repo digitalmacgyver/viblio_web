@@ -18,7 +18,8 @@
     </div>
     
     <div class="mainVidSection">
-        <div class="hstrip bottomBorder-Thin" data-bind="if: mediaHasViews()">
+        <!-- ko if: mediaHasViews -->
+        <div class="hstrip bottomBorder-Thin">
 
             <div>
                 <p class="mainTitle marginL45 textShadowed whiteText" data-bind="html: title"></p>
@@ -31,6 +32,7 @@
                 <!--/ko-->
             </div>
         </div>
+        <!-- /ko -->
         <div class="yir air">
             <p class="mainTitle marginL45 textShadowed">All Videos in this Album</p>
             <div class="a-searching lightGreyFont" data-bind="visible: loadingYears">
