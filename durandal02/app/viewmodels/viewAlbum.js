@@ -68,6 +68,8 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 			    months().forEach( function( month ) {
 				month.media.remove( m );
 			    });
+                            boxOfficeHits.remove( function(video) { return video.view.id == m.media().uuid } );
+                            $( ".horizontal-scroller").trigger( 'children-changed', { enable: true } );
 			});
 		    });
                     mediafiles.push( m );
@@ -156,6 +158,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
         activate: function (args) {
             system.log(args, viblio.user().uuid);
 	    var self = this;
+            self.editLabel( 'Edit' );
 	    album_id = args.aid;
             currAid( album_id );
             boxOfficeHits.removeAll();
