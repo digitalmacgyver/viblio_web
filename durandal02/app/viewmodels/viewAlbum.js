@@ -125,7 +125,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
     };
     
     return {
-        showShareVidModal: function() {
+        showShareAlbumModal: function() {
 	    app.showMessage( 'Need a custom dialog for sharing this page.' );
         },
         years: years,
@@ -211,6 +211,9 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 		customDialogs.hideLoading();
 	    });
             // only refresh the AIR section if the user is viewing a different album than before
+            
+            // TODO - Add functionality to test if new videos have been added to the album
+            
             /*if( currAid() != prevAid() ) {
                 getYears();
             }*/
