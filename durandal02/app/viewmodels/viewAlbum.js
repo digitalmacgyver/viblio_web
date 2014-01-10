@@ -91,7 +91,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
         activate: function (args) {
             system.log(args, viblio.user().uuid);
 	    var self = this;
-	    album_id = args.uuid;
+	    album_id = args.aid;
 	    strips.removeAll();
             boxOfficeHits.removeAll();
             allVids.removeAll();

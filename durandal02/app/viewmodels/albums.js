@@ -137,7 +137,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
         yearIsSelected: yearIsSelected,
         
         viewAlbum: function($data) {
-            router.navigate('viewAlbum?uuid=' + $data.uuid);
+            router.navigate('viewAlbum?aid=' + $data.uuid);
         },
 
 	yearSelected: function( self, year ) {
