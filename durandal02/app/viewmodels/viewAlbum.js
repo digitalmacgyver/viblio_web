@@ -177,6 +177,8 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
                         if( mf.view_count > 0 ) {
                             mediaHasViews( true );
                             boxOfficeHits.push( addMediaFile( mf ) );
+                        } else {
+                            mediaHasViews( false );
                         }
                         allVids.push( addMediaFile( mf ) );
                     });
