@@ -173,12 +173,11 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 		    var album = data.album;
                     ownerName( album.owner.displayname );
                     ownerUUID( album.owner.uuid );
+                    mediaHasViews( false );
                     album.media.forEach( function( mf ) {
                         if( mf.view_count > 0 ) {
                             mediaHasViews( true );
                             boxOfficeHits.push( addMediaFile( mf ) );
-                        } else {
-                            mediaHasViews( false );
                         }
                         allVids.push( addMediaFile( mf ) );
                     });
