@@ -2604,8 +2604,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     border: 0;
     text-decoration: none;
     opacity: .6;
-    top: 50px;
-    left: 145px;
+    top: 40%;
+    margin-top: -41px;
+    left: 50%;
+    margin-left: -34px;
 } 
 
 .mediafile .mplay-icon i {
@@ -2745,16 +2747,6 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .pp-related-column-related .mediafile .information {
     height: 40px;
     padding: 10px 5px;
-}
-
-
-/***************************/
-
-.pp-related-column-related-videos .mediafile .mplay-icon,
-.pp-related-column-related-videos .mediafile .mplay-icon:hover,
-.pp-related-column-related-videos .mediafile .mplay-icon:visited {
-    top: 40px;
-    left: 101px;
 }
 
 /*********************************/
@@ -3271,4 +3263,36 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     margin-left: auto;
     text-align: center;
     font-size: 30px;
+}
+
+/************* viewAlbum Page ***************/
+
+.albumView .pstrip {
+    padding: 32px 20px 28px 45px;
+}
+
+.albumTitle {
+    padding-top: 0px;
+    display: inline-block;
+    color: rgb(255, 255, 255);
+    font-size: 32px;
+    vertical-align: middle;
+}
+
+.albumOwnerInfo {
+    margin-top: -11px;
+}
+
+.allAlbumVids {
+    padding: 0 42px;
+}
+
+.allAlbumVids .mediafile {
+    float: left;
+    width: 423px;
+    margin-bottom: 20px;
+}
+
+.allAlbumVids .mediafile img {
+    height: 240px;
 }

@@ -1,4 +1,4 @@
-<div id="albumView-page">
+<div id="viewAlbum-page" class="albumView">
     <div class="pstrip bottomBorder-Thin turquoiseBG">
         <!-- ko if: ownedByViewer -->
         <a class="shareButton btn pull-right" href="#" data-bind="click: showShareVidModal">
@@ -6,16 +6,42 @@
         </a>
         <!-- /ko -->
         <!-- ko ifnot: ownedByViewer -->
-        <div class="pull-right" >
+        <div class="pull-right albumOwnerInfo" >
             <img data-bind="attr:{src:ownerPhoto()}"/>
             <span class="whiteText lightFontWeight">Album by </span><span class="whiteText heavyFontWeight" data-bind="text: ownerName"></span>
         </div>
         <!-- /ko -->
         <img src="css/images/folderImage.png" />
-        <span class="textShadowed" data-bind="text: albumTitle"></span>
+        <span class="textShadowed albumTitle" data-bind="text: albumTitle"></span>
     </div>
-    <div class="mainVidSection" data-bind="foreach: strips">
+    
+    <!--<div class="mainVidSection" data-bind="foreach: strips">
         <div data-bind="compose: $data"></div>
+    </div>-->
+    
+    <div class="mainVidSection">
+        <div class="hstrip bottomBorder-Thin" data-bind="if: mediaHasViews()">
+
+            <div>
+                <p class="mainTitle marginL45 textShadowed whiteText" data-bind="html: title"></p>
+                <span class="subtitle" data-bind="html: subtitle"></span>
+            </div>
+            
+            <div class="sd-scroll" data-bind="hscroller:{}">
+                <!-- ko foreach: boxOfficeHits -->
+                <!-- ko compose: $data --><!--/ko-->
+                <!--/ko-->
+            </div>
+        </div>
+        <div class="yir">
+            <p class="mainTitle marginL45 textShadowed">All Videos in this Album</p>
+            <div class="allAlbumVids" data-bind="highlightChange: allVids()">
+                <!-- ko foreach: allVids -->
+                <!-- ko compose: $data --><!--/ko-->
+                <!--/ko-->
+            </div>
+        </div>
     </div>
+    
 </div>
 
