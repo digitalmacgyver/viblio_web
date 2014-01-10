@@ -1,46 +1,106 @@
 define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'viewmodels/mediafile', 'viewmodels/hscroll', 'viewmodels/yir', 'lib/customDialogs', 'viewmodels/allVideos', ], function (router, app, system, viblio, Mediafile, HScroll, YIR, customDialogs, allVideos) {
 
-    var strips = ko.observableArray([]);
+    var years  = ko.observableArray();
+    var loadingYears = ko.observable( true );
+    var yearIsSelected = null;
+    var months = ko.observableArray();
     var albumTitle = ko.observable();
     var album_id;
+    var prevAid = ko.observable( null );
+    var currAid = ko.observable();
     var ownerPhoto = ko.observable();
     var ownerName  = ko.observable();
     var ownerUUID = ko.observable();
-    var ownedByViewer = ko.computed(function(){
-        if( ownerUUID == viblio.user().uuid ){
-            return true;
-        } else {
-            return false;
-        }
-    });
+    var ownedByViewer = ko.observable();
     var boxOfficeHits = ko.observableArray();
     var allVids = ko.observableArray();
     
     var mediaHasViews = ko.observable( false );
     
-    function hh(title, subtitle, options) {
-        return system.defer( function( dfd ) {
-            dfd.resolve( new HScroll(title, subtitle, options) );
-        } ).promise();
+    // An edit/done label to use on the GUI
+    var editLabel = ko.observable( 'Edit' );
+    
+    // Toggle edit mode.  This will put all of media
+    // files in the strip into/out of edit mode.  I'm thinking
+    // this will be the way user's can delete their media files
+    function toggleEditMode() {
+	var self = this;
+	if ( self.editLabel() === 'Edit' )
+	    self.editLabel( 'Done' );
+	else
+	    self.editLabel( 'Edit' );
+        
+        self.months().forEach( function( month ) {
+	    month.media().forEach( function( mf ) {
+		mf.toggleEditMode();
+	    });
+	});
+    };
+    
+    // Right before the user navigates away from the page set the prevAid to the 
+    // currAid so we know when to reload the AID section or not
+    router.on( 'router:route:activating', function() {
+        system.log('router event triggered');
+	prevAid( currAid() );
+    });
+    
+    function checkOwner() {
+        if( ownerUUID() == viblio.user().uuid ){
+            ownedByViewer( true );
+        } else {
+            ownedByViewer( false );
+        }
+    };
+    
+    // fetch videos for given year
+    function fetch( year ) {
+        var args = { year: year,
+                     aid: album_id };
+        viblio.api( '/services/air/videos_for_year', args ).then( function( data ) {
+            months.removeAll();
+            data.media.forEach( function( month ) {
+                var mediafiles = ko.observableArray([]);
+                month.data.forEach( function( mf ) {
+                    var m = new Mediafile( mf, ownedByViewer ? { show_share_badge: true } : {} );
+		    m.on( 'mediafile:delete', function( m ) {
+			viblio.api( '/services/album/remove_media?', { aid: album_id, mid: m.media().uuid } ).then( function() {
+			    viblio.mpEvent( 'remove_video_from_album' );
+			    months().forEach( function( month ) {
+				month.media.remove( m );
+			    });
+			});
+		    });
+                    mediafiles.push( m );
+                });
+                months.push({month: month.month, media: mediafiles});
+            });   
+        });
+        yearIsSelected = true;
     }
 
-    function yy( album_id ) {
-        return system.defer( function( dfd ) {
-            dfd.resolve( new YIR( album_id, albumTitle() ) );
-        } ).promise();
-    }
-    
-    function av( album_id ) {
-        return system.defer( function( dfd ) {
-            dfd.resolve( new allVideos( album_id, albumTitle() ) );
-        } ).promise();
+    // get the years to display in the year navigator
+    function getYears() {
+        loadingYears( true );
+        var args = { aid: album_id };
+	viblio.api( '/services/air/years', args ).then( function( data ) {
+            var arr = [];
+            data.years.forEach( function( year ) {
+                arr.push({ label: year, selected: ko.observable(false) });
+            });
+            years( arr );
+            if ( data.years.length >= 1 ) {
+                years()[0].selected( true );
+                fetch( years()[0].label );
+            }
+            loadingYears( false );
+        });
     }
     
     function addMediaFile( mf ) {
 	var self = this;
 
 	// Create a new Mediafile with the data from the server
-	var m = new Mediafile( mf, { show_share_badge: true } );
+	var m = new Mediafile( mf, ownedByViewer ? { show_share_badge: true } : {} );
 
 	// Register a callback for when a Mediafile is selected.
 	// This is so we can deselect the previous one to create
@@ -59,15 +119,6 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 	    $( ".horizontal-scroller").trigger( 'children-changed', { enable: true } );
 	});
 
-	// When a mediafile wishes to be deleted
-	//
-	m.on( 'mediafile:delete', function( m ) {
-	    viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function() {
-		self.mediafiles.remove( m );
-		$( ".horizontal-scroller").trigger( 'children-changed' );
-	    });
-	});
-
 	return m;
     };
     
@@ -75,8 +126,11 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
         showShareVidModal: function() {
 	    app.showMessage( 'Need a custom dialog for sharing this page.' );
         },
+        years: years,
+        loadingYears: loadingYears,
+        yearIsSelected: yearIsSelected,
+        months: months,
         albumTitle: albumTitle,
-        strips: strips,
         displayName: 'Album',        
 	ownerPhoto: ownerPhoto,
 	ownerName: ownerName,
@@ -84,24 +138,41 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
         boxOfficeHits: boxOfficeHits,
         allVids: allVids,
         mediaHasViews: mediaHasViews,
+        editLabel: editLabel,
+        toggleEditMode: toggleEditMode,
         
         title: 'Box Office Hits',
         subtitle: 'The most popular videos in this album',
+        
+        yearSelected: function( self, year ) {
+	    years().forEach( function( y ) {
+		y.selected( false );
+            });
+            year.selected( true );
+            //viblio.mpEvent( 'yir' );
+            fetch( year.label );
+	},
         
         activate: function (args) {
             system.log(args, viblio.user().uuid);
 	    var self = this;
 	    album_id = args.aid;
-	    strips.removeAll();
+            currAid( album_id );
             boxOfficeHits.removeAll();
-            allVids.removeAll();
+            // only refresh the AIR section if the user is viewing a different album than before
+            /*if( currAid() != prevAid() ){
+                years.removeAll();
+                months.removeAll();
+            }*/
+            years.removeAll();
+            months.removeAll();
             viblio.mpEvent( 'album viewed' );
 	    return system.defer( function( dfd ) {
 		viblio.api( 'services/album/get?aid=' + album_id ).then( function( data ) {
                     viblio.log(data);
 		    var album = data.album;
-                    //ownerName( album.owner.name );
-                    //ownerUUID( album.owner.uuid );
+                    ownerName( album.owner.displayname );
+                    ownerUUID( album.owner.uuid );
                     album.media.forEach( function( mf ) {
                         if( mf.view_count > 0 ) {
                             mediaHasViews( true );
@@ -116,23 +187,12 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
                     }));
 		    
                     albumTitle( album.title );
+                    ownerPhoto( "/services/na/avatar?uid=" + ownerUUID() + "&y=66" );
+                    
+                    checkOwner();
+                    
                     dfd.resolve();
-		    /*$.when( hh('Box Office Hits', 'The most popular videos in this album', 
-			       { search_api: function() {
-				   return( { api: '/services/faces/media_face_appears_in', args: { album_uuid: album_id } } );
-			       }}), 
-			    yy( album_id ),
-                            av( album_id )
-			 ).then( function( h1, h2, h3 ) {
-			     self.hits = h1;
-			     self.yir  = h2;
-			     strips.push( h1 );
-			     strips.push( h2 );
-                             //self.strips.push( h3 );
-			     dfd.resolve();
-			 });*/
 		});
-                ownerPhoto( "/services/na/avatar?uid=" + ownerUUID + "&y=66" );
 	    }).promise();
         },
 	attached: function() {
@@ -146,6 +206,15 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 	    system.wait(1).then( function() {
 		customDialogs.hideLoading();
 	    });
+            // only refresh the AIR section if the user is viewing a different album than before
+            /*if( currAid() != prevAid() ) {
+                getYears();
+            }*/
+            getYears();
+            // Set the prevAid and currAid to equal the first time the user navigates to the page (or it's refreshed).
+            if( prevAid() == null ){
+                prevAid( currAid() );
+            }
 	}
     };
 });

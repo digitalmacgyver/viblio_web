@@ -57,6 +57,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
                 months.push({month: month.month, media: mediafiles});
             });   
         });
+        yearIsSelected = true;
     }
 
     // get the years to display in the year navigator
@@ -145,7 +146,6 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 		y.selected( false );
             });
             year.selected( true );
-            yearIsSelected = true;
             //viblio.mpEvent( 'yir' );
             fetch( year.label );
 	},

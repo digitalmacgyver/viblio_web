@@ -1905,7 +1905,7 @@ li.token-input-token-facebook {
     position: relative;
 }
 
-.allVidsPage .sel {
+.sel {
     font-weight: 600;
 }
     
@@ -3279,8 +3279,39 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     vertical-align: middle;
 }
 
+.albumView .shareButton {
+    margin-top: -12px;
+}
+
 .albumOwnerInfo {
-    margin-top: -11px;
+    margin: -11px 25px 0 0;
+}
+
+.albumOwnerInfo img,
+.albumOwnerInfo div {
+    display: inline-block;
+}
+
+.albumOwnerInfo img {
+    margin-right: 10px;
+}
+
+.albumOwnerInfo div {
+    vertical-align: middle;
+}
+
+.albumYears,
+.air ul li {
+    display: inline-block;
+}
+
+.air ul li {
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.air ul li span:hover {
+    font-weight: 600;
 }
 
 .allAlbumVids {
