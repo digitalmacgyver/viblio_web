@@ -13,7 +13,6 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
     var ownerUUID = ko.observable();
     var ownedByViewer = ko.observable();
     var boxOfficeHits = ko.observableArray();
-    var allVids = ko.observableArray();
     
     var mediaHasViews = ko.observable( false );
     
@@ -138,7 +137,6 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 	ownerName: ownerName,
         ownedByViewer: ownedByViewer,
         boxOfficeHits: boxOfficeHits,
-        allVids: allVids,
         mediaHasViews: mediaHasViews,
         editLabel: editLabel,
         toggleEditMode: toggleEditMode,
@@ -182,7 +180,6 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
                             mediaHasViews( true );
                             boxOfficeHits.push( addMediaFile( mf ) );
                         }
-                        allVids.push( addMediaFile( mf ) );
                     });
                     
                     //reverse the order of the sorted array
