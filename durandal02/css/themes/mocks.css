@@ -760,6 +760,10 @@ input:-moz-placeholder {
     margin-right: 45px;
 }
 
+.marginT15 {
+    margin-top: 15px;
+}
+
 .marginB10 {
     margin-bottom: 10px;
 }
@@ -1901,7 +1905,7 @@ li.token-input-token-facebook {
     position: relative;
 }
 
-.allVidsPage .sel {
+.sel {
     font-weight: 600;
 }
     
@@ -2600,8 +2604,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     border: 0;
     text-decoration: none;
     opacity: .6;
-    top: 50px;
-    left: 145px;
+    top: 40%;
+    margin-top: -41px;
+    left: 50%;
+    margin-left: -34px;
 } 
 
 .mediafile .mplay-icon i {
@@ -2741,16 +2747,6 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .pp-related-column-related .mediafile .information {
     height: 40px;
     padding: 10px 5px;
-}
-
-
-/***************************/
-
-.pp-related-column-related-videos .mediafile .mplay-icon,
-.pp-related-column-related-videos .mediafile .mplay-icon:hover,
-.pp-related-column-related-videos .mediafile .mplay-icon:visited {
-    top: 40px;
-    left: 101px;
 }
 
 /*********************************/
@@ -3224,6 +3220,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     z-index: 1;
 }
 
+.a-drop-box .highlight,
 .a-drop-about-to-drop .a-instruction,
 .a-drop-box:hover .a-instruction {
     background-color: rgba(50,53,68,.75);
@@ -3265,6 +3262,68 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     margin-right: auto;
     margin-left: auto;
     text-align: center;
-    color: white;
     font-size: 30px;
+}
+
+/************* viewAlbum Page ***************/
+
+.albumView .pstrip {
+    padding: 32px 20px 28px 45px;
+}
+
+.albumTitle {
+    padding-top: 0px;
+    display: inline-block;
+    color: rgb(255, 255, 255);
+    font-size: 32px;
+    vertical-align: middle;
+}
+
+.albumView .shareButton {
+    margin-top: -12px;
+}
+
+.albumOwnerInfo {
+    margin: -11px 25px 0 0;
+}
+
+.albumOwnerInfo img,
+.albumOwnerInfo div {
+    display: inline-block;
+}
+
+.albumOwnerInfo img {
+    margin-right: 10px;
+}
+
+.albumOwnerInfo div {
+    vertical-align: middle;
+}
+
+.albumYears,
+.air ul li {
+    display: inline-block;
+}
+
+.air ul li {
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.air ul li span:hover {
+    font-weight: 600;
+}
+
+.allAlbumVids {
+    padding: 0 42px;
+}
+
+.allAlbumVids .mediafile {
+    float: left;
+    width: 423px;
+    margin-bottom: 20px;
+}
+
+.allAlbumVids .mediafile img {
+    height: 240px;
 }

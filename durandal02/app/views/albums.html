@@ -6,8 +6,12 @@
 	<div class="a-wrapper a-left-wrapper lightGreyBG">
 	  <div class="a-header a-left-header">
 	    <p class="mainTitle textShadowed">Drag and Drop Videos</p>
-
-	    <div class="yir-inner" data-bind="if: years().length == 0">
+            
+            <div class="a-searching lightGreyFont" data-bind="visible: loadingYears">
+	      <i class="icon-spinner icon-spin active"></i>
+	    </div>
+            
+	    <div class="yir-inner" data-bind="if: !loadingYears() && years().length == 0">
               <div class="yirHeading-Wrap">
 		<p class="mainTitle marginL45 textShadowed">Got any videos?</p>
 		<p class="marginL45 font18" style="text-align: left;">We noticed you 
@@ -19,7 +23,7 @@
 	    </div>
 	    
 
-	    <div>
+	    <div data-bind="highlightChange: years().length > 0">
 	      <ul data-bind="foreach: years">
 		<li>
                   <span class="textShadowed font24 lightWeightFont" data-bind="click: $parent.yearSelected.bind( $data, $parent ), 
@@ -29,7 +33,7 @@
               </ul>
 	    </div>
 	  </div>
-	  <div class="a-content a-left-content">
+	  <div class="a-content a-left-content" data-bind="highlightChange: months().length > 0">
 	    <!-- ko foreach: months -->
             <div class="month-heading textShadowed marginB10">
               <span class="month-name heavyWeightFont font20" data-bind="text: $data.month"></span>
@@ -56,14 +60,14 @@
 	  <div class="a-content a-right-content">
 
 	    <div class="no-albums-wrapper" data-bind="visible: no_albums">
-	      <img src="/css/images/vid-album.png" />
+	      <img src="/css/images/vidsToFolders.png" />
 	      <p class="textShadowed">Albums keep your Videos organized and make sharing easy!</p>
 	    </div>
 
 	    <!-- ko foreach: albums -->
-	    <div class="a-drop-box">
+	    <div class="a-drop-box" data-bind="highlightChange: !$root.no_albums">
               <div class="marginB10">
-                <div class="a-drop-view pull-right font20">
+                <div class="a-drop-view pull-right font20" data-bind="click: $parent.viewAlbum">
                   <i class="icon-eye-open"></i>&nbsp;View
                 </div>
                 <div class="a-drop-name whiteText textShadowed font20" data-bind="liveEditor: name">
@@ -83,7 +87,7 @@
 	      <div class="a-drop" data-bind="style:{width:$parent.drop_box_width},
 					     droponable:{scope:'mediafile',hoverClass:'a-drop-about-to-drop',callback:$parent.albumDrop}">
 
-		<div class="a-instruction lightWeightFont fadeIn">
+		<div data-bind="css: { highlight: $root.no_albums }" class="a-instruction lightWeightFont fadeIn">
 		  <i class="icon-share-alt"></i>&nbsp;Drop Videos Here
 		</div>
 		<!-- ko foreach: media -->
@@ -96,7 +100,7 @@
 
 	    </div>
 	    <!-- /ko -->
-	    <div class="a-searching" data-bind="visible: searching">
+	    <div class="a-searching whiteText" data-bind="visible: searching">
 	      <i class="icon-spinner icon-spin active"></i>
 	    </div>
 	  </div>

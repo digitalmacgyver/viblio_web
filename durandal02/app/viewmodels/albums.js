@@ -6,7 +6,9 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
     var drop_box_width = ko.observable('99%');
     var no_albums = ko.observable(false);
     var searching = ko.observable( false );
-
+    var loadingYears = ko.observable( true );
+    var yearIsSelected = null;
+    
     var pager = {
         next_page: 1,
         entries_per_page: 25,
@@ -55,10 +57,12 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
                 months.push({month: month.month, media: mediafiles});
             });   
         });
+        yearIsSelected = true;
     }
 
     // get the years to display in the year navigator
     function getYears() {
+        loadingYears( true );
 	viblio.api( '/services/yir/years' ).then( function( data ) {
             var arr = [];
             data.years.forEach( function( year ) {
@@ -69,6 +73,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
                 years()[0].selected( true );
                 fetch( years()[0].label );
             }
+            loadingYears( false );
         });
     }
 
@@ -129,6 +134,12 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	albums: albums,
 	no_albums: no_albums,
 	searching: searching,
+        loadingYears: loadingYears,
+        yearIsSelected: yearIsSelected,
+        
+        viewAlbum: function($data) {
+            router.navigate('viewAlbum?aid=' + $data.uuid);
+        },
 
 	yearSelected: function( self, year ) {
 	    years().forEach( function( y ) {
@@ -188,14 +199,19 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	    pager.next_page = 1;
             pager.total_entries = -1;
 	    albums.removeAll();
+            //prevents videos from reloading everytime a user navigates to the albums page - keeps the selected year
+            if( !yearIsSelected ) {
+                years.removeAll();
+                getYears();
+                months.removeAll();
+            }
 	},
 
 	compositionComplete: function() {
 	    resizeColumns();
-	    getYears();
 
 	    // Fetch albums.  If none, create an initial fake album
-	    search();
+            search();
 
 	    // Infinite scroll support
 	    $(view).find('.a-right-content').scroll( $.throttle( 250, function() {

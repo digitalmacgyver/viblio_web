@@ -1,0 +1,71 @@
+<div id="viewAlbum-page" class="albumView">
+    <div class="pstrip bottomBorder-Thin turquoiseBG">
+        <!-- ko if: ownedByViewer -->
+        <a class="shareButton btn pull-right" href="#" data-bind="click: showShareAlbumModal">
+            <img src="css/images/share.png"/> Share this Album!
+        </a>
+        <!-- /ko -->
+        <!-- ko ifnot: ownedByViewer -->
+        <div class="pull-right albumOwnerInfo" >
+            <img class="boxShadowed marginR10" data-bind="attr:{src:ownerPhoto()}"/>
+            <div class="font18 whiteText textShadowed">
+                <span class="lightWeightFont">Album by </span><br><span class="heavyWeightFont" data-bind="text: ownerName"></span>
+            </div>
+        </div>
+        <!-- /ko -->
+        <img src="css/images/folderImage.png" />
+        <span class="textShadowed albumTitle" data-bind="text: albumTitle"></span>
+    </div>
+    
+    <div class="mainVidSection">
+        <!-- ko if: mediaHasViews -->
+        <div class="hstrip bottomBorder-Thin">
+
+            <div>
+                <p class="mainTitle marginL45 textShadowed whiteText" data-bind="html: title"></p>
+                <span class="subtitle" data-bind="html: subtitle"></span>
+            </div>
+            
+            <div class="sd-scroll" data-bind="hscroller:{}">
+                <!-- ko foreach: boxOfficeHits -->
+                <!-- ko compose: $data --><!--/ko-->
+                <!--/ko-->
+            </div>
+        </div>
+        <!-- /ko -->
+        <div class="yir air">
+            <p class="mainTitle marginL45 textShadowed">All Videos in this Album</p>
+            <div class="a-searching lightGreyFont" data-bind="visible: loadingYears">
+	      <i class="icon-spinner icon-spin active"></i>
+	    </div>
+            <div class="albumYears" data-bind="highlightChange: years().length > 0">
+                <ul data-bind="foreach: years">
+                    <li>
+                        <span class="textShadowed font24 lightWeightFont" data-bind="click: $parent.yearSelected.bind( $data, $parent ), 
+                                                                                    text: $data.label, 
+                                                                                    css:{sel: $data.selected()}"></span>
+                    </li>
+                </ul>
+	    </div>
+            <!-- ko if: ownedByViewer -->
+                <button class="btn btn-small btn-secondary pull-right marginR45" data-bind="click: toggleEditMode, text: editLabel"></button>
+            <!-- /ko -->
+            
+            <div class="a-content a-left-content" data-bind="highlightChange: months().length > 0">
+                <!-- ko foreach: months -->
+                <div class="month-heading textShadowed marginB10 marginL45">
+                    <span class="month-name heavyWeightFont font20" data-bind="text: $data.month"></span>
+                    <span class="num-videos lightWeightFont font20" data-bind="text: '(' + $data.media().length + ( $data.media().length == 1 ? ' video)' : ' videos)' )"></span>
+                </div>
+                <div class="media-list allAlbumVids" data-bind="foreach: { data: $data.media, as: 'm' }">
+                <!-- ko compose: m --><!-- /ko -->
+                </div>
+                <div class="clearfix marginB20"></div>
+                <!-- /ko -->
+            </div>
+            
+        </div>
+    </div>
+    
+</div>
+
