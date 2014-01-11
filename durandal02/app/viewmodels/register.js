@@ -202,11 +202,11 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
 						   email: email(),
 						   password: password(),
 						   displayname: email() }, handleLoginFailure )
-		.then( function( user ) {
+		.then( function( data ) {
 		    // Save the logged in user info to the viblio object,
 		    // which serves as a global exchange
 		    //
-		    viblio.setUser( user );
+		    viblio.setUser( data.user );
 	
 		    // mixpanel event
 

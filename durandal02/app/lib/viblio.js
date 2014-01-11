@@ -114,6 +114,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 	// attaches the "page" (or route) that was active when this
 	// call was made.
 	gaEvent: function( category, action, label, value ) {
+	    if ( window.location.hostname != 'viblio.com' ) return;
 	    var page = '/' + ( router.activeInstruction().fragment || 'unknown' );
 	    if ( value )
 		ga( 'send', 'event', category, action, label, value, { 'page': page } );
@@ -125,6 +126,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 
 	// Mixpanel Page View
 	mpPage: function( title, page ) {
+	    if ( window.location.hostname != 'viblio.com' ) return;
 	    mixpanel.track_pageview( page );
 	    ga( 'send', 'pageview', {
 		title: title, page: page });
@@ -133,6 +135,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 	// Mixpanel Event log
 	// The current page fragment gets added automatically.
 	mpEvent: function( event, options ) {
+	    if ( window.location.hostname != 'viblio.com' ) return;
 	    if ( ! options )
 		options = {};
 	    if ( ! options['page'] ) {
