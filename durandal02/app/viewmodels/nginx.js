@@ -14,6 +14,9 @@ define(['lib/viblio','lib/config','lib/customDialogs'], function(viblio,config,c
     var server   = ko.observable( config.uploader() );
     var localhost = ko.observable( location.hostname );
 
+    var BR = 0;
+    var BP = 0;
+
     var port = ko.computed( function() {
 	if ( protocol() == 'https:' )
 	    return 443;
@@ -328,7 +331,12 @@ define(['lib/viblio','lib/config','lib/customDialogs'], function(viblio,config,c
 		 * This callback keeps track of the combined progress for all active uploads.
 		 */
 		progressall: function (e, data) {
-		    overall_bitrate( _formatBitrate(data.bitrate) );
+
+		    BR += data.bitrate;
+		    BP += 1;
+		    var ave = BR/BP;
+
+		    overall_bitrate( _formatBitrate(ave) );
 		    overall_time( _formatTime( (data.total - data.loaded) * 8 / data.bitrate ) );
 		    overall_percent( _formatPercentage( data.loaded / data.total ) );
 		    overall_size( _formatFileSize(data.loaded) + ' / ' + _formatFileSize(data.total) );
