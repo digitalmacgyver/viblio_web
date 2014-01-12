@@ -26,6 +26,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	    ro: false,
 	    show_share_badge: false,
 	    share_action: 'modal', // 'modal' to popup showShareVidModal, 'trigger' to trigger mediafile:share, function as a callback
+	    show_preview: true,    // show animated gif, if available, on hover.
 	}, options );
         
 	this.media    = ko.observable( data );
@@ -36,6 +37,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 
 	this.title = ko.observable( data.title );
 	this.description = ko.observable( data.description );
+
+	this.image = ko.observable( this.media().views.poster.url );
 
 	Events.includeIn( this );
 
@@ -105,6 +108,30 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	var self = this;
 	self.view = view;
 	self.trigger( 'mediafile:composed', self );
+
+	if ( self.options.show_preview ) {
+	    if ( typeof viblio.cached_gifs[ self.media().uuid ] == 'undefined' ) {
+		viblio.api( '/services/mediafile/get_animated_gif', { mid: self.media().uuid } ).then( function( data ) {
+		    if ( data.url ) {
+			var image = new Image();
+			image.src = data.url;
+			viblio.cached_gifs[ self.media().uuid ] = data.url;
+		    }
+		    else {
+			viblio.cached_gifs[ self.media().uuid ] = 'none';
+		    }
+		});
+	    }
+	    
+	    $(view).on( 'mouseover', function() {
+		if ( viblio.cached_gifs[ self.media().uuid ] && viblio.cached_gifs[ self.media().uuid ] != 'none' ) 
+		    self.image( viblio.cached_gifs[ self.media().uuid ] );
+	    });
+
+	    $(view).on( 'mouseleave', function() {
+		self.image( self.media().views.poster.url );
+	    });
+	}
     };
     
     return Video;

@@ -3,6 +3,8 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
     // The currently logged in user
     var user = ko.observable();
 
+    var cached_gifs = {};
+
     var setUser = function( u ) {
 	if ( u ) {
 	    if ( u.uuid != user().uuid ) {
@@ -68,6 +70,8 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
     }
 
     return {
+	cached_gifs: cached_gifs,
+
 	// log() and debug() should maybe use 
 	//    http://log4javascript.org/
 	// for production
