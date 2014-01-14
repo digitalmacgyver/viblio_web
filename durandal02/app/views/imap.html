@@ -1,27 +1,24 @@
 <div id="imapModal" class="mocksWhiteBG">
   <div class='closeX btn btn-primary' data-bind="click: dismiss"><img src='css/images/closeX.png'/></div>
+  <div class="centered">Click the map to drop a draggable location marker ( <img src="css/images/mapMarker-Blue.png"> ).</div>
   <div class="modal-body">
     <div class="map" style="width: 600px; height: 400px;"></div>
     <div class="help">
       <button type="button" class="close" data-bind="click: helpHide" aria-hidden="true">&times;</button>
-      <p><span class="emph">Search</span> for your approximate location by clicking on the
-	  search icon (pic) and entering address, city, state, etc.
+      <p><span class="emph">Search</span> for your approximate location by and entering address, city, state, etc. and then pressing the enter key.
       </p>
       <p><span class="emph">Zoom</span> in and out of the map by clicking on the
-	[+] and [-] (pics) buttons.
+	[+] and [-] buttons in the top right corner of the map.
       </p>
-      <p><span class="emph">Drop</span> a draggable marker (pic) by clicking on the map near the
+      <p><span class="emph">Drop</span> a draggable marker ( <img src="css/images/mapMarker-Blue.png"> ) by clicking on the map near the
 	location you want.
       </p>
-      <p><span class="emph">Drag</span> the (pic) markerover the exact location you want.
+      <p><span class="emph">Drag</span> the ( <img src="css/images/mapMarker-Blue.png"> ) marker over the exact location you want.
       </p>
-      <p><span class="emph">Click</span> on the (pic) marker to cancel or choose this as your
-	final location.  If you cancel, you can drop another (pic) marker somewhere else.
+      <p><span class="emph">Click</span> on the ( <img src="css/images/mapMarker-Blue.png"> ) marker to cancel or choose this as your
+	final location.  If you cancel, you can drop another ( <img src="css/images/mapMarker-Blue.png"> ) marker somewhere else.
       </p>
-      <p><span class="emph">Resize</span> and drag the map around by moving your mouse to the 
-	bottom or right edges of the map and dragging.
-      </p>
-      <button data-bind="click: helpHide">Close Help</button>
+      <button data-bind="click: helpHide" class="btn btn-secondary btn-small">Close Help</button>
     </div>
   </div>
   <div class="is-near"><div data-bind="text: isNear"></div></div>

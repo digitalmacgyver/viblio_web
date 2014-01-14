@@ -1660,15 +1660,21 @@ input:-moz-placeholder {
 }
 
 #geo-nomap {
+    text-align: center;
+}
+
+.hoverMe:hover {
     cursor: pointer;
-    height: 30px;
-    width: 200px;
-    left: 36px;
+    box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
 }
 
 #geo-nomap img {
-    height: 70px;
+    height: 38px;
     margin-right: 10px;
+}
+
+#geo-nomap span {
+    vertical-align: middle;
 }
 
 /********************* Player Comments ************************/
@@ -2854,7 +2860,6 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .pp-related-column-wrapper .orangeBG {
     margin-left: -4px;
     border-left: 4px inset rgba(0, 0, 0, 0.2);
-    padding-bottom: 20px;
 }
 
 .pp-related-column-related-videos {
@@ -2929,6 +2934,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     margin-right: auto;
     margin-left: auto;
     margin-top: 6px;
+    margin-bottom: 20px;
 }
 .pp-faces-box {
     padding: 25px 0 0;

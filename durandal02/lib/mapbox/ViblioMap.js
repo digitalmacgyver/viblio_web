@@ -218,9 +218,11 @@
     $.fn.removeAllMarkers = function() {
 	var self = $(this);
 	var marker;
-	while( marker = self.data( 'markers' ).pop() ) {
-	    self.data( 'map' ).removeLayer( marker._m );
-	}
+        if( self.data( 'markers' ) ) {
+            while( marker = self.data( 'markers' ).pop() ) {
+                self.data( 'map' ).removeLayer( marker._m );
+            }
+        }
     };
 
     // Turn this map into a 'Set Location' widget
