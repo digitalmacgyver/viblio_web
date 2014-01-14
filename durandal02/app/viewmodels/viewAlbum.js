@@ -13,6 +13,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
     var ownerUUID = ko.observable();
     var ownedByViewer = ko.observable();
     var boxOfficeHits = ko.observableArray();
+    var refresh = ko.observable( false );
     
     var mediaHasViews = ko.observable( false );
     
@@ -39,8 +40,19 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
     // Right before the user navigates away from the page set the prevAid to the 
     // currAid so we know when to reload the AID section or not
     router.on( 'router:route:activating', function() {
-        system.log('router event triggered');
 	prevAid( currAid() );
+    });
+    
+    app.on( 'album:newMediaAdded', function() {
+        refresh( true );
+    });
+    
+    app.on( "mediaFile:TitleDescChanged", function() {
+        refresh( true );
+    });
+    
+    app.on( 'album:name_changed', function() {
+        refresh( true );
     });
     
     function checkOwner() {
@@ -60,18 +72,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
             data.media.forEach( function( month ) {
                 var mediafiles = ko.observableArray([]);
                 month.data.forEach( function( mf ) {
-                    var m = new Mediafile( mf, ownedByViewer ? { show_share_badge: true } : {} );
-		    m.on( 'mediafile:delete', function( m ) {
-			viblio.api( '/services/album/remove_media?', { aid: album_id, mid: m.media().uuid } ).then( function() {
-			    viblio.mpEvent( 'remove_video_from_album' );
-			    months().forEach( function( month ) {
-				month.media.remove( m );
-			    });
-                            boxOfficeHits.remove( function(video) { return video.view.id == m.media().uuid } );
-                            $( ".horizontal-scroller").trigger( 'children-changed', { enable: true } );
-			});
-		    });
-                    mediafiles.push( m );
+                    mediafiles.push( addMediaFile( mf ) );
                 });
                 months.push({month: month.month, media: mediafiles});
             });   
@@ -119,6 +120,41 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 	m.on( 'mediafile:composed', function() {
 	    $( ".horizontal-scroller").trigger( 'children-changed', { enable: true } );
 	});
+        
+        m.on( 'mediafile:delete', function( m ) {
+            viblio.api( '/services/album/remove_media?', { aid: album_id, mid: m.media().uuid } ).then( function() {
+                viblio.mpEvent( 'remove_video_from_album' );
+                months().forEach( function( month ) {
+                    month.media.remove( m );
+                });
+                boxOfficeHits.remove( function(video) { return video.view.id == m.media().uuid } );
+                $( ".horizontal-scroller").trigger( 'children-changed', { enable: true } );
+            });
+        });
+        
+        m.on( "mediaFile:TitleDescChanged", function() {
+            var uuid = this.view.id;
+            var title = this.title();
+            if( boxOfficeHits().length > 0 ) {
+                // If title is changed in Box Office Hits section update title in AIR
+                if( this.view.parentElement.className == 'scrollableArea' ) {
+                    months().forEach( function( month ) {
+                        month.media().forEach( function( mf ) {
+                            if( mf.view.id == uuid ) {
+                                mf.title( title );
+                            }
+                        });
+                    });
+                } else {
+                    // Otherwise title was updated in AIR, so update title in Box Office Hits
+                    boxOfficeHits().forEach( function( mf ) {
+                        if( mf.view.id == uuid ) {
+                            mf.title( title );
+                        }
+                    });
+                }    
+            }
+        });
 
 	return m;
     };
@@ -154,54 +190,18 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 	},
         
         activate: function (args) {
-            system.log(args, viblio.user().uuid);
-	    var self = this;
-            self.editLabel( 'Edit' );
 	    album_id = args.aid;
             currAid( album_id );
-            boxOfficeHits.removeAll();
-            // only refresh the AIR section if the user is viewing a different album than before
-            /*if( currAid() != prevAid() ){
-                years.removeAll();
-                months.removeAll();
-            }*/
-            years.removeAll();
-            months.removeAll();
-            viblio.mpEvent( 'album viewed' );
-	    return system.defer( function( dfd ) {
-		viblio.api( 'services/album/get?aid=' + album_id ).then( function( data ) {
-                    viblio.log(data);
-		    var album = data.album;
-                    ownerName( album.owner.displayname );
-                    ownerUUID( album.owner.uuid );
-                    mediaHasViews( false );
-                    album.media.forEach( function( mf ) {
-                        if( mf.view_count > 0 ) {
-                            mediaHasViews( true );
-                            boxOfficeHits.push( addMediaFile( mf ) );
-                        }
-                    });
-                    
-                    //reverse the order of the sorted array
-                    boxOfficeHits.reverse(boxOfficeHits.sort( function(l, r) {
-                        return Number(l.media().view_count) < Number(r.media().view_count) ? -1 : 1;
-                    }));
-		    
-                    albumTitle( album.title );
-                    ownerPhoto( "/services/na/avatar?uid=" + ownerUUID() + "&y=66" );
-                    
-                    checkOwner();
-                    
-                    dfd.resolve();
-		});
-	    }).promise();
+            if( currAid() != prevAid() ) {
+                refresh( true );
+            }
         },
-	attached: function() {
+	/*attached: function() {
 	    return system.defer( function( dfd ) {
 		customDialogs.showLoading();
 		dfd.resolve();
 	    }).promise();
-	},
+	},*/
 	compositionComplete: function( view, parent ) {
 	    var self = this;
 	    system.wait(1).then( function() {
@@ -211,14 +211,56 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
             
             // TODO - Add functionality to test if new videos have been added to the album
             
-            /*if( currAid() != prevAid() ) {
+            if( refresh() ) {
                 getYears();
-            }*/
-            getYears();
+            }
+            
+            // get the years labels for the videos in the album, select most recent year, and get months for that year
+            //getYears();
+            
+            self.editLabel( 'Edit' );
+            // only refresh page if the user is viewing a different album than before or if new media has been added to an album
+            if( refresh() ){
+                years.removeAll();
+                months.removeAll();
+                boxOfficeHits.removeAll();
+                //return system.defer( function( dfd ) {
+                    viblio.api( 'services/album/get?aid=' + album_id ).then( function( data ) {
+                        viblio.log(data);
+                        var album = data.album;
+                        ownerName( album.owner.displayname );
+                        ownerUUID( album.owner.uuid );
+                        mediaHasViews( false );
+                        album.media.forEach( function( mf ) {
+                            if( mf.view_count > 0 ) {
+                                mediaHasViews( true );
+                                boxOfficeHits.push( addMediaFile( mf ) );
+                            }
+                        });
+
+                        //reverse the order of the sorted array
+                        boxOfficeHits.reverse(boxOfficeHits.sort( function(l, r) {
+                            return Number(l.media().view_count) < Number(r.media().view_count) ? -1 : 1;
+                        }));
+
+                        albumTitle( album.title );
+                        ownerPhoto( "/services/na/avatar?uid=" + ownerUUID() + "&y=66" );
+
+                        checkOwner();
+
+                        //dfd.resolve();
+                    });
+                //}).promise();
+            }
+            //years.removeAll();
+            //months.removeAll();
+            viblio.mpEvent( 'album viewed' );
+            
             // Set the prevAid and currAid to equal the first time the user navigates to the page (or it's refreshed).
             if( prevAid() == null ){
                 prevAid( currAid() );
             }
+            refresh( false );
 	}
     };
 });

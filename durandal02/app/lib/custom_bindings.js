@@ -33,7 +33,9 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
 		if ( ! o ) {
 		    o = app;
 		}
-                o.trigger( targetName, data ); 
+                o.trigger( targetName, data );
+                // ensure that the call is also triggered by app so the rest of the app can be notified when triggered
+                app.trigger( targetName );
             }
         };
         

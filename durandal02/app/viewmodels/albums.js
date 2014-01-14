@@ -33,6 +33,10 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	if ( album.uuid )
 	    viblio.api( '/services/album/change_title', { aid: album.uuid, title: album.name() } );
     });
+    
+    app.on( "mediaFile:TitleDescChanged", function() {
+        yearIsSelected = null;
+    });
 
     // fetch videos for given year
     function fetch( year ) {
@@ -174,6 +178,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 		    // add media to an exiting album
 		    viblio.api( '/services/album/add_media', { aid: album.uuid, mid: mf.media().uuid } ).then( function() {
 			album.media.unshift( mf );
+                        app.trigger('album:newMediaAdded');
 		    });
 		}
 		else {
@@ -196,6 +201,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	},
 
 	activate: function() {
+            viblio.log( yearIsSelected );
 	    pager.next_page = 1;
             pager.total_entries = -1;
 	    albums.removeAll();
