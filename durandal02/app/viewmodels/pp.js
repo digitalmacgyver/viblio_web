@@ -634,6 +634,12 @@ define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_vi
 	get_the_app_overlay_logic: get_the_app_overlay_logic,
 	map_location_editable: map_location_editable,
 	new_face_addable: new_face_addable,
+        
+        shouldShowInteractiveMap: function() {
+            if( nolocation() ) {
+                this.showInteractiveMap();
+            }
+        },
 
         showInteractiveMap: function() {
             customDialogs.showInteractiveMap( playing().media, {

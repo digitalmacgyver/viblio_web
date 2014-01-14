@@ -1,25 +1,26 @@
 <div class="pp-related-column-wrapper">
 
-  <div class="pp-related-column-share orangeBG bottomBorder-Thin" data-bind="visible: map_location_editable()==true || nolocation()==false">
+  <div class="pp-related-column-share orangeBG bottomBorder-Thin" data-bind="visible: map_location_editable() || !nolocation(), css: { hoverMe: nolocation() }, click: shouldShowInteractiveMap">
       <div class="pp-info-map-wrapper">
-          <div id="geo" data-bind="style: {height: nolocation() ? '80px' : 'auto'}">
-          <div id="geo-title" class="textShadowed">
-            <span data-bind="visible: isNear() != 'Find in map' ">Near&nbsp;<span data-bind="text: isNear()"></span></span>
-          </div>
-          <div style="position: relative">
-            <div id="geo-map" class="map boxShadowed" data-bind="css:{hideme: nolocation() == true}"></div>
-            <div id="geo-map-reloc" data-bind="visible: map_location_editable, css:{hideme: nolocation() == true}">
-              <button class="btn btn-blue" data-bind="click: relocate">Change Location</button>
+          <div id="geo">
+            <div id="geo-title" class="textShadowed" data-bind="ifnot: nolocation">
+              <span data-bind="visible: isNear() != 'Find in map' ">Near&nbsp;</span><span data-bind="text: isNear()"></span>
             </div>
-            <div id="geo-nomap" data-bind="visible: map_location_editable, css:{hideme: nolocation() == false}, click: showInteractiveMap">
-              <img class="pull-left" src="css/images/mapMarker-Large.png" />
-              <div class="whiteText font24 textShadowed doubleSpaced">
-                  <span class="lightWeightFont">Coming soon:</span><br>
-                  <span class="heavyWeightFont">Add to Map</span>
+            <div style="position: relative">
+              <div id="geo-map" class="map boxShadowed" data-bind="css:{hideme: nolocation() == true}"></div>
+              <!-- ko ifnot: nolocation -->  
+              <div id="geo-map-reloc" data-bind="visible: map_location_editable">
+                <button class="btn btn-blue" data-bind="click: relocate">Change Location</button>
               </div>
+              <!-- /ko -->
+              <!-- ko if: nolocation -->  
+              <div id="geo-nomap" data-bind="visible: map_location_editable">
+                <img src="css/images/mapMarker-Large.png" />
+                <span class="whiteText font24 textShadowed heavyWeightFont">Add to Map</span>
+              </div>
+              <!-- /ko -->
             </div>
           </div>
-        </div>
       </div>
   </div>
 
