@@ -257,6 +257,18 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
             self.map.data('map').setView({ lat: 35, lon: -35 }, 3);
         }
     };
+    
+    Map.prototype.toggleInstructions = function() {
+        if( $( '.missingVideos' ).css( 'bottom' ) == '0px' ) {
+            $( '.missingVideos' ).css( 'bottom', '-252px' );
+            $( '.missingVideos .tab' ).css( 'opacity', '.6');
+            $( '.missingVideos .tab' ).hover( function(){ $(this).css( 'opacity', '.8'); }, function(){ $(this).css( 'opacity', '.6'); } );
+        } else {
+            $( '.missingVideos' ).css( 'bottom', '0' );
+            $( '.missingVideos .tab' ).css( 'opacity', '.8');
+            $( '.missingVideos .tab' ).off( "mouseenter mouseleave" );
+        } 
+    },
 
     Map.prototype.enableDetails = function(marker) {
 	this.markerTitle( marker.title );

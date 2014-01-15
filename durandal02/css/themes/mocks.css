@@ -2305,6 +2305,46 @@ ul.token-input-list-facebook {
 
 /**************** Map Page *******************/
 
+.missingVideos {
+    position: fixed;
+    z-index: 1;
+    padding: 8px;
+    bottom: -252px;
+    left: 20px;
+    transition: bottom 1s;
+    -webkit-transition: bottom 1s;
+}
+
+.missingVideos i {
+    vertical-align: middle;
+    margin-right: 4px;
+    font-size: 24px;
+}
+
+.missingVideos .tab {
+    background-color: rgb(49, 53, 67);
+    opacity: .6;
+    padding: 2px 8px;
+    width: 110px;
+    cursor: pointer;
+}
+
+.missingVideos .tab:hover {
+    opacity: .8;
+}
+
+.tab div {
+    display: inline-block;
+}
+
+.mapInstructions {
+    width: 200px;
+    background-color: rgba(49, 53, 67, 0.8);
+    padding: 8px;
+    font-size: 16px;
+    font-weight: 100;
+}
+
 /* start overlay */
 #noPointsOverlay {
     position: absolute;
