@@ -15,6 +15,10 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
     var boxOfficeHits = ko.observableArray();
     var refresh = ko.observable( false );
     
+    var updatedTitle = ko.observable( null );
+    var prevAlbum = ko.observable( null );
+    var currAlbum = ko.observable();
+    
     var mediaHasViews = ko.observable( false );
     
     // An edit/done label to use on the GUI
@@ -38,9 +42,11 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
     };
     
     // Right before the user navigates away from the page set the prevAid to the 
-    // currAid so we know when to reload the AID section or not
+    // currAid so we know when to reload the AID section or not. Also set prevAlbum
+    // to currAlbum so we know when to refresh the whole page (used to test updated titles)
     router.on( 'router:route:activating', function() {
 	prevAid( currAid() );
+        prevAlbum( currAlbum() );
     });
     
     app.on( 'album:newMediaAdded', function( album ) {
@@ -50,8 +56,9 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
         }
     });
     
-    app.on( "mediaFile:TitleDescChanged", function() {
-        refresh( true );
+    app.on( "mediaFile:TitleDescChanged", function( mf ) {
+        updatedTitle( mf.uuid );
+        //refresh( true );
     });
     
     app.on( 'album:name_changed', function( album ) {
@@ -201,6 +208,18 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
             if( currAid() != prevAid() ) {
                 refresh( true );
             }
+            // Check to see if the recently updated mediafile is in the album, if so refresh( true )
+            if( updatedTitle() != null ) {
+                if( currAid() == prevAid() ) {
+                    currAlbum().media.forEach( function( mf ) {
+                        if( mf.uuid == updatedTitle() ) {
+                            refresh( true );
+                            updatedTitle( null );
+                            return;
+                        }
+                    });
+                }    
+            }
         },
 	/*attached: function() {
 	    return system.defer( function( dfd ) {
@@ -232,11 +251,11 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
                 boxOfficeHits.removeAll();
                 //return system.defer( function( dfd ) {
                     viblio.api( 'services/album/get?aid=' + album_id ).then( function( data ) {
-                        var album = data.album;
-                        ownerName( album.owner.displayname );
-                        ownerUUID( album.owner.uuid );
+                        currAlbum( data.album );
+                        ownerName( currAlbum().owner.displayname );
+                        ownerUUID( currAlbum().owner.uuid );
                         mediaHasViews( false );
-                        album.media.forEach( function( mf ) {
+                        currAlbum().media.forEach( function( mf ) {
                             if( mf.view_count > 0 ) {
                                 mediaHasViews( true );
                                 boxOfficeHits.push( addMediaFile( mf ) );
@@ -248,7 +267,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
                             return Number(l.media().view_count) < Number(r.media().view_count) ? -1 : 1;
                         }));
 
-                        albumTitle( album.title );
+                        albumTitle( currAlbum().title );
                         ownerPhoto( "/services/na/avatar?uid=" + ownerUUID() + "&y=66" );
 
                         checkOwner();
@@ -265,6 +284,11 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
             if( prevAid() == null ){
                 prevAid( currAid() );
             }
+            // Set prevAlbum and currAlbum to equal when user first navigates to an album
+            if( prevAlbum() == null ) {
+                prevAlbum( currAlbum() );
+            }
+            
             refresh( false );
 	}
     };
