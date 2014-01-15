@@ -1,6 +1,5 @@
-define( function() {
-    var viblio = require( 'lib/viblio' );
-    var Mediafile = require( 'viewmodels/mediafile' );
+define(['lib/viblio','viewmodels/mediafile'], function(viblio,Mediafile) {
+
     var mediafiles;
     var searching;
     var play_callback;

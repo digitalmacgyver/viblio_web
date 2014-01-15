@@ -1,15 +1,14 @@
-define( ['require', 'viewmodels/mediafile', 'viewmodels/person', 'lib/related_video'], function( require ) {
-    var app = require( "durandal/app" );
-    var system = require( "durandal/system" );
-    var router = require( "plugins/router" );
-    var config = require( "lib/config" );
-    var viblio = require( "lib/viblio" );
-    var Mediafile = require( "viewmodels/mediafile" );
-    var customDialogs = require( "lib/customDialogs" );
-    var Face = require( "viewmodels/person" );
-    var Related = require( "lib/related_video" );
-    var footer = require( "viewmodels/footer" );
-
+define(["durandal/app",
+	"durandal/system",
+	"plugins/router",
+	"lib/config",
+	"lib/viblio",
+	"viewmodels/mediafile",
+	"lib/customDialogs",
+	"viewmodels/person",
+	"lib/related_video",
+	"viewmodels/footer"], 
+       function(app,system,router,config,viblio,Mediafile,customDialogs,Face,Related,footer) {
     var incoming_mid;
     var view;
     var route;
