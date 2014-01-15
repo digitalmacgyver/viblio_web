@@ -15,6 +15,8 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
     var boxOfficeHits = ko.observableArray();
     var refresh = ko.observable( false );
     
+    var showBOH = ko.observable();
+    
     var updatedTitle = ko.observable( null );
     var prevAlbum = ko.observable( null );
     var currAlbum = ko.observable();
@@ -52,18 +54,19 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
     app.on( 'album:newMediaAdded', function( album ) {
         var changedAid = album.uuid;
         if( changedAid == album_id ) {
+            showBOH( false );
             refresh( true );
         }
     });
     
     app.on( "mediaFile:TitleDescChanged", function( mf ) {
         updatedTitle( mf.uuid );
-        //refresh( true );
     });
     
     app.on( 'album:name_changed', function( album ) {
         var changedAid = album.uuid;
         if( changedAid == album_id ) {
+            showBOH( false );
             refresh( true );
         }
     });
@@ -142,6 +145,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
                 });
                 boxOfficeHits.remove( function(video) { return video.view.id == m.media().uuid } );
                 $( ".horizontal-scroller").trigger( 'children-changed', { enable: true } );
+                refresh( true );
             });
         });
         
@@ -189,6 +193,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
         mediaHasViews: mediaHasViews,
         editLabel: editLabel,
         toggleEditMode: toggleEditMode,
+        showBOH: showBOH,
         
         title: 'Box Office Hits',
         subtitle: 'The most popular videos in this album',
@@ -206,6 +211,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 	    album_id = args.aid;
             currAid( album_id );
             if( currAid() != prevAid() ) {
+                showBOH( false );
                 refresh( true );
             }
             // Check to see if the recently updated mediafile is in the album, if so refresh( true )
@@ -213,12 +219,19 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
                 if( currAid() == prevAid() ) {
                     currAlbum().media.forEach( function( mf ) {
                         if( mf.uuid == updatedTitle() ) {
+                            showBOH( false );
                             refresh( true );
                             updatedTitle( null );
                             return;
                         }
                     });
                 }    
+            }
+            if( refresh() ){
+                years.removeAll();
+                months.removeAll();
+                boxOfficeHits.removeAll();
+                albumTitle('');
             }
         },
 	/*attached: function() {
@@ -246,9 +259,9 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
             self.editLabel( 'Edit' );
             // only refresh page if the user is viewing a different album than before or if new media has been added to an album
             if( refresh() ){
-                years.removeAll();
+                /*years.removeAll();
                 months.removeAll();
-                boxOfficeHits.removeAll();
+                boxOfficeHits.removeAll();*/
                 //return system.defer( function( dfd ) {
                     viblio.api( 'services/album/get?aid=' + album_id ).then( function( data ) {
                         currAlbum( data.album );
@@ -258,6 +271,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
                         currAlbum().media.forEach( function( mf ) {
                             if( mf.view_count > 0 ) {
                                 mediaHasViews( true );
+                                showBOH( true );
                                 boxOfficeHits.push( addMediaFile( mf ) );
                             }
                         });

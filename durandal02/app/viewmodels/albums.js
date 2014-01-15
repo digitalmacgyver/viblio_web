@@ -178,7 +178,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 		    // add media to an exiting album
 		    viblio.api( '/services/album/add_media', { aid: album.uuid, mid: mf.media().uuid } ).then( function() {
 			album.media.unshift( mf );
-                        app.trigger('album:newMediaAdded');
+                        app.trigger('album:newMediaAdded', album)
 		    });
 		}
 		else {

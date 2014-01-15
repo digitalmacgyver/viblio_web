@@ -18,9 +18,8 @@
     </div>
     
     <div class="mainVidSection">
-        <!-- ko if: boxOfficeHits().length > 0 -->
-        <div class="hstrip bottomBorder-Thin">
-
+        
+        <div class="hstrip bottomBorder-Thin" data-bind="slideVisible: showBOH() && boxOfficeHits().length > 0">
             <div>
                 <p class="mainTitle marginL45 textShadowed whiteText" data-bind="html: title"></p>
                 <span class="subtitle" data-bind="html: subtitle"></span>
@@ -32,7 +31,7 @@
                 <!--/ko-->
             </div>
         </div>
-        <!-- /ko -->
+        
         <div class="yir air">
             <p class="mainTitle marginL45 textShadowed">All Videos in this Album</p>
             <div class="a-searching lightGreyFont" data-bind="visible: loadingYears">
