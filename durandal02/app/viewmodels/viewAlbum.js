@@ -43,16 +43,22 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 	prevAid( currAid() );
     });
     
-    app.on( 'album:newMediaAdded', function() {
-        refresh( true );
+    app.on( 'album:newMediaAdded', function( album ) {
+        var changedAid = album.uuid;
+        if( changedAid == album_id ) {
+            refresh( true );
+        }
     });
     
     app.on( "mediaFile:TitleDescChanged", function() {
         refresh( true );
     });
     
-    app.on( 'album:name_changed', function() {
-        refresh( true );
+    app.on( 'album:name_changed', function( album ) {
+        var changedAid = album.uuid;
+        if( changedAid == album_id ) {
+            refresh( true );
+        }
     });
     
     function checkOwner() {
@@ -226,7 +232,6 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
                 boxOfficeHits.removeAll();
                 //return system.defer( function( dfd ) {
                     viblio.api( 'services/album/get?aid=' + album_id ).then( function( data ) {
-                        viblio.log(data);
                         var album = data.album;
                         ownerName( album.owner.displayname );
                         ownerUUID( album.owner.uuid );

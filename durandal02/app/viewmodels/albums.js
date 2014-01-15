@@ -37,7 +37,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
     app.on( "mediaFile:TitleDescChanged", function() {
         yearIsSelected = null;
     });
-
+    
     // fetch videos for given year
     function fetch( year ) {
         var args = { year: year };
