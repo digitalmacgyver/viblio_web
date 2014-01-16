@@ -27,6 +27,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	    show_share_badge: false,
 	    share_action: 'modal', // 'modal' to popup showShareVidModal, 'trigger' to trigger mediafile:share, function as a callback
 	    show_preview: true,    // show animated gif, if available, on hover.
+            show_delete_mode: false
 	}, options );
         
 	this.media    = ko.observable( data );
@@ -34,6 +35,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	this.edittable = ko.observable( false );
 	this.ro       = ko.observable( this.options.ro );  // If true, then cannot edit title
 	this.show_share_badge = ko.observable( this.options.show_share_badge );
+        this.show_delete_mode = ko.observable( this.options.show_delete_mode );
 
 	this.title = ko.observable( data.title );
 	this.description = ko.observable( data.description );
@@ -132,6 +134,11 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 		self.image( self.media().views.poster.url );
 	    });
 	}
+        
+        if ( self.options.show_delete_mode ) {
+            $( '.media-share-badge' ).addClass( 'hideme' );
+            $( '.dbtn' ).show();
+        }
     };
     
     return Video;

@@ -215,8 +215,15 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 		viblio.api( '/services/yir/videos_for_month', args )
 		    .then( function( json ) {
 			self.monthPager = json.pager;
+                        // if currently shown mediafiles show delte buttong, make newly fetched mediafiles match them
+                        var deleteMode;
+                        if( self.editLabel() === 'Done' ) {
+                            deleteMode = true;
+                        } else {
+                            deleteMode = false;
+                        }
                         json.media.forEach( function( mf ) {
-                            var m = new Mediafile( mf, { show_share_badge: true } );
+                            var m = new Mediafile( mf, { show_share_badge: true, show_delete_mode: deleteMode } );
                             m.on( 'mediafile:play', function( m ) {
                                 router.navigate( 'new_player?mid=' + m.media().uuid );
                             });
@@ -259,9 +266,17 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     // Add a new mediafile to our managed list of mediafiles
     allVids.prototype.addMediaFile = function( mf ) {
 	var self = this;
+        
+        // If currently shown mediafiles are shwoing the delete button, then make the newly fetched medialfiles match
+        var deleteMode;
+        if( self.editLabel() === 'Done' ) {
+            deleteMode = true;
+        } else {
+            deleteMode = false;
+        }
 
 	// Create a new Mediafile with the data from the server
-	var m = new Mediafile( mf, { show_share_badge: true } );
+	var m = new Mediafile( mf, { show_share_badge: true, show_delete_mode: deleteMode } );
 
 	// Register a callback for when a Mediafile is selected.
 	// This is so we can deselect the previous one to create
@@ -281,7 +296,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                         viblio.mpEvent( 'delete_video' );
                         self.videos.remove( m );
                     });
-                });
+                });         
 
 	// Add it to the list
 	self.videos.push( m );
