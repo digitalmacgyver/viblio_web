@@ -237,10 +237,11 @@ font-family: 'Source Sans Pro', serif; /* google font */
 
 #imapModal {
     position: relative;
+    z-index: 1;
 }
 
 #imapModal .map {
-    width: 600px;
+    width: 100%;
     height: 400px;
 }
 
@@ -263,12 +264,12 @@ font-family: 'Source Sans Pro', serif; /* google font */
     left: 50%;
     margin-left: -208px;
     width: 400px;
-    overflow: scroll;
     background: white;
     padding: 8px;
     -webkit-box-shadow:1px 1px 10px rgba(0,0,0,0.2); 
     -moz-box-shadow:1px 1px 10px rgba(0,0,0,0.2); 
     box-shadow:1px 1px 10px rgba(0,0,0,0.2);
+    z-index: 3;
 }
 
 #imapModal .help .emph {

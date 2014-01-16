@@ -2307,11 +2307,12 @@ ul.token-input-list-facebook {
 
 #mapContainer {
     position: relative;
+    z-index: 0;
 }
 
 .missingVideos {
     position: fixed;
-    z-index: 1;
+    z-index: 3;
     padding: 8px;
     bottom: -252px;
     left: 20px;

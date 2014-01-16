@@ -240,7 +240,7 @@
 	self.data( 'map' ).addControl( self.data( 'geocoder' ) );
 	// where we would add custom buttons if we end up using them
 	//self.data( 'map' ).addControl( HelloWorldControl( function( mouseevent, map ) {
-	//    console.log( map );
+	//    viblio.log( map );
 	//}));
 	self.data( 'map' ).once( 'click', setLocationHandler );
     };
