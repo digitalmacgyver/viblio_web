@@ -256,6 +256,18 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
         } else {
             self.map.data('map').setView({ lat: 35, lon: -35 }, 3);
         }
+        
+        // Makes the map instructions 'sometimes sticky' - stays above the footer, otherwise always at the bottom of the window
+        var maxPos = 202;
+        $(window).scroll(function(){
+            var distanceFromBottom = $(document).height()-( $(window).scrollTop()+$(window).height() );
+            if(distanceFromBottom <= maxPos){
+                    $('.missingVideos').css( 'position','absolute' );
+            }else{
+                    $('.missingVideos').css( 'position','fixed' );
+            }
+	});
+        
     };
     
     Map.prototype.toggleInstructions = function() {

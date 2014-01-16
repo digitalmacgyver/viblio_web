@@ -2305,6 +2305,10 @@ ul.token-input-list-facebook {
 
 /**************** Map Page *******************/
 
+#mapContainer {
+    position: relative;
+}
+
 .missingVideos {
     position: fixed;
     z-index: 1;
@@ -2313,6 +2317,11 @@ ul.token-input-list-facebook {
     left: 20px;
     transition: bottom 1s;
     -webkit-transition: bottom 1s;
+}
+
+.missingVideos.stuck {
+    position: absolute;
+    bottom: 0;
 }
 
 .missingVideos i {
