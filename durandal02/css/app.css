@@ -258,11 +258,11 @@ font-family: 'Source Sans Pro', serif; /* google font */
 
 #imapModal .help {
     position: absolute;
-    top: 62px;
+    top: 50%;
+    margin-top: -102px;
     left: 50%;
     margin-left: -208px;
     width: 400px;
-    height: 300px;
     overflow: scroll;
     background: white;
     padding: 8px;
@@ -275,6 +275,10 @@ font-family: 'Source Sans Pro', serif; /* google font */
     font-weight: bold;
     font-size: 120%;
     margin-right: 0.5em;
+}
+
+#imapModal .leaflet-tile-loaded {
+    z-index: 0;
 }
 
 .leaflet-control-mapbox-geocoder-results {
