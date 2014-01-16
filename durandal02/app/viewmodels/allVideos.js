@@ -58,7 +58,15 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	};
 	
 	// An edit/done label to use on the GUI
-	self.editLabel = ko.observable( 'Edit' ); 
+	self.editLabel = ko.observable( 'Edit' );
+        
+        self.deleteModeOn = ko.computed( function() {
+            if( self.editLabel() === 'Done' ) {
+                return true;
+            } else {
+                return false;
+            }
+        });
         
         events.includeIn( this );
     };
@@ -215,15 +223,8 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 		viblio.api( '/services/yir/videos_for_month', args )
 		    .then( function( json ) {
 			self.monthPager = json.pager;
-                        // if currently shown mediafiles show delte buttong, make newly fetched mediafiles match them
-                        var deleteMode;
-                        if( self.editLabel() === 'Done' ) {
-                            deleteMode = true;
-                        } else {
-                            deleteMode = false;
-                        }
                         json.media.forEach( function( mf ) {
-                            var m = new Mediafile( mf, { show_share_badge: true, show_delete_mode: deleteMode } );
+                            var m = new Mediafile( mf, { show_share_badge: true, show_delete_mode: self.deleteModeOn() } );
                             m.on( 'mediafile:play', function( m ) {
                                 router.navigate( 'new_player?mid=' + m.media().uuid );
                             });
@@ -267,16 +268,8 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     allVids.prototype.addMediaFile = function( mf ) {
 	var self = this;
         
-        // If currently shown mediafiles are shwoing the delete button, then make the newly fetched medialfiles match
-        var deleteMode;
-        if( self.editLabel() === 'Done' ) {
-            deleteMode = true;
-        } else {
-            deleteMode = false;
-        }
-
 	// Create a new Mediafile with the data from the server
-	var m = new Mediafile( mf, { show_share_badge: true, show_delete_mode: deleteMode } );
+	var m = new Mediafile( mf, { show_share_badge: true, show_delete_mode: self.deleteModeOn() } );
 
 	// Register a callback for when a Mediafile is selected.
 	// This is so we can deselect the previous one to create
