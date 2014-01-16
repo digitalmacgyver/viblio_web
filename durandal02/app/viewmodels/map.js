@@ -259,7 +259,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
         
         // Makes the map instructions 'sometimes sticky' - stays above the footer, otherwise always at the bottom of the window
         var maxPos = 202;
-        $(window).scroll(function(){
+        $(window).on("resize scroll",function(){
             var distanceFromBottom = $(document).height()-( $(window).scrollTop()+$(window).height() );
             if(distanceFromBottom <= maxPos){
                     $('.missingVideos').css( 'position','absolute' );
