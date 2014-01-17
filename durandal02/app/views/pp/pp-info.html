@@ -102,7 +102,7 @@
 	  <!-- ko if: faces_fetched() && faces().length>0 -->
           
             <!-- ko if: faces_unidentified_visible() && unknown_faces().length > 0 -->
-                <div class="pp-face-container pp-unknown-faces-container" data-bind="style: { bottomBorder: unknown_faces().length > 0 && known_faces().length > 0 ? '1px solid white' : 'none' }">
+                <div class="pp-face-container pp-unknown-faces-container" data-bind="style: { borderBottom: known_faces().length > 0 ? '1px solid rgba(255,255,255,.4)' : 'none' }">
                     <p class="pp-faces-need-names whiteBG centered">These faces need names!</p>
                     <!-- ko foreach: unknown_faces -->
                     <!-- ko compose: $data --><!-- /ko -->
@@ -112,7 +112,7 @@
 
             <!-- ko if: faces_identified_visible() && known_faces().length > 0 -->
                 <div class="pp-face-container">
-                    <p class="pp-faces-starring whiteText centered font24 textShadowed lightWeightFont">Starring</p>
+                    <p class="pp-faces-starring whiteText centered font24 textShadowed">Starring</p>
                     <!-- ko foreach: known_faces -->
                     <!-- ko compose: $data --><!-- /ko -->
                     <!-- /ko -->
@@ -125,13 +125,13 @@
         </div>
 	</div>
 
-	<div class="pp-no-faces pp-new-face" data-bind="if: faces_fetched">
+	<div class="pp-no-faces pp-new-face" data-bind="if: faces_fetched, style: { paddingTop: unknown_faces().length > 0 && known_faces().length < 1? '25px' : '0' }">
 	  <!-- ko if: new_face_addable() -->
 	  <p data-bind="tag3:{mode:'inline',
-						             display:false,
-						             name:add_face_to_video,
-						             changed:add_face}, 
-						       text:'Who else is in this video?'"></p>
+                             display:false,
+                             name:add_face_to_video,
+                             changed:add_face}, 
+                             text:'Who else is in this video?'"></p>
 	  <!-- /ko -->
 	</div>
 
