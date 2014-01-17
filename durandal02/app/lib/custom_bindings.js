@@ -209,7 +209,7 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
 				src = data.url;
 			    }
 			});
-			return '<img style="width: 30px; height: 30px; margin-right: 3px;" src="' + src + '"/><strong>' + item.text + '</strong>';
+			return '<img style="width: 30px; height: 30px; margin-right: 6px;" src="' + src + '"/><strong>' + item.text + '</strong><p class="contactSource"><span>Source: </span>' + item.provider + '</p>';
 		    }
 		},
 		validate: function( value ) {

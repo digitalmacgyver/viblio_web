@@ -374,7 +374,20 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 .person .editableform input[type="text"] {
     font-size: 14px;
     height: auto;
-    width: 120px;
+    width: 180px;
+}
+
+.person .editable-input ul li {
+    border-bottom: 1px solid rgba(117,117,128,.6);
+}
+
+.person .contactSource {
+    margin: 0;
+    font-weight: 200;
+}
+
+.person .contactSource span {
+    font-weight: 400;
 }
 
 .person .editableform .editable-buttons {
