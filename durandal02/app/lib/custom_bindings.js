@@ -200,16 +200,17 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
 		typeahead: {
 		    minLength: 2,
 		    highlighter: function( item ) {
-			var src;
+			var src, provider;
 			$.ajax({
 			    url: '/services/faces/avatar_for_name',
 			    data: { contact_name: item.text },
 			    async: false,
 			    success: function( data ) {
 				src = data.url;
+				provider = data.provider;
 			    }
 			});
-			return '<img style="width: 30px; height: 30px; margin-right: 6px;" src="' + src + '"/><strong>' + item.text + '</strong><p class="contactSource"><span>Source: </span>' + item.provider + '</p>';
+			return '<img style="width: 30px; height: 30px; margin-right: 6px;" src="' + src + '"/><strong>' + item.text + '</strong><p class="contactSource"><span>Source: </span>' + provider + '</p>';
 		    }
 		},
 		validate: function( value ) {
