@@ -135,7 +135,7 @@ define( ['plugins/dialog'], function( dialog ) {
                 theDialog.close();
             });
         }
-	
+        
         $('.autofocus', child).each(function() {
             $(this).focus();
         });

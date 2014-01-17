@@ -1,0 +1,19 @@
+<div class="web-player-error mocksWhiteBG">
+  <div class='closeX btn btn-primary' data-bind="click: close"><img src='css/images/closeX.png'/></div>
+  <div class="modal-header">
+    <h3 data-bind="text: title"></h3>
+  </div>
+  <div class="modal-body">
+    <p class="message" data-bind="text: message"></p>
+    <div class="control-group">
+      <div class="controls">
+	<input type="text" id="prompt" name="prompt" data-bind="hasFocus: focus,event:{focus:clearError},autofocus:'autofocus', attr:{placeholder: options().placeholder}, value: prompt" />
+	<span class="help-inline" data-bind="text: help_text"></span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer" data-bind="foreach: options().buttons">
+    <button class="btn" data-bind="click: function () { $parent.selectOption($data); }, 
+				   text: $data, css: { 'btn-primary': $index() == 0, 'btn-white': $index() > 0 }"></button>
+  </div>
+</div>

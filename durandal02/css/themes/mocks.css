@@ -106,6 +106,15 @@ input[type="color"],
     box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
 }
 
+.btn-white:hover,
+.btn-white {
+    background-color: white;
+    color: rgb(112, 113, 123);
+    -moz-text-shadow: none;
+    -webkit-text-shadow: none;
+    text-shadow: none;
+}
+
 .btn-primary {
     background-color: rgba(239,85,65,1);
 }
@@ -678,6 +687,10 @@ input:-moz-placeholder {
     border: 1px solid lightgrey;
 }
 
+.lightGreyBG {
+    background-color: rgb(239, 239, 232);
+}
+
 .whiteBG {
     background-color: white;
 }
@@ -758,6 +771,26 @@ input:-moz-placeholder {
 
 .marginR45 {
     margin-right: 45px;
+}
+
+.marginT15 {
+    margin-top: 15px;
+}
+
+.marginB10 {
+    margin-bottom: 10px;
+}
+
+.marginB20 {
+    margin-bottom: 20px;
+}
+
+.marginB30 {
+    margin-bottom: 30px;
+}
+
+.marginB40 {
+    margin-bottom: 40px;
 }
 
 .font18 {
@@ -1891,7 +1924,7 @@ li.token-input-token-facebook {
     position: relative;
 }
 
-.allVidsPage .sel {
+.sel {
     font-weight: 600;
 }
     
@@ -2285,7 +2318,8 @@ ul.token-input-list-facebook {
 
 #faces-column .person i {
     font-size: 20px;
-    width: 20px; height: 20px;
+    width: 20px;
+    height: 20px;
 }
 
 #faces-column .person .left-badge {
@@ -2639,8 +2673,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     border: 0;
     text-decoration: none;
     opacity: .6;
-    top: 50px;
-    left: 145px;
+    top: 40%;
+    margin-top: -41px;
+    left: 50%;
+    margin-left: -34px;
 } 
 
 .mediafile .mplay-icon i {
@@ -2781,16 +2817,6 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .pp-related-column-related .mediafile .information {
     height: 40px;
     padding: 10px 5px;
-}
-
-
-/***************************/
-
-.pp-related-column-related-videos .mediafile .mplay-icon,
-.pp-related-column-related-videos .mediafile .mplay-icon:hover,
-.pp-related-column-related-videos .mediafile .mplay-icon:visited {
-    top: 40px;
-    left: 101px;
 }
 
 /*********************************/
@@ -3118,4 +3144,256 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .pp-faces-box-wrapper {
     text-align: center;
     vertical-align: top;
+}
+
+/*** ALBUMS PAGE ******/
+
+.albums .a-table {
+    width: 100%;
+}
+
+.albums .a-wrapper {
+    padding: 40px;
+}
+
+.albums .a-left-header {
+    text-align: right;
+}
+
+.albums .a-table .a-table-td {
+    width: 50%;
+}
+
+.albums .a-content {
+    width: 100%;
+    overflow: auto;
+    position: relative;
+}
+
+.albums .a-left-header ul {
+    display: inline;
+}
+
+.albums .a-left-header ul span {
+    cursor: pointer;
+}
+
+.albums .a-left-header ul span:hover,
+.albums .a-left-header ul span.sel {
+    font-weight: bold;
+}
+
+.albums .a-left-header ul li {
+    display: inline;
+    list-style-type: none;
+    padding-right: 20px;
+}
+
+.albums .a-left-header ul li:last-of-type {
+    padding-right: 0;
+}
+
+.albums .mediafile {
+    width: 180px;
+    float: left;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    z-index: 2;
+}
+
+.albums .mediafile img {
+    height: 101px;
+}
+
+.albums .mediafile a.mplay-icon {
+    visibility: hidden;
+}
+
+.albums .mediafile .information .aux {
+    visibility: hidden;
+}
+
+.albums .mediafile .information {
+    padding: 5px 5px;
+    height: 27px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.albums .mediafile .information input.edit {
+    font-size: 14px;
+}
+
+.a-drop-box {
+    width: 100%;
+    color: white;
+    margin-bottom: 50px;
+}
+
+.inputMirror {
+    position: relative;
+    top: -999999px;
+    right: -9999999px;
+}
+
+.a-drop-box div.editTitle-Wrap input {
+    height: 24px;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0);
+    margin: 0;
+    padding: 0;
+}
+
+.a-drop-box div.editTitle-Wrap input.edit {
+    margin: -24px 0 0 0;
+    padding: 0;
+}
+
+.a-drop-box .a-drop-name {
+    font-weight: bold;
+    display: inline-block;
+}
+
+.a-drop-box .a-drop {
+    /* width: 99%; */
+    height: 101px;
+    border: 1px dashed rgba(255,255,255,.5);
+    //opacity: 0.5;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.a-drop-box .a-drop.a-drop-about-to-drop {
+    opacity: 1.0;
+}
+
+.a-drop-box .a-drop .a-drop-wrapper {
+
+}
+
+.fadeIn {
+    transition: .25s ease-in-out;
+   -moz-transition: .25s ease-in-out;
+   -webkit-transition: .25s ease-in-out;
+}
+
+.a-drop-box .a-instruction {
+    position: absolute;
+    top: 32px;
+    left: 50%;
+    margin-left: -102px;
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    z-index: 1;
+}
+
+.a-drop-box .highlight,
+.a-drop-about-to-drop .a-instruction,
+.a-drop-box:hover .a-instruction {
+    background-color: rgba(50,53,68,.75);
+}    
+
+.a-drop-box .a-poster {
+    width: 180px;
+    height: 101px;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    opacity: .15;
+}
+
+.a-drop-about-to-drop .a-poster,
+.a-drop-box:hover .a-poster {
+    opacity: .65;
+}
+
+.a-drop-view {
+    cursor: pointer;
+    width: 180px;
+    text-align: right;
+}
+
+.no-albums-wrapper {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.no-albums-wrapper p {
+    color: white;
+    font-size: 25px;
+    line-height: 40px;
+    font-weight: 100;
+}
+
+.a-searching {
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    font-size: 30px;
+}
+
+/************* viewAlbum Page ***************/
+
+.albumView .pstrip {
+    padding: 32px 20px 28px 45px;
+}
+
+.albumTitle {
+    padding-top: 0px;
+    display: inline-block;
+    color: rgb(255, 255, 255);
+    font-size: 32px;
+    vertical-align: middle;
+}
+
+.albumView .shareButton {
+    margin-top: -12px;
+}
+
+.albumOwnerInfo {
+    margin: -11px 25px 0 0;
+}
+
+.albumOwnerInfo img,
+.albumOwnerInfo div {
+    display: inline-block;
+}
+
+.albumOwnerInfo img {
+    margin-right: 10px;
+}
+
+.albumOwnerInfo div {
+    vertical-align: middle;
+}
+
+.albumYears,
+.air ul li {
+    display: inline-block;
+}
+
+.air ul li {
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.air ul li span:hover {
+    font-weight: 600;
+}
+
+.allAlbumVids {
+    padding: 0 42px;
+}
+
+.allAlbumVids .mediafile {
+    float: left;
+    width: 423px;
+    margin-bottom: 20px;
+}
+
+.allAlbumVids .mediafile img {
+    height: 240px;
 }

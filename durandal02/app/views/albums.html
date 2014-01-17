@@ -1,0 +1,112 @@
+<div class="albums">
+  <table class="a-table">
+    <tr>
+
+      <td class="a-table-td a-table-left-td">
+	<div class="a-wrapper a-left-wrapper lightGreyBG">
+	  <div class="a-header a-left-header">
+	    <p class="mainTitle textShadowed">Drag and Drop Videos</p>
+            
+            <div class="a-searching lightGreyFont" data-bind="visible: loadingYears">
+	      <i class="icon-spinner icon-spin active"></i>
+	    </div>
+            
+	    <div class="yir-inner" data-bind="if: !loadingYears() && years().length == 0">
+              <div class="yirHeading-Wrap">
+		<p class="mainTitle marginL45 textShadowed">Got any videos?</p>
+		<p class="marginL45 font18" style="text-align: left;">We noticed you 
+                  <span>don't have any videos yet.</span>&nbsp;
+                  If you have some videos, why not add them to Viblio!
+		</p>
+		<button class="btn btn-primary marginL45" data-bind="click: goToUpload">Upload more videos &raquo;</button>
+              </div>
+	    </div>
+	    
+
+	    <div data-bind="highlightChange: years().length > 0">
+	      <ul data-bind="foreach: years">
+		<li>
+                  <span class="textShadowed font24 lightWeightFont" data-bind="click: $parent.yearSelected.bind( $data, $parent ), 
+							text: $data.label, 
+							css:{sel: $data.selected()}"></span>
+		</li>
+              </ul>
+	    </div>
+	  </div>
+	  <div class="a-content a-left-content" data-bind="highlightChange: months().length > 0">
+	    <!-- ko foreach: months -->
+            <div class="month-heading textShadowed marginB10">
+              <span class="month-name heavyWeightFont font20" data-bind="text: $data.month"></span>
+              <span class="num-videos lightWeightFont font20" data-bind="text: '(' + $data.media().length + ( $data.media().length == 1 ? ' video)' : ' videos)' )"></span>
+            </div>
+            <div class="media-list" data-bind="foreach: { data: $data.media, as: 'm' }">
+              <!-- ko compose: m --><!-- /ko -->
+            </div>
+            <div class="clearfix marginB20"></div>
+            <!-- /ko -->
+	  </div>
+	</div>
+      </td>
+
+      <td class="a-table-td a-table-right-td">
+	<div class="a-wrapper a-right-wrapper lightBlueBG" style="position: relative;">
+	  <img src="/css/images/dnd.png" style="position: absolute; top: 35px; left: -21px;" />
+	  <div class="a-header a-right-header">
+	    <a class="btn btn-white pull-right" data-bind="visible: no_albums()==false, click: newAlbum">
+	      <i class="icon-plus-sign"></i> New Album
+	    </a>
+	    <p class="mainTitle textShadowed whiteText">Into Albums!</p>
+	  </div>
+	  <div class="a-content a-right-content">
+
+	    <div class="no-albums-wrapper" data-bind="visible: no_albums">
+	      <img src="/css/images/vidsToFolders.png" />
+	      <p class="textShadowed">Albums keep your Videos organized and make sharing easy!</p>
+	    </div>
+
+	    <!-- ko foreach: albums -->
+	    <div class="a-drop-box" data-bind="highlightChange: !$root.no_albums">
+              <div class="marginB10">
+                <div class="a-drop-view pull-right font20" data-bind="click: $parent.viewAlbum">
+                  <i class="icon-eye-open"></i>&nbsp;View
+                </div>
+                <div class="a-drop-name whiteText textShadowed font20" data-bind="liveEditor: name">
+                    <div class="view vidTitle title" data-bind="click: name.edit, text: name() ? name() : 'Click to add title', tooltip:{title:'Click to edit name'}"></div>
+                    <div class="editTitle-Wrap">
+                        <div class="inputMirror" data-bind="text: name, visible: name.editing"></div>
+                        <input type="text" class="edit" data-bind="value: name, 
+                                                                   hasFocus: name.editing, 
+                                                                   event: { blur: function() { name.stopEditing(); name.save( null, $data, 'album:name_changed' ) } }" />
+                    </div>  
+                </div>
+                <span class="a-drop-number lightWeightFont font20">
+                    <span>(</span><span data-bind="text: (media().length <= 0 ? '0' : media().length)"></span>
+                    <span>video</span><span data-bind="if: media().length != 1">s</span><span>)</span>
+                </span>    
+              </div>    
+	      <div class="a-drop" data-bind="style:{width:$parent.drop_box_width},
+					     droponable:{scope:'mediafile',hoverClass:'a-drop-about-to-drop',callback:$parent.albumDrop}">
+
+		<div data-bind="css: { highlight: $root.no_albums }" class="a-instruction lightWeightFont fadeIn">
+		  <i class="icon-share-alt"></i>&nbsp;Drop Videos Here
+		</div>
+		<!-- ko foreach: media -->
+		<div class="a-poster fadeIn">
+		  <img data-bind="attr:{src:media().views.poster.url}" />
+		</div>
+		<!-- /ko -->
+		<div class="clearfix"></div>
+	      </div>
+
+	    </div>
+	    <!-- /ko -->
+	    <div class="a-searching whiteText" data-bind="visible: searching">
+	      <i class="icon-spinner icon-spin active"></i>
+	    </div>
+	  </div>
+	</div>
+      </td>
+
+    </tr>
+  </table>
+</div>

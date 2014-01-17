@@ -33,7 +33,9 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
 		if ( ! o ) {
 		    o = app;
 		}
-                o.trigger( targetName, data ); 
+                o.trigger( targetName, data );
+                // ensure that the call is also triggered by app so the rest of the app can be notified when triggered
+                app.trigger( targetName, data );
             }
         };
         
@@ -359,6 +361,49 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
         update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             $(element).autosize();
         }           
+    };
+
+    // Makes a container drop-on-able
+    ko.bindingHandlers.droponable = {
+	init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+	    var $element = $(element);
+            var value = ko.utils.unwrapObservable(valueAccessor()) || {};
+	    var droponable = {};
+	    //build a new object that has the global options with overrides from the binding
+            $.extend(true, droponable, ko.bindingHandlers.droponable);
+            if (value.options && droponable.options) {
+                ko.utils.extend(droponable.options, value.options);
+                delete value.options;
+            }
+            ko.utils.extend(droponable, value);
+
+	    $(element).droppable({
+		scope: droponable.scope,
+		hoverClass: droponable.hoverClass,
+		drop: function( event, ui ) {
+		    droponable.callback.call( bindingContext['$data'], ko.dataFor( $(ui.draggable).get(0) ) );
+		}
+	    });
+	}
+    };
+
+    // Add a tooltip to an element. 
+    // data-bind="tooltip:{bootstrap-tooltip-options}"
+    // data-bind="tooltip:{title:'This is the tip'}"
+    ko.bindingHandlers.tooltip = {
+	init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+	    var $element = $(element);
+            var value = ko.utils.unwrapObservable(valueAccessor()) || {};
+	    var tooltip = {};
+	    //build a new object that has the global options with overrides from the binding
+            $.extend(true, tooltip, ko.bindingHandlers.tooltip);
+            if (value.options && tooltip.options) {
+                ko.utils.extend(tooltip.options, value.options);
+                delete value.options;
+            }
+            ko.utils.extend(tooltip, value);
+	    $(element).tooltip( tooltip );
+	}
     };
 
     return({});
