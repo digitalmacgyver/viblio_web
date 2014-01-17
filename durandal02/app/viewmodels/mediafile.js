@@ -96,7 +96,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	this.edittable( this.edittable() ? false : true );
 	if ( this.show_share_badge() )
 	    $(this.view).find( '.media-share-badge' ).toggleClass( 'hideme' );
-	$(this.view).find( '.dbtn' ).toggle('slide', {direction: 'right'}, 300);
+        $(this.view).find( '.dbtn' ).animate({padding: [ "toggle", "swing" ], width: [ "toggle", "swing" ]}, 300);
     };
 
     // Send an event, so those above can manage screen
