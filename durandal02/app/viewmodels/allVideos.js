@@ -58,7 +58,15 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	};
 	
 	// An edit/done label to use on the GUI
-	self.editLabel = ko.observable( 'Edit' ); 
+	self.editLabel = ko.observable( 'Edit' );
+        
+        self.deleteModeOn = ko.computed( function() {
+            if( self.editLabel() === 'Done' ) {
+                return true;
+            } else {
+                return false;
+            }
+        });
         
         events.includeIn( this );
     };
@@ -216,7 +224,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 		    .then( function( json ) {
 			self.monthPager = json.pager;
                         json.media.forEach( function( mf ) {
-                            var m = new Mediafile( mf, { show_share_badge: true } );
+                            var m = new Mediafile( mf, { show_share_badge: true, show_delete_mode: self.deleteModeOn() } );
                             m.on( 'mediafile:play', function( m ) {
                                 router.navigate( 'new_player?mid=' + m.media().uuid );
                             });
@@ -259,9 +267,9 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     // Add a new mediafile to our managed list of mediafiles
     allVids.prototype.addMediaFile = function( mf ) {
 	var self = this;
-
+        
 	// Create a new Mediafile with the data from the server
-	var m = new Mediafile( mf, { show_share_badge: true } );
+	var m = new Mediafile( mf, { show_share_badge: true, show_delete_mode: self.deleteModeOn() } );
 
 	// Register a callback for when a Mediafile is selected.
 	// This is so we can deselect the previous one to create
@@ -281,7 +289,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                         viblio.mpEvent( 'delete_video' );
                         self.videos.remove( m );
                     });
-                });
+                });         
 
 	// Add it to the list
 	self.videos.push( m );
@@ -336,36 +344,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	var item = scroller.find('#'+m.media().uuid);
 	scroller.scrollTop( item.position().top + scroller.scrollTop() );
     };
-    
-    // If the item container is shorter than the scroller, and there
-    // is more data on the server, then fetch more data.  We either
-    // want enough data to enable the scrollbar, or all the data
-    //
-    /*allVids.prototype.updateScroller = function() {
-        var self = this;
-        var rows = Math.ceil( self.allVidsPager.entries_per_page / ( ($(document).width()-90)*.9 / 352 ) );
-        var item_height = 256; //Math.ceil( $(window).height() / rows ); // each item height
-        var total_rows  = Math.ceil( $(document).height() / item_height );
-        var need_rows = (total_rows - rows) + 1; // this is how many more we need to fetch
-        var fetches = Math.ceil( need_rows / rows ); // how many search()s
-        
-        if ( $(window).scrollTop() + $(window).height() <= $(document).height() ) {
-           if ( self.allVidsPager.next_page ) {
-               // There is more data on the server and we have room to display it.
-               // Will fetching 'rows' cover what we need, or do we need to do multiple
-               // fetches? (computed above)
-               
-               // This code *should* queue up N searches to run in serial.
-               for( var i=0; i<fetches; i++ ) {
-                   $('body').queue(function() {
-                        self.search().then( function() {
-                            $('body').dequeue();
-                        });
-                    });
-                } 
-            }
-        }
-    };*/
     
     allVids.prototype.showAllVideos = function() {
         var self = this;

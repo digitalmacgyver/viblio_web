@@ -2653,6 +2653,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     z-index: 100;
     top: 10px;
     right: 8px;
+    height: 39px;
 }
 
 .mediafile .media-share-badge {
