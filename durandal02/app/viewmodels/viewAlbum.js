@@ -178,7 +178,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
     
     return {
         showShareAlbumModal: function() {
-	    app.showMessage( 'Need a custom dialog for sharing this page.' );
+	    customDialogs.showMessage( 'This feature coming soon!', 'Share an Album' );
         },
         years: years,
         loadingYears: loadingYears,
