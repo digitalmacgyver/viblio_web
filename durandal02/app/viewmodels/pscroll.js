@@ -133,9 +133,5 @@ define(['durandal/events','plugins/router', 'durandal/app', 'durandal/system', '
 	self.view = view;
     };
 
-    Pscroll.prototype.detached = function() {
-	//$(this.view).find( ".sd-pscroll").smoothDivScroll("destroy");
-    };
-
     return Pscroll;
 });

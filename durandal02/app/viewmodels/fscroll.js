@@ -155,10 +155,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	self.arrow = $(view).find(".arrow");
     };
 
-    FScroll.prototype.detached = function() {
-	//$(this.view).find( '.sd-fscroll').smoothDivScroll("destroy");
-    };
-
     FScroll.prototype.clear = function() {
 	var self = this;
 	self.pager = {

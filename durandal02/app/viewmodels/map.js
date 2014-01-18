@@ -302,7 +302,6 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
     };
     
     Map.prototype.detached = function() {
-	//$(this.view).find('.mapSD-scroll').smoothDivScroll("destroy");
 	this.map.destroy();
 	this.map = null;
     };
