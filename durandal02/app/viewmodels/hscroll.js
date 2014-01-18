@@ -171,7 +171,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     };
 
     HScroll.prototype.detached = function() {
-	$(this.view).find( ".sd-scroll").smoothDivScroll("destroy");
+	//$(this.view).find( ".sd-scroll").smoothDivScroll("destroy");
     };
 
     return HScroll;

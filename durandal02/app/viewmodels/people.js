@@ -349,7 +349,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
 
 	detached: function() {
 	    var self = this;
-	    $(self.view).find( ".horizontal-scroller").smoothDivScroll("destroy");
+	    //$(self.view).find( ".horizontal-scroller").smoothDivScroll("destroy");
 	    clipboard.removeAll();
 	    selected( null );
 	    pending_changes = 0;

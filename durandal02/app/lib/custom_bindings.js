@@ -339,6 +339,10 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
 		if ( opts && opts.enable ) 
 		    $element.smoothDivScroll("enable" );
 	    });
+
+	    ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
+                $(element).smoothDivScroll("destroy");
+            });
 	}
     };
     

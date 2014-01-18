@@ -368,10 +368,8 @@
 			/*****************************************
 			SET UP EVENT FOR RESIZING THE BROWSER WINDOW
 			*****************************************/
-			$(window).bind("resize", function () {
-				self._showHideHotSpots();
-				self._trigger("windowResized");
-			});
+		        // (qp)
+ 		        $(window).bind( "resize", self, self._resize_fcn );
 
 			/*****************************************
 			FETCHING CONTENT ON INITIALIZATION
@@ -450,6 +448,14 @@
 			});
 
 		},
+
+	    // (qp) added by aqpeeb, bound to $(window) resize
+	    _resize_fcn: function(event) {
+		var self = this;
+		event.data._showHideHotSpots();
+		event.data._trigger("windowResized");
+	    },
+
 		/**********************************************************
 		Override _setOption and handle altered options
 		**********************************************************/
@@ -1324,8 +1330,11 @@
 			el.data("scrollingHotSpotLeft").unbind("mouseout");
 			el.data("scrollingHotSpotLeft").unbind("mousedown");
 
-			el.unbind("mousenter");
+			el.unbind("mouseenter");
 			el.unbind("mouseleave");
+
+		    // (qp)
+		    $(window).unbind("resize",self._resize_fcn);
 
 			// Remove all elements created by the plugin
 			el.data("scrollingHotSpotRight").remove();
