@@ -3404,3 +3404,34 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .allAlbumVids .mediafile img {
     height: 240px;
 }
+
+/**** Your Videos Page ***/
+.your-videos .nav-title {
+    text-align: center;
+    padding-top: 40px;
+}
+.your-videos .nav-btns {
+    text-align: center;
+}
+.your-videos .containerxx {
+    padding-right: 40px;
+    padding-left: 40px;
+}
+
+.your-videos .allVidsPage {
+    padding-top: 0;
+}
+
+.yv-secondary-nav {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.yv-secondary-nav .btn {
+    width: 128px;
+}
+
+.yv-secondary-nav .btn-secondary {
+    margin-left: inherit;
+}

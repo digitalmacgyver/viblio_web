@@ -138,7 +138,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'viewAlbum',          moduleId: 'viewAlbum',          title: 'Album View',
 	      nav: false,   authenticated: true,   header: page_header },
 	    
-            { route: 'videos',             moduleId: 'allVideos',          title: 'VIDEOS',
+            { route: 'videos',             moduleId: 'your-videos',          title: 'VIDEOS',
 	      nav: true,   authenticated: true,   header: page_header },
 	    
             { route: 'people',             moduleId: 'people',             title: 'PEOPLE',
