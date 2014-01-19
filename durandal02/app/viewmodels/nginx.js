@@ -183,6 +183,8 @@ define(['lib/viblio','lib/config','lib/customDialogs'], function(viblio,config,c
 	port: port,
 	localhost: localhost,
 	endpoint: CREATE_ENDPT,
+	hide_directions: ko.observable( false ),
+
 	_renderExtendedProgress: function (data) {
             return this._formatBitrate(data.bitrate) + ' | ' +
 		this._formatTime(
@@ -200,6 +202,10 @@ define(['lib/viblio','lib/config','lib/customDialogs'], function(viblio,config,c
 		return customDialogs.showMessage('Any uploads in progress will be interrupted and lost.  Are you sure you want to leave this page?', 'Leave this page?', ['Yes', 'No']);
 	    else
 		return true;
+	},
+
+	activate: function() {
+	    this.hide_directions( false );
 	},
 
 	compositionComplete: function( el ) {
@@ -226,6 +232,7 @@ define(['lib/viblio','lib/config','lib/customDialogs'], function(viblio,config,c
                     minFileSize: 'File is too small'
 		},
 		add: function(e, data) {
+		    self.hide_directions( true ),
 		    in_progress += 1;
 		    var that = this;
 		    // Collect some basic information about the file.

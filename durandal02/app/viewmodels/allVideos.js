@@ -344,7 +344,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	var item = scroller.find('#'+m.media().uuid);
 	scroller.scrollTop( item.position().top + scroller.scrollTop() );
     };
-    
+
     allVids.prototype.showAllVideos = function() {
         var self = this;
         self.monthsLabels().forEach( function( m ) {
@@ -362,32 +362,41 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.search();
     };
 
+    // bind to scroll() event and when scroll is 150px or less from bottom fetch more data.
+    // Uses flag to determine if fetch is already in process, if so a new one will not be made 
+    allVids.prototype.scrollHandler = function( event ) {
+        var self = event.data;
+        // If a month is not selected use the search function, else use monthVidsSearch
+        if( !self.aMonthIsSelected() ) {
+            if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
+                self.search();
+            }
+        } else {
+            if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
+                self.monthVidsSearch( self.selectedMonth() );
+            }
+        }
+    };
+
+    allVids.prototype.attached = function() {
+        $(window).scroll( this, this.scrollHandler );
+    };
+
+    allVids.prototype.detached = function() {
+        $(window).off( "scroll", this.scollHandler );
+    };
+    
     // In attached, attach the mCustomScrollbar we're presently
     // employing for this purpose.
     allVids.prototype.compositionComplete = function( view ) {
 	var self = this;
 	self.element = view;
         
-        // bind to scroll() event and when scroll is 150px or less from bottom fetch more data.
-        // Uses flag to determine if fetch is already in process, if so a new one will not be made 
-        $(window).scroll(function() {
-            // If a month is not selected use the search function, else use monthVidsSearch
-            if( !self.aMonthIsSelected() ) {
-                if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                    self.search();
-                }
-            } else {
-                if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                    self.monthVidsSearch( self.selectedMonth() );
-                }
-            }
-         });
-         
         // At this point (and only at this point!) we have an accurate
 	// height dimension for the scroll area and its item container.
 	self.search();
     };
-    
+
     // Animation callbacks
     this.showElement = function(elem) { if (elem.nodeType === 1) $(elem).hide().fadeIn('slow'); };
     this.hideElement = function(elem) { if (elem.nodeType === 1) $(elem).fadeOut(function() { $(elem).remove(); }); };

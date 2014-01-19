@@ -201,7 +201,6 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	},
 
 	activate: function() {
-            viblio.log( yearIsSelected );
 	    pager.next_page = 1;
             pager.total_entries = -1;
 	    albums.removeAll();
