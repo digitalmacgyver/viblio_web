@@ -389,7 +389,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     };
 
     allVids.prototype.add_videos = function() {
-	dialog.showMessage( 'This will be an uploader screen', 'Upload Videos' );
+	dialog.showModal( 'viewmodels/nginx-modal' );
     };
     
     // Animation callbacks
