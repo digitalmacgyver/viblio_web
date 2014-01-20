@@ -40,6 +40,13 @@ define(['lib/viblio','lib/config','lib/customDialogs'], function(viblio,config,c
     var overall_time = ko.observable('00:00:00:00');
     var overall_percent = ko.observable('0%');
     var overall_size = ko.observable('0 / 0');
+
+    function reset_stats() {
+	overall_bitrate('0');
+	overall_time('00:00:00:00');
+	overall_percent('0%');
+	overall_size('0 / 0');
+    }
  
     // A container to hold all of the upload data objects.
     var files = [];
@@ -206,6 +213,11 @@ define(['lib/viblio','lib/config','lib/customDialogs'], function(viblio,config,c
 
 	activate: function() {
 	    this.hide_directions( false );
+	},
+
+	detached: function() {
+	    reset_stats();
+	    in_progress = 0;
 	},
 
 	compositionComplete: function( el ) {
