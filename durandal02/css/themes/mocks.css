@@ -3413,6 +3413,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .your-videos .nav-btns {
     text-align: center;
 }
+.your-videos .nav-btns .btn {
+    width: 181px;
+    margin: 0 10px 10px;
+}
 .your-videos .containerxx {
     padding-right: 40px;
     padding-left: 40px;
@@ -3430,11 +3434,21 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .yv-secondary-nav .btn {
     width: 128px;
+    margin: 0 5px 10px;
 }
 
-.yv-secondary-nav .btn-secondary {
-    margin-left: inherit;
+.yv-secondary-nav .dropdown-menu {
+    min-width: 0;
+    width: 128px;
+    top: 27px;
+    left: 5px;
 }
+
+.yv-secondary-nav .dropdown-menu li {
+   text-align: left;
+   cursor: pointer;
+}
+
 #nginx table.file-container {
     border: 1px dashed;
     overflow: auto;

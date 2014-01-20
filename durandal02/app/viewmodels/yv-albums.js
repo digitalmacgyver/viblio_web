@@ -18,7 +18,7 @@ function( system, router, viblio, dialogs, Mediafile ) {
     resetPager();
 
     var media = ko.observableArray([]);
-    var searching = ko.observable( false );
+    var searching = ko.observable( true );
     var editLabel = ko.observable( 'Remove...' );
 
     var deleteModeOn = ko.computed( function() {
