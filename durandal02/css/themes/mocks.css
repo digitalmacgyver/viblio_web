@@ -3449,6 +3449,12 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
    cursor: pointer;
 }
 
+.no-comms {
+    width: 100%;
+    max-width: 800px;
+    margin: 40px auto 0;
+}
+
 #nginx table.file-container {
     border: 1px dashed;
     overflow: auto;
