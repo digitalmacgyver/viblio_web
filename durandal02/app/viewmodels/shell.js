@@ -133,7 +133,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      nav: false,    authenticated: true,   header: page_header },
           
             { route: 'albums',             moduleId: 'albums',             title: 'ALBUMS',
-	      nav: true,   authenticated: true,   header: page_header },
+	      nav: false,   authenticated: true,   header: page_header },
           
             { route: 'viewAlbum',          moduleId: 'viewAlbum',          title: 'Album View',
 	      nav: false,   authenticated: true,   header: page_header },

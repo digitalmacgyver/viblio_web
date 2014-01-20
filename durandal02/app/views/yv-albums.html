@@ -1,0 +1,34 @@
+<div class="allVidsPage">
+  <div class="yv-secondary-nav">
+    <button class="btn btn-small btn-secondary" data-bind="click: add">Add...</button>
+    <button class="btn btn-small btn-secondary" data-bind="visible: media().length > 0, click: toggleEditMode, text: editLabel"></button>
+  </div>
+
+  <div data-bind="visible: media().length > 0">
+    <div style="display: block; text-align: center;" class="mainTitle textShadowed">
+      Your media organized into albums.
+    </div>
+    <div class="table">
+      <div id="allVidsWrap">
+	<!-- ko foreach: media -->
+	<!-- ko compose: $data --><!--/ko-->
+	<!-- /ko -->
+        
+	<!-- ko if: searching() -->
+	<div class="mfLoader">
+          <i class="icon-spinner icon-5x icon-spin active"></i>
+          <p class="font18">Loading...</p>
+	</div>
+	<!-- /ko -->
+      </div>
+    </div>
+  </div>
+
+  <div data-bind="visible: searching()==false && media().length == 0">
+    <p class="font24 tomatoFont doubleSpaced">
+      Create albums to organize and share your video collection.  Click the add button above to get started!
+    </p>
+  </div>  
+
+</div>
+
