@@ -131,6 +131,7 @@ function( system, router, viblio, dialogs, Mediafile ) {
 	},
 
 	attached: function( view ) {
+            searching(true);
 	    $(window).scroll( this, scrollHandler );
 	},
 
