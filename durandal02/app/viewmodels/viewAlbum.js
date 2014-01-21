@@ -118,7 +118,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
         });
     }
     
-    function getFilterLabels() {
+    /*function getFilterLabels() {
         var args = { aid: album_id };
 	viblio.api( '/services/air/years', args ).then( function( data ) {
             data.years.forEach( function( year ) {
@@ -131,7 +131,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
                 });
             });
         });
-    }
+    }*/
     
     function addMediaFile( mf ) {
 	var self = this;
@@ -263,7 +263,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
                 boxOfficeHits.removeAll();
                 albumTitle('');
             }
-            getFilterLabels();
+            //getFilterLabels();
         },
 	/*attached: function() {
 	    return system.defer( function( dfd ) {
