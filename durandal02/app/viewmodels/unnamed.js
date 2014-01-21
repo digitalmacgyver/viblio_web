@@ -7,10 +7,13 @@
 define([
     'plugins/router', 
     'durandal/system', 
+    'durandal/app', 
     'lib/viblio', 
     'viewmodels/person', 
     'lib/customDialogs'], 
-function (router, system, viblio, Face, dialogs) {
+function (router, system, app, viblio, Face, dialogs) {
+    var view;
+    var visible = ko.observable( false );
     var faces = ko.observableArray([]);
     var pager = {
             next_page: 1,
@@ -30,20 +33,32 @@ function (router, system, viblio, Face, dialogs) {
     function search() {
 	if ( pager.next_page ) {
 	    searching( true );
-	    faces.removeAll();
-	    viblio.api( '/services/faces/unnamed', 
-			{ page: pager.next_page, rows: pager.entries_per_page } )
-		.then( function( data ) {
-		    pager = data.pager;
-		    data.faces.forEach( function( face ) {
-			addFace( face );
+	    $(view).find('.fx').slideUp(function() {
+		faces.removeAll();
+		viblio.api( '/services/faces/unnamed', 
+			    { page: pager.next_page, rows: pager.entries_per_page } )
+		    .then( function( data ) {
+			pager = data.pager;
+			data.faces.forEach( function( face ) {
+			    addFace( face );
+			});
+			$(view).find('.fx').slideDown();
+			if ( data.faces.length ) {
+			    visible( true );
+			    app.trigger( 'unnamed:visibility', true );
+			}
+			else {
+			    visible( false );
+			    app.trigger( 'unnamed:visibility', false );
+			}
+			searching( false );
 		    });
-		    searching( false );
-		});
+	    });
 	}
     }
 
     return {
+	visible: visible,
 	faces: faces,
 	searching: searching,
 
@@ -51,12 +66,20 @@ function (router, system, viblio, Face, dialogs) {
 	    search();
 	},
 
+	prevThree: function() {
+	    //search();
+	    visible( false );
+	    app.trigger( 'unnamed:visibility', false );
+	},
+
 	manageAll: function() {
 	    router.navigate( 'people' );
 	},
 
-	compositionComplete: function( view ) {
+	compositionComplete: function( _view ) {
+	    view = _view;
 	    search();
+	    app.trigger( 'unnamed:composed', this );
 	}
     };
 });

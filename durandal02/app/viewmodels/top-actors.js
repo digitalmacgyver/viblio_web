@@ -28,9 +28,9 @@ function (Events, router, app, system, viblio, Face, VideosFor, dialogs) {
     // When new faces arrive in the system async, add them
     // to the start of the list.
     app.on( 'face:ready', function( mf ) {
-        var m = self.addFace( mf );
-        self.faces.unshift( m );
-        $(self.view).find( ".sd-pscroll").trigger( 'children-changed' );
+        var m = addFace( mf );
+        faces.unshift( m );
+        $(view).find( ".sd-pscroll").trigger( 'children-changed' );
     });
 
     var videosFor = ko.observable( new VideosFor( 'n Videos with Anonymous', '' ) );
@@ -125,8 +125,12 @@ function (Events, router, app, system, viblio, Face, VideosFor, dialogs) {
 		$(currentSelection.view).removeClass( 'selected' );
 	},
 
-	compositionComplete: function() {
+	compositionComplete: function( _view ) {
+	    view = _view;
 	    search().then( function() { fetched(true); });
+	    $(view).find( '.fstrip').width(
+		$(window).width() );
+	    app.trigger( 'top-actors:composed', this );
 	},
 
 	hLimitReached: function() {
