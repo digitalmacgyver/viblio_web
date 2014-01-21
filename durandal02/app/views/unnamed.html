@@ -1,0 +1,33 @@
+<style>
+.unnamed {
+    width: 340px;
+    height: 300px;
+    border-left: 1px solid #ccc;
+}
+.unnamed .pp-info-faces-wrapper {
+    min-height: inherit;
+    height: 146px;
+    width: inherit;
+    padding-top: 60px;
+    padding-left: 23px;
+}
+.unnamed .pp-info-faces-wrapper .person {
+    float: left;
+}
+</style>
+<div class="unnamed bottomBorder-Thin turquoiseBG">
+  <div class="pp-info-faces-wrapper">
+    <!-- ko foreach: faces -->
+      <!-- ko compose: $data --><!-- /ko -->
+    <!-- /ko -->
+    <div class="clearfix"></div>
+  </div>
+  <div style="text-align: center;">
+  <button class="btn btn-white" data-bind="click: nextThree">
+    Next
+  </button>
+  <button class="btn btn-white" data-bind="click: manageAll">
+    Manage All
+  </button>
+  </div>
+</div>

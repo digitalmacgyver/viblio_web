@@ -1,0 +1,36 @@
+<style>
+div.pstrip {
+    position: relative;
+    padding-top: 25px;
+    padding-bottom: 0;
+}
+div.fstrip {
+    position: absolute;
+    width: 100%;
+    display: none;
+    z-index: 1000;
+}
+</style>
+<div class="pstrip top-actors bottomBorder-Thin turquoiseBG">
+
+  <div class="marginL45">
+    <p class="mainTitle textShadowed whiteText" data-bind="html: title"></p>
+    <span class="subtitle" data-bind="html: subtitle"></span>
+  </div>
+    
+    <!-- ko if: fetched() && faces().length < 1 -->
+    <div class="marginL45">
+        <img src="css/images/avatar.png" alt="avatar" class="pull-left marginR45">
+        <p class="font24 whiteText marginR45 doubleSpaced">Once you upload some more videos,  VIBLIO’s  Magic Tagging™ will find faces in your videos and help you create Memory Boxes of each person’s videos.</p>
+    </div>
+    <!-- /ko -->
+
+  <div class="sd-pscroll" data-bind="hscroller:{rightLimitReached: hLimitReached}">
+    <!-- ko foreach: faces -->
+    <!-- ko compose: $data --><!--/ko-->
+    <!--/ko-->
+  </div>
+
+  <!-- ko compose: videosFor --><!-- /ko -->
+
+</div>
