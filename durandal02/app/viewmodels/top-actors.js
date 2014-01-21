@@ -103,6 +103,11 @@ function (Events, router, app, system, viblio, Face, VideosFor, dialogs) {
             });
     };
 
+    function resize_fstrip() {
+	$(view).find( '.fstrip').width(
+	    $(window).width() );
+    };
+
     return {
 	title: title,
 	subtitle: subtitle,
@@ -128,8 +133,7 @@ function (Events, router, app, system, viblio, Face, VideosFor, dialogs) {
 	compositionComplete: function( _view ) {
 	    view = _view;
 	    search().then( function() { fetched(true); });
-	    $(view).find( '.fstrip').width(
-		$(window).width() );
+	    resize_fstrip();
 	    app.trigger( 'top-actors:composed', this );
 	},
 
@@ -147,6 +151,12 @@ function (Events, router, app, system, viblio, Face, VideosFor, dialogs) {
 
 	attached: function( _view ) {
 	    view = _view;
+	    resize_fstrip();
+	    $(window).bind( 'resize', resize_fstrip );
+	},
+
+	detached: function() {
+	    $(window).unbind( 'resize', resize_fstrip );
 	}
 
     };

@@ -111,7 +111,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'landing',            moduleId: 'landing',            title: 'Viblio Landing Page',
 	      nav: false,   authenticated: false,  header: landing_header },
 
-            { route: 'home',               moduleId: 'home',               title: 'HOME',
+            { route: 'home',               moduleId: 'hp',               title: 'VIDEOS',
 	      nav: true,    authenticated: true,   header: page_header },
 
             { route: 'oops',               moduleId: 'oops',               title: 'Oops',
@@ -139,12 +139,9 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      nav: false,   authenticated: true,   header: page_header },
 	    
             { route: 'videos',             moduleId: 'your-videos',          title: 'VIDEOS',
-	      nav: true,   authenticated: true,   header: page_header },
+	      nav: false,   authenticated: true,   header: page_header },
 	    
             { route: 'people',             moduleId: 'people',             title: 'PEOPLE',
-	      nav: true,    authenticated: true,   header: page_header },
-	    
-            { route: 'page',             moduleId: 'hp',             title: 'PAGE',
 	      nav: true,    authenticated: true,   header: page_header },
 	    
             { route: 'raw',                moduleId: 'raw',                title: 'Raw Upload',

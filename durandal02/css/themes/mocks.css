@@ -3476,3 +3476,72 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     padding: 50px;
     opacity: 0.6;
 }
+
+/** New Home Page **/
+
+.hp .top-strip .cont {
+    margin-right: -340px; 
+    /* margin-right: 0px; */
+    float: left;
+    width: 100%;
+}
+.hp .top-strip .cont .left {
+    /* margin-right: 340px; */
+    margin-right: 0px;
+}
+.hp .top-strip .right {
+    float: left;
+    width: 340px;
+}
+
+/** top-actors **/
+
+div.pstrip {
+    position: relative;
+    padding-top: 25px;
+    padding-bottom: 0;
+}
+div.fstrip {
+    position: absolute;
+    width: 100%;
+    display: none;
+    z-index: 1000;
+}
+
+/** unnamed **/
+
+.unnamed {
+    width: 340px;
+    height: 300px;
+    border-left: 1px solid #ccc;
+}
+.unnamed .pp-info-faces-wrapper {
+    min-height: inherit;
+    height: 220px;
+    width: inherit;
+    padding-top: 24px;
+    padding-left: 23px;
+    overflow: hidden;
+}
+.unnamed .pp-info-faces-wrapper .person {
+    float: left;
+}
+.unnamed .pp-faces-need-names {
+    width: 290px;
+}
+.unnamed .pp-faces-need-names::before {
+    left: 132px;
+}
+.unnamed .pp-faces-need-names::after {
+    left: 132px;
+}
+.unnamed .btn {
+    width: 80px;
+    margin-left: 8px;
+}
+.unnamed .buttons .btn:first-of-type {
+    margin-left: 0px;
+}
+.unnamed .editable-input input[type="text"] {
+    width: 112px;
+}
