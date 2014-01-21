@@ -13,6 +13,10 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
     var ownerUUID = ko.observable();
     var ownedByViewer = ko.observable();
     var boxOfficeHits = ko.observableArray();
+    var allVideos = ko.observableArray();
+    var filterLabels = ko.observableArray();
+    var selectedYear = ko.observable( null );
+    var showAllVids = ko.observable( true );
     var refresh = ko.observable( false );
     
     var showBOH = ko.observable();
@@ -114,6 +118,21 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
         });
     }
     
+    function getFilterLabels() {
+        var args = { aid: album_id };
+	viblio.api( '/services/air/years', args ).then( function( data ) {
+            data.years.forEach( function( year ) {
+                var args = { year: year,
+                             aid: album_id };
+                viblio.api( '/services/air/videos_for_year', args ).then( function( data ) {
+                    data.media.forEach( function( month ) {
+                        filterLabels.push( { label: month.month + ' ' + year, selected: ko.observable(false) } );
+                    });
+                });
+            });
+        });
+    }
+    
     function addMediaFile( mf ) {
 	var self = this;
 
@@ -190,6 +209,10 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 	ownerName: ownerName,
         ownedByViewer: ownedByViewer,
         boxOfficeHits: boxOfficeHits,
+        allVideos: allVideos,
+        filterLabels: filterLabels,
+        selectedYear: selectedYear,
+        showAllVids: showAllVids,
         mediaHasViews: mediaHasViews,
         editLabel: editLabel,
         toggleEditMode: toggleEditMode,
@@ -198,7 +221,9 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
         title: 'Box Office Hits',
         subtitle: 'The most popular videos in this album',
         
-        yearSelected: function( self, year ) {
+        yearSelected: function( year, self ) {
+            months.removeAll();
+            selectedYear( year.label );
 	    years().forEach( function( y ) {
 		y.selected( false );
             });
@@ -206,6 +231,10 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
             //viblio.mpEvent( 'yir' );
             fetch( year.label );
 	},
+        
+        getAllVids: function() {
+            showAllVids(true);
+        },
         
         activate: function (args) {
 	    album_id = args.aid;
@@ -228,11 +257,13 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
                 }    
             }
             if( refresh() ){
+                allVideos.removeAll();
                 years.removeAll();
                 months.removeAll();
                 boxOfficeHits.removeAll();
                 albumTitle('');
             }
+            getFilterLabels();
         },
 	/*attached: function() {
 	    return system.defer( function( dfd ) {
@@ -246,8 +277,6 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 		customDialogs.hideLoading();
 	    });
             // only refresh the AIR section if the user is viewing a different album than before
-            
-            // TODO - Add functionality to test if new videos have been added to the album
             
             if( refresh() ) {
                 getYears();
@@ -274,6 +303,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
                                 showBOH( true );
                                 boxOfficeHits.push( addMediaFile( mf ) );
                             }
+                            allVideos.push( addMediaFile( mf ) );
                         });
 
                         //reverse the order of the sorted array

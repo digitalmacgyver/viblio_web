@@ -426,6 +426,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
     margin-left: 0;
 }
 
+.mapSD-scroll.horizontal-scroller {
+    height: 272px;
+}
+
 .horizontal-scroller {
     width: 100%;
     position: relative;
@@ -3377,18 +3381,19 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     vertical-align: middle;
 }
 
-.albumYears,
-.air ul li {
-    display: inline-block;
+.air .mainTitle {
+    margin-right: 20px;
 }
 
-.air ul li {
-    margin-left: 20px;
+.air .dropdown .btn {
+    width: 120px;
+    margin-top: -10px
+}
+
+.air .dropdown .dropdown-menu {
+    width: 120px;
+    min-width: 0;
     cursor: pointer;
-}
-
-.air ul li span:hover {
-    font-weight: 600;
 }
 
 .allAlbumVids {
