@@ -13,7 +13,7 @@ define([
     'lib/customDialogs'], 
 function (router, system, app, viblio, Face, dialogs) {
     var view;
-    var visible = ko.observable( false );
+    var is_visible = ko.observable( false );
     var faces = ko.observableArray([]);
     var allFaces = [];
     var start = 0;
@@ -28,7 +28,7 @@ function (router, system, app, viblio, Face, dialogs) {
     app.on( 'person:tag3_changed', function() {
 	numFacesTagged += 1;
 	if ( numFacesTagged >= allFaces.length ) {
-	    visible( false );
+	    is_visible( false );
 	    app.trigger( 'unnamed:visibility', false );
 	}
     });
@@ -44,38 +44,36 @@ function (router, system, app, viblio, Face, dialogs) {
     function search() {
 	if ( pager.next_page ) {
 	    searching( true );
-	    $(view).find('.fx').animate({'margin-left':'-312px'}, function() {
-		faces.removeAll();
-		viblio.api( '/services/faces/unnamed', 
-			    { page: pager.next_page, rows: pager.entries_per_page } )
-		    .then( function( data ) {
-			pager = data.pager;
-			data.faces.forEach( function( face ) {
-			    addFace( face );
-			});
 
-			var end = start + 3;
-			if ( end > ( allFaces.length + 1 ) )
-			    end = allFaces.length + 1;
-			faces( allFaces.slice( start, end ) );
-
-			$(view).find('.fx').animate({'margin-left':'0px'});
-			if ( data.faces.length ) {
-			    visible( true );
-			    app.trigger( 'unnamed:visibility', true );
-			}
-			else {
-			    visible( false );
-			    app.trigger( 'unnamed:visibility', false );
-			}
-			searching( false );
+	    faces.removeAll();
+	    viblio.api( '/services/faces/unnamed', 
+			{ page: pager.next_page, rows: pager.entries_per_page } )
+		.then( function( data ) {
+		    pager = data.pager; 
+		    data.faces.forEach( function( face ) {
+			addFace( face );
 		    });
-	    });
+
+		    var end = start + 3;
+		    if ( end > ( allFaces.length + 1 ) )
+			end = allFaces.length + 1;
+		    faces( allFaces.slice( start, end ) );
+
+		    if ( data.faces.length ) {
+			is_visible( true );
+			app.trigger( 'unnamed:visibility', true );
+		    }
+		    else {
+			is_visible( false );
+			app.trigger( 'unnamed:visibility', false );
+		    }
+		    searching( false );
+		});
 	}
     }
 
     return {
-	visible: visible,
+	is_visible: is_visible,
 	faces: faces,
 	searching: searching,
 
