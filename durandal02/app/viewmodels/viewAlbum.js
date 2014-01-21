@@ -40,11 +40,17 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 	else
 	    self.editLabel( 'Edit' );
         
-        self.months().forEach( function( month ) {
-	    month.media().forEach( function( mf ) {
-		mf.toggleEditMode();
-	    });
-	});
+        if( showAllVids() ) {
+            self.allVideos().forEach( function( mf ) {
+                mf.toggleEditMode();
+            });
+        } else {
+            self.months().forEach( function( month ) {
+                month.media().forEach( function( mf ) {
+                    mf.toggleEditMode();
+                });
+            });
+        }
     };
     
     // Right before the user navigates away from the page set the prevAid to the 
@@ -159,10 +165,11 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
         m.on( 'mediafile:delete', function( m ) {
             viblio.api( '/services/album/remove_media?', { aid: album_id, mid: m.media().uuid } ).then( function() {
                 viblio.mpEvent( 'remove_video_from_album' );
+                allVideos.remove( function(video) { return video.view.id == m.media().uuid; } );
                 months().forEach( function( month ) {
                     month.media.remove( m );
                 });
-                boxOfficeHits.remove( function(video) { return video.view.id == m.media().uuid } );
+                boxOfficeHits.remove( function(video) { return video.view.id == m.media().uuid; } );
                 $( ".horizontal-scroller").trigger( 'children-changed', { enable: true } );
                 refresh( true );
             });
@@ -171,16 +178,24 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
         m.on( "mediaFile:TitleDescChanged", function() {
             var uuid = this.view.id;
             var title = this.title();
+            // Update name in allVideos no matter what
+            allVideos().forEach(function( mf ) {
+                if( mf.view.id == uuid ) {
+                    mf.title( title );
+                }
+            });
             if( boxOfficeHits().length > 0 ) {
                 // If title is changed in Box Office Hits section update title in AIR
                 if( this.view.parentElement.className == 'scrollableArea' ) {
-                    months().forEach( function( month ) {
-                        month.media().forEach( function( mf ) {
-                            if( mf.view.id == uuid ) {
-                                mf.title( title );
-                            }
-                        });
-                    });
+                    if( !showAllVids() ) {
+                        months().forEach( function( month ) {
+                            month.media().forEach( function( mf ) {
+                                if( mf.view.id == uuid ) {
+                                    mf.title( title );
+                                }
+                            });
+                        });    
+                    }
                 } else {
                     // Otherwise title was updated in AIR, so update title in Box Office Hits
                     boxOfficeHits().forEach( function( mf ) {
@@ -257,6 +272,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
                 }    
             }
             if( refresh() ){
+                showAllVids( true );
                 allVideos.removeAll();
                 years.removeAll();
                 months.removeAll();
