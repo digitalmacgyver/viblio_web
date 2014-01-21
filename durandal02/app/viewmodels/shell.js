@@ -144,6 +144,9 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'people',             moduleId: 'people',             title: 'PEOPLE',
 	      nav: true,    authenticated: true,   header: page_header },
 	    
+            { route: 'page',             moduleId: 'hp',             title: 'PAGE',
+	      nav: true,    authenticated: true,   header: page_header },
+	    
             { route: 'raw',                moduleId: 'raw',                title: 'Raw Upload',
 	      nav: false,    authenticated: true,   header: page_header },
 	    

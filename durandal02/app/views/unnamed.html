@@ -1,0 +1,59 @@
+<style>
+.unnamed {
+    width: 340px;
+    height: 300px;
+    border-left: 1px solid #ccc;
+}
+.unnamed .pp-info-faces-wrapper {
+    min-height: inherit;
+    height: 220px;
+    width: inherit;
+    padding-top: 24px;
+    padding-left: 23px;
+    overflow: hidden;
+}
+.unnamed .pp-info-faces-wrapper .person {
+    float: left;
+}
+.unnamed .pp-faces-need-names {
+    width: 290px;
+}
+.unnamed .pp-faces-need-names::before {
+    left: 132px;
+}
+.unnamed .pp-faces-need-names::after {
+    left: 132px;
+}
+.unnamed .btn {
+    width: 80px;
+    margin-left: 8px;
+}
+.unnamed .buttons .btn:first-of-type {
+    margin-left: 0px;
+}
+.unnamed .editable-input input[type="text"] {
+    width: 112px;
+}
+</style>
+<div class="unnamed bottomBorder-Thin turquoiseBG" data-bind="visible: visible">
+  <div class="pp-info-faces-wrapper">
+    <p class="pp-faces-need-names whiteBG centered">These faces need names!</p>
+    <div class="fx">
+    <!-- ko foreach: faces -->
+      <!-- ko compose: $data --><!-- /ko -->
+    <!-- /ko -->
+    <div class="clearfix"></div>
+    </div>
+  </div>
+  <div class="buttons" style="text-align: center;">
+  <button class="btn btn-small btn-white" data-bind="click: prevThree">
+    <i class="icon-hand-left"></i>&nbsp;Prev
+  </button>
+  <button class="btn btn-small btn-primary" data-bind="click: manageAll">
+    Manage All
+  </button>
+  <button class="btn btn-small btn-white" data-bind="click: nextThree">
+    Next&nbsp;<i class="icon-hand-right"></i>
+  </button>
+  </div>
+</div>
