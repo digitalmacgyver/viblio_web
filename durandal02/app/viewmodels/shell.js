@@ -178,6 +178,9 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      nav: true,   authenticated: true,   header: page_header },
           
             { route: 'tutorial',        moduleId: 'tutorial',     title: 'Tray App Tutorial',
+	      nav: false,   authenticated: false,   header: conditional_header },
+          
+            { route: 'help',        moduleId: 'help',     title: 'Viblio help',
 	      nav: false,   authenticated: false,   header: conditional_header }
 
         ]).buildNavigationModel();

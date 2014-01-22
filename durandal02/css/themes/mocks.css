@@ -876,6 +876,12 @@ input:-moz-placeholder {
     outline: none;
 }
 
+@media (max-width: 900px) {
+    .navbar-fixed-top, .navbar-fixed-bottom {
+    position: relative;
+    }
+}
+
 /* When nav bar is NOT collapsed */
 @media (min-width: 900px) {
     #page-header .navbar .nav li.dropdown.open {
@@ -3409,3 +3415,55 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .allAlbumVids .mediafile img {
     height: 240px;
 }
+
+/********** Help Tab *************/
+
+.helpContainer {
+    position: fixed;
+    z-index: 10;
+    width: 200px;
+    right: 0;
+    transition: top 1s;
+    -webkit-transition: top 1s;
+}
+
+@media (max-width: 900px) {
+    .helpContainer {
+        position: absolute;
+    }
+}
+
+.helpBody {
+    background-color: rgba(49, 53, 67, 0.8);
+    padding: 8px;
+    font-size: 16px;
+    font-weight: 100;
+}
+
+.helptab {
+    background-color: rgb(49, 53, 67);
+    opacity: .6;
+    padding: 2px 8px;
+    width: 85px;
+    cursor: pointer;
+    text-align: right;
+    position: absolute;
+    right: 0;
+}
+
+.helptab:hover {
+    opacity: .8;
+}
+
+.helptab i {
+    vertical-align: middle;
+    margin-right: 4px;
+    font-size: 24px;
+}
+
+.helptab div {
+    display: inline-block;
+}
+
+
+
