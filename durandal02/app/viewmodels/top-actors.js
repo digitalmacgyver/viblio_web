@@ -66,6 +66,7 @@ function (Events, router, app, system, viblio, Face, VideosFor, dialogs) {
                 var pos = $(person.view).offset().left + Math.round( $(person.view).width() / 2 );
                 if ( currentSelection && currentSelection != person )
                     $(currentSelection.view).removeClass( 'selected' );
+		currentSelection = person;
                 face_selected( person, pos );
             }
         });
@@ -87,20 +88,23 @@ function (Events, router, app, system, viblio, Face, VideosFor, dialogs) {
     };
 
     function search() {
-        // pause is needed to temporarily turn off the timers that control
-        // hover and mousedown scrolling, while we go off and fetch data
-        // it will be re-enabled in mediafile:composed at the proper time
-        $(view).find( ".sd-pscroll").smoothDivScroll("pause");
-
-        return viblio.api( '/services/faces/contacts',
-                           { page: pager.next_page, 
-                             rows: pager.entries_per_page } )
-            .then( function( json ) {
-                pager = json.pager;
-                json.faces.forEach( function( mf ) {
-                    faces.push( addFace( mf ) );
-                });
-            });
+	if ( pager.next_page ) {
+            // pause is needed to temporarily turn off the timers that control
+            // hover and mousedown scrolling, while we go off and fetch data
+            // it will be re-enabled in mediafile:composed at the proper time
+            $(view).find( ".sd-pscroll").smoothDivScroll("pause");
+	    fetched( false );
+            viblio.api( '/services/faces/contacts',
+                        { page: pager.next_page, 
+			  rows: pager.entries_per_page } )
+		.then( function( json ) {
+                    pager = json.pager;
+		    fetched( true );
+                    json.faces.forEach( function( mf ) {
+			faces.push( addFace( mf ) );
+                    });
+		});
+	}
     };
 
     function resize_fstrip() {
@@ -132,7 +136,7 @@ function (Events, router, app, system, viblio, Face, VideosFor, dialogs) {
 
 	compositionComplete: function( _view ) {
 	    view = _view;
-	    search().then( function() { fetched(true); });
+	    search();
 	    resize_fstrip();
 	    app.trigger( 'top-actors:composed', this );
 	},
