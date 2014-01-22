@@ -9,22 +9,22 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'durandal/events',], fun
         var self = this;
         if( $( '.helpContainer' ).css( 'top' ) == self.topDistance() + 'px' ) {
             if( $( window ).width() > '900' ) {
-                $( '.helpContainer' ).css( 'top', '65px' );
+                $( '.helpContainer' ).animate( {'top': '65px'}, 500 );
             } else {
-                $( '.helpContainer' ).css( 'top', '0' );
+                $( '.helpContainer' ).animate( {'top': '0'}, 500 );
             }
             $( '.helpContainer .helptab' ).css( 'opacity', '.8');
             $( '.helpContainer .helptab' ).off( "mouseenter mouseleave" );
         } else {
-            $( '.helpContainer' ).css( 'top', self.topDistance() );
+            $( '.helpContainer' ).animate( {'top': self.topDistance()}, 500 );
             $( '.helpContainer .helptab' ).css( 'opacity', '.6');
             $( '.helpContainer .helptab' ).hover( function(){ $(this).css( 'opacity', '.8'); }, function(){ $(this).css( 'opacity', '.6'); } );
-        } 
+        }
     };
     
     Help.prototype.getHeight = function( s ) {
         if( $( window ).width() > '900' ) {
-            s.topDistance( -$( '.helpBody' ).height() + 45 );
+            s.topDistance( -$( '.helpBody' ).height() + 48 );
         } else {
             s.topDistance( -$( '.helpBody' ).height() - 16 );
         }

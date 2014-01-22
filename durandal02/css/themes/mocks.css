@@ -3422,8 +3422,6 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     position: fixed;
     z-index: 10;
     right: 0;
-    transition: top 1s;
-    -webkit-transition: top 1s;
 }
 
 @media (max-width: 900px) {
