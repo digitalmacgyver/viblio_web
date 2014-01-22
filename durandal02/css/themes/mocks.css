@@ -3421,7 +3421,6 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .helpContainer {
     position: fixed;
     z-index: 10;
-    width: 200px;
     right: 0;
     transition: top 1s;
     -webkit-transition: top 1s;
@@ -3434,6 +3433,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .helpBody {
+    width: 200px;
     background-color: rgba(49, 53, 67, 0.8);
     padding: 8px;
     font-size: 16px;
