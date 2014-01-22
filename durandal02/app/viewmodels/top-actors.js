@@ -161,8 +161,13 @@ function (Events, router, app, system, viblio, Face, VideosFor, dialogs) {
 
 	detached: function() {
 	    $(window).unbind( 'resize', resize_fstrip );
+            videosFor().hide();
+            videosFor().clear();
+	    if ( currentSelection ) {
+		$(currentSelection.view).removeClass( 'selected' );
+		currentSelection = null;
+	    }
 	}
-
     };
 	
 });
