@@ -42,34 +42,39 @@ function (router, system, app, viblio, Face, dialogs) {
     }
 
     function search() {
-	if ( pager.next_page ) {
-	    searching( true );
+	return system.defer( function( dfd ) {
+	    if ( pager.next_page ) {
+		searching( true );
+		faces.removeAll();
+		viblio.api( '/services/faces/unnamed', 
+			    { page: pager.next_page, rows: pager.entries_per_page } )
+		    .then( function( data ) {
+			pager = data.pager; 
+			data.faces.forEach( function( face ) {
+			    addFace( face );
+			});
 
-	    faces.removeAll();
-	    viblio.api( '/services/faces/unnamed', 
-			{ page: pager.next_page, rows: pager.entries_per_page } )
-		.then( function( data ) {
-		    pager = data.pager; 
-		    data.faces.forEach( function( face ) {
-			addFace( face );
+			var end = start + 3;
+			if ( end > ( allFaces.length + 1 ) )
+			    end = allFaces.length + 1;
+			faces( allFaces.slice( start, end ) );
+			
+			searching( false );
+			dfd.resolve();
 		    });
-
-		    var end = start + 3;
-		    if ( end > ( allFaces.length + 1 ) )
-			end = allFaces.length + 1;
-		    faces( allFaces.slice( start, end ) );
-
-		    if ( data.faces.length ) {
-			is_visible( true );
-			app.trigger( 'unnamed:visibility', true );
-		    }
-		    else {
-			is_visible( false );
-			app.trigger( 'unnamed:visibility', false );
-		    }
-		    searching( false );
-		});
-	}
+	    } else {
+		dfd.resolve();
+	    }
+	}).promise().then( function() {
+	    if ( faces().length ) {
+		is_visible( true );
+		app.trigger( 'unnamed:visibility', true );
+	    }
+	    else {
+		is_visible( false );
+		app.trigger( 'unnamed:visibility', false );
+	    }
+	});
     }
 
     return {
