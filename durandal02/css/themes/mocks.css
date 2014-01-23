@@ -3420,8 +3420,8 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .helpContainer {
     position: fixed;
-    z-index: 10;
-    right: 0;
+    z-index: 1001;
+    right: 20px;
 }
 
 @media (max-width: 900px) {
@@ -3431,8 +3431,8 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .helpBody {
-    width: 200px;
-    background-color: rgba(49, 53, 67, 0.8);
+    width: 300px;
+    background-color: rgb(49, 53, 67);
     padding: 8px;
     font-size: 16px;
     font-weight: 100;
@@ -3440,7 +3440,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .helptab {
     background-color: rgb(49, 53, 67);
-    opacity: .6;
+    opacity: .8;
     padding: 2px 8px;
     width: 85px;
     cursor: pointer;
@@ -3450,7 +3450,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .helptab:hover {
-    opacity: .8;
+    opacity: 1;
 }
 
 .helptab i {

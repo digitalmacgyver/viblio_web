@@ -13,12 +13,12 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'durandal/events',], fun
             } else {
                 $( '.helpContainer' ).animate( {'top': '0'}, 500 );
             }
-            $( '.helpContainer .helptab' ).css( 'opacity', '.8');
+            $( '.helpContainer .helptab' ).css( 'opacity', '1');
             $( '.helpContainer .helptab' ).off( "mouseenter mouseleave" );
         } else {
             $( '.helpContainer' ).animate( {'top': self.topDistance()}, 500 );
-            $( '.helpContainer .helptab' ).css( 'opacity', '.6');
-            $( '.helpContainer .helptab' ).hover( function(){ $(this).css( 'opacity', '.8'); }, function(){ $(this).css( 'opacity', '.6'); } );
+            $( '.helpContainer .helptab' ).css( 'opacity', '.8');
+            $( '.helpContainer .helptab' ).hover( function(){ $(this).css( 'opacity', '1'); }, function(){ $(this).css( 'opacity', '.8'); } );
         }
     };
     
