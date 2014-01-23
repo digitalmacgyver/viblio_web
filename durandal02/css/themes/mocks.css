@@ -3464,6 +3464,19 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     margin: 40px auto 0;
 }
 
+.nginx-modal .paddingDiv {
+    padding: 25px 35px;
+}
+
+.nginx-modal .paddingDiv .btn {
+    margin-top: -10px;
+    margin-left: 20px;
+}
+
+.nginx-modal h3 {
+    display: inline-block;
+}
+
 #nginx table.file-container {
     border: 1px dashed;
     overflow: auto;

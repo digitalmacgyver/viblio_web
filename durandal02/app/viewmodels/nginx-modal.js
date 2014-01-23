@@ -5,6 +5,7 @@ define(['plugins/dialog'],function(dialog){
     return{
 	close: function() {
 	    dialog.close( this );
+            return true;
 	},
 	compositionComplete: function( view ) {
 	    // This special modal needs to be wider and higher than the
