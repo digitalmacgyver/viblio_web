@@ -13,7 +13,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
     var ownerUUID = ko.observable();
     var ownedByViewer = ko.observable();
     var boxOfficeHits = ko.observableArray();
-    var allVideos = ko.observableArray();
+    var allVids = ko.observableArray();
     var filterLabels = ko.observableArray();
     var selectedYear = ko.observable( null );
     var showAllVids = ko.observable( true );
@@ -40,11 +40,17 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 	else
 	    self.editLabel( 'Edit' );
         
-        self.months().forEach( function( month ) {
-	    month.media().forEach( function( mf ) {
-		mf.toggleEditMode();
-	    });
-	});
+        if( showAllVids() ) {
+            self.allVids().forEach( function( mf ) {
+                mf.toggleEditMode();
+            });
+        } else {
+            self.months().forEach( function( month ) {
+                month.media().forEach( function( mf ) {
+                    mf.toggleEditMode();
+                });
+            });
+        }
     };
     
     // Right before the user navigates away from the page set the prevAid to the 
@@ -159,10 +165,14 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
         m.on( 'mediafile:delete', function( m ) {
             viblio.api( '/services/album/remove_media?', { aid: album_id, mid: m.media().uuid } ).then( function() {
                 viblio.mpEvent( 'remove_video_from_album' );
+                // Remove from allVids
+                allVids.remove( function(video) { return video.view.id == m.media().uuid; } );
+                // Remove from months
                 months().forEach( function( month ) {
                     month.media.remove( m );
                 });
-                boxOfficeHits.remove( function(video) { return video.view.id == m.media().uuid } );
+                // Remove from boxOfficeHits
+                boxOfficeHits.remove( function(video) { return video.view.id == m.media().uuid; } );
                 $( ".horizontal-scroller").trigger( 'children-changed', { enable: true } );
                 refresh( true );
             });
@@ -171,16 +181,24 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
         m.on( "mediaFile:TitleDescChanged", function() {
             var uuid = this.view.id;
             var title = this.title();
+            // Update name in allVids no matter what
+            allVids().forEach(function( mf ) {
+                if( mf.view.id == uuid ) {
+                    mf.title( title );
+                }
+            });
             if( boxOfficeHits().length > 0 ) {
                 // If title is changed in Box Office Hits section update title in AIR
                 if( this.view.parentElement.className == 'scrollableArea' ) {
-                    months().forEach( function( month ) {
-                        month.media().forEach( function( mf ) {
-                            if( mf.view.id == uuid ) {
-                                mf.title( title );
-                            }
-                        });
-                    });
+                    if( !showAllVids() ) {
+                        months().forEach( function( month ) {
+                            month.media().forEach( function( mf ) {
+                                if( mf.view.id == uuid ) {
+                                    mf.title( title );
+                                }
+                            });
+                        });    
+                    }
                 } else {
                     // Otherwise title was updated in AIR, so update title in Box Office Hits
                     boxOfficeHits().forEach( function( mf ) {
@@ -209,7 +227,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 	ownerName: ownerName,
         ownedByViewer: ownedByViewer,
         boxOfficeHits: boxOfficeHits,
-        allVideos: allVideos,
+        allVids: allVids,
         filterLabels: filterLabels,
         selectedYear: selectedYear,
         showAllVids: showAllVids,
@@ -230,10 +248,12 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
             year.selected( true );
             //viblio.mpEvent( 'yir' );
             fetch( year.label );
+            editLabel('Edit');
 	},
         
         getAllVids: function() {
             showAllVids(true);
+            editLabel('Edit');
         },
         
         activate: function (args) {
@@ -257,7 +277,8 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
                 }    
             }
             if( refresh() ){
-                allVideos.removeAll();
+                showAllVids( true );
+                allVids.removeAll();
                 years.removeAll();
                 months.removeAll();
                 boxOfficeHits.removeAll();
@@ -303,7 +324,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
                                 showBOH( true );
                                 boxOfficeHits.push( addMediaFile( mf ) );
                             }
-                            allVideos.push( addMediaFile( mf ) );
+                            allVids.push( addMediaFile( mf ) );
                         });
 
                         //reverse the order of the sorted array

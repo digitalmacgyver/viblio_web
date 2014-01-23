@@ -1,7 +1,8 @@
-define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', 'durandal/events', 'durandal/system', 'plugins/dialog'], function( router,viblio, Mediafile, app, events, system, dialog) {
+define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', 'durandal/events', 'durandal/system', 'lib/customDialogs'], function( router,viblio, Mediafile, app, events, system, dialog ) {
 
     var allVids = function( cid, name ) {
 	var self = this;
+
 	self.years  = ko.observableArray([]);
 	self.months = ko.observableArray([]);
         self.monthsLabels = ko.observableArray([]);
@@ -57,7 +58,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	};
 	
 	// An edit/done label to use on the GUI
-	self.editLabel = ko.observable( 'Edit' );
+	self.editLabel = ko.observable( 'Remove...' );
         
         self.deleteModeOn = ko.computed( function() {
             if( self.editLabel() === 'Done' ) {
@@ -96,7 +97,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         var args = {};
         args.placeholder = "I discovered Viblio, a great way to privately organize and share videos.  I'd love it if you signed up and shared some of your videos with me.";
         args.logout = false;
-        dialog.show('viewmodels/loggedOutTellFriendsModal', args);
+        dialog.showModal('viewmodels/loggedOutTellFriendsModal', args);
     };
     
     allVids.prototype.getShared = function() {
@@ -161,10 +162,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     // this will be the way user's can delete their media files
     allVids.prototype.toggleEditMode = function() {
 	var self = this;
-	if ( self.editLabel() === 'Edit' )
+	if ( self.editLabel() === 'Remove...' )
 	    self.editLabel( 'Done' );
 	else
-	    self.editLabel( 'Edit' );
+	    self.editLabel( 'Remove...' );
         
         if( self.sharedLabel() === 'My Videos' ) {
             self.sections().forEach( function( section ) {
@@ -184,7 +185,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	    m.selected( false );
 	});
 	month.selected( true );
-	self.editLabel( 'Edit' );
+	self.editLabel( 'Remove...' );
         self.videos.removeAll();
         // reset pager
         self.monthPager = {
@@ -343,7 +344,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	var item = scroller.find('#'+m.media().uuid);
 	scroller.scrollTop( item.position().top + scroller.scrollTop() );
     };
-
+    
     allVids.prototype.showAllVideos = function() {
         var self = this;
         self.monthsLabels().forEach( function( m ) {
@@ -364,7 +365,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     // bind to scroll() event and when scroll is 150px or less from bottom fetch more data.
     // Uses flag to determine if fetch is already in process, if so a new one will not be made 
     allVids.prototype.scrollHandler = function( event ) {
-        var self = event.data;
+	var self = event.data;
         // If a month is not selected use the search function, else use monthVidsSearch
         if( !self.aMonthIsSelected() ) {
             if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
@@ -378,13 +379,13 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     };
 
     allVids.prototype.attached = function() {
-        $(window).scroll( this, this.scrollHandler );
+	$(window).scroll( this, this.scrollHandler );
     };
 
     allVids.prototype.detached = function() {
-        $(window).off( "scroll", this.scollHandler );
+	$(window).off( "scroll", this.scollHandler );
     };
-    
+
     // In attached, attach the mCustomScrollbar we're presently
     // employing for this purpose.
     allVids.prototype.compositionComplete = function( view ) {
@@ -396,6 +397,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	self.search();
     };
 
+    allVids.prototype.add_videos = function() {
+	dialog.showModal( 'viewmodels/nginx-modal' );
+    };
+    
     // Animation callbacks
     this.showElement = function(elem) { if (elem.nodeType === 1) $(elem).hide().fadeIn('slow'); };
     this.hideElement = function(elem) { if (elem.nodeType === 1) $(elem).fadeOut(function() { $(elem).remove(); }); };

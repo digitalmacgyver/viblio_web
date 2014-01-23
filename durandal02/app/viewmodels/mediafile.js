@@ -140,6 +140,14 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
             $( '.dbtn' ).show();
         }
     };
+
+    Video.prototype.change_poster = function( url ) {
+	this.image( url );
+    };
+
+    Video.prototype.reset_poster = function() {
+	this.image( this.media().views.poster.url );
+    };
     
     return Video;
 });

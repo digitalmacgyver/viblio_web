@@ -285,7 +285,11 @@ input[type="color"],
 }
 
 .person.selected {
-    background: rgba(239,85,65,1);
+    background-color: rgba(239,85,65,1);
+}
+
+.tomatoBG .person.selected {
+    background-color: rgba(28,184,209,1); 
 }
 
 .person img {
@@ -3481,5 +3485,138 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     display: inline-block;
 }
 
+/**** Your Videos Page ***/
+.your-videos .nav-title {
+    text-align: center;
+    padding-top: 40px;
+}
+.your-videos .nav-btns {
+    text-align: center;
+}
+.your-videos .nav-btns .btn {
+    width: 181px;
+    margin: 0 10px 10px;
+}
+.your-videos .containerxx {
+    padding-right: 40px;
+    padding-left: 40px;
+}
 
+.your-videos .allVidsPage {
+    padding-top: 0;
+}
 
+.yv-secondary-nav {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.yv-secondary-nav .btn {
+    width: 128px;
+    margin: 0 5px 10px;
+}
+
+.yv-secondary-nav .dropdown-menu {
+    min-width: 0;
+    width: 128px;
+    top: 27px;
+    left: 5px;
+}
+
+.yv-secondary-nav .dropdown-menu li {
+   text-align: left;
+   cursor: pointer;
+}
+
+.no-comms {
+    width: 100%;
+    max-width: 800px;
+    margin: 40px auto 0;
+}
+
+#nginx table.file-container {
+    border: 1px dashed;
+    overflow: auto;
+    display: block;
+    padding: 5px;
+    position: relative;
+}
+
+#nginx .progress {
+    width: 30%;
+}
+
+#nginx .directions {
+    padding: 50px;
+    opacity: 0.6;
+}
+
+/** New Home Page **/
+
+.hp .top-strip .cont {
+    margin-right: -340px; 
+    /* margin-right: 0px; */
+    float: left;
+    width: 100%;
+}
+.hp .top-strip .cont .left {
+    /* margin-right: 340px; */
+    margin-right: 0px;
+}
+.hp .top-strip .right {
+    float: left;
+    width: 340px;
+}
+
+/** top-actors **/
+
+div.pstrip {
+    position: relative;
+    padding-top: 25px;
+    padding-bottom: 0;
+}
+div.fstrip {
+    position: absolute;
+    width: 100%;
+    display: none;
+    z-index: 1000;
+}
+
+/** unnamed **/
+
+.unnamed {
+    width: 340px;
+    height: 300px;
+    border-left: 1px solid #ccc;
+}
+.unnamed .pp-info-faces-wrapper {
+    min-height: inherit;
+    height: 220px;
+    width: inherit;
+    padding-top: 24px;
+    padding-left: 23px;
+    overflow: hidden;
+}
+.unnamed .pp-info-faces-wrapper .person {
+    float: left;
+}
+.unnamed .pp-faces-need-names {
+    width: 290px;
+}
+.unnamed .pp-faces-need-names::before {
+    left: 132px;
+}
+.unnamed .pp-faces-need-names::after {
+    left: 132px;
+}
+.unnamed .btn {
+    width: 80px;
+    margin-left: 8px;
+}
+.unnamed .buttons .btn:first-of-type {
+    margin-left: 0px;
+}
+.unnamed .editable-input input[type="text"] {
+    width: 112px;
+}

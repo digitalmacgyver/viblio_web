@@ -1,41 +1,4 @@
 <div id="nginx">
-  <h2 data-bind="html:displayName"></h2>
-  <blockquote>
-    <p>Select one or more video files to upload using the <b>Add Files</b> button, or 
-      drag and drop files from your desktop onto this page.  Once you have all of the 
-      files you'd like to upload, click on the <b>Start uploads</b> button.
-    </p>
-  </blockquote>
-
-  <!--
-  <p><b>TEST:</b> Uploading to: <span data-bind="text: endpoint"></span></p>
-  <form>
-    <fieldset>
-      <legend>Override Protocol</legend>
-      <label class="radio">
-	<input type="radio" name="protocol" value="http:" data-bind="checked: protocol" />HTTP
-      </label>
-      <label class="radio">
-	<input type="radio" name="protocol" value="https:" data-bind="checked: protocol" />HTTPS
-      </label>
-    </fieldset>
-    <fieldset>
-      <legend>Override Server</legend>
-      <label class="radio">
-	<input type="radio" name="server" data-bind="checked: server, value: localhost" />Current
-      </label>
-      <label class="radio">
-	<input type="radio" name="server" value="staging.viblio.com" data-bind="checked: server" />stading.viblio.com
-      </label>
-      <label class="radio">
-	<input type="radio" name="server" value="upload.viblio.com" data-bind="checked: server" />upload.viblio.com
-      </label>
-      <label class="radio">
-	<input type="radio" name="server" value="uploader.viblio.com" data-bind="checked: server" />uploader.viblio.com
-      </label>
-    </fieldset>
-  </form>
-  -->
   <input class="btn-primary" title="Add Files..." id="fileupload" type="file" name="files[]" multiple>
   <div class="btn-group">
     <button class="btn btn-success" id="start_upload" type="button">Start uploads</button> &nbsp;
@@ -43,8 +6,17 @@
   </div>
   <div class="alert alert-error">
   </div>
-  <table id="files">
-  </table>
+  <div>
+    <div style="position: absolute;" class="directions" data-bind="visible: hide_directions()==false">
+      <h2 data-bind="html:displayName"></h2>
+      <p>Select one or more video files to upload using the <b>Add Files</b> button, or 
+	drag and drop files from your desktop onto this page.  Once you have all of the 
+	files you'd like to upload, click on the <b>Start uploads</b> button.
+      </p>
+    </div>
+    <table class="file-container" id="files">
+    </table>
+  </div>
   <div id="stats">
     <table>
       <tr>

@@ -15,13 +15,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	self.cid = cid;
         
         self.name = ko.observable(name);
-        /*self.firstName = ko.computed(function() {
-            if ( name ) {
-                return name.slice( 0, name.indexOf(' ') );
-            } else {
-                return null;
-            }
-        });*/
         self.hits = ko.observable();
         self.hasCID = ko.computed(function() {
             if (self.cid) {
@@ -114,9 +107,12 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     };
 
     YIR.prototype.activate = function() {
+	this.getHits();
+    };
+
+    YIR.prototype.compositionComplete = function() {
 	var self = this;
 	var args = {};
-        self.getHits();
 	if ( self.cid ) args['cid'] = self.cid;
 	return viblio.api( '/services/yir/years', args ).then( function( data ) {
 	    var arr = [];

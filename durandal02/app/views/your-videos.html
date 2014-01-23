@@ -1,0 +1,18 @@
+<div class="your-videos">
+  <div class="nav-title">
+    <p class="mainTitle textShadowed"  data-bind="text: title"></p>
+  </div>
+  <div class="nav-btns">
+    <button class="btn" data-bind="css:{'btn-blue':selected()['yv-all'] == true, 'btn-white':selected()['yv-all'] != true },
+				   click: screen.bind( $data, 'All Your Videos', 'yv-all' )">All Your Videos</button>
+    <button class="btn" data-bind="css:{'btn-blue':selected()['yv-popular'] == true, 'btn-white':selected()['yv-popular'] != true },
+				   click: screen.bind( $data, 'Your Most Popular Videos', 'yv-popular' )">Most Popular</button>
+    <button class="btn" data-bind="css:{'btn-blue':selected()['yv-albums'] == true, 'btn-white':selected()['yv-albums'] != true },
+				   click: screen.bind( $data, 'Your Albums', 'yv-albums' )">Your Albums</button>
+    <button class="btn" data-bind="css:{'btn-blue':selected()['communities'] == true, 'btn-white':selected()['communities'] != true },
+				   click: screen.bind( $data, 'Communities You Belong To', 'communities' )">Communities</button>
+  </div>
+  <div class="containerxx">
+    <!-- ko compose: view --><!-- /ko -->
+  </div>
+</div>
