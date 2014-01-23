@@ -11,7 +11,12 @@
       <i class="left-badge" data-bind="css:leftBadgeIcon,click:leftBadgeClick"></i>
     </div>
     <div data-bind="css:{pointer:clickable()}, click:select">
+      <!-- ko if:  show_tag3()-->  
+      <img class="person-img pointer" data-bind="attr:{src:url}, click:updateName" />
+      <!-- /ko -->
+      <!-- ko ifnot:  show_tag3()-->  
       <img class="person-img" data-bind="attr:{src:url}" />
+      <!-- /ko -->
       <!-- ko if:  show_name()-->
       <div class="name" data-bind="text: name"></div>
       <!-- /ko -->
