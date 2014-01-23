@@ -2271,6 +2271,10 @@ ul.token-input-list-facebook {
     float: left;
 }
 
+#people-page .horizontalStrip {
+    position: relative;
+}
+
 #people-page .known_faces-container .person.selected {
     background-color: #24b8d1;
 }
@@ -3418,20 +3422,30 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 /********** Help Tab *************/
 
-.helpContainer {
-    position: fixed;
-    z-index: 1001;
-    right: 20px;
-    top: -9999px;
+.lightBlueBG .helpContainer {
+    top: 0;
 }
 
-@media (max-width: 900px) {
+.helpContainer {
+    top: 5px;
+    position: absolute;
+    right: 20px;
+}
+
+.helpContainer.active {
+    z-index: 1002;
+}
+
+/*@media (max-width: 900px) {
     .helpContainer {
         position: absolute;
     }
-}
+}*/
 
 .helpBody {
+    position: relative;
+    z-index: 1001;
+    display: none;
     width: 300px;
     background-color: rgb(49, 53, 67);
     padding: 8px;
@@ -3440,6 +3454,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .helptab {
+    z-index: 100;
     background-color: rgb(49, 53, 67);
     opacity: .8;
     padding: 2px 8px;
@@ -3451,6 +3466,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     border-bottom: 3px inset rgba(0, 0, 0, 0.2);
 }
 
+.helpContainer.active .helptab,
 .helptab:hover {
     opacity: 1;
 }
