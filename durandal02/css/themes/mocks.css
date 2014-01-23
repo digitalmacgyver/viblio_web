@@ -3447,6 +3447,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     text-align: right;
     position: absolute;
     right: 0;
+    border-bottom: 3px inset rgba(0, 0, 0, 0.2);
 }
 
 .helptab:hover {
