@@ -1,8 +1,9 @@
 define(['durandal/app', 'plugins/router', 'lib/viblio', 'durandal/events',], function(app,router,viblio,events) {
-    var Help = function( content ) {
+    var Help = function( content, type ) {
         var self = this;
         self.content = content;
         self.topDistance = ko.observable();
+        self.type = type;
     };
     
     Help.prototype.toggleInstructions = function(data, event) {

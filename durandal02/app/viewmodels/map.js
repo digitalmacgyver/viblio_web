@@ -2,7 +2,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
     var Map = function() {
         var self = this;
         self.points = [];
-        self.help = new Help( 'help/mapHelp.html' );
+        self.help = new Help( 'help/mapHelp.html', 'stickyTop' );
         self.markerTitle = ko.observable();
         self.markerImage = ko.observable();
         

@@ -3436,15 +3436,22 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     right: 20px;
 }
 
+.helpContainer.stickyTop {
+    top: 65px;
+    position: fixed;
+    z-index: 900;
+}
+
 .helpContainer.active {
     z-index: 1002;
 }
 
-/*@media (max-width: 900px) {
-    .helpContainer {
+@media (max-width: 900px) {
+    .helpContainer.stickyTop {
+        top: 0;
         position: absolute;
     }
-}*/
+}
 
 .helpBody {
     position: relative;
