@@ -22,8 +22,6 @@ define([], function() {
 	    last_selected = _model;
 	    s[last_selected] = true;
 	    selected( s );
-	},
-	compositionComplete: function() {
 	}
     };
 });

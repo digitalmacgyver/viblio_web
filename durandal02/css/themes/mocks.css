@@ -3501,18 +3501,17 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 /** New Home Page **/
 
 .hp .top-strip .cont {
-    margin-right: -340px; 
-    /* margin-right: 0px; */
+    margin-right: -340px;
     float: left;
     width: 100%;
 }
 .hp .top-strip .cont .left {
-    /* margin-right: 340px; */
     margin-right: 0px;
 }
 .hp .top-strip .right {
     float: left;
     width: 340px;
+    display: none;
 }
 
 /** top-actors **/
