@@ -74,7 +74,7 @@ define(['lib/viblio','viewmodels/mediafile'], function(viblio,Mediafile) {
 	    pager.total_entries = -1;
 	},
 
-	search: function( _mid, options ) {
+	search: function( _mid, options, callback ) {
 	    if ( _mid ) mid = _mid;
 	    var opts = $.extend( criterion, 
 				 { mid: mid, 
@@ -91,6 +91,7 @@ define(['lib/viblio','viewmodels/mediafile'], function(viblio,Mediafile) {
                             addMediaFile( mf );
                         });
                         searching( false );
+                        callback();
                     });
             }
 	},
