@@ -15,19 +15,24 @@ function (router, system, app, viblio, Face, dialogs) {
     var view;
     var is_visible = ko.observable( false );
     var faces = ko.observableArray([]);
-    var allFaces = [];
     var start = 0;
     var numFacesTagged = 0;
-    var pager = {
+
+    var pager = {};
+    function reset_pager() {
+	pager = {
             next_page: 1,
             entries_per_page: 30,
             total_entries: -1 /* currently unknown */
         };
+    }
+    reset_pager();
+
     var searching = ko.observable( false );
 
     app.on( 'person:tag3_changed', function() {
 	numFacesTagged += 1;
-	if ( numFacesTagged >= allFaces.length ) {
+	if ( numFacesTagged >= faces().length ) {
 	    is_visible( false );
 	    app.trigger( 'unnamed:visibility', false );
 	}
@@ -38,14 +43,13 @@ function (router, system, app, viblio, Face, dialogs) {
 	    show_name: false,
 	    show_tag3: true,
 	} );
-	allFaces.push( f );
+	faces.push( f );
     }
 
     function search() {
 	return system.defer( function( dfd ) {
 	    if ( pager.next_page ) {
 		searching( true );
-		faces.removeAll();
 		viblio.api( '/services/faces/unnamed', 
 			    { page: pager.next_page, rows: pager.entries_per_page } )
 		    .then( function( data ) {
@@ -54,11 +58,6 @@ function (router, system, app, viblio, Face, dialogs) {
 			    addFace( face );
 			});
 
-			var end = start + 3;
-			if ( end > ( allFaces.length + 1 ) )
-			    end = allFaces.length + 1;
-			faces( allFaces.slice( start, end ) );
-			
 			searching( false );
 			dfd.resolve();
 		    });
@@ -83,15 +82,9 @@ function (router, system, app, viblio, Face, dialogs) {
 	searching: searching,
 
 	nextThree: function() {
-	    if ( start + 3 >= allFaces.length ) return;
+	    if ( start + 3 >= faces().length ) return;
 	    start += 3;
-	    var end = start + 3;
-	    if ( end > ( allFaces.length + 1 ) )
-		end = allFaces.length + 1;
-	    $(view).find('.fx').animate({'margin-left':'-312px'}, function() {
-		faces( allFaces.slice( start, end ) );
-		$(view).find('.fx').animate({'margin-left':'0px'});
-	    });
+	    $(view).find('.fx').animate({'margin-left': '-' + ( start * 96 ) + 'px'});
 	},
 
 	prevThree: function() {
@@ -99,13 +92,7 @@ function (router, system, app, viblio, Face, dialogs) {
 	    start -= 3;
 	    if ( start < 0 )
 		start = 0;
-	    var end = start + 3;
-	    if ( end > ( allFaces.length + 1 ) )
-		end = allFaces.length + 1;
-	    $(view).find('.fx').animate({'margin-left':'312px'}, function() {
-		faces( allFaces.slice( start, end ) );
-		$(view).find('.fx').animate({'margin-left':'0px'});
-	    });
+	    $(view).find('.fx').animate({'margin-left': '-' + ( start * 96 ) + 'px'});
 	},
 
 	manageAll: function() {
@@ -114,6 +101,10 @@ function (router, system, app, viblio, Face, dialogs) {
 
 	compositionComplete: function( _view ) {
 	    view = _view; this.view = _view;
+	    faces.removeAll();
+	    start = 0;
+	    $(view).find('.fx').animate({'margin-left': '0px'});
+	    reset_pager();
 	    search();
 	    app.trigger( 'unnamed:composed', this );
 	}
