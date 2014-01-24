@@ -1,7 +1,8 @@
-define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 'lib/customDialogs', 'viewmodels/hscroll', 'durandal/events',], function(app,router,viblio,Mediafile,customDialogs,HScroll, events) {
+define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 'lib/customDialogs', 'viewmodels/hscroll', 'durandal/events', 'viewmodels/help'], function(app,router,viblio,Mediafile,customDialogs,HScroll,events,Help) {
     var Map = function() {
         var self = this;
         self.points = [];
+        self.help = new Help( 'help/mapHelp.html', 'stickyTop' );
         self.markerTitle = ko.observable();
         self.markerImage = ko.observable();
         
@@ -257,17 +258,18 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
             self.map.data('map').setView({ lat: 35, lon: -35 }, 3);
         }
         
-        // Makes the map instructions 'sometimes sticky' - stays above the footer, otherwise always at the bottom of the window
+        $( window ).bind('resize scroll', self.stickyHelp );
+    };
+    
+    // Makes the map instructions 'sometimes sticky' - stays above the footer, otherwise always at the bottom of the window
+    Map.prototype.stickyHelp = function() {
         var maxPos = 202; //height of footer
-        $(window).on("resize scroll",function(){
-            var distanceFromBottom = $(document).height()-( $(window).scrollTop()+$(window).height() );
-            if(distanceFromBottom <= maxPos){
-                    $('.missingVideos').css( 'position','absolute' );
-            }else{
-                    $('.missingVideos').css( 'position','fixed' );
-            }
-	});
-        
+        var distanceFromBottom = $(document).height()-( $(window).scrollTop()+$(window).height() );
+        if(distanceFromBottom <= maxPos){
+            $( '.missingVideos' ).css( 'position','absolute' );
+        }else{
+            $( '.missingVideos' ).css( 'position','fixed' );
+        }
     };
     
     Map.prototype.toggleInstructions = function() {
@@ -280,7 +282,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
             $( '.missingVideos .tab' ).css( 'opacity', '.8');
             $( '.missingVideos .tab' ).off( "mouseenter mouseleave" );
         } 
-    },
+    };
 
     Map.prototype.enableDetails = function(marker) {
 	this.markerTitle( marker.title );
@@ -304,6 +306,7 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
     Map.prototype.detached = function() {
 	this.map.destroy();
 	this.map = null;
+        $(window).unbind('resize scroll', this.stickyHelp );
     };
 
     Map.prototype.resize = function() {

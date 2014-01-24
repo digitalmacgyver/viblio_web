@@ -1,4 +1,5 @@
 <div id="map-page">
+    <!-- ko compose: help --><!-- /ko -->
     <div class="orangeTitle">
         <h2>Your Videos on the Map</h2>    
     </div>
@@ -11,7 +12,7 @@
                     </a>
                     <i class="icon-ok-sign"></i>
                     <div class='pointer' data-bind="click: $root.play">
-                        <img data-bind="{attr:{src:$data.url}}" alt="video poster"/>
+                        <img data-bind="attr:{src:$data.url}" alt="video poster"/>
                     </div>
                     <div class="information">
                         <div class="aux pull-right muted"><img src='css/images/viewsEye.png'/><span data-bind="html: $data.eyes">0</span></div>
@@ -25,7 +26,7 @@
     </div>
     
     <div id="mapContainer" class="map-wrap bottomBorder-Thin">
-        <div class="missingVideos whiteText sticky">
+        <!--<div class="missingVideos whiteText sticky">
             <div class='tab' data-bind='click: toggleInstructions'>
                 <i class="icon-lightbulb"></i><div>Missing a video?</div>
             </div>
@@ -43,7 +44,7 @@
                     </li>
                 </ol>
             </div>
-        </div>
+        </div>-->
         <!-- ko if: points.length < 1 -->
         <div id='noPointsOverlay' class='darkBlueOpaqueBG'>
             <div class='content-Wrap centeredEl'>
