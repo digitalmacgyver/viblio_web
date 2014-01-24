@@ -884,6 +884,12 @@ input:-moz-placeholder {
     outline: none;
 }
 
+@media (max-width: 900px) {
+    .navbar-fixed-top, .navbar-fixed-bottom {
+    position: relative;
+    }
+}
+
 /* When nav bar is NOT collapsed */
 @media (min-width: 900px) {
     #page-header .navbar .nav li.dropdown.open {
@@ -2273,6 +2279,10 @@ ul.token-input-list-facebook {
     float: left;
 }
 
+#people-page .horizontalStrip {
+    position: relative;
+}
+
 #people-page .known_faces-container .person.selected {
     background-color: #24b8d1;
 }
@@ -3416,6 +3426,74 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .allAlbumVids .mediafile img {
     height: 240px;
+}
+
+/********** Help Tab *************/
+
+.lightBlueBG .helpContainer {
+    top: 0;
+}
+
+.helpContainer {
+    top: 5px;
+    position: absolute;
+    right: 20px;
+}
+
+.helpContainer.stickyTop {
+    top: 65px;
+    position: fixed;
+    z-index: 900;
+}
+
+.helpContainer.active {
+    z-index: 1002;
+}
+
+@media (max-width: 900px) {
+    .helpContainer.stickyTop {
+        top: 0;
+        position: absolute;
+    }
+}
+
+.helpBody {
+    position: relative;
+    z-index: 1001;
+    display: none;
+    width: 300px;
+    background-color: rgb(49, 53, 67);
+    padding: 8px;
+    font-size: 16px;
+    font-weight: 100;
+}
+
+.helptab {
+    z-index: 100;
+    background-color: rgb(49, 53, 67);
+    opacity: .8;
+    padding: 2px 8px;
+    width: 85px;
+    cursor: pointer;
+    text-align: right;
+    position: absolute;
+    right: 0;
+    border-bottom: 3px inset rgba(0, 0, 0, 0.2);
+}
+
+.helpContainer.active .helptab,
+.helptab:hover {
+    opacity: 1;
+}
+
+.helptab i {
+    vertical-align: middle;
+    margin-right: 4px;
+    font-size: 24px;
+}
+
+.helptab div {
+    display: inline-block;
 }
 
 /**** Your Videos Page ***/

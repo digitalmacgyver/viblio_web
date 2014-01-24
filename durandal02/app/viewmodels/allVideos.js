@@ -1,8 +1,7 @@
-define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', 'durandal/events', 'durandal/system', 'plugins/dialog'], function( router,viblio, Mediafile, app, events, system, dialog ) {
+define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', 'durandal/events', 'durandal/system', 'plugins/dialog'], function( router,viblio, Mediafile, app, events, system, dialog) {
 
     var allVids = function( cid, name ) {
 	var self = this;
-
 	self.years  = ko.observableArray([]);
 	self.months = ko.observableArray([]);
         self.monthsLabels = ko.observableArray([]);

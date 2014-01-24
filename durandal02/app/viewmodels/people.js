@@ -1,5 +1,7 @@
-define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/customDialogs','viewmodels/person'], function(app,system,router,viblio,customDialogs,Face) {
-
+define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/customDialogs','viewmodels/person','viewmodels/help'], function(app,system,router,viblio,customDialogs,Face,Help) {
+    
+    var knownHelp = new Help( 'help/knownHelp.html' );
+    var unknownHelp = new Help( 'help/unknownHelp.html' );
     var known_faces   = ko.observableArray([]);
     var unknown_faces = ko.observableArray([]);
     var faces_for     = ko.observableArray([]);
@@ -271,6 +273,8 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
     }
 
     return {
+        knownHelp: knownHelp,
+        unknownHelp: unknownHelp,
 	known_faces: known_faces,
 	unknown_faces: unknown_faces,
 	faces_for: faces_for,
