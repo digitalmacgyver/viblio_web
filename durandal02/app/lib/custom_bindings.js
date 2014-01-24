@@ -187,7 +187,7 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
                 delete value.options;
             }
             ko.utils.extend(tag3, value);
-	    $element.addClass( 'tag3-editable' );
+            $element.addClass( 'tag3-editable' );
 	    $element.editable({
 		display: tag3.display,
 		mode: tag3.mode,

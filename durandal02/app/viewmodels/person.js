@@ -158,6 +158,11 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 	    return true;
 	}
     };
+    
+    Person.prototype.updateName = function( data, e ) {
+        e.stopPropagation();
+        $( e.currentTarget ).siblings('.name').trigger('click');
+    };
 
     Person.prototype.attached = function( view ) {
         this.view = view;

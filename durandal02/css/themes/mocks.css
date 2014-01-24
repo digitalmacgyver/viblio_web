@@ -373,6 +373,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
     cursor: pointer;
 }
 
+.person-img-editable {
+    top: 49px;
+}
+
 .person .name.tag3-editable {
     cursor: pointer;
 }
@@ -3462,6 +3466,19 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     width: 100%;
     max-width: 800px;
     margin: 40px auto 0;
+}
+
+.nginx-modal .paddingDiv {
+    padding: 25px 35px;
+}
+
+.nginx-modal .paddingDiv .btn {
+    margin-top: -10px;
+    margin-left: 20px;
+}
+
+.nginx-modal h3 {
+    display: inline-block;
 }
 
 #nginx table.file-container {

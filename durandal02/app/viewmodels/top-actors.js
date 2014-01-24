@@ -44,6 +44,7 @@ function (Events, router, app, system, viblio, Face, VideosFor, dialogs) {
         }
         if ( videosFor().isvisible() && showing_videos_for == face.data.uuid ) {
             videosFor().hide();
+	    currentSelection = null;
         }
         else {
             showing_videos_for = face.data.uuid; 
