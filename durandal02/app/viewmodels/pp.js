@@ -385,7 +385,8 @@ define(["durandal/app",
     // a call on the server to http://maps.googleapis.com
     //
     function getCountry(results)
-    {
+    {   
+        system.log(results);
         return results[0].formatted_address;
         for (var i = 0; i < results[0].address_components.length; i++) {
             var shortname = results[0].address_components[i].short_name;
