@@ -3511,6 +3511,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .hp .top-strip .right {
     float: left;
     width: 340px;
+    display: none;
 }
 
 /** top-actors **/

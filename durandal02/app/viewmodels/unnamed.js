@@ -113,7 +113,7 @@ function (router, system, app, viblio, Face, dialogs) {
 	},
 
 	compositionComplete: function( _view ) {
-	    view = _view;
+	    view = _view; this.view = _view;
 	    search();
 	    app.trigger( 'unnamed:composed', this );
 	}
