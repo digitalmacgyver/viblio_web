@@ -40,10 +40,31 @@ function (router, system, app, viblio, Face, dialogs) {
 
     function addFace( face ) {
 	var f = new Face( face, {
-	    show_name: false,
-	    show_tag3: true,
+	    show_name: true,
+	    clickable: true,
+	    click: name_face
 	} );
 	faces.push( f );
+    }
+
+    function name_face( person ) {
+	$(view).find('.pp-faces-need-names').on( 'init', function( e, editable ) {
+	    //editable.show();
+	    console.log( 'INIT' );
+	});
+	$(view).find('.pp-faces-need-names span').editable({
+	    mode: 'inline',
+	    type: 'text',
+	    value: '',
+	    success: function( res, newvalue ) {
+		console.log( 'newval', newvalue );
+		$(view).find('.pp-faces-need-names span').editable('destroy');
+		$(view).find('.pp-faces-need-names span').html('These faces need names!');
+	    }
+	});
+	setTimeout( function() {
+	    $(view).find('.pp-faces-need-names span').editable( 'show' );
+	}, 500 );
     }
 
     function search() {
