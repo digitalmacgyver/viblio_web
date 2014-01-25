@@ -3626,6 +3626,7 @@ div.fstrip {
 }
 .unnamed .pp-faces-need-names {
     width: 290px;
+    height: 23px;
 }
 .unnamed .pp-faces-need-names::before {
     left: 132px;
@@ -3641,5 +3642,11 @@ div.fstrip {
     margin-left: 0px;
 }
 .unnamed .editable-input input[type="text"] {
-    width: 112px;
+    width: 165px;
+    height: 25px;
+}
+
+.unnamed .editable-container .editable-buttons button {
+    width: 25px;
+    height: 25px;
 }
