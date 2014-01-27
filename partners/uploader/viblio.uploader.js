@@ -6,9 +6,12 @@
 	    accept: /(\.|\/)(3gp|avi|flv|m4v|mp4|mts|mov|mpeg|mpg|ogg|swf|mwv)$/i,
 	    concurrent: 4,
 	    maxFileSize: 10000000000, // 10G
-	    display_progress: true,
+	    dropzone_effects: true,
+	    display_stats: true,
 	    done_message: 'Done, pending review',
 	    cancel_message: 'Canceled!',
+	    waiting_message: 'waiting...',
+	    template: null,
             messages: {
                 maxNumberOfFiles: 'Maximum number of files exceeded',
                 acceptFileTypes: 'Only video file types are uploadable',
@@ -120,6 +123,21 @@
 	    return this._vpin_progress;
 	},
 
+	alert: function( msg, append ) {
+	    var elem = this.element;
+	    if ( append )
+		elem.find('.vup-alert span').append(msg);
+	    else
+		elem.find('.vup-alert span').html(msg);
+	    elem.find('.vup-alert').slideDown();
+	    elem.find('.vup-alert').on( 'click.vup', function() {
+		elem.find('.vup-alert').slideUp(function() {
+		    elem.find('.vup-alert span').empty();
+		    elem.find('.vup-alert').unbind( 'click.vup' );
+		});
+	    });
+	},
+
 	_create: function() {
 	    var self = this;
 	    var elem = self.element;
@@ -127,9 +145,9 @@
 	    self._vpin_progress = 0;
 	    self.BR = 0;
 	    self.BP = 0;
-	    self._html();
+	    elem.append( self.options.template || self._html() );
 	    self._reset_stats();
-	    if ( self.options.display_progress )
+	    if ( self.options.display_stats )
 		elem.find( '.vup-stats' ).css( 'visibility', 'visible' );
 	    elem.find('input[type=file]').bootstrapFileInput();
             elem.find('input[type=file]').fileupload({
@@ -140,7 +158,7 @@
                 retryTimeout: 1000,
                 multipart: false,
                 dataType: 'text',
-                dropZone: elem,
+                dropZone: elem.find('.vup-area'),
                 acceptFileTypes: self.options.accept,
                 maxFileSize: self.options.maxFileSize,
                 minFileSize: 10, // 10 Bytes
@@ -153,17 +171,10 @@
                     }).always(function() {
 			if ( data.files.error ) {
                             var msg = data.files[0].error;
-                            elem.find('.vup-alert span').append('<p>'+self._fileName(data)+': '+msg);
-                            //elem.find('.vup-alert').css('visibility','visible');
-			    elem.find('.vup-alert').slideDown();
-			    elem.find('.vup-alert').on( 'click.vup', function() {
-				elem.find('.vup-alert').slideUp(function() {
-				    elem.find('.vup-alert span').empty();
-				    elem.find('.vup-alert').unbind( 'click.vup' );
-				});
-			    });
+			    self.alert( self._fileName(data)+': '+msg+'<br/>', true );
 			}
 			else {
+			    elem.find('.vup-cancel-all').css( 'visibility', 'visible' );
 			    elem.find('.vup-instructions').css( 'visibility', 'hidden' );
 			    self._vpin_progress += 1;
 
@@ -197,7 +208,8 @@
                             var sessionID = submit_url.split('/').pop();
 
 			    $(row).find(".vup-filename-column").text(filename);
-                            $(row).find(".vup-file-progress-column").html(self._createProgressBar(progress));
+                            //$(row).find(".vup-file-progress-column").html(self._createProgressBar(progress));
+			    $(row).find(".vup-file-progress-column").html('<span class="bar" style="width:0%;">' + self.options.waiting_message + '</span>' );
                             $(row).find(".vup-cancel-column").append(cancelButton);
                             $(row).attr("sessionID", sessionID);
                             $(row).attr("offset", 0 );
@@ -319,17 +331,47 @@
 	    elem.find('.vup-cancel-all').click( function() {
 		self._cancelAllUploads();
 	    });
+	    if ( self.options.dropzone_effects ) {
+		$(document).bind('dragover.VUP', function (e) {
+		    var dropZone = elem.find('.vup-area' );
+		    timeout = window.dropZoneTimeout;
+		    if (!timeout) {
+			dropZone.addClass('in');
+		    } else {
+			clearTimeout(timeout);
+		    }
+		    var found = false,
+		    node = e.target;
+		    do {
+			if (node === dropZone[0]) {
+			    found = true;
+			    break;
+			}
+			node = node.parentNode;
+		    } while (node != null);
+		    if (found) {
+			dropZone.addClass('hover');
+		    } else {
+			dropZone.removeClass('hover');
+		    }
+		    window.dropZoneTimeout = setTimeout(function () {
+			window.dropZoneTimeout = null;
+			dropZone.removeClass('in hover');
+		    }, 100);
+		});
+	    }
 	},
 
 	_destroy: function() {
+	    $(document).unbind( 'dragover.VUP' );
             this.element.find('input[type=file]').fileupload( 'destroy' );
 	},
 
 	_html: function() {
-	    this.element.append('\
+	    return ('\
       <div class="vup-banner">\
-	<button type="button" class="vup-cancel-all">Cancel All</button>\
-	<input  title="Add Files..." type="file" class="vup-add-files" name="files[]" multiple />\
+	<a href="#" type="button" class="vup-cancel-all vup-btn">Cancel All</a>\
+	<input  title="Add Files..." type="file" class="vup-add-files vup-btn" name="files[]" multiple />\
       </div>\
       <div class="vup-instructions"><div>Drop Files Here</div></div>\
       <div class="vup-alert"><span></span></div>\
