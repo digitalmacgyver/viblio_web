@@ -1,17 +1,46 @@
 (function($) {
     $.widget( 'viblio.viblio_uploader', {
 	options: {
+	    // REQUIRED.  The Viblio user uuid that is doiing this upload.
 	    uuid: '682DC812-05C3-11E3-839F-54DE3DA5649D',
-	    endpoint: 'https://staging.viblio.com/files',
+	    //
+	    // The endpoint of the Viblio upload server.  This should
+	    // normally not be changed.  For developers, it may be useful
+	    // to set this to https://staging.viblio.com/files.
+	    endpoint: 'https://viblio.com/files',
+	    //
+	    // The file types to accept.  Currently viblio only accepts
+	    // video files.
 	    accept: /(\.|\/)(3gp|avi|flv|m4v|mp4|mts|mov|mpeg|mpg|ogg|swf|mwv)$/i,
+	    //
+	    // The maximum number of concurrent videos that can be uploaded
+	    // in parallel.  Others will wait in a queue until a slot opens up.
 	    concurrent: 4,
+	    //
+	    // The maximum video file size to accept, in bytes
 	    maxFileSize: 10000000000, // 10G
+	    //
+	    // Whether to generate dynamic css classes that can be used to
+	    // animate the dropzone.
 	    dropzone_effects: true,
+	    //
+	    // Whether to display upload statistics during the upload.
 	    display_stats: true,
+	    //
+	    // What to display when a video file has completed upload
 	    done_message: 'Done, pending review',
-	    cancel_message: 'Canceled!',
+	    //
+	    // What to say when a video file upload is cancelled
+	    cancel_message: 'Cancelled!',
+	    //
+	    // What to say when a video file is waiting for a slot to upload
 	    waiting_message: 'waiting...',
+	    //
+	    // For skinning, you can override the html template used to
+	    // render the UI.
 	    template: null,
+	    //
+	    // Validation error messages
             messages: {
                 maxNumberOfFiles: 'Maximum number of files exceeded',
                 acceptFileTypes: 'Only video file types are uploadable',
@@ -370,7 +399,7 @@
 	_html: function() {
 	    return ('\
       <div class="vup-banner">\
-	<a href="#" type="button" class="vup-cancel-all vup-btn">Cancel All</a>\
+	<a class="vup-cancel-all vup-btn">Cancel All</a>\
 	<input  title="Add Files..." type="file" class="vup-add-files vup-btn" name="files[]" multiple />\
       </div>\
       <div class="vup-instructions"><div>Drop Files Here</div></div>\
