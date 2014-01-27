@@ -3544,6 +3544,14 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
    cursor: pointer;
 }
 
+.albumThumbTitle {
+    width: 350px;
+    height: 25px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .no-comms {
     width: 100%;
     max-width: 800px;
