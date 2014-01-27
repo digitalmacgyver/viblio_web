@@ -149,5 +149,9 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	this.image( this.media().views.poster.url );
     };
     
+    Video.prototype.change_title = function( newTitle ) {
+	this.title( newTitle );
+    };
+    
     return Video;
 });

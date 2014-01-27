@@ -1,15 +1,15 @@
 <div class="your-videos">
-  <div class="nav-title">
+  <!--<div class="nav-title">
     <p class="mainTitle textShadowed"  data-bind="text: title"></p>
-  </div>
+  </div>-->
   <div class="nav-btns">
-    <button class="btn" data-bind="css:{'btn-blue':selected()['yv-all'] == true, 'btn-white':selected()['yv-all'] != true },
-				   click: screen.bind( $data, 'All Your Videos', 'yv-all' )">All Your Videos</button>
-    <button class="btn" data-bind="css:{'btn-blue':selected()['yv-popular'] == true, 'btn-white':selected()['yv-popular'] != true },
-				   click: screen.bind( $data, 'Your Most Popular Videos', 'yv-popular' )">Most Popular</button>
-    <button class="btn" data-bind="css:{'btn-blue':selected()['yv-albums'] == true, 'btn-white':selected()['yv-albums'] != true },
-				   click: screen.bind( $data, 'Your Albums', 'yv-albums' )">Your Albums</button>
-    <button class="btn" data-bind="css:{'btn-blue':selected()['communities'] == true, 'btn-white':selected()['communities'] != true },
+    <button class="btn" data-bind="css:{'btn-blue':last_selected() == 'yv-all', 'btn-white':last_selected() != 'yv-all' },
+				   click: screen.bind( $data, 'All My Videos', 'yv-all' )">All My Videos</button>
+    <button class="btn" data-bind="css:{'btn-blue':last_selected() == 'yv-popular', 'btn-white':last_selected() != 'yv-popular' },
+				   click: screen.bind( $data, 'My Most Popular Videos', 'yv-popular' )">Most Popular</button>
+    <button class="btn" data-bind="css:{'btn-blue':last_selected() == 'yv-albums', 'btn-white':last_selected() != 'yv-albums' },
+				   click: screen.bind( $data, 'My Albums', 'yv-albums' )">My Albums</button>
+    <button class="btn" data-bind="css:{'btn-blue':last_selected() == 'communities', 'btn-white':last_selected() != 'communities' },
 				   click: screen.bind( $data, 'Communities You Belong To', 'communities' )">Communities</button>
   </div>
   <div class="containerxx">

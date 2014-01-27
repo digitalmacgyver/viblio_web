@@ -18,7 +18,10 @@
     <div class="table">
       <div id="allVidsWrap">
 	<!-- ko foreach: media -->
-	<!-- ko compose: $data --><!--/ko-->
+        <div class="albumWrap pull-left">
+            <p class="font20 textShadowed lightWeightFont albumThumbTitle" data-bind="text: $data.albumTitle"></p>
+            <!-- ko compose: $data --><!--/ko-->
+        </div>
 	<!-- /ko -->
       </div>
     </div>

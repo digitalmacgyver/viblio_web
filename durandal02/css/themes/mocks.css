@@ -3497,6 +3497,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 /**** Your Videos Page ***/
+.your-videos {
+    padding-top: 45px;
+}
+
 .your-videos .nav-title {
     text-align: center;
     padding-top: 40px;

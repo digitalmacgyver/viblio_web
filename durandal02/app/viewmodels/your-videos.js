@@ -2,26 +2,29 @@ define([], function() {
 
     var title = ko.observable();
     var view  = ko.observable();
-    var selected = ko.observable({});
-    var last_selected = 'yv-all';
-    selected()[last_selected] = true;
-
-    title( 'Your Videos' );
-    view( 'viewmodels/yv-all' );
+    //var selected = ko.observable({});
+    var last_selected = ko.observable( null );
+    //selected()[last_selected] = true;
 
     return {
 	title: title,
 	view: view,
-	selected: selected,
-
-	screen: function( _title, _model ) {
+	//selected: selected,
+        last_selected: last_selected,
+        
+        screen: function( _title, _model ) {
 	    title( _title );
 	    view( 'viewmodels/' + _model );
-	    var s = selected();
-	    s[last_selected] = false;
-	    last_selected = _model;
-	    s[last_selected] = true;
-	    selected( s );
-	}
+            last_selected( _model );
+	},
+        
+        compositionComplete: function() {
+            if( last_selected() == null ) {
+                last_selected('yv-all');
+                title( 'Your Videos' );
+                view( 'viewmodels/yv-all' );
+            }
+        }
+        
     };
 });
