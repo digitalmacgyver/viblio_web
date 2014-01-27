@@ -6,6 +6,7 @@
 	    accept: /(\.|\/)(3gp|avi|flv|m4v|mp4|mts|mov|mpeg|mpg|ogg|swf|mwv)$/i,
 	    concurrent: 4,
 	    maxFileSize: 10000000000, // 10G
+	    display_progress: true,
 	    done_message: 'Done, pending review',
 	    cancel_message: 'Canceled!',
             messages: {
@@ -14,6 +15,57 @@
                 maxFileSize: 'File is too large',
                 minFileSize: 'File is too small'
             }
+	},
+
+	_overall_bitrate: function( v ) {
+	    this.element.find('.vup-overall-bitrate').html(v);
+	},
+
+	_overall_percent: function( v ) {
+	    this.element.find('.vup-overall-percent').html(v);
+	},
+
+	_overall_size: function( v ) {
+	    this.element.find('.vup-overall-size').html(v);
+	},
+
+	_reset_stats: function() {
+            this._overall_bitrate('0');
+            this._overall_percent('0%');
+            this._overall_size('0 / 0');
+	},
+
+	_formatFileSize: function (bytes) {
+            if (typeof bytes !== 'number') {
+		return '';
+            }
+            if (bytes >= 1000000000) {
+		return (bytes / 1000000000).toFixed(2) + ' GB';
+            }
+            if (bytes >= 1000000) {
+		return (bytes / 1000000).toFixed(2) + ' MB';
+            }
+            return (bytes / 1000).toFixed(2) + ' KB';
+	},
+
+	_formatBitrate: function (bits) {
+            if (typeof bits !== 'number') {
+		return '';
+            }
+            if (bits >= 1000000000) {
+		return (bits / 1000000000).toFixed(2) + ' Gbit/s';
+            }
+            if (bits >= 1000000) {
+		return (bits / 1000000).toFixed(2) + ' Mbit/s';
+            }
+            if (bits >= 1000) {
+		return (bits / 1000).toFixed(2) + ' kbit/s';
+            }
+            return bits.toFixed(2) + ' bit/s';
+	},
+	
+	_formatPercentage: function (floatValue) {
+            return (floatValue * 100).toFixed(2) + ' %';
 	},
 
 	_fileName: function( data ) {
@@ -48,11 +100,37 @@
             }
 	},
 
+	_cancelAllUploads: function() {
+	    var self = this;
+            $(this._vpfiles).each(function(index, file) {
+		self._cancelUpload(index);
+            });
+	},
+
+	// Public method.  Cancel all uploads in progress.  Might be called when
+	// leaving a page.
+	cancel_all_uploads: function() {
+	    this._cancelAllUploads();
+	},
+
+	// Public method.  Returns 0 if there are no files in progress, non-zero
+	// if there are.  Can be used to decide whether to leave the page (prompt
+	// the user) if there is danger of losing uploads.
+	in_progress: function() {
+	    return this._vpin_progress;
+	},
+
 	_create: function() {
 	    var self = this;
 	    var elem = self.element;
 	    self._vpfiles = [];
 	    self._vpin_progress = 0;
+	    self.BR = 0;
+	    self.BP = 0;
+	    self._html();
+	    self._reset_stats();
+	    if ( self.options.display_progress )
+		elem.find( '.vup-stats' ).css( 'visibility', 'visible' );
 	    elem.find('input[type=file]').bootstrapFileInput();
             elem.find('input[type=file]').fileupload({
 		url: self.options.endpoint,
@@ -151,6 +229,13 @@
                     $(data.context).attr("offset", data.loaded);
                 },
 		progressall: function (e, data) {
+		    self.BR += data.bitrate;
+                    self.BP += 1;
+                    var ave = self.BR / self.BP;
+
+                    self._overall_bitrate( self._formatBitrate(ave) );
+                    self._overall_percent( self._formatPercentage( data.loaded / data.total ) );
+                    self._overall_size( self._formatFileSize(data.loaded) + ' / ' + self._formatFileSize(data.total) );
 		},
 		beforeSend: function(e, files, index, xhr, handler, callback) {
                     var chrome, context, device, file, filename, filesize, ios, sessionID, offset;
@@ -213,7 +298,7 @@
                     if (retryCount < maxRetries) {
                         window.setTimeout(function() {
                             // Set the row's progress bar section to display that we are trying again
-                            row.find(".vup-file-progress-column").html("<label>Retry #" + retryCount + "</label>");
+                            row.find(".vup-file-progress-column .bar").html("Retry #" + retryCount );
  
                             // Increment the retry count and set it back on the row
                             row.data("retries", retryCount += 1);
@@ -226,15 +311,48 @@
                         
                     } else {
                         // We've met our retry limit. Indicate that this upload has failed.
-                        row.find(".vup-file-progress-column").html("<label>Upload failed</label>");
+                        row.find(".vup-file-progress-column .bar").html("Upload failed");
                         self._vpin_progress -= 1;
                     }
                 }
 	    });
+	    elem.find('.vup-cancel-all').click( function() {
+		self._cancelAllUploads();
+	    });
 	},
 
 	_destroy: function() {
-            elem.find('input[type=file]').fileupload( 'destroy' );
+            this.element.find('input[type=file]').fileupload( 'destroy' );
+	},
+
+	_html: function() {
+	    this.element.append('\
+      <div class="vup-banner">\
+	<button type="button" class="vup-cancel-all">Cancel All</button>\
+	<input  title="Add Files..." type="file" class="vup-add-files" name="files[]" multiple />\
+      </div>\
+      <div class="vup-instructions"><div>Drop Files Here</div></div>\
+      <div class="vup-alert"><span></span></div>\
+      <div class="vup-area">\
+	<table class="vup-files">\
+	</table>\
+      </div>\
+      \
+      <div class="vup-stats">\
+	<table>\
+	  <tr>\
+            <td><span class="vup-data-point vup-overall-bitrate"></span></td>\
+            <td><span class="vup-data-point vup-overall-percent"></span></td>\
+            <td><span class="vup-data-point vup-overall-size"></span></td>\
+	  </tr>\
+	  <tr>\
+            <td><span class="vup-data-title">Upload Speed</span></td>\
+            <td><span class="vup-data-title">Percent Done</span></td>\
+            <td><span class="vup-data-title">Data Uploaded</span></td>\
+	  </tr>\
+	</table>\
+      </div>\
+');
 	}
     });
 })(jQuery);

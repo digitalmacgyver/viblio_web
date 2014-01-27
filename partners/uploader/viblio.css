@@ -28,11 +28,13 @@
     text-align: center;
 }
 
+.vup-files .vup-cancel-column a {
+    color: #ccc;
+}
 .vup-files .vup-cancel-column a,
 .vup-files .vup-cancel-column a:hover,
 .vup-files .vup-cancel-column a:visited {
     text-decoration: none;
-    color: #ccc;
 }
 
 .vup-instructions {
@@ -68,4 +70,26 @@
     display: inline-block;
     cursor: pointer;
 }
-    
+
+.vup-data-title,
+.vup-data-point { 
+    text-align: left;
+}
+
+.vup-data-point {
+    font-size: 24px;
+}
+
+.vup-stats {
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    padding: 8px;
+    visibility: hidden;
+}
+.vup-stats table {
+    width: 100%;
+}
+.vup-stats table td {
+    width: 33%;
+}

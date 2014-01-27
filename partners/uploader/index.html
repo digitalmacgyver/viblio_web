@@ -9,20 +9,10 @@
   </head>
   <body>
 
-    <div class="vup">
-      <div class="vup-banner">
-	<button type="button" class="vup-cancel-all btn">Cancel All</button>
-	<input  title="Add Files..." type="file" class="vup-add-files btn" id="fileupload" name="files[]" multiple />
-      </div>
-      <div class="vup-instructions"><div>Drop Files Here</div></div>
-      <div class="vup-alert"><span></span></div>
-      <div class="vup-progress"></div>
-      <div class="vup-area">
-	<table class="vup-files">
-	</table>
-      </div>
-    </div>
+    <!-- The Viblio file uploader -->
+    <div class="vup"></div>
 
+    <!-- script dependencies -->
     <script src="jquery-1.9.1.min.js"></script>
     <script src="jquery.ui.widget.js"></script>
     <script src="jquery.iframe-transport.js"></script>
@@ -33,8 +23,16 @@
     <script src="viblio.uploader.js"></script>
     <script>
       $(document).ready( function() {
+        // instanciate the uploader
         $('.vup').viblio_uploader({
         });
+        // style buttons using bootstrap
+        $('.vup').find('.vup-cancel-all')
+            .addClass( 'btn')
+            .addClass( 'btn-danger' );
+        $('.vup').find('.vup-add-files')
+            .addClass( 'btn')
+            .addClass( 'btn-primary' );
       });
     </script>
   </body> 
