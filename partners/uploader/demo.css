@@ -1,0 +1,24 @@
+body { font-family: "Segoe UI", Arial, sans-serif; }
+
+.vup-banner {
+    padding: 8px;
+}
+
+.vup-area {
+    height: 200px;
+    overflow: auto;
+    border: 1px dashed black;
+    padding: 8px;
+}
+
+.vup-filename-column {
+    font-weight: bold;
+}
+
+/* progress bar */
+.vup-file-progress-column span.bar {
+    width: 0%;
+    background-color: aliceblue;
+    display: block;
+    text-align: center;
+}

@@ -1,0 +1,71 @@
+.vup {
+    position: relative;
+}
+.vup-cancel-all {
+    float: right;
+}
+
+/* .file-input-wrapper is an <a> that looks like
+   <a class="file-input-wrapper btn vup-add-files">
+     Browse
+     <input type="file" ... />
+   </a>
+*/
+.vup .file-input-wrapper {
+}
+
+.vup-files {
+    width: 100%;
+}
+.vup-files .vup-filename-column {
+    width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.vup-files .vup-cancel-column {
+    width: 40px;
+    text-align: center;
+}
+
+.vup-files .vup-cancel-column a,
+.vup-files .vup-cancel-column a:hover,
+.vup-files .vup-cancel-column a:visited {
+    text-decoration: none;
+    color: #ccc;
+}
+
+.vup-instructions {
+    position: absolute;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+    opacity: 0.2;
+    margin-top: 40px;
+}
+
+/* applied to the vup-file-progress-column when the
+   file is done uploading. */
+.vp-file-done {
+}
+
+.vup-alert {
+    position: absolute;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+    text-align: center;
+    display: none;
+}
+
+.vup-alert span {
+    background-color: red;
+    color: white;
+    width: 300px;
+    display: inline-block;
+    cursor: pointer;
+}
+    

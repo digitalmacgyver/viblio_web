@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Viblio Media Upload Example</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="viblio.css" />
+    <link rel="stylesheet" href="demo.css" />
+  </head>
+  <body>
+
+    <div class="vup">
+      <div class="vup-banner">
+	<button type="button" class="vup-cancel-all btn">Cancel All</button>
+	<input  title="Add Files..." type="file" class="vup-add-files btn" id="fileupload" name="files[]" multiple />
+      </div>
+      <div class="vup-instructions"><div>Drop Files Here</div></div>
+      <div class="vup-alert"><span></span></div>
+      <div class="vup-progress"></div>
+      <div class="vup-area">
+	<table class="vup-files">
+	</table>
+      </div>
+    </div>
+
+    <script src="jquery-1.9.1.min.js"></script>
+    <script src="jquery.ui.widget.js"></script>
+    <script src="jquery.iframe-transport.js"></script>
+    <script src="jquery.fileupload.js"></script>
+    <script src="jquery.fileupload-process.js"></script>
+    <script src="jquery.fileupload-validate.js"></script>
+    <script src="bootstrap.file-input.js"></script>
+    <script src="viblio.uploader.js"></script>
+    <script>
+      $(document).ready( function() {
+        $('.vup').viblio_uploader({
+        });
+      });
+    </script>
+  </body> 
+</html>
