@@ -148,10 +148,10 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 
 	if ( self.clickable() ) {
 	    if ( self.options.click ) {
-		self.options.click( self );
+		self.options.click( self, e );
 	    }
 	    else {
-		self.trigger( 'person:selected', self );
+		self.trigger( 'person:selected', self, e );
 	    }
 	}
 	else {
