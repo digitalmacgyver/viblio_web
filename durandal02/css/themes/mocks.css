@@ -386,6 +386,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 }
 
 .editable-click, a.editable-click, a.editable-click:hover {
+    cursor: pointer;
     border-bottom: 0;
 }
 
@@ -485,7 +486,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 /* Trying to get a universal strip
  */
 .horizontal-strip {
-    padding: 35px 0 40px 0;
+    padding: 45px 0 40px 0;
 }
 
 .horizontal-strip .title {
@@ -3437,12 +3438,12 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 /********** Help Tab *************/
 
-.lightBlueBG .helpContainer {
-    top: 0;
+.orangeBG .helpContainer{
+    top: 8px;
 }
 
 .helpContainer {
-    top: 5px;
+    top: 0px;
     position: absolute;
     right: 20px;
 }
@@ -3458,7 +3459,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 @media (max-width: 900px) {
-    .helpContainer.stickyTop {
+    .orangeBG .helpContainer {
         top: 0;
         position: absolute;
     }
@@ -3469,16 +3470,16 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     z-index: 1001;
     display: none;
     width: 300px;
-    background-color: rgb(49, 53, 67);
+    background-color: white;
     padding: 8px;
     font-size: 16px;
-    font-weight: 100;
+    font-weight: 400;
+    cursor: pointer;
 }
 
 .helptab {
-    z-index: 100;
-    background-color: rgb(49, 53, 67);
-    opacity: .8;
+    z-index: 1001;
+    background-color: white;
     padding: 2px 8px;
     width: 85px;
     cursor: pointer;
@@ -3488,9 +3489,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     border-bottom: 3px inset rgba(0, 0, 0, 0.2);
 }
 
-.helpContainer.active .helptab,
 .helptab:hover {
-    opacity: 1;
+    -moz-box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
+    -webkit-box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
+    box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
 }
 
 .helptab i {
@@ -3501,6 +3503,17 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .helptab div {
     display: inline-block;
+}
+
+.manageHelp img {
+    height: 28px;
+}
+
+.unknownHelp img {
+    margin: 5px 0;
+    -moz-box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, 0.6);
+    -webkit-box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, 0.6);
+    box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, 0.6);
 }
 
 /**** Your Videos Page ***/
