@@ -373,6 +373,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
     cursor: pointer;
 }
 
+.person-img-editable {
+    top: 49px;
+}
+
 .person .name.tag3-editable {
     cursor: pointer;
 }
@@ -3542,6 +3546,19 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     margin: 40px auto 0;
 }
 
+.nginx-modal .paddingDiv {
+    padding: 25px 35px;
+}
+
+.nginx-modal .paddingDiv .btn {
+    margin-top: -10px;
+    margin-left: 20px;
+}
+
+.nginx-modal h3 {
+    display: inline-block;
+}
+
 #nginx table.file-container {
     border: 1px dashed;
     overflow: auto;
@@ -3562,18 +3579,17 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 /** New Home Page **/
 
 .hp .top-strip .cont {
-    margin-right: -340px; 
-    /* margin-right: 0px; */
+    margin-right: -340px;
     float: left;
     width: 100%;
 }
 .hp .top-strip .cont .left {
-    /* margin-right: 340px; */
     margin-right: 0px;
 }
 .hp .top-strip .right {
     float: left;
     width: 340px;
+    display: none;
 }
 
 /** top-actors **/
@@ -3610,6 +3626,7 @@ div.fstrip {
 }
 .unnamed .pp-faces-need-names {
     width: 290px;
+    height: 23px;
 }
 .unnamed .pp-faces-need-names::before {
     left: 132px;
@@ -3625,5 +3642,36 @@ div.fstrip {
     margin-left: 0px;
 }
 .unnamed .editable-input input[type="text"] {
-    width: 112px;
+    width: 165px;
+    height: 25px;
+}
+
+.unnamed .editable-container .editable-buttons button {
+    width: 25px;
+    height: 25px;
+}
+
+/* For the viblio uploader plugin */
+/* dropzone effect */
+.vup-area.hover {
+    background: #ccc;
+}
+
+/* bold filenames */
+.vup-filename-column {
+    font-weight: bold;
+}
+
+/* red-ish cancel buttons */
+.vup-files .vup-cancel-column a {
+    color: #da4f49;
+}
+
+.vup-area table tr > td {
+    padding-bottom: 3px;
+}
+
+.vup-area {
+    margin-right: 10px;
+    margin-left: 10px;
 }

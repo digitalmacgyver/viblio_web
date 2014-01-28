@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Viblio Media Upload Example</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="viblio.css" />
+    <link rel="stylesheet" href="demo.css" />
+  </head>
+  <body>
+
+    <!-- The Viblio file uploader -->
+    <div class="vup"></div>
+
+    <!-- script dependencies -->
+    <script src="vendor/jquery-1.9.1.min.js"></script>
+    <script src="vendor/jquery.ui.widget.js"></script>
+    <script src="vendor/jquery.iframe-transport.js"></script>
+    <script src="vendor/jquery.fileupload.js"></script>
+    <script src="vendor/jquery.fileupload-process.js"></script>
+    <script src="vendor/jquery.fileupload-validate.js"></script>
+    <script src="vendor/bootstrap.file-input.js"></script>
+    <script src="viblio.uploader.js"></script>
+    <script>
+      $(document).ready( function() {
+        // instanciate the uploader
+        $('.vup').viblio_uploader({
+          uuid: '682DC812-05C3-11E3-839F-54DE3DA5649D',
+          endpoint: 'https://staging.viblio.com/files'
+        });
+        /**
+        // style buttons using bootstrap
+        $('.vup').find('.vup-cancel-all')
+            .addClass( 'btn')
+            .addClass( 'btn-danger' );
+        $('.vup').find('.vup-add-files')
+            .addClass( 'btn')
+            .addClass( 'btn-primary' );
+        **/
+      });
+    </script>
+  </body> 
+</html>

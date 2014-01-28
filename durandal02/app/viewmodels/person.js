@@ -148,15 +148,20 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 
 	if ( self.clickable() ) {
 	    if ( self.options.click ) {
-		self.options.click( self );
+		self.options.click( self, e );
 	    }
 	    else {
-		self.trigger( 'person:selected', self );
+		self.trigger( 'person:selected', self, e );
 	    }
 	}
 	else {
 	    return true;
 	}
+    };
+    
+    Person.prototype.updateName = function( data, e ) {
+        e.stopPropagation();
+        $( e.currentTarget ).siblings('.name').trigger('click');
     };
 
     Person.prototype.attached = function( view ) {

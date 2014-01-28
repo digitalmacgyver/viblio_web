@@ -18,11 +18,16 @@ function (Events, router, app, system, viblio, Face, VideosFor, dialogs) {
 
     var faces = ko.observableArray([]);
     var currentSelection = null;
-    var pager = {
+    var pager = {};
+    function reset_pager() {
+	pager = {
             next_page: 1,
             entries_per_page: 50,
             total_entries: -1 /* currently unknown */
         };
+    }
+    reset_pager();
+
     var fetched = ko.observable( false );
 
     // When new faces arrive in the system async, add them
@@ -113,6 +118,12 @@ function (Events, router, app, system, viblio, Face, VideosFor, dialogs) {
 	    $(window).width() );
     };
 
+    app.on( 'unnamed:tagged', function( face ) {
+	faces.removeAll();
+	reset_pager();
+	search();
+    });
+
     return {
 	title: title,
 	subtitle: subtitle,
@@ -137,6 +148,8 @@ function (Events, router, app, system, viblio, Face, VideosFor, dialogs) {
 
 	compositionComplete: function( _view ) {
 	    view = _view;
+	    faces.removeAll();
+	    reset_pager();
 	    search();
 	    resize_fstrip();
 	    app.trigger( 'top-actors:composed', this );

@@ -41,7 +41,7 @@ define( ['durandal/app', 'durandal/system', 'plugins/dialog', 'viewmodels/loadin
 	    return dialog.showAnimated( new ChangePassword() );
 	},
 	showInteractiveMap: function( mediafile, options ) {
-	    return dialog.showAnimated( new IMap( mediafile, options ) );
+	    return app.showDialog( new IMap( mediafile, options ) );
 	},
 	showMagicTag: function( face ) {
 	    // return app.showDialog( new MagicTag( face ) );
