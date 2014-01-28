@@ -1,0 +1,161 @@
+Viblio Uploader Widget
+----------------------
+
+Use this jQuery plugin to implement a video file uploader on your site for
+uploading video files to the Viblio system.
+
+Getting Started
+---------------
+
+1. Include the default style sheet into your page header(s):
+
+   <link rel="stylesheet" href="viblio.uploader.css" />
+
+2. Include the plugin and its dependencies at the bottom of your page,
+   just above the closing </body> tag:
+
+   <script src="vendor/jquery-1.9.1.min.js"></script>
+   <script src="vendor/jquery.ui.widget.js"></script>
+   <script src="vendor/jquery.iframe-transport.js"></script>
+   <script src="vendor/jquery.fileupload.js"></script>
+   <script src="vendor/jquery.fileupload-process.js"></script>
+   <script src="vendor/jquery.fileupload-validate.js"></script>
+   <script src="vendor/bootstrap.file-input.js"></script>
+   <script src="viblio.uploader.js"></script>
+
+3. Somewhere on your page, include the following where you want the
+   uploader to appear:
+
+   <div class="vup"></div>
+
+4. Apply the plugin to the div.  Something like:
+
+   $(document).ready( function() {
+     $(".vup").viblio_uploader({
+       uuid: viblio.get_user_uuid( userid )
+     });
+   });
+
+Options
+-------
+
+The uploader plugin accepts thr following options:
+
+  {
+    // REQUIRED.  The Viblio user uuid that is doiing this upload.
+    uuid: '682DC812-05C3-11E3-839F-54DE3DA5649D',
+    //
+    // The endpoint of the Viblio upload server.  This should
+    // normally not be changed.  For developers, it may be useful
+    // to set this to https://staging.viblio.com/files.
+    endpoint: 'https://viblio.com/files',
+    //
+    // The file types to accept.  Currently viblio only accepts
+    // video files.
+    accept: /(\.|\/)(3gp|avi|flv|m4v|mp4|mts|mov|mpeg|mpg|ogg|swf|mwv)$/i,
+    //
+    // The maximum number of concurrent videos that can be uploaded
+    // in parallel.  Others will wait in a queue until a slot opens up.
+    concurrent: 4,
+    //
+    // The maximum video file size to accept, in bytes
+    maxFileSize: 10000000000, // 10G
+    //
+    // Whether to generate dynamic css classes that can be used to
+    // animate the dropzone.
+    dropzone_effects: true,
+    //
+    // Whether to display upload statistics during the upload.
+    display_stats: true,
+    //
+    // What to display when a video file has completed upload
+    done_message: 'Done, pending review',
+    //
+    // What to say when a video file upload is cancelled
+    cancel_message: 'Cancelled!',
+    //
+    // What to say when a video file is waiting for a slot to upload
+    waiting_message: 'waiting...',
+    //
+    // For skinning, you can override the html template used to
+    // render the UI.
+    template: null,
+    //
+    // Validation error messages
+    messages: {
+       maxNumberOfFiles: 'Maximum number of files exceeded',
+       acceptFileTypes: 'Only video file types are uploadable',
+       maxFileSize: 'File is too large',
+       minFileSize: 'File is too small'
+    }
+  }
+
+Methods
+-------
+
+var files_in_progress = $('.vup').viblio_uploader( 'in_progress' );
+
+Will tell you if files are currenty being uploaded.  Will be zero if an upload
+is not in progress or the number of files in the upload queue if an upload is
+in progress.  Should be used in page-leave situations, where you want to prompt
+the user should they accidentally kill ongoing uploads.
+
+$('.vup').viblio_uploader( 'cancel_all_uploads' );
+
+Will cancel all ongoing and waiting uploads.  Might call this after checking
+for files_in_progress, and the user wishing to leave the page anyway.
+
+$('.vup').viblio_uploader( 'alert', message, should_append );
+
+Can send an alert to the user using the uploader's error mechanism.  If
+should_append is true, then append the message to anything that is already
+there.
+
+Skinning
+--------
+
+The plugin creates the following DOM structure as children of the div on
+which the plugin is attached:
+
+   <div class="vup-banner">
+     <a class="vup-cancel-all vup-btn">Cancel All</a>
+     <a class="vup-add-files vup-btn">
+       <input  title="Add Files..." type="file" class="vup-add-files vup-btn" name="files[]" multiple />
+     </a>
+   </div>
+
+   <div class="vup-instructions"><div>Drop Files Here</div></div>
+   <div class="vup-alert"><span></span></div>
+
+   <div class="vup-area">
+     <table class="vup-files">
+       <tr>
+	 <td class="vup-filename-column"></td>
+	 <td class="vup-file-progress-column">
+	   <span class="bar"></span>
+	 </td>
+	 <td class="vup-cancel-column">
+	   <a class="vup-cancel-file">&times;</a>
+	 </td>
+       </tr>
+     </table>
+   </div>
+   
+   <div class="vup-stats">
+     <table>
+       <tr>
+         <td><span class="vup-data-point vup-overall-bitrate"></span></td>
+         <td><span class="vup-data-point vup-overall-percent"></span></td>
+         <td><span class="vup-data-point vup-overall-size"></span></td>
+       </tr>
+       <tr>
+         <td><span class="vup-data-title">Upload Speed</span></td>
+         <td><span class="vup-data-title">Percent Done</span></td>
+         <td><span class="vup-data-title">Data Uploaded</span></td>
+       </tr>
+     </table>
+   </div>
+
+You can style this structure in place, or you may supply your own template
+via the "template" option when you instanciate the plugin.  If you supply 
+your own template, you must have elements with the same class names.
