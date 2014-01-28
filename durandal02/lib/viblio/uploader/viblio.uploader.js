@@ -40,6 +40,12 @@
 	    // render the UI.
 	    template: null,
 	    //
+	    // Added to the alert window when an alert is triggered
+	    alert_class: null,
+	    //
+	    // Added to the alert window when a notify is triggered
+	    notify_class: null,
+	    //
 	    // Validation error messages
             messages: {
                 maxNumberOfFiles: 'Maximum number of files exceeded',
@@ -161,6 +167,29 @@
 		elem.find('.vup-alert span').append(msg);
 	    else
 		elem.find('.vup-alert span').html(msg);
+	    if ( this.options.notify_class )
+		elem.find('.vup-alert span').removeClass( this.options.notify_class );
+	    if ( this.options.alert_class )
+		elem.find('.vup-alert span').addClass( this.options.alert_class );
+	    elem.find('.vup-alert').slideDown();
+	    elem.find('.vup-alert').on( 'click.vup', function() {
+		elem.find('.vup-alert').slideUp(function() {
+		    elem.find('.vup-alert span').empty();
+		    elem.find('.vup-alert').unbind( 'click.vup' );
+		});
+	    });
+	},
+
+	notify: function( msg, append ) {
+	    var elem = this.element;
+	    if ( append )
+		elem.find('.vup-alert span').append(msg);
+	    else
+		elem.find('.vup-alert span').html(msg);
+	    if ( this.options.alert_class )
+		elem.find('.vup-alert span').removeClass( this.options.alert_class );
+	    if ( this.options.notify_class )
+		elem.find('.vup-alert span').addClass( this.options.notify_class );
 	    elem.find('.vup-alert').slideDown();
 	    elem.find('.vup-alert').on( 'click.vup', function() {
 		elem.find('.vup-alert').slideUp(function() {
@@ -271,6 +300,8 @@
 		done: function(e, data) {
 		    $(data.context[0]).data( 'done', true );
                     self._vpin_progress -= 1;
+		    if ( self._vpin_progress == 0 )
+			self.notify( 'Your uploaded videos are now being processed to find and bring out the magic!' );
                     data.context.find(".vup-file-progress-column .bar").html( self.options.done_message );
                     data.context.find(".vup-file-progress-column .bar").addClass( 'vp-file-done' );
                     data.context.find( '.vup-cancel-column').empty();

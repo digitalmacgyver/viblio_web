@@ -21,7 +21,9 @@ define(['lib/viblio','lib/config','plugins/dialog'],function(viblio,config,dialo
 	    $(view).find( '.vup' ).viblio_uploader({
 		uuid: viblio.getUser().uuid,
 		endpoint: '/files',
-		done_message: 'Done; Processing...'
+		done_message: 'Done; Processing...',
+		alert_class: 'alert-error',
+		notify_class: 'alert-success'
 	    });
 	    $(view).find('.vup-cancel-all')
 		.addClass( 'btn')
@@ -29,7 +31,7 @@ define(['lib/viblio','lib/config','plugins/dialog'],function(viblio,config,dialo
             $(view).find('.vup-add-files')
 		.addClass( 'btn')
 		.addClass( 'btn-success' );
-	    $(view).find('.vup-alert span').addClass('alert').addClass('alert-block').addClass('alert-error');
+	    $(view).find('.vup-alert span').addClass('alert').addClass('alert-block');
 
 	    // This special modal needs to be wider and higher than the
 	    // standard dialog ...
