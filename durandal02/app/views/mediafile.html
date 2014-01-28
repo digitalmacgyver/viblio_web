@@ -8,10 +8,10 @@
         </a>
         <i class="icon-ok-sign"></i>
         <div class='pointer' data-bind="click:play">
-            <img data-bind="{attr:{src:image}}" />
+            <img data-bind="attr:{src:image}" />
         </div>
         <div class="information">
-            <div class="aux pull-right muted"><img src='css/images/viewsEye.png'/><span data-bind="html: media().eyes">0</span></div>
+            <div class="aux pull-right muted"><img src='css/images/viewsEye.png' alt="view count"/><span data-bind="html: media().eyes">0</span></div>
             <div data-bind="liveEditor: title, ifnot: ro">
                 <div class="view vidTitle title truncate" data-bind="click: title.edit, text: title() || 'Click to edit title'"></div>
                 <div class="editTitle-Wrap">

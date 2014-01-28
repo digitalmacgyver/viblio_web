@@ -116,7 +116,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 self.numVids( self.numVids() + share.media.length );
                 var mediafiles = ko.observableArray([]);
                 share.media.forEach( function( mf ) {
-                    var m = new Mediafile( mf, { ro: true } ); //m.ro( true );
+                    var m = new Mediafile( mf, { ro: true, show_delete_mode: self.deleteModeOn() } ); //m.ro( true );
                     m.on( 'mediafile:play', function( m ) {
                         router.navigate( 'web_player?mid=' + m.media().uuid );
                     });
@@ -147,12 +147,14 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	if ( self.sharedLabel() === 'My Videos' ) {
 	    self.sharedLabel( 'Shared with me' );
             self.showShared( false );
+            self.editLabel( 'Remove...' );
         } else {
 	    self.sharedLabel( 'My Videos' )
             self.showShared( true );
             //only fetch the shared videos once
             if(self.sharedAlreadyFetched === false) {
                 self.getShared();
+                self.editLabel( 'Remove...' );
             }
         }
     };

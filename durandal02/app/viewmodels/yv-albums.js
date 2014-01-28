@@ -20,7 +20,7 @@ function( system, router, viblio, dialogs, Mediafile ) {
     var media = ko.observableArray([]);
     var searching = ko.observable( true );
     var editLabel = ko.observable( 'Remove...' );
-
+    
     var deleteModeOn = ko.computed( function() {
         if( editLabel() === 'Done' ) {
             return true;
@@ -36,10 +36,30 @@ function( system, router, viblio, dialogs, Mediafile ) {
 		viblio.api( '/services/album/list', { views: ['poster'], page: pager.next_page, rows: pager.entries_per_page } ).then( function( data ) {
 		    pager = data.pager;
 		    data.albums.forEach( function( mf ) {
-			var m = new Mediafile( mf, { show_share_badge: true, 
+			var m = new Mediafile( mf, { ro: true,
+                                                     show_share_badge: true, 
 						     show_preview: false,
 						     share_action: 'trigger',
 						     show_delete_mode: deleteModeOn() } );
+                        
+                        // Add album title to show in GUI
+                        m.albumTitle = mf.title;
+                        m.albumPosterUri = mf.views.poster.uri.slice( 0, mf.views.poster.uri.indexOf('/') );
+                        // Get title of poster image
+                        mf.media.forEach( function( media ){
+                            if( media.uuid == m.albumPosterUri ) {
+                                mf.posterTitle = media.title;
+                            }
+                        });
+                        m.albumLength = mf.media.length;
+                        m.videoOrVideos = ko.computed(function(){
+                            if( m.albumLength == 1 ) {
+                                return 'Video';
+                            } else {
+                                return 'Videos';
+                            }
+                        });
+                                                 
 			m.on( 'mediafile:play', function( m ) {
 			    router.navigate( 'viewAlbum?aid=' + m.media().uuid );
 			});
@@ -61,15 +81,18 @@ function( system, router, viblio, dialogs, Mediafile ) {
 			// this album.
 			//
 			m.on( 'mediafile:composed', function() {
+                            m.change_title( mf.posterTitle );
 			    $(m.view).on( 'mouseover', function() {
 				if ( ! m.i_timer ) {
 				    var count = 0;
 				    m.change_poster( m.media().media[count].views.poster.url );
+                                    m.change_title( m.media().media[count].title );
 				    count += 1;
 				    if ( count >= m.media().media.length )
 					count = 0;
 				    m.i_timer = setInterval( function() {
 					m.change_poster( m.media().media[count].views.poster.url );
+                                        m.change_title( m.media().media[count].title );
 					count += 1;
 					if ( count >= m.media().media.length )
 					    count = 0;
@@ -79,6 +102,7 @@ function( system, router, viblio, dialogs, Mediafile ) {
 			    $(m.view).on( 'mouseleave', function() {
 				clearInterval( m.i_timer ); m.i_timer = 0;
 				m.reset_poster();
+                                m.change_title( mf.posterTitle );
 			    });
 			});
 
@@ -124,6 +148,11 @@ function( system, router, viblio, dialogs, Mediafile ) {
 	    resetPager();
 	    media.removeAll();
 	    search();
+            
+            // Add click event to secondary buttons to toggle active class
+            $('.yv-secondary-nav .btn').on('click', function(){
+                $(this).toggleClass('active');
+            });
 	},
 
 	add: function() {

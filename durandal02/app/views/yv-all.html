@@ -5,8 +5,8 @@
     <button class="btn btn-small btn-secondary" data-bind="click: add_videos">Add...</button>
     <!-- /ko -->
 
-    <!-- ko if: ( hits() && !showShared() )> 0 || ( numVids() > 0 && showShared() ) --> 
-    <button class="btn btn-small btn-secondary" data-bind="click: toggleEditMode, text: editLabel"></button>
+    <!-- ko if: ( hits() > 0 && !showShared() ) || ( numVids() > 0 && showShared() ) -->
+    <button class="btn btn-small btn-secondary" data-bind="click: toggleEditMode, css: { active: deleteModeOn() == true }, text: editLabel"></button>
     <!-- /ko -->
 
     <!-- ko if: !showShared() -->
@@ -28,7 +28,7 @@
     <!-- /ko -->
 
     <!-- ko if: !name() -->
-    <button class="btn btn-small btn-secondary" data-bind="click: toggleShared, text: sharedLabel"></button>
+    <button class="btn btn-small btn-secondary" data-bind="click: function(data, event){ toggleShared(), $(event.target).toggleClass('active') }, text: sharedLabel"></button>
     <!-- /ko -->
 
   </div>

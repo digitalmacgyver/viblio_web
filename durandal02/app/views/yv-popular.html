@@ -1,9 +1,4 @@
-<div class="allVidsPage">
-  <div class="yv-secondary-nav">
-    <button class="btn btn-small btn-secondary" data-bind="click: add">Add...</button>
-    <button class="btn btn-small btn-secondary" data-bind="visible: media().length > 0, click: toggleEditMode, text: editLabel"></button>
-  </div>
-    
+<div class="allVidsPage">  
   <!-- ko if: searching() -->
     <div class="mfLoader">
       <i class="icon-spinner icon-5x icon-spin active"></i>
@@ -13,7 +8,7 @@
 
   <div data-bind="visible: media().length > 0">
     <div style="display: block; text-align: center;" class="mainTitle textShadowed">
-      Most watched, sorted by view count
+      Most watched videos, sorted by view count
     </div>
     <div class="table">
       <div id="allVidsWrap">
