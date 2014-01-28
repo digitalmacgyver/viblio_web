@@ -3677,3 +3677,28 @@ div.fstrip {
     width: 25px;
     height: 25px;
 }
+
+/* For the viblio uploader plugin */
+/* dropzone effect */
+.vup-area.hover {
+    background: #ccc;
+}
+
+/* bold filenames */
+.vup-filename-column {
+    font-weight: bold;
+}
+
+/* red-ish cancel buttons */
+.vup-files .vup-cancel-column a {
+    color: #da4f49;
+}
+
+.vup-area table tr > td {
+    padding-bottom: 3px;
+}
+
+.vup-area {
+    margin-right: 10px;
+    margin-left: 10px;
+}

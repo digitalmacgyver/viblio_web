@@ -81,6 +81,12 @@ The uploader plugin accepts thr following options:
     // render the UI.
     template: null,
     //
+    // Added to the alert window when an alert is triggered
+    alert_class: null,
+    //
+    // Added to the alert window when a notify is triggered
+    notify_class: null,
+    //
     // Validation error messages
     messages: {
        maxNumberOfFiles: 'Maximum number of files exceeded',
@@ -159,3 +165,18 @@ which the plugin is attached:
 You can style this structure in place, or you may supply your own template
 via the "template" option when you instanciate the plugin.  If you supply 
 your own template, you must have elements with the same class names.
+
+Suggestions for Integration with Bootstrap
+------------------------------------------
+
+   $('.vup').viblio_uploader({
+       alert_class: 'alert-error',
+       notify_class: 'alert-success'
+   });
+   $('.vup .vup-cancel-all')
+       .addClass( 'btn')
+       .addClass( 'btn-danger' );
+   $('.vup .vup-add-files')
+       .addClass( 'btn')
+       .addClass( 'btn-success' );
+   $('.vup .vup-alert span').addClass('alert').addClass('alert-block');

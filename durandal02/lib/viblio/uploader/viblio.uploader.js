@@ -40,6 +40,12 @@
 	    // render the UI.
 	    template: null,
 	    //
+	    // Added to the alert window when an alert is triggered
+	    alert_class: null,
+	    //
+	    // Added to the alert window when a notify is triggered
+	    notify_class: null,
+	    //
 	    // Validation error messages
             messages: {
                 maxNumberOfFiles: 'Maximum number of files exceeded',
@@ -117,19 +123,22 @@
 	_cancelUpload: function( index ) {
 	    var files = this._vpfiles;
 	    if (files[index]) {
-		$(files[index].context).data('canceled', true);
-		if ( files[index].jqXHR ) {
-                    files[index].jqXHR.abort();
+		if ( ! $(files[index].context).data('done') ) {
+		    $(files[index].context).data('canceled', true);
+		    if ( files[index].jqXHR ) {
+			files[index].jqXHR.abort();
 
-                    // Cancel the upload on the server side
-                    var sessionID = $(files[index].context).attr('sessionID');
-                    var endpoint = this.options.endpoint + '/' + sessionID;
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("DELETE", endpoint, false ); // sync!
-                    xhr.send();
+			// Cancel the upload on the server side
+			var sessionID = $(files[index].context).attr('sessionID');
+			var endpoint = this.options.endpoint + '/' + sessionID;
+			var xhr = new XMLHttpRequest();
+			xhr.open("DELETE", endpoint, false ); // sync!
+			xhr.send();
+			files[index].jqXHR = null;
+			this._vpin_progress -= 1;
+		    }
 		}
-		this._vpin_progress -= 1;
-            }
+	    }
 	},
 
 	_cancelAllUploads: function() {
@@ -158,6 +167,29 @@
 		elem.find('.vup-alert span').append(msg);
 	    else
 		elem.find('.vup-alert span').html(msg);
+	    if ( this.options.notify_class )
+		elem.find('.vup-alert span').removeClass( this.options.notify_class );
+	    if ( this.options.alert_class )
+		elem.find('.vup-alert span').addClass( this.options.alert_class );
+	    elem.find('.vup-alert').slideDown();
+	    elem.find('.vup-alert').on( 'click.vup', function() {
+		elem.find('.vup-alert').slideUp(function() {
+		    elem.find('.vup-alert span').empty();
+		    elem.find('.vup-alert').unbind( 'click.vup' );
+		});
+	    });
+	},
+
+	notify: function( msg, append ) {
+	    var elem = this.element;
+	    if ( append )
+		elem.find('.vup-alert span').append(msg);
+	    else
+		elem.find('.vup-alert span').html(msg);
+	    if ( this.options.alert_class )
+		elem.find('.vup-alert span').removeClass( this.options.alert_class );
+	    if ( this.options.notify_class )
+		elem.find('.vup-alert span').addClass( this.options.notify_class );
 	    elem.find('.vup-alert').slideDown();
 	    elem.find('.vup-alert').on( 'click.vup', function() {
 		elem.find('.vup-alert').slideUp(function() {
@@ -233,38 +265,50 @@
                             xhr.open("POST", endpoint, false ); // sync!
                             xhr.setRequestHeader('Final-Length', file.size );
                             xhr.send(JSON.stringify({uuid: uuid, file:{Path:file.name}}));
-                            var submit_url = xhr.getResponseHeader("Location");
-                            var sessionID = submit_url.split('/').pop();
+			    if ( xhr.status != 200 && xhr.status != 201 ) {
+				$(row).find(".vup-filename-column").text(filename);
+				$(row).find(".vup-file-progress-column").html('<span class="bar" style="width:100%;">Upload failed: ' + xhr.statusText + '</span>' );
+				// Add the new file upload row to our list (table) of file uploads
+				$(row).appendTo(elem.find(".vup-files"));
+				self._vpin_progress -= 1;
+			    }
+			    else {
+				var submit_url = xhr.getResponseHeader("Location");
+				var sessionID = submit_url.split('/').pop();
 
-			    $(row).find(".vup-filename-column").text(filename);
-                            //$(row).find(".vup-file-progress-column").html(self._createProgressBar(progress));
-			    $(row).find(".vup-file-progress-column").html('<span class="bar" style="width:0%;">' + self.options.waiting_message + '</span>' );
-                            $(row).find(".vup-cancel-column").append(cancelButton);
-                            $(row).attr("sessionID", sessionID);
-                            $(row).attr("offset", 0 );
+				$(row).find(".vup-filename-column").text(filename);
+				$(row).find(".vup-file-progress-column").html('<span class="bar" style="width:0%;">' + self.options.waiting_message + '</span>' );
+				$(row).find(".vup-cancel-column").append(cancelButton);
+				$(row).attr("sessionID", sessionID);
+				$(row).attr("offset", 0 );
 			    
-                            // Add the new file upload row to our list (table) of file uploads
-                            $(row).appendTo(elem.find(".vup-files"));
+				// Add the new file upload row to our list (table) of file uploads
+				$(row).appendTo(elem.find(".vup-files"));
+				
+				// Assign this row to this upload's context
+				data.context = row;
 			    
-			    // Assign this row to this upload's context
-                            data.context = row;
-			    
-                            // Add this upload data to our files container
-                            data.finished = false;
-			    self._vpfiles.push( data );
-
-			    data.submit();
+				// Add this upload data to our files container
+				data.finished = false;
+				self._vpfiles.push( data );
+				
+				data.submit();
+			    }
 			}
 		    });
 		},
 		done: function(e, data) {
+		    $(data.context[0]).data( 'done', true );
                     self._vpin_progress -= 1;
+		    if ( self._vpin_progress == 0 )
+			self.notify( 'Your uploaded videos are now being processed to find and bring out the magic!' );
                     data.context.find(".vup-file-progress-column .bar").html( self.options.done_message );
                     data.context.find(".vup-file-progress-column .bar").addClass( 'vp-file-done' );
+                    data.context.find( '.vup-cancel-column').empty();
                 },
 		progress: function(e, data) {
                     var progress;
-                    data.context.removeData("retries");
+                    //data.context.removeData("retries");
                     progress = self._calculateProgress(data);
                     data.context.find(".vup-file-progress-column").html(self._createProgressBar(progress));
                     $(data.context).attr("offset", data.loaded);
@@ -293,7 +337,8 @@
  
                     // Get the generated sessionID for this upload
                     sessionID = $(context).attr("sessionID");
-                    offset = $(context).attr("offset");
+                    //offset = $(context).attr("offset");
+		    offset = files.uploadedBytes;
 
                     files.url += '/' + sessionID;
 
@@ -330,19 +375,21 @@
 
                     // Grab its current retry count
                     retryCount = row.data("retries") || 1;
- 
+		    var filename = row.find(".vup-filename-column").text();
+
                     // Get our maxRetries and retryTimeout settings
                     maxRetries = $(this).data("blueimpFileupload").options.maxRetries + 1;
                     retryTimeout = $(this).data("blueimpFileupload").options.retryTimeout;
                     
                     // If we can still attempt a retry
                     if (retryCount < maxRetries) {
+                        // Set the row's progress bar section to display that we are trying again
+                        row.find(".vup-file-progress-column .bar").html("Retry&nbsp;#" + retryCount + '/' + (maxRetries-1) );
                         window.setTimeout(function() {
-                            // Set the row's progress bar section to display that we are trying again
-                            row.find(".vup-file-progress-column .bar").html("Retry #" + retryCount );
  
                             // Increment the retry count and set it back on the row
-                            row.data("retries", retryCount += 1);
+			    retryCount += 1;
+                            row.data("retries", retryCount );
                             
                             // Reassign the uploadedBytes, then submit to start the upload again.
                             data.uploadedBytes = parseInt(row.attr("uploadedBytes"), 10);
@@ -352,7 +399,10 @@
                         
                     } else {
                         // We've met our retry limit. Indicate that this upload has failed.
-                        row.find(".vup-file-progress-column .bar").html("Upload failed");
+                        row.find(".vup-file-progress-column .bar").html("Upload failed: comm timeout");
+			row.find(".vup-file-progress-column .bar").css( 'width', '100%' );
+			row.find(".vup-file-progress-column .bar").addClass( 'vp-file-done' );
+                        row.find( '.vup-cancel-column').empty();
                         self._vpin_progress -= 1;
                     }
                 }

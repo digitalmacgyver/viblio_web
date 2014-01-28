@@ -1,5 +1,11 @@
 body { font-family: "Segoe UI", Arial, sans-serif; }
 
+/* error/alert box */
+.vup-alert span {
+    background-color: red;
+    color: white;
+}
+
 /* dropzone effect */
 .vup-area.hover {
     background: #ccc;
@@ -15,6 +21,7 @@ body { font-family: "Segoe UI", Arial, sans-serif; }
     color: #da4f49;
 }
 
+/* css buttons */
 .vup-add-files {
     -moz-box-shadow:inset 0px 1px 0px 0px #dcecfb;
     -webkit-box-shadow:inset 0px 1px 0px 0px #dcecfb;
@@ -64,6 +71,7 @@ body { font-family: "Segoe UI", Arial, sans-serif; }
     top:1px;
 }
 
+/* The alert window */
 .vup-alert span {
     -moz-box-shadow:inset 0px 1px 0px 0px #f29c93;
     -webkit-box-shadow:inset 0px 1px 0px 0px #f29c93;
@@ -98,6 +106,7 @@ body { font-family: "Segoe UI", Arial, sans-serif; }
     text-shadow:1px 1px 0px #b23e35;
 }
 
+/* css buttons */
 .vup-cancel-all {
     -moz-box-shadow:inset 0px 1px 0px 0px #f29c93;
     -webkit-box-shadow:inset 0px 1px 0px 0px #f29c93;
