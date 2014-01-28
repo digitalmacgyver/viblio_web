@@ -3599,23 +3599,6 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     display: inline-block;
 }
 
-#nginx table.file-container {
-    border: 1px dashed;
-    overflow: auto;
-    display: block;
-    padding: 5px;
-    position: relative;
-}
-
-#nginx .progress {
-    width: 30%;
-}
-
-#nginx .directions {
-    padding: 50px;
-    opacity: 0.6;
-}
-
 /** New Home Page **/
 
 .hp .top-strip .cont {
