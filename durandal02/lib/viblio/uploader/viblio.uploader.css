@@ -62,8 +62,6 @@
 }
 
 .vup-alert span {
-    background-color: red;
-    color: white;
     width: 300px;
     display: inline-block;
     cursor: pointer;
