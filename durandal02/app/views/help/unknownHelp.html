@@ -1,11 +1,19 @@
-<div>
-    To manage an unknown face you can:
-    <ol>
+<div class='unknownHelp'>
+    In this panel you can:
+    <ol data-bind="ifnot: $parent.faces_for_visible()">
         <li>
-            <strong>Identify</strong> them by clicking on their name and updating it. This will add them to your 'Identified People' 
+            <strong>Name</strong> a person that you want us to start automatically recognizing in your videos <img src='css/images/help/unknown.png' alt='Name a face' />  
         </li>
         <li>
-            <strong>Delete</strong> a face by clicking on the <i class="icon-remove-circle"></i>
+            <strong>Delete</strong> an image from your library <i class="icon-remove-circle"></i>
+        </li>
+    </ol>
+    <ol data-bind="if: $parent.faces_for_visible()">
+        <li>
+            <strong>Add</strong> an unknown face to <span data-bind="text: $parent.selected_name"></span>'s images <i class='icon-thumbs-up'></i>  
+        </li>
+        <li>
+            <strong>Delete</strong> an image from your library <i class="icon-remove-circle"></i>
         </li>
     </ol>
 </div>

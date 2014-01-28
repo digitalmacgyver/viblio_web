@@ -23,6 +23,7 @@
   </div>
 
   <div class="darkBlueBG horizontal-strip bottomBorder-Thin faces-for-face" data-bind="slideVisible: faces_for_visible()" >
+    <!-- ko compose: { model: manageHelp, preserveContext: true } --><!-- /ko --> 
     <div class="title">
       <button class="btn btn-primary pull-right" data-bind="click:done">Done</button>
       <span class="inline-editable marginL45 textShadowed whiteText" data-bind="html: selected_name">placeholder</span>
@@ -41,7 +42,7 @@
   </div>
 
   <div class="unknown_faces-container horizontalStrip lightBlueBG bottomBorder-Thin">
-      <!-- ko compose: unknownHelp --><!-- /ko --> 
+      <!-- ko compose: { model: unknownHelp, preserveContext: true } --><!-- /ko --> 
     <div>
       <p class="mainTitle marginL45 textShadowed whiteText">Unknown People</p>
       <span class="subtitle">Click on a person's name to identify them.</span>
