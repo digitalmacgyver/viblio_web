@@ -1,6 +1,6 @@
 <div class="allVidsPage">
   <div class="yv-secondary-nav">
-    <button class="btn btn-small btn-secondary" data-bind="click: add">Add...</button>
+    <button class="btn btn-small btn-secondary" data-bind="click: add">Add/Edit...</button>
     <button class="btn btn-small btn-secondary" data-bind="visible: media().length > 0, click: toggleEditMode, text: editLabel"></button>
   </div>
     
@@ -19,7 +19,9 @@
       <div id="allVidsWrap">
 	<!-- ko foreach: media -->
         <div class="albumWrap pull-left">
-            <p class="font20 textShadowed lightWeightFont albumThumbTitle" data-bind="text: $data.albumTitle"></p>
+            <p class="font20 textShadowed lightWeightFont albumThumbTitle">
+                <span class="heavyWeightFont" data-bind="text: $data.albumTitle"></span> <span>(<span data-bind="text: $data.albumLength"></span> <span data-bind="text: $data.videoOrVideos()"></span>)</span>
+            </p>
             <!-- ko compose: $data --><!--/ko-->
         </div>
 	<!-- /ko -->

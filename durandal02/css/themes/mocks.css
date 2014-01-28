@@ -3532,6 +3532,11 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     margin: 0 5px 10px;
 }
 
+.yv-secondary-nav .dropdown.open .btn,
+.yv-secondary-nav .btn.active {
+    background-color: rgb(50,53,68);
+}
+
 .yv-secondary-nav .dropdown-menu {
     min-width: 0;
     width: 128px;
@@ -3547,6 +3552,16 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .albumThumbTitle {
     width: 350px;
     height: 25px;
+}
+
+.albumThumbTitle > span {
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+}
+
+.albumThumbTitle > span:first-of-type {
+    max-width:268px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

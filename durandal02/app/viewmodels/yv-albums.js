@@ -51,6 +51,14 @@ function( system, router, viblio, dialogs, Mediafile ) {
                                 mf.posterTitle = media.title;
                             }
                         });
+                        m.albumLength = mf.media.length;
+                        m.videoOrVideos = ko.computed(function(){
+                            if( m.albumLength == 1 ) {
+                                return 'Video';
+                            } else {
+                                return 'Videos';
+                            }
+                        });
                                                  
 			m.on( 'mediafile:play', function( m ) {
 			    router.navigate( 'viewAlbum?aid=' + m.media().uuid );
@@ -140,6 +148,11 @@ function( system, router, viblio, dialogs, Mediafile ) {
 	    resetPager();
 	    media.removeAll();
 	    search();
+            
+            // Add click event to secondary buttons to toggle active class
+            $('.yv-secondary-nav .btn').on('click', function(){
+                $(this).toggleClass('active');
+            });
 	},
 
 	add: function() {
