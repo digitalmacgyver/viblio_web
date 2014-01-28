@@ -1619,6 +1619,13 @@ input:-moz-placeholder {
 #comments .comment-editor {
     padding: 8px;
     margin: 0;
+    position: relative;
+}
+
+.btn-Post {
+    position: absolute;
+    right: 8px;
+    bottom: 5px;
 }
 
 #info-table td,
