@@ -1,37 +1,58 @@
 (function($) {
     $.widget( 'viblio.viblio_player', {
 	options: {
-	    cf_domain: 's2gdj4u4bxrah6.cloudfront.net'
+	    cf_domain: 's2gdj4u4bxrah6.cloudfront.net',
+	    items_per_page: 13,
 	},
 	_create: function() {
 	    var self = this;
 	    var elem = self.element;
 
-	    self.sim = self._should_simulate();
+	    self.pager = { 
+		next_page: 1,
+		entries_per_page: self.options.items_per_page,
+		total_entries: -1 };
 
-	    viblio.api('/services/mediafile/list' ).then(
-		function( data ) {
-		    data.media.forEach( function( mf ) {
-			var m = $('<a class="fancybox" data-cf="' + mf.views.main.cf_url + 
-				  '" data-url="' + mf.views.main.url + 
-				  '" href="#' + mf.uuid + '"' +
-				  '" data-mid="' + mf.uuid + '">' + 
-				  '<img src="' +
-				  mf.views.poster.url +
-				  '" width=120 height=90 />' +
-				  '</a>');
-			//m.on( 'click.VP', function() {
-			//    var mid = m.attr( 'mid' );
-			//    console.log( 'clicked on:', mid );
-			//});
-			elem.append( m );
-		    });
-		    self._apply();
-		},
-		function( err ) {
-		    alert( err.message );
-		}
-	    );
+	    /* for flowplayer, use html5 player on mobile */
+	    self.sim = self._should_simulate();
+	    /* load templates */
+	    ich.addTemplate( 'mediafile', self._mediafile_template() );
+
+	    self.searching = false;
+	    /* set up infinite scroll handler */
+	    elem.on( 'scroll.VP', function() {
+		if ( self.searching == true ) return;
+		if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight)
+		    self._search();
+	    });
+	    /* fetch mediafiles */
+	    self._search();
+	},
+	_search: function() {
+	    var self = this;
+	    var elem = self.element;
+	    if ( self.pager.next_page ) {
+		self.searching = true;
+		var loading = $('<span>Loading...</span>').appendTo( elem );
+		viblio.api('/services/mediafile/list', 
+			   { page: self.pager.next_page, 
+			     rows: self.pager.entries_per_page } )
+		    .then(
+			function( data ) {
+			    self.searching = false;
+			    loading.remove();
+			    self.pager = data.pager;
+			    data.media.forEach( function( mf ) {
+				var m = ich.mediafile( mf );
+				elem.append( m );
+				self._apply( m );
+			    });
+			},
+			function( err ) {
+			    alert( err.message );
+			}
+		    );
+	    }
 	},
 	_should_simulate: function() {
 	    var videoel = document.createElement("video"),
@@ -41,9 +62,9 @@
 		!!(videoel.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"').replace(/no/, ''));
             return simulate;
 	},
-	_apply: function() {
+	_apply: function( elem ) {
 	    var self = this;
-	    $('.fancybox').fancybox({
+	    elem.fancybox({
 		tpl: {
 		    // wrap template with custom inner DIV: the empty player container
 		    wrap: '<div class="fancybox-wrap" tabIndex="-1">' +
@@ -88,6 +109,21 @@
 		    flowplayer().unload();
 		}
 	    });
+	},
+	_destroy: function() {
+	    this.element.unbind( 'scroll.VP' );
+	    flowplayer.unload();
+	},
+	_mediafile_template: function() {
+	    return '\
+<a class="fancybox vp-media" \
+   data-cf="{{ views.main.cf_url }}" \
+   data-url="{{ views.main.url }}" \
+   data-mid="{{ uuid }}" \
+   href="#{{ uuid }}"> \
+  <img src="{{ views.poster.url}}" width=240 height=135 /> \
+</a> \
+';
 	}
     });
 })(jQuery);
