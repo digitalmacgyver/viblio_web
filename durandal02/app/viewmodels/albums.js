@@ -314,6 +314,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	    pager.next_page = 1;
             pager.total_entries = -1;
 	    albums.removeAll();
+            monthsLabels.removeAll();
             self.getHits();
             // get months and create labels to use as selectors
             viblio.api( '/services/yir/months' ).then( function(data) {
@@ -322,10 +323,6 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
                 });   
             });
 	},
-        
-        detached: function() {
-            videos.removeAll();
-        },
 
 	compositionComplete: function() {
             var self = this;
