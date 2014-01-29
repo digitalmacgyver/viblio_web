@@ -73,6 +73,11 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
             }
         });
         
+        if ( self.options.show_delete_mode ) {
+            $( '.media-share-badge' ).addClass( 'hideme' );
+            $( '.dbtn' ).show();
+        }
+        
         // Once the album is composed and has a view, add mouse-over
         // callbacks that cycle through the media posters that belong to
         // this album. This can be turned off in the options, but is on by default.
@@ -161,11 +166,6 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	var self = this;
 	self.view = view;
 	self.trigger( 'album:composed', self );
-        
-        if ( self.options.show_delete_mode ) {
-            $( '.media-share-badge' ).addClass( 'hideme' );
-            $( '.dbtn' ).show();
-        }
     };
 
     Album.prototype.change_poster = function( url ) {
