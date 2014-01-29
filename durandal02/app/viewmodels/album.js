@@ -19,7 +19,6 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
     //
     var Album = function( data, options ) {
         var self = this;
-	data.eyes = data.view_count || 0;
         
 	this.options = $.extend({
             animated: true, // cycle through videos in album on mouse over
@@ -78,7 +77,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         // callbacks that cycle through the media posters that belong to
         // this album. This can be turned off in the options, but is on by default.
         if( this.options.animated == true ) {
-            this.on( 'mediafile:composed', function() {
+            this.on( 'album:composed', function() {
                 self.change_title( self.albumPosterTitle );
                 self.change_viewCount( self.albumPosterViews );
                 $(this.view).find('.mediafile').on( 'mouseover', function() {
@@ -122,17 +121,17 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
     // Toggle selected state and send an event.
     Album.prototype.select = function() {
 	this.selected( this.selected() ? false : true );
-	this.trigger( 'mediafile:selected', this );
+	this.trigger( 'album:selected', this );
     };
 
     // User clicked on play(), send an event.
     Album.prototype.play = function() {
-	this.trigger( 'mediafile:play', this );
+	this.trigger( 'album:view', this );
     };
 
     // User clicked on delete(), send an event
     Album.prototype.mfdelete = function() {
-	this.trigger( 'mediafile:delete', this );
+	this.trigger( 'album:delete', this );
     };
 
     Album.prototype.share = function() {
@@ -141,7 +140,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	else if ( this.options.share_action == 'modal' )
 	    dialogs.showShareVidModal( this );
 	else if ( this.options.share_action == 'trigger' )
-	    this.trigger( 'mediafile:share', this );
+	    this.trigger( 'album:share', this );
     };
     
     Album.prototype.toggleEditMode = function() {
@@ -155,13 +154,13 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
     // redraws, if needed.
     Album.prototype.attached = function( view ) {
 	this.view = view;
-	this.trigger( 'mediafile:attached', this );
+	this.trigger( 'album:attached', this );
     };
 
     Album.prototype.compositionComplete = function( view ) {
 	var self = this;
 	self.view = view;
-	self.trigger( 'mediafile:composed', self );
+	self.trigger( 'album:composed', self );
         
         if ( self.options.show_delete_mode ) {
             $( '.media-share-badge' ).addClass( 'hideme' );

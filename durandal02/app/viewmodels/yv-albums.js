@@ -36,17 +36,16 @@ function( system, router, viblio, dialogs, Album ) {
 		viblio.api( '/services/album/list', { views: ['poster'], page: pager.next_page, rows: pager.entries_per_page } ).then( function( data ) {
 		    pager = data.pager;
 		    data.albums.forEach( function( album ) {
-			var a = new Album( album, {     ro: false,
+			var a = new Album( album, {  ro: false,
                                                      show_share_badge: true, 
 						     show_preview: false,
 						     share_action: 'trigger',
 						     show_delete_mode: deleteModeOn() } );
-                        
-                        console.log(a);                 
-			a.on( 'mediafile:play', function( a ) {
+                                        
+			a.on( 'album:view', function( a ) {
 			    router.navigate( 'viewAlbum?aid=' + a.media().uuid );
 			});
-			a.on( 'mediafile:delete', function( a ) {
+			a.on( 'album:delete', function( a ) {
 			    viblio.api( '/services/album/delete_album', { aid: a.media().uuid } ).then( function() {
 				viblio.mpEvent( 'delete_album' );
 				albums.remove( a );
@@ -55,7 +54,7 @@ function( system, router, viblio, dialogs, Album ) {
 			//
 			// Share an album
 			//
-			a.on( 'mediafile:share', function() {
+			a.on( 'album:share', function() {
 			    dialogs.showMessage( 'This feature coming soon!', 'Share an Album' );
 			});
 
