@@ -22,7 +22,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	data.eyes = data.view_count || 0;
         
 	this.options = $.extend({
-            animated: true,
+            animated: true, // cycle through videos in album on mouse over
 	    ro: false,
 	    show_share_badge: false,
 	    share_action: 'modal', // 'modal' to popup showShareVidModal, 'trigger' to trigger mediafile:share, function as a callback
@@ -46,7 +46,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         
         this.albumPosterUri = this.media().views.poster.uri.slice( 0, this.media().views.poster.uri.indexOf('/') );
         this.posterTitle = ko.observable();
-        // Get title of poster image
+        // Get title and view count of poster image
         this.media().media.forEach( function( media ){
             console.log(media);
             if( media.uuid == self.albumPosterUri ) {
@@ -55,8 +55,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
             }
         });
         this.albumLength = this.media().media.length;
-        this.videoOrVideos = ko.computed(function(){
-            if( this.albumLength == 1 ) {
+        this.videoOrVideos = ko.computed(function() {
+            if( self.albumLength == 1 ) {
                 return 'Video';
             } else {
                 return 'Videos';
