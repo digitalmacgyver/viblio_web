@@ -41,15 +41,17 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         }
 	this.albumTitle = ko.observable( data.title );
 	this.description = ko.observable( data.description );
-
+        this.albumViews = ko.observable();
 	this.image = ko.observable( this.media().views.poster.url );
         
         this.albumPosterUri = this.media().views.poster.uri.slice( 0, this.media().views.poster.uri.indexOf('/') );
         this.posterTitle = ko.observable();
         // Get title of poster image
         this.media().media.forEach( function( media ){
+            console.log(media);
             if( media.uuid == self.albumPosterUri ) {
                 self.albumPosterTitle = media.title;
+                self.albumPosterViews = media.view_count;
             }
         });
         this.albumLength = this.media().media.length;
@@ -78,17 +80,20 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         if( this.options.animated == true ) {
             this.on( 'mediafile:composed', function() {
                 self.change_title( self.albumPosterTitle );
+                self.change_viewCount( self.albumPosterViews );
                 $(this.view).find('.mediafile').on( 'mouseover', function() {
                     if ( ! this.i_timer ) {
                         var count = 0;
                         self.change_poster( self.media().media[count].views.poster.url );
                         self.change_title( self.media().media[count].title );
+                        self.change_viewCount( self.media().media[count].view_count );
                         count += 1;
                         if ( count >= self.media().media.length )
                             count = 0;
                         this.i_timer = setInterval( function() {
                             self.change_poster( self.media().media[count].views.poster.url );
                             self.change_title( self.media().media[count].title );
+                            self.change_viewCount( self.media().media[count].view_count );
                             count += 1;
                             if ( count >= self.media().media.length )
                                 count = 0;
@@ -99,6 +104,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
                     clearInterval( this.i_timer ); this.i_timer = 0;
                     self.reset_poster();
                     self.change_title( self.albumPosterTitle );
+                    self.change_viewCount( self.albumPosterViews );
                 });
             });
         }
@@ -173,6 +179,10 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
     
     Album.prototype.change_title = function( newTitle ) {
 	this.posterTitle( newTitle );
+    };
+    
+    Album.prototype.change_viewCount = function( newCount ) {
+	this.albumViews( newCount );
     };
     
     return Album;
