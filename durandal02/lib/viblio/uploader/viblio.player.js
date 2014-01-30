@@ -27,6 +27,12 @@
 	    //   title:  'the title of the video played'
 	    // }
 	    play_callback: null,
+	    //
+	    // When to initiate a new page fetch for infinite scroll.  This is the
+	    // number of pixels in height still remaining in the scrolled area when
+	    // you want to fire another fetch.  A decent number is the height of the
+	    // mediafile object.
+	    scroll_offset: 90,
 	},
 	_create: function() {
 	    var self = this;
@@ -58,9 +64,9 @@
 	    self.searching = false;
 	    /* set up infinite scroll handler */
 	    self.media_area.on( 'scroll.VP', function() {
-		// console.log( $(this).scrollTop(), $(this).innerHeight(), $(this)[0].scrollHeight, $(this).scrollTop() + $(this).innerHeight() );
 		if ( self.searching == true ) return;
-		if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight)
+		//console.log( $(this).scrollTop(), $(this).innerHeight(), $(this)[0].scrollHeight, $(this).scrollTop() + $(this).innerHeight() );
+		if ($(this).scrollTop() + $(this).innerHeight() >= ( $(this)[0].scrollHeight - self.options.scroll_offset ) )
 		    self._search();
 	    });
 	    /* fetch mediafiles */
@@ -71,7 +77,7 @@
 	    var elem = self.media_area;
 	    if ( self.pager.next_page ) {
 		self.searching = true;
-		var loading = $('<span>Loading...</span>').appendTo( elem );
+		var loading = $('<span style="display: block;"><img src="img/loading.gif" /></span>').appendTo( elem );
 		viblio.api('/services/mediafile/list', 
 			   { page: self.pager.next_page, 
 			     rows: self.pager.entries_per_page } )
@@ -129,19 +135,70 @@
 		}
 	    }
 	},
+	_show_dialog: function( options, callback ) {
+	    var self = this;
+	    self.backdrop = $('<div class="vp-modal-backdrop"></div>');
+	    self.element.find( '.vp-dialog-wrapper' ).before( self.backdrop );
+	    self.element.find( '.vp-dialog-wrapper' ).html( ich.dialog( options ) );
+	    self.element.find( '.vp-dialog-wrapper .vp-dialog-footer button' ).on( 'click.VPDIALOG', function() {
+		var label = $(this).html();
+		callback( label );
+	    });
+	    this.element.find( '.vp-dialog' ).animate({height:'200px'});
+	},
+	_hide_dialog: function() {
+	    var self = this;
+	    self.element.find( '.vp-dialog-wrapper .vp-dialog-footer button' ).unbind( 'click.VPDIALOG' );
+	    self.element.find( '.vp-dialog-wrapper .vp-dialog' ).empty();
+	    self.element.find( '.vp-dialog' ).animate({height:'0px'}, function() {
+		self.element.find( '.vp-dialog-wrapper' ).empty();
+		self.backdrop.remove();
+	    });
+	},
 	_accept: function( m ) {
+	    var self = this;
+	    self._show_dialog({
+		clss: 'alert-success',
+		header: 'Accept Video',
+		body: 'You are about to accept this video for the community collection.  After this operation, everyone in the community will be able to view this video.',
+		buttons: [{ bclss:"", label: 'Cancel' },
+			  { bclss:"btn-success", label:'OK' }]
+	    }, function( answer ) {
+		if ( answer == 'OK' ) {
+		    m.remove();
+		}
+		self._hide_dialog();
+	    });
 	},
 	_reject: function( m ) {
-	},
-	_remove: function() {
-	    this.element.find( '.vp-dialog-wrapper' ).html( ich.dialog({
-		clss: 'alert-error',
-		header: 'Error',
-		body: 'This is an error message',
+	    var self = this;
+	    self._show_dialog({
+		clss: 'alert-warning',
+		header: 'Reject Video',
+		body: 'You are about to reject this video.  If you continue, this video will not be visibile to the community.',
 		buttons: [{ bclss:"", label: 'Cancel' },
-			  { bclss:"btn-primary", label:'OK' }]
-	    }));
-	    this.element.find( '.vp-dialog' ).animate({height:'200px'});
+			  { bclss:"btn-warning", label:'OK' }]
+	    }, function( answer ) {
+		if ( answer == 'OK' ) {
+		    m.remove();
+		}
+		self._hide_dialog();
+	    });
+	},
+	_remove: function( m ) {
+	    var self = this;
+	    self._show_dialog({
+		clss: 'alert-error',
+		header: 'Delete Video',
+		body: 'You are about to delete this video from the community collection.',
+		buttons: [{ bclss:"", label: 'Cancel' },
+			  { bclss:"btn-danger", label:'OK' }]
+	    }, function( answer ) {
+		if ( answer == 'OK' ) {
+		    m.remove();
+		}
+		self._hide_dialog();
+	    });
 	},
 	_should_simulate: function() {
 	    var videoel = document.createElement("video"),
@@ -282,7 +339,7 @@
   <div class="vp-dialog-body">{{ body }}</div>\
   <div class="vp-dialog-footer">\
     {{#buttons}}\
-      <button class="btn {{ bclss }}">{{ label }}</button>\
+      <button type="button" class="btn {{ bclss }}">{{ label }}</button>\
     {{/buttons}}\
   </div>\
 </div>\

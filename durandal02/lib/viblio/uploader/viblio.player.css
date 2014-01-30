@@ -159,3 +159,18 @@
     padding: 8px;
 }
 
+.vp-dialog-header {
+    font-size: 150%;
+    font-weight: bold;
+    margin-bottom: 11px;
+    border-bottom: 1px solid white;
+    line-height: 40px;
+    padding-bottom: 4px;
+}
+
+.vp-modal-backdrop {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 800;
+    background: rgba(0,0,0,0.7);
+}
