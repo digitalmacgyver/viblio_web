@@ -1,7 +1,7 @@
 <div class="allVidsPage">
   <div class="yv-secondary-nav">
     <button class="btn btn-small btn-secondary" data-bind="click: add">Add/Edit...</button>
-    <button class="btn btn-small btn-secondary" data-bind="visible: media().length > 0, click: toggleEditMode, text: editLabel"></button>
+    <button class="btn btn-small btn-secondary" data-bind="visible: albums().length > 0, click: toggleEditMode, text: editLabel"></button>
   </div>
     
   <!-- ko if: searching() -->
@@ -11,17 +11,14 @@
     </div>
   <!-- /ko -->  
 
-  <div data-bind="visible: media().length > 0">
+  <div data-bind="visible: albums().length > 0">
     <div style="display: block; text-align: center;" class="mainTitle textShadowed">
       Your media organized into albums.
     </div>
     <div class="table">
       <div id="allVidsWrap">
-	<!-- ko foreach: media -->
+	<!-- ko foreach: albums -->
         <div class="albumWrap pull-left">
-            <p class="font20 textShadowed lightWeightFont albumThumbTitle">
-                <span class="heavyWeightFont" data-bind="text: $data.albumTitle"></span> <span>(<span data-bind="text: $data.albumLength"></span> <span data-bind="text: $data.videoOrVideos()"></span>)</span>
-            </p>
             <!-- ko compose: $data --><!--/ko-->
         </div>
 	<!-- /ko -->
@@ -29,7 +26,7 @@
     </div>
   </div>
 
-  <div data-bind="visible: searching()==false && media().length == 0">
+  <div data-bind="visible: searching()==false && albums().length == 0">
     <p class="font24 tomatoFont doubleSpaced">
       Create albums to organize and share your video collection.  Click the add button above to get started!
     </p>
