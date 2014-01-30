@@ -7,7 +7,7 @@ body {
 
 .vp {
     height: 400px;
-    overflow: auto;
+    padding-top: 0;
 }
 
 .vp-media .slide-up > div,
