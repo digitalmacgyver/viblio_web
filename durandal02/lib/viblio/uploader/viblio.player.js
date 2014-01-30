@@ -1,10 +1,8 @@
 (function($) {
     $.widget( 'viblio.viblio_player', {
 	options: {
-	    // Cloudfront streaming domain.  YOU MUST USE different domain for testing verses production!
-	    // staging.viblio.com: s2gdj4u4bxrah6.cloudfront.net
-	    // viblio.com:         s3vrmtwctzbu8n.cloudfront.net
-	    cf_domain: 's2gdj4u4bxrah6.cloudfront.net',
+	    // The platform.  Use 'staging' for initial testing, 'production' when you deploy.
+	    platform: 'production',
 	    //
 	    // How many video files to fetch for each page of infinite scroll.  Should be 2-3 times what
 	    // fits in the area alloted.  Set to a huge number to effectively disable infinite scroll.
@@ -32,7 +30,19 @@
 	},
 	_create: function() {
 	    var self = this;
-	    var elem = self.element;
+
+	    if ( self.options.platform == 'staging' )
+		self.cf_domain = 's2gdj4u4bxrah6.cloudfront.net';
+	    else
+		self.cf_domain = 's3vrmtwctzbu8n.cloudfront.net';
+
+	    self.element.css( 'position', 'relative' );
+	    if ( ! self.options.dialog ) {
+		$('<div class="vp-dialog-wrapper"></div>').appendTo( self.element );
+	    }
+
+	    self.media_area = $('<div class="vp-media-area"></div>').appendTo( self.element );
+	    self.media_area.height( self.element.height() );
 
 	    self.pager = { 
 		next_page: 1,
@@ -43,10 +53,12 @@
 	    self.sim = self._should_simulate();
 	    /* load templates */
 	    ich.addTemplate( 'mediafile', self._mediafile_template() );
+	    ich.addTemplate( 'dialog', self._dialog_template() );
 
 	    self.searching = false;
 	    /* set up infinite scroll handler */
-	    elem.on( 'scroll.VP', function() {
+	    self.media_area.on( 'scroll.VP', function() {
+		// console.log( $(this).scrollTop(), $(this).innerHeight(), $(this)[0].scrollHeight, $(this).scrollTop() + $(this).innerHeight() );
 		if ( self.searching == true ) return;
 		if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight)
 		    self._search();
@@ -56,7 +68,7 @@
 	},
 	_search: function() {
 	    var self = this;
-	    var elem = self.element;
+	    var elem = self.media_area;
 	    if ( self.pager.next_page ) {
 		self.searching = true;
 		var loading = $('<span>Loading...</span>').appendTo( elem );
@@ -122,6 +134,14 @@
 	_reject: function( m ) {
 	},
 	_remove: function() {
+	    this.element.find( '.vp-dialog-wrapper' ).html( ich.dialog({
+		clss: 'alert-error',
+		header: 'Error',
+		body: 'This is an error message',
+		buttons: [{ bclss:"", label: 'Cancel' },
+			  { bclss:"btn-primary", label:'OK' }]
+	    }));
+	    this.element.find( '.vp-dialog' ).animate({height:'200px'});
 	},
 	_should_simulate: function() {
 	    var videoel = document.createElement("video"),
@@ -177,7 +197,7 @@
 			      // Cloudfront
 			      rtmp: {
 				  url: 'vendor/flowplayer/flowplayer.rtmp-3.2.12.swf',
-				  netConnectionUrl: 'rtmp://' + self.options.cf_domain + '/cfx/st'
+				  netConnectionUrl: 'rtmp://' + self.cf_domain + '/cfx/st'
 			      }
 			  },
 			  canvas: {
@@ -202,10 +222,10 @@
 	    });
 	},
 	_destroy: function() {
-	    this.element.unbind( 'mouseover.VP' );
-	    this.element.unbind( 'mouseleave.VP' );
-	    this.element.unbind( 'click.VP' );
-	    this.element.unbind( 'scroll.VP' );
+	    this.media_area.unbind( 'mouseover.VP' );
+	    this.media_area.unbind( 'mouseleave.VP' );
+	    this.media_area.unbind( 'click.VP' );
+	    this.media_area.unbind( 'scroll.VP' );
 	    flowplayer().unload();
 	},
 	refresh: function() {
@@ -214,10 +234,10 @@
 		next_page: 1,
 		entries_per_page: self.options.items_per_page,
 		total_entries: -1 };
-	    self.element.unbind( 'mouseover.VP' );
-	    self.element.unbind( 'mouseleave.VP' );
-	    self.element.unbind( 'click.VP' );
-	    self.element.empty();
+	    self.media_area.unbind( 'mouseover.VP' );
+	    self.media_area.unbind( 'mouseleave.VP' );
+	    self.media_area.unbind( 'click.VP' );
+	    self.media_area.empty();
 	    self._search();
 	},
 	_mediafile_template: function() {
@@ -253,6 +273,19 @@
     <div class="title vidTitle truncate">{{ title }}</div> \
   </div> \
 </div> </div>\
+';
+	},
+	_dialog_template: function() {
+	    return '\
+<div class="vp-dialog alert {{ clss }}">\
+  <div class="vp-dialog-header">{{ header }}</div>\
+  <div class="vp-dialog-body">{{ body }}</div>\
+  <div class="vp-dialog-footer">\
+    {{#buttons}}\
+      <button class="btn {{ bclss }}">{{ label }}</button>\
+    {{/buttons}}\
+  </div>\
+</div>\
 ';
 	}
     });

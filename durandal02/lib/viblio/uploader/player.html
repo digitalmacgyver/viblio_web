@@ -49,6 +49,7 @@
 		console.log( 'viblio user id:', viblio.vid() );
 		// ADD THE PLATER
 		$('.vp').viblio_player({
+                    platform: 'staging',
 		    play_callback: function( data ) {
 			console.log( 'play callback:', data );
 		    }

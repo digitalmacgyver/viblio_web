@@ -3,12 +3,13 @@
   width: 80% !important;
 }
 
-.vp {
+.vp-media-area {
     position: relative;
     text-align: center;
+    overflow: auto;
 }
 
-.vp .vp-media {
+.vp-media-area .vp-media {
     margin: 6px;
 }
 
@@ -127,3 +128,34 @@
 }
 .vp-logo img {
 }
+
+.vp-dialog-wrapper {
+    position: absolute;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+    text-align: center;
+    z-index: 9999;
+}
+
+.vp-dialog {
+    width: 300px;
+    display: inline-block;
+    position: relative;
+    text-align: left;
+    height: 0px;
+
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+
+    box-shadow: 4px 4px 5px #666;   
+}
+
+.vp-dialog-footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 8px;
+}
+
