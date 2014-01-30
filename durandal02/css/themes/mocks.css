@@ -1804,6 +1804,25 @@ input.edit,
     font-size: 14px;
 }
 
+.albumThumbTitle .tooltip {
+    font-weight: 600;
+}
+
+.albumThumbTitle .view:hover {
+    cursor: pointer;
+    background-color: white;
+}
+
+.albumThumbTitle .editing input.edit {
+    margin:  -24px 0 0 0;
+    padding: 0;
+    height: 25px;
+    font-size: 20px;
+    font-weight: 600;
+    max-width: 260px;
+    background-color: transparent;
+}
+
 /********************  Share Video Modal Section  *************************/
 
 #shareVidModal {
@@ -3201,6 +3220,18 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     width: 50%;
 }
 
+.a-table-right-td .mainTitle {
+    margin-bottom: 0;
+}
+
+.a-table-left-td .mainTitle {
+    margin-bottom: 36px;
+}
+
+.a-right-content {
+    padding-top: 36px;
+}
+
 .albums .a-content {
     width: 100%;
     overflow: auto;
@@ -3572,6 +3603,11 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .albumThumbTitle {
     width: 350px;
     height: 25px;
+    padding-left: 3px;
+}
+
+.albumThumbTitle div {
+    display: inline-block;
 }
 
 .albumThumbTitle > span {
@@ -3580,8 +3616,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     height: 100%;
 }
 
+.albumThumbTitle > div > div:first-of-type,
 .albumThumbTitle > span:first-of-type {
-    max-width:268px;
+    height: 23px;
+    max-width: 265px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

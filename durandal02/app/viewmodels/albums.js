@@ -30,7 +30,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
     // User changed an album title
     app.on( 'album:name_changed', function( album ) {
 	//viblio.log( 'new name', album.name() );
-	if ( album.uuid )
+	if ( album.uuid && album.name )
 	    viblio.api( '/services/album/change_title', { aid: album.uuid, title: album.name() } );
     });
     

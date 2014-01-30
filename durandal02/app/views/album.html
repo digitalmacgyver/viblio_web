@@ -1,0 +1,31 @@
+<div class="font20 textShadowed lightWeightFont albumThumbTitle">
+    <div data-bind="liveEditor: albumTitle, ifnot: ro">
+        <div class="view heavyWeightFont" data-bind="click: albumTitle.edit, text: albumTitle() ? albumTitle() : 'Click to add album title', tooltip:{title:'Click to edit album title'} "></div>
+        <div class="editAlbumTitle-Wrap">
+            <input type="text" class="edit" data-bind="value: albumTitle, 
+                                 hasFocus: albumTitle.editing, 
+                                 event: { blur: function() { albumTitle.stopEditing(); albumTitle.save( $data, media(), 'album:name_changed' ) } }" />
+        </div>  
+    </div>
+    <!-- ko if: ro -->
+    <span class="heavyWeightFont" data-bind="text: albumTitle || 'no title'"></span>
+    <!-- /ko -->
+    <span>(<span data-bind="text: albumLength"></span> <span data-bind="text: videoOrVideos()"></span>)</span>
+</div>
+<div class="mediafile" data-bind="attr:{id:media().uuid}">
+    <div>
+        <button class="dbtn btn btn-danger clearfix" data-bind="click:mfdelete">delete</button>
+	<a class="btn btn-primary media-share-badge" alt="share" title="share" data-bind="visible: show_share_badge, click: share"><i class="icon-share"></i></a>
+        <a class="mplay-icon pointer" data-bind="click:play">
+            <i class="icon-play-circle"></i> 
+        </a>
+        <i class="icon-ok-sign"></i>
+        <div class='pointer' data-bind="click:play">
+            <img data-bind="attr:{src:image}" />
+        </div>
+        <div class="information">
+            <div class="aux pull-right muted"><img src='css/images/viewsEye.png' alt="view count"/><span data-bind="text: albumViews">0</span></div>
+	    <div class="view title truncate" data-bind="text: posterTitle() || 'no title'"></div>
+        </div>
+    </div>
+</div>
