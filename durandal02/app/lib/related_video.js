@@ -1,4 +1,4 @@
-define(['lib/viblio','viewmodels/mediafile'], function(viblio,Mediafile) {
+define(['lib/viblio','viewmodels/mediafile','durandal/app'], function(viblio,Mediafile,app) {
 
     var mediafiles;
     var searching;
@@ -121,6 +121,6 @@ define(['lib/viblio','viewmodels/mediafile'], function(viblio,Mediafile) {
 		scroller.scrollTop( item.position().top + scroller.scrollTop() );
 	    }
 	},
-
+        
     };
 });

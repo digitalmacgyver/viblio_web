@@ -248,7 +248,6 @@ define(["durandal/app",
     }
 
     function resizeColumns() {
-        system.log('resizeColumns fired');
 	var player_height = $('.pp-tv').height();
 	// The faces/map column dictates the height of the other columns
 	var faces_map_height = $('.pp-info-faces-wrapper').height();
@@ -381,7 +380,7 @@ define(["durandal/app",
                     });
         }
     });
-
+    
     // Extracts an address from the structure returned from
     // a call on the server to http://maps.googleapis.com
     //
@@ -424,11 +423,13 @@ define(["durandal/app",
                     map.addMarker( m.lat, m.lng, m, true );
                     // ensures all map tiles are shown when the map is shown
                     map.data("map").invalidateSize();
+                    resizePlayer();
                 }
                 else {
                     isNear( 'Find in map' );
                     // comingSoon(m);
                     nolocation( true );
+                    resizePlayer();
                 }
             });
         }
@@ -436,6 +437,7 @@ define(["durandal/app",
             isNear( 'Find in map' );
             // comingSoon(m);
             nolocation( true );
+            resizePlayer();
         }
     }
 
