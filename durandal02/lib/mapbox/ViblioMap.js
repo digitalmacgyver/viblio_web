@@ -7,7 +7,7 @@
     var settings;
     var mapIcon;
     var va;
-
+    
     $.fn.vibliomap = function( options ) {
 	settings = $.extend({
 	    tiles: 'aqpeeb.map-pu25jc1g',

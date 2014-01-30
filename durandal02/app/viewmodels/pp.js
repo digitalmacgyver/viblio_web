@@ -380,13 +380,12 @@ define(["durandal/app",
                     });
         }
     });
-
+    
     // Extracts an address from the structure returned from
     // a call on the server to http://maps.googleapis.com
     //
     function getCountry(results)
     {   
-        system.log(results);
         return results[0].formatted_address;
         for (var i = 0; i < results[0].address_components.length; i++) {
             var shortname = results[0].address_components[i].short_name;
@@ -422,11 +421,15 @@ define(["durandal/app",
                     nolocation( false );
                     isNear( getCountry( res ) );
                     map.addMarker( m.lat, m.lng, m, true );
+                    // ensures all map tiles are shown when the map is shown
+                    map.data("map").invalidateSize();
+                    resizePlayer();
                 }
                 else {
                     isNear( 'Find in map' );
                     // comingSoon(m);
                     nolocation( true );
+                    resizePlayer();
                 }
             });
         }
@@ -434,6 +437,7 @@ define(["durandal/app",
             isNear( 'Find in map' );
             // comingSoon(m);
             nolocation( true );
+            resizePlayer();
         }
     }
 
@@ -822,7 +826,7 @@ define(["durandal/app",
 	    map = $("#geo-map").vibliomap({
                 disableZoomControl: true
             });
-
+            
 	    // center/zoom to media file location
             near( playing().media() );
 
@@ -832,7 +836,7 @@ define(["durandal/app",
 		Related.init( '.pp-related-column-related-videos', mediafiles, query_in_progress, function( m ) {
 		    playRelated( m );
 		}, ( route == 'web_player' ));
-		Related.search( playing().media().uuid );
+		Related.search( playing().media().uuid, {}, resizePlayer );
 	    }
 
 	    // related video search widget
