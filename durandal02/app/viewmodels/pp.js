@@ -386,7 +386,6 @@ define(["durandal/app",
     //
     function getCountry(results)
     {   
-        system.log(results);
         return results[0].formatted_address;
         for (var i = 0; i < results[0].address_components.length; i++) {
             var shortname = results[0].address_components[i].short_name;
@@ -822,7 +821,8 @@ define(["durandal/app",
 	    map = $("#geo-map").vibliomap({
                 disableZoomControl: true
             });
-
+            system.log( map );
+            
 	    // center/zoom to media file location
             near( playing().media() );
 
