@@ -166,10 +166,6 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	goToUpload: function() {
             router.navigate( 'getApp?from=albums' );
 	},
-
-	attached: function( elem ) {
-	    view = elem;
-	},
         
         // Get the number of mediafiles so the allVids style can be decided on.
         // 3 or more mediafiles gets the normal view, while less than 3 gets 
@@ -216,14 +212,15 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
                     });
         },
 
-        monthVidsSearch: function( month, year, cid ) {
+        monthVidsSearch: function( month, obj ) {
             var self = this;
             var args = {
                 month: month,
-                year: year,
                 cid: self.cid
             };
-            self.isActiveFlag(true);
+            if( !obj ){
+                self.isActiveFlag(true);
+            }
             return system.defer( function( dfd ) {
                 if ( self.monthPager.next_page )   {
                     args.page = self.monthPager.next_page;
@@ -241,7 +238,9 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
                     dfd.resolve();
                 }
             }).promise().then(function(){
-                self.isActiveFlag(false);
+                if( !obj ){
+                    self.isActiveFlag(false);
+                }
             });
         },
         
@@ -264,10 +263,12 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
             self.videos.push( m );
         },
         
-        search: function() {
+        search: function( args ) {
             var self = this;
             var apiCall;
-            self.isActiveFlag(true);
+            if( !args ) {
+                self.isActiveFlag(true);
+            }
             return system.defer( function( dfd ) {
                 if ( self.allVidsPager.next_page )   {
                     apiCall = viblio.api( '/services/mediafile/list', 
@@ -288,7 +289,9 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
                     dfd.resolve();
                 }
             }).promise().then(function(){
-                self.isActiveFlag(false);
+                if( !args ) {
+                    self.isActiveFlag(false);
+                }
             });
         },
         
@@ -323,6 +326,10 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
                 });   
             });
 	},
+        
+        attached: function( elem ) {
+            view = elem;
+        },
 
 	compositionComplete: function() {
             var self = this;
@@ -330,7 +337,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	    // Fetch albums.  If none, create an initial fake album
             albumSearch();
             self.search();
-	    // Infinite scroll support
+	    // Infinite scroll support for albums list
 	    $(view).find('.a-right-content').scroll( $.throttle( 250, function() {
 		var $this = $(this);
 		var height = this.scrollHeight - $this.height(); // Get the height of the div
@@ -343,6 +350,27 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 
 		if (isScrolledToEnd) {
                     albumSearch();
+		}
+            }));
+            
+            // Infinite scroll support for mediafiles list
+            $(view).find('.a-left-content').scroll( $.throttle( 250, function() {
+		var $this = $(this);
+		var height = this.scrollHeight - $this.height(); // Get the height of the div
+		var scroll = $this.scrollTop(); // Get the vertical scroll position
+
+		if ( searching() ) return;
+		if ( height == 0 && scroll == 0 ) return;
+
+		var isScrolledToEnd = (scroll >= height);
+
+		if (isScrolledToEnd) {
+                    // If a month is not selected use the search function, else use monthVidsSearch
+                    if( !self.aMonthIsSelected() ) {
+                        self.search( { paging: true } );
+                    } else {
+                        self.monthVidsSearch( self.selectedMonth(), { paging: true } );
+                    }
 		}
             }));
             
