@@ -6,12 +6,38 @@
 	<div class="a-wrapper a-left-wrapper lightGreyBG">
 	  <div class="a-header a-left-header">
 	    <p class="mainTitle textShadowed">Drag and Drop Videos</p>
+	  </div>
             
-            <div class="a-searching lightGreyFont" data-bind="visible: loadingYears">
-	      <i class="icon-spinner icon-spin active"></i>
-	    </div>
+            <div class="dropdown pull-right" data-bind="if: hits() > 0">
+                <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown">Filter...</a>
+                <ul class="dropdown-menu" role="menu">
+                  <!-- ko foreach: monthsLabels -->
+                  <li>
+                    <a data-bind="click: $parent.monthSelected.bind( $data, $parent ), 
+                                  text: $data.label != 'Missing dates' ? $data.label.slice(0,3) + ' ' + $data.label.slice($data.label.length-4) : $data.label, 
+                                  css:{sel: $data.selected()}"></a>
+                  </li>
+                  <!-- /ko -->
+                  <li>
+                    <a id="allVids" class="textShadowed" data-bind="click: showAllVideos, css:{sel: allVidsIsSelected()}">All Videos</a>
+                  </li>
+                </ul>
+            </div>
             
-	    <div class="yir-inner" data-bind="if: !loadingYears() && years().length == 0">
+            <!-- ko if: !allVidsIsSelected() && !isActiveFlag() --> 
+            <div class="month-heading textShadowed marginB10">
+                <span class="month-name heavyWeightFont font20" data-bind="text: selectedMonth()"></span>
+                <span class="num-videos lightWeightFont font20" data-bind="text: '(' + vidsInSelectedMonth() + ( vidsInSelectedMonth() == 1 ? ' video)' : ' videos)' )"></span>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: allVidsIsSelected() && !isActiveFlag() && hits() > 0 --> 
+            <div class="month-heading textShadowed marginB10">
+                <span class="month-name heavyWeightFont font20">All Videos</span>
+                <span class="num-videos lightWeightFont font20" data-bind="text: '(' + hits() + ( hits() == 1 ? ' video)' : ' videos)' )"></span>
+            </div>
+            <!-- /ko -->
+            
+            <div class="yir-inner" data-bind="if: !isActiveFlag() && hits() == 0">
               <div class="yirHeading-Wrap">
 		<p class="mainTitle marginL45 textShadowed">Got any videos?</p>
 		<p class="marginL45 font18" style="text-align: left;">We noticed you 
@@ -21,30 +47,20 @@
 		<button class="btn btn-primary marginL45" data-bind="click: goToUpload">Upload more videos &raquo;</button>
               </div>
 	    </div>
-	    
+            
+            <div class="a-content a-left-content">
+                <div class="media-list clearfix marginB20" data-bind="foreach: { data: $data.videos, as: 'm' }">
+                    <!-- ko compose: m --><!-- /ko -->
+                </div>
 
-	    <div data-bind="highlightChange: years().length > 0">
-	      <ul data-bind="foreach: years">
-		<li>
-                  <span class="textShadowed font24 lightWeightFont" data-bind="click: $parent.yearSelected.bind( $data, $parent ), 
-							text: $data.label, 
-							css:{sel: $data.selected()}"></span>
-		</li>
-              </ul>
-	    </div>
-	  </div>
-	  <div class="a-content a-left-content" data-bind="highlightChange: months().length > 0">
-	    <!-- ko foreach: months -->
-            <div class="month-heading textShadowed marginB10">
-              <span class="month-name heavyWeightFont font20" data-bind="text: $data.month"></span>
-              <span class="num-videos lightWeightFont font20" data-bind="text: '(' + $data.media().length + ( $data.media().length == 1 ? ' video)' : ' videos)' )"></span>
+                <!-- ko if: isActiveFlag() -->
+                <div class="mfLoader">
+                  <i class="icon-spinner icon-5x icon-spin active"></i>
+                  <p class='font18'>Loading...</p>
+                </div>
+                <!-- /ko -->
             </div>
-            <div class="media-list" data-bind="foreach: { data: $data.media, as: 'm' }">
-              <!-- ko compose: m --><!-- /ko -->
-            </div>
-            <div class="clearfix marginB20"></div>
-            <!-- /ko -->
-	  </div>
+            
 	</div>
       </td>
 

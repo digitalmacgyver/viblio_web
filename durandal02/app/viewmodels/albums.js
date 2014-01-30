@@ -1,13 +1,33 @@
-define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmodels/mediafile'], function( app, router, viblio, dialogs, Mediafile ) {
+define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmodels/mediafile','durandal/system'], function( app, router, viblio, dialogs, Mediafile,system ) {
 
-    var years  = ko.observableArray([]);
-    var months = ko.observableArray([]);
     var albums = ko.observableArray([]);
+    var monthsLabels = ko.observableArray([]);
+    var videos = ko.observableArray([]);
     var drop_box_width = ko.observable('99%');
     var no_albums = ko.observable(false);
     var searching = ko.observable( false );
-    var loadingYears = ko.observable( true );
-    var yearIsSelected = null;
+    var hits = ko.observable();
+    
+    var allVidsIsSelected = ko.observable( true );
+    var aMonthIsSelected = ko.observable(false);
+    var selectedMonth = ko.observable();
+    var vidsInSelectedMonth = ko.observable();
+    var isActiveFlag = ko.observable(false);
+
+    // Hold the pager data back from server
+    // media queries.  Initialize it here so
+    // the first fetch works.
+    var allVidsPager = {
+        next_page: 1,
+        entries_per_page: 20,
+        total_entries: -1 /* currently unknown */
+    };
+
+    var monthPager = {
+        next_page: 1,
+        entries_per_page: 20,
+        total_entries: -1 /* currently unknown */
+    };
     
     var pager = {
         next_page: 1,
@@ -33,53 +53,6 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	if ( album.uuid && album.name )
 	    viblio.api( '/services/album/change_title', { aid: album.uuid, title: album.name() } );
     });
-    
-    app.on( "mediaFile:TitleDescChanged", function() {
-        yearIsSelected = null;
-    });
-    
-    // fetch videos for given year
-    function fetch( year ) {
-        var args = { year: year };
-        viblio.api( '/services/yir/videos_for_year', args ).then( function( data ) {
-            months.removeAll();
-            data.media.forEach( function( month ) {
-                var mediafiles = ko.observableArray([]);
-                month.data.forEach( function( mf ) {
-                    var m = new Mediafile( mf );
-		    m.on( 'mediafile:composed', function( e ) {
-			$(e.view).draggable({
-			    appendTo: '.albums',
-			    scope: 'mediafile',
-			    helper: 'clone',
-			    scroll: true,
-			    opacity: 0.75
-			});
-		    });
-                    mediafiles.push( m );
-                });
-                months.push({month: month.month, media: mediafiles});
-            });   
-        });
-        yearIsSelected = true;
-    }
-
-    // get the years to display in the year navigator
-    function getYears() {
-        loadingYears( true );
-	viblio.api( '/services/yir/years' ).then( function( data ) {
-            var arr = [];
-            data.years.forEach( function( year ) {
-                arr.push({ label: year, selected: ko.observable(false) });
-            });
-            years( arr );
-            if ( data.years.length >= 1 ) {
-                years()[0].selected( true );
-                fetch( years()[0].label );
-            }
-            loadingYears( false );
-        });
-    }
 
     // For the album name prompt.  Verify that the user input is OK.
     function naVerify( response, prompt ) {
@@ -105,7 +78,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	}
     }
 
-    function search() {
+    function albumSearch() {
 	if ( pager.next_page ) {
 	    searching( true );
 	    viblio.api( '/services/album/list', { page: pager.next_page, rows: pager.entries_per_page } ).then( function( data ) {
@@ -133,26 +106,24 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 
     return {
 	drop_box_width: drop_box_width,
-	years: years,
-	months: months,
 	albums: albums,
+        monthsLabels: monthsLabels,
+        videos: videos,
+        allVidsIsSelected: allVidsIsSelected,
+        aMonthIsSelected: aMonthIsSelected,
+        selectedMonth: selectedMonth,
+        vidsInSelectedMonth: vidsInSelectedMonth,
+        isActiveFlag: isActiveFlag,
+        hits: hits,
+        allVidsPager: allVidsPager,
+        monthPager: monthPager,
+        
 	no_albums: no_albums,
 	searching: searching,
-        loadingYears: loadingYears,
-        yearIsSelected: yearIsSelected,
         
         viewAlbum: function($data) {
             router.navigate('viewAlbum?aid=' + $data.uuid);
         },
-
-	yearSelected: function( self, year ) {
-	    years().forEach( function( y ) {
-		y.selected( false );
-            });
-            year.selected( true );
-            //viblio.mpEvent( 'yir' );
-            fetch( year.label );
-	},
         
 	// A new album is not committed to the database until the first
 	// mediafile is added to it.
@@ -195,30 +166,178 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	goToUpload: function() {
             router.navigate( 'getApp?from=albums' );
 	},
+        
+        // Get the number of mediafiles so the allVids style can be decided on.
+        // 3 or more mediafiles gets the normal view, while less than 3 gets 
+        // the "Got more videos?" view.
+        getHits: function() {
+            var self = this;
+            var args = {};
+            if ( self.cid ) {
+                viblio.api('/services/faces/contact_mediafile_count?cid=' + self.cid).then( function( data ) {
+                    self.hits(data.count);
+                });
+            } else {
+                // can send a user uuid in args to get number of videos for specific user: {uid: uuid}
+                viblio.api( '/services/mediafile/count', args ).then( function( data ) {
+                    self.hits(data.count);
+                });
+            }
+        },
+        
+        monthSelected: function( self, month ) {
+            self.monthsLabels().forEach( function( m ) {
+                m.selected( false );
+            });
+            month.selected( true );
+            self.videos.removeAll();
+            // reset pager
+            self.monthPager = {
+                next_page: 1,
+                entries_per_page: 20,
+                total_entries: -1 /* currently unknown */
+            };
+            self.selectedMonth( month.label );
+            self.monthVidsSearch( self.selectedMonth() );
+            self.aMonthIsSelected(true);
+            self.allVidsIsSelected(false);
+            // get number of videos in selected month
+            var args = {
+                month: self.selectedMonth(),
+                cid: self.cid
+            };
+            viblio.api( '/services/yir/videos_for_month', args )
+                    .then(function(data){
+                        self.vidsInSelectedMonth( data.media.length );
+                    });
+        },
 
-	attached: function( elem ) {
-	    view = elem;
-	},
+        monthVidsSearch: function( month, obj ) {
+            var self = this;
+            var args = {
+                month: month,
+                cid: self.cid
+            };
+            if( !obj ){
+                self.isActiveFlag(true);
+            }
+            return system.defer( function( dfd ) {
+                if ( self.monthPager.next_page )   {
+                    args.page = self.monthPager.next_page;
+                    args.rows = self.monthPager.entries_per_page;
+                    viblio.api( '/services/yir/videos_for_month', args )
+                        .then( function( json ) {
+                            self.monthPager = json.pager;
+                            json.media.forEach( function( mf ) {
+                                self.addMediaFile( mf );
+                            });
+                            dfd.resolve();
+                        });
+                }
+                else {
+                    dfd.resolve();
+                }
+            }).promise().then(function(){
+                if( !obj ){
+                    self.isActiveFlag(false);
+                }
+            });
+        },
+        
+        addMediaFile: function( mf ) {
+            var self = this;
+
+            // Create a new Mediafile with the data from the server
+            var m = new Mediafile( mf, { show_share_badge: false } );
+            
+            m.on( 'mediafile:composed', function( e ) {
+                $(e.view).draggable({
+                    appendTo: '.albums',
+                    scope: 'mediafile',
+                    helper: 'clone',
+                    scroll: true,
+                    opacity: 0.75
+                });
+            });
+            
+            self.videos.push( m );
+        },
+        
+        search: function( args ) {
+            var self = this;
+            var apiCall;
+            if( !args ) {
+                self.isActiveFlag(true);
+            }
+            return system.defer( function( dfd ) {
+                if ( self.allVidsPager.next_page )   {
+                    apiCall = viblio.api( '/services/mediafile/list', 
+                            { 
+                                views: ['poster'],
+                                page: self.allVidsPager.next_page, 
+                                rows: self.allVidsPager.entries_per_page } );
+                    
+                    apiCall.then( function( json ) {
+                            self.allVidsPager = json.pager;
+                            json.media.forEach( function( mf ) {
+                                self.addMediaFile( mf );
+                            });
+                            dfd.resolve();
+                        });
+                }
+                else {
+                    dfd.resolve();
+                }
+            }).promise().then(function(){
+                if( !args ) {
+                    self.isActiveFlag(false);
+                }
+            });
+        },
+        
+        showAllVideos: function() {
+            var self = this;
+            self.monthsLabels().forEach( function( m ) {
+                m.selected( false );
+            });
+            self.aMonthIsSelected(false);
+            self.allVidsIsSelected(true);
+            self.videos.removeAll();
+            // reset pager
+            self.allVidsPager = {
+                next_page: 1,
+                entries_per_page: 20,
+                total_entries: -1 /* currently unknown */
+            };
+            self.search();
+        },
 
 	activate: function() {
+            var self = this;
 	    pager.next_page = 1;
             pager.total_entries = -1;
 	    albums.removeAll();
-            //prevents videos from reloading everytime a user navigates to the albums page - keeps the selected year
-            if( !yearIsSelected ) {
-                years.removeAll();
-                getYears();
-                months.removeAll();
-            }
+            monthsLabels.removeAll();
+            self.getHits();
+            // get months and create labels to use as selectors
+            viblio.api( '/services/yir/months' ).then( function(data) {
+                data.months.forEach( function( month ) {
+                    self.monthsLabels.push( { "label": month, "selected": ko.observable(false) } );
+                });   
+            });
 	},
+        
+        attached: function( elem ) {
+            view = elem;
+        },
 
 	compositionComplete: function() {
-	    resizeColumns();
+            var self = this;
 
 	    // Fetch albums.  If none, create an initial fake album
-            search();
-
-	    // Infinite scroll support
+            albumSearch();
+            self.search();
+	    // Infinite scroll support for albums list
 	    $(view).find('.a-right-content').scroll( $.throttle( 250, function() {
 		var $this = $(this);
 		var height = this.scrollHeight - $this.height(); // Get the height of the div
@@ -230,10 +349,31 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 		var isScrolledToEnd = (scroll >= height);
 
 		if (isScrolledToEnd) {
-                    search();
+                    albumSearch();
 		}
             }));
+            
+            // Infinite scroll support for mediafiles list
+            $(view).find('.a-left-content').scroll( $.throttle( 250, function() {
+		var $this = $(this);
+		var height = this.scrollHeight - $this.height(); // Get the height of the div
+		var scroll = $this.scrollTop(); // Get the vertical scroll position
 
+		if ( searching() ) return;
+		if ( height == 0 && scroll == 0 ) return;
+
+		var isScrolledToEnd = (scroll >= height);
+
+		if (isScrolledToEnd) {
+                    // If a month is not selected use the search function, else use monthVidsSearch
+                    if( !self.aMonthIsSelected() ) {
+                        self.search( { paging: true } );
+                    } else {
+                        self.monthVidsSearch( self.selectedMonth(), { paging: true } );
+                    }
+		}
+            }));
+            
 	    if ( head.mobile ) {
 		$(view).find( '.a-content' ).kinetic();
 	    } 
