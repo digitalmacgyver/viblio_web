@@ -5,13 +5,23 @@
     <title>Viblio Player Example</title>
     <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="vendor/fancybox/jquery.fancybox.css" />
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Comfortaa|Source+Sans+Pro">
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:100,200,300,400,700,900" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Comfortaa:100,200,300,400,700,900" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="viblio.css" />
     <link rel="stylesheet" href="player-demo.css" />
   </head>
   <body>
 
     <div class="container">
-      <h4>Community Videos</h4>
+      <!-- Just for demo purposes ... -->
+      <div style="padding-top:22px;" class="pull-right">
+	<input type="checkbox" id="curator" />curator&nbsp;
+	<input type="checkbox" id="pending" />pending
+	<button id="refresh" class="btn btn-primary"><i class="icon-refresh"></i>&nbsp;refresh</button>
+      </div>
+      <h3>Community Videos</h3>
+      <!-- The player container -->
       <div class="well well-large vp"></div>
     </div>
 
@@ -26,18 +36,47 @@
     <script src="viblio.player.js"></script>
     <script>
     $(document).ready( function() {
+	// Initialize the viblio library
 	viblio.init( 'my-apikey', 'my-cid',
 		     'https://' + window.location.hostname );
+	// Attach a global error handler if desired (optional)
 	viblio.error_handler( function(err) {
 	    alert( err.message );
 	});
+	// Authenticate the user
 	viblio.authenticate( 'userID' ).then(
 	    function( data ) {
 		console.log( 'viblio user id:', viblio.vid() );
-		$('.vp').viblio_player();
-	    },
-	    function( err ) {
-		$('.msg').text( 'ERROR: ' + JSON.stringify( err ) );
+		// ADD THE PLATER
+		$('.vp').viblio_player({
+		    play_callback: function( data ) {
+			console.log( 'play callback:', data );
+		    }
+		});
+
+		// FOR DEMO ONLY... TO SHOW CURATOR/PENDING MODES
+		$("#refresh").click( function() {
+		    $('.vp').viblio_player('refresh');
+		});
+		$("#curator").change( function() {
+		    var val = $("#curator").is(':checked'); console.log( val );
+		    if ( val )
+			$('.vp').viblio_player('option', 'curator', true );
+		    else
+			$('.vp').viblio_player('option', 'curator', false );
+		    return true;
+		});
+		$("#pending").change( function() {
+		    var val = $("#pending").is(':checked');
+		    if ( val ) {
+			$('.vp').viblio_player('option', 'pending', true );
+			$("#curator").attr("checked",true);
+			$('.vp').viblio_player('option', 'curator', true );
+		    }
+		    else
+			$('.vp').viblio_player('option', 'pending', false );
+		    return true;
+		});
 	    }
 	);
     });

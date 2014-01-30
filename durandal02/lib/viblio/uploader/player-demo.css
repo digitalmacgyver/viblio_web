@@ -1,4 +1,16 @@
+body {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    font-family: 'Source Sans Pro', serif;
+}
+
 .vp {
     height: 400px;
     overflow: auto;
+}
+
+.vp-media .slide-up > div,
+.vp-media .title {
+    font-family: 'Comfortaa', serif;
 }

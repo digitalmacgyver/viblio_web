@@ -1,8 +1,34 @@
 (function($) {
     $.widget( 'viblio.viblio_player', {
 	options: {
+	    // Cloudfront streaming domain.  YOU MUST USE different domain for testing verses production!
+	    // staging.viblio.com: s2gdj4u4bxrah6.cloudfront.net
+	    // viblio.com:         s3vrmtwctzbu8n.cloudfront.net
 	    cf_domain: 's2gdj4u4bxrah6.cloudfront.net',
+	    //
+	    // How many video files to fetch for each page of infinite scroll.  Should be 2-3 times what
+	    // fits in the area alloted.  Set to a huge number to effectively disable infinite scroll.
 	    items_per_page: 13,
+	    //
+	    // Set to true for a curator view
+	    curator: false,
+	    //
+	    // Set to true if curator is looking at the pending queue
+	    pending: false,
+	    //
+	    // Show video titles at bottom of player popup
+	    show_titles: true,
+	    //
+	    // Display Viblio branding.  PLEASE CONTACT VIBLIO before setting this to false.
+	    branded: true,
+	    //
+	    // Use this to capture analytics.  If set to a function, when a video is played, you will
+	    // get called with one parameter; an object that looks like:
+	    // { userid: 'your-logged-in-users-id',
+	    //   mid:    'the viblio medifile uuid',
+	    //   title:  'the title of the video played'
+	    // }
+	    play_callback: null,
 	},
 	_create: function() {
 	    var self = this;
@@ -43,9 +69,22 @@
 			    loading.remove();
 			    self.pager = data.pager;
 			    data.media.forEach( function( mf ) {
-				var m = ich.mediafile( mf );
+				var m = $( ich.mediafile( mf ) );
+				if ( self.options.show_titles ) {
+				    m.find('.fancybox').attr('title', mf.title );
+				}
 				elem.append( m );
-				self._apply( m );
+				self._apply( m.find('.fancybox') );
+				m.on( 'mouseover.VP', function() {
+				    m.find('.slide-up').animate({height: '100px'});
+				});
+				m.on( 'mouseleave.VP', function() {
+				    m.find('.slide-up').animate({height: '0px'});
+				});
+				m.find('.slide-up .play').on('click.VP', function() {
+				    m.find('.fancybox').click();
+				});
+				self._setup_buttons( m );
 			    });
 			},
 			function( err ) {
@@ -53,6 +92,36 @@
 			}
 		    );
 	    }
+	},
+	_setup_buttons: function( m ) {
+	    var self = this;
+	    if ( self.options.curator ) {
+		if ( self.options.pending ) {
+		    m.find('.slide-up .remove').css( 'display', 'inline-none' );
+		    m.find('.slide-up .accept').css( 'display', 'inline-block' );
+		    m.find('.slide-up .accept').on( 'click.VP', function() {
+			self._accept( m );
+		    });
+		    m.find('.slide-up .reject').css( 'display', 'inline-block' );
+		    m.find('.slide-up .reject').on( 'click.VP', function() {
+			self._reject( m );
+		    });
+		}
+		else {
+		    m.find('.slide-up .accept').css( 'display', 'none' );
+		    m.find('.slide-up .reject').css( 'display', 'none' );
+		    m.find('.slide-up .remove').css( 'display', 'inline-block' );
+		    m.find('.slide-up .remove').on( 'click.VP', function() {
+			self._remove( m );
+		    });
+		}
+	    }
+	},
+	_accept: function( m ) {
+	},
+	_reject: function( m ) {
+	},
+	_remove: function() {
 	},
 	_should_simulate: function() {
 	    var videoel = document.createElement("video"),
@@ -65,6 +134,13 @@
 	_apply: function( elem ) {
 	    var self = this;
 	    elem.fancybox({
+		helpers : {
+		    title : {
+			type: 'inside'
+		    }
+		},
+		openEffect: 'fade',
+		closeEffect: 'elastic',
 		tpl: {
 		    // wrap template with custom inner DIV: the empty player container
 		    wrap: '<div class="fancybox-wrap" tabIndex="-1">' +
@@ -87,6 +163,15 @@
 			      ipadUrl: encodeURIComponent(url),
 			      scaling: 'fit',
 			      provider: 'rtmp',
+			      onStart: function( clip ) {
+				  if ( self.options.play_callback ) {
+				      self.options.play_callback({
+					  userid: viblio.uid(),
+					  mid: elem.data('mid'),
+					  title: elem.attr( 'title' )
+				      });
+				  }
+			      },
 			  },
 			  plugins: {
 			      // Cloudfront
@@ -107,22 +192,67 @@
 		beforeClose: function () {
 		    // important! unload the player
 		    flowplayer().unload();
+		},
+
+		afterShow: function() {
+		    if ( self.options.branded ) {
+			$('<div class="vp-logo"><a href="https://viblio.com" title="Powered by Viblio"><img src="img/viblioWhite.png" /></a></div>').appendTo( this.outer );
+		    }
 		}
 	    });
 	},
 	_destroy: function() {
+	    this.element.unbind( 'mouseover.VP' );
+	    this.element.unbind( 'mouseleave.VP' );
+	    this.element.unbind( 'click.VP' );
 	    this.element.unbind( 'scroll.VP' );
-	    flowplayer.unload();
+	    flowplayer().unload();
+	},
+	refresh: function() {
+	    var self = this;
+	    self.pager = { 
+		next_page: 1,
+		entries_per_page: self.options.items_per_page,
+		total_entries: -1 };
+	    self.element.unbind( 'mouseover.VP' );
+	    self.element.unbind( 'mouseleave.VP' );
+	    self.element.unbind( 'click.VP' );
+	    self.element.empty();
+	    self._search();
 	},
 	_mediafile_template: function() {
 	    return '\
-<a class="fancybox vp-media" \
-   data-cf="{{ views.main.cf_url }}" \
-   data-url="{{ views.main.url }}" \
-   data-mid="{{ uuid }}" \
-   href="#{{ uuid }}"> \
-  <img src="{{ views.poster.url}}" width=240 height=135 /> \
-</a> \
+<div class="vp-media"> <div>\
+  <i class="icon-play-circle"></i> \
+  <a class="fancybox vp-media-poster" \
+     data-cf="{{ views.main.cf_url }}" \
+     data-url="{{ views.main.url }}" \
+     data-mid="{{ uuid }}" \
+     href="#{{ uuid }}"> \
+    <img src="{{ views.poster.url}}" width=240 height=135 /> \
+  </a> \
+  <div class="slide-up"> \
+    <div>\
+      <table>\
+        <tr><td>Contributor:</td><td>Andrew Peebles</td></tr>\
+        <tr><td>Recorded:</td><td>{{ recording_date }}</td></tr>\
+      </table>\
+      <div class="buttons"> \
+        <a class="accept btn btn-mini btn-success">accept&nbsp;<i class="icon-check"></i></a>\
+        <a class="reject btn btn-mini btn-warning">reject&nbsp;<i class="icon-ban-circle"></i></a>\
+        <a class="remove btn btn-mini btn-danger">remove&nbsp;<i class="icon-remove-circle"></i></a>\
+        <a class="play   btn btn-mini btn-info">play&nbsp;<i class="icon-play-circle"></i></a>\
+      </div> \
+    </div> \
+  </div> \
+  <div class="information"> \
+    <div class="aux pull-right muted"> \
+      <img src="img/viewsEye.png" /> \
+      <span>{{ view_count }}</span> \
+    </div> \
+    <div class="title vidTitle truncate">{{ title }}</div> \
+  </div> \
+</div> </div>\
 ';
 	}
     });

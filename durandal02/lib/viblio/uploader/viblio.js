@@ -68,6 +68,7 @@
     viblio.prototype.authenticate = function( userid, cid ) {
 	var self = this;
 	cid = cid || self.cid;
+	self.userid = userid;
 	return self.api( '/services/na/authenticate',
 			 { realm: 'community',
 			   apikey: self.apikey,
@@ -85,6 +86,11 @@
     // Return the viblio uuid for the authenticated user
     viblio.prototype.vid = function() {
 	return this.uuid;
+    };
+
+    // Return the partner userid for the authenticated user
+    viblio.prototype.uid = function() {
+	return this.userid;
     };
 
     window.viblio = new viblio();

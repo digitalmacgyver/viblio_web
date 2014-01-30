@@ -2,3 +2,128 @@
 .fancybox-wrap {
   width: 80% !important;
 }
+
+.vp {
+    position: relative;
+    text-align: center;
+}
+
+.vp .vp-media {
+    margin: 6px;
+}
+
+.vp-media > div {
+    -moz-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2); /* Firefox */
+    -webkit-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2);
+    box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2); 
+    position: relative;
+}
+
+.vp-media {
+    display: inline-block;
+    position: relative;
+    padding: 3px;
+    background: transparent;
+}
+.vp-media div > i {
+    position: absolute;
+    top: 50%;
+    margin-top: -50px;
+    left: 50%;
+    margin-left: -25px;
+    color: white;
+    font-size: 56px;
+    opacity: 0.5;
+}
+
+.vp-media .information {
+    text-align: left;
+    width: 100%;
+    background-color: white;
+    position: relative;
+    box-sizing: border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+    padding: 12px 5px;
+    height: 42px;
+}
+
+.vp-media .information .aux {
+    background-color: rgba(211,246,253,1);
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    color: rgba(82,152,189,1);
+    text-align: center;
+    width: 42px;
+    height: 42px;
+}
+
+.vp-media .information .aux img {
+    display: block;
+    text-align: center;
+    width: 30px;
+    height: 20px;
+    margin: 4px auto -4px;
+}
+
+.vp-media .information .aux span {
+    font-weight: 300;
+}
+
+.vp-media .information .title {
+    color: rgba(94,95,105,1);
+    margin-left: 5px;
+
+    width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.vp-media .slide-up {
+    position: absolute;
+    /*
+    background: black;
+    opacity: 0.7;
+    */
+    background-color: rgba(0,0,0,0.7);
+    color: white;
+    height: 0px;
+    text-align: left;
+    width: 100%;
+    overflow: hidden;
+    bottom: 42px;
+}
+
+.vp-media .slide-up > div {
+    padding: 5px;
+    position: relative;
+    height: 100%;
+}
+
+.vp-media .slide-up .buttons {
+    position: absolute;
+    right: 3px;
+    bottom: 14px;
+}
+
+.vp-media .slide-up .buttons .btn {
+    display: none;
+}
+.vp-media .slide-up .buttons .play {
+    display: inline-block;
+}
+
+.vp-logo {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 15px;
+    margin-bottom: 20px;
+    opacity: 0.7;
+    z-index: 9999;
+}
+.vp-logo img {
+}
