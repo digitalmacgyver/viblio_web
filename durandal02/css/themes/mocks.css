@@ -1036,6 +1036,7 @@ input:-moz-placeholder {
     color: rgba(117,117,128,1);
     font-size: 16px;
     white-space: nowrap;
+    cursor: pointer;
 }
 
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus,
