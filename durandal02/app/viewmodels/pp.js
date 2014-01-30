@@ -421,6 +421,8 @@ define(["durandal/app",
                     nolocation( false );
                     isNear( getCountry( res ) );
                     map.addMarker( m.lat, m.lng, m, true );
+                    // ensures all map tiles are shown when the map is shown
+                    map.data("map").invalidateSize();
                 }
                 else {
                     isNear( 'Find in map' );
@@ -821,7 +823,6 @@ define(["durandal/app",
 	    map = $("#geo-map").vibliomap({
                 disableZoomControl: true
             });
-            system.log( map );
             
 	    // center/zoom to media file location
             near( playing().media() );
