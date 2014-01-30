@@ -1,10 +1,8 @@
 (function($) {
     $.widget( 'viblio.viblio_player', {
 	options: {
-	    // Cloudfront streaming domain.  YOU MUST USE different domain for testing verses production!
-	    // staging.viblio.com: s2gdj4u4bxrah6.cloudfront.net
-	    // viblio.com:         s3vrmtwctzbu8n.cloudfront.net
-	    cf_domain: 's2gdj4u4bxrah6.cloudfront.net',
+	    // The platform.  Use 'staging' for initial testing, 'production' when you deploy.
+	    platform: 'production',
 	    //
 	    // How many video files to fetch for each page of infinite scroll.  Should be 2-3 times what
 	    // fits in the area alloted.  Set to a huge number to effectively disable infinite scroll.
@@ -33,6 +31,11 @@
 	_create: function() {
 	    var self = this;
 	    var elem = self.element;
+
+	    if ( self.options.platform == 'staging' )
+		self.cf_domain = 's2gdj4u4bxrah6.cloudfront.net';
+	    else
+		self.cf_domain = 's3vrmtwctzbu8n.cloudfront.net';
 
 	    self.pager = { 
 		next_page: 1,
@@ -177,7 +180,7 @@
 			      // Cloudfront
 			      rtmp: {
 				  url: 'vendor/flowplayer/flowplayer.rtmp-3.2.12.swf',
-				  netConnectionUrl: 'rtmp://' + self.options.cf_domain + '/cfx/st'
+				  netConnectionUrl: 'rtmp://' + self.cf_domain + '/cfx/st'
 			      }
 			  },
 			  canvas: {
