@@ -248,6 +248,7 @@ define(["durandal/app",
     }
 
     function resizeColumns() {
+        system.log('resizeColumns fired');
 	var player_height = $('.pp-tv').height();
 	// The faces/map column dictates the height of the other columns
 	var faces_map_height = $('.pp-info-faces-wrapper').height();
@@ -833,7 +834,7 @@ define(["durandal/app",
 		Related.init( '.pp-related-column-related-videos', mediafiles, query_in_progress, function( m ) {
 		    playRelated( m );
 		}, ( route == 'web_player' ));
-		Related.search( playing().media().uuid );
+		Related.search( playing().media().uuid, {}, resizePlayer );
 	    }
 
 	    // related video search widget
