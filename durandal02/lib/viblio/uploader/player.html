@@ -15,10 +15,17 @@
 
     <div class="container">
       <!-- Just for demo purposes ... -->
-      <div style="padding-top:22px;" class="pull-right">
-	<input type="checkbox" id="curator" />curator&nbsp;
-	<input type="checkbox" id="pending" />pending
-	<button id="refresh" class="btn btn-primary"><i class="icon-refresh"></i>&nbsp;refresh</button>
+      <div style="padding-top:22px;">
+ 	<p style="color:#666">
+	  For demo purposes; select <b>curator</b> to see her view (she can delete).  Select <b>pending</b> to
+	  see what the curator's pending queue looks like.  After selecting these buttons, do a <b>refresh</b>
+	  to re-render the views.
+	</p>
+	<div style="margin-right: auto; margin-left: auto; width: 100%; text-align:center;">
+	  <input type="checkbox" id="curator" />curator&nbsp;
+	  <input type="checkbox" id="pending" />pending
+	  <button id="refresh" class="btn btn-primary"><i class="icon-refresh"></i>&nbsp;refresh</button>
+	</div>
       </div>
       <div class="page-header">
 	<!-- The <a> link will fire the video uploader in a fancybox popup window -->
@@ -65,14 +72,14 @@
 	// Authenticate the user
 	viblio.authenticate( 'userID' ).then(
 	    function( data ) {
-		console.log( 'viblio user id:', viblio.vid() );
+		//console.log( 'viblio user id:', viblio.vid() );
 		// ADD THE PLATER
 		$('.vp').viblio_player({
 		    // using staging for test
                     platform: 'staging',
 		    // capture video play action for analytics
 		    play_callback: function( data ) {
-			console.log( 'play callback:', data );
+			//console.log( 'play callback:', data );
 		    },
 		    // let this plugin create and manage the uploader
 		    // plugin, so we don't need another ui component.
@@ -87,7 +94,7 @@
 		    $('.vp').viblio_player('refresh');
 		});
 		$("#curator").change( function() {
-		    var val = $("#curator").is(':checked'); console.log( val );
+		    var val = $("#curator").is(':checked');
 		    if ( val )
 			$('.vp').viblio_player('option', 'curator', true );
 		    else
@@ -98,7 +105,7 @@
 		    var val = $("#pending").is(':checked');
 		    if ( val ) {
 			$('.vp').viblio_player('option', 'pending', true );
-			$("#curator").attr("checked",true);
+			$("#curator").attr("checked","checked");
 			$('.vp').viblio_player('option', 'curator', true );
 		    }
 		    else
