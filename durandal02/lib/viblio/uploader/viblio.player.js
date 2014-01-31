@@ -50,6 +50,37 @@
 	    self.media_area = $('<div class="vp-media-area"></div>').appendTo( self.element );
 	    self.media_area.height( self.element.height() );
 
+	    if ( self.options.attach_uploader ) {
+		$(self.options.attach_uploader.ui_selector).viblio_uploader(
+		    self.options.attach_uploader.options );
+		$(self.options.attach_uploader.trigger_selector).fancybox({
+		    helpers: {
+			overlay: {
+			    closeClick: false
+			}
+		    },
+		    beforeShow: function() {
+			$(self.options.attach_uploader.ui_selector).width($('.fancybox-inner').width())
+		    },
+		    afterShow: function() {
+		    },
+		    beforeClose: function() {
+			var uploader = $(self.options.attach_uploader.ui_selector);
+			if ( uploader.viblio_uploader( 'in_progress' ) ) {
+			    uploader.viblio_uploader( 
+				'alert',
+				'There are files currently being uploaded.  Please cancel them before closing this window.' );
+			    return false;
+						      
+			}
+			else {
+			    uploader.viblio_uploader( 'reset' );
+			    return true;
+			}
+		    }
+		});
+	    }
+
 	    self.pager = { 
 		next_page: 1,
 		entries_per_page: self.options.items_per_page,

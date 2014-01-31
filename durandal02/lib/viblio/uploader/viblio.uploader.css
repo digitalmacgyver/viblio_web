@@ -107,7 +107,7 @@
 /* progress bar */
 .vup-file-progress-column span.bar {
     width: 0%;
-    background-color: aliceblue;
+    background-color: #eeeeb3;
     display: block;
     text-align: center;
 }

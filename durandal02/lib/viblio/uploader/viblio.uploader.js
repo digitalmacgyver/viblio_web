@@ -41,10 +41,10 @@
 	    template: null,
 	    //
 	    // Added to the alert window when an alert is triggered
-	    alert_class: null,
+	    alert_class: 'alert-error',
 	    //
 	    // Added to the alert window when a notify is triggered
-	    notify_class: null,
+	    notify_class: 'alert-success',
 	    //
 	    // Validation error messages
             messages: {
@@ -197,6 +197,18 @@
 		    elem.find('.vup-alert').unbind( 'click.vup' );
 		});
 	    });
+	},
+
+	reset: function() {
+	    var self = this;
+	    self._vpfiles = [];
+	    self._vpin_progress = 0;
+	    self.BR = 0;
+	    self.BP = 0;
+	    self._reset_stats();
+	    self.element.find( '.vup-files' ).empty();
+	    self.element.find('.vup-cancel-all').css( 'visibility', 'hidden' );
+	    self.element.find('.vup-instructions').css( 'visibility', 'visible' );
 	},
 
 	_create: function() {
@@ -412,6 +424,7 @@
 	    });
 	    if ( self.options.dropzone_effects ) {
 		$(document).bind('dragover.VUP', function (e) {
+		    elem.find('.vup-instructions').css( 'visibility','hidden');
 		    var dropZone = elem.find('.vup-area' );
 		    timeout = window.dropZoneTimeout;
 		    if (!timeout) {
@@ -449,11 +462,11 @@
 	_html: function() {
 	    return ('\
       <div class="vup-banner">\
-	<a class="vup-cancel-all vup-btn">Cancel All</a>\
-	<input  title="Add Files..." type="file" class="vup-add-files vup-btn" name="files[]" multiple />\
+	<a class="vup-cancel-all btn btn-danger vup-btn">Cancel All</a>\
+	<input  title="Add Files..." type="file" class="vup-add-files btn btn-primary vup-btn" name="files[]" multiple />\
       </div>\
       <div class="vup-instructions"><div>Drop Files Here</div></div>\
-      <div class="vup-alert"><span></span></div>\
+      <div class="vup-alert"><span class="alert"></span></div>\
       <div class="vup-area">\
 	<table class="vup-files">\
 	</table>\

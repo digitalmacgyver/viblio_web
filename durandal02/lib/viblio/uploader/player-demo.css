@@ -14,3 +14,21 @@ body {
 .vp-media .title {
     font-family: 'Comfortaa', serif;
 }
+
+/* uploader */
+
+/* dropzone effect */
+.vup-area.hover {
+    background: #ccc;
+}
+
+/* bold filenames */
+.vup-filename-column {
+    font-weight: bold;
+}
+
+/* red-ish cancel buttons */
+.vup-files .vup-cancel-column a {
+    color: #da4f49;
+}
+
