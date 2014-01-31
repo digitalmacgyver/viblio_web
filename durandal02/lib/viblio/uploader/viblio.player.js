@@ -33,6 +33,30 @@
 	    // you want to fire another fetch.  A decent number is the height of the
 	    // mediafile object.
 	    scroll_offset: 90,
+	    //
+	    // If attach_uploader is set to an object, then this plugin will leverage
+	    // fancybox as a dialog popup, to popup an instance of the uploader when
+	    // the user clicks on something in the parnet gui.
+	    //
+	    // The markup required to use this parameter would look something like 
+	    // this:
+	    //
+	    // <a title="Video Uploader" href="#upload" id="upload-trigger">Upload videos...</a>
+	    // 
+	    // That is the trigger; when clicked on the dialog will popup.  Now you need a 
+	    // placeholder for the uploader gui:
+	    //
+	    // <div style="display: none;"><div id="upload"></div></div>
+	    //
+	    // The href of the trigger must be a hash tag, who's name is equal to the id of
+	    // the inner div shown above.  Given this example, then:
+	    //
+	    // attach_uploader: {
+	    //   trigger_selector: '#upload-trigger',
+            //   ui_selector: '#upload',
+	    //   options: { <viblio_uploader options> }
+	    // }
+	    attach_uploader: null,
 	},
 	_create: function() {
 	    var self = this;

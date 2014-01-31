@@ -21,33 +21,38 @@
 	<button id="refresh" class="btn btn-primary"><i class="icon-refresh"></i>&nbsp;refresh</button>
       </div>
       <div class="page-header">
+	<!-- The <a> link will fire the video uploader in a fancybox popup window -->
 	<h2>Community Videos <small><a title="Video Uploader" href="#upload" id="upload-trigger">Upload Videos...</a></small></h2>
       </div>
       <!-- The player container -->
       <div class="well well-large vp"></div>
     </div>
 
+    <!-- Placeholder for the uploader gui. -->
     <div style="display: none;">
-      <div style="width:600px;" id="upload"></div>
+      <div id="upload"></div>
     </div>
 
-    <!-- script dependencies -->
+    <!-- common script dependencies -->
     <script src="vendor/jquery-1.9.1.min.js"></script>
     <script src="vendor/jquery.ui.widget.js"></script>
     <script src="vendor/ICanHaz.min.js"></script>
+    <script src="viblio.js"></script>
+
+    <!-- Viblio Player -->
     <script src="vendor/fancybox/jquery.fancybox.js"></script>
     <script src="vendor/flowplayer/flowplayer-3.2.12.min.js"></script>
     <script src="vendor/flowplayer/plugins/flowplayer.ipad-3.2.12.min.js"></script>
+    <script src="viblio.player.js"></script>
 
+    <!-- Viblio Uploader -->
     <script src="vendor/jquery.iframe-transport.js"></script>
     <script src="vendor/jquery.fileupload.js"></script>
     <script src="vendor/jquery.fileupload-process.js"></script>
     <script src="vendor/jquery.fileupload-validate.js"></script>
     <script src="vendor/bootstrap.file-input.js"></script>
-
-    <script src="viblio.js"></script>
-    <script src="viblio.player.js"></script>
     <script src="viblio.uploader.js"></script>
+
     <script>
     $(document).ready( function() {
 	// Initialize the viblio library
@@ -63,17 +68,17 @@
 		console.log( 'viblio user id:', viblio.vid() );
 		// ADD THE PLATER
 		$('.vp').viblio_player({
+		    // using staging for test
                     platform: 'staging',
+		    // capture video play action for analytics
 		    play_callback: function( data ) {
 			console.log( 'play callback:', data );
 		    },
+		    // let this plugin create and manage the uploader
+		    // plugin, so we don't need another ui component.
                     attach_uploader: {
                         trigger_selector: '#upload-trigger',
                         ui_selector: '#upload',
-			options: {
-			    uuid: '682DC812-05C3-11E3-839F-54DE3DA5649D',
-			    endpoint: 'https://staging.viblio.com/files'
-			}
 		    }
 		});
 

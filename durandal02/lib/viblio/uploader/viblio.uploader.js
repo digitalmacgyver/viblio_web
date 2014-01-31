@@ -1,13 +1,17 @@
 (function($) {
     $.widget( 'viblio.viblio_uploader', {
 	options: {
-	    // REQUIRED.  The Viblio user uuid that is doiing this upload.
-	    uuid: '682DC812-05C3-11E3-839F-54DE3DA5649D',
+	    // Mostly for debug.  If null, then the viblio uuid for uploads
+	    // will be obtained by the viblio.js plugin.  If not null, it
+	    // is used.
+	    uuid: null,
 	    //
 	    // The endpoint of the Viblio upload server.  This should
 	    // normally not be changed.  For developers, it may be useful
 	    // to set this to https://staging.viblio.com/files.
-	    endpoint: 'https://viblio.com/files',
+	    // If null, it is derived by getting the endpoint from the
+	    // viblio.js plugin.
+	    endpoint: null,
 	    //
 	    // The file types to accept.  Currently viblio only accepts
 	    // video files.
@@ -214,6 +218,10 @@
 	_create: function() {
 	    var self = this;
 	    var elem = self.element;
+
+	    self.options.uuid = self.options.uuid || viblio.vid();
+	    self.options.endpoint = self.options.endpoint || viblio.service('/files');
+
 	    self._vpfiles = [];
 	    self._vpin_progress = 0;
 	    self.BR = 0;
