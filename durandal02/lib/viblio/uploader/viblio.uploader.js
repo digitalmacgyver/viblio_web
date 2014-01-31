@@ -213,6 +213,16 @@
 	    self.element.find( '.vup-files' ).empty();
 	    self.element.find('.vup-cancel-all').css( 'visibility', 'hidden' );
 	    self.element.find('.vup-instructions').css( 'visibility', 'visible' );
+	    self.element.find('.vup-area').css( 'cursor', 'pointer' );
+	    self.element.find('.vup-area').on( 'click.VUP-AREA', function() {
+		self.element.find('input[type=file]').click();
+	    });
+	},
+
+	_remove_droparea_click: function() {
+	    var self = this;
+	    self.element.find('.vup-area').unbind( 'click.VUP-AREA' );
+	    self.element.find('.vup-area').css( 'cursor', 'default' );
 	},
 
 	_create: function() {
@@ -221,15 +231,12 @@
 
 	    self.options.uuid = self.options.uuid || viblio.vid();
 	    self.options.endpoint = self.options.endpoint || viblio.service('/files');
-
-	    self._vpfiles = [];
-	    self._vpin_progress = 0;
-	    self.BR = 0;
-	    self.BP = 0;
 	    elem.append( self.options.template || self._html() );
-	    self._reset_stats();
 	    if ( self.options.display_stats )
 		elem.find( '.vup-stats' ).css( 'visibility', 'visible' );
+
+	    self.reset();
+
 	    elem.find('input[type=file]').bootstrapFileInput();
             elem.find('input[type=file]').fileupload({
 		url: self.options.endpoint,
@@ -257,6 +264,7 @@
 			else {
 			    elem.find('.vup-cancel-all').css( 'visibility', 'visible' );
 			    elem.find('.vup-instructions').css( 'visibility', 'hidden' );
+			    self._remove_droparea_click();
 			    self._vpin_progress += 1;
 
 			    var progress = self._calculateProgress(data);
