@@ -118,21 +118,27 @@
 
 	    self.searching = false;
 	    /* set up infinite scroll handler */
-	    self.media_area.on( 'scroll.VP', function() {
-		if ( self.searching == true ) return;
-		//console.log( $(this).scrollTop(), $(this).innerHeight(), $(this)[0].scrollHeight, $(this).scrollTop() + $(this).innerHeight() );
-		if ($(this).scrollTop() + $(this).innerHeight() >= ( $(this)[0].scrollHeight - self.options.scroll_offset ) )
-		    self._search();
-	    });
-
-	    /* if we have mobile support, make the scrolled area kinetic */
-	    try {
-		if ( head.mobile() ) {
-		    self.media_area.kinetic();
-		}
-	    } catch(e) {
-		// support was not included for this
-	    };
+	    if ( false ) {
+		// This doesn't work.  Should be enabled when ( head && head.mobile ) or even 
+		// unconditionally, but it needs debugging.  Right now, mobile doesn't work
+		// very well at all.
+		self.media_area.kinetic({
+		    moved: function( settings ) {
+			if ( self.searching == true ) return;
+			//console.log( $(this).scrollTop(), $(this).innerHeight(), $(this)[0].scrollHeight, $(this).scrollTop() + $(this).innerHeight() );
+			if (settings.scrollTop + $(this).innerHeight() >= ( $(this)[0].scrollHeight - self.options.scroll_offset ) )
+			    self._search();
+		    }
+		});
+	    }
+	    else {
+		self.media_area.on( 'scroll.VP', function() {
+		    if ( self.searching == true ) return;
+		    //console.log( $(this).scrollTop(), $(this).innerHeight(), $(this)[0].scrollHeight, $(this).scrollTop() + $(this).innerHeight() );
+		    if ($(this).scrollTop() + $(this).innerHeight() >= ( $(this)[0].scrollHeight - self.options.scroll_offset ) )
+			self._search();
+		});
+	    }
 
 	    /* fetch mediafiles */
 	    self._search();
@@ -281,8 +287,6 @@
 			type: 'inside'
 		    }
 		},
-		openEffect: 'fade',
-		closeEffect: 'elastic',
 		tpl: {
 		    // wrap template with custom inner DIV: the empty player container
 		    wrap: '<div class="fancybox-wrap" tabIndex="-1">' +
@@ -297,7 +301,7 @@
 		    var url    = $(this.element[0]).data( 'url' );
 		    
 		    // install player into empty container
-		    var f = $("#player").flowplayer(
+		    $f( "player",
 			{ src: "vendor/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' },
 			{ ratio: 9/16,
 			  clip: {
@@ -327,14 +331,14 @@
 			      backgroundColor:'#000',
 			      //backgroundGradient: [0.1, 0]
 			  }
-			}).flowplayer().ipad({simulateiDevice: self.sim});
+			}).ipad({simulateiDevice: self.sim});
 		    $('#player').height(
 			($('#player').width()*9)/16);
-		    flowplayer().play(0);
+		    $f("player").play(0);
 		},
 		beforeClose: function () {
 		    // important! unload the player
-		    flowplayer().unload();
+		    $f("player").unload();
 		},
 
 		afterShow: function() {
@@ -349,7 +353,7 @@
 	    this.media_area.unbind( 'mouseleave.VP' );
 	    this.media_area.unbind( 'click.VP' );
 	    this.media_area.unbind( 'scroll.VP' );
-	    flowplayer().unload();
+	    $f("player").unload();
 	},
 	refresh: function() {
 	    var self = this;
