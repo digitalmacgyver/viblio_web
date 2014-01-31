@@ -124,6 +124,16 @@
 		if ($(this).scrollTop() + $(this).innerHeight() >= ( $(this)[0].scrollHeight - self.options.scroll_offset ) )
 		    self._search();
 	    });
+
+	    /* if we have mobile support, make the scrolled area kinetic */
+	    try {
+		if ( head.mobile() ) {
+		    self.media_area.kinetic();
+		}
+	    } catch(e) {
+		// support was not included for this
+	    };
+
 	    /* fetch mediafiles */
 	    self._search();
 	},

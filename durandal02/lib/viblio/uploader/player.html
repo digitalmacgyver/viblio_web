@@ -3,12 +3,17 @@
   <head>
     <meta charset="utf-8">
     <title>Viblio Player Example</title>
+    
+    <!-- For this demo only -->
     <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" href="vendor/fancybox/jquery.fancybox.css" />
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Comfortaa|Source+Sans+Pro">
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:100,200,300,400,700,900" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Comfortaa:100,200,300,400,700,900" rel="stylesheet" type="text/css">
+
+    <!-- Required Viblio styles -->
     <link rel="stylesheet" href="viblio.css" />
+
+    <!-- For this demo only -->
     <link rel="stylesheet" href="player-demo.css" />
   </head>
   <body>
@@ -31,8 +36,10 @@
 	<!-- The <a> link will fire the video uploader in a fancybox popup window -->
 	<h2>Community Videos <small><a title="Video Uploader" href="#upload" id="upload-trigger">Upload Videos...</a></small></h2>
       </div>
-      <!-- The player container -->
+
+      <!-- The Viblio player container -->
       <div class="well well-large vp"></div>
+
     </div>
 
     <!-- Placeholder for the uploader gui. -->
@@ -45,6 +52,10 @@
     <script src="vendor/jquery.ui.widget.js"></script>
     <script src="vendor/ICanHaz.min.js"></script>
     <script src="viblio.js"></script>
+
+    <!-- if you want to support mobile platforms -->
+    <script src="vendor/head.core.js"></script>
+    <script src="vendor/jquery.kinetic.js"></script>
 
     <!-- Viblio Player -->
     <script src="vendor/fancybox/jquery.fancybox.js"></script>
