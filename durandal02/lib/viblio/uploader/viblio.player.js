@@ -313,8 +313,9 @@
 			      }
 			  },
 			  canvas: {
-			      backgroundColor:'#254558',
-			      backgroundGradient: [0.1, 0]
+			      //backgroundColor:'#254558',
+			      backgroundColor:'#000',
+			      //backgroundGradient: [0.1, 0]
 			  }
 			}).flowplayer().ipad({simulateiDevice: self.sim});
 		    $('#player').height(
