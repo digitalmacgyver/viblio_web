@@ -41,15 +41,21 @@
     margin-left: auto;
     width: 100%;
     text-align: center;
+    margin-top: 40px;
+}
+
+.vup-instructions .line1 {
     font-size: 40px;
     font-weight: bold;
-    opacity: 0.2;
-    margin-top: 40px;
+    line-height: 35px;
+}
+.vup-instructions .line2 {
+    font-size: 25px;
 }
 
 /* applied to the vup-file-progress-column when the
    file is done uploading. */
-.vp-file-done {
+.vup-file-done {
 }
 
 .vup-alert {

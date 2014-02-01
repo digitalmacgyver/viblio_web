@@ -213,8 +213,12 @@
 	    self.element.find( '.vup-files' ).empty();
 	    self.element.find('.vup-cancel-all').css( 'visibility', 'hidden' );
 	    self.element.find('.vup-instructions').css( 'visibility', 'visible' );
+	    self.element.find('.vup-instructions').css( 'cursor', 'pointer' );
 	    self.element.find('.vup-area').css( 'cursor', 'pointer' );
 	    self.element.find('.vup-area').on( 'click.VUP-AREA', function() {
+		self.element.find('input[type=file]').click();
+	    });
+	    self.element.find('.vup-instructions').on( 'click.VUP-AREA', function() {
 		self.element.find('input[type=file]').click();
 	    });
 	},
@@ -222,6 +226,7 @@
 	_remove_droparea_click: function() {
 	    var self = this;
 	    self.element.find('.vup-area').unbind( 'click.VUP-AREA' );
+	    self.element.find('.vup-instructions').unbind( 'click.VUP-AREA' );
 	    self.element.find('.vup-area').css( 'cursor', 'default' );
 	},
 
@@ -331,7 +336,7 @@
 		    if ( self._vpin_progress == 0 )
 			self.notify( 'Your uploaded videos are now being processed to find and bring out the magic!' );
                     data.context.find(".vup-file-progress-column .bar").html( self.options.done_message );
-                    data.context.find(".vup-file-progress-column .bar").addClass( 'vp-file-done' );
+                    data.context.find(".vup-file-progress-column .bar").addClass( 'vup-file-done' );
                     data.context.find( '.vup-cancel-column').empty();
                 },
 		progress: function(e, data) {
@@ -397,7 +402,7 @@
                         row.find( '.vup-cancel-column').empty();
                         row.find(".vup-file-progress-column .bar").html(self.options.cancel_message);
                         row.find(".vup-file-progress-column .bar").css( 'width', '100%' );
-                        row.find(".vup-file-progress-column .bar").addClass( 'vp-file-done' );
+                        row.find(".vup-file-progress-column .bar").addClass( 'vup-file-done' );
                         return;
                     }
 
@@ -429,7 +434,7 @@
                         // We've met our retry limit. Indicate that this upload has failed.
                         row.find(".vup-file-progress-column .bar").html("Upload failed: comm timeout");
 			row.find(".vup-file-progress-column .bar").css( 'width', '100%' );
-			row.find(".vup-file-progress-column .bar").addClass( 'vp-file-done' );
+			row.find(".vup-file-progress-column .bar").addClass( 'vup-file-done' );
                         row.find( '.vup-cancel-column').empty();
                         self._vpin_progress -= 1;
                     }
@@ -481,7 +486,7 @@
 	<a class="vup-cancel-all btn btn-danger vup-btn">Cancel All</a>\
 	<input  title="Add Files..." type="file" class="vup-add-files btn btn-primary vup-btn" name="files[]" multiple />\
       </div>\
-      <div class="vup-instructions"><div>Drop Files Here</div></div>\
+      <div class="vup-instructions"><div><p class="line1">Drop files here</p><p class="line2">(or click)</p></div></div>\
       <div class="vup-alert"><span class="alert"></span></div>\
       <div class="vup-area">\
 	<table class="vup-files">\
