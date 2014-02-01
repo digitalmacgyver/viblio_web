@@ -36,6 +36,7 @@
 	    //
 	    // What to say when a video file upload is cancelled
 	    cancel_message: 'Cancelled!',
+	    pause_message: 'Paused...',
 	    //
 	    // What to say when a video file is waiting for a slot to upload
 	    waiting_message: 'waiting...',
@@ -128,19 +129,22 @@
 	    var files = this._vpfiles;
 	    if (files[index]) {
 		if ( ! $(files[index].context).data('done') ) {
+		    if ( ! $(files[index].context).data('canceled') )
+			this._vpin_progress -= 1;
 		    $(files[index].context).data('canceled', true);
 		    if ( files[index].jqXHR ) {
 			files[index].jqXHR.abort();
-
-			// Cancel the upload on the server side
-			var sessionID = $(files[index].context).attr('sessionID');
-			var endpoint = this.options.endpoint + '/' + sessionID;
-			var xhr = new XMLHttpRequest();
-			xhr.open("DELETE", endpoint, false ); // sync!
-			xhr.send();
-			files[index].jqXHR = null;
-			this._vpin_progress -= 1;
 		    }
+		    else {
+			$(this._fu).data('blueimp-fileupload')._trigger( 'fail', null, files[index] );
+		    }
+		    // Cancel the upload on the server side
+		    var sessionID = $(files[index].context).attr('sessionID');
+		    var endpoint = this.options.endpoint + '/' + sessionID;
+		    var xhr = new XMLHttpRequest();
+		    xhr.open("DELETE", endpoint, false ); // sync!
+		    xhr.send();
+		    files[index].jqXHR = null;
 		}
 	    }
 	},
@@ -149,6 +153,59 @@
 	    var self = this;
             $(this._vpfiles).each(function(index, file) {
 		self._cancelUpload(index);
+            });
+	},
+
+	_pauseUpload: function( index ) {
+	    var files = this._vpfiles;
+	    if (files[index]) {
+		if ( ! $(files[index].context).data('done') &&
+		     ! $(files[index].context).data('canceled') ) {
+		    $(files[index].context).data('paused', true);
+		    if ( files[index].jqXHR ) {
+			files[index].jqXHR.abort();
+			files[index].jqXHR = null;
+		    }
+		}
+	    }
+	},
+
+	_pauseAllUploads: function() {
+	    var self = this;
+            $(this._vpfiles).each(function(index, file) {
+		self._pauseUpload(index);
+            });
+	},
+
+	_resumeUpload: function( index ) {
+	    var self = this;
+	    var files = self._vpfiles;
+	    if ( files[index] ) {
+		if ( $(files[index].context).data('paused') ) {
+		    $(files[index].context).data('paused', false );
+		    var sessionID = $(files[index].context).attr('sessionID');
+		    var endpoint = this.options.endpoint + '/' + sessionID;
+		    $.ajax({
+			url: endpoint,
+			method: 'HEAD',
+			success: function( d, s, xhr ) {
+			    var Offset = xhr.getResponseHeader( 'Offset' );
+			    files[index].uploadedBytes = parseInt( Offset );
+			    files[index].data = null;
+			    files[index].submit();
+			},
+			error: function() {
+			    $(self._fu).data('blueimp-fileupload')._trigger( 'fail', null, files[index] );
+			}
+		    });
+		}
+	    }
+	},
+
+	_resumeAllUploads: function() {
+	    var self = this;
+            $(this._vpfiles).each(function(index, file) {
+		self._resumeUpload(index);
             });
 	},
 
@@ -258,6 +315,7 @@
 		messages: self.options.messages,
 		add: function(e, data) {
 		    var that = this;
+		    self._fu = this;
 		    data.process().done(function() {
 			return $(that).fileupload('process', data);
                     }).always(function() {
@@ -275,13 +333,65 @@
 			    
                             // A count of the number of rows (current file uploads)
                             var index = elem.find(".vup-files tr").length;
+
+			    if ( index == 0 ) {
+				// first time here, add the global cancel/pause buttons
+				var allCancelButton = $('<a title="Cancel ALL" href="#" class="vup-cancel-file"><i class="icon-remove"></i></a>');
+				var allPauseButton = $('<a title="Pause/Resume ALL" href="#" class="vup-pause-file"><i class="icon-pause"></i></a>');
+
+				allCancelButton.click( function() {
+				    self._cancelAllUploads();
+				    allCancelButton.remove();
+				    allPauseButton.remove();
+				});
+
+				allPauseButton.click( function() {
+				    if ( $(this).data('paused') ) {
+					$(this).data( 'paused', false );
+					$('.vup-pause-file i').removeClass( 'icon-play' );
+					$('.vup-pause-file i').addClass( 'icon-pause' );
+					self._resumeAllUploads();
+				    }
+				    else {
+					$(this).data( 'paused', true );
+					$('.vup-pause-file i').removeClass( 'icon-pause' );
+					$('.vup-pause-file i').addClass( 'icon-play' );
+					self._pauseAllUploads();
+				    }
+				});
+				var row = $('<tr><td class="vup-filename-column"></td><td class="vup-file-progress-column"></td><td class="vup-cancel-column"></td>');
+				$(row).find(".vup-cancel-column").append(allCancelButton);
+				$(row).find(".vup-cancel-column").append(allPauseButton);
+				$(row).appendTo(elem.find(".vup-files"));				
+			    }
+			    else {
+				// account for the first row which contains the global buttons
+				index -= 1;
+			    }
 			    
 			    // create a cancel button for this upload
-			    var cancelButton = $('<a href="#" class="vup-cancel-file">&times;</a>');
+			    var cancelButton = $('<a title="Cancel" href="#" class="vup-cancel-file"><i class="icon-remove"></i></a>');
 			    cancelButton.data( 'file', index );
+			    var pauseButton = $('<a title="Pause/Resume" href="#" class="vup-pause-file"><i class="icon-pause"></i></a>');
+			    pauseButton.data( 'file', index );
+
 			    cancelButton.click( function() {
 				self._cancelUpload($(this).data( 'file' ));
 				cancelButton.remove();
+				pauseButton.remove();
+			    });
+
+			    pauseButton.click( function() {
+				if ( $( self._vpfiles[$(this).data( 'file' )].context ).data('paused') ) {
+				    $(this).find('i').removeClass( 'icon-play' );
+				    $(this).find('i').addClass( 'icon-pause' );
+				    self._resumeUpload($(this).data( 'file' ));
+				}
+				else {
+				    $(this).find('i').removeClass( 'icon-pause' );
+				    $(this).find('i').addClass( 'icon-play' );
+				    self._pauseUpload($(this).data( 'file' ));
+				}
 			    });
 			    
 			    // create new table row
@@ -310,6 +420,7 @@
 				$(row).find(".vup-filename-column").text(filename);
 				$(row).find(".vup-file-progress-column").html('<span class="bar" style="width:0%;">' + self.options.waiting_message + '</span>' );
 				$(row).find(".vup-cancel-column").append(cancelButton);
+				$(row).find(".vup-cancel-column").append(pauseButton);
 				$(row).attr("sessionID", sessionID);
 				$(row).attr("offset", 0 );
 			    
@@ -335,7 +446,7 @@
 			self.notify( 'Your uploaded videos are now being processed to find and bring out the magic!' );
                     data.context.find(".vup-file-progress-column .bar").html( self.options.done_message );
                     data.context.find(".vup-file-progress-column .bar").addClass( 'vup-file-done' );
-                    data.context.find( '.vup-cancel-column').empty();
+                    elem.find( '.vup-cancel-column').empty();
                 },
 		progress: function(e, data) {
                     var progress;
@@ -403,6 +514,11 @@
                         row.find(".vup-file-progress-column .bar").addClass( 'vup-file-done' );
                         return;
                     }
+		    else if ( row.data( 'paused' ) ) {
+                        row.find(".vup-file-progress-column .bar").html(self.options.pause_message);
+                        row.find(".vup-file-progress-column .bar").addClass( 'vup-file-paused' );
+			return;
+		    }
 
                     // Grab its current retry count
                     retryCount = row.data("retries") || 1;
@@ -438,9 +554,6 @@
                     }
                 }
 	    });
-	    //elem.find('.vup-cancel-all').click( function() {
-	//	self._cancelAllUploads();
-	  //  });
 	    if ( self.options.dropzone_effects ) {
 		$(document).bind('dragover.VUP', function (e) {
 		    elem.find('.vup-instructions').css( 'visibility','hidden');

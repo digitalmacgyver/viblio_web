@@ -29,7 +29,14 @@ body {
 }
 
 /* red-ish cancel buttons */
-.vup-files .vup-cancel-column a {
+.vup-files .vup-cancel-column a.vup-cancel-file {
     color: #da4f49;
+}
+.vup-files .vup-cancel-column a.vup-pause-file {
+    color: #f1bf91;
+}
+
+.vup-files tr:first-child td.vup-cancel-column {
+    background: #eee;
 }
 
