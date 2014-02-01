@@ -186,10 +186,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	    var self = this;
 	    self.view = view;
             
-	    customDialogs.showLoading();
-            
 	    return viblio.api( '/services/user/profile' ).then( function( json ) {
-		customDialogs.hideLoading();
 
 		var p = { uuid: json.profile.uuid,
 			  email: json.profile.email,
@@ -226,7 +223,10 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
         
         compositionComplete: function(view) {
 	    // jqueryFileUpload
-	    $("#fileupload").fileupload({
+	    $(view).find(".avatar").on( 'click', function() {
+		$(view).find(".fileupload").click();
+	    });
+	    $(view).find(".fileupload").fileupload({
 		dataType: 'json',
 		start: function() {
 		    $(".avatar div i").css( 'visibility', 'visible' );
