@@ -211,7 +211,6 @@
 	    self.BP = 0;
 	    self._reset_stats();
 	    self.element.find( '.vup-files' ).empty();
-	    self.element.find('.vup-cancel-all').css( 'visibility', 'hidden' );
 	    self.element.find('.vup-instructions').css( 'visibility', 'visible' );
 	    self.element.find('.vup-instructions').css( 'cursor', 'pointer' );
 	    self.element.find('.vup-area').css( 'cursor', 'pointer' );
@@ -236,13 +235,13 @@
 
 	    self.options.uuid = self.options.uuid || viblio.vid();
 	    self.options.endpoint = self.options.endpoint || viblio.service('/files');
+	    $('<input type="file" name="files[]" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;" multiple />').appendTo( elem );
 	    elem.append( self.options.template || self._html() );
 	    if ( self.options.display_stats )
 		elem.find( '.vup-stats' ).css( 'visibility', 'visible' );
 
 	    self.reset();
 
-	    elem.find('input[type=file]').bootstrapFileInput();
             elem.find('input[type=file]').fileupload({
 		url: self.options.endpoint,
                 type: 'PATCH',
@@ -267,7 +266,6 @@
 			    self.alert( self._fileName(data)+': '+msg+'<br/>', true );
 			}
 			else {
-			    elem.find('.vup-cancel-all').css( 'visibility', 'visible' );
 			    elem.find('.vup-instructions').css( 'visibility', 'hidden' );
 			    self._remove_droparea_click();
 			    self._vpin_progress += 1;
@@ -440,9 +438,9 @@
                     }
                 }
 	    });
-	    elem.find('.vup-cancel-all').click( function() {
-		self._cancelAllUploads();
-	    });
+	    //elem.find('.vup-cancel-all').click( function() {
+	//	self._cancelAllUploads();
+	  //  });
 	    if ( self.options.dropzone_effects ) {
 		$(document).bind('dragover.VUP', function (e) {
 		    elem.find('.vup-instructions').css( 'visibility','hidden');
@@ -482,10 +480,6 @@
 
 	_html: function() {
 	    return ('\
-      <div class="vup-banner">\
-	<a class="vup-cancel-all btn btn-danger vup-btn">Cancel All</a>\
-	<input  title="Add Files..." type="file" class="vup-add-files btn btn-primary vup-btn" name="files[]" multiple />\
-      </div>\
       <div class="vup-instructions"><div><p class="line1">Drop files here</p><p class="line2">(or click)</p></div></div>\
       <div class="vup-alert"><span class="alert"></span></div>\
       <div class="vup-area">\

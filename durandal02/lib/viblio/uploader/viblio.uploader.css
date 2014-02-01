@@ -6,12 +6,6 @@
     position: relative;
 }
 
-/* cancel all button hidden until uploads are in flight */
-.vup-cancel-all {
-    float: right;
-    visibility: hidden;
-}
-
 .vup-files {
     width: 100%;
 }
@@ -96,10 +90,6 @@
 }
 .vup-stats table td {
     width: 33%;
-}
-
-.vup-banner {
-    padding: 8px;
 }
 
 /* dashed dropzone, with a fixed height and scrollable */
