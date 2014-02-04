@@ -7,12 +7,42 @@
           <div class="paddedDiv bottomBorder-Thin">
             <div id="cloudImage"></div>
             <p class="landingHeaderTitle"><span>Create your own </span>VIBLIO Video Library</p>
-            <a class="btn btn-primary" href="/#getApp?from=web_player_overlay" data-bind="click: getApp, clickBubble: false">
-              Get VIBLIO &raquo;
-            </a>
+            <table class="overlayTable">
+                <tbody>
+                    <tr>
+                        <td colspan="2" class="bottomBorder-Thin font20">Add</td>
+                    </tr>
+                    <tr class="overlayTableButtons">
+                        <td data-bind="click: addVideos, clickBubble: false">
+                            <div>
+                                <i class="icon-film"></i><br>
+                                <p>Videos</p>
+                            </div>
+                        </td>
+                        <td class="addAlbumBtn" data-bind="click: addAlbum, clickBubble: false">
+                            <div class="albumWrap">
+                                <div class="albumOuter">
+                                    <div class="albumInner">
+                                        <i class="icon-picture innerAlbumIcon"></i>
+                                    </div>
+                                    <i class="icon-picture"></i>
+                                </div>
+                                <br>
+                                <p>New Album</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <span class="font18">
+                Want faster uploads? Download the
+                <a class="whiteText heavyWeightFont" href="/#getApp?from=web_player_overlay" data-bind="click: getApp, clickBubble: false">
+                  VIBLIO App
+                </a>
+            </span>
           </div>
           <div class="button-Wrap">
-            <button class="btn btn-blue" data-bind="click: playAgain, clickBubble: false">
+            <button class="btn btn-white" data-bind="click: playAgain, clickBubble: false">
               <i class="icon-repeat"></i>  Watch this Video again
             </button>
           </div>

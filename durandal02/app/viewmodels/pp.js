@@ -7,8 +7,9 @@ define(["durandal/app",
 	"lib/customDialogs",
 	"viewmodels/person",
 	"lib/related_video",
-	"viewmodels/footer"], 
-       function(app,system,router,config,viblio,Mediafile,customDialogs,Face,Related,footer) {
+	"viewmodels/footer",
+        "lib/customDialogs"], 
+       function(app,system,router,config,viblio,Mediafile,customDialogs,Face,Related,footer,dialog) {
     var incoming_mid;
     var view;
     var route;
@@ -121,7 +122,15 @@ define(["durandal/app",
     var showPlayerOverlay = ko.observable(false);
     function hidePlayerOverlay() {
         showPlayerOverlay(false);
-    }
+    };
+    
+    function addVideos() {
+        dialog.showModal( 'viewmodels/nginx-modal' );
+    };
+    
+    function addAlbum() {
+        router.navigate('albums');
+    };
 
     // default search criterion for related videos.
     var defaultCriterion = [ 'by_date',
@@ -597,6 +606,8 @@ define(["durandal/app",
 	pp_related_column_visible: pp_related_column_visible,
 	showPlayerOverlay: showPlayerOverlay,
 	hidePlayerOverlay: hidePlayerOverlay,
+        addVideos: addVideos,
+        addAlbum: addAlbum,
 	playAgain: playAgain,
 	getApp: getApp,
 	playing: playing,
