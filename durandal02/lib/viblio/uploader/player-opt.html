@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Viblio Player Example</title>
+    
+    <!-- For this demo only -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Comfortaa|Source+Sans+Pro">
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:100,200,300,400,700,900" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Comfortaa:100,200,300,400,700,900" rel="stylesheet" type="text/css">
+
+    <!-- =========================================================
+	 REQUIRED VIBLIO STYLES 
+	 =========================================================
+      -->
+    <link rel="stylesheet" href="viblio.css" />
+
+    <!-- For this demo only -->
+    <link rel="stylesheet" href="player-demo.css" />
+  </head>
+  <body>
+
+    <div class="container">
+      <!-- Just for demo purposes ... -->
+      <div style="padding-top:22px;">
+ 	<p style="color:#666">
+	  For demo purposes; select <b>curator</b> to see her view (she can delete).  Select <b>pending</b> to
+	  see what the curator's pending queue looks like.  After selecting these buttons, do a <b>refresh</b>
+	  to re-render the views.
+	</p>
+	<div style="margin-right: auto; margin-left: auto; width: 100%; text-align:center;">
+	  <input type="checkbox" id="curator" />curator&nbsp;
+	  <input type="checkbox" id="pending" />pending
+	  <button id="refresh" class="btn btn-primary"><i class="icon-refresh"></i>&nbsp;refresh</button>
+	</div>
+      </div>
+      <div class="page-header">
+	<!-- The <a> link will fire the video uploader in a fancybox popup window -->
+	<h2>Community Videos <small><a title="Video Uploader" href="#upload" id="upload-trigger">Upload Videos...</a></small></h2>
+      </div>
+
+      <!-- ==========================================================
+	   THE VIBLIO PLAYER CONTAINER 
+	   ==========================================================
+	-->
+      <div class="well well-large vp"></div>
+
+    </div>
+
+    <!-- ============================================================
+	 PLACEHOLDER FOR THE UPLOADER GUI. 
+	 ============================================================
+      -->
+    <div style="display: none;">
+      <div id="upload"></div>
+    </div>
+
+    <!-- common script dependencies -->
+    <script src="vendor.min.js"></script>
+
+    <!-- viblio script -->
+    <script src="viblio.js"></script>
+    <script src="viblio.player.js"></script>
+    <script src="viblio.uploader.js"></script>
+
+    <script>
+    $(document).ready( function() {
+	// Initialize the viblio library
+	viblio.init( 'my-apikey', 'my-cid',
+		     'https://' + window.location.hostname );
+	// Attach a global error handler if desired (optional)
+	viblio.error_handler( function(err) {
+	    alert( err.message );
+	});
+	// Authenticate the user
+	viblio.authenticate( 'userID' ).then(
+	    function( data ) {
+		//console.log( 'viblio user id:', viblio.vid() );
+		// ADD THE PLAYER
+		$('.vp').viblio_player({
+		    // using staging for test
+                    platform: 'staging',
+		    // capture video play action for analytics
+		    play_callback: function( data ) {
+			//console.log( 'play callback:', data );
+		    },
+		    // let this plugin create and manage the uploader
+		    // plugin, so we don't need another ui component.
+                    attach_uploader: {
+                        trigger_selector: '#upload-trigger',
+                        ui_selector: '#upload',
+		    }
+		});
+
+		// FOR DEMO ONLY... TO SHOW CURATOR/PENDING MODES
+		$("#refresh").click( function() {
+		    $('.vp').viblio_player('refresh');
+		});
+		$("#curator").change( function() {
+		    var val = $("#curator").is(':checked');
+		    if ( val )
+			$('.vp').viblio_player('option', 'curator', true );
+		    else
+			$('.vp').viblio_player('option', 'curator', false );
+		    return true;
+		});
+		$("#pending").change( function() {
+		    var val = $("#pending").is(':checked');
+		    if ( val ) {
+			$('.vp').viblio_player('option', 'pending', true );
+			$("#curator").attr("checked","checked");
+			$('.vp').viblio_player('option', 'curator', true );
+		    }
+		    else
+			$('.vp').viblio_player('option', 'pending', false );
+		    return true;
+		});
+	    }
+	);
+    });
+    </script>
+  </body> 
+</html>
