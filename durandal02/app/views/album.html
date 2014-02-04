@@ -8,15 +8,17 @@
         </div>  
     </div>
     <!-- ko if: ro -->
-    <span class="heavyWeightFont" data-bind="text: albumTitle || 'no title'"></span>
+    <span class="heavyWeightFont" data-bind="text: albumTitle || 'No title'"></span>
     <!-- /ko -->
     <span>(<span data-bind="text: albumLength"></span> <span data-bind="text: videoOrVideos()"></span>)</span>
 </div>
 <div class="mediafile" data-bind="attr:{id:media().uuid}">
     <div>
-        <div class="albumOverlay" data-bind="ifnot: noVideos">
+        <!-- ko if: noVideos -->
+        <div class="albumOverlay">
             <p class="font18 textShadowed">There are no videos in this album. Please add videos before viewing.</p>
         </div>
+        <!-- /ko -->
         <button class="dbtn btn btn-danger clearfix" data-bind="click:mfdelete">delete</button>
 	<a class="btn btn-primary media-share-badge" alt="share" title="share" data-bind="visible: show_share_badge, click: share"><i class="icon-share"></i></a>
         <a class="mplay-icon pointer" data-bind="click:play">
@@ -28,7 +30,7 @@
         </div>
         <div class="information">
             <div class="aux pull-right muted"><img src='css/images/viewsEye.png' alt="view count"/><span data-bind="text: albumViews">0</span></div>
-	    <div class="view title truncate" data-bind="text: posterTitle() || 'no title'"></div>
+	    <div class="view title truncate" data-bind="text: posterTitle() || 'No title'"></div>
         </div>
     </div>
 </div>

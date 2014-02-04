@@ -42,10 +42,10 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	this.description = ko.observable( data.description );
         this.albumViews = ko.observable();
         this.noVideos = ko.computed(function(){
-            if( self.media().length > 0 ) {
-                return true;
-            } else {
+            if( data.media.length > 0 ) {
                 return false;
+            } else {
+                return true;
             }
         });
 	this.image = ko.observable( this.media().views.poster.url );
@@ -88,7 +88,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         // Once the album is composed and has a view, add mouse-over
         // callbacks that cycle through the media posters that belong to
         // this album. This can be turned off in the options, but is on by default.
-        if( this.options.animated == true ) {
+        if( this.options.animated == true && self.noVideos() == false ) {
             this.on( 'album:composed', function() {
                 self.change_title( self.albumPosterTitle );
                 self.change_viewCount( self.albumPosterViews );

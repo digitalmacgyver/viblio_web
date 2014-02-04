@@ -791,6 +791,10 @@ input:-moz-placeholder {
     margin-top: 15px;
 }
 
+.marginT-20 {
+    margin-top: -20px;
+}
+
 .marginB10 {
     margin-bottom: 10px;
 }
@@ -3441,6 +3445,12 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .air .mainTitle {
     margin-right: 20px;
+}
+
+@media (max-width: 921px) {
+    .air .btn-primary {
+        margin-left: 45px;
+    }
 }
 
 .air .dropdown .btn {

@@ -33,10 +33,14 @@
         </div>
         
         <div class="yir air clearfix">
-            <!-- ko if: showAllVids -->
+            <!-- ko if: noVids -->
+                <p class="mainTitle marginL45 textShadowed">All videos have been removed from this Album.</p>
+                <a href="#albums" class="btn btn-primary marginT-20">Add videos to album &raquo;</a>
+            <!-- /ko -->
+            <!-- ko if: showAllVids() && allVids().length > 0 -->
                 <p class="mainTitle marginL45 textShadowed">All Videos in this Album</p>
             <!-- /ko -->
-            <!-- ko ifnot: showAllVids -->
+            <!-- ko if: !showAllVids() && allVids().length > 0 -->
                 <p class="mainTitle marginL45 textShadowed">All Videos from <span data-bind="text: selectedYear"></span> in this Album</p>
             <!-- /ko -->
             <div class="a-searching lightGreyFont" data-bind="visible: loadingYears">
@@ -53,7 +57,7 @@
                 </ul>
 	    </div>-->
             
-            <!-- ko if: ownedByViewer -->
+            <!-- ko if: ownedByViewer && allVids().length > 0 -->
                 <button class="btn btn-small btn-secondary pull-right marginR45" data-bind="click: toggleEditMode, text: editLabel"></button>
             <!-- /ko -->
             
@@ -81,7 +85,7 @@
             </div>
             <!-- /ko -->
             
-            <!-- ko ifnot: showAllVids -->
+            <!-- ko if: !showAllVids() &&  allVids().length > 0 -->
             <div class="a-content a-left-content" data-bind="highlightChange: months().length > 0">
                 <!-- ko foreach: months -->
                 <div class="month-heading textShadowed marginB10 marginL45">

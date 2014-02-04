@@ -19,6 +19,14 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
     var showAllVids = ko.observable( true );
     var refresh = ko.observable( false );
     
+    var noVids = ko.computed(function() {
+        if ( allVids().length === 0 ) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    
     var showBOH = ko.observable();
     
     var updatedTitle = ko.observable( null );
@@ -234,6 +242,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
         mediaHasViews: mediaHasViews,
         editLabel: editLabel,
         toggleEditMode: toggleEditMode,
+        noVids: noVids,
         showBOH: showBOH,
         
         title: 'Box Office Hits',
