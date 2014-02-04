@@ -14,6 +14,9 @@
 </div>
 <div class="mediafile" data-bind="attr:{id:media().uuid}">
     <div>
+        <div class="albumOverlay" data-bind="ifnot: noVideos">
+            <p class="font18 textShadowed">There are no videos in this album. Please add videos before viewing.</p>
+        </div>
         <button class="dbtn btn btn-danger clearfix" data-bind="click:mfdelete">delete</button>
 	<a class="btn btn-primary media-share-badge" alt="share" title="share" data-bind="visible: show_share_badge, click: share"><i class="icon-share"></i></a>
         <a class="mplay-icon pointer" data-bind="click:play">

@@ -121,8 +121,12 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	no_albums: no_albums,
 	searching: searching,
         
-        viewAlbum: function($data) {
-            router.navigate('viewAlbum?aid=' + $data.uuid);
+        viewAlbum: function( $data ) {
+            if( $data.media().length > 0 ) {
+                router.navigate( 'viewAlbum?aid=' + $data.uuid );
+            } else {
+                dialogs.showMessage( 'Please add a video to this album before viewing it.', 'Album Error' );
+            }
         },
         
 	// A new album is not committed to the database until the first

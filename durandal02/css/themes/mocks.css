@@ -3626,6 +3626,20 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     text-overflow: ellipsis;
 }
 
+.albumOverlay {
+    position: absolute;
+    width: 350px;
+    height: 197px;
+    margin: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 101;
+    color: rgb(255, 255, 255);
+}
+
+.albumOverlay p {
+    padding: 60px;
+}
+
 .no-comms {
     width: 100%;
     max-width: 800px;

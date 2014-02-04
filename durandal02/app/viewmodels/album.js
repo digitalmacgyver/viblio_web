@@ -41,6 +41,13 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	this.albumTitle = ko.observable( data.title );
 	this.description = ko.observable( data.description );
         this.albumViews = ko.observable();
+        this.noVideos = ko.computed(function(){
+            if( self.media().length > 0 ) {
+                return true;
+            } else {
+                return false;
+            }
+        });
 	this.image = ko.observable( this.media().views.poster.url );
         
         this.albumPosterUri = this.media().views.poster.uri.slice( 0, this.media().views.poster.uri.indexOf('/') );
