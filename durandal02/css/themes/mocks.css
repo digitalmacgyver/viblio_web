@@ -104,6 +104,8 @@ input[type="color"],
 .btn-primary:active,
 .btn:active,
 .btn:hover {
+    -moz-box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
+    -webkit-box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
     box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
 }
 
@@ -738,8 +740,8 @@ input:-moz-placeholder {
 .bottomBorder-Thick {
     border-bottom: 8px inset rgba(0,0,0,.1); 
 }
-
-.whiteText {
+.whiteText,
+.whiteText:hover {
     color: white;
 }
 
@@ -1571,7 +1573,7 @@ input:-moz-placeholder {
 }
 
 #cloudImage {
-    background-image: url("/css/images/cloud.png");
+    background-image: url("/css/images/logo-white-200.png");
     background-repeat: no-repeat;
     padding: 5%;
     background-size: contain;
@@ -1580,29 +1582,110 @@ input:-moz-placeholder {
     background-position: center;
 }
 
+.pp-player-column .overlayTable {
+    width: 32%;
+    margin: 0 auto 3%;
+    background-color: rgb(179,179,179);
+}
+
+.overlayTable td {
+    padding: 4% 0;
+}
+
+.videoOverlay .overlayTable .bottomBorder-Thin {
+    border-bottom: 1px solid white;
+}
+
+.overlayTableButtons td {
+    padding: 10% 0;
+    width: 48%;
+    font-size: 16px;
+    border-bottom: 3px inset rgba(0,0,0,.2);
+}
+
+.overlayTableButtons i {
+    font-size: 22px;
+}
+
+.overlayTableButtons td:last-of-type {
+    border-left: 1px solid white;
+}
+
+.overlayTableButtons p {
+    margin-bottom: 0;
+}
+
+.addAlbumBtn .albumWrap {
+    position: relative;
+}
+
+.addAlbumBtn .albumOuter {
+    margin-left: -41px;
+    margin-top: -10px;
+    left: 50%;
+    position: absolute;
+}
+
+.addAlbumBtn .albumInner {
+    background-color: rgb(179, 179, 179);
+    display: inline-block;
+    position: relative;
+    top: 8px;
+    left: 35px;
+    height: 21px;
+    width: 26px;
+}
+
+.addAlbumBtn .innerAlbumIcon {
+    position: absolute;
+    right: 0;
+}
+
+.addAlbumBtn .albumWrap {
+    margin-top: 3px;
+}
+
+.overlayTableButtons td:hover,
+.addAlbumBtn:hover .albumInner {
+    -moz-box-shadow: inset 0 0 0 100px rgba(0,0,0,.1);
+    -webkit-box-shadow: inset 0 0 0 100px rgba(0,0,0,.1);
+    box-shadow: inset 0 0 0 100px rgba(0,0,0,.1);
+    cursor: pointer;
+}
+
 .videoOverlay .bottomBorder-Thin {
     border-bottom: 1px solid lightgrey;
 }
 
 .videoOverlay .paddedDiv {
     padding: 2% 0 4%;
-    height: 64%;
+    height: 71%;
 }
 
 .videoOverlay .landingHeaderTitle {
     border: none;
     font-size: 32px;
     padding: 0 15%;
-    margin-bottom: 5%; 
+    margin-bottom: 3%;
+    margin-top: 2%;
 }
 
 .videoOverlay .button-Wrap {
-    margin-top: 5%;
+    margin-top: 4%;
 }
 
-@media (max-width: 650px) {
+@media (max-width: 1242px) {
     .videoOverlay .landingHeaderTitle {
-        font-size: 30px;
+        margin: 0 0 1%;
+    }
+    .pp-player-column .overlayTable {
+        margin: 0 auto;
+    }
+    .overlayTableButtons td {
+        padding: 4% 0;
+    }
+    .videoOverlay .button-Wrap {
+        margin-top: 1.5%;
     }
 }
 
