@@ -125,7 +125,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
             if( $data.media().length > 0 ) {
                 router.navigate( 'viewAlbum?aid=' + $data.uuid );
             } else {
-                dialogs.showMessage( 'Please add a video to this album before viewing it.', 'Album Error' );
+                dialogs.showMessage( 'Please add a video to this album before viewing it.', 'Album' );
             }
         },
         
