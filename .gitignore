@@ -4,3 +4,6 @@ node_modules
 package.tar.gz
 /durandal02/build
 /durandal02/app/main-built.js
+/durandal02/lib/viblio/uploader/vendor.all.js
+/durandal02/lib/viblio/uploader/vendor.js
+/durandal02/lib/viblio/uploader/vendor.min.js
