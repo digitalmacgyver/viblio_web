@@ -125,11 +125,20 @@ define(["durandal/app",
     };
     
     function addVideos() {
-        dialog.showModal( 'viewmodels/nginx-modal' );
+        if ( loggedIn() ) {
+            dialog.showModal( 'viewmodels/nginx-modal' );
+        } else {
+            dialog.showModal( 'viewmodels/loginModal', 'Please log in before uploading new videos to your account.' );
+        }
     };
     
     function addAlbum() {
-        router.navigate('albums');
+        if ( loggedIn() ) {
+            router.navigate('albums');
+        } else {
+            dialog.showModal( 'viewmodels/loginModal', 'Please log in before creating a new album.' );
+        }
+        
     };
 
     // default search criterion for related videos.

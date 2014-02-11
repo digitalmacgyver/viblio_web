@@ -1911,6 +1911,17 @@ input.edit,
     background-color: transparent;
 }
 
+/********************  loginModal Section  *************************/
+
+.loginModal p {
+    margin: 0;
+    font-size: 16px;
+}
+
+.loginModal .bottomBorder {
+    padding-top: 45px;
+}
+
 /********************  Share Video Modal Section  *************************/
 
 #shareVidModal {
