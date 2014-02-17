@@ -41,7 +41,15 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	// either go to the personal channel page, or
 	// do a pass thru to the page the user was
 	// trying to get to.
-	router.navigate( viblio.getLastAttempt() || 'home' );
+        
+        // Special case to check if the upload modal should be shown after log in
+        if( viblio.getLastAttempt() && viblio.getLastAttempt().last_attempted_url != null && viblio.getLastAttempt().showuploadmodal ) {
+            router.navigate( viblio.getLastAttempt().last_attempted_url );
+            dialog.showModal( 'viewmodels/nginx-modal' );
+            viblio.setLastAttempt( null );
+        } else {
+            router.navigate( viblio.getLastAttempt() || 'home' );
+        }
     };
 
     function handleLoginFailure( json ) {

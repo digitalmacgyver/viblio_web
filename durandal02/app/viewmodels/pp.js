@@ -128,6 +128,8 @@ define(["durandal/app",
         if ( loggedIn() ) {
             dialog.showModal( 'viewmodels/nginx-modal' );
         } else {
+            // Set the last attempt to the current video player page AND pass along an object that says to show the upload modal so the modal will be shown when the user logs in
+            viblio.setLastAttempt( router.activeInstruction().config.route + "?" + router.activeInstruction().queryString, {showuploadmodal: true} );
             dialog.showModal( 'viewmodels/loginModal', 'Please log in before uploading new videos to your account.' );
         }
     };
@@ -136,6 +138,8 @@ define(["durandal/app",
         if ( loggedIn() ) {
             router.navigate('albums');
         } else {
+            // Set it so user will be routed to the albums page after they log in
+            viblio.setLastAttempt( 'albums' );
             dialog.showModal( 'viewmodels/loginModal', 'Please log in before creating a new album.' );
         }
         
