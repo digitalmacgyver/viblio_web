@@ -41,7 +41,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
     };
 
     var last_attempted_url = null;
-    var showUploadModal = ko.observable(null);
 
     // support for a timed logout.  Needed for the 'tell a friend' functionality.
     var logoutTimeout;
@@ -59,7 +58,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 	if ( logoutTimeout ) clearTimeout( logoutTimeout );
 	logoutTimeout = null;
 	this.scheduleLogout( seconds );
-    }
+    };
     var cancelScheduledLogoutAndLogout = function() {
 	var self = this;
 	if ( logoutTimeout ) clearTimeout( logoutTimeout );
@@ -68,7 +67,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 	    self.setUser( null );
 	    router.navigate( 'login' );
 	});
-    }
+    };
 
     return {
 	cached_gifs: cached_gifs,
@@ -96,24 +95,11 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 	    alertify.log( msg, type, wait );
 	},
 
-	setLastAttempt: function( attempt, options ) {
+	setLastAttempt: function( attempt ) {
 	    last_attempted_url = attempt;
-            // Set showUploadModal according to whether or not the last attempt passed along options to show upload modal - passed from player page overlay
-            if( options && options.showuploadmodal ) {
-                showUploadModal(true);
-            } else {
-                showUploadModal(false);
-            }
 	},
+        
 	getLastAttempt: function() {
-            // Check to see if the upload modal should be shown after login, passed from the player page video overlay
-            if( showUploadModal() ) {
-                var obj = {
-                    last_attempted_url: last_attempted_url,
-                    showuploadmodal: true
-                };
-                return obj;   
-            }
 	    return last_attempted_url;
 	},
 	

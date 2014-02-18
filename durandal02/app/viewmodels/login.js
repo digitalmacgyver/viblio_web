@@ -42,12 +42,12 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	// do a pass thru to the page the user was
 	// trying to get to.
         
-        // Special case to check if the upload modal should be shown after log in
-        if( viblio.getLastAttempt() && viblio.getLastAttempt().last_attempted_url != null && viblio.getLastAttempt().showuploadmodal ) {
-            router.navigate( viblio.getLastAttempt().last_attempted_url );
-            dialog.showModal( 'viewmodels/nginx-modal' );
-            viblio.setLastAttempt( null );
+        // getLastAttempt can be set to a funciton to run on login in order to do more than simply route to a specific hash
+        if ( viblio.getLastAttempt() && typeof viblio.getLastAttempt() == 'function' ) {
+            // if it's a function, run it
+            viblio.getLastAttempt()();
         } else {
+            // else route to hash or home
             router.navigate( viblio.getLastAttempt() || 'home' );
         }
     };

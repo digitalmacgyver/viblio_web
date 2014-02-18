@@ -125,11 +125,20 @@ define(["durandal/app",
     };
     
     function addVideos() {
+        // save current player address along with mid of video to a variable that can be used in the else section of if statement below
+        var last_URL = router.activeInstruction().config.route + "?" + router.activeInstruction().queryString;
         if ( loggedIn() ) {
             dialog.showModal( 'viewmodels/nginx-modal' );
         } else {
-            // Set the last attempt to the current video player page AND pass along an object that says to show the upload modal so the modal will be shown when the user logs in
-            viblio.setLastAttempt( router.activeInstruction().config.route + "?" + router.activeInstruction().queryString, {showuploadmodal: true} );
+            // Set the last attempt to a function that will route the user to the player page and will open the add vids modal
+            viblio.setLastAttempt( function() {
+                router.navigate( last_URL );
+                setTimeout( function(){
+                    flowplayer().pause();
+                    dialog.showModal( 'viewmodels/nginx-modal' );
+                },1000);
+                viblio.setLastAttempt( null );
+            });
             dialog.showModal( 'viewmodels/loginModal', 'Please log in before uploading new videos to your account.' );
         }
     };
