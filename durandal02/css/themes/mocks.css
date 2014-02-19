@@ -2773,8 +2773,59 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 /* New mediafile CSS */
 
+/********* New Sizing section ********/
+
 .mediafile {
     width: 350px;
+}
+    .mediafile img {
+        //height: 197px; /* 16:9 */
+        height: 263px;  /* 4:3 */  
+    }
+
+.pp-related-column-related-videos .mediafile {
+    width: 270px;
+}
+    .pp-related-column-related-videos .mediafile img {
+        //height: 152px;    /* 16:9 */
+        height: 203px       /* 4:3 */
+    }
+
+#register-page .mediafile {
+    width: 270px;
+}
+    #register-page .mediafile img {
+        //height: 152px;    /* 16:9 */
+        height: 203px;      /* 4:3 */
+    }
+
+.albums .mediafile {
+    width: 180px;
+}
+    .albums .mediafile img {
+        //height: 101px;    /* 16:9 */
+        height: 135px;      /* 4:3 */
+    }
+    .albumOverlay {
+        //height: 197px; /* 16:9 */
+        height: 263px; /* 4:3 */
+    }
+    .albumOverlay p {
+        //padding: 60px; /* 16:9 */
+        padding: 100px 60px 0; /* 4:3 */
+    }
+
+.allAlbumVids .mediafile {
+    width: 423px;
+}
+    .allAlbumVids .mediafile img {
+        //height: 238px;    /* 16:9 */
+        height: 317px       /* 4:3 */
+    }
+
+ /******* General Mediafile CSS ********/
+ 
+.mediafile {
     position: relative;
     display: block;
 
@@ -2799,7 +2850,6 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .mediafile img {
-    height: 197px;
     width: 100%;
     border: none;
 }
@@ -2894,14 +2944,6 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     margin-left: 5px;
 }
 /************/
-
-#register-page .mediafile {
-    width: 270px;
-}
-
-#register-page .mediafile img {
-    height: 152px;
-}
 
 #register-page .mediafile {
     margin: 20px 0;
@@ -3080,11 +3122,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     position: relative;
 }
 .pp-related-column-related-videos .mediafile {
-    width: 270px;
     margin-bottom: 25px;
-}
-.pp-related-column-related-videos .mediafile img {
-    height: 152px;
 }
 .pp-info-faces-wrapper,
 .pp-info-right-column {
@@ -3361,15 +3399,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .albums .mediafile {
-    width: 180px;
     float: left;
     margin-right: 15px;
     margin-bottom: 15px;
     z-index: 2;
-}
-
-.albums .mediafile img {
-    height: 101px;
 }
 
 .albums .mediafile a.mplay-icon {
@@ -3564,12 +3597,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .allAlbumVids .mediafile {
     float: left;
-    width: 423px;
     margin-bottom: 20px;
-}
-
-.allAlbumVids .mediafile img {
-    height: 240px;
 }
 
 /********** Help Tab *************/
@@ -3733,15 +3761,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .albumOverlay {
     position: absolute;
     width: 350px;
-    height: 197px;
     margin: 0;
     background: rgba(0, 0, 0, 0.5);
     z-index: 101;
     color: rgb(255, 255, 255);
-}
-
-.albumOverlay p {
-    padding: 60px;
 }
 
 .no-comms {
