@@ -37,10 +37,14 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
         if( shouldBeLoggedOut() ) {
             viblio.rescheduleLogout( 60 );
         }
-	var list = $(self.view).find( "#friendsEmails" ).val();
-        system.log( list, message );
 
-	viblio.api( '/services/user/tell_a_friend', { list: list, message: message } ).then( function() {
+	var list = $(self.view).find( "#friendsEmails" ).tokenInput("get");
+	var emails = [];
+	list.forEach( function( email ) {
+	    emails.push( email.id || email.name );
+	});
+
+	viblio.api( '/services/user/tell_a_friend', { list: emails, message: message } ).then( function() {
 	    viblio.notify( 'Email sent', 'success' );
 	    viblio.mpEvent( 'tell_a_friend' );
 	    self.closeModal();
@@ -93,7 +97,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 		      self.friendsEmailsValid( true );
 		  },
 		  resultsFormatter: function( item ) {
-		      return '<li>' + item.name + '&nbsp;(' + item.id + ')</li>';
+		      return '<li>' + item.name + '&nbsp;(' + (item.id || item.name) + ')</li>';
 		  }
 		});
 	},

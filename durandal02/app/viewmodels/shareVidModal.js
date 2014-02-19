@@ -93,11 +93,15 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
         };
         
 	var message = $('#shareVidMessage').val();
-	var list    = $( "#shareVidEmail" ).val();
+	var list = $(self.view).find( "#shareVidEmail" ).tokenInput("get");
+	var emails = [];
+	list.forEach( function( email ) {
+	    emails.push( email.id || email.name );
+	});
 	var viblio = require( 'lib/viblio' );
 	viblio.api( '/services/mediafile/add_share', 
 		    { mid: self.mediafile.media().uuid, 
-		      list: list, 
+		      list: emails, 
 		      body: message, 
 		      private: self.private() } ).then( function() {
 			  // log it to google analytics
@@ -125,6 +129,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
         
     S.prototype.compositionComplete = function( view, parent ) {
         var self = this;
+	self.view = view;
         cloudsponge.init({
             domain_key:config.cloudsponge_appid(),
             textarea_id: null,
@@ -154,7 +159,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
                   self.shareVidEmailValid(true);
               },
               resultsFormatter: function( item ) {
-                  return '<li>' + item.name + '&nbsp;(' + item.id + ')</li>';
+                  return '<li>' + item.name + '&nbsp;(' + (item.id || item.name) + ')</li>';
               }
             });
         
