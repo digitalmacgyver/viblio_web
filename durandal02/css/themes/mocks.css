@@ -3869,3 +3869,37 @@ div.fstrip {
     margin-right: 10px;
     margin-left: 10px;
 }
+
+/*********** Who We Are *************/
+
+.whoWeAre-Page {
+    
+}
+
+.teamMember-Wrap {
+    width: 400px;
+    display: table;
+    float: left;
+    background-color: rgb(239, 85, 65);
+    color: rgb(255, 255, 255);
+}
+
+.teamMember-image-Wrap {
+    width: 200px;
+    display: table-cell;
+    float: left;
+}
+
+.teamMember-image-innerWrap {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+}
+
+.teamMember-info-Wrap {
+    width: 200px;
+    display: table-cell;
+    vertical-align: top;
+}
+
+

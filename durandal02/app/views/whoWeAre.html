@@ -1,0 +1,34 @@
+<div class="whoWeAre-Page">
+    <!-- ko foreach: teamMembers -->
+    <!-- ko if: $data.style == 'leftAligned' -->
+    <div class="teamMember-Wrap clearfix leftAligned">
+        <div class="teamMember-image-Wrap">
+            <div class="teamMember-image-innerWrap">
+                <img data-bind="attr: { src: 'css/images/whoWeAre/' + imageName}"/>
+            </div>
+        </div>
+        <div class="teamMember-info-Wrap">
+            <p data-bind="text: name"></p>
+            <p data-bind="text: title"></p>
+            <!--<p data-bind="text: desc"></p>-->
+        </div>
+    </div>
+    <!-- /ko -->
+    
+    <!-- ko if: $data.style != 'leftAligned' -->
+    <div class="teamMember-Wrap clearfix">
+        <div class="teamMember-info-Wrap">
+            <p data-bind="text: name"></p>
+            <p data-bind="text: title"></p>
+            <!--<p data-bind="text: desc"></p>-->
+        </div>
+        <div class="teamMember-image-Wrap">
+            <div class="teamMember-image-innerWrap">
+                <img data-bind="attr: { src: 'css/images/whoWeAre/' + imageName}"/>
+            </div>
+        </div>
+    </div>
+    <!-- /ko -->
+    
+    <!-- /ko -->
+</div>
