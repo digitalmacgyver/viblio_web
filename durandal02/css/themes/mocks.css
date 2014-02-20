@@ -3873,33 +3873,63 @@ div.fstrip {
 /*********** Who We Are *************/
 
 .whoWeAre-Page {
-    
+    width: 1080px;
+    margin: 8px auto 0;
+}
+
+@media (max-width: 900px) {
+    .whoWeAre-Page {
+        margin-top: 0;
+    }
 }
 
 .teamMember-Wrap {
-    width: 400px;
+    width: 360px;
     display: table;
     float: left;
-    background-color: rgb(239, 85, 65);
+    background-color: rgb(239, 102, 84);
     color: rgb(255, 255, 255);
+    transition: all .6s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.teamMember-Wrap:hover {
+    background-color: rgb(239, 85, 65);
 }
 
 .teamMember-image-Wrap {
-    width: 200px;
+    width: 180px;
     display: table-cell;
     float: left;
 }
 
 .teamMember-image-innerWrap {
-    width: 200px;
+    width: 180px;
     height: 200px;
     overflow: hidden;
+    transition: all .6s ease;
 }
 
 .teamMember-info-Wrap {
-    width: 200px;
+    width: 180px;
     display: table-cell;
     vertical-align: top;
+    padding: 15px 5px 0;
 }
 
+.desaturate {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
 
+.teamMember-desc {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgb(239, 85, 65);
+    z-index: 1;
+    min-height: 200px;
+}
