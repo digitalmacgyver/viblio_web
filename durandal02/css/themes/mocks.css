@@ -438,7 +438,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 }
 
 .mapSD-scroll.horizontal-scroller {
-    height: 272px;
+    //height: 272px; /* 16:9 */
+    height: 347px  /* 4:3 */
 }
 
 .horizontal-scroller {
@@ -447,8 +448,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 }
 
 .sd-scroll.horizontal-scroller {
-    height: 258px; /* 16:9 */
-    height: 330px;
+    //height: 258px; /* 16:9 */
+    height: 330px; /* 4:3 */
 }
 
 .sd-pscroll.horizontal-scroller {
@@ -2632,7 +2633,8 @@ ul.token-input-list-facebook {
 
 #map-page .leaflet-popup-content-wrapper {
     width: 272px;
-    height: 193px;
+    //height: 193px; /* 16:9 */
+    height: 244px; /* 4:3 */
     padding: 0;
     border-radius: 0;
     -moz-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2); /* Firefox */
@@ -2646,7 +2648,8 @@ ul.token-input-list-facebook {
  
 .leaflet-popup-content .thumb-wrap {
     width: 100%;
-    height: 152px;
+    //height: 152px; /* 16:9 */
+    height: 203px;
 }
  
 .leaflet-popup-content .thumb-wrap img {
