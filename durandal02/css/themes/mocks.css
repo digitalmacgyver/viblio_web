@@ -2819,11 +2819,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     //height: 101px; /* 16:9 */
     height: 135px; /* 4:3 */
 }
-
-.a-drop-box .a-poster img {
-    //height: 101px; /* 16:9 */
-    height: 135px; /* 4:3 */
-}
+    .a-drop-box .a-poster img {
+        //height: 101px; /* 16:9 */
+        height: 135px; /* 4:3 */
+    }
 
 .allAlbumVids .mediafile {
     width: 423px;
