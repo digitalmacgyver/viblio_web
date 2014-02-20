@@ -447,7 +447,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 }
 
 .sd-scroll.horizontal-scroller {
-    height: 258px;
+    height: 258px; /* 16:9 */
+    height: 330px;
 }
 
 .sd-pscroll.horizontal-scroller {
