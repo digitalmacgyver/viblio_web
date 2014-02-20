@@ -2633,8 +2633,6 @@ ul.token-input-list-facebook {
 
 #map-page .leaflet-popup-content-wrapper {
     width: 272px;
-    //height: 193px; /* 16:9 */
-    height: 244px; /* 4:3 */
     padding: 0;
     border-radius: 0;
     -moz-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.2); /* Firefox */
@@ -2648,8 +2646,6 @@ ul.token-input-list-facebook {
  
 .leaflet-popup-content .thumb-wrap {
     width: 100%;
-    //height: 152px; /* 16:9 */
-    height: 203px;
 }
  
 .leaflet-popup-content .thumb-wrap img {
@@ -2818,6 +2814,16 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
         //padding: 60px; /* 16:9 */
         padding: 100px 60px 0; /* 4:3 */
     }
+    
+.a-drop-box .a-drop {
+    //height: 101px; /* 16:9 */
+    height: 135px; /* 4:3 */
+}
+
+.a-drop-box .a-poster img {
+    //height: 101px; /* 16:9 */
+    height: 135px; /* 4:3 */
+}
 
 .allAlbumVids .mediafile {
     width: 423px;
@@ -2825,6 +2831,15 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     .allAlbumVids .mediafile img {
         //height: 238px;    /* 16:9 */
         height: 317px       /* 4:3 */
+    }
+    
+#map-page .leaflet-popup-content-wrapper {
+    //height: 193px; /* 16:9 */
+    height: 244px; /* 4:3 */
+}
+    .leaflet-popup-content .thumb-wrap {
+        //height: 152px; /* 16:9 */
+        height: 203px; /* 4:3 */
     }
 
  /******* General Mediafile CSS ********/
@@ -3461,7 +3476,6 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .a-drop-box .a-drop {
     /* width: 99%; */
-    height: 101px;
     border: 1px dashed rgba(255,255,255,.5);
     //opacity: 0.5;
     position: relative;
@@ -3502,7 +3516,6 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .a-drop-box .a-poster {
     width: 180px;
-    height: 101px;
     padding: 0;
     margin: 0;
     display: inline-block;
