@@ -199,9 +199,11 @@ function( router,viblio, Mediafile, app, events, system, customDialogs, dialog )
                 $(this).toggleClass('desaturate');
             });
             
-            $(window).on('resize', function() {
-                fixLayout();
-            });
+            $(window).bind('resize', fixLayout);
+        },
+        
+        detached: function() {
+            $(window).unbind('resize', fixLayout);
         }
         
     };	
