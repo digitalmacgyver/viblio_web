@@ -3873,58 +3873,82 @@ div.fstrip {
 /*********** Who We Are *************/
 
 .whoWeAre-Page {
-    width: 1080px;
-    margin: 8px auto 0;
+    width: 1440px;
+    margin: 45px auto;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1440px) {
     .whoWeAre-Page {
-        margin-top: 0;
+        width: 1080px;
     }
 }
 
-.teamMember-Wrap {
+@media (max-width: 1080px) {
+    .whoWeAre-Page {
+        width: 720px;
+    }
+}
+
+@media (max-width: 720px) {
+    .whoWeAre-Page {
+        width: 360px;
+    }
+}
+
+.whoWeAre-Page .teamMember-Wrap {
     width: 360px;
     display: table;
     float: left;
-    background-color: rgb(239, 102, 84);
+    background-color: rgb(239, 85, 65);
     color: rgb(255, 255, 255);
     transition: all .6s ease;
     cursor: pointer;
     position: relative;
 }
 
-.teamMember-Wrap:hover {
-    background-color: rgb(239, 85, 65);
+.whoWeAre-Page .teamMember-Wrap:hover .teamMember-info-Wrap {
+    background-color: rgb(190, 67, 51);
 }
 
-.teamMember-image-Wrap {
+.whoWeAre-Page .teamMember-image-Wrap {
     width: 180px;
     display: table-cell;
     float: left;
 }
 
-.teamMember-image-innerWrap {
+.whoWeAre-Page .teamMember-image-innerWrap {
     width: 180px;
     height: 200px;
     overflow: hidden;
     transition: all .6s ease;
 }
 
-.teamMember-info-Wrap {
+.whoWeAre-Page .teamMember-info-Wrap {
     width: 180px;
     display: table-cell;
     vertical-align: top;
     padding: 15px 5px 0;
+    transition: all .6s ease;
 }
 
-.desaturate {
+.whoWeAre-Page .desaturate {
+     /* for Webkit browsere, Chrome 19+, Safari 6+ ... */
+    -webkit-filter: grayscale(1);
+
+    /* this is for Firefox 3.5+, Firefox mobile */
+    filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'gs\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#gs");
+
     -webkit-filter: grayscale(100%);
     -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
     filter: grayscale(100%);
+    
+    /* for IE6+ */
+    filter: gray;
 }
 
-.teamMember-desc {
+.whoWeAre-Page .teamMember-desc {
     display: none;
     position: absolute;
     top: 0;
@@ -3933,3 +3957,46 @@ div.fstrip {
     z-index: 1;
     min-height: 200px;
 }
+
+/************ Profile Modal ************/
+
+.whoWeAreProfile {
+    min-width: 400px;
+    border-radius: 0;
+}
+
+.whoWeAreProfile .teamMember-desc {
+    display: block;
+    position: static;
+}
+
+.whoWeAreProfile .teamMember-Wrap {
+    display: table;
+    padding: 45px;
+}
+
+.whoWeAreProfile .teamMember-image-Wrap {
+    width: 180px;
+    display: table-cell;
+    float: left;
+}
+
+.whoWeAreProfile .teamMember-image-innerWrap {
+    width: 180px;
+    height: 200px;
+    overflow: hidden;
+    transition: all .6s ease;
+}
+
+.whoWeAreProfile .teamMember-info-Wrap {
+    display: table-cell;
+    vertical-align: top;
+    padding: 0 15px;    
+}
+
+.whoWeAreProfile .teamMember-desc {
+    padding: 0 45px 35px;
+    font-size: 16px;
+}
+
+

@@ -1,4 +1,13 @@
-define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', 'durandal/events', 'durandal/system'], function( router,viblio, Mediafile, app, events, system ) {
+define( ['plugins/router',
+         'lib/viblio',
+         'viewmodels/mediafile',
+         'durandal/app',
+         'durandal/events',
+         'durandal/system',
+         'lib/customDialogs',
+         'plugins/dialog'], 
+     
+function( router,viblio, Mediafile, app, events, system, customDialogs, dialog ) {
     
     var teamMembers = ko.observableArray([
         {
@@ -126,9 +135,52 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     }
     
     showInfo = function( data, e ) {
-        console.log('clicked');
-        //$(e.target).parents('div.teamMember-Wrap').find('div.teamMember-desc').slideToggle();
+        customDialogs.showModal('viewmodels/whoWeAreProfile', data);
     }
+    
+    fixLayout = function() {
+        var ww = $( window ).width();
+        
+        if ( ww > 1440 ) {
+            teamMembers().forEach( function( member ) {
+                if ( teamMembers().indexOf(member) == 0 || teamMembers().indexOf(member) == 1 || teamMembers().indexOf(member) == 2 || teamMembers().indexOf(member) == 3 ||
+                     teamMembers().indexOf(member) == 8 || teamMembers().indexOf(member) == 9 || teamMembers().indexOf(member) == 10 || teamMembers().indexOf(member) == 11 ) {
+                    member.style('leftAligned');
+                } else {
+                    member.style('rightAligned');
+                }    
+            });
+        } else if ( ww > 1080 ) {
+            teamMembers().forEach( function( member ) {
+                if ( teamMembers().indexOf(member) == 0 || teamMembers().indexOf(member) == 1 || teamMembers().indexOf(member) == 2 ||
+                     teamMembers().indexOf(member) == 6 || teamMembers().indexOf(member) == 7 || teamMembers().indexOf(member) == 8) {
+                    member.style('leftAligned');
+                } else {
+                    member.style('rightAligned');
+                }    
+            });
+        } else if ( ww > 720 ) {
+            teamMembers().forEach( function( member ) {
+                if ( teamMembers().indexOf(member) == 0 || teamMembers().indexOf(member) == 1 ||
+                     teamMembers().indexOf(member) == 4 || teamMembers().indexOf(member) == 5 ||
+                     teamMembers().indexOf(member) == 8 || teamMembers().indexOf(member) == 9  ) {
+                    member.style('leftAligned');
+                } else {
+                    member.style('rightAligned');
+                }    
+            });
+        } else {
+            teamMembers().forEach( function( member ) {
+                if ( teamMembers().indexOf(member) % 2 == 0 ) {
+                    //For even indexes
+                    member.style('leftAligned');
+                } else {
+                    //for odd indexes
+                    member.style('rightAligned');
+                }    
+            });
+        }
+    };
     
     return {
         teamMembers: teamMembers,
@@ -137,22 +189,18 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         binding: function() {
             teamMembers().forEach( function( member ) {
-                if ( teamMembers().indexOf(member) == 0 || teamMembers().indexOf(member) == 1 || teamMembers().indexOf(member) == 2 ||
-                     teamMembers().indexOf(member) == 6 || teamMembers().indexOf(member) == 7 || teamMembers().indexOf(member) == 8) {
-                    //For even indexes
-                    member.style = 'leftAligned';
-                } else {
-                    //for odd indexes
-                    member.style = 'rightAligned';
-                }
+                member.style = ko.observable();
             });
-            console.log( teamMembers() );
+            fixLayout();
         },
-        
+               
         compositionComplete: function() {
             $('.teamMember-Wrap').on('hover', function(){
-                console.log(this);
                 $(this).toggleClass('desaturate');
+            });
+            
+            $(window).on('resize', function() {
+                fixLayout();
             });
         }
         
