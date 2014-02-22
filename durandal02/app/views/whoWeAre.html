@@ -1,0 +1,46 @@
+<div class="orangeTitle">
+    <h2 class="">
+        Meet the VIBLIO team
+    </h2>
+</div>
+
+<div class="whoWeAre-Page clearfix">
+    
+    <!-- ko foreach: teamMembers -->
+    
+        <!-- ko if: $data.style() == 'leftAligned' -->
+        <div class="teamMember-Wrap clearfix leftAligned" data-bind="event: { mouseover: showColor, mouseout: showColor }, click: showInfo">
+            <div class="teamMember-image-Wrap">
+                <div class="teamMember-image-innerWrap desaturate">
+                    <!-- ko if: imageName -->
+                    <img data-bind="attr: { src: 'css/images/whoWeAre/' + imageName}"/>
+                    <!-- /ko -->
+                </div>
+            </div>
+            <div class="teamMember-info-Wrap textShadowed">
+                <p class="font24" data-bind="text: name"></p>
+                <p class="font18 lightWeightFont" data-bind="text: title"></p>
+            </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: $data.style() != 'leftAligned' -->
+        <div class="teamMember-Wrap clearfix" data-bind="event: { mouseover: showColor, mouseout: showColor }, click: showInfo">
+            <div class="teamMember-info-Wrap textShadowed">
+                <p class="font24" data-bind="text: name"></p>
+                <p class="font18 lightWeightFont" data-bind="text: title"></p>
+                <!--<p data-bind="text: desc"></p>-->
+            </div>
+            <div class="teamMember-image-Wrap">
+                <div class="teamMember-image-innerWrap desaturate">
+                    <!-- ko if: imageName -->
+                    <img data-bind="attr: { src: 'css/images/whoWeAre/' + imageName}"/>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+    
+    <!-- /ko -->
+    
+</div>
