@@ -4038,4 +4038,7 @@ div.fstrip {
     font-size: 16px;
 }
 
-
+/* new web uploader button in page headers */
+.navbar .btn.web-uploader-header-button {
+    margin-top: 18px;
+}
