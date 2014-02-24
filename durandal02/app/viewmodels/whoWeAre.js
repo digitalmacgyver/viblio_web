@@ -25,15 +25,6 @@ function( router,viblio, Mediafile, app, events, system, customDialogs, dialog )
             imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/mona-sabet.jpg\")'>"
         },
         {
-            name: 'Bidyut Parruck',
-            title: 'Co-founder and Chief Technologist and Entrepreneur',
-            imageName: 'bidyut-parruck.jpg',
-            desc: 'Bidyut is a serial entrepreneur having founded four companies prior to starting Viblio. He has deep expertise in\n\
-                 networking, telecommunications and video delivery. He has taken on multiple technical and business roles including\n\
-                 running product and business organizations.',
-            imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/bidyut-parruck.jpg\")'>"
-        },
-        {
             name: 'Matthew Hayward',
             title: 'Head of Data and Analysis',
             imageName: 'matthew-hayward.jpg',
@@ -54,15 +45,6 @@ function( router,viblio, Mediafile, app, events, system, customDialogs, dialog )
             imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/andrew-peebles.jpg\")'>"
         },
         {
-            name: 'Alexander Black',
-            title: 'Head of Products',
-            imageName: 'alex-black.jpg',
-            desc: 'Alex brings to Viblio 15 years of experience in nearly every specialization associated with film and web application design, development\n\
-                deployment and testing. He runs a web and mobile app product development firm called Turing, and is also a managing director of Colorflow, post\n\
-                production facility specializing in DCI 4K DI Color Grading, HD finishing, DCI Mastering and Data Archiving.',
-            imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/alex-black.jpg\")'>"
-        },
-        {
              name: 'Ramsri Golla',
              title: 'Software Developer, Computer Vision',
              imageName: 'ramsri-golla.jpg',
@@ -72,6 +54,15 @@ function( router,viblio, Mediafile, app, events, system, customDialogs, dialog )
                   them through the new Viblio platform! Ramsri loves to explore his non-technical side during weekends with skateboarding, hip-hop dancing and blogging.',
             imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/ramsri-golla.jpg\")'>"
          },
+        {
+            name: 'Alexander Black',
+            title: 'Head of Products',
+            imageName: 'alex-black.jpg',
+            desc: 'Alex brings to Viblio 15 years of experience in nearly every specialization associated with film and web application design, development\n\
+                deployment and testing. He runs a web and mobile app product development firm called Turing, and is also a managing director of Colorflow, post\n\
+                production facility specializing in DCI 4K DI Color Grading, HD finishing, DCI Mastering and Data Archiving.',
+            imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/alex-black.jpg\")'>"
+        },
          {
             name: 'Jesse Garrison',
             title: 'Front-end Developer',
@@ -83,12 +74,21 @@ function( router,viblio, Mediafile, app, events, system, customDialogs, dialog )
             imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/jesse-garrison.jpg\")'>"
         },
         {
+            name: 'Bidyut Parruck',
+            title: 'Technical Advisor',
+            imageName: 'bidyut-parruck.jpg',
+            desc: 'Bidyut is a serial entrepreneur having founded four companies prior to starting Viblio. He has deep expertise in\n\
+                 networking, telecommunications and video delivery. He has taken on multiple technical and business roles including\n\
+                 running product and business organizations.',
+            imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/bidyut-parruck.jpg\")'>"
+        },
+        {
              name: 'Ali Zandifar',
              title: 'Computer Vision Advisor',
              imageName: 'ali-zandifar2.jpg',
              desc: 'Ali Zandifar is an expert in video and image content-based filtering and interactive video analytics.  He has built large-scale internet-based\n\
                 computer vision applications at numerous companies.  He lives in San Francisco and enjoys travelling and capturing good times with videos!',
-            imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/ali-zandifar.jpg\")'>"
+            imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/ali-zandifar2.jpg\")'>"
          },
         {
             name: 'Jason Catchpole',
