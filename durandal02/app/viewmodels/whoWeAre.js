@@ -88,7 +88,7 @@ function( router,viblio, Mediafile, app, events, system, customDialogs, dialog )
              imageName: 'ali-zandifar2.jpg',
              desc: 'Ali Zandifar is an expert in video and image content-based filtering and interactive video analytics.  He has built large-scale internet-based\n\
                 computer vision applications at numerous companies.  He lives in San Francisco and enjoys travelling and capturing good times with videos!',
-            imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/ali-zandifar.jpg\")'>"
+            imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/ali-zandifar2.jpg\")'>"
          },
         {
             name: 'Jason Catchpole',
