@@ -1,0 +1,15 @@
+<div id="shareVidModal" class="mocksWhiteBG bottomBorder-Thick">
+  <div class='closeX btn btn-primary' data-bind="click: closeModal"><img src='css/images/closeX.png'/></div>
+  <div class="paddedDiv"></div>
+  <form id="sendVidEmail" class="bottomBorder paddedDiv">
+    <div class="centeredEl">
+      <p class="bigTitle">Send a link by email</p>
+      <p class="cimport pull-right"><a class="tomatoFont heavyWeightFont" href="#" data-bind="click: cimport">Import from Address Book(s)</a></p>
+      <p class="uitoken-input"><input id='shareVidEmail' type="text" placeholder="Email address" /></p>
+      <textarea id="shareVidMessage" class="text" data-bind="click: updateMessage, value: shareVidMessage" placeholder="Check out these videos on Viblio!"></textarea>
+      <button class="btn btn-primary" data-bind="click: emailLink, enable: shareVidEmailValid">
+        Send
+      </button>
+    </div>
+  </form>
+</div>

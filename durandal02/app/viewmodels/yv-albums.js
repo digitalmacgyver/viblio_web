@@ -39,7 +39,6 @@ function( system, router, viblio, dialogs, Album ) {
 			var a = new Album( album, {  ro: false,
                                                      show_share_badge: true, 
 						     show_preview: false,
-						     share_action: 'trigger',
 						     show_delete_mode: deleteModeOn() } );
                                         
 			a.on( 'album:view', function( a ) {
@@ -51,12 +50,6 @@ function( system, router, viblio, dialogs, Album ) {
 				albums.remove( a );
 			    });
 			});         
-			//
-			// Share an album
-			//
-			a.on( 'album:share', function() {
-			    dialogs.showMessage( 'This feature coming soon!', 'Share an Album' );
-			});
 
 			albums.push( a );
 		    });

@@ -1,4 +1,14 @@
-define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'viewmodels/mediafile', 'viewmodels/hscroll', 'viewmodels/yir', 'lib/customDialogs', 'viewmodels/allVideos', ], function (router, app, system, viblio, Mediafile, HScroll, YIR, customDialogs, allVideos) {
+define( ['plugins/router', 
+	 'durandal/app', 
+	 'durandal/system', 
+	 'lib/viblio', 
+	 'viewmodels/mediafile', 
+	 'viewmodels/album', 
+	 'viewmodels/hscroll', 
+	 'viewmodels/yir', 
+	 'lib/customDialogs', 
+	 'viewmodels/allVideos', ], 
+function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDialogs, allVideos) {
 
     var years  = ko.observableArray();
     var loadingYears = ko.observable( true );
@@ -151,7 +161,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 	var self = this;
 
 	// Create a new Mediafile with the data from the server
-	var m = new Mediafile( mf, ownedByViewer ? { show_share_badge: true } : {} );
+	var m = new Mediafile( mf, ownedByViewer() ? { show_share_badge: true } : {} );
 
 	// Register a callback for when a Mediafile is selected.
 	// This is so we can deselect the previous one to create
@@ -163,7 +173,10 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 	// Play a mediafile clip.  This uses the query parameter
 	// passing technique to pass in the mediafile to play.
 	m.on( 'mediafile:play', function( m ) {
-	    router.navigate( 'new_player?mid=' + m.media().uuid );
+	    if ( ownedByViewer() )
+		router.navigate( 'new_player?mid=' + m.media().uuid );
+	    else
+		router.navigate( 'web_player?mid=' + m.media().uuid );
 	});
 
 	m.on( 'mediafile:composed', function() {
@@ -223,7 +236,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
     
     return {
         showShareAlbumModal: function() {
-	    customDialogs.showMessage( 'This feature coming soon!', 'Share an Album' );
+	    customDialogs.showShareAlbumModal( new Album( currAlbum() ) );
         },
         years: years,
         loadingYears: loadingYears,

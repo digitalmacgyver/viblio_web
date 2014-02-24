@@ -24,7 +24,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
             animated: true, // cycle through videos in album on mouse over
 	    ro: false,
 	    show_share_badge: false,
-	    share_action: 'modal', // 'modal' to popup showShareVidModal, 'trigger' to trigger mediafile:share, function as a callback
+	    share_action: 'modal', // 'modal' to popup showShareAlbumModal, 'trigger' to trigger mediafile:share, function as a callback
 	    show_preview: true,    // show animated gif, if available, on hover.
             show_delete_mode: false
 	}, options );
@@ -150,7 +150,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	if ( typeof this.options.share_action == 'function' )
 	    this.options.share_action( this );
 	else if ( this.options.share_action == 'modal' )
-	    dialogs.showShareVidModal( this );
+	    dialogs.showShareAlbumModal( this );
 	else if ( this.options.share_action == 'trigger' )
 	    this.trigger( 'album:share', this );
     };
