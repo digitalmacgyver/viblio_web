@@ -442,11 +442,14 @@
 		done: function(e, data) {
 		    $(data.context[0]).data( 'done', true );
                     self._vpin_progress -= 1;
-		    if ( self._vpin_progress == 0 )
+		    if ( self._vpin_progress == 0 ) {
 			self.notify( 'Your uploaded videos are now being processed to find and bring out the magic!' );
+			elem.find( '.vup-cancel-column').empty();
+		    }
                     data.context.find(".vup-file-progress-column .bar").html( self.options.done_message );
                     data.context.find(".vup-file-progress-column .bar").addClass( 'vup-file-done' );
-                    elem.find( '.vup-cancel-column').empty();
+                    var row = $(data.context[0]);
+                    row.find( '.vup-cancel-column').empty();
                 },
 		progress: function(e, data) {
                     var progress;

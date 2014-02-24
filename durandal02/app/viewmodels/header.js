@@ -1,6 +1,11 @@
 /* A common header.  
  */
-define( ['plugins/router', 'durandal/app', 'lib/viblio', 'lib/config'], function(router, app, viblio, config) {
+define( ['plugins/router', 
+	 'durandal/app', 
+	 'lib/viblio', 
+	 'lib/config', 
+	 'lib/customDialogs'], 
+function(router, app, viblio, config, dialogs) {
     // The header can show router navigation points.  It also has a logout
     // function.
     //
@@ -20,7 +25,9 @@ define( ['plugins/router', 'durandal/app', 'lib/viblio', 'lib/config'], function
 	    viblio.mpEvent( 'download_viblio' );
 	    return true;
 	},
-
+	web_uploader: function() {
+	    dialogs.showModal( 'viewmodels/nginx-modal' );
+	},
 	testNewVideo: function() {
 	    viblio.api( '/services/test/new_video_test' );
 	},

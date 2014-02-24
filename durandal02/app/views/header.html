@@ -17,6 +17,7 @@
                     <a data-bind="attr: { href: hash }, html: title"></a>
                 </li>
             </ul>
+
             <ul id='userNamePicNav' class="nav pull-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -29,13 +30,17 @@
                     </a>
                     <ul class="dropdown-menu pull-left">
                         <li><a href="#settings">Settings</a></li>
-                        <li><a href="#" data-bind="click: download_viblio, attr:{href:download_link}">Get the App</a></li>
+                        <!-- <li><a href="#" data-bind="click: download_viblio, attr:{href:download_link}">Get the App</a></li> -->
                         <li><a href="#" data-bind="click: sent_feedback, attr:{href:feedback_email}">Send us Feedback</a></li>
 			<!-- <li><a href="#" data-bind="click: testNewVideo">Test New Video</a></li> -->
                         <li><a href="#" data-bind="click: logout">Log Out</a></li>
                     </ul>
                 </li>
             </ul>
+
+	    <a href="#" data-bind="click: web_uploader" class="web-uploader-header-button btn btn-small btn-primary pull-right">Upload Videos</a>
+
+
         </div>
         
         <div class="clearfix"></div>
