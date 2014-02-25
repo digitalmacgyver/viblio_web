@@ -173,7 +173,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
 	// Play a mediafile clip.  This uses the query parameter
 	// passing technique to pass in the mediafile to play.
 	m.on( 'mediafile:play', function( m ) {
-	    if ( ownedByViewer() )
+	    if ( m.media().owner_uuid == viblio.user().uuid )
 		router.navigate( 'new_player?mid=' + m.media().uuid );
 	    else
 		router.navigate( 'web_player?mid=' + m.media().uuid );
