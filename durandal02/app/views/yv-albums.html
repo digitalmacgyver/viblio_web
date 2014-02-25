@@ -1,7 +1,8 @@
 <div class="allVidsPage">
   <div class="yv-secondary-nav">
     <button class="btn btn-small btn-secondary" data-bind="click: add">Add/Edit...</button>
-    <button class="btn btn-small btn-secondary" data-bind="visible: albums().length > 0, click: toggleEditMode, text: editLabel"></button>
+    <button class="btn btn-small btn-secondary" data-bind="visible: albums().length > 0, click: toggleEditMode, text: editLabel, css: {'active': deleteModeOn()}"></button>
+    <button class="btn btn-small btn-secondary" data-bind="click: function(data, event){ toggleShared() }, text: sharedLabel, css: {'active': showShared()}"></button>
   </div>
     
   <!-- ko if: searching() -->
@@ -11,6 +12,7 @@
     </div>
   <!-- /ko -->  
 
+  <!-- ko if: !showShared() -->  
   <div data-bind="visible: albums().length > 0">
     <div style="display: block; text-align: center;" class="mainTitle textShadowed">
       Your media organized into albums.
@@ -25,6 +27,26 @@
       </div>
     </div>
   </div>
+  <!-- /ko -->
+ 
+  <!-- ko if: showShared() -->
+  <div class="shared-page-wrap mainVidSection yir">
+    <!-- ko foreach: sections -->
+      <div class="month-heading textShadowed">
+      <img class="boxShadowed avatar" data-bind="attr:{src:$data.owner.avatar}" />
+      <span class="month-name heavyWeightFont" data-bind="text: $data.owner.displayname"></span>
+      <span class="num-videos" data-bind="text: '(' + $data.album().length + ( $data.album().length == 1 ? ' album)' : ' albums)' )"></span>
+      </div>
+      <!-- ko foreach: album -->
+        <div class="albumWrap pull-left">
+            <!-- ko compose: $data --><!--/ko-->
+        </div>
+	<!-- /ko -->
+      <div class="clearfix"></div>
+    <!-- /ko -->    
+  </div>
+  <!-- /ko -->
+    
 
   <div data-bind="visible: searching()==false && albums().length == 0">
     <p class="font24 tomatoFont doubleSpaced">

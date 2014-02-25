@@ -16,10 +16,27 @@ function( system, router, viblio, dialogs, Album ) {
 	};
     }
     resetPager();
+    
+    var sharedPager = {};
+    
+    function resetSharedPager() {
+	sharedPager = {
+	    next_page: 1,
+	    entries_per_page: 20,
+	    total_entries: -1
+	};
+    }
+    resetSharedPager();
 
     var albums = ko.observableArray([]);
     var searching = ko.observable( true );
     var editLabel = ko.observable( 'Remove...' );
+    
+    // shared albums
+    var sections = ko.observableArray([]);
+    var sharedLabel = ko.observable( 'Shared with me' );
+    var showShared = ko.observable( false );
+    var sharedAlreadyFetched = false;
     
     var deleteModeOn = ko.computed( function() {
         if( editLabel() === 'Done' ) {
@@ -62,42 +79,112 @@ function( system, router, viblio, dialogs, Album ) {
 	}).promise().then( function() {
 	    searching( false );
 	});
-    }
+    };
 
     function scrollHandler( event ) {
         var self = event.data;
 	if( !searching() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
             search();
         }
-    }
+    };
+    
+    function toggleShared() {
+	if ( sharedLabel() === 'My Albums' ) {
+	    sharedLabel( 'Shared with me' );
+            showShared( false );
+            search();
+            editLabel( 'Remove...' );
+        } else {
+	    sharedLabel( 'My Albums' )
+            showShared( true );
+            //only fetch the shared videos once
+            if(sharedAlreadyFetched === false) {
+                getShared();
+            }
+            editLabel( 'Remove...' );
+        }
+    };
+    
+    function getShared() {
+        console.log('getShared fired');
+        searching( true );
+        return viblio.api( '/services/album/list_shared_by_sharer', { page: sharedPager.next_page, rows: sharedPager.entries_per_page } ).then( function( data ) {
+            var shared = data.shared;
+            
+            sections.removeAll();
+            shared.forEach( function( share ) {
+                //self.numVids( self.numVids() + share.media.length );
+                var albums = ko.observableArray([]);
+                share.albums.forEach( function( album ) {
+                    var a = new Album( album, {  ro: false,
+                                                 show_share_badge: false, 
+                                                 show_preview: false,
+                                                 show_delete_mode: deleteModeOn() } );
+
+                    a.on( 'album:view', function( a ) {
+                        router.navigate( 'viewAlbum?aid=' + a.media().uuid );
+                    });
+                    a.on( 'album:delete', function( a ) {
+                        viblio.api( '/services/delete_shared_album', { aid: a.media().uuid } ).then( function() {
+                            viblio.mpEvent( 'delete_album' );
+                            sections().forEach( function( section ) {
+                                albums.remove( a );
+                            });
+                        });
+                    });
+                    
+                    albums.push( a );
+                });
+                share.owner.avatar = "/services/na/avatar?uid=" + share.owner.uuid + "&y=36";
+                sections.push({ owner: share.owner, album: albums });
+            });
+            sharedAlreadyFetched = true;
+            searching( false );
+        });
+    };
 
     return {
 	albums: albums,
 	searching: searching,
 	editLabel: editLabel,
+        sections: sections,
+        sharedLabel: sharedLabel, 
+        showShared: showShared,
+        toggleShared: toggleShared,
+        deleteModeOn: deleteModeOn,
 
 	toggleEditMode: function() {
-	    var self = this;
             if ( editLabel() === 'Remove...' )
-		editLabel( 'Done' );
+                editLabel( 'Done' );
             else
-		editLabel( 'Remove...' );
+                editLabel( 'Remove...' );
 
-	    albums().forEach( function( m ) {
-		m.toggleEditMode();
-	    });
+            if( sharedLabel() === 'My Albums' ) {
+                sections().forEach( function( section ) {
+                    console.log( section );
+                    section.album().forEach( function( mf ) {
+                        mf.toggleEditMode();
+                    });
+                });
+            } else {
+                albums().forEach( function( mf ) {
+                    mf.toggleEditMode();
+                });
+            }
 	},
 
 	compositionComplete: function( view ) {
 	    var self = this;
 	    resetPager();
 	    albums.removeAll();
-	    search();
+            if( !showShared() ) {
+                search();
+            }
             
             // Add click event to secondary buttons to toggle active class
-            $('.yv-secondary-nav .btn').on('click', function(){
+            /*$('.yv-secondary-nav .btn').on('click', function(){
                 $(this).toggleClass('active');
-            });
+            });*/
 	},
 
 	add: function() {
@@ -105,7 +192,9 @@ function( system, router, viblio, dialogs, Album ) {
 	},
 
 	attached: function( view ) {
-            searching(true);
+            if( !showShared() ) {
+                searching(true);
+            }
 	    $(window).scroll( this, scrollHandler );
 	},
 

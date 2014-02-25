@@ -154,8 +154,8 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             //only fetch the shared videos once
             if(self.sharedAlreadyFetched === false) {
                 self.getShared();
-                self.editLabel( 'Remove...' );
             }
+            self.editLabel( 'Remove...' );
         }
     };
     
