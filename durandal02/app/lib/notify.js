@@ -1,15 +1,20 @@
 define(['lib/config','durandal/system','durandal/app', 'lib/viblio'], function( config, system, app, viblio) {
     return {
-	notify: function( template, data, level ) {
-	    // render the template for it
-	    var html;
-	    try { 
-		html = ich[template]( data, true );
-	    } catch(err) {
-		html = err;
-	    }
+	notify: function( template, messages ) {
 	    var viblio = require( 'lib/viblio' );
-	    viblio.notify( html, level );
+	    messages.forEach( function( msg ) {
+		// render the template for it
+		var html;
+		try { 
+		    html = ich[template]( msg, true );
+		} catch(err) {
+		    html = err;
+		}
+		viblio.notify( html );
+		if ( msg.send_event && msg.send_event.event )
+		    app.trigger( msg.send_event.event, 
+				 msg.send_event.data );
+	    });
 	},
 
 	new_video: function( messages ) {

@@ -114,5 +114,19 @@ mixpanel.init("404b9a0b96b8147b5050c165dfc809b3");</script><!-- end Mixpanel -->
       </div>
     </script>
 
+    <script id="new_album_video" type="text/html">
+      <div class="new-album-video">
+	<img src="{{ data.video.views.poster.url }}" width="80" height="45" style="vertical-align: text-top; margin-right: 3px;" />
+	{{ data.user.displayname }} has added a video to {{ data.album.title }}
+      </div>
+    </script>
+
+    <script id="new_shared_album" type="text/html">
+      <div class="new-shared-album">
+	<img src="{{ data.album.views.poster.url }}" width="80" height="45" style="vertical-align: text-top; margin-right: 3px;" />
+	{{ data.user.displayname }} has shared an album called {{ data.album.title }}
+      </div>
+    </script>
+
   </body>
 </html>
