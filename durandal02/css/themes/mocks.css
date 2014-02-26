@@ -791,6 +791,10 @@ input:-moz-placeholder {
     margin-right: 45px;
 }
 
+.marginR10 {
+    margin-right: 10px;
+}
+
 .marginT15 {
     margin-top: 15px;
 }
