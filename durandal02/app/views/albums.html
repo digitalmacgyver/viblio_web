@@ -71,6 +71,7 @@
 	    <a class="btn btn-white pull-right" data-bind="visible: no_albums()==false, click: newAlbum">
 	      <i class="icon-plus-sign"></i> New Album
 	    </a>
+            <button class="btn btn-small btn-secondary pull-right" data-bind="click: function(data, event){ toggleShared() }, text: sharedLabel, css: {'active': showShared()}"></button>
 	    <p class="mainTitle textShadowed whiteText">Into Albums!</p>
 	  </div>
 	  <div class="a-content a-right-content">
@@ -80,6 +81,7 @@
 	      <p class="textShadowed">Albums keep your Videos organized and make sharing easy!</p>
 	    </div>
 
+            <!-- ko ifnot: showShared -->   
 	    <!-- ko foreach: albums -->
 	    <div class="a-drop-box" data-bind="highlightChange: !$root.no_albums">
               <div class="marginB10">
@@ -98,9 +100,12 @@
                 <span class="a-drop-number lightWeightFont font20">
                     <span>(</span><span data-bind="text: (media().length <= 0 ? '0' : media().length)"></span>
                     <span>video</span><span data-bind="if: media().length != 1">s</span><span>)</span>
-                </span>    
+                </span>
+                <br>
+                <span class="lightWeightFont font20" data-bind="text: sharedWith"></span>
+                <button class="btn btn-small btn-secondary" data-bind="click: unshareAlbum">Unshare Album</button>
               </div>    
-	      <div class="a-drop" data-bind="style:{width:$parent.drop_box_width},
+	      <div class="a-drop clearfix" data-bind="style:{width:$parent.drop_box_width},
 					     droponable:{scope:'mediafile',hoverClass:'a-drop-about-to-drop',callback:$parent.albumDrop}">
 
 		<div data-bind="css: { highlight: $root.no_albums }" class="a-instruction lightWeightFont fadeIn">
@@ -111,11 +116,44 @@
 		  <img data-bind="attr:{src:media().views.poster.url}" />
 		</div>
 		<!-- /ko -->
-		<div class="clearfix"></div>
 	      </div>
 
 	    </div>
 	    <!-- /ko -->
+            <!-- /ko -->
+            
+            <!-- ko if: showShared -->   
+	    <!-- ko foreach: sharedAlbums -->
+	    <div class="a-drop-box" data-bind="highlightChange: !$root.no_albums">
+              <div class="marginB10">
+                <div class="a-drop-view pull-right font20" data-bind="click: $parent.viewAlbum">
+                  <i class="icon-eye-open"></i>&nbsp;View
+                </div>
+                <div class="a-drop-name whiteText textShadowed font20" data-bind="text: name"></div>
+                <span class="a-drop-number lightWeightFont font20">
+                    <span>(</span><span data-bind="text: (media().length <= 0 ? '0' : media().length)"></span>
+                    <span>video</span><span data-bind="if: media().length != 1">s</span><span>)</span>
+                </span>
+                <br>
+                <img class="boxShadowed avatar" data-bind="attr:{src: ownerAvatar}" />
+                <span class="lightWeightFont font20">Album by </span><span class="font20 heavyWeightFont" data-bind="text: ownerName"></span>
+              </div>    
+	      <div class="a-drop clearfix" data-bind="style:{width:$parent.drop_box_width},
+					     droponable:{scope:'mediafile',hoverClass:'a-drop-about-to-drop',callback:$parent.albumDrop}">
+
+		<div data-bind="css: { highlight: $root.no_albums }" class="a-instruction lightWeightFont fadeIn">
+		  <i class="icon-share-alt"></i>&nbsp;Drop Videos Here
+		</div>
+		<!-- ko foreach: media -->
+		<div class="a-poster fadeIn">
+		  <img data-bind="attr:{src:media().views.poster.url}" />
+		</div>
+		<!-- /ko -->
+	      </div>
+	    </div>
+	    <!-- /ko -->
+            <!-- /ko -->
+            
 	    <div class="a-searching whiteText" data-bind="visible: searching">
 	      <i class="icon-spinner icon-spin active"></i>
 	    </div>

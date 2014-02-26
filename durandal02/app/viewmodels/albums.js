@@ -1,6 +1,7 @@
 define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmodels/mediafile','durandal/system'], function( app, router, viblio, dialogs, Mediafile,system ) {
 
     var albums = ko.observableArray([]);
+    var sharedAlbums = ko.observableArray([]);
     var monthsLabels = ko.observableArray([]);
     var videos = ko.observableArray([]);
     var drop_box_width = ko.observable('99%');
@@ -13,6 +14,10 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
     var selectedMonth = ko.observable();
     var vidsInSelectedMonth = ko.observable();
     var isActiveFlag = ko.observable(false);
+    
+    var sharedLabel = ko.observable( 'Shared with me' );
+    var showShared = ko.observable( false );
+    var sharedAlreadyFetched = false;
 
     // Hold the pager data back from server
     // media queries.  Initialize it here so
@@ -86,13 +91,36 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 		if ( data.albums.length >= 1 ) {
 		    no_albums( false );
 		    data.albums.forEach( function( album ) {
-			var media = ko.observableArray([]);
-			album.media.forEach( function( mf ) {
-			    media.push( new Mediafile( mf ) );
-			});
-			albums.unshift({ name: ko.observable( album.title ),
+                        console.log(album);
+                        var sharedWith;
+                        if ( album.is_shared == 1 ) {
+                            return system.defer( function( dfd ) {
+                                viblio.api('/services/album/shared_with?aid=' + album.uuid).then( function( data ) {
+                                    console.log(data.displayname);
+                                    sharedWith = data.displayname;
+                                    dfd.resolve();
+                                });
+                            }).promise().then(function(){
+                                    var media = ko.observableArray([]);
+                                    album.media.forEach( function( mf ) {
+                                        media.push( new Mediafile( mf ) );
+                                    });
+                                    albums.unshift({ name: ko.observable( album.title ),
 					 uuid: album.uuid,
-					 media: media });
+					 media: media,
+                                         sharedWith: 'This album has been shared with ' + sharedWith });    
+                            });
+                        } else {
+                            var media = ko.observableArray([]);
+                            album.media.forEach( function( mf ) {
+                                media.push( new Mediafile( mf ) );
+                            });
+                            albums.unshift({ name: ko.observable( album.title ),
+                                             uuid: album.uuid,
+                                             media: media,
+                                             sharedWith: 'This album has not been shared yet' });
+                        }
+			
 		    });
 		}
 		else {
@@ -103,9 +131,65 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	    });
 	}
     }
+    function toggleShared() {
+	if ( sharedLabel() === 'My Albums' ) {
+	    sharedLabel( 'Shared with me' );
+            showShared( false );
+            albumSearch();
+        } else {
+	    sharedLabel( 'My Albums' )
+            showShared( true );
+            //only fetch the shared videos once
+            if(sharedAlreadyFetched === false) {
+                getShared();
+            }
+        }
+    };
+    
+    var pager = {};
+
+    function resetPager() {
+	pager = {
+	    next_page: 1,
+	    entries_per_page: 20,
+	    total_entries: -1
+	};
+    }
+    resetPager();
+    
+    function getShared() {
+        searching( true );
+        return viblio.api( '/services/album/list_shared?', { page: pager.next_page, rows: pager.entries_per_page } ).then( function( data ) {
+            var album = data.albums;
+            pager = data.pager;
+            //sections.removeAll();
+            album.forEach( function( album ) {
+                var media = ko.observableArray([]);
+                album.media.forEach( function( mf ) {
+                    media.push( new Mediafile( mf ) );
+                });
+                sharedAlbums.unshift({ name: ko.observable( album.title ),
+                                 uuid: album.uuid,
+                                 media: media,
+                                 ownerName: album.owner.displayname,
+                                 ownerAvatar: "/services/na/avatar?uid=" + album.owner.uuid + "&y=36"   
+                                 });
+            });
+            sharedAlreadyFetched = true;
+            searching( false );
+        });
+    };
+    
+    function unshareAlbum( data ) {
+        console.log( data );
+        /*viblio.api( '/services/album/delete_shared_album', { aid: data.uuid } ).then( function( data ) {
+        
+        });*/
+    };
 
     return {
 	drop_box_width: drop_box_width,
+        sharedAlbums: sharedAlbums,
 	albums: albums,
         monthsLabels: monthsLabels,
         videos: videos,
@@ -120,6 +204,12 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
         
 	no_albums: no_albums,
 	searching: searching,
+        
+        sharedLabel: sharedLabel,
+        showShared: showShared,
+        toggleShared: toggleShared,
+        
+        unshareAlbum: unshareAlbum,
         
         viewAlbum: function( $data ) {
             if( $data.media().length > 0 ) {

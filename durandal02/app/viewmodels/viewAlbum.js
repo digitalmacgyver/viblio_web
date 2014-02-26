@@ -161,7 +161,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
 	var self = this;
 
 	// Create a new Mediafile with the data from the server
-	var m = new Mediafile( mf, ownedByViewer() ? { show_share_badge: true } : {} );
+	var m = new Mediafile( mf, ownedByViewer() ? { show_share_badge: true, show_preview: true } : {show_preview: true} );
 
 	// Register a callback for when a Mediafile is selected.
 	// This is so we can deselect the previous one to create

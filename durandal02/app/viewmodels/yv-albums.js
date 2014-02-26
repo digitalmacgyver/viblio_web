@@ -16,17 +16,6 @@ function( system, router, viblio, dialogs, Album ) {
 	};
     }
     resetPager();
-    
-    var sharedPager = {};
-    
-    function resetSharedPager() {
-	sharedPager = {
-	    next_page: 1,
-	    entries_per_page: 20,
-	    total_entries: -1
-	};
-    }
-    resetSharedPager();
 
     var albums = ko.observableArray([]);
     var searching = ko.observable( true );
@@ -106,9 +95,8 @@ function( system, router, viblio, dialogs, Album ) {
     };
     
     function getShared() {
-        console.log('getShared fired');
         searching( true );
-        return viblio.api( '/services/album/list_shared_by_sharer', { page: sharedPager.next_page, rows: sharedPager.entries_per_page } ).then( function( data ) {
+        return viblio.api( '/services/album/list_shared_by_sharer' ).then( function( data ) {
             var shared = data.shared;
             
             sections.removeAll();
@@ -116,16 +104,16 @@ function( system, router, viblio, dialogs, Album ) {
                 //self.numVids( self.numVids() + share.media.length );
                 var albums = ko.observableArray([]);
                 share.albums.forEach( function( album ) {
-                    var a = new Album( album, {  ro: false,
+                    var a = new Album( album, {  ro: true,
                                                  show_share_badge: false, 
-                                                 show_preview: false,
+                                                 show_preview: true,
                                                  show_delete_mode: deleteModeOn() } );
 
                     a.on( 'album:view', function( a ) {
                         router.navigate( 'viewAlbum?aid=' + a.media().uuid );
                     });
                     a.on( 'album:delete', function( a ) {
-                        viblio.api( '/services/delete_shared_album', { aid: a.media().uuid } ).then( function() {
+                        viblio.api( '/services/album/remove_me_from_shared', { aid: a.media().uuid } ).then( function() {
                             viblio.mpEvent( 'delete_album' );
                             sections().forEach( function( section ) {
                                 albums.remove( a );
@@ -161,7 +149,6 @@ function( system, router, viblio, dialogs, Album ) {
 
             if( sharedLabel() === 'My Albums' ) {
                 sections().forEach( function( section ) {
-                    console.log( section );
                     section.album().forEach( function( mf ) {
                         mf.toggleEditMode();
                     });
