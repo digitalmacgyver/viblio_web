@@ -54,7 +54,6 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         this.posterTitle = ko.observable();
         // Get title and view count of poster image
         this.media().media.forEach( function( media ){
-            console.log(media);
             if( media.uuid == self.albumPosterUri ) {
                 self.albumPosterTitle = media.title;
                 self.albumPosterViews = media.view_count;
