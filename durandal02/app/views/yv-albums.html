@@ -28,9 +28,16 @@
     </div>
   </div>
   <!-- /ko -->
+  
+  <div data-bind="visible: searching()==false && albums().length == 0 && !showShared()">
+    <p class="font24 tomatoFont doubleSpaced">
+      Create albums to organize and share your video collection.  Click the add button above to get started!
+    </p>
+  </div>
  
-  <!-- ko if: showShared() -->
+  <!-- ko if: showShared() && !searching() -->
   <div class="shared-page-wrap mainVidSection yir">
+      <div style="display: block; text-align: center;" class="mainTitle textShadowed">You have <span data-bind="text: numShared"></span> <span data-bind="text: numShared == 1 ? 'album' : 'albums' "></span> that <span data-bind="text: numShared == 1 ? 'has' : 'have' "></span> been shared with you.</div>
     <!-- ko foreach: sections -->
       <div class="month-heading textShadowed">
       <img class="boxShadowed avatar" data-bind="attr:{src:$data.owner.avatar}" />
@@ -46,11 +53,10 @@
     <!-- /ko -->    
   </div>
   <!-- /ko -->
-    
-
-  <div data-bind="visible: searching()==false && albums().length == 0">
+  
+  <div data-bind="visible: searching()==false && sections().length == 0 && showShared">
     <p class="font24 tomatoFont doubleSpaced">
-      Create albums to organize and share your video collection.  Click the add button above to get started!
+      It looks like you don't have any shared albums yet.
     </p>
   </div>  
 

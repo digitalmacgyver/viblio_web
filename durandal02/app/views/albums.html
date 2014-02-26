@@ -4,7 +4,7 @@
 
       <td class="a-table-td a-table-left-td">
 	<div class="a-wrapper a-left-wrapper lightGreyBG">
-	  <div class="a-header a-left-header">
+	  <div class="a-header a-left-header marginB40">
 	    <p class="mainTitle textShadowed">Drag and Drop Videos</p>
 	  </div>
             
@@ -71,9 +71,9 @@
 	    <a class="btn btn-white pull-right" data-bind="visible: no_albums()==false, click: newAlbum">
 	      <i class="icon-plus-sign"></i> New Album
 	    </a>
-            <button class="btn btn-small btn-secondary pull-right" data-bind="click: function(data, event){ toggleShared() }, text: sharedLabel, css: {'active': showShared()}"></button>
 	    <p class="mainTitle textShadowed whiteText">Into Albums!</p>
 	  </div>
+          <button class="btn btn-small btn-secondary pull-right marginT15" data-bind="click: function(data, event){ toggleShared() }, text: sharedLabel, css: {'active': showShared()}"></button>
 	  <div class="a-content a-right-content">
 
 	    <div class="no-albums-wrapper" data-bind="visible: no_albums">
@@ -103,7 +103,9 @@
                 </span>
                 <br>
                 <span class="lightWeightFont font20" data-bind="text: sharedWith"></span>
-                <button class="btn btn-small btn-secondary" data-bind="click: unshareAlbum">Unshare Album</button>
+                <!-- ko if: shared() == 1 -->
+                <button class="btn btn-small btn-secondary" data-bind="click: $parent.unshareAlbum">Unshare Album</button>
+                <!-- /ko -->
               </div>    
 	      <div class="a-drop clearfix" data-bind="style:{width:$parent.drop_box_width},
 					     droponable:{scope:'mediafile',hoverClass:'a-drop-about-to-drop',callback:$parent.albumDrop}">

@@ -26,6 +26,7 @@ function( system, router, viblio, dialogs, Album ) {
     var sharedLabel = ko.observable( 'Shared with me' );
     var showShared = ko.observable( false );
     var sharedAlreadyFetched = false;
+    var numShared = ko.observable();
     
     var deleteModeOn = ko.computed( function() {
         if( editLabel() === 'Done' ) {
@@ -72,7 +73,7 @@ function( system, router, viblio, dialogs, Album ) {
 
     function scrollHandler( event ) {
         var self = event.data;
-	if( !searching() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
+	if( !searching() && !showShared() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
             search();
         }
     };
@@ -88,6 +89,7 @@ function( system, router, viblio, dialogs, Album ) {
             showShared( true );
             //only fetch the shared videos once
             if(sharedAlreadyFetched === false) {
+                getNumShared();
                 getShared();
             }
             editLabel( 'Remove...' );
@@ -118,6 +120,7 @@ function( system, router, viblio, dialogs, Album ) {
                             sections().forEach( function( section ) {
                                 albums.remove( a );
                             });
+                            sharedAlreadyFetched = false;
                         });
                     });
                     
@@ -130,6 +133,12 @@ function( system, router, viblio, dialogs, Album ) {
             searching( false );
         });
     };
+    
+    function getNumShared() {
+        viblio.api( '/services/album/list').then( function( data ) {
+            numShared( data.albums.length );
+        });
+    }
 
     return {
 	albums: albums,
@@ -140,6 +149,7 @@ function( system, router, viblio, dialogs, Album ) {
         showShared: showShared,
         toggleShared: toggleShared,
         deleteModeOn: deleteModeOn,
+        numShared: numShared,
 
 	toggleEditMode: function() {
             if ( editLabel() === 'Remove...' )

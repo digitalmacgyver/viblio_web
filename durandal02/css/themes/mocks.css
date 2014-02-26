@@ -3733,7 +3733,8 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .yv-secondary-nav .dropdown.open .btn,
-.yv-secondary-nav .btn.active {
+.yv-secondary-nav .btn.active,
+.albums .btn.active {
     background-color: rgb(50,53,68);
 }
 

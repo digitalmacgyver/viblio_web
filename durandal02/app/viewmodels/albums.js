@@ -82,6 +82,54 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	    return null;
 	}
     }
+    
+    /*function getListOfShared( album ) {
+        viblio.api('/services/album/shared_with?aid=' + album.uuid).then( function( data ) {
+            console.log('shared with: ' + data.displayname );
+            return data.displayname;
+        });
+    }
+    
+    function getSharedWith() {
+        albums().forEach( function( album ) {
+            console.log(album);
+            if ( album.shared() ) {
+                album.sharedWith( 'This album is shared with ' + getListOfShared( album ) );
+            } else {
+                album.sharedWith( 'This album has not been shared yet' );
+            }
+        });
+    };
+    
+    function albumSearch( callback ) {
+	if ( pager.next_page ) {
+	    searching( true );
+	    viblio.api( '/services/album/list', { page: pager.next_page, rows: pager.entries_per_page } ).then( function( data ) {
+		pager = data.pager;
+		if ( data.albums.length >= 1 ) {
+		    no_albums( false );
+		    data.albums.forEach( function( album ) {
+			var media = ko.observableArray([]);
+                            album.media.forEach( function( mf ) {
+                                media.push( new Mediafile( mf ) );
+                            });
+                            albums.unshift({ name: ko.observable( album.title ),
+                                             uuid: album.uuid,
+                                             media: media,
+                                             shared: ko.observable( album.is_shared ),
+                                             sharedWith: ko.observable() });
+		    });
+		}
+		else {
+		    no_albums( true );
+		    albums.unshift({ name: ko.observable('Your First Album'), uuid: null, media: ko.observableArray([]) });
+		}
+                callback();
+		searching( false );
+	    });
+	}
+        
+    };*/
 
     function albumSearch() {
 	if ( pager.next_page ) {
@@ -108,7 +156,8 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
                                     albums.unshift({ name: ko.observable( album.title ),
 					 uuid: album.uuid,
 					 media: media,
-                                         sharedWith: 'This album has been shared with ' + sharedWith });    
+                                         shared: ko.observable( album.is_shared ),
+                                         sharedWith: ko.observable( 'This album is shared with ' + sharedWith ) });    
                             });
                         } else {
                             var media = ko.observableArray([]);
@@ -118,7 +167,8 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
                             albums.unshift({ name: ko.observable( album.title ),
                                              uuid: album.uuid,
                                              media: media,
-                                             sharedWith: 'This album has not been shared yet' });
+                                             shared: ko.observable( album.is_shared ),
+                                             sharedWith: ko.observable( 'This album is not shared' ) });
                         }
 			
 		    });
@@ -130,7 +180,8 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 		searching( false );
 	    });
 	}
-    }
+    };
+    
     function toggleShared() {
 	if ( sharedLabel() === 'My Albums' ) {
 	    sharedLabel( 'Shared with me' );
@@ -180,11 +231,19 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
         });
     };
     
-    function unshareAlbum( data ) {
+    function unshareAlbum(data) {
         console.log( data );
-        /*viblio.api( '/services/album/delete_shared_album', { aid: data.uuid } ).then( function( data ) {
-        
-        });*/
+        viblio.api( '/services/album/delete_shared_album', { aid: data.uuid } ).then( function( returnedData ) {
+            /*albums.removeAll();
+            pager = {
+                next_page: 1,
+                entries_per_page: 25,
+                total_entries: -1 /* currently unknown */
+            /*};
+            albumSearch();*/
+            data.shared(0);
+            data.sharedWith('This album is not shared');
+        });
     };
 
     return {
@@ -474,6 +533,8 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
             
 	    $(window).on( 'resize', resizeColumns );
 	    resizeColumns();
+            
+            
 	}
     };
 });
