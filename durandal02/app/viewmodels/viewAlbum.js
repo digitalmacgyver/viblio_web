@@ -29,6 +29,10 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
     var showAllVids = ko.observable( true );
     var refresh = ko.observable( false );
     
+    var albumIsShared = ko.observable();
+    var sharedWithDisplayname = ko.observable();
+    var sharedWithMembers = ko.observableArray();
+    
     var noVids = ko.computed(function() {
         if ( allVids().length === 0 ) {
             return true;
@@ -157,6 +161,13 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
         });
     }*/
     
+    function getSharedMembers() {
+        viblio.api('/services/album/shared_with', {aid: album_id}).then( function( data ) {
+            sharedWithDisplayname( data.displayname );
+            sharedWithMembers( data.members );
+        });
+    }
+    
     function addMediaFile( mf ) {
 	var self = this;
 
@@ -258,6 +269,11 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
         noVids: noVids,
         showBOH: showBOH,
         
+        albumIsShared: albumIsShared,
+        sharedWithDisplayname: sharedWithDisplayname,
+        sharedWithMembers: sharedWithMembers,
+        getSharedMembers: getSharedMembers,
+        
         title: 'Box Office Hits',
         subtitle: 'The most popular videos in this album',
         
@@ -335,7 +351,10 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                 months.removeAll();
                 boxOfficeHits.removeAll();*/
                 //return system.defer( function( dfd ) {
+                sharedWithDisplayname('');
                     viblio.api( 'services/album/get?aid=' + album_id ).then( function( data ) {
+                        console.log( data );
+                        albumIsShared( data.album.is_shared ? true : false );
                         currAlbum( data.album );
                         ownerName( currAlbum().owner.displayname );
                         ownerUUID( currAlbum().owner.uuid );
@@ -358,6 +377,10 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                         ownerPhoto( "/services/na/avatar?uid=" + ownerUUID() + "&y=66" );
 
                         checkOwner();
+                        
+                        if( albumIsShared() ) {
+                            getSharedMembers();
+                        }
 
                         //dfd.resolve();
                     });

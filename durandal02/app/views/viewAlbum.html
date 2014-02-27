@@ -14,7 +14,9 @@
         </div>
         <!-- /ko -->
         <img src="css/images/folderImage.png" />
-        <span class="textShadowed albumTitle" data-bind="text: albumTitle"></span>
+        <span class="textShadowed albumTitle" data-bind="text: albumTitle"></span>       
+        <span class='whiteText font20 textShadowed lightWeightFont albumSubTitle' data-bind="text: sharedWithDisplayname() ? ' - Shared with ' + sharedWithDisplayname() : '' "></span>
+        
     </div>
     
     <div class="mainVidSection">

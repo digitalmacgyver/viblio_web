@@ -44,8 +44,8 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	// The column heights fit the screen and are scrollable
 	var h = $(window).height() - $(view).offset().top - $('#footer').height();
 	$(view).find( '.a-wrapper' ).height( h );
-	$(view).find( '.a-left-content' ).height( h - $(view).find( '.a-left-wrapper' ).offset().top );
-	$(view).find( '.a-right-content' ).height( h - $(view).find( '.a-right-wrapper' ).offset().top );
+	$(view).find( '.a-right-content' ).height( h - $(view).find( '.a-right-wrapper' ).offset().top - $('.a-right-wrapper .extra').height() );
+        $(view).find( '.a-left-content' ).height( $('.a-right-content' ).height() - 30 );
 
 	// The dropbox widths need adjustment to follow resizes
 	var columnw = ($(window).width() / 2 )- 80 - 3;
@@ -81,59 +81,13 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	else {
 	    return null;
 	}
-    }
-    
-    /*function getListOfShared( album ) {
-        viblio.api('/services/album/shared_with?aid=' + album.uuid).then( function( data ) {
-            console.log('shared with: ' + data.displayname );
-            return data.displayname;
-        });
-    }
-    
-    function getSharedWith() {
-        albums().forEach( function( album ) {
-            console.log(album);
-            if ( album.shared() ) {
-                album.sharedWith( 'This album is shared with ' + getListOfShared( album ) );
-            } else {
-                album.sharedWith( 'This album has not been shared yet' );
-            }
-        });
     };
     
-    function albumSearch( callback ) {
-	if ( pager.next_page ) {
-	    searching( true );
-	    viblio.api( '/services/album/list', { page: pager.next_page, rows: pager.entries_per_page } ).then( function( data ) {
-		pager = data.pager;
-		if ( data.albums.length >= 1 ) {
-		    no_albums( false );
-		    data.albums.forEach( function( album ) {
-			var media = ko.observableArray([]);
-                            album.media.forEach( function( mf ) {
-                                media.push( new Mediafile( mf ) );
-                            });
-                            albums.unshift({ name: ko.observable( album.title ),
-                                             uuid: album.uuid,
-                                             media: media,
-                                             shared: ko.observable( album.is_shared ),
-                                             sharedWith: ko.observable() });
-		    });
-		}
-		else {
-		    no_albums( true );
-		    albums.unshift({ name: ko.observable('Your First Album'), uuid: null, media: ko.observableArray([]) });
-		}
-                callback();
-		searching( false );
-	    });
-	}
-        
-    };*/
-    
     function showMembers( data ) {
-        console.log( data.fullMembers);    
-    }
+        data.fullMembers.forEach( function( member ) {
+            system.log(member.contact_name);
+        });
+    };
 
     function albumSearch() {
 	if ( pager.next_page ) {
@@ -150,6 +104,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
                             viblio.api('/services/album/shared_with', {aid: album.uuid}).then( function( data ) {
                                 console.log(data.displayname);
                                 sharedWith = data.displayname;
+                                fullMembers = ko.observable(data.members);
                                 var media = ko.observableArray([]);
                                 album.media.forEach( function( mf ) {
                                     media.push( new Mediafile( mf ) );
@@ -158,7 +113,8 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 						 uuid: album.uuid,
 						 media: media,
 						 shared: ko.observable( album.is_shared ),
-						 sharedWith: ko.observable( 'This album is shared with ' + sharedWith ) });    
+						 sharedWith: ko.observable( 'This album is shared with ' + sharedWith ),
+                                                 fullMembers: fullMembers() });    
                             });
                         } else {
                             var media = ko.observableArray([]);

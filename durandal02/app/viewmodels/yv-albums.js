@@ -82,16 +82,19 @@ function( system, router, viblio, dialogs, Album ) {
 	if ( sharedLabel() === 'My Albums' ) {
 	    sharedLabel( 'Shared with me' );
             showShared( false );
+            // Make sure it relaods each time the button is pressed
+            resetPager();
+            albums.removeAll();
             search();
             editLabel( 'Remove...' );
         } else {
 	    sharedLabel( 'My Albums' )
             showShared( true );
-            //only fetch the shared videos once
-            if(sharedAlreadyFetched === false) {
+            //only fetch the shared videos once - commented out so it will refresh each time
+            //if(sharedAlreadyFetched === false) {
                 getNumShared();
                 getShared();
-            }
+            //}
             editLabel( 'Remove...' );
         }
     };

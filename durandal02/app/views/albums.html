@@ -4,39 +4,41 @@
 
       <td class="a-table-td a-table-left-td">
 	<div class="a-wrapper a-left-wrapper lightGreyBG">
-	  <div class="a-header a-left-header marginB40">
-	    <p class="mainTitle textShadowed">Drag and Drop Videos</p>
-	  </div>
-            
-            <div class="dropdown pull-right" data-bind="if: hits() > 0">
-                <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown">Filter...</a>
-                <ul class="dropdown-menu" role="menu">
-                  <!-- ko foreach: monthsLabels -->
-                  <li>
-                    <a data-bind="click: $parent.monthSelected.bind( $data, $parent ), 
-                                  text: $data.label != 'Missing dates' ? $data.label.slice(0,3) + ' ' + $data.label.slice($data.label.length-4) : $data.label, 
-                                  css:{sel: $data.selected()}"></a>
-                  </li>
-                  <!-- /ko -->
-                  <li>
-                    <a id="allVids" class="textShadowed" data-bind="click: showAllVideos, css:{sel: allVidsIsSelected()}">All Videos</a>
-                  </li>
-                </ul>
+            <div class='extra' >
+                <div class="a-header a-left-header marginB40">
+                <p class="mainTitle textShadowed">Drag and Drop Videos</p>
+              </div>
+
+                <div class="dropdown pull-right" data-bind="if: hits() > 0">
+                    <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown">Filter...</a>
+                    <ul class="dropdown-menu" role="menu">
+                      <!-- ko foreach: monthsLabels -->
+                      <li>
+                        <a data-bind="click: $parent.monthSelected.bind( $data, $parent ), 
+                                      text: $data.label != 'Missing dates' ? $data.label.slice(0,3) + ' ' + $data.label.slice($data.label.length-4) : $data.label, 
+                                      css:{sel: $data.selected()}"></a>
+                      </li>
+                      <!-- /ko -->
+                      <li>
+                        <a id="allVids" class="textShadowed" data-bind="click: showAllVideos, css:{sel: allVidsIsSelected()}">All Videos</a>
+                      </li>
+                    </ul>
+                </div>
+
+                <!-- ko if: !allVidsIsSelected() && !isActiveFlag() --> 
+                <div class="month-heading textShadowed marginB10">
+                    <span class="month-name heavyWeightFont font20" data-bind="text: selectedMonth()"></span>
+                    <span class="num-videos lightWeightFont font20" data-bind="text: '(' + vidsInSelectedMonth() + ( vidsInSelectedMonth() == 1 ? ' video)' : ' videos)' )"></span>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: allVidsIsSelected() && !isActiveFlag() && hits() > 0 --> 
+                <div class="month-heading textShadowed marginB10">
+                    <span class="month-name heavyWeightFont font20">All Videos</span>
+                    <span class="num-videos lightWeightFont font20" data-bind="text: '(' + hits() + ( hits() == 1 ? ' video)' : ' videos)' )"></span>
+                </div>
+                <!-- /ko -->    
             </div>
-            
-            <!-- ko if: !allVidsIsSelected() && !isActiveFlag() --> 
-            <div class="month-heading textShadowed marginB10">
-                <span class="month-name heavyWeightFont font20" data-bind="text: selectedMonth()"></span>
-                <span class="num-videos lightWeightFont font20" data-bind="text: '(' + vidsInSelectedMonth() + ( vidsInSelectedMonth() == 1 ? ' video)' : ' videos)' )"></span>
-            </div>
-            <!-- /ko -->
-            <!-- ko if: allVidsIsSelected() && !isActiveFlag() && hits() > 0 --> 
-            <div class="month-heading textShadowed marginB10">
-                <span class="month-name heavyWeightFont font20">All Videos</span>
-                <span class="num-videos lightWeightFont font20" data-bind="text: '(' + hits() + ( hits() == 1 ? ' video)' : ' videos)' )"></span>
-            </div>
-            <!-- /ko -->
-            
+	             
             <div class="yir-inner" data-bind="if: !isActiveFlag() && hits() == 0">
               <div class="yirHeading-Wrap">
 		<p class="mainTitle marginL45 textShadowed">Got any videos?</p>
@@ -66,14 +68,16 @@
 
       <td class="a-table-td a-table-right-td">
 	<div class="a-wrapper a-right-wrapper lightBlueBG" style="position: relative;">
-	  <img src="/css/images/dnd.png" style="position: absolute; top: 35px; left: -21px;" />
-	  <div class="a-header a-right-header">
-	    <a class="btn btn-white pull-right" data-bind="visible: no_albums()==false, click: newAlbum">
-	      <i class="icon-plus-sign"></i> New Album
-	    </a>
-	    <p class="mainTitle textShadowed whiteText">Into Albums!</p>
-	  </div>
-          <button class="btn btn-small btn-secondary pull-right marginT15" data-bind="click: function(data, event){ toggleShared() }, text: sharedLabel, css: {'active': showShared()}"></button>
+        <div class='extra'>    
+            <img src="/css/images/dnd.png" style="position: absolute; top: 35px; left: -21px;" />
+            <div class="a-header a-right-header">
+                <a class="btn btn-white pull-right" data-bind="visible: no_albums()==false, click: newAlbum">
+                <i class="icon-plus-sign"></i> New Album
+                </a>
+                <p class="mainTitle textShadowed whiteText">Into Albums!</p>
+            </div>
+            <button class="btn btn-small btn-secondary pull-right marginT15" data-bind="click: function(data, event){ toggleShared() }, text: sharedLabel, css: {'active': showShared()}"></button>
+        </div>
 	  <div class="a-content a-right-content">
 
 	    <div class="no-albums-wrapper" data-bind="visible: no_albums">
@@ -103,10 +107,10 @@
                 </span>
                 <br>
                 <!-- ko if: sharedWith() != 'This album is not shared' -->
-                <span data-bind="click: $parent.showMembers(), text: sharedWith"></span>
+                <span class="lightWeightFont font18" data-bind="click: $parent.showMembers, text: sharedWith"></span>
                 <!-- /ko -->
                 <!-- ko if: sharedWith() == 'This album is not shared' -->
-                <span class="lightWeightFont font20" data-bind="text: sharedWith"></span>
+                <span class="lightWeightFont font18" data-bind="text: sharedWith"></span>
                 <!-- /ko -->
                 <!-- ko if: shared() == 1 -->
                 <button class="btn btn-small btn-secondary" data-bind="click: $parent.unshareAlbum">Unshare Album</button>
