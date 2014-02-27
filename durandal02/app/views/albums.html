@@ -104,7 +104,8 @@
                 <br>
                 <span class="lightWeightFont font20" data-bind="text: sharedWith"></span>
                 <!-- ko if: shared() == 1 -->
-                <button class="btn btn-small btn-secondary" data-bind="click: $parent.unshareAlbum">Unshare Album</button>
+                <button class="btn btn-small btn-secondary" data-bind="click: $parent.manageAlbum">Membership</button>
+                <button class="btn btn-small btn-secondary" data-bind="click: $parent.unshareAlbum">Unshare</button>
                 <!-- /ko -->
               </div>    
 	      <div class="a-drop clearfix" data-bind="style:{width:$parent.drop_box_width},
