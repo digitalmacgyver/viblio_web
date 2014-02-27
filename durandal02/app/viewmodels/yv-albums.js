@@ -135,7 +135,7 @@ function( system, router, viblio, dialogs, Album ) {
     };
     
     function getNumShared() {
-        viblio.api( '/services/album/list').then( function( data ) {
+        viblio.api( '/services/album/list_shared').then( function( data ) {
             numShared( data.albums.length );
         });
     }

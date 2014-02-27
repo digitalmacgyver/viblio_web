@@ -37,7 +37,7 @@
  
   <!-- ko if: showShared() && !searching() -->
   <div class="shared-page-wrap mainVidSection yir">
-      <div style="display: block; text-align: center;" class="mainTitle textShadowed">You have <span data-bind="text: numShared"></span> <span data-bind="text: numShared == 1 ? 'album' : 'albums' "></span> that <span data-bind="text: numShared == 1 ? 'has' : 'have' "></span> been shared with you.</div>
+      <div style="display: block; text-align: center;" class="mainTitle textShadowed">You have <span data-bind="text: numShared"></span> <span data-bind="text: numShared() == 1 ? 'album' : 'albums' "></span> that <span data-bind="text: numShared() == 1 ? 'has' : 'have' "></span> been shared with you.</div>
     <!-- ko foreach: sections -->
       <div class="month-heading textShadowed">
       <img class="boxShadowed avatar" data-bind="attr:{src:$data.owner.avatar}" />

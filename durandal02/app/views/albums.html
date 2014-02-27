@@ -102,7 +102,12 @@
                     <span>video</span><span data-bind="if: media().length != 1">s</span><span>)</span>
                 </span>
                 <br>
+                <!-- ko if: sharedWith() != 'This album is not shared' -->
+                <span data-bind="click: $parent.showMembers(), text: sharedWith"></span>
+                <!-- /ko -->
+                <!-- ko if: sharedWith() == 'This album is not shared' -->
                 <span class="lightWeightFont font20" data-bind="text: sharedWith"></span>
+                <!-- /ko -->
                 <!-- ko if: shared() == 1 -->
                 <button class="btn btn-small btn-secondary" data-bind="click: $parent.unshareAlbum">Unshare Album</button>
                 <!-- /ko -->

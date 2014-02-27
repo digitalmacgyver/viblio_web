@@ -130,6 +130,10 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 	}
         
     };*/
+    
+    function showMembers( data ) {
+        console.log( data.fullMembers);    
+    }
 
     function albumSearch() {
 	if ( pager.next_page ) {
@@ -141,11 +145,13 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 		    data.albums.forEach( function( album ) {
                         console.log(album);
                         var sharedWith;
+                        var fullMembers;
                         if ( album.is_shared == 1 ) {
                             return system.defer( function( dfd ) {
                                 viblio.api('/services/album/shared_with?aid=' + album.uuid).then( function( data ) {
-                                    console.log(data.displayname);
+                                    console.log(data);
                                     sharedWith = data.displayname;
+                                    fullMembers = ko.observable( data.members );
                                     dfd.resolve();
                                 });
                             }).promise().then(function(){
@@ -157,7 +163,9 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
 					 uuid: album.uuid,
 					 media: media,
                                          shared: ko.observable( album.is_shared ),
-                                         sharedWith: ko.observable( 'This album is shared with ' + sharedWith ) });    
+                                         sharedWith: ko.observable( 'This album is shared with ' + sharedWith ), 
+                                         fullMembers: fullMembers()
+                                         });
                             });
                         } else {
                             var media = ko.observableArray([]);
@@ -268,6 +276,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
         showShared: showShared,
         toggleShared: toggleShared,
         
+        showMembers: showMembers,
         unshareAlbum: unshareAlbum,
         
         viewAlbum: function( $data ) {
