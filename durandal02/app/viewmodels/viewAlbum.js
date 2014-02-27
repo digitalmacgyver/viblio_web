@@ -353,7 +353,6 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                 //return system.defer( function( dfd ) {
                 sharedWithDisplayname('');
                     viblio.api( 'services/album/get?aid=' + album_id ).then( function( data ) {
-                        console.log( data );
                         albumIsShared( data.album.is_shared ? true : false );
                         currAlbum( data.album );
                         ownerName( currAlbum().owner.displayname );

@@ -104,12 +104,10 @@ function( app, router, viblio, dialogs, Mediafile, Album, system ) {
 		if ( data.albums.length >= 1 ) {
 		    no_albums( false );
 		    data.albums.forEach( function( album ) {
-                        console.log(album);
                         var sharedWith;
                         var fullMembers;
                         if ( album.is_shared == 1 ) {
                             viblio.api('/services/album/shared_with', {aid: album.uuid}).then( function( data ) {
-                                console.log(data.displayname);
                                 sharedWith = data.displayname;
                                 fullMembers = ko.observable(data.members);
                                 var media = ko.observableArray([]);
@@ -198,7 +196,6 @@ function( app, router, viblio, dialogs, Mediafile, Album, system ) {
     };
     
     function unshareAlbum(data) {
-        console.log( data );
         viblio.api( '/services/album/delete_shared_album', { aid: data.uuid } ).then( function( returnedData ) {
             /*albums.removeAll();
             pager = {
@@ -219,6 +216,13 @@ function( app, router, viblio, dialogs, Mediafile, Album, system ) {
 	    // membership.  album.is_shared() will be false if the members array
 	    // has hit zero.  album.members() is an array of contacts, from which you
 	    // can get emails.  Use this information to update the UI for this element.
+	    if ( ! album.is_shared() )
+		data.sharedWith('This album is shared with no one');
+	    else {
+		viblio.api( '/services/album/shared_with', { aid: data.uuid } ).then( function( d ) {
+		    data.sharedWith( 'This album is shared with ' + d.displayname );
+		});
+	    }
 	});
     };
 

@@ -8,7 +8,6 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'durandal/events',], fun
     
     Help.prototype.toggleInstructions = function(data, event) {
         var self = this;
-        console.log( $(event.currentTarget) );
         if( $(event.currentTarget).hasClass('helptab') ) {
             $(event.currentTarget).siblings('.helpBody').slideToggle(500);
             $(event.currentTarget).parent().toggleClass('active');
