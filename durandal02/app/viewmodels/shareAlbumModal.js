@@ -10,6 +10,9 @@ function( router, app, system, config, viblio, dialog ) {
     var S = function( mediafile ) {
 	var self = this;
 	self.mediafile = mediafile;
+	self.is_shared = ko.observable( self.mediafile.media().is_shared ? true: false );
+	self.shared_with = ko.observable();
+	self.members = ko.observableArray([]);
 	self.videoTitle = ko.computed(function() {
 	    var title = self.mediafile.albumTitle();
 	    title = title || 'My Viblio Album';
@@ -32,7 +35,7 @@ function( router, app, system, config, viblio, dialog ) {
     };
 
     S.prototype.closeModal = function() {
-        dialog.close(this);
+        dialog.close(this, this);
     };
     
     S.prototype.updateMessage = function() {
@@ -62,6 +65,7 @@ function( router, app, system, config, viblio, dialog ) {
 		      members: emails, 
 		      body: message } ).then( function() {
 			  // log it to google analytics
+			  self.is_shared( true );
 			  viblio.mpEvent( 'share', { type: 'album' } );
 			  viblio.notify( 'Share email sent', 'success' );
 		      });
@@ -77,10 +81,44 @@ function( router, app, system, config, viblio, dialog ) {
 
     S.prototype.deactivate = function() {
     };
+
+    S.prototype.remove_member = function(a,b) {
+	$(b.target).parent().find( '.remove-member-confirm' ).css( 'display', 'inline' );
+    };
+        
+    S.prototype.yes_remove = function(a,b) {
+	var self = this;
+	var viblio = require( 'lib/viblio' );
+	viblio.api( '/services/album/remove_members_from_shared',
+		    { aid: self.mediafile.media().uuid,
+		      members: [ a.contact_email ] } )
+	    .then( function() {
+		self.members.remove( a );
+		if ( self.members().length == 0 )
+		    self.is_shared( false );
+	    });
+    };
+        
+    S.prototype.no_remove = function(a,b) {
+	$(b.target).parent().css( 'display', 'none' );
+    };
         
     S.prototype.compositionComplete = function( view, parent ) {
         var self = this;
 	self.view = view;
+
+	// If this album is a shared album, then obtain the current
+	// members for display
+	if ( self.is_shared() ) {
+	    var viblio = require( 'lib/viblio' );
+	    viblio.api( '/services/album/shared_with', { aid: self.mediafile.media().uuid } ).then( function( data ) {
+		var displayname = data.displayname;
+		var members = data.members;
+		self.shared_with( displayname );
+		self.members( members );
+	    });
+	}
+
         cloudsponge.init({
             domain_key:config.cloudsponge_appid(),
             textarea_id: null,
