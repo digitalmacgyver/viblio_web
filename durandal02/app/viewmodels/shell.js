@@ -52,7 +52,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 			// Remember the failed attempt so we can return there
 			// after a successful login.
 			if ( instruction.config.route != 'login' )
-			    viblio.setLastAttempt( instruction.config.route );
+			    viblio.setLastAttempt( instruction.config.route, instruction.queryString );
 			dfd.resolve('login');
 		    }
 		    else {

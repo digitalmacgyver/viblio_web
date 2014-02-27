@@ -95,8 +95,9 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 	    alertify.log( msg, type, wait );
 	},
 
-	setLastAttempt: function( attempt ) {
+	setLastAttempt: function( attempt, qs ) {
 	    last_attempted_url = attempt;
+	    if ( qs ) last_attempted_url = last_attempted_url + '?' + qs;
 	},
         
 	getLastAttempt: function() {
