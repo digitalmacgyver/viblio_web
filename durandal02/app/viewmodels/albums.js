@@ -147,25 +147,18 @@ define(['durandal/app','plugins/router','lib/viblio','lib/customDialogs','viewmo
                         var sharedWith;
                         var fullMembers;
                         if ( album.is_shared == 1 ) {
-                            return system.defer( function( dfd ) {
-                                viblio.api('/services/album/shared_with?aid=' + album.uuid).then( function( data ) {
-                                    console.log(data);
-                                    sharedWith = data.displayname;
-                                    fullMembers = ko.observable( data.members );
-                                    dfd.resolve();
+                            viblio.api('/services/album/shared_with', {aid: album.uuid}).then( function( data ) {
+                                console.log(data.displayname);
+                                sharedWith = data.displayname;
+                                var media = ko.observableArray([]);
+                                album.media.forEach( function( mf ) {
+                                    media.push( new Mediafile( mf ) );
                                 });
-                            }).promise().then(function(){
-                                    var media = ko.observableArray([]);
-                                    album.media.forEach( function( mf ) {
-                                        media.push( new Mediafile( mf ) );
-                                    });
-                                    albums.unshift({ name: ko.observable( album.title ),
-					 uuid: album.uuid,
-					 media: media,
-                                         shared: ko.observable( album.is_shared ),
-                                         sharedWith: ko.observable( 'This album is shared with ' + sharedWith ), 
-                                         fullMembers: fullMembers()
-                                         });
+                                albums.unshift({ name: ko.observable( album.title ),
+						 uuid: album.uuid,
+						 media: media,
+						 shared: ko.observable( album.is_shared ),
+						 sharedWith: ko.observable( 'This album is shared with ' + sharedWith ) });    
                             });
                         } else {
                             var media = ko.observableArray([]);
