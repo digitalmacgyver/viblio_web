@@ -289,7 +289,12 @@ function( app, router, viblio, dialogs, Mediafile, Album, system ) {
 	    dialogs.showTextPrompt( 'Give this album a name.', 'New Album', { verify: naVerify, placeholder: 'Album Name', buttons: [ 'OK', 'Cancel' ] } ).then( function( r, p ) {
 		if ( r == 'OK' ) {
 		    var name = $.trim( p );
-		    albums.unshift({ name: ko.observable(name), uuid: null, media: ko.observableArray([]) });
+		    albums.unshift({ name: ko.observable(name), 
+				     uuid: null, 
+				     media: ko.observableArray([]),
+				     shared: ko.observable( false ),
+				     sharedWith: ko.observable( 'This album is not shared' ),
+				   });
 		}
 	    });
 	},
