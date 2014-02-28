@@ -244,6 +244,28 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
 
 	return m;
     };
+
+    // Trigger on sync events from the server, when new videos are added or
+    // removed from the shared album being viewed.
+    app.on( 'album:new_shared_album_video', function( data ) {
+	if ( data.aid != currAlbum().uuid ) return;
+	viblio.api( '/services/album/get_shared_video', { mid: data.mid } ).then( function( data ) {
+	    allVids.push( addMediaFile( data.media ) );	    
+	});
+    });
+
+    app.on( 'album:delete_shared_album_video', function( data ) {
+	if ( data.aid != currAlbum().uuid ) return;
+        allVids.remove( function(video) { return video.view.id == data.mid; } );
+        // Remove from months
+        months().forEach( function( month ) {
+            month.media.remove( function(media) { return media.media().uuid == data.mid; } );
+        });
+        // Remove from boxOfficeHits
+        boxOfficeHits.remove( function(video) { return video.view.id == data.mid; } );
+        $( ".horizontal-scroller").trigger( 'children-changed', { enable: true } );
+        refresh( true );
+    });
     
     return {
         showShareAlbumModal: function() {

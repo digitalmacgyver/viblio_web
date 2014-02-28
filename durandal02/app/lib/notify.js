@@ -7,13 +7,18 @@ define(['lib/config','durandal/system','durandal/app', 'lib/viblio'], function( 
 		var html;
 		try { 
 		    html = ich[template]( msg, true );
+		    viblio.notify( html );
 		} catch(err) {
-		    html = err;
+		    // This is not nessesarily bad.  Some messages
+		    // might just want to send an event, not popup
+		    // a user viewable message.
+		    system.log( err );
 		}
-		viblio.notify( html );
-		if ( msg.send_event && msg.send_event.event )
+		if ( msg.send_event && msg.send_event.event ) {
+		    system.log( '==> triggering ', msg.send_event );
 		    app.trigger( msg.send_event.event, 
 				 msg.send_event.data );
+		}
 	    });
 	},
 

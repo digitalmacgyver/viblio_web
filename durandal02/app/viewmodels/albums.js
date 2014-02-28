@@ -194,6 +194,28 @@ function( app, router, viblio, dialogs, Mediafile, Album, system ) {
             searching( false );
         });
     };
+
+    // when a new shared album is available async, add it to the ui
+    app.on( 'album:new_shared_album', function( data ) {
+	viblio.api( '/services/album/get', { aid: data.aid } ).then( function( data ) {
+	    var album = data.album;
+            var media = ko.observableArray([]);
+            album.media.forEach( function( mf ) {
+                media.push( new Mediafile( mf ) );
+            });
+            sharedAlbums.unshift({ name: ko.observable( album.title ),
+                                   uuid: album.uuid,
+                                   media: media,
+                                   ownerName: album.owner.displayname,
+                                   ownerAvatar: "/services/na/avatar?uid=" + album.owner.uuid + "&y=36"   
+                                 });
+	});
+    });
+
+    // when a shared album is revoked, remove it from the ui
+    app.on( 'album:delete_shared_album', function( data ) {
+	sharedAlbums.remove( function( a ) { return a.uuid == data.aid; } );
+    });
     
     function unshareAlbum(data) {
         viblio.api( '/services/album/delete_shared_album', { aid: data.uuid } ).then( function( returnedData ) {

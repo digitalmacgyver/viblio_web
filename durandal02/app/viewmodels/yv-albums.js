@@ -1,10 +1,11 @@
 define([
     'durandal/system', 
+    'durandal/app', 
     'plugins/router',
     'lib/viblio', 
     'lib/customDialogs',
     'viewmodels/album'], 
-function( system, router, viblio, dialogs, Album ) {
+function( system, app, router, viblio, dialogs, Album ) {
 
     var pager = {};
 
@@ -123,6 +124,7 @@ function( system, router, viblio, dialogs, Album ) {
                             sections().forEach( function( section ) {
                                 albums.remove( a );
                             });
+			    numShared( numShared() - 1 );
                             sharedAlreadyFetched = false;
                         });
                     });
@@ -142,6 +144,58 @@ function( system, router, viblio, dialogs, Album ) {
             numShared( data.albums.length );
         });
     }
+
+    // When a new album has been shared to me ... update the
+    // screen in response to the async event
+    app.on( 'album:new_shared_album', function( data ) {
+	if ( ! showShared() ) return;
+	viblio.api( '/services/album/get', { aid: data.aid } ).then( function( data ) {
+	    var a = new Album( data.album, { ro: true,
+                                             show_share_badge: false, 
+                                             show_preview: true,
+                                             show_delete_mode: deleteModeOn() } );
+	    
+            a.on( 'album:view', function( a ) {
+                router.navigate( 'viewAlbum?aid=' + a.media().uuid );
+            });
+            a.on( 'album:delete', function( a ) {
+                viblio.api( '/services/album/remove_me_from_shared', { aid: a.media().uuid } ).then( function() {
+                    viblio.mpEvent( 'delete_album' );
+                    sections().forEach( function( section ) {
+                        section.album.remove( a );
+                    });
+		    numShared( numShared() - 1 );
+                    sharedAlreadyFetched = false;
+                });
+            });
+	    var owner = data.album.owner;
+            owner.avatar = "/services/na/avatar?uid=" + owner.uuid + "&y=36";
+	    var found = false;
+	    sections().forEach( function( section ) {
+		if ( section.owner.uuid == owner.uuid ) {
+		    found = true;
+		    section.album.push( a );
+		}
+	    });
+	    if ( ! found ) 
+		sections.push({ owner: owner, album: ko.observableArray([ a ]) });
+	    numShared( numShared() + 1 );
+	});
+    });
+
+    // When I've been removed from a shared album ... update the
+    // screen in response to the async event
+    app.on( 'album:delete_shared_album', function( data ) {
+	if ( ! showShared() ) return;
+	sections().forEach( function( section ) {
+	    section.album().forEach( function( album ) {
+		if ( album.media().uuid == data.aid ) {
+		    section.album.remove( album );
+		    numShared( numShared() - 1 );
+		}
+	    });
+	});
+    });
 
     return {
 	albums: albums,
