@@ -1,4 +1,7 @@
 (function($) {
+
+    var IE = (head.browser.ie && head.browser.version < 10);
+
     $.widget( 'viblio.viblio_uploader', {
 	options: {
 	    // Mostly for debug.  If null, then the viblio uuid for uploads
@@ -40,6 +43,10 @@
 	    //
 	    // What to say when a video file is waiting for a slot to upload
 	    waiting_message: 'waiting...',
+	    //
+	    // When doing iframe transport (ie < 10), the message to
+	    // display while the user is waiting for the upload to finish
+	    iframe_wait_message: 'uploading...',
 	    //
 	    // For skinning, you can override the html template used to
 	    // render the UI.
@@ -271,18 +278,22 @@
 	    self.element.find('.vup-instructions').css( 'visibility', 'visible' );
 	    self.element.find('.vup-instructions').css( 'cursor', 'pointer' );
 	    self.element.find('.vup-area').css( 'cursor', 'pointer' );
-	    self.element.find('.vup-area').on( 'click.VUP-AREA', function() {
-		self.element.find('input[type=file]').click();
-	    });
-	    self.element.find('.vup-instructions').on( 'click.VUP-AREA', function() {
-		self.element.find('input[type=file]').click();
-	    });
+	    if ( ! IE ) {
+		self.element.find('.vup-area').on( 'click.VUP-AREA', function() {
+		    self.element.find('input[type=file]').click();
+		});
+		self.element.find('.vup-instructions').on( 'click.VUP-AREA', function() {
+		    self.element.find('input[type=file]').click();
+		});
+	    }
 	},
 
 	_remove_droparea_click: function() {
 	    var self = this;
-	    self.element.find('.vup-area').unbind( 'click.VUP-AREA' );
-	    self.element.find('.vup-instructions').unbind( 'click.VUP-AREA' );
+	    if ( ! IE ) {
+		self.element.find('.vup-area').unbind( 'click.VUP-AREA' );
+		self.element.find('.vup-instructions').unbind( 'click.VUP-AREA' );
+	    }
 	    self.element.find('.vup-area').css( 'cursor', 'default' );
 	},
 
@@ -292,20 +303,34 @@
 
 	    self.options.uuid = self.options.uuid || viblio.vid();
 	    self.options.endpoint = self.options.endpoint || viblio.service('/files');
-	    $('<input type="file" name="files[]" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;" multiple />').appendTo( elem );
-	    elem.append( self.options.template || self._html() );
+	    if ( ! IE ) {
+		$('<input type="file" name="files[]" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;" multiple />').appendTo( elem );
+	    }
+	    elem.append( self.options.template || self._html( IE ) );
 	    if ( self.options.display_stats )
 		elem.find( '.vup-stats' ).css( 'visibility', 'visible' );
 
 	    self.reset();
-
+	    
+	    if ( IE ) {
+		// Need to proxy the change of the input manually and 
+		// initiate the file uploader.
+		elem.find( 'input[type=file]' ).bind( 'change', function( e ) {
+		    elem.find('input[type=file]').fileupload( 'add', {
+			files: e.target.files || [{name: this.value}],
+			fileInput: $(this)
+		    });
+		});
+	    }
+	    
             elem.find('input[type=file]').fileupload({
 		url: self.options.endpoint,
                 type: 'PATCH',
                 maxChunkSize: 1024 * 256,
                 maxRetries: 15,
                 retryTimeout: 1000,
-                multipart: false,
+                //multipart: false,
+		fileInput: ( IE ? null : undefined ),
                 dataType: 'text',
                 dropZone: elem.find('.vup-area'),
                 acceptFileTypes: self.options.accept,
@@ -361,7 +386,8 @@
 				});
 				var row = $('<tr><td class="vup-filename-column"></td><td class="vup-file-progress-column"></td><td class="vup-cancel-column"></td>');
 				$(row).find(".vup-cancel-column").append(allCancelButton);
-				$(row).find(".vup-cancel-column").append(allPauseButton);
+				if ( ! IE )
+				    $(row).find(".vup-cancel-column").append(allPauseButton);
 				$(row).appendTo(elem.find(".vup-files"));				
 			    }
 			    else {
@@ -418,9 +444,13 @@
 				var sessionID = submit_url.split('/').pop();
 
 				$(row).find(".vup-filename-column").text(filename);
-				$(row).find(".vup-file-progress-column").html('<span class="bar" style="width:0%;">' + self.options.waiting_message + '</span>' );
+				if ( ! IE )
+				    $(row).find(".vup-file-progress-column").html('<span class="bar" style="width:0%;">' + self.options.waiting_message + '</span>' );
+				else
+				    $(row).find(".vup-file-progress-column").html('<span class="bar" style="width:0%;">' + self.options.iframe_wait_message + '</span>' );
 				$(row).find(".vup-cancel-column").append(cancelButton);
-				$(row).find(".vup-cancel-column").append(pauseButton);
+				if ( ! IE )
+				    $(row).find(".vup-cancel-column").append(pauseButton);
 				$(row).attr("sessionID", sessionID);
 				$(row).attr("offset", 0 );
 			    
@@ -442,7 +472,7 @@
 		done: function(e, data) {
 		    $(data.context[0]).data( 'done', true );
                     self._vpin_progress -= 1;
-		    if ( self._vpin_progress == 0 ) {
+		    if ( self._vpin_progress == 0 || IE ) {
 			self.notify( 'Your uploaded videos are now being processed to find and bring out the magic!' );
 			elem.find( '.vup-cancel-column').empty();
 		    }
@@ -594,8 +624,9 @@
             this.element.find('input[type=file]').fileupload( 'destroy' );
 	},
 
-	_html: function() {
-	    return ('\
+	_html: function( ie ) {
+	    if ( ! ie ) 
+		return ('\
       <div class="vup-instructions"><div><p class="line1">Drop files here</p><p class="line2">(or click)</p></div></div>\
       <div class="vup-alert"><span class="alert"></span></div>\
       <div class="vup-area">\
@@ -618,6 +649,21 @@
 	</table>\
       </div>\
 ');
+	    else 
+		return ('\
+      <div class="vup-instructions">\
+        <div><p class="line1">Choose a file to upload</p><p class="ie-fileupload-input">\
+          <form id="fileupload"><input type="file" name="files[]" /></form>\
+        </p></div>\
+      </div>\
+      <div class="vup-alert"><span class="alert"></span></div>\
+      <div class="vup-area">\
+	<table class="vup-files">\
+	</table>\
+      </div>\
+      \
+');
+		
 	}
     });
 })(jQuery);
