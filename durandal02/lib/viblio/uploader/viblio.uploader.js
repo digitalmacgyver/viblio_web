@@ -329,7 +329,7 @@
                 maxChunkSize: 1024 * 256,
                 maxRetries: 15,
                 retryTimeout: 1000,
-                //multipart: false,
+                multipart: ( IE ? undefined : false ),
 		fileInput: ( IE ? null : undefined ),
                 dataType: 'text',
                 dropZone: elem.find('.vup-area'),
