@@ -2796,11 +2796,11 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     }
 
 #register-page .mediafile {
-    width: 270px;
+    width: 252px;
 }
     #register-page .mediafile img {
         //height: 152px;    /* 16:9 */
-        height: 203px;      /* 4:3 */
+        height: 189px;      /* 4:3 */
     }
 
 .albums .mediafile {
