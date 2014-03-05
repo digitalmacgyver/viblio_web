@@ -839,6 +839,10 @@ input:-moz-placeholder {
     text-align: center;
 }
 
+.blankModal .paddedDiv {
+    padding-top: 50px;
+}
+
 /********************  Page Header Section  *****************************/
 
 #page-header .navbar {
