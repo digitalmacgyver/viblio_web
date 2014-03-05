@@ -1,8 +1,21 @@
-define(['durandal/app'],function(app){
+define(['durandal/app',
+        "plugins/router",
+	"lib/viblio",
+        "lib/customDialogs"],function(app,router,viblio,customDialogs){
     var view;
     var unnamed;
     var top_actors;
     var unamed_is_visible = false;
+    
+    // Used to handle message from email to open upload modal
+    var user = viblio.user;
+    var loggedIn = ko.computed(function(){
+        if( user() && user().uuid != null ) {
+            return true;
+        } else {
+            return false;
+        }
+    });
 
     app.on( 'unnamed:composed', function( obj ) {
 	unamed = obj;
@@ -37,6 +50,27 @@ define(['durandal/app'],function(app){
     });
 
     return{
+        
+        // When user is routed from email link for 'upload' capture that and open upload modal on login
+        activate: function( args ) {
+            if ( args && args.addVideos ) {
+                var last_URL = router.activeInstruction().config.route + "?" + router.activeInstruction().queryString;
+                if ( loggedIn() ) {
+                    customDialogs.showModal( 'viewmodels/nginx-modal' );
+                } else {
+                    // Set the last attempt to a function that will route the user to the home page and will open the add vids modal
+                    viblio.setLastAttempt( function() {
+                        router.navigate( last_URL );
+                        setTimeout( function(){
+                            customDialogs.showModal( 'viewmodels/nginx-modal' );
+                        },1000);
+                        viblio.setLastAttempt( null );
+                    });
+                    customDialogs.showModal( 'viewmodels/loginModal', 'Please log in before uploading new videos to your account.' );
+                }
+            }
+        },
+        
 	compositionComplete: function( _view ) {
 	    view = _view;
 	    handle_visibility( unamed_is_visible );

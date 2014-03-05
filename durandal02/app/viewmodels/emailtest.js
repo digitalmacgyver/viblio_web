@@ -14,7 +14,9 @@ define(['lib/viblio'],function(viblio) {
         'videosSharedWithYou.tt',
         'videosWaitingToBeWatched.tt',
         'weeklyDigest.tt',
-        'youveGotVideos.tt' 
+        'youveGotVideos.tt',
+        'viblioLikesPrivacyToo.tt',
+        'dontForgetViblio.tt'
     ]);
     var forceStaging = ko.observable( true );
 
