@@ -61,8 +61,8 @@ function( app, system, dialog, Loading, ChangePassword, IMap, ShareVid, ShareAlb
 	showShareVidModal: function( mediafile ) {
 	    return dialog.showAnimated( new ShareVid( mediafile ) );
 	},
-	showShareAlbumModal: function( mediafile ) {
-	    return dialog.showAnimated( new ShareAlbum( mediafile ) );
+	showShareAlbumModal: function( mediafile, args ) {
+	    return dialog.showAnimated( new ShareAlbum( mediafile, args ) );
 	},
 	showWebPlayerError: function( title, message, err ) {
 	    return dialog.showAnimated( new WebPlayerError( title, message, err ) );

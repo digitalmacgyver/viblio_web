@@ -7,7 +7,7 @@ define( ['plugins/router',
 
 function( router, app, system, config, viblio, dialog ) {
     
-    var S = function( mediafile ) {
+    var S = function( mediafile, args ) {
 	var self = this;
 	self.mediafile = mediafile;
 	self.is_shared = ko.observable( self.mediafile.media().is_shared ? true: false );
@@ -25,6 +25,10 @@ function( router, app, system, config, viblio, dialog ) {
 	
 	self.shareVidMessage = ko.observable( $('#shareVidMessage').val() );
 	self.shareMessage_entry_error = ko.observable( false );
+        self.showEmailSection = ko.observable( true );
+        if ( args && args.showEmailSection == false ) {
+            self.showEmailSection( false );
+        }
     };
     
     S.prototype.cimport = function() {
@@ -68,6 +72,8 @@ function( router, app, system, config, viblio, dialog ) {
 			  self.is_shared( true );
 			  viblio.mpEvent( 'share', { type: 'album' } );
 			  viblio.notify( 'Share email sent', 'success' );
+                          // broadcast that album has been shared along with aid so new members can be shown in viewAlbum
+                          app.trigger('album:album_shared', self.mediafile.media().uuid);
 		      });
 	self.closeModal();
     };

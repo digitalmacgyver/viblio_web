@@ -28,6 +28,8 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
     var selectedYear = ko.observable( null );
     var showAllVids = ko.observable( true );
     var refresh = ko.observable( false );
+    var viewerOwnsAVideo = ko.observable( false );
+    var vidsOwnedByViewerNum = ko.observable( 0 );
     
     var albumIsShared = ko.observable();
     var sharedWithDisplayname = ko.observable();
@@ -64,12 +66,22 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
         
         if( showAllVids() ) {
             self.allVids().forEach( function( mf ) {
-                mf.toggleEditMode();
+                console.log(mf);
+                if ( ownedByViewer() ) {
+                    mf.toggleEditMode();
+                } else if ( mf.show_share_badge() ) {
+                    mf.toggleEditMode();                    
+                }
             });
         } else {
             self.months().forEach( function( month ) {
                 month.media().forEach( function( mf ) {
-                    mf.toggleEditMode();
+                    console.log(mf);
+                    if ( ownedByViewer() ) {
+                        mf.toggleEditMode();
+                    } else if ( mf.show_share_badge() ) {
+                        mf.toggleEditMode();                    
+                    }
                 });
             });
         }
@@ -81,6 +93,14 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
     router.on( 'router:route:activating', function() {
 	prevAid( currAid() );
         prevAlbum( currAlbum() );
+    });
+    
+    // If album is shared by user, show the members as they are added - triggered in shareAlbumModal
+    app.on('album:album_shared', function( aid ) {
+        var sharedAID = aid;
+        if ( sharedAID == album_id ) {
+            getSharedMembers();
+        }
     });
     
     app.on( 'album:newMediaAdded', function( album ) {
@@ -108,6 +128,14 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
             ownedByViewer( true );
         } else {
             ownedByViewer( false );
+        }
+    };
+    
+    function mfOwnedByViewer( mf ) {
+        if( mf.owner_uuid == viblio.user().uuid ){
+            return true;
+        } else {
+            return false;
         }
     };
     
@@ -170,9 +198,9 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
     
     function addMediaFile( mf ) {
 	var self = this;
-
-	// Create a new Mediafile with the data from the server
-	var m = new Mediafile( mf, ownedByViewer() ? { show_share_badge: true, show_preview: true } : {show_preview: true} );
+        
+	// Create a new Mediafile with the data from the server - Only albums owned by the viewer will be given the share badge
+	var m = new Mediafile( mf, mfOwnedByViewer(mf) ? { show_share_badge: true, show_preview: true } : {show_preview: true} );
 
 	// Register a callback for when a Mediafile is selected.
 	// This is so we can deselect the previous one to create
@@ -207,6 +235,9 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                 boxOfficeHits.remove( function(video) { return video.view.id == m.media().uuid; } );
                 $( ".horizontal-scroller").trigger( 'children-changed', { enable: true } );
                 refresh( true );
+                if ( m.show_share_badge() ) {
+                    vidsOwnedByViewerNum( vidsOwnedByViewerNum()-1 );
+                }
             });
         });
         
@@ -290,6 +321,8 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
         toggleEditMode: toggleEditMode,
         noVids: noVids,
         showBOH: showBOH,
+        viewerOwnsAVideo: viewerOwnsAVideo,
+        vidsOwnedByViewerNum: vidsOwnedByViewerNum,
         
         albumIsShared: albumIsShared,
         sharedWithDisplayname: sharedWithDisplayname,
@@ -374,6 +407,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                 boxOfficeHits.removeAll();*/
                 //return system.defer( function( dfd ) {
                 sharedWithDisplayname('');
+                vidsOwnedByViewerNum( 0 );
                     viblio.api( 'services/album/get?aid=' + album_id ).then( function( data ) {
                         system.log(data);
                         albumIsShared( data.album.is_shared ? true : false );
@@ -388,6 +422,11 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                                 boxOfficeHits.push( addMediaFile( mf ) );
                             }
                             allVids.push( addMediaFile( mf ) );
+                            // If one of the mf's is owned by the viewer then set viewerOwnsAVideo to true, increment vidsOwnedByViewerNum by one
+                            if ( mfOwnedByViewer( mf ) ) {
+                                viewerOwnsAVideo(true );
+                                vidsOwnedByViewerNum( vidsOwnedByViewerNum()+1 );
+                            }
                         });
 
                         //reverse the order of the sorted array
@@ -421,7 +460,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                 prevAlbum( currAlbum() );
             }
             
-            refresh( false );
+            refresh( true );
 	}
     };
 });

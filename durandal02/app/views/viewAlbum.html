@@ -14,8 +14,10 @@
         </div>
         <!-- /ko -->
         <img src="css/images/folderImage.png" />
-        <span class="textShadowed albumTitle" data-bind="text: albumTitle"></span>       
+        <span class="textShadowed albumTitle" data-bind="text: albumTitle"></span>
+        <!-- ko if: ownedByViewer -->
         <span class='whiteText font20 textShadowed lightWeightFont albumSubTitle' data-bind="text: sharedWithDisplayname() ? ' - Shared with ' + sharedWithDisplayname() : '' "></span>
+        <!-- /ko -->
         
     </div>
     
@@ -59,7 +61,7 @@
                 </ul>
 	    </div>-->
             
-            <!-- ko if: ownedByViewer() && allVids().length > 0 -->
+            <!-- ko if: ownedByViewer() || vidsOwnedByViewerNum() > 0 && allVids().length > 0 -->
                 <button class="btn btn-small btn-secondary pull-right marginR45" data-bind="click: toggleEditMode, text: editLabel"></button>
             <!-- /ko -->
             
