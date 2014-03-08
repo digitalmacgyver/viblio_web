@@ -2,13 +2,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 
     var header = ko.observable( );
     var location = ko.observable();
-    var showFooter = ko.computed(function(){
-        if(location() == 'Video Player') {
-            return false;
-        } else {
-            return true;
-        }
-    });
+    var showFooter = ko.observable();
     
     router.on('router:route:activating').then(function(instance, instruction, router){
         location(instruction.config.title);
@@ -28,6 +22,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             document.title = instruction.config.title;
         }
 	header( instruction.config.header );      
+	showFooter( instruction.config.showFooter );
     });
 
     // This is how you "guard" routes; ie make conditional decisions
@@ -106,85 +101,88 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
     function buildRouterMap() {
         router.map([
             { route: '',                   moduleId: 'landing',            title: 'Viblio Landing Page',
-	      nav: false,   authenticated: false,  header: landing_header },
+	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
 
             { route: 'landing',            moduleId: 'landing',            title: 'Viblio Landing Page',
-	      nav: false,   authenticated: false,  header: landing_header },
+	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
 
             { route: 'home',               moduleId: 'hp',               title: 'VIDEOS',
-	      nav: true,    authenticated: true,   header: page_header },
+	      showFooter: true, nav: true,    authenticated: true,   header: page_header },
 
             { route: 'oops',               moduleId: 'oops',               title: 'Oops',
-	      nav: false,    authenticated: false,   header: page_header },
+	      showFooter: true, nav: false,    authenticated: false,   header: page_header },
 
             { route: 'videosof',           moduleId: 'videosof',           title: 'Videos Starring',
-	      nav: false,    authenticated: true,   header: page_header },
+	      showFooter: true, nav: false,    authenticated: true,   header: page_header },
 
             { route: 'login',              moduleId: 'login',              title: 'Log in to your Viblio account',
-	      nav: false,   authenticated: false,  header: landing_header },
+	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
 
             { route: 'confirmed',          moduleId: 'confirmed',          title: 'Account Confirmation',
-	      nav: false,   authenticated: false,  header: landing_header },
+	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
 
             { route: 'settings',           moduleId: 'settings',           title: 'User Settings',
-	      nav: false,   authenticated: true,   header: page_header },
+	      showFooter: true, nav: false,   authenticated: true,   header: page_header },
 
             { route: 'upload',             moduleId: 'nginx',              title: 'UPLOAD',
-	      nav: false,    authenticated: true,   header: page_header },
+	      showFooter: true, nav: false,    authenticated: true,   header: page_header },
           
             { route: 'albums',             moduleId: 'albums',             title: 'ALBUMS',
-	      nav: false,   authenticated: true,   header: page_header },
+	      showFooter: true, nav: false,   authenticated: true,   header: page_header },
           
             { route: 'viewAlbum',          moduleId: 'viewAlbum',          title: 'Album View',
-	      nav: false,   authenticated: true,   header: page_header },
+	      showFooter: true, nav: false,   authenticated: true,   header: page_header },
 	    
             { route: 'videos',             moduleId: 'your-videos',          title: 'VIDEOS',
-	      nav: false,   authenticated: true,   header: page_header },
+	      showFooter: true, nav: false,   authenticated: true,   header: page_header },
 	    
             { route: 'people',             moduleId: 'people',             title: 'PEOPLE',
-	      nav: true,    authenticated: true,   header: page_header },
+	      showFooter: true, nav: true,    authenticated: true,   header: page_header },
 	    
             { route: 'raw',                moduleId: 'raw',                title: 'Raw Upload',
-	      nav: false,    authenticated: true,   header: page_header },
+	      showFooter: true, nav: false,    authenticated: true,   header: page_header },
 	    
             { route: 'emailtest',          moduleId: 'emailtest',          title: 'Email Test',
-	      nav: false,    authenticated: true,   header: page_header },
+	      showFooter: true, nav: false,    authenticated: true,   header: page_header },
 	    
             { route: 'new_player',             moduleId: 'pp',     title: 'Video Player',
-	      nav: false,   authenticated: true,   header: page_header },
+	      showFooter: false, nav: false,   authenticated: true,   header: page_header },
 
             { route: 'forgotPassword',     moduleId: 'forgotPassword',     title: 'Forgot your Password?',
-	      nav: false,   authenticated: false,  header: landing_header },
+	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
 
             { route: 'web_player',         moduleId: 'pp',         title: 'Video Player',
-	      nav: false,   authenticated: false,   header: conditional_header },
+	      showFooter: false, nav: false,   authenticated: false,   header: conditional_header },
           
             { route: 'loggedOut',           moduleId: 'loggedOut',         title: 'Log out successful',
-	      nav: false,   authenticated: true,   header: landing_header },
+	      showFooter: true, nav: false,   authenticated: true,   header: landing_header },
 
             { route: 'register',           moduleId: 'register',           title: 'Registration',
-	      nav: false,   authenticated: false,   header: landing_header },
+	      showFooter: true, nav: false,   authenticated: false,   header: landing_header },
           
             { route: 'TOS',           moduleId: 'TOS',           title: 'Viblio Terms of Service',
-	      nav: false,   authenticated: false,   header: conditional_header },
+	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
           
             { route: 'getApp',           moduleId: 'getApp',     title: 'Download Viblio',
-                nav: false,   authenticated: false,   header: conditional_header },
+                showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
+            
+            { route: 'iosApp',           moduleId: 'iosApp',     title: 'Download Viblio iOS App',
+                showFooter: false, nav: false,   authenticated: false,   header: 'ios_header.html' },
             
             { route: 'faq',           moduleId: 'faq',     title: 'Viblio FAQ',
-                nav: false,   authenticated: false,   header: conditional_header }, 
+                showFooter: true, nav: false,   authenticated: false,   header: conditional_header }, 
           
             { route: 'map',        moduleId: 'map',     title: 'MAP',
-	      nav: true,   authenticated: true,   header: page_header },
+	      showFooter: true, nav: true,   authenticated: true,   header: page_header },
           
             { route: 'tutorial',        moduleId: 'tutorial',     title: 'Tray App Tutorial',
-	      nav: false,   authenticated: false,   header: conditional_header },
+	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
           
             { route: 'help',        moduleId: 'help',     title: 'Viblio help',
-	      nav: false,   authenticated: false,   header: conditional_header },
+	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
           
             { route: 'whoWeAre',   moduleId: 'whoWeAre',     title: 'Who We Are',
-	      nav: false,   authenticated: false,   header: conditional_header }
+	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header }
 
         ]).buildNavigationModel();
     }
