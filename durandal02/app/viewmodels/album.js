@@ -86,6 +86,14 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
             $( '.dbtn' ).show();
         }
         
+        app.on('album:album_unshared', function( aid ) {
+            console.log( aid );
+            console.log( self.media().uuid );
+            if( self.media().uuid == aid ) {
+                self.show_shared_badge( false );
+            }
+        });
+        
         // Once the album is composed and has a view, add mouse-over
         // callbacks that cycle through the media posters that belong to
         // this album. This can be turned off in the options, but is on by default.

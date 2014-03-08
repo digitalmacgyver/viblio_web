@@ -91,6 +91,15 @@ function( router, app, system, config, viblio, dialog ) {
     S.prototype.remove_member = function(a,b) {
 	$(b.target).parent().find( '.remove-member-confirm' ).css( 'display', 'inline' );
     };
+    
+    S.prototype.unshareAlbum = function(data) {
+        var self = this;
+        var viblio = require( 'lib/viblio' );
+        viblio.api( '/services/album/delete_shared_album', { aid: data.uuid } ).then( function() {
+            app.trigger('album:album_unshared', data.uuid);
+            self.closeModal();
+        });
+    };
         
     S.prototype.yes_remove = function(a,b) {
 	var self = this;
@@ -100,8 +109,10 @@ function( router, app, system, config, viblio, dialog ) {
 		      members: [ a.contact_email ] } )
 	    .then( function() {
 		self.members.remove( a );
-		if ( self.members().length == 0 )
+		if ( self.members().length == 0 ) {
 		    self.is_shared( false );
+                    self.unshareAlbum( self.mediafile.media() );
+                }
 	    });
     };
         
