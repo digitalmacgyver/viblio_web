@@ -10,13 +10,17 @@ define(['lib/viblio'],function(viblio) {
 	'firstVideosUploaded.tt',
 	'forgotPassword.tt',
         'referAFriend.tt',
-        'uploadSomeVideos.tt',
+        'uploadSomeVideos-DRAFT.tt',
         'videosSharedWithYou.tt',
         'videosWaitingToBeWatched.tt',
         'weeklyDigest.tt',
         'youveGotVideos.tt',
         'viblioLikesPrivacyToo.tt',
-        'dontForgetViblio.tt'
+        'dontForgetViblio.tt',
+        'newVideos.tt',
+        'memoriesFromPastWeek.tt',
+        'inviteToShare.tt',
+        'albumSharedToYou.tt'
     ]);
     var forceStaging = ko.observable( true );
 

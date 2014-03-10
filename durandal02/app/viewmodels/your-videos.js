@@ -18,11 +18,20 @@ define([], function() {
             last_selected( _model );
 	},
         
+        activate: function( args ) {
+            console.log(args);
+            if ( args && args.last_selected ) {
+                last_selected( args.last_selected );
+            }
+        },
+        
         compositionComplete: function() {
             if( last_selected() == null ) {
                 last_selected('yv-all');
                 title( 'Your Videos' );
                 view( 'viewmodels/yv-all' );
+            } else {
+                view( 'viewmodels/' + last_selected() );
             }
         }
         
