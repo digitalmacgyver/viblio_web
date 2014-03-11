@@ -12,10 +12,13 @@
             <img src="css/images/viblioLogo-WhiteWText.png" />
         </a>
         <div class="nav-collapse collapse">
-            <ul class="nav pagesNav" data-bind="foreach: router.navigationModel">
+            <ul class="nav pagesNav">
+                <!-- ko foreach: router.navigationModel -->
                 <li data-bind="css: { active: isActive }">
                     <a data-bind="attr: { href: hash }, html: title"></a>
                 </li>
+                <!-- /ko -->
+                <li><a href="#" data-bind="click: web_uploader" class="web-uploader-header-button btn btn-small btn-primary pull-right">UPLOAD VIDEOS</a></li>
             </ul>
 
             <ul id='userNamePicNav' class="nav pull-right">
@@ -37,10 +40,6 @@
                     </ul>
                 </li>
             </ul>
-
-	    <a href="#" data-bind="click: web_uploader" class="web-uploader-header-button btn btn-small btn-primary pull-right">Upload Videos</a>
-
-
         </div>
         
         <div class="clearfix"></div>

@@ -627,7 +627,7 @@
 	_html: function( ie ) {
 	    if ( ! ie ) 
 		return ('\
-      <div class="vup-instructions"><div><p class="line1">Drop files here</p><p class="line2">(or click)</p></div></div>\
+      <div class="vup-instructions"><div><p class="line1">Drop videos here</p><p class="line2">(or click)</p></div></div>\
       <div class="vup-alert"><span class="alert"></span></div>\
       <div class="vup-area">\
 	<table class="vup-files">\
