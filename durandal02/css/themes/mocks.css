@@ -4072,3 +4072,9 @@ div.fstrip {
 .navbar .btn.web-uploader-header-button {
     margin-top: 18px;
 }
+
+.btn.web-uploader-header-button:hover {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
