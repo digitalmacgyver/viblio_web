@@ -156,7 +156,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
     };
     
     Album.prototype.showShareMembers = function() {
-        dialogs.showShareAlbumModal( this, {showEmailSection: false} );
+        dialogs.showShareAlbumModal( this/*, {showEmailSection: false}*/ );
     };
 
     Album.prototype.share = function() {
