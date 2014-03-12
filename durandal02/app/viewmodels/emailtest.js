@@ -2,25 +2,25 @@ define(['lib/viblio'],function(viblio) {
     var email = ko.observable();
     var selectedTemplate = ko.observable();
     var templates = ko.observableArray([
-	'accountConfirmation.tt',
-        'accountCreated_ShareReferral.tt',
-        'accountCreated_trayApp.tt',
-        'commentsOnVidSharedWYou.tt',
-        'commentsOnYourVid.tt',
-	'firstVideosUploaded.tt',
-	'forgotPassword.tt',
-        'referAFriend.tt',
-        'uploadSomeVideos-DRAFT.tt',
-        'videosSharedWithYou.tt',
-        'videosWaitingToBeWatched.tt',
-        'weeklyDigest.tt',
-        'youveGotVideos.tt',
-        'viblioLikesPrivacyToo.tt',
-        'dontForgetViblio.tt',
-        'newVideos.tt',
-        'memoriesFromPastWeek.tt',
-        'inviteToShare.tt',
-        'albumSharedToYou.tt'
+	'03-accountConfirmation.tt',        
+        '04b-viblioLikesPrivacyToo.tt',
+        '04-07-accountCreated.tt',
+        '05-youveGotVideos.tt',
+        '06-videosSharedWithYou.tt',
+        '08-dontForgetViblio.tt',
+        '09-videosWaitingToBeWatched.tt',
+        '10-uploadSomeVideos-DRAFT.tt',
+        '11-makeSomeMemoriesThisWeekend.tt',
+        '12-memoriesFromPastWeek.tt',
+        '14-referAFriend.tt',
+        '15-inviteToShare.tt',
+        '16-commentsOnYourVid.tt',
+        '18-forgotPassword.tt',
+        '19-albumSharedToYou.tt',
+        '20-newVideoAddedToAlbum.tt',
+	'firstVideosUploaded.tt',                 
+        'weeklyDigest.tt',       
+        'newVideos.tt'    
     ]);
     var forceStaging = ko.observable( true );
 
