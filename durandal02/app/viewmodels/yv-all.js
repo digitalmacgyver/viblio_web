@@ -37,7 +37,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         });
         
         //shared videos section
-        self.sharedLabel = ko.observable( 'Shared with me' );
+        self.sharedLabel = ko.observable( '<i class="icon-share"></i> Shared with me' );
         self.showShared = ko.observable( false );
         self.sections = ko.observableArray([]);
         self.numVids = ko.observable(0);
@@ -72,7 +72,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	};
 	
 	// An edit/done label to use on the GUI
-	self.editLabel = ko.observable( 'Remove...' );
+	self.editLabel = ko.observable( '<i class="icon-minus"></i> Remove...' );
         
         self.deleteModeOn = ko.computed( function() {
             if( self.editLabel() === 'Done' ) {
@@ -172,9 +172,15 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                             console.log( json );
                             self.tagsPager = json.pager;
                             json.months.forEach( function( month ) {
-                                var shortName = month.slice(0,3);
-                                var longName = month.slice(0, month.indexOf(' '));
-                                var year = month.slice(month.length-4);
+                                if ( month != 'Missing Dates' ) {
+                                    var shortName = month.slice(0,3);
+                                    var longName = month.slice(0, month.indexOf(' '));
+                                    var year = month.slice(month.length-4);
+                                } else {
+                                    var shortName = 'No';
+                                    var longName = '';
+                                    var year = 'Dates';
+                                }
                                 self.datesLabels.push( { shortMonth: shortName, longMonth: longName, year: year, label: month, selected: ko.observable(false) } );
                             });
                         }
@@ -258,9 +264,9 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
      allVids.prototype.toggleShared = function() {
 	var self = this;
 	if ( self.sharedLabel() === 'My Videos' ) {
-	    self.sharedLabel( 'Shared with me' );
+	    self.sharedLabel( '<i class="icon-share"></i> Shared with me' );
             self.showShared( false );
-            self.editLabel( 'Remove...' );
+            self.editLabel( '<i class="icon-minus"></i> Remove...' );
         } else {
 	    self.sharedLabel( 'My Videos' )
             self.showShared( true );
@@ -268,7 +274,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             if(self.sharedAlreadyFetched === false) {
                 self.getShared();
             }
-            self.editLabel( 'Remove...' );
+            self.editLabel( '<i class="icon-minus"></i> Remove...' );
         }
     };
     
@@ -277,10 +283,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     // this will be the way user's can delete their media files
     allVids.prototype.toggleEditMode = function() {
 	var self = this;
-	if ( self.editLabel() === 'Remove...' )
+	if ( self.editLabel() === '<i class="icon-minus"></i> Remove...' )
 	    self.editLabel( 'Done' );
 	else
-	    self.editLabel( 'Remove...' );
+	    self.editLabel( '<i class="icon-minus"></i> Remove...' );
         
         if( self.sharedLabel() === 'My Videos' ) {
             self.sections().forEach( function( section ) {
