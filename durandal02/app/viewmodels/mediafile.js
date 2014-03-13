@@ -27,7 +27,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	    show_share_badge: false,
 	    share_action: 'modal', // 'modal' to popup showShareVidModal, 'trigger' to trigger mediafile:share, function as a callback
 	    show_preview: true,    // show animated gif, if available, on hover.
-            show_delete_mode: false
+            show_delete_mode: false,
+            delete_title: 'delete'
 	}, options );
         
 	this.media    = ko.observable( data );

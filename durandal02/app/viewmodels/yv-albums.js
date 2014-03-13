@@ -45,6 +45,7 @@ function( system, app, router, viblio, dialogs, Album ) {
 		    pager = data.pager;
 		    data.albums.forEach( function( album ) {
 			var a = new Album( album, {  ro: false,
+                                                     show_shared_badge: album.is_shared ? true : false,
                                                      show_share_badge: true, 
 						     show_preview: false,
 						     show_delete_mode: deleteModeOn() } );
@@ -111,6 +112,7 @@ function( system, app, router, viblio, dialogs, Album ) {
                 var albums = ko.observableArray([]);
                 share.albums.forEach( function( album ) {
                     var a = new Album( album, {  ro: true,
+                                                 show_shared_badge: false,
                                                  show_share_badge: false, 
                                                  show_preview: true,
                                                  show_delete_mode: deleteModeOn() } );

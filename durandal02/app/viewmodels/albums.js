@@ -139,7 +139,9 @@ function( app, router, viblio, dialogs, Mediafile, Album, system ) {
 		}
 		else {
 		    no_albums( true );
-		    albums.unshift({ name: ko.observable('Your First Album'), uuid: null, media: ko.observableArray([]) });
+		    albums.unshift({ name: ko.observable('Your First Album'), uuid: null, media: ko.observableArray([]),
+                                    shared: ko.observable( 0 ),
+                                    sharedWith: ko.observable( 'This album is not shared' )});
 		}
 		searching( false );
 	    });

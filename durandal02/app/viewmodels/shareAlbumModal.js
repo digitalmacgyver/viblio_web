@@ -7,7 +7,7 @@ define( ['plugins/router',
 
 function( router, app, system, config, viblio, dialog ) {
     
-    var S = function( mediafile ) {
+    var S = function( mediafile, args ) {
 	var self = this;
 	self.mediafile = mediafile;
 	self.is_shared = ko.observable( self.mediafile.media().is_shared ? true: false );
@@ -25,6 +25,10 @@ function( router, app, system, config, viblio, dialog ) {
 	
 	self.shareVidMessage = ko.observable( $('#shareVidMessage').val() );
 	self.shareMessage_entry_error = ko.observable( false );
+        self.showEmailSection = ko.observable( true );
+        if ( args && args.showEmailSection == false ) {
+            self.showEmailSection( false );
+        }
     };
     
     S.prototype.cimport = function() {
@@ -68,6 +72,8 @@ function( router, app, system, config, viblio, dialog ) {
 			  self.is_shared( true );
 			  viblio.mpEvent( 'share', { type: 'album' } );
 			  viblio.notify( 'Share email sent', 'success' );
+                          // broadcast that album has been shared along with aid so new members can be shown in viewAlbum
+                          app.trigger('album:album_shared', self.mediafile.media().uuid);
 		      });
 	self.closeModal();
     };
@@ -85,6 +91,15 @@ function( router, app, system, config, viblio, dialog ) {
     S.prototype.remove_member = function(a,b) {
 	$(b.target).parent().find( '.remove-member-confirm' ).css( 'display', 'inline' );
     };
+    
+    S.prototype.unshareAlbum = function(data) {
+        var self = this;
+        var viblio = require( 'lib/viblio' );
+        viblio.api( '/services/album/delete_shared_album', { aid: data.uuid } ).then( function() {
+            app.trigger('album:album_unshared', data.uuid);
+            self.closeModal();
+        });
+    };
         
     S.prototype.yes_remove = function(a,b) {
 	var self = this;
@@ -94,8 +109,10 @@ function( router, app, system, config, viblio, dialog ) {
 		      members: [ a.contact_email ] } )
 	    .then( function() {
 		self.members.remove( a );
-		if ( self.members().length == 0 )
+		if ( self.members().length == 0 ) {
 		    self.is_shared( false );
+                    self.unshareAlbum( self.mediafile.media() );
+                }
 	    });
     };
         

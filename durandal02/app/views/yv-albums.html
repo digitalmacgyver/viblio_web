@@ -1,7 +1,12 @@
 <div class="allVidsPage">
   <div class="yv-secondary-nav">
     <button class="btn btn-small btn-secondary" data-bind="click: add">Add/Edit...</button>
+    <!-- ko if: showShared() -->
+    <button class="btn btn-small btn-secondary" data-bind="visible: sections().length > 0, click: toggleEditMode, text: editLabel, css: {'active': deleteModeOn()}"></button>
+    <!-- /ko -->
+    <!-- ko ifnot: showShared() -->
     <button class="btn btn-small btn-secondary" data-bind="visible: albums().length > 0, click: toggleEditMode, text: editLabel, css: {'active': deleteModeOn()}"></button>
+    <!-- /ko -->
     <button class="btn btn-small btn-secondary" data-bind="click: function(data, event){ toggleShared() }, text: sharedLabel, css: {'active': showShared()}"></button>
   </div>
     
@@ -56,7 +61,7 @@
   
   <div data-bind="visible: searching()==false && sections().length == 0 && showShared">
     <p class="font24 tomatoFont doubleSpaced">
-      It looks like you don't have any shared albums yet.
+      It looks like you don't have any albums that have been shared with you yet.
     </p>
   </div>  
 

@@ -2921,6 +2921,23 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     font-size: 80px;
 }
 
+.mediafile .media-shared-badge {
+    position: absolute;
+    left: 3px;
+    padding-top: 10px;
+    padding-bottom: 6px;
+    padding-right: 11px;
+    padding-left: 11px;
+    font-size: 30px;
+    //cursor: default;
+}
+
+/*.mediafile .media-shared-badge:hover {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}*/
+
 .mediafile .dbtn {
     position: absolute;
     display: none;
@@ -4054,4 +4071,10 @@ div.fstrip {
 /* new web uploader button in page headers */
 .navbar .btn.web-uploader-header-button {
     margin-top: 18px;
+}
+
+.btn.web-uploader-header-button:hover {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }

@@ -23,6 +23,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	this.options = $.extend({
             animated: true, // cycle through videos in album on mouse over
 	    ro: false,
+            show_shared_badge: true,
 	    show_share_badge: false,
 	    share_action: 'modal', // 'modal' to popup showShareAlbumModal, 'trigger' to trigger mediafile:share, function as a callback
 	    show_preview: true,    // show animated gif, if available, on hover.
@@ -33,6 +34,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	this.selected = ko.observable( false );
 	this.edittable = ko.observable( false );
 	this.ro       = ko.observable( this.options.ro );  // If true, then cannot edit title
+        this.show_shared_badge = ko.observable( this.options.show_shared_badge );
 	this.show_share_badge = ko.observable( this.options.show_share_badge );
         this.show_delete_mode = ko.observable( this.options.show_delete_mode );
         if( !data.title || data.title == '' ) {
@@ -83,6 +85,14 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
             $( '.media-share-badge' ).addClass( 'hideme' );
             $( '.dbtn' ).show();
         }
+        
+        app.on('album:album_unshared', function( aid ) {
+            console.log( aid );
+            console.log( self.media().uuid );
+            if( self.media().uuid == aid ) {
+                self.show_shared_badge( false );
+            }
+        });
         
         // Once the album is composed and has a view, add mouse-over
         // callbacks that cycle through the media posters that belong to
@@ -143,6 +153,10 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
     // User clicked on delete(), send an event
     Album.prototype.mfdelete = function() {
 	this.trigger( 'album:delete', this );
+    };
+    
+    Album.prototype.showShareMembers = function() {
+        dialogs.showShareAlbumModal( this/*, {showEmailSection: false}*/ );
     };
 
     Album.prototype.share = function() {
