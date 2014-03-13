@@ -144,6 +144,25 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         }
     };
     
+    allVids.prototype.nameMonths = function( month ) {
+        var self = this;
+        
+        var shortName;
+        var longName;
+        var year;
+        
+        if ( month != 'Missing Dates' ) {
+            shortName = month.slice(0,3);
+            longName = month.slice(0, month.indexOf(' '));
+            year = month.slice(month.length-4);
+        } else {
+            shortName = 'No';
+            longName = '';
+            year = 'Dates';
+        }
+        self.datesLabels.push( { shortMonth: shortName, longMonth: longName, year: year, label: month, selected: ko.observable(false) } );        
+    }
+    
     allVids.prototype.tagVidsSearch = function( month, year, cid ) {
         console.log( this.selectedTags() );
         console.log('tagVidsSearch fired');
@@ -172,16 +191,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                             console.log( json );
                             self.tagsPager = json.pager;
                             json.months.forEach( function( month ) {
-                                if ( month != 'Missing Dates' ) {
-                                    var shortName = month.slice(0,3);
-                                    var longName = month.slice(0, month.indexOf(' '));
-                                    var year = month.slice(month.length-4);
-                                } else {
-                                    var shortName = 'No';
-                                    var longName = '';
-                                    var year = 'Dates';
-                                }
-                                self.datesLabels.push( { shortMonth: shortName, longMonth: longName, year: year, label: month, selected: ko.observable(false) } );
+                                self.nameMonths( month );
                             });
                         }
                         json.media.forEach( function( mf ) {
@@ -393,10 +403,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         viblio.api( '/services/yir/months', args ).then( function(data) {
             console.log(data);
             data.months.forEach( function( month ) {
-                var shortName = month.slice(0,3);
-                var longName = month.slice(0, month.indexOf(' '));
-                var year = month.slice(month.length-4);
-                self.datesLabels.push( { shortMonth: shortName, longMonth: longName, year: year, label: month, selected: ko.observable(false) } );
+                self.nameMonths( month );
             });
             self.showingAllDatesLabels( true );
             self.selectedTags.removeAll();
