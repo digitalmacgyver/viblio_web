@@ -130,7 +130,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         var longName;
         var year;
         
-        if ( month != 'Missing Dates' ) {
+        if ( month != 'Missing dates' ) {
             shortName = month.slice(0,3);
             longName = month.slice(0, month.indexOf(' '));
             year = month.slice(month.length-4);
