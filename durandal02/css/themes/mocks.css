@@ -3769,16 +3769,22 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .your-videos .dates {
     position: absolute;
+    height: 100%;
     right: -40px;
     top: 0;
     bottom: 0px;
     z-index: 10;
-    width: 70px;
+    width: 80px;
     background-color: rgba(239,239,232,.9);
     -webkit-transition: width 300ms ease;
     -moz-transition: width 300ms ease;
     -ms-transition: width 300ms ease;
     -o-transition: width 300ms ease;
+}
+
+.your-videos .dates .scroller {
+    height: 100%;
+    overflow-y: auto;
 }
 
 .your-videos .dates.stuck {

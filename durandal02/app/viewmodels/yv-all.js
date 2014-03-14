@@ -22,9 +22,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.getVidsData = ko.observable();
         
         self.name = ko.observable(name);
-        self.hits = ko.computed(function(){
+        /*self.hits = ko.computed(function(){
             return self.videos().length;
-        });
+        });*/
+        self.hits = ko.observable();
         self.hasCID = ko.computed(function() {
             if (self.cid) {
                 return true;
@@ -107,6 +108,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 entries_per_page: 20,
                 total_entries: -1 /* currently unknown */
             };
+            self.videos.removeAll();
             self.tagFilterIsActive( true );
             self.allVidsIsSelected( false );
             if (self.selectedTags().length > 1 ) {
@@ -146,8 +148,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         console.log( this.selectedTags() );
         console.log('tagVidsSearch fired');
 	var self = this;
-        
-        self.videos.removeAll();
+                
         var args = {
             filters: self.selectedTags()
         };
@@ -163,16 +164,18 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 args.rows = self.tagsPager.entries_per_page;
 		viblio.api( '/services/filters/filter_by', args )
 		    .then( function( json ) {
+                        console.log( json );
+                        self.hits ( json.pager.total_entries );
                         // Only replace the calendar when user is doing a new tag, or if they are looking at all vids/dates
                         if ( !month ) {
                             self.datesLabels.removeAll();
                             self.showingAllDatesLabels( false );
                             console.log( json );
-                            self.tagsPager = json.pager;
                             json.months.forEach( function( month ) {
                                 self.nameMonths( month );
                             });
                         }
+                        self.tagsPager = json.pager;
                         json.media.forEach( function( mf ) {
                             var m = new Mediafile( mf, { show_share_badge: true, show_delete_mode: self.deleteModeOn() } );
                             m.on( 'mediafile:play', function( m ) {
@@ -307,6 +310,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 entries_per_page: 20,
                 total_entries: -1 /* currently unknown */
             };
+            self.videos.removeAll();
             self.tagVidsSearch( month.label );
         } else {
             if ( !self.showingAllDatesLabels() ) {
@@ -345,6 +349,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 args.rows = self.monthPager.entries_per_page;
 		viblio.api( '/services/yir/videos_for_month', args )
 		    .then( function( json ) {
+                        self.hits ( json.pager.total_entries );
 			self.monthPager = json.pager;
                         json.media.forEach( function( mf ) {
                             var m = new Mediafile( mf, { show_share_badge: true, show_delete_mode: self.deleteModeOn() } );
@@ -418,7 +423,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             $('.dates').addClass('stuck');
         }
         
-        if ( ($('.allVidsPage').offset().top) - scrollTop >= 65 ){
+        if ( ( $('.allVidsPage').offset().top ) - scrollTop >= 65 ){
             $('.dates').removeClass('stuck');
         }
     };
@@ -474,6 +479,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 				rows: self.allVidsPager.entries_per_page } );
                 }
 		apiCall.then( function( json ) {
+                        self.hits ( json.pager.total_entries );
 			self.allVidsPager = json.pager;
 			json.media.forEach( function( mf ) {
 			    self.addMediaFile( mf );
@@ -533,15 +539,28 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     // Uses flag to determine if fetch is already in process, if so a new one will not be made 
     allVids.prototype.scrollHandler = function( event ) {
 	var self = event.data;
-        // If a month is not selected use the search function, else use monthVidsSearch
-        if( !self.aMonthIsSelected() ) {
-            if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                self.search();
+        
+        if ( self.tagFilterIsActive() ) {
+            if( self.aMonthIsSelected() ) {
+                if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
+                    self.tagVidsSearch( self.selectedMonth() );
+                }
+            } else {
+                if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
+                    self.tagVidsSearch();
+                }
             }
         } else {
-            if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                self.monthVidsSearch( self.selectedMonth() );
-            }
+            // If a month is not selected use the search function, else use monthVidsSearch
+            if( !self.aMonthIsSelected() ) {
+                if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
+                    self.search();
+                }
+            } else {
+                if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
+                    self.monthVidsSearch( self.selectedMonth() );
+                }
+            }    
         }
     };
 
