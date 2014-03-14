@@ -3002,6 +3002,27 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     color: rgba(94,95,105,1);
     margin-left: 5px;
 }
+
+.mediafile .video-tags span {
+    color: white;
+    background: green;
+    margin-right: 3px;
+    padding: 2px 3px;
+
+    -moz-box-shadow: inset 0 0 0 50px rgba(0,0,0,.2);
+    -webkit-box-shadow: inset 0 0 0 50px rgba(0,0,0,.2);
+    box-shadow: inset 0 0 0 50px rgba(0,0,0,.2);
+
+    -moz-text-shadow: 1px 1px rgba(0,0,0,.2);
+    -webkit-text-shadow: 1px 1px rgba(0,0,0,.2);
+    text-shadow: 1px 1px rgba(0,0,0,.2);
+
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+
+}
+
 /************/
 
 #register-page .mediafile {
