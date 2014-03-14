@@ -3811,6 +3811,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     padding: 0px 18px;
 }
 
+.your-videos .dates .year h1.sel,
 .your-videos .dates .year h1:hover {
     color: rgb(112, 113, 123);
 }

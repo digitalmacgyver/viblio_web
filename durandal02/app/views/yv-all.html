@@ -5,19 +5,13 @@
                 <div class="wrapper textShadowed">
                     <!-- ko foreach: datesLabels -->
                     <div class="year">
-                        <h1 data-bind="click: $parent.monthSelected.bind( $data, $parent )">
+                        <h1 data-bind="click: $parent.monthSelected.bind( $data, $parent ), css:{sel: $data.selected()}">
                             <span data-bind="text: $data.shortMonth"></span> <span data-bind="text: $data.year"></span>
                         </h1>
-                        <!--<div class="months">
-                            <span class="month" data-bind="click: $parent.monthSelected.bind( $data, $parent )">
-                                <span class="shortName" data-bind="text: $data.shortMonth"></span>
-                                <span class="longName" data-bind="text: $data.longMonth"></span>    
-                            </span>
-                        </div>-->
                     </div>
                     <!-- /ko -->
                     <div class="year">
-                        <h1 data-bind="click: triggerTagVidsSearch">
+                        <h1 data-bind="click: triggerTagVidsSearch, css:{sel: !aMonthIsSelected()}">
                             <span>All</span>
                         </h1>
                     </div>
@@ -35,24 +29,7 @@
     <!-- /ko -->
 
     <!-- ko if: !showShared() -->
-    
-    <!--<div style="display: inline-block;" class="dropdown" data-bind="if: hits() > 0">
-      <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown">Filter...</a>
-      <ul class="dropdown-menu" role="menu">
-        <!-- ko foreach: monthsLabels -->
-        <!--<li>
-          <a data-bind="click: $parent.monthSelected.bind( $data, $parent ), 
-			text: $data.label != 'Missing dates' ? $data.label.slice(0,3) + ' ' + $data.label.slice($data.label.length-4) : $data.label, 
-			css:{sel: $data.selected()}"></a>
-        </li>
-        <!-- /ko -->
-        <!--<li>
-          <a id="allVids" class="textShadowed" data-bind="click: showAllVideos, css:{sel: allVidsIsSelected()}">All Videos</a>
-        </li>
-      </ul>
-    </div>-->
-    
-    
+
     <div style="display: inline-block;" class="dropdown" data-bind="ifnot: isActiveFlag">
         <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-tags"></i> Tags (<span data-bind="text: currentlySelectedTag"></span>)</a>
         <ul class="dropdown-menu tags" role="menu">
@@ -103,40 +80,46 @@
 
   <div class="table">
       <!-- ko if: !showShared() && !isActiveFlag() -->
-        
-        <!-- ko if: !tagFilterIsActive() -->
-            <!-- ko if: !aMonthIsSelected() -->
+                            
               <div style="display: block; text-align: center;" class="mainTitle textShadowed">
                 You have <span data-bind="text: hits"></span>
                 <span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span>
-                <span data-bind="text: name() ? ' of ' + name() : '' "></span> in your private Viblio Library.
+                <!-- ko if: !tagFilterIsActive() -->
+                    <!-- ko if: !aMonthIsSelected() -->
+                        <span data-bind="text: name() ? ' of ' + name() : '' "></span> in your private Viblio Library.
+                    <!-- /ko -->
+                    <!-- ko if: aMonthIsSelected() -->
+                        <span data-bind="text: selectedMonth() == 'Missing dates' ? ' without dates ' : ' from ' + selectedMonth()"></span>.
+                    <!-- /ko -->
+                <!-- /ko -->
+                
+                <!-- ko if: tagFilterIsActive() -->
+                    <span data-bind="text: name() ? ' of ' + name() : '' "></span> that <span data-bind="text: hits() == 1 ? 'matches' : 'match'"></span> your search criteria
+                    <!-- ko if: !aMonthIsSelected() -->
+                    .    
+                    <!-- /ko -->
+                    <!-- ko if: aMonthIsSelected() -->
+                        <span data-bind="text: selectedMonth() == 'Missing dates' ? ' without dates ' : ' from ' + selectedMonth()"></span>.
+                    <!-- /ko -->
+                <!-- /ko -->
               </div>
-            <!-- /ko -->
-            <!-- ko if: aMonthIsSelected() -->
-              <div style="display: block; text-align: center;" class="mainTitle textShadowed">
-                You have <span data-bind="text: vidsInSelectedMonth"></span>
-                <span data-bind="text: vidsInSelectedMonth() == 1 ? ' video ' : ' videos'"></span>
-                <span data-bind="text: name() ? ' of ' + name() : '' "></span>
-                <span data-bind="text: selectedMonth() == 'Missing dates' ? ' without dates ' : ' from ' + selectedMonth()"></span>.
-              </div>
-            <!-- /ko -->
-        <!-- /ko -->
                
       <!-- /ko -->
 
-      <!-- ko if: showShared() && !name() && !isActiveFlag() -->
+      <!-- ko if: showShared() && !isActiveFlag() -->
         <div style="display: block; text-align: center;" class="mainTitle textShadowed">
 	  You have <span data-bind="text: numVids"></span>
-	  <span data-bind="text: numVids() == 1 ? ' video that has ' : ' videos that have '"></span> been shared with you.
-	</div>
-      <!-- /ko -->
-
-      <!-- ko if: showShared() && name() && !isActiveFlag() -->
-        <div style="display: block; text-align: center;" class="mainTitle textShadowed">
-	  You have <span data-bind="text: numVids"></span>
-	  <span data-bind="text: numVids() == 1 ? ' video ' : ' videos '"></span>
-	  <span data-bind="text: name() ? ' of ' + name() : '' "></span>
-	  <span data-bind="text: numVids() == 1 ? ' that has ' : ' that have '"></span> been shared with you.
+          <!-- ko if: !name() -->
+            <span data-bind="text: numVids() == 1 ? ' video that has ' : ' videos that have '"></span>
+          <!-- /ko -->
+          
+          <!-- ko if: name() -->
+            <span data-bind="text: numVids() == 1 ? ' video ' : ' videos '"></span>
+            <span data-bind="text: name() ? ' of ' + name() : '' "></span>
+            <span data-bind="text: numVids() == 1 ? ' that has ' : ' that have '"></span>
+          <!-- /ko -->
+          
+          <span> been shared with you.</span>
 	</div>
       <!-- /ko -->
 
@@ -156,53 +139,53 @@
   </div>
     
   <div class="table">
-        <!-- ko if: !showShared() -->
-    <div id="allVidsWrap">
-      <!-- ko foreach: videos -->
-      <!-- ko compose: $data --><!--/ko-->
-      <!-- /ko -->
-	
-      <!-- ko if: isActiveFlag() -->
-      <div class="mfLoader">
-        <i class="icon-spinner icon-5x icon-spin active"></i>
-        <p class='font18'>Loading...</p>
-      </div>
-      <!-- /ko -->
-    </div>
+    <!-- ko if: !showShared() -->
+        <div id="allVidsWrap">
+            <!-- ko foreach: videos -->
+                <!-- ko compose: $data --><!--/ko-->
+            <!-- /ko -->
+
+            <!-- ko if: isActiveFlag() -->
+                <div class="mfLoader">
+                    <i class="icon-spinner icon-5x icon-spin active"></i>
+                    <p class='font18'>Loading...</p>
+                </div>
+            <!-- /ko -->
+        </div>
     <!-- /ko -->
 
     <!-- ko if: numVids() > 0 && showShared() -->
-    <div class="shared-page-wrap mainVidSection yir">
-      <!-- ko foreach: sections -->
-      <div class="month-heading textShadowed">
-        <img class="boxShadowed avatar" data-bind="attr:{src:$data.owner.avatar}" />
-        <span class="month-name heavyWeightFont" data-bind="text: $data.owner.displayname"></span>
-        <span class="num-videos" data-bind="text: '(' + $data.media().length + ( $data.media().length == 1 ? ' video)' : ' videos)' )"></span>
-      </div>
-      <div class="media-list" data-bind="foreach: { data: $data.media, as: 'm' }">
-        <!-- ko compose: m --><!-- /ko -->
-      </div>
-      <div class="clearfix"></div>
-      <!-- /ko -->
-      
-      <!-- ko if: showShareBtn() -->
-      <button class="btn btn-primary" data-bind="click: showLoggedOutTellFriendsModal">
-        Invite a friend to share &raquo;
-      </button>
-      <!-- /ko --> 
-    </div>
+        <div class="shared-page-wrap mainVidSection yir">
+            <!-- ko foreach: sections -->
+                <div class="month-heading textShadowed">
+                    <img class="boxShadowed avatar" data-bind="attr:{src:$data.owner.avatar}" />
+                    <span class="month-name heavyWeightFont" data-bind="text: $data.owner.displayname"></span>
+                    <span class="num-videos" data-bind="text: '(' + $data.media().length + ( $data.media().length == 1 ? ' video)' : ' videos)' )"></span>
+                </div>
+                <div class="media-list" data-bind="foreach: { data: $data.media, as: 'm' }">
+                    <!-- ko compose: m --><!-- /ko -->
+                </div>
+                <div class="clearfix"></div>
+            <!-- /ko -->
+
+            <!-- ko if: showShareBtn() -->
+                <button class="btn btn-primary" data-bind="click: showLoggedOutTellFriendsModal">
+                    Invite a friend to share &raquo;
+                </button>
+            <!-- /ko --> 
+        </div>
     <!-- /ko -->
 
-    <div class="" data-bind="if: currentlySelectedTag() == 'All' && hits() <= 2 && !showShared() && !isActiveFlag()">
-      <div class="yirHeading-Wrap" data-bind="if: !hasCID()">
-        <p class="mainTitle textShadowed">Got any more videos?</p>
-        <p class="font20 doubleSpaced">We noticed you 
-          <span data-bind="if: hits() == 0 ">don't have any videos yet. </span>
-          <span data-bind="if: hits() != 0 "><span data-bind="text: hits() == 1 ? 'only have one ' : 'only have two '"></span><span data-bind="text: hits() == 1 ? ' video. ' : ' videos. '"></span></span> 
-          If you have videos you haven’t uploaded to your private VIBLIO library yet, take a moment to start uploading them now.
-        </p>
-        <button class="btn btn-primary" data-bind="click: add_videos">Upload more videos &raquo;</button>
-      </div>
+    <div class="" data-bind="if: currentlySelectedTag() == 'All' && allVidsIsSelected() && hits() <= 2 && !showShared() && !isActiveFlag()">
+        <div class="yirHeading-Wrap" data-bind="if: !hasCID()">
+            <p class="mainTitle textShadowed">Got any more videos?</p>
+            <p class="font20 doubleSpaced">We noticed you 
+                <span data-bind="if: hits() == 0 ">don't have any videos yet. </span>
+                <span data-bind="if: hits() != 0 "><span data-bind="text: hits() == 1 ? 'only have one ' : 'only have two '"></span><span data-bind="text: hits() == 1 ? ' video. ' : ' videos. '"></span></span> 
+                If you have videos you haven’t uploaded to your private VIBLIO library yet, take a moment to start uploading them now.
+            </p>
+            <button class="btn btn-primary" data-bind="click: add_videos">Upload more videos &raquo;</button>
+        </div>
     </div>    
   </div>
 </div>

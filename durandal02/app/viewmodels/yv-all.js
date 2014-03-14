@@ -3,10 +3,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     var allVids = function( cid, name ) {
 	var self = this;
 
-	self.years  = ko.observableArray([]);
         self.datesLabels  = ko.observableArray([]);
-	self.months = ko.observableArray([]);
-        self.monthsLabels = ko.observableArray([]);
         self.showingAllDatesLabels = ko.observable(true);
         self.tags = ko.observableArray([]);
         self.selectedTags = ko.observableArray([]);
@@ -47,7 +44,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.allVidsIsSelected = ko.observable( true );
         self.aMonthIsSelected = ko.observable(false);
         self.selectedMonth = ko.observable();
-        self.vidsInSelectedMonth = ko.observable();
         self.isActiveFlag = ko.observable(false);
         
         // Hold the pager data back from server
@@ -83,25 +79,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         });
         
         events.includeIn( this );
-    };
-    
-    // Get the number of mediafiles so the allVids style can be decided on.
-    // 3 or more mediafiles gets the normal view, while less than 3 gets 
-    // the "Got more videos?" view.
-    allVids.prototype.getHits = function() {
-        var self = this;
-	var args = {};
-	if ( self.cid ) {
-            viblio.api('/services/faces/contact_mediafile_count?cid=' + self.cid).then( function( data ) {
-                self.hits(data.count);
-            });
-        } else {
-            // can send a user uuid in args to get number of videos for specific user: {uid: uuid}
-            viblio.api( '/services/mediafile/count', args ).then( function( data ) {
-                self.hits(data.count);
-            });
-        }
-    };
+    };    
     
     allVids.prototype.tagSelected = function( self, tag ) {
         console.log( tag );
@@ -136,6 +114,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             } else {
                 self.currentlySelectedTag( self.selectedTags() );
             }
+            self.aMonthIsSelected( false );
             self.tagVidsSearch();
         } else {
             self.tagFilterIsActive( false );
@@ -312,9 +291,17 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     };
  
    allVids.prototype.monthSelected = function( self, month ) {
+        self.datesLabels().forEach( function( m ) {
+            m.selected( false );
+        });
+        month.selected( true );
+        self.selectedMonth( month.label );
+        self.aMonthIsSelected(true);
+        self.editLabel( 'Remove...' );
         // If a tag is currently active then pass in month and keep filter
         if ( self.tagFilterIsActive() ) {
             console.log( month );
+            
             self.tagsPager = {
                 next_page: 1,
                 entries_per_page: 20,
@@ -326,31 +313,21 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 self.datesLabels.removeAll();
                 self.getAllDatesLabels();
             }
-            self.monthsLabels().forEach( function( m ) {
-                m.selected( false );
-            });
-            month.selected( true );
-            self.editLabel( 'Remove...' );
             self.videos.removeAll();
             // reset pager
             self.monthPager = {
                 next_page: 1,
                 entries_per_page: 20,
                 total_entries: -1 /* currently unknown */
-            };
-            self.selectedMonth( month.label );
-            self.monthVidsSearch( self.selectedMonth() );
-            self.aMonthIsSelected(true);
+            };           
+            self.monthVidsSearch( self.selectedMonth() );           
             self.allVidsIsSelected(false);
             // get number of videos in selected month
             var args = {
                 month: self.selectedMonth(),
                 cid: self.cid
             };
-            viblio.api( '/services/yir/videos_for_month', args )
-                    .then(function(data){
-                        self.vidsInSelectedMonth( data.media.length );
-                    });    
+            viblio.api( '/services/yir/videos_for_month', args );    
         }
     };
     
@@ -417,18 +394,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         args = {
             cid: self.cid
         };
-        // get total number of videos
-        //self.getHits();
+
         // get months and create labels to use as selectors
         self.getAllDatesLabels();
-        
-        // get years and create labels to use as selectors
-        /*viblio.api( '/services/yir/years', args ).then( function(data) {
-            console.log(data);
-            data.years.forEach( function( year ) {
-                self.yearsLabels.push( { "label": year, "selected": ko.observable(false) } );
-            });   
-        });*/
+
         // get tag labels to populate tags dropdown        
         viblio.api( '/services/filters/video_filters' ).then( function( data ) {
             data.filters.forEach( function( tag ) {
@@ -545,7 +514,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.selectedTags.removeAll();
         self.currentlySelectedTag('All');
         self.getAllDatesLabels();
-        self.monthsLabels().forEach( function( m ) {
+        self.datesLabels().forEach( function( m ) {
 	    m.selected( false );
 	});        
         self.aMonthIsSelected(false);
