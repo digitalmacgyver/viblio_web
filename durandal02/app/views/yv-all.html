@@ -1,23 +1,23 @@
 <div class="allVidsPage">
     
-        <div class="dates" data-bind="ifnot: isActiveFlag">
-            <div class="scroller">
-                <div class="wrapper textShadowed">
-                    <!-- ko foreach: datesLabels -->
-                    <div class="year">
-                        <h1 data-bind="click: $parent.monthSelected.bind( $data, $parent ), css:{sel: $data.selected()}">
-                            <span data-bind="text: $data.shortMonth"></span> <span data-bind="text: $data.year"></span>
-                        </h1>
-                    </div>
-                    <!-- /ko -->
-                    <div class="year">
-                        <h1 data-bind="click: triggerTagVidsSearch, css:{sel: !aMonthIsSelected()}">
-                            <span>All</span>
-                        </h1>
-                    </div>
+    <div class="dates" data-bind="ifnot: isActiveFlag">
+        <div class="scroller">
+            <div class="wrapper textShadowed">
+                <!-- ko foreach: datesLabels -->
+                <div class="year">
+                    <h1 data-bind="click: $parent.monthSelected.bind( $data, $parent ), css:{sel: $data.selected()}">
+                        <span data-bind="text: $data.shortMonth"></span> <span data-bind="text: $data.year"></span>
+                    </h1>
+                </div>
+                <!-- /ko -->
+                <div class="year">
+                    <h1 data-bind="click: triggerTagVidsSearch, css:{sel: !aMonthIsSelected()}">
+                        <span>All</span>
+                    </h1>
                 </div>
             </div>
         </div>
+    </div>
 
   <div class="yv-secondary-nav">
     <!-- ko if: !showShared() -->
