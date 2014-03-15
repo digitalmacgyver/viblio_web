@@ -326,12 +326,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             };           
             self.monthVidsSearch( self.selectedMonth() );           
             self.allVidsIsSelected(false);
-            // get number of videos in selected month
-            var args = {
-                month: self.selectedMonth(),
-                cid: self.cid
-            };
-            viblio.api( '/services/yir/videos_for_month', args );    
         }
     };
     

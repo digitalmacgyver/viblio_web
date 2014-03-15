@@ -196,15 +196,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	self.monthVidsSearch( self.selectedMonth() );
         self.aMonthIsSelected(true);
         self.allVidsIsSelected(false);
-        // get number of videos in selected month
-        var args = {
-            month: self.selectedMonth(),
-            cid: self.cid
-        };
-        viblio.api( '/services/yir/videos_for_month', args )
-                .then(function(data){
-                    self.vidsInSelectedMonth( data.media.length );
-                });
     };
     
     allVids.prototype.monthVidsSearch = function( month, year, cid ) {
@@ -222,6 +213,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 		viblio.api( '/services/yir/videos_for_month', args )
 		    .then( function( json ) {
 			self.monthPager = json.pager;
+			self.vidsInSelectedMonth( json.pager.total_entries );
                         json.media.forEach( function( mf ) {
                             var m = new Mediafile( mf, { show_share_badge: true, show_delete_mode: self.deleteModeOn() } );
                             m.on( 'mediafile:play', function( m ) {
