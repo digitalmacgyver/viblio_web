@@ -197,6 +197,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	    }
 	}).promise().then(function(){
             self.isActiveFlag(false);
+            self.stickyDates();
         });
     };
     
@@ -368,6 +369,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	    }
 	}).promise().then(function(){
             self.isActiveFlag(false);
+            self.stickyDates();
         });
     };
     
@@ -407,20 +409,24 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         });
     };
     
-    // Makes the map instructions 'sometimes sticky' - stays above the footer, otherwise always at the bottom of the window
+    // Makes the dates 'sometimes sticky'
     allVids.prototype.stickyDates = function() {       
         var maxPos = 65; //height of header
         
         var scrollTop = $(window).scrollTop(),
         elementOffset = $('.dates').offset().top,
-        distance      = (elementOffset - scrollTop);
+        distance      = (elementOffset - scrollTop),
+        footerHeight  = ( $('#footer').offset().top ) - scrollTop;
 
         if( distance <= maxPos ){
             $('.dates').addClass('stuck');
+            // keep the dates section above the footer
+            $('.dates').css( { 'height': footerHeight - 65, 'max-height': $(window).height() - 65 } );
         }
         
         if ( ( $('.allVidsPage').offset().top ) - scrollTop >= 65 ){
             $('.dates').removeClass('stuck');
+            $('.dates').css( { 'height': '100%' } );
         }
     };
     
@@ -488,6 +494,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	    }
 	}).promise().then(function(){
             self.isActiveFlag(false);
+            self.stickyDates();
         });
     };
     
