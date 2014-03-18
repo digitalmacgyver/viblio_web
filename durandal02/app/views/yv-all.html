@@ -1,6 +1,6 @@
 <div class="allVidsPage">
     
-    <div class="dates">
+    <div class="dates" data-bind="if: !showShared()">
         <div class="scroller">
             <div class="wrapper textShadowed">
                 <!-- ko foreach: datesLabels -->
@@ -130,7 +130,7 @@
 	</p>
       </div>
 
-      <div data-bind="if: numVids() < 1 && showShared()">
+      <div data-bind="if: numVids() < 1 && showShared() && !isActiveFlag()">
         <p class="font24 tomatoFont doubleSpaced">
 	  Want videos to show up here? The best way is to tell friends and family about Viblio!
 	</p>
@@ -139,17 +139,20 @@
   </div>
     
   <div class="table">
+    
+    <!-- ko if: isActiveFlag() -->
+        <div id="allVidsWrap">
+            <div class="mfLoader">
+                <i class="icon-spinner icon-5x icon-spin active"></i>
+                <p class='font18'>Loading...</p>
+            </div>
+        </div>
+    <!-- /ko -->
+      
     <!-- ko if: !showShared() -->
         <div id="allVidsWrap">
             <!-- ko foreach: videos -->
                 <!-- ko compose: $data --><!--/ko-->
-            <!-- /ko -->
-
-            <!-- ko if: isActiveFlag() -->
-                <div class="mfLoader">
-                    <i class="icon-spinner icon-5x icon-spin active"></i>
-                    <p class='font18'>Loading...</p>
-                </div>
             <!-- /ko -->
         </div>
     <!-- /ko -->

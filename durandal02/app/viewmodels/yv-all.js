@@ -213,6 +213,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     
     allVids.prototype.getShared = function() {
         var self = this;
+        self.isActiveFlag(true);
         var args = {};
         if(self.cid) {
             args = {
@@ -245,6 +246,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 self.sections.push({ owner: share.owner, media: mediafiles });
             });
             self.sharedAlreadyFetched = true;
+            self.isActiveFlag(false);
             /*if( self.numVids() < 3 ) {
                 self.showShareBtn(true);
             } else {
