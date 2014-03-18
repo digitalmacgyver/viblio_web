@@ -546,7 +546,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                     self.tagVidsSearch();
                 }
             }
-        } else {
+        } else if ( !self.showShared() ) {
             // If a month is not selected use the search function, else use monthVidsSearch
             if( !self.aMonthIsSelected() ) {
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
