@@ -190,6 +190,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	    }
 	}).promise().then(function(){
             self.isActiveFlag(false);
+            self.stickyDates();
         });
     };
     
@@ -206,6 +207,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     
     allVids.prototype.getShared = function() {
         var self = this;
+        self.isActiveFlag(true);
         var args = {};
         if(self.cid) {
             args = {
@@ -238,6 +240,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 self.sections.push({ owner: share.owner, media: mediafiles });
             });
             self.sharedAlreadyFetched = true;
+            self.isActiveFlag(false);
             /*if( self.numVids() < 3 ) {
                 self.showShareBtn(true);
             } else {
@@ -357,6 +360,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	    }
 	}).promise().then(function(){
             self.isActiveFlag(false);
+            self.stickyDates();
         });
     };
     
@@ -395,20 +399,24 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         });
     };
     
-    // Makes the map instructions 'sometimes sticky' - stays above the footer, otherwise always at the bottom of the window
+    // Makes the dates 'sometimes sticky'
     allVids.prototype.stickyDates = function() {       
         var maxPos = 65; //height of header
         
         var scrollTop = $(window).scrollTop(),
         elementOffset = $('.dates').offset().top,
-        distance      = (elementOffset - scrollTop);
+        distance      = (elementOffset - scrollTop),
+        footerHeight  = ( $('#footer').offset().top ) - scrollTop;
 
         if( distance <= maxPos ){
             $('.dates').addClass('stuck');
+            // keep the dates section above the footer
+            $('.dates').css( { 'height': footerHeight - 65, 'max-height': $(window).height() - 65 } );
         }
         
         if ( ( $('.allVidsPage').offset().top ) - scrollTop >= 65 ){
             $('.dates').removeClass('stuck');
+            $('.dates').css( { 'height': '100%' } );
         }
     };
     
@@ -476,6 +484,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	    }
 	}).promise().then(function(){
             self.isActiveFlag(false);
+            self.stickyDates();
         });
     };
     
@@ -534,7 +543,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                     self.tagVidsSearch();
                 }
             }
-        } else {
+        } else if ( !self.showShared() ) {
             // If a month is not selected use the search function, else use monthVidsSearch
             if( !self.aMonthIsSelected() ) {
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
