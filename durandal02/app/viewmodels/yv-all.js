@@ -83,8 +83,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     };    
     
     allVids.prototype.tagSelected = function( self, tag ) {
-        console.log( tag );
-        console.log( self.selectedTags() );
         if ( tag.selected() ) {
             tag.selected( false );
             self.selectedTags.remove( tag.label );
@@ -99,7 +97,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     };
     
     allVids.prototype.triggerTagVidsSearch = function() {
-        console.log( 'triggerTagVidsSearch fired' );
         $("body").trigger("click");
         var self = this;
         if( self.selectedTags().length > 0 ) {
@@ -145,8 +142,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     }
     
     allVids.prototype.tagVidsSearch = function( month, year, cid ) {
-        console.log( this.selectedTags() );
-        console.log('tagVidsSearch fired');
 	var self = this;
                 
         var args = {
@@ -164,13 +159,11 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 args.rows = self.tagsPager.entries_per_page;
 		viblio.api( '/services/filters/filter_by', args )
 		    .then( function( json ) {
-                        console.log( json );
                         self.hits ( json.pager.total_entries );
                         // Only replace the calendar when user is doing a new tag, or if they are looking at all vids/dates
                         if ( !month ) {
                             self.datesLabels.removeAll();
                             self.showingAllDatesLabels( false );
-                            console.log( json );
                             json.months.forEach( function( month ) {
                                 self.nameMonths( month );
                             });
@@ -306,8 +299,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.editLabel( 'Remove...' );
         // If a tag is currently active then pass in month and keep filter
         if ( self.tagFilterIsActive() ) {
-            console.log( month );
-            
             self.tagsPager = {
                 next_page: 1,
                 entries_per_page: 20,
@@ -381,7 +372,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         };
         self.datesLabels.removeAll();
         viblio.api( '/services/yir/months', args ).then( function(data) {
-            console.log(data);
             data.months.forEach( function( month ) {
                 self.nameMonths( month );
             });
