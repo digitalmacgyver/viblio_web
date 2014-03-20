@@ -62,6 +62,8 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
         activate: function( args ) {
             // reset value in case user shared already during their session
             friendsEmailsValid(false);
+            // reset email template
+            emailTemplate('');
             placeholderText(args.placeholder);
             shouldBeLoggedOut(args.logout);
             emailTemplate(args.template);
