@@ -38,6 +38,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	this.show_share_badge = ko.observable( this.options.show_share_badge );
         this.show_delete_mode = ko.observable( this.options.show_delete_mode );
 
+	this.tags = ko.observableArray( data.tags );
+
 	this.title = ko.observable( data.title );
 	this.description = ko.observable( data.description );
 

@@ -20,11 +20,11 @@ function( system, app, router, viblio, dialogs, Album ) {
 
     var albums = ko.observableArray([]);
     var searching = ko.observable( true );
-    var editLabel = ko.observable( 'Remove...' );
+    var editLabel = ko.observable( '<i class="icon-minus"></i> Remove...' );
     
     // shared albums
     var sections = ko.observableArray([]);
-    var sharedLabel = ko.observable( 'Shared with me' );
+    var sharedLabel = ko.observable( '<i class="icon-share"></i> Shared with me' );
     var showShared = ko.observable( false );
     var sharedAlreadyFetched = false;
     var numShared = ko.observable();
@@ -82,13 +82,13 @@ function( system, app, router, viblio, dialogs, Album ) {
     
     function toggleShared() {
 	if ( sharedLabel() === 'My Albums' ) {
-	    sharedLabel( 'Shared with me' );
+	    sharedLabel( '<i class="icon-share"></i> Shared with me' );
             showShared( false );
             // Make sure it relaods each time the button is pressed
             resetPager();
             albums.removeAll();
             search();
-            editLabel( 'Remove...' );
+            editLabel( '<i class="icon-minus"></i> Remove...' );
         } else {
 	    sharedLabel( 'My Albums' )
             showShared( true );
@@ -97,7 +97,7 @@ function( system, app, router, viblio, dialogs, Album ) {
                 getNumShared();
                 getShared();
             //}
-            editLabel( 'Remove...' );
+            editLabel( '<i class="icon-minus"></i> Remove...' );
         }
     };
     
@@ -211,10 +211,10 @@ function( system, app, router, viblio, dialogs, Album ) {
         numShared: numShared,
 
 	toggleEditMode: function() {
-            if ( editLabel() === 'Remove...' )
+            if ( editLabel() === '<i class="icon-minus"></i> Remove...' )
                 editLabel( 'Done' );
             else
-                editLabel( 'Remove...' );
+                editLabel( '<i class="icon-minus"></i> Remove...' );
 
             if( sharedLabel() === 'My Albums' ) {
                 sections().forEach( function( section ) {

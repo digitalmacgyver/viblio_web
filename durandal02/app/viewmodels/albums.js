@@ -365,15 +365,6 @@ function( app, router, viblio, dialogs, Mediafile, Album, system ) {
             self.monthVidsSearch( self.selectedMonth() );
             self.aMonthIsSelected(true);
             self.allVidsIsSelected(false);
-            // get number of videos in selected month
-            var args = {
-                month: self.selectedMonth(),
-                cid: self.cid
-            };
-            viblio.api( '/services/yir/videos_for_month', args )
-                    .then(function(data){
-                        self.vidsInSelectedMonth( data.media.length );
-                    });
         },
 
         monthVidsSearch: function( month, obj ) {
@@ -392,6 +383,7 @@ function( app, router, viblio, dialogs, Mediafile, Album, system ) {
                     viblio.api( '/services/yir/videos_for_month', args )
                         .then( function( json ) {
                             self.monthPager = json.pager;
+                            self.vidsInSelectedMonth( json.pager.total_entries );
                             json.media.forEach( function( mf ) {
                                 self.addMediaFile( mf );
                             });

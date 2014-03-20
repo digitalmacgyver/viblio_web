@@ -66,7 +66,6 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
         
         if( showAllVids() ) {
             self.allVids().forEach( function( mf ) {
-                console.log(mf);
                 if ( ownedByViewer() ) {
                     mf.toggleEditMode();
                 } else if ( mf.show_share_badge() ) {
@@ -76,7 +75,6 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
         } else {
             self.months().forEach( function( month ) {
                 month.media().forEach( function( mf ) {
-                    console.log(mf);
                     if ( ownedByViewer() ) {
                         mf.toggleEditMode();
                     } else if ( mf.show_share_badge() ) {

@@ -87,8 +87,6 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         }
         
         app.on('album:album_unshared', function( aid ) {
-            console.log( aid );
-            console.log( self.media().uuid );
             if( self.media().uuid == aid ) {
                 self.show_shared_badge( false );
             }
