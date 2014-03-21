@@ -153,6 +153,18 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 	    mixpanel.track( event, options );
 	    ga( 'send', 'event', event, 'interact', { 'page': options['page'] } );
 	},
+        
+        // Increment people properties to send notifications based off of them
+        // Use example: viblio.mpPeopleIncrement('Video View Count', 1);                    
+        mpPeopleIncrement: function( event, options ) {
+            mixpanel.people.increment( event, options );
+        },
+        
+        // Set people properties to send notifications based off of them
+        // Use example: viblio.mpPeopleSet({'Last Video Viewed Date': new Date() });
+        mpPeopleSet: function( obj ) {
+            mixpanel.people.set( obj );
+        },
 
 	api: function( url, data, errorCallback ) {
 	    var self = this;
