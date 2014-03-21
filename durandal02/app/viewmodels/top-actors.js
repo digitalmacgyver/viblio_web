@@ -145,10 +145,14 @@ function (Events, router, app, system, viblio, Face, VideosFor, dialogs) {
 	    if ( currentSelection )
 		$(currentSelection.view).removeClass( 'selected' );
 	},
+        
+        activate: function() {
+            fetched( false );
+            faces.removeAll();
+        },
 
 	compositionComplete: function( _view ) {
 	    view = _view;
-	    faces.removeAll();
 	    reset_pager();
 	    search();
 	    resize_fstrip();

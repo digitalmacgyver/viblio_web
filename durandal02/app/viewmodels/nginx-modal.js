@@ -25,6 +25,16 @@ define(['lib/viblio','lib/config','plugins/dialog'],function(viblio,config,dialo
 		alert_class: 'alert-error',
 		notify_class: 'alert-success'
 	    });
+
+	    $(view).find( '.vup' ).bind( 'viblio_uploaderstarted', function() {
+		viblio.mpEvent( 'upload_started' );
+	    });
+
+	    $(view).find( '.vup' ).bind( 'viblio_uploaderfinished', function() {
+		// Jesse, the batch of uploaded files is done and successful.
+		// Do your magic here.
+	    });
+
 	    $(view).find('.vup-cancel-all')
 		.addClass( 'btn')
 		.addClass( 'btn-danger' );
