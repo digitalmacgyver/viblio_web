@@ -331,6 +331,7 @@
                 retryTimeout: 1000,
                 multipart: ( IE ? undefined : false ),
 		fileInput: ( IE ? null : undefined ),
+		forceIframeTransport: ( IE ? true : undefined ),
                 dataType: 'text',
                 dropZone: elem.find('.vup-area'),
                 acceptFileTypes: self.options.accept,
@@ -523,7 +524,8 @@
  
                     // Set the required headers for the nginx upload module
                     e.setRequestHeader("Offset", offset);
-                    e.setRequestHeader("Content-type", "application/offset+octet-stream" );
+		    if ( ! head.browser.ie )
+			e.setRequestHeader("Content-type", "application/offset+octet-stream" );
                     e.setRequestHeader("X-Requested-With", "XMLHttpRequest");
  
                     device = navigator.userAgent.toLowerCase();
