@@ -303,8 +303,9 @@ function( app, router, viblio, dialogs, Mediafile, Album, system ) {
 
 	albumDrop: function( mf ) {
 	    var album = this;
-	    //viblio.log( 'Dropped mediafile', mf.media().uuid, 'on album', album.name );
-	    if ( album.media.indexOf( mf ) != -1 ) {
+	    var present = false;
+	    album.media().forEach( function( m ) { if ( m.media().uuid == mf.media().uuid ) { present=true; } });
+	    if ( present ) {
 		// No dups!
 		return dialogs.showError( 'This video is already present in this album!', 'Album' );
 	    }
