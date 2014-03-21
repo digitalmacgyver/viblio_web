@@ -1,11 +1,11 @@
-﻿requirejs.config({
+requirejs.config({
     paths: {
         'text': '../lib/require/text',
         'durandal':'../lib/durandal/js',
         'plugins' : '../lib/durandal/js/plugins',
         'transitions' : '../lib/durandal/js/transitions',
 
-	'facebook': '//connect.facebook.net/en_US/all',
+	'facebook': '//connect.facebook.net/en_US/all'
     },
     shim: {
         'facebook' : {
@@ -13,6 +13,15 @@
         }
     }
 });
+
+requirejs.onError = function (err) {
+    console.log(err);
+    if (err.requireType === 'scripterror') {
+        alert(err);
+    } else {
+        throw err;
+    }
+};
 
 define('jquery', function () { return jQuery; });
 define('knockout', ko);

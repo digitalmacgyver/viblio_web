@@ -395,6 +395,7 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
 
     // Add a tooltip to an element. 
     // data-bind="tooltip:{bootstrap-tooltip-options}"
+    // Visit http://getbootstrap.com/2.3.2/javascript.html#tooltips for list of options
     // data-bind="tooltip:{title:'This is the tip'}"
     ko.bindingHandlers.tooltip = {
 	init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
@@ -409,6 +410,25 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
             }
             ko.utils.extend(tooltip, value);
 	    $(element).tooltip( tooltip );
+	}
+    };
+    
+    // Add a popover to an element. 
+    // data-bind="popover:{Option1: val, Option2: val, title: string, content: string}"
+    // Visit http://getbootstrap.com/2.3.2/javascript.html#popovers for list of options
+    ko.bindingHandlers.popover = {
+	init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+	    var $element = $(element);
+            var value = ko.utils.unwrapObservable(valueAccessor()) || {};
+	    var popover = {};
+	    //build a new object that has the global options with overrides from the binding
+            $.extend(true, popover, ko.bindingHandlers.popover);
+            if (value.options && popover.options) {
+                ko.utils.extend(popover.options, value.options);
+                delete value.options;
+            }
+            ko.utils.extend(popover, value);
+	    $(element).popover( popover );
 	}
     };
 

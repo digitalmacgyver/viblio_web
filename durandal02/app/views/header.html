@@ -17,8 +17,17 @@
                 <li data-bind="css: { active: isActive }">
                     <a data-bind="attr: { href: hash }, html: title"></a>
                 </li>
+                <!-- /ko -->                
+                <!-- ko if: showPopup -->
+                <li>
+                    <a href="#" data-bind="click: web_uploader, popover: {title:'Get Started', content: 'Click me to begin using your VIBLIO account by uploading your first videos.', placement: 'bottom'}" class="web-uploader-header-button btn btn-small btn-primary pull-right">UPLOAD VIDEOS</a>    
+                </li>
                 <!-- /ko -->
-                <li><a href="#" data-bind="click: web_uploader" class="web-uploader-header-button btn btn-small btn-primary pull-right">UPLOAD VIDEOS</a></li>
+                <!-- ko ifnot: showPopup -->
+                <li>
+                    <a href="#" data-bind="click: web_uploader" class="web-uploader-header-button btn btn-small btn-primary pull-right">UPLOAD VIDEOS</a>    
+                </li>
+                <!-- /ko -->
             </ul>
 
             <ul id='userNamePicNav' class="nav pull-right">

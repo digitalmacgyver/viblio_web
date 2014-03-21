@@ -6,6 +6,7 @@ define(['durandal/app',
     var unnamed;
     var top_actors;
     var unamed_is_visible = false;
+    var firstTime = ko.observable();
     
     // Used to handle message from email to open upload modal
     var user = viblio.user;
@@ -23,6 +24,11 @@ define(['durandal/app',
 
     app.on( 'top-actors:composed', function( obj ) {
 	top_actors = obj; 
+    });
+    
+    // Shown after first video upload is completed.
+    this.on( 'nginxModal:closed', function() {
+	customDialogs.showModal( 'viewmodels/firstTimeUploadModal' ); 
     });
 
     function handle_visibility( visible ) {
@@ -48,6 +54,10 @@ define(['durandal/app',
     app.on( 'unnamed:visibility', function( visible ) {
 	handle_visibility( visible );
     });
+    
+    function showFirstTimeBubble() {
+        customDialogs.showModal( 'viewmodels/firstTimeUserModal' );
+    };
 
     return{
         
@@ -69,6 +79,22 @@ define(['durandal/app',
                     customDialogs.showModal( 'viewmodels/loginModal', 'Please log in before uploading new videos to your account.' );
                 }
             }
+            
+            
+            // Used for testing only - remove after testing is complete
+            localStorage.removeItem( 'hasUserBeenHereBefore' );
+            
+            // check if this is user's first visit
+            viblio.localStorage( 'hasUserBeenHereBefore' ).then(function( data ) {
+                console.log( data );
+                if ( data.hasUserBeenHereBefore ) {
+                    firstTime( false );
+                } else {
+                    firstTime( true );
+                    showFirstTimeBubble();
+                }
+            });
+            
         },
         
 	compositionComplete: function( _view ) {

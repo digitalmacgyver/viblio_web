@@ -1,6 +1,6 @@
 <div class="font20 textShadowed lightWeightFont albumThumbTitle">
     <div data-bind="liveEditor: albumTitle, ifnot: ro">
-        <div class="view heavyWeightFont" data-bind="click: albumTitle.edit, text: albumTitle() ? albumTitle() : 'Click to add album title', tooltip:{title:'Click to edit album title'} "></div>
+        <div class="view heavyWeightFont" data-bind="click: albumTitle.edit, text: albumTitle() ? albumTitle() : 'Click to add album title', tooltip:{title:'Click to edit album title'}"></div>
         <div class="editAlbumTitle-Wrap">
             <input type="text" class="edit" data-bind="value: albumTitle, 
                                  hasFocus: albumTitle.editing, 

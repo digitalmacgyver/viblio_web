@@ -228,7 +228,7 @@
 	in_progress: function() {
 	    return this._vpin_progress;
 	},
-
+        
 	alert: function( msg, append ) {
 	    var elem = this.element;
 	    if ( append )
@@ -300,7 +300,7 @@
 	_create: function() {
 	    var self = this;
 	    var elem = self.element;
-
+            
 	    self.options.uuid = self.options.uuid || viblio.vid();
 	    self.options.endpoint = self.options.endpoint || viblio.service('/files');
 	    if ( ! IE ) {
@@ -311,7 +311,7 @@
 		elem.find( '.vup-stats' ).css( 'visibility', 'visible' );
 
 	    self.reset();
-	    
+            
 	    if ( IE ) {
 		// Need to proxy the change of the input manually and 
 		// initiate the file uploader.

@@ -153,6 +153,24 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 	    mixpanel.track( event, options );
 	    ga( 'send', 'event', event, 'interact', { 'page': options['page'] } );
 	},
+        
+        localStorage: function( key, val ) {
+            var deferred = $.Deferred();
+            
+            if ( val ) {
+                localStorage.setItem( key, val );
+            } else {
+                if ( localStorage.getItem( key ) ) {
+                    deferred.resolve( localStorage.getItem( key ) );
+                } else {
+                    deferred.resolve( false );
+                }
+            }
+            
+            //deferred.resolve( localStorage );
+            
+            return deferred.promise();
+        },
 
 	api: function( url, data, errorCallback ) {
 	    var self = this;

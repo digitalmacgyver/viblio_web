@@ -1,8 +1,20 @@
 // This shim model allows the nginx upload page to be used as
 // a modal popup.
 //
-define(['lib/viblio','lib/config','plugins/dialog'],function(viblio,config,dialog){
+define(['lib/viblio','lib/config','plugins/dialog','durandal/events'],function(viblio,config,dialog,Events){
+    
+    var firstTime = ko.observable();
+    var firstUpload = ko.observable();
+    
+    Events.includeIn( this );
+    
+    function sendClosedMessage() {
+        this.trigger( 'nginxModal:closed', this );
+    }
+    
     return{
+        firstTime: firstTime,
+        
 	close: function() {
 	    var pending = $(this.view).find('.vup').viblio_uploader( 'in_progress' );
 	    if ( pending ) {
@@ -13,9 +25,34 @@ define(['lib/viblio','lib/config','plugins/dialog'],function(viblio,config,dialo
 	    }
 	    else {
 		dialog.close( this );
+                // only show after user's first upload in completed
+                if ( firstUpload() ) {
+                    sendClosedMessage();
+                }
 		return true;
-	    }
+	    }  
 	},
+        activate: function() {
+            // check if this is user's first visit
+            viblio.localStorage( 'hasUserBeenHereBefore' ).then(function( data ) {
+                console.log( data );
+                if ( data.hasUserBeenHereBefore ) {
+                    firstTime( false );
+                } else {
+                    firstTime( true );
+                    $('.web-uploader-header-button').popover('show');
+                }
+            });
+            // Check if first upload
+            viblio.localStorage( 'hasUserUploadedBefore' ).then(function( data ) {
+                console.log( data );
+                if ( data.hasUserUploadedBefore ) {
+                    firstUpload( false );
+                } else {
+                    firstUpload( true );
+                }
+            });
+        },
 	compositionComplete: function( view ) {
 	    this.view = view;
 	    $(view).find( '.vup' ).viblio_uploader({
