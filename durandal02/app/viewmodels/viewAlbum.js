@@ -139,6 +139,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
     
     // fetch videos for given year
     function fetch( year ) {
+        loadingYears( true );
         var args = { year: year,
                      aid: album_id };
         viblio.api( '/services/air/videos_for_year', args ).then( function( data ) {
@@ -149,7 +150,8 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                     mediafiles.push( addMediaFile( mf ) );
                 });
                 months.push({month: month.month, media: mediafiles});
-            });   
+            });
+            loadingYears( false );
         });
         yearIsSelected = true;
     }
@@ -164,13 +166,42 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                 arr.push({ label: year, selected: ko.observable(false) });
             });
             years( arr );
-            if ( data.years.length >= 1 ) {
-                years()[0].selected( true );
-                fetch( years()[0].label );
-            }
             loadingYears( false );
         });
     }
+    
+    // Makes the dates 'sometimes sticky'
+    function stickyDates() {       
+        var maxPos = 65; //height of header
+        
+        var scrollTop = $(window).scrollTop(),
+        elementOffset = $('.dates').offset().top,
+        distance      = (elementOffset - scrollTop),
+        footerHeight  = ( $('#footer').offset().top ) - scrollTop;
+
+        if( distance <= maxPos ){
+            $('.dates').addClass('stuck');
+            // keep the dates section above the footer
+            if ( $(window).width() >= 900 ) {
+                $('.dates').css( { 'height': footerHeight - 65, 'max-height': $(window).height() - 65 } );
+            } else {
+                $('.dates').css( { 'height': footerHeight, 'max-height': $(window).height() } );
+            }            
+        }
+        
+        if ( $(window).width() >= 900 ) {
+            if ( ( $('.viewAlbumInner').offset().top ) - scrollTop >= 65 ){
+                $('.dates').removeClass('stuck');
+                $('.dates').css( { 'height': '100%' } );
+            }    
+        } else {
+            if ( ( $('.viewAlbumInner').offset().top ) - scrollTop >= 0 ){
+                $('.dates').removeClass('stuck');
+                $('.dates').css( { 'height': '100%' } );
+            }
+        }
+        
+    };
     
     /*function getFilterLabels() {
         var args = { aid: album_id };
@@ -344,6 +375,9 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
         
         getAllVids: function() {
             showAllVids(true);
+            years().forEach( function( y ) {
+		y.selected( false );
+            });
             editLabel('Edit');
         },
         
@@ -377,12 +411,15 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
             }
             //getFilterLabels();
         },
-	/*attached: function() {
-	    return system.defer( function( dfd ) {
-		customDialogs.showLoading();
-		dfd.resolve();
-	    }).promise();
-	},*/
+	
+        attached: function() {
+            $(window).scroll( this, stickyDates );
+        },
+
+        detached: function() {
+            $(window).off( "scroll", stickyDates );
+        },
+        
 	compositionComplete: function( view, parent ) {
 	    var self = this;
 	    system.wait(1).then( function() {

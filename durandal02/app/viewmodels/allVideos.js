@@ -237,6 +237,72 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             self.isActiveFlag(false);
         });
     };
+    
+    allVids.prototype.nameMonths = function( month ) {
+        var self = this;
+        
+        var shortName;
+        var longName;
+        var year;
+        
+        if ( month != 'Missing dates' ) {
+            shortName = month.slice(0,3);
+            longName = month.slice(0, month.indexOf(' '));
+            year = month.slice(month.length-4);
+        } else {
+            shortName = 'No';
+            longName = '';
+            year = 'Dates';
+        }
+        self.monthsLabels.push( { shortMonth: shortName, longMonth: longName, year: year, label: month, selected: ko.observable(false) } );        
+    }
+    
+    allVids.prototype.getAllDatesLabels = function() {
+        var self = this;
+        var args = {};
+        args = {
+            cid: self.cid
+        };
+        self.monthsLabels.removeAll();
+        viblio.api( '/services/yir/months', args ).then( function(data) {
+            data.months.forEach( function( month ) {
+                self.nameMonths( month );
+            });
+        });
+    };
+    
+    // Makes the dates 'sometimes sticky'
+    allVids.prototype.stickyDates = function() {       
+        var maxPos = 65; //height of header
+        
+        var scrollTop = $(window).scrollTop(),
+        elementOffset = $('.dates').offset().top,
+        distance      = (elementOffset - scrollTop),
+        footerHeight  = ( $('#footer').offset().top ) - scrollTop;
+
+        if( distance <= maxPos ){
+            $('.dates').addClass('stuck');
+            // keep the dates section above the footer
+            if ( $(window).width() >= 900 ) {
+                $('.dates').css( { 'height': footerHeight - 65, 'max-height': $(window).height() - 65 } );
+            } else {
+                $('.dates').css( { 'height': footerHeight, 'max-height': $(window).height() } );
+            }            
+        }
+        
+        if ( $(window).width() >= 900 ) {
+            if ( ( $('#allVidsWrap').offset().top ) - scrollTop >= 65 ){
+                $('.dates').removeClass('stuck');
+                $('.dates').css( { 'height': '100%' } );
+            }    
+        } else {
+            if ( ( $('#allVidsWrap').offset().top ) - scrollTop >= 0 ){
+                $('.dates').removeClass('stuck');
+                $('.dates').css( { 'height': '100%' } );
+            }
+        }
+        
+    };
 
     allVids.prototype.activate = function() {
 	var self = this;
@@ -248,11 +314,14 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.getHits();
         
         // get months and create labels to use as selectors
-        viblio.api( '/services/yir/months', args ).then( function(data) {
+        self.getAllDatesLabels();
+        
+        // get months and create labels to use as selectors
+        /*viblio.api( '/services/yir/months', args ).then( function(data) {
             data.months.forEach( function( month ) {
                 self.monthsLabels.push( { "label": month, "selected": ko.observable(false) } );
             });   
-        });     
+        });*/     
     };
     
     // Add a new mediafile to our managed list of mediafiles
@@ -371,10 +440,12 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 
     allVids.prototype.attached = function() {
         $(window).scroll( this, this.scrollHandler );
+        $(window).scroll( this, this.stickyDates );
     };
 
     allVids.prototype.detached = function() {
         $(window).off( "scroll", this.scollHandler );
+        $(window).off( "scroll", this.stickyDates );
     };
     
     // In attached, attach the mCustomScrollbar we're presently

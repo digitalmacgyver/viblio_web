@@ -412,12 +412,23 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         if( distance <= maxPos ){
             $('.dates').addClass('stuck');
             // keep the dates section above the footer
-            $('.dates').css( { 'height': footerHeight - 65, 'max-height': $(window).height() - 65 } );
+            if ( $(window).width() >= 900 ) {
+                $('.dates').css( { 'height': footerHeight - 65, 'max-height': $(window).height() - 65 } );
+            } else {
+                $('.dates').css( { 'height': footerHeight, 'max-height': $(window).height() } );
+            }            
         }
         
-        if ( ( $('.allVidsPage').offset().top ) - scrollTop >= 65 ){
-            $('.dates').removeClass('stuck');
-            $('.dates').css( { 'height': '100%' } );
+        if ( $(window).width() >= 900 ) {
+            if ( ( $('.allVidsInner').offset().top ) - scrollTop >= 65 ){
+                $('.dates').removeClass('stuck');
+                $('.dates').css( { 'height': '100%' } );
+            }    
+        } else {
+            if ( ( $('.allVidsInner').offset().top ) - scrollTop >= 0 ){
+                $('.dates').removeClass('stuck');
+                $('.dates').css( { 'height': '100%' } );
+            }
         }
     };
     

@@ -1,5 +1,5 @@
 
-<div class="allVidsPage padding45">
+<div class="allVidsPage padding40">
     <div class="table">
         <!-- ko if: !showShared() -->
             <!-- ko if: !aMonthIsSelected() -->
@@ -35,23 +35,30 @@
         </div>
     </div>
     
-    <div class="table">
+    <div>
         <!-- ko if: !showShared() -->
-            <div id="months" class="pull-right" data-bind="if: hits() > 0">
-                <ul class="monthLabels">
-                    <!-- ko foreach: monthsLabels -->
-                    <li>
-                        <span class="textShadowed" data-bind="click: $parent.monthSelected.bind( $data, $parent ), 
-                                         text: $data.label != 'Missing dates' ? $data.label.slice(0,3) + ' ' + $data.label.slice($data.label.length-4) : $data.label, 
-                                         css:{sel: $data.selected()}"></span>
-                    </li>
-                    <!-- /ko -->
-                    <li>
-                        <span id="allVids" class="textShadowed" data-bind="click: showAllVideos, css:{sel: allVidsIsSelected()}">All Videos</span>
-                    </li>
-                </ul>
-            </div> <!-- end months -->
-            <div id="allVidsWrap">
+            <div class="clearfix" id="allVidsWrap">
+                
+                <div class="dates">
+                    <div class="scroller">
+                        <div class="wrapper textShadowed">
+                            <!-- ko foreach: monthsLabels -->
+                            <div class="year">
+                                <h1 data-bind="click: $parent.monthSelected.bind( $data, $parent ), css:{sel: $data.selected()}">
+                                    <span data-bind="text: $data.shortMonth"></span> <span data-bind="text: $data.year"></span>
+                                </h1>
+                            </div>               
+                            <!-- /ko -->
+                            <div class="year">
+                                <h1 data-bind="click: showAllVideos, css:{sel: allVidsIsSelected()}">
+                                    <span>All</span>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end months -->
+                
                 <!-- ko foreach: videos -->
                     <!-- ko compose: $data --><!--/ko-->
                 <!-- /ko -->

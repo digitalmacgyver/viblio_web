@@ -6,8 +6,9 @@
         <img class="boxShadowed" data-bind="attr:{src:contactPhoto}" />
         <span class="textShadowed">Videos starring <span class="contact-name" data-bind="text: contactName"></span></span>
     </div>
-    <div class="mainVidSection" data-bind="foreach: strips">
-        <div data-bind="compose: $data"></div>
+    <div class="mainVidSection">
+        <div data-bind="compose: hits, slideVisible: hits.mediafiles().length > 0"></div>
+        <div data-bind="compose: allVids"></div>
     </div>
 </div>
 
