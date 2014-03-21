@@ -16,15 +16,15 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 		// Add this identity to mixpanel
 		mixpanel.identify( u.uuid );  // unique key is user uuid
 		mixpanel.register({ uuid: u.uuid }); // send user uuid on every event
-		mixpanel.people.set({
-		    "$email": u.email,
-		    "$last_login": new Date(),
-		    "$created": u.created_date
-		});
 	    }
 	    if ( u.displayname != user().displayname ) {
 		user( u );
 	    }
+	    mixpanel.people.set({
+		"$email": u.email,
+		"$last_login": new Date(),
+		"$created": u.created_date
+	    });
 	}
 	else {
 	    user({
@@ -170,6 +170,18 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
             //deferred.resolve( localStorage );
             
             return deferred.promise();
+        },
+
+        // Increment people properties to send notifications based off of them
+        // Use example: viblio.mpPeopleIncrement('Video View Count', 1);                    
+        mpPeopleIncrement: function( event, options ) {
+            mixpanel.people.increment( event, options );
+        },
+        
+        // Set people properties to send notifications based off of them
+        // Use example: viblio.mpPeopleSet({'Last Video Viewed Date': new Date() });
+        mpPeopleSet: function( obj ) {
+            mixpanel.people.set( obj );
         },
 
 	api: function( url, data, errorCallback ) {

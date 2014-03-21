@@ -7,7 +7,8 @@ define(['durandal/app',
     var top_actors;
     var unamed_is_visible = false;
     var firstTime = ko.observable();
-    
+    var yvSection;
+   
     // Used to handle message from email to open upload modal
     var user = viblio.user;
     var loggedIn = ko.computed(function(){
@@ -60,6 +61,7 @@ define(['durandal/app',
     };
 
     return{
+        yvSection: yvSection,
         
         // When user is routed from email link for 'upload' capture that and open upload modal on login
         activate: function( args ) {
@@ -95,6 +97,11 @@ define(['durandal/app',
                 }
             });
             
+            this.yvSection = { model:'viewmodels/your-videos' };
+            if ( args && args.last_selected ) {
+                this.yvSection = { model:'viewmodels/your-videos', activationData: args };
+            }
+
         },
         
 	compositionComplete: function( _view ) {

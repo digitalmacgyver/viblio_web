@@ -331,6 +331,7 @@
                 retryTimeout: 1000,
                 multipart: ( IE ? undefined : false ),
 		fileInput: ( IE ? null : undefined ),
+		forceIframeTransport: ( IE ? true : undefined ),
                 dataType: 'text',
                 dropZone: elem.find('.vup-area'),
                 acceptFileTypes: self.options.accept,
@@ -464,6 +465,7 @@
 				data.finished = false;
 				self._vpfiles.push( data );
 				
+				self._trigger( 'started', null, null );
 				data.submit();
 			    }
 			}
@@ -473,6 +475,7 @@
 		    $(data.context[0]).data( 'done', true );
                     self._vpin_progress -= 1;
 		    if ( self._vpin_progress == 0 || IE ) {
+			self._trigger( 'finished', null, null );
 			self.notify( 'Your uploaded videos are now being processed to find and bring out the magic!' );
 			elem.find( '.vup-cancel-column').empty();
 		    }
@@ -523,7 +526,8 @@
  
                     // Set the required headers for the nginx upload module
                     e.setRequestHeader("Offset", offset);
-                    e.setRequestHeader("Content-type", "application/offset+octet-stream" );
+		    if ( ! head.browser.ie )
+			e.setRequestHeader("Content-type", "application/offset+octet-stream" );
                     e.setRequestHeader("X-Requested-With", "XMLHttpRequest");
  
                     device = navigator.userAgent.toLowerCase();
@@ -579,7 +583,7 @@
                         
                     } else {
                         // We've met our retry limit. Indicate that this upload has failed.
-                        row.find(".vup-file-progress-column .bar").html("Upload failed: comm timeout");
+                        row.find(".vup-file-progress-column .bar").html("Bummer, I failed to get to the server.  Try again later?");
 			row.find(".vup-file-progress-column .bar").css( 'width', '100%' );
 			row.find(".vup-file-progress-column .bar").addClass( 'vup-file-done' );
                         row.find( '.vup-cancel-column').empty();

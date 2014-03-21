@@ -365,15 +365,6 @@ function( app, router, viblio, dialogs, Mediafile, Album, system ) {
             self.monthVidsSearch( self.selectedMonth() );
             self.aMonthIsSelected(true);
             self.allVidsIsSelected(false);
-            // get number of videos in selected month
-            var args = {
-                month: self.selectedMonth(),
-                cid: self.cid
-            };
-            viblio.api( '/services/yir/videos_for_month', args )
-                    .then(function(data){
-                        self.vidsInSelectedMonth( data.media.length );
-                    });
         },
 
         monthVidsSearch: function( month, obj ) {
@@ -392,6 +383,7 @@ function( app, router, viblio, dialogs, Mediafile, Album, system ) {
                     viblio.api( '/services/yir/videos_for_month', args )
                         .then( function( json ) {
                             self.monthPager = json.pager;
+                            self.vidsInSelectedMonth( json.pager.total_entries );
                             json.media.forEach( function( mf ) {
                                 self.addMediaFile( mf );
                             });
@@ -480,6 +472,7 @@ function( app, router, viblio, dialogs, Mediafile, Album, system ) {
             var self = this;
 	    pager.next_page = 1;
             pager.total_entries = -1;
+            self.videos.removeAll();
 	    albums.removeAll();
             monthsLabels.removeAll();
             self.getHits();
@@ -500,7 +493,7 @@ function( app, router, viblio, dialogs, Mediafile, Album, system ) {
 
 	    // Fetch albums.  If none, create an initial fake album
             albumSearch();
-            self.search();
+            self.showAllVideos();
 	    // Infinite scroll support for albums list
 	    $(view).find('.a-right-content').scroll( $.throttle( 250, function() {
 		var $this = $(this);

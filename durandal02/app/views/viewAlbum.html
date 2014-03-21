@@ -37,72 +37,85 @@
         </div>
         
         <div class="yir air clearfix">
-            <!-- ko if: noVids -->
-                <p class="mainTitle marginL45 textShadowed">All videos have been removed from this Album.</p>
-                <a href="#albums" class="btn btn-primary marginT-20">Add videos to album &raquo;</a>
-            <!-- /ko -->
-            <!-- ko if: showAllVids() && allVids().length > 0 -->
-                <p class="mainTitle marginL45 textShadowed">All Videos in this Album</p>
-            <!-- /ko -->
-            <!-- ko if: !showAllVids() && allVids().length > 0 -->
-                <p class="mainTitle marginL45 textShadowed">All Videos from <span data-bind="text: selectedYear"></span> in this Album</p>
-            <!-- /ko -->
-            <div class="a-searching lightGreyFont" data-bind="visible: loadingYears">
-	      <i class="icon-spinner icon-spin active"></i>
-	    </div>
-            
-            <!--<div class="albumYears" data-bind="highlightChange: years().length > 0">
-                <ul data-bind="foreach: years">
-                    <li>
-                        <span class="textShadowed font24 lightWeightFont" data-bind="click: $parent.yearSelected.bind( $data, $parent ), 
-                                                                                    text: $data.label, 
-                                                                                    css:{sel: $data.selected()}"></span>
-                    </li>
-                </ul>
-	    </div>-->
-            
-            <!-- ko if: ownedByViewer() || vidsOwnedByViewerNum() > 0 && allVids().length > 0 -->
-                <button class="btn btn-small btn-secondary pull-right marginR45" data-bind="click: toggleEditMode, text: editLabel"></button>
-            <!-- /ko -->
-            
-            <div style="display: inline-block;" class="dropdown" data-bind="if: allVids().length > 0">
-                <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown">Filter...</a>
-                <ul class="dropdown-menu" role="menu">
-                  <!-- ko foreach: years -->
-                  <li>
-                    <a data-bind="click: function(){ $parent.yearSelected( $data, $parent ); $parent.showAllVids(false); }, 
-                                  text: $data.label, 
-                                  css:{sel: $data.selected()}"></a>
-                  </li>
-                  <!-- /ko -->
-                  <li>
-                    <a id="allVids" class="textShadowed" data-bind="click: getAllVids">All Videos</a>
-                  </li>
-                </ul>
-            </div> 
-            
-            <!-- ko if: showAllVids -->
-            <div class='allAlbumVids' data-bind="highlightChange: allVids().length > 0">
-            <!-- ko foreach: allVids -->
-            <!-- ko compose: $data --><!--/ko-->
-            <!--/ko-->    
-            </div>
-            <!-- /ko -->
-            
-            <!-- ko if: !showAllVids() &&  allVids().length > 0 -->
-            <div class="a-content a-left-content" data-bind="highlightChange: months().length > 0">
-                <!-- ko foreach: months -->
-                <div class="month-heading textShadowed marginB10 marginL45">
-                    <span class="month-name heavyWeightFont font20" data-bind="text: $data.month"></span>
-                    <span class="num-videos lightWeightFont font20" data-bind="text: '(' + $data.media().length + ( $data.media().length == 1 ? ' video)' : ' videos)' )"></span>
-                </div>
-                <div class="media-list allAlbumVids" data-bind="foreach: { data: $data.media, as: 'm' }">
-                <!-- ko compose: m --><!-- /ko -->
-                </div>
-                <div class="clearfix marginB20"></div>
+            <div class="table">
+                <!-- ko if: noVids && !loadingYears -->
+                    <p class="mainTitle textShadowed">All videos have been removed from this Album.</p>
+                    <a href="#albums" class="btn btn-primary marginT-20">Add videos to album &raquo;</a>
                 <!-- /ko -->
+                <!-- ko if: showAllVids() && allVids().length > 0 -->
+                    <p class="mainTitle textShadowed">All Videos in this Album</p>
+                <!-- /ko -->
+                <!-- ko if: !showAllVids() && allVids().length > 0 -->
+                    <p class="mainTitle textShadowed">All Videos from <span data-bind="text: selectedYear"></span> in this Album</p>
+                <!-- /ko -->
+
+                <!--<div class="albumYears" data-bind="highlightChange: years().length > 0">
+                    <ul data-bind="foreach: years">
+                        <li>
+                            <span class="textShadowed font24 lightWeightFont" data-bind="click: $parent.yearSelected.bind( $data, $parent ), 
+                                                                                        text: $data.label, 
+                                                                                        css:{sel: $data.selected()}"></span>
+                        </li>
+                    </ul>
+                </div>-->
+
+                <!-- ko if: ownedByViewer() || vidsOwnedByViewerNum() > 0 && allVids().length > 0 -->
+                    <button class="btn btn-small btn-secondary pull-right" data-bind="click: toggleEditMode, text: editLabel"></button>
+                <!-- /ko -->    
             </div>
-            <!-- /ko -->
+                                   
+            <div class="viewAlbumInner clearfix">
+                
+                <div class="dates">
+                    <div class="scroller">
+                        <div class="wrapper textShadowed">
+                            <!-- ko foreach: years -->
+                            <div class="year">
+                                <h1 data-bind="click: function(){ $parent.yearSelected( $data, $parent ); $parent.showAllVids(false); }, css:{sel: $data.selected() }">
+                                    <span data-bind="text: $data.label"></span>
+                                </h1>
+                            </div>               
+                            <!-- /ko -->
+                            <div class="year">
+                                <h1 data-bind="click: getAllVids, css:{sel: showAllVids()}">
+                                    <span>All</span>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ko if: showAllVids -->
+                <div class='allAlbumVids' data-bind="highlightChange: allVids().length > 0">
+                <!-- ko foreach: allVids -->
+                <!-- ko compose: $data --><!--/ko-->
+                <!--/ko-->    
+                </div>
+                <!-- /ko -->
+
+                <!-- ko if: !showAllVids() &&  allVids().length > 0 -->
+                <div class="a-content a-left-content" data-bind="highlightChange: months().length > 0">
+                    <!-- ko foreach: months -->
+                    <div class="month-heading textShadowed marginB10">
+                        <span class="month-name heavyWeightFont font20" data-bind="text: $data.month"></span>
+                        <span class="num-videos lightWeightFont font20" data-bind="text: '(' + $data.media().length + ( $data.media().length == 1 ? ' video)' : ' videos)' )"></span>
+                    </div>
+                    <div class="media-list allAlbumVids" data-bind="foreach: { data: $data.media, as: 'm' }">
+                    <!-- ko compose: m --><!-- /ko -->
+                    </div>
+                    <div class="clearfix marginB20"></div>
+                    <!-- /ko -->
+                </div>
+                <!-- /ko -->
+                
+                <!-- ko if: loadingYears() -->
+                    <div class="lightGreyFont mfLoader">
+                        <i class="icon-spinner icon-5x icon-spin active"></i>
+                        <p class='font18'>Loading...</p>
+                    </div>
+                <!-- /ko -->
+                
+            </div>
             
         </div>
     </div>

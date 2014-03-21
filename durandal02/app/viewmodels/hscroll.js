@@ -11,6 +11,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	self.subtitle = ko.observable(subtitle || '&nbsp;' );
 	self.advanced = options.advanced;
 	self.search_api = options.search_api;
+        self.desendingOrder = options.descending;
 
 	// Will eventually pass in a query, somehow
 
@@ -49,7 +50,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     
     HScroll.prototype.getApp = function( media ) {
         router.navigate( 'getApp?from=hscroll' );
-    }
+    };
     
     // We may not use selection in the GUI, but if we do,
     // this managed a radio-selection behavior.
@@ -136,13 +137,28 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	// it will be re-enabled in mediafile:composed at the proper time
 	$(self.view).find( ".sd-scroll").smoothDivScroll("pause");
 
-	return viblio.api( api, args )
-	    .then( function( json ) {
-		self.pager = json.pager;
-		json.media.forEach( function( mf ) {
-		    self.mediafiles.push( self.addMediaFile( mf ) );
-		});
-	    });
+            return viblio.api( api, args )
+                .then( function( json ) {
+                    if ( self.pager.next_page ) {
+                        self.pager = json.pager;
+                        json.media.forEach( function( mf ) {
+                            if ( self.desendingOrder ) {
+                                if ( mf.view_count > 0 ) {
+                                        self.mediafiles.push( self.addMediaFile( mf ) );
+                                    }
+                            } else {
+                                self.mediafiles.push( self.addMediaFile( mf ) );
+                            }		    
+                        });
+
+                        if ( self.desendingOrder ) {
+                            //reverse the order of the sorted array
+                            self.mediafiles.reverse(self.mediafiles.sort( function(l, r) {
+                                return Number(l.media().view_count) < Number(r.media().view_count) ? -1 : 1;
+                            }));
+                        }
+                  }
+            });    
     };
 
     HScroll.prototype.compositionComplete = function() {
@@ -169,6 +185,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	var self = this;
 	self.view = view;
     };
-
+    
     return HScroll;
 });

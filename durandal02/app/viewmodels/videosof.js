@@ -45,12 +45,14 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 		    $.when( hh('Box Office Hits', contactName() + '\'s most popular videos', 
 			       { search_api: function() {
 				   return( { api: '/services/faces/media_face_appears_in', args: { contact_uuid: contact_id } } );
-			       }}), 
+			       }, descending: true }), 
 			    yy( contact_id ),
                             av( contact_id )
 			 ).then( function( h1, h2, h3 ) {
 			     self.hits = h1;
-			     self.yir  = h2;
+                             system.log ( h1.mediafiles() );
+			     //self.yir  = h2;
+                             self.allVids  = h3;
 			     self.strips.push( h1 );
 			     //self.strips.push( h2 );
                              self.strips.push( h3 );
