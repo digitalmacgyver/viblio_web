@@ -19,7 +19,6 @@ define([], function() {
 	},
         
         activate: function( args ) {
-            console.log(args);
             if ( args && args.last_selected ) {
                 last_selected( args.last_selected );
             }
