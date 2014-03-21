@@ -28,6 +28,7 @@ define(['lib/viblio','lib/config','plugins/dialog'],function(viblio,config,dialo
 
 	    $(view).find( '.vup' ).bind( 'viblio_uploaderstarted', function() {
 		viblio.mpEvent( 'upload_started' );
+                viblio.mpPeopleSet({'Last Video Upload Date': new Date() });
 	    });
 
 	    $(view).find( '.vup' ).bind( 'viblio_uploaderfinished', function() {
