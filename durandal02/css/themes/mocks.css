@@ -457,7 +457,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 }
 
 .sd-fscroll.horizontal-scroller {
-    height: 251px;
+    height: 321px;
 }
 
 .faces-container.horizontal-scroller {
@@ -2914,7 +2914,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     border: 0;
     text-decoration: none;
     opacity: .6;
-    top: 40%;
+    top: 50%;
     margin-top: -41px;
     left: 50%;
     margin-left: -34px;
@@ -3801,6 +3801,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     -moz-transition: width 300ms ease;
     -ms-transition: width 300ms ease;
     -o-transition: width 300ms ease;
+    transition: width 300ms ease;
 }
 
 .your-videos .dates .scroller {
@@ -3831,6 +3832,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     -moz-transition: font-size 300ms ease,padding 300ms ease;
     -ms-transition: font-size 300ms ease,padding 300ms ease;
     -o-transition: font-size 300ms ease,padding 300ms ease;
+    transition: font-size 300ms ease,padding 300ms ease;
 }
 
 .your-videos .dates:hover .year h1 {
@@ -3880,6 +3882,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     -moz-transition: opacity 300ms ease;
     -ms-transition: opacity 300ms ease;
     -o-transition: opacity 300ms ease;
+    transition: opacity 300ms ease;
 }
 
 .your-videos .dates:hover .year .month .longName {

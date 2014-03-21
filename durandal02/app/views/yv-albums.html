@@ -1,13 +1,13 @@
 <div class="allVidsPage">
   <div class="yv-secondary-nav">
-    <button class="btn btn-small btn-secondary" data-bind="click: add">Add/Edit...</button>
+    <button class="btn btn-small btn-secondary" data-bind="click: add"><i class="icon-edit"></i> Add/Edit...</button>
     <!-- ko if: showShared() -->
-    <button class="btn btn-small btn-secondary" data-bind="visible: sections().length > 0, click: toggleEditMode, text: editLabel, css: {'active': deleteModeOn()}"></button>
+    <button class="btn btn-small btn-secondary" data-bind="visible: sections().length > 0, click: toggleEditMode, html: editLabel, css: {'active': deleteModeOn()}"></button>
     <!-- /ko -->
     <!-- ko ifnot: showShared() -->
-    <button class="btn btn-small btn-secondary" data-bind="visible: albums().length > 0, click: toggleEditMode, text: editLabel, css: {'active': deleteModeOn()}"></button>
+    <button class="btn btn-small btn-secondary" data-bind="visible: albums().length > 0, click: toggleEditMode, html: editLabel, css: {'active': deleteModeOn()}"></button>
     <!-- /ko -->
-    <button class="btn btn-small btn-secondary" data-bind="click: function(data, event){ toggleShared() }, text: sharedLabel, css: {'active': showShared()}"></button>
+    <button class="btn btn-small btn-secondary" data-bind="click: function(data, event){ toggleShared() }, html: sharedLabel, css: {'active': showShared()}"></button>
   </div>
     
   <!-- ko if: searching() -->

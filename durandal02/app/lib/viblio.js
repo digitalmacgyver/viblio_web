@@ -16,15 +16,15 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 		// Add this identity to mixpanel
 		mixpanel.identify( u.uuid );  // unique key is user uuid
 		mixpanel.register({ uuid: u.uuid }); // send user uuid on every event
-		mixpanel.people.set({
-		    "$email": u.email,
-		    "$last_login": new Date(),
-		    "$created": u.created_date
-		});
 	    }
 	    if ( u.displayname != user().displayname ) {
 		user( u );
 	    }
+	    mixpanel.people.set({
+		"$email": u.email,
+		"$last_login": new Date(),
+		"$created": u.created_date
+	    });
 	}
 	else {
 	    user({

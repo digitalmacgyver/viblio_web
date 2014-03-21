@@ -6,6 +6,7 @@ define(['durandal/app',
     var unnamed;
     var top_actors;
     var unamed_is_visible = false;
+    var yvSection;
     
     // Used to handle message from email to open upload modal
     var user = viblio.user;
@@ -50,6 +51,7 @@ define(['durandal/app',
     });
 
     return{
+        yvSection: yvSection,
         
         // When user is routed from email link for 'upload' capture that and open upload modal on login
         activate: function( args ) {
@@ -68,6 +70,10 @@ define(['durandal/app',
                     });
                     customDialogs.showModal( 'viewmodels/loginModal', 'Please log in before uploading new videos to your account.' );
                 }
+            }
+            this.yvSection = { model:'viewmodels/your-videos' };
+            if ( args && args.last_selected ) {
+                this.yvSection = { model:'viewmodels/your-videos', activationData: args };
             }
         },
         

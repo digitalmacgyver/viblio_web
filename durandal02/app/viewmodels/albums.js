@@ -472,6 +472,7 @@ function( app, router, viblio, dialogs, Mediafile, Album, system ) {
             var self = this;
 	    pager.next_page = 1;
             pager.total_entries = -1;
+            self.videos.removeAll();
 	    albums.removeAll();
             monthsLabels.removeAll();
             self.getHits();
@@ -492,7 +493,7 @@ function( app, router, viblio, dialogs, Mediafile, Album, system ) {
 
 	    // Fetch albums.  If none, create an initial fake album
             albumSearch();
-            self.search();
+            self.showAllVideos();
 	    // Infinite scroll support for albums list
 	    $(view).find('.a-right-content').scroll( $.throttle( 250, function() {
 		var $this = $(this);

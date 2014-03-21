@@ -3,7 +3,8 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     var friendsEmailsValid = ko.observable(false);
     var tellFriendsMessage = ko.observable();
     var placeholderText = ko.observable();
-    var shouldBeLoggedOut = ko.observable();;
+    var shouldBeLoggedOut = ko.observable();
+    var emailTemplate = ko.observable();
     
     function showLoggedOutTellFriendsModal() {
         dialog.show('viewmodels/loggedOutTellFriendsModal');
@@ -44,7 +45,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	    emails.push( email.id || email.name );
 	});
 
-	viblio.api( '/services/user/tell_a_friend', { list: emails, message: message } ).then( function() {
+	viblio.api( '/services/user/tell_a_friend', { list: emails, message: message, emailTemplate: emailTemplate() === 15 ? 15 : 14 } ).then( function() {
 	    viblio.notify( 'Email sent', 'success' );
 	    viblio.mpEvent( 'tell_a_friend' );
 	    self.closeModal();
@@ -61,8 +62,11 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
         activate: function( args ) {
             // reset value in case user shared already during their session
             friendsEmailsValid(false);
+            // reset email template
+            emailTemplate('');
             placeholderText(args.placeholder);
             shouldBeLoggedOut(args.logout);
+            emailTemplate(args.template);
         },
 	compositionComplete: function( view ) {
 	    var self = this;
