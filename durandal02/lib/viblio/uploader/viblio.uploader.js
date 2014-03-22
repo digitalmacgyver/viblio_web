@@ -18,7 +18,7 @@
 	    //
 	    // The file types to accept.  Currently viblio only accepts
 	    // video files.
-	    accept: /(\.|\/)(3gp|avi|flv|m4v|mp4|mts|mov|mpeg|mpg|ogg|swf|mwv)$/i,
+	    accept: /(\.|\/)(3gp|avi|flv|m4v|mp4|mts|m2ts|mov|mpeg|mpg|ogg|swf|mwv)$/i,
 	    //
 	    // The maximum number of concurrent videos that can be uploaded
 	    // in parallel.  Others will wait in a queue until a slot opens up.
