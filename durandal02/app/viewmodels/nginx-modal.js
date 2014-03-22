@@ -3,8 +3,8 @@
 //
 define(['lib/viblio','lib/config','plugins/dialog','durandal/events'],function(viblio,config,dialog,Events){
     
-    var firstTime = ko.observable();
-    var firstUpload = ko.observable();
+    var firstUploadComplete = ko.observable();
+    var firstUploadMessageHasBeenShown = ko.observable();
     
     Events.includeIn( this );
     
@@ -13,8 +13,6 @@ define(['lib/viblio','lib/config','plugins/dialog','durandal/events'],function(v
     }
     
     return{
-        firstTime: firstTime,
-        
 	close: function() {
 	    var pending = $(this.view).find('.vup').viblio_uploader( 'in_progress' );
 	    if ( pending ) {
@@ -25,31 +23,30 @@ define(['lib/viblio','lib/config','plugins/dialog','durandal/events'],function(v
 	    }
 	    else {
 		dialog.close( this );
-                // only show after user's first upload in completed
-                if ( firstUpload() ) {
+                // only show ONCE after user's first upload in completed
+                if ( firstUploadComplete() && !firstUploadMessageHasBeenShown() ) {
                     sendClosedMessage();
+                    viblio.localStorage( 'firstUploadMessageHasBeenShown', true );
                 }
 		return true;
 	    }  
 	},
         activate: function() {
-            // check if this is user's first visit
-            viblio.localStorage( 'hasUserBeenHereBefore' ).then(function( data ) {
-                console.log( data );
-                if ( data.hasUserBeenHereBefore ) {
-                    firstTime( false );
+           // Check if first upload has been completed
+           viblio.localStorage( 'firstUploadComplete' ).then(function( data ) {
+                if ( data ) {
+                    firstUploadComplete( true );
                 } else {
-                    firstTime( true );
-                    $('.web-uploader-header-button').popover('show');
+                    firstUploadComplete( false );
                 }
             });
-            // Check if first upload
-            viblio.localStorage( 'hasUserUploadedBefore' ).then(function( data ) {
-                console.log( data );
-                if ( data.hasUserUploadedBefore ) {
-                    firstUpload( false );
+            
+            // Check if first Upload Message Has Been Shown
+            viblio.localStorage( 'firstUploadMessageHasBeenShown' ).then(function( data ) {
+                if ( data ) {
+                    firstUploadMessageHasBeenShown( true );
                 } else {
-                    firstUpload( true );
+                    firstUploadMessageHasBeenShown( false );
                 }
             });
         },
@@ -67,10 +64,10 @@ define(['lib/viblio','lib/config','plugins/dialog','durandal/events'],function(v
 		viblio.mpEvent( 'upload_started' );
                 viblio.mpPeopleSet({'Last Video Upload Date': new Date() });
 	    });
-
+            
+            //After first successful upload mark 'firstUploadComplete' as true 
 	    $(view).find( '.vup' ).bind( 'viblio_uploaderfinished', function() {
-		// Jesse, the batch of uploaded files is done and successful.
-		// Do your magic here.
+		viblio.localStorage( 'firstUploadComplete', true );
 	    });
 
 	    $(view).find('.vup-cancel-all')

@@ -80,7 +80,7 @@
         </div>
 	  <div class="a-content a-right-content">
 
-	    <div class="no-albums-wrapper" data-bind="visible: no_albums && !showShared()">
+	    <div class="no-albums-wrapper" data-bind="visible: no_albums() && !showShared() || showShared() && sharedAlbums().length == 0">
 	      <img src="/css/images/vidsToFolders.png" />
 	      <p class="textShadowed">Albums keep your Videos organized and make sharing easy!</p>
 	    </div>

@@ -63,8 +63,8 @@ define(['durandal/app',
     return{
         yvSection: yvSection,
         
-        // When user is routed from email link for 'upload' capture that and open upload modal on login
         activate: function( args ) {
+            // When user is routed from email link for 'upload' capture that and open upload modal on login
             if ( args && args.addVideos ) {
                 var last_URL = router.activeInstruction().config.route + "?" + router.activeInstruction().queryString;
                 if ( loggedIn() ) {
@@ -81,19 +81,19 @@ define(['durandal/app',
                     customDialogs.showModal( 'viewmodels/loginModal', 'Please log in before uploading new videos to your account.' );
                 }
             }
-            
-            
+                       
             // Used for testing only - remove after testing is complete
-            localStorage.removeItem( 'hasUserBeenHereBefore' );
+            //localStorage.clear();
             
             // check if this is user's first visit
             viblio.localStorage( 'hasUserBeenHereBefore' ).then(function( data ) {
                 console.log( data );
-                if ( data.hasUserBeenHereBefore ) {
+                if ( data ) {
                     firstTime( false );
                 } else {
                     firstTime( true );
                     showFirstTimeBubble();
+                    viblio.localStorage( 'hasUserBeenHereBefore', true );
                 }
             });
             

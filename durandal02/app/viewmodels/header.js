@@ -56,11 +56,10 @@ function(router, app, viblio, config, dialogs, Events) {
             if ( firstTime() ) {
                 $('.web-uploader-header-button').popover('show');
             }*/
-            
             // check if this is user's first visit
             viblio.localStorage( 'hasUserPushedUploadBefore' ).then(function( data ) {
                 console.log( data );
-                if ( data.hasUserPushedUploadBefore ) {
+                if ( data ) {
                     showPopup( false );
                 } else {
                     showPopup( true );

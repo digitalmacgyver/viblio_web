@@ -159,6 +159,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
             
             if ( val ) {
                 localStorage.setItem( key, val );
+                deferred.resolve();
             } else {
                 if ( localStorage.getItem( key ) ) {
                     deferred.resolve( localStorage.getItem( key ) );
