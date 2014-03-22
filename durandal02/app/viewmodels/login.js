@@ -192,7 +192,24 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	// This is the final step, after a new_user has succeeded.
 	email( signup_email() );
 	password( signup_pw1() );
-	nativeAuthenticate();
+	//nativeAuthenticate();
+	viblio.api( '/services/na/new_user', { via: 'create',
+                                               email: email(),
+                                               password: password(),
+                                               displayname: signup_displayname() }, handleLoginFailure )
+            .then( function( data ) {
+                // Save the logged in user info to the viblio object,
+                // which serves as a global exchange
+                //
+                viblio.setUser( data.user );
+		
+                // mixpanel event
+
+                viblio.mpEvent( 'registered_via_login' );
+                viblio.mpEvent( 'login' );
+		
+                router.navigate( viblio.getLastAttempt() || 'home' );
+            });
     };
 
     return {
