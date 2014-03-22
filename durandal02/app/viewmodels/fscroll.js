@@ -136,6 +136,15 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	router.navigate( 'videosof?uuid=' + this.contact_id );
     };
 
+    FScroll.prototype.mkAlbum = function() {
+	var self = this;
+	viblio.api( '/services/album/create_face_album',
+		    { contact_id: self.contact_id } )
+	    .then( function( data ) {
+		router.navigate( 'viewAlbum?aid='+data.album.uuid );
+	    });
+    };
+
     FScroll.prototype.hLimitReached = function() {
 	var self = this;
 	if ( self.pager.next_page ) {
