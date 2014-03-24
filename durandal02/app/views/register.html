@@ -6,7 +6,7 @@
         <div id="register-Wrap" class='centeredEl'>
            <div id="videoPoster-Wrap" class='bottomBorder-Thick'>    
                 <div id="shareFrom">
-                    <img class="boxShadowed" data-bind="{attr:{src:avatar}}" />
+                    <img class="boxShadowed" data-bind="attr:{src:avatar}" />
 		    <!-- ko if: media().is_album -->
                     <p><strong><span data-bind="text: displayname()"></span></strong> shared an Album with you!</p>
 		    <!-- /ko -->
@@ -17,7 +17,7 @@
                 <div class="mediafile" data-bind="attr:{id:media().uuid}">
                     <div class="boxShadowed">
                         <div>
-                            <img data-bind="{attr:{src:media().views.poster.url}}" />
+                            <img data-bind="attr:{src:media().views.poster.url}" />
                         </div>
                         <div class="information">
                             <div class="aux pull-right muted"><img src='css/images/viewsEye.png'/><span data-bind="html: media().view_count">0</span></div>
@@ -39,7 +39,7 @@
               <div id='or-Wrap'>
                 <p>or</p>
               </div>
-              <form class='bottomBorder-Thick'>
+              <form>
                 <div class="centeredEl">
                     <div id="registerForm-Wrap">
                         <input type="email" data-bind="value: email, enable: false" />
