@@ -118,6 +118,9 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             { route: 'login',              moduleId: 'login',              title: 'Log in to your Viblio account',
 	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
 
+            { route: 'signup',              moduleId: 'signup',              title: 'Sign up for a Viblio account',
+	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
+
             { route: 'confirmed',          moduleId: 'confirmed',          title: 'Account Confirmation',
 	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
 

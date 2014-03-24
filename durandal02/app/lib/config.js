@@ -34,7 +34,7 @@ define( function() {
 	    email: 'support-prod.viblio.com',
 	    uploader: 'prod.viblio.com'
 	},
-	'192.168.220.189': {
+	'192.168.220.190': {
 	    facebook: '566096966734454',
 	    csponge: 'FD7C6RP5SE8ERDMB3RHR'
 	},
