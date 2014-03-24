@@ -837,7 +837,7 @@ div.map .marker i {
 }
 
 #register-Wrap {
-    width: 842px;
+    display: table;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     border: 1px solid lightgrey;
@@ -855,13 +855,12 @@ div.map .marker i {
 }
 
 #videoPoster-Wrap {
+    display: table-cell;
+    vertical-align: top;
     background-color: rgba(255,255,255,.2);
-    width: 340px;
-    float: left;
-    padding: 40px;
+    padding: 48px 40px 20px;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
-    height: 476px;
     font-size: 16px;
 }
 
@@ -874,12 +873,14 @@ div.map .marker i {
 
 
 #register-page #loginArea  {
+    display: table-cell;
+    vertical-align: top;
     width: 500px;
-    float: left;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     border: none;
     border-left: 1px solid lightgrey;
+    border-bottom: 8px inset rgba(0, 0, 0, 0.1);
 }
 
 .password-helper {
