@@ -241,7 +241,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 
 	activate: function( args ) {
 	    if ( args && args.orsignup ) {
-		this.orsignup( true );
+		router.navigate( 'signup' );
 	    }
 	    else {
 		this.orsignup( false );
