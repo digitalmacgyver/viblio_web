@@ -38,8 +38,12 @@ function(router, app, viblio, config, dialogs, Events) {
 	},
 	web_uploader: function() {
             viblio.localStorage( 'hasUserPushedUploadBefore', true );
-            showPopup(false);
-	    dialogs.showModal( 'viewmodels/nginx-modal' );
+            if ( showPopup() ) {
+                dialogs.showModal( 'viewmodels/firstTimeUserModal2' );
+            } else {
+                dialogs.showModal( 'viewmodels/nginx-modal' );
+            }
+            showPopup( false );
 	},
 	testNewVideo: function() {
 	    viblio.api( '/services/test/new_video_test' );
