@@ -58,7 +58,6 @@ function(router, app, viblio, config, dialogs, Events) {
             }*/
             // check if this is user's first visit
             viblio.localStorage( 'hasUserPushedUploadBefore' ).then(function( data ) {
-                console.log( data );
                 if ( data ) {
                     showPopup( false );
                 } else {

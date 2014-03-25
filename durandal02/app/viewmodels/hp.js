@@ -87,7 +87,6 @@ define(['durandal/app',
             
             // check if this is user's first visit
             viblio.localStorage( 'hasUserBeenHereBefore' ).then(function( data ) {
-                console.log( data );
                 if ( data ) {
                     firstTime( false );
                 } else {
