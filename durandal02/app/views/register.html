@@ -7,10 +7,10 @@
            <div id="videoPoster-Wrap" class='bottomBorder-Thick'>    
                 <div id="shareFrom">
                     <img class="boxShadowed" data-bind="attr:{src:avatar}" />
-		    <!-- ko if: media().is_album -->
+		    <!-- ko if: media().is_album == 1 -->
                     <p><strong><span data-bind="text: displayname()"></span></strong> shared an Album with you!</p>
 		    <!-- /ko -->
-		    <!-- ko ifnot: media().is_album -->
+		    <!-- ko if: media().is_album == 0 -->
                     <p><strong><span data-bind="text: displayname()"></span></strong> shared a Video with you!</p>
 		    <!-- /ko -->
                 </div>
