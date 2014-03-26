@@ -1,17 +1,18 @@
 <div class="unnamed bottomBorder-Thin tomatoBG" data-bind="if: is_visible">  
   <div class="pp-info-faces-wrapper">
     <p class="pp-faces-need-names whiteBG centered"><span>These faces need names!</span></p>
-    <div class="fx">
-    <!-- ko if: searching() -->
-    <div>
-        <i class="icon-spinner icon-5x icon-spin active"></i>
-        <p class='font18'>Loading...</p>
-    </div>
-    <!-- /ko -->     
-    <!-- ko foreach: faces -->
-      <!-- ko compose: $data --><!-- /ko -->
-    <!-- /ko -->
-    <div class="clearfix"></div>
+    <div class='fx-outer'>
+        <div class="fx clearfix">
+            <!-- ko if: searching() -->
+            <div>
+                <i class="icon-spinner icon-5x icon-spin active"></i>
+                <p class='font18'>Loading...</p>
+            </div>
+            <!-- /ko -->     
+            <!-- ko foreach: faces -->
+              <!-- ko compose: $data --><!-- /ko -->
+            <!-- /ko -->
+        </div>    
     </div>
   </div>
   <div class="buttons" style="text-align: center;">

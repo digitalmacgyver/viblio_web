@@ -95,6 +95,12 @@ input[type="color"],
     box-sizing: border-box;
 }
 
+.editable-input > .dropdown-menu {
+    max-height: 300px;
+    overflow-y: auto;
+    max-width: 250px;
+}
+
 .btn-small {
     padding: 2px 6px;
     font-size: 14px;
@@ -4012,6 +4018,10 @@ div.fstrip {
     width: inherit;
     padding-top: 24px;
     padding-left: 23px;
+}
+.fx-outer {
+    width: 290px;
+    height: 120px;
     overflow: hidden;
 }
 .unnamed .pp-info-faces-wrapper .person {
