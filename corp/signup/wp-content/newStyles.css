@@ -41,9 +41,10 @@ and open the template in the editor.
 
 .tagline {
     background-color: rgb(50, 53, 68);
-    padding: 2% 0;
+    //padding: 2% 0;
     border-bottom: 4px solid rgb(0, 0, 0);
     margin-bottom: 3%;
+    height: 64px;
 }
 
 .bxslider img {
