@@ -4,12 +4,12 @@
     </h2>
 </div>
 
-<div class="whoWeAre-Page clearfix">
+<div class="whoWeAre-Page team clearfix">
     
     <!-- ko foreach: teamMembers -->
     
         <!-- ko if: $data.style() == 'leftAligned' -->
-        <div class="teamMember-Wrap clearfix leftAligned" data-bind="event: { mouseover: showColor, mouseout: showColor }, click: showInfo">
+        <div class="teamMember-Wrap clearfix leftAligned" data-bind="event: { mouseover: showColor, mouseout: showColor }, click: showInfo, css: { marginL180: $data.margin() == 'marginL180' }">
             <div class="teamMember-image-Wrap">
                 <div class="teamMember-image-innerWrap desaturate">
                     <!-- ko if: imageName -->
@@ -25,7 +25,52 @@
         <!-- /ko -->
 
         <!-- ko if: $data.style() != 'leftAligned' -->
-        <div class="teamMember-Wrap clearfix" data-bind="event: { mouseover: showColor, mouseout: showColor }, click: showInfo">
+        <div class="teamMember-Wrap clearfix" data-bind="event: { mouseover: showColor, mouseout: showColor }, click: showInfo, css: { marginL180: $data.margin() == 'marginL180' }">
+            <div class="teamMember-info-Wrap textShadowed">
+                <p class="font24" data-bind="text: name"></p>
+                <p class="font18 lightWeightFont" data-bind="text: title"></p>
+                <!--<p data-bind="text: desc"></p>-->
+            </div>
+            <div class="teamMember-image-Wrap">
+                <div class="teamMember-image-innerWrap desaturate">
+                    <!-- ko if: imageName -->
+                    <img data-bind="attr: { src: 'css/images/whoWeAre/' + imageName}"/>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+    
+    <!-- /ko -->
+</div>
+    
+<div class="orangeTitle">
+    <h2 class="">
+        Our Awesome Advisors
+    </h2>
+</div>
+ 
+<div class="whoWeAre-Page advisors clearfix">
+    <!-- ko foreach: advisors -->
+    
+        <!-- ko if: $data.style() == 'leftAligned' -->
+        <div class="teamMember-Wrap clearfix leftAligned" data-bind="event: { mouseover: showColor, mouseout: showColor }, click: showInfo, css: { marginL180: $data.margin() == 'marginL180' }">
+            <div class="teamMember-image-Wrap">
+                <div class="teamMember-image-innerWrap desaturate">
+                    <!-- ko if: imageName -->
+                    <img data-bind="attr: { src: 'css/images/whoWeAre/' + imageName}"/>
+                    <!-- /ko -->
+                </div>
+            </div>
+            <div class="teamMember-info-Wrap textShadowed">
+                <p class="font24" data-bind="text: name"></p>
+                <p class="font18 lightWeightFont" data-bind="text: title"></p>
+            </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: $data.style() != 'leftAligned' -->
+        <div class="teamMember-Wrap clearfix" data-bind="event: { mouseover: showColor, mouseout: showColor }, click: showInfo, css: { marginL180: $data.margin() == 'marginL180' }">
             <div class="teamMember-info-Wrap textShadowed">
                 <p class="font24" data-bind="text: name"></p>
                 <p class="font18 lightWeightFont" data-bind="text: title"></p>
