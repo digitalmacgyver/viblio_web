@@ -9,7 +9,7 @@
     <!-- ko foreach: teamMembers -->
     
         <!-- ko if: $data.style() == 'leftAligned' -->
-        <div class="teamMember-Wrap clearfix leftAligned" data-bind="event: { mouseover: showColor, mouseout: showColor }, click: showInfo">
+        <div class="teamMember-Wrap clearfix leftAligned" data-bind="event: { mouseover: showColor, mouseout: showColor }, click: showInfo, css: { marginL180: $data.margin() == 'marginL180' }">
             <div class="teamMember-image-Wrap">
                 <div class="teamMember-image-innerWrap desaturate">
                     <!-- ko if: imageName -->
@@ -25,7 +25,7 @@
         <!-- /ko -->
 
         <!-- ko if: $data.style() != 'leftAligned' -->
-        <div class="teamMember-Wrap clearfix" data-bind="event: { mouseover: showColor, mouseout: showColor }, click: showInfo">
+        <div class="teamMember-Wrap clearfix" data-bind="event: { mouseover: showColor, mouseout: showColor }, click: showInfo, css: { marginL180: $data.margin() == 'marginL180' }">
             <div class="teamMember-info-Wrap textShadowed">
                 <p class="font24" data-bind="text: name"></p>
                 <p class="font18 lightWeightFont" data-bind="text: title"></p>
@@ -54,7 +54,7 @@
     <!-- ko foreach: advisors -->
     
         <!-- ko if: $data.style() == 'leftAligned' -->
-        <div class="teamMember-Wrap clearfix leftAligned" data-bind="event: { mouseover: showColor, mouseout: showColor }, click: showInfo">
+        <div class="teamMember-Wrap clearfix leftAligned" data-bind="event: { mouseover: showColor, mouseout: showColor }, click: showInfo, css: { marginL180: $data.margin() == 'marginL180' }">
             <div class="teamMember-image-Wrap">
                 <div class="teamMember-image-innerWrap desaturate">
                     <!-- ko if: imageName -->
@@ -70,7 +70,7 @@
         <!-- /ko -->
 
         <!-- ko if: $data.style() != 'leftAligned' -->
-        <div class="teamMember-Wrap clearfix" data-bind="event: { mouseover: showColor, mouseout: showColor }, click: showInfo">
+        <div class="teamMember-Wrap clearfix" data-bind="event: { mouseover: showColor, mouseout: showColor }, click: showInfo, css: { marginL180: $data.margin() == 'marginL180' }">
             <div class="teamMember-info-Wrap textShadowed">
                 <p class="font24" data-bind="text: name"></p>
                 <p class="font18 lightWeightFont" data-bind="text: title"></p>

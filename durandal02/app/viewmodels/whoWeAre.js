@@ -152,36 +152,30 @@ function( router,viblio, Mediafile, app, events, system, customDialogs, dialog )
     fixLayout = function() {
         var ww = $( window ).width();
         
-        if ( ww > 1440 ) {
+        if ( ww > 1080 ) {
             teamMembers().forEach( function( member ) {
-                if ( teamMembers().indexOf(member) == 0 || teamMembers().indexOf(member) == 1 || teamMembers().indexOf(member) == 2 || teamMembers().indexOf(member) == 3 ||
-                     teamMembers().indexOf(member) == 8 || teamMembers().indexOf(member) == 9 || teamMembers().indexOf(member) == 10 || teamMembers().indexOf(member) == 11 ) {
-                    member.style('leftAligned');
-                } else {
-                    member.style('rightAligned');
-                }    
-            });
-        } else if ( ww > 1080 ) {
-            teamMembers().forEach( function( member ) {
-                if ( teamMembers().indexOf(member) == 0 || teamMembers().indexOf(member) == 1 || teamMembers().indexOf(member) == 2 ||
-                     teamMembers().indexOf(member) == 6 || teamMembers().indexOf(member) == 7 || teamMembers().indexOf(member) == 8) {
-                    member.style('leftAligned');
-                } else {
-                    member.style('rightAligned');
-                }    
+                member.style('leftAligned');
+                member.margin('');
+                if ( teamMembers().indexOf(member) == 3 ) {
+                    member.margin('marginL180');
+                }   
             });
         } else if ( ww > 720 ) {
             teamMembers().forEach( function( member ) {
-                if ( teamMembers().indexOf(member) == 0 || teamMembers().indexOf(member) == 1 ||
-                     teamMembers().indexOf(member) == 4 || teamMembers().indexOf(member) == 5 ||
-                     teamMembers().indexOf(member) == 8 || teamMembers().indexOf(member) == 9  ) {
+                member.margin('');
+                if ( teamMembers().indexOf(member) == 0 || teamMembers().indexOf(member) == 1 ) {
                     member.style('leftAligned');
                 } else {
                     member.style('rightAligned');
-                }    
+                }
+                
+                if ( teamMembers().indexOf(member) == 4 ) {
+                    member.margin('marginL180');
+                }
             });
         } else {
             teamMembers().forEach( function( member ) {
+                member.margin('');
                 if ( teamMembers().indexOf(member) % 2 == 0 ) {
                     //For even indexes
                     member.style('leftAligned');
@@ -194,8 +188,8 @@ function( router,viblio, Mediafile, app, events, system, customDialogs, dialog )
         
         if ( ww > 1440 ) {
             advisors().forEach( function( member ) {
-                if ( advisors().indexOf(member) == 0 || advisors().indexOf(member) == 1 || advisors().indexOf(member) == 2 || advisors().indexOf(member) == 3 ||
-                     advisors().indexOf(member) == 8 || advisors().indexOf(member) == 9 || advisors().indexOf(member) == 10 || advisors().indexOf(member) == 11 ) {
+                member.margin('');
+                if ( advisors().indexOf(member) == 0 || advisors().indexOf(member) == 1 || advisors().indexOf(member) == 2 || advisors().indexOf(member) == 3) {
                     member.style('leftAligned');
                 } else {
                     member.style('rightAligned');
@@ -203,18 +197,22 @@ function( router,viblio, Mediafile, app, events, system, customDialogs, dialog )
             });
         } else if ( ww > 1080 ) {
             advisors().forEach( function( member ) {
-                if ( advisors().indexOf(member) == 0 || advisors().indexOf(member) == 1 || advisors().indexOf(member) == 2 ||
-                     advisors().indexOf(member) == 6 || advisors().indexOf(member) == 7 || advisors().indexOf(member) == 8) {
+                member.margin('');
+                if ( advisors().indexOf(member) == 0 || advisors().indexOf(member) == 1 || advisors().indexOf(member) == 2) {
                     member.style('leftAligned');
                 } else {
                     member.style('rightAligned');
-                }    
+                }
+                
+                if ( advisors().indexOf(member) == 6 ) {
+                    member.margin('marginL180');
+                }
             });
         } else if ( ww > 720 ) {
             advisors().forEach( function( member ) {
+                member.margin('');
                 if ( advisors().indexOf(member) == 0 || advisors().indexOf(member) == 1 ||
-                     advisors().indexOf(member) == 4 || advisors().indexOf(member) == 5 ||
-                     advisors().indexOf(member) == 8 || advisors().indexOf(member) == 9  ) {
+                     advisors().indexOf(member) == 4 || advisors().indexOf(member) == 5) {
                     member.style('leftAligned');
                 } else {
                     member.style('rightAligned');
@@ -222,6 +220,7 @@ function( router,viblio, Mediafile, app, events, system, customDialogs, dialog )
             });
         } else {
             advisors().forEach( function( member ) {
+                member.margin('');
                 if ( advisors().indexOf(member) % 2 == 0 ) {
                     //For even indexes
                     member.style('leftAligned');
@@ -242,9 +241,11 @@ function( router,viblio, Mediafile, app, events, system, customDialogs, dialog )
         binding: function() {
             teamMembers().forEach( function( member ) {
                 member.style = ko.observable();
+                member.margin = ko.observable();
             });
             advisors().forEach( function( member ) {
                 member.style = ko.observable();
+                member.margin = ko.observable();
             });
             fixLayout();
         },

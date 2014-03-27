@@ -4093,6 +4093,14 @@ div.fstrip {
     margin: 45px auto;
 }
 
+.team {
+    max-width: 1080px;
+}
+
+.marginL180 {
+    margin-left: 180px;
+}
+
 @media (max-width: 1440px) {
     .whoWeAre-Page {
         width: 1080px;
@@ -4117,7 +4125,6 @@ div.fstrip {
     float: left;
     background-color: rgb(239, 85, 65);
     color: rgb(255, 255, 255);
-    transition: all .6s ease;
     cursor: pointer;
     position: relative;
 }
