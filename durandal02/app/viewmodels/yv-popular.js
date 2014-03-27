@@ -1,10 +1,11 @@
 define([
     'durandal/system', 
+    'durandal/app', 
     'plugins/router',
     'lib/viblio', 
     'lib/customDialogs',
     'viewmodels/mediafile'], 
-function( system, router, viblio, dialogs, Mediafile ) {
+function( system, app, router, viblio, dialogs, Mediafile ) {
 
     var pager = {};
 
@@ -41,9 +42,14 @@ function( system, router, viblio, dialogs, Mediafile ) {
 			    router.navigate( 'new_player?mid=' + m.media().uuid );
 			});
 			m.on( 'mediafile:delete', function( m ) {
-			    viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function() {
+			    viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function( json ) {
 				viblio.mpEvent( 'delete_video' );
 				media.remove( m );
+				if ( json && json.contacts ) {
+				    json.contacts.forEach( function( contact ) {
+					app.trigger( 'top-actor:remove', contact );
+				    });
+				}
 			    });
 			});         
 			

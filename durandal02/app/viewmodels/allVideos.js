@@ -220,9 +220,14 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                                 router.navigate( 'new_player?mid=' + m.media().uuid );
                             });
                             m.on( 'mediafile:delete', function( m ) {
-                                viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function() {
+                                viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function( json ) {
                                     viblio.mpEvent( 'delete_video' );
                                     self.videos.remove( m );
+				    if ( json && json.contacts ) {
+					json.contacts.forEach( function( contact ) {
+					    app.trigger( 'top-actor:remove', contact );
+					});
+				    }
                                 });
                             });
                             self.videos.push(m);
@@ -345,9 +350,14 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	});
         
         m.on( 'mediafile:delete', function( m ) {
-                    viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function() {
+                    viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function(json) {
                         viblio.mpEvent( 'delete_video' );
                         self.videos.remove( m );
+			if ( json && json.contacts ) {
+			    json.contacts.forEach( function( contact ) {
+				app.trigger( 'top-actor:remove', contact );
+			    });
+			}
                     });
                 });         
 
