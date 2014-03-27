@@ -26,7 +26,7 @@ function( router,viblio, Mediafile, app, events, system, customDialogs, dialog )
         },
         {
             name: 'Matthew Hayward',
-            title: 'Head of Data and Analysis',
+            title: 'Head of Technology',
             imageName: 'matthew-hayward.jpg',
             desc: 'Matt built the professional services organizations from the ground up at software startups Delphix (agile data management)\n\
                 and Coverity (development testing). His interest in databases, scalability, and software quality grew out of his work as a database\n\
@@ -37,7 +37,7 @@ function( router,viblio, Mediafile, app, events, system, customDialogs, dialog )
         },
         {
             name: 'Andrew Peebles',
-            title: 'Architectural Advisor',
+            title: 'Web Genius',
             imageName: 'andrew-peebles.jpg',
             desc: 'Andy has been designing and coding web technology platforms for the past 10 years. He built and ran the engineering infrastructure\n\
                 at various technology companies such as Mips, SGI, StratumOne, and Cisco over the last 20 years. Andy enjoys the creativity of coming up\n\
@@ -54,15 +54,6 @@ function( router,viblio, Mediafile, app, events, system, customDialogs, dialog )
                   them through the new Viblio platform! Ramsri loves to explore his non-technical side during weekends with skateboarding, hip-hop dancing and blogging.',
             imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/ramsri-golla.jpg\")'>"
          },
-        {
-            name: 'Alexander Black',
-            title: 'Head of Products',
-            imageName: 'alex-black.jpg',
-            desc: 'Alex brings to Viblio 15 years of experience in nearly every specialization associated with film and web application design, development\n\
-                deployment and testing. He runs a web and mobile app product development firm called Turing, and is also a managing director of Colorflow, post\n\
-                production facility specializing in DCI 4K DI Color Grading, HD finishing, DCI Mastering and Data Archiving.',
-            imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/alex-black.jpg\")'>"
-        },
          {
             name: 'Jesse Garrison',
             title: 'Front-end Developer',
@@ -72,15 +63,26 @@ function( router,viblio, Mediafile, app, events, system, customDialogs, dialog )
                  He enjoys turning ideas into functional and interactive experiences. When he’s not busy coding, he enjoys skiing, surfing and traveling the\n\
                  world on the never ending search for adventure.',
             imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/jesse-garrison.jpg\")'>"
+        }
+    ]);
+    
+    var advisors = ko.observableArray([
+        {
+            name: 'Greg Mori',
+            title: 'Technical Advisor, Computer Vision',
+            imageName: 'greg-mori.jpg',
+            desc: 'Greg Mori is a computer vision professor at Simon Fraser University in Canada, specializing in video analysis. His research focuses on\n\
+                 automatically interpret images and videos, particularly those containing people. Greg received his PhD in Computer Science from the University\n\
+                 of California at Berkeley, and is widely published. He is a proud father of two, with the consequent mass of video data that Viblio is helping to organize!',
+            imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/greg-mori.jpg\")'>"
         },
         {
-            name: 'Bidyut Parruck',
-            title: 'Technical Advisor',
-            imageName: 'bidyut-parruck.jpg',
-            desc: 'Bidyut is a serial entrepreneur having founded four companies prior to starting Viblio. He has deep expertise in\n\
-                 networking, telecommunications and video delivery. He has taken on multiple technical and business roles including\n\
-                 running product and business organizations.',
-            imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/bidyut-parruck.jpg\")'>"
+            name: 'Arash Vahdat',
+            title: 'Ph.D. Comp.Sci student at Simon Fraser University',
+            imageName: 'arash-vahdat.jpg',
+            desc: 'Passionate and committed computer vision expert, with over seven top-tier conference publications and six years of experience in design and\n\
+                    implementation of machine learning based algorithms for a variety of visual recognition problems, applied to unconstrained images and videos common in internet.',
+            imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/arash-vahdat.jpg\")'>"
         },
         {
              name: 'Ali Zandifar',
@@ -102,13 +104,13 @@ function( router,viblio, Mediafile, app, events, system, customDialogs, dialog )
             imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/jason-catchpole.jpg\")'>"
         },
         {
-            name: 'Greg Mori',
-            title: 'Technical Advisor, Computer Vision',
-            imageName: 'greg-mori.jpg',
-            desc: 'Greg Mori is a computer vision professor at Simon Fraser University in Canada, specializing in video analysis. His research focuses on\n\
-                 automatically interpret images and videos, particularly those containing people. Greg received his PhD in Computer Science from the University\n\
-                 of California at Berkeley, and is widely published. He is a proud father of two, with the consequent mass of video data that Viblio is helping to organize!',
-            imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/greg-mori.jpg\")'>"
+            name: 'Bidyut Parruck',
+            title: 'Technical Advisor',
+            imageName: 'bidyut-parruck.jpg',
+            desc: 'Bidyut is a serial entrepreneur having founded four companies prior to starting Viblio. He has deep expertise in\n\
+                 networking, telecommunications and video delivery. He has taken on multiple technical and business roles including\n\
+                 running product and business organizations.',
+            imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/bidyut-parruck.jpg\")'>"
         },
         {
             name: 'Mike Solomon',
@@ -118,6 +120,15 @@ function( router,viblio, Mediafile, app, events, system, customDialogs, dialog )
                  and YouTube. At YouTube, Mike developed a focus on distributed systems and on improving the efficiency of Youtube\'s MySQL infrastructure.',
             imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/mike-solomon.jpg\")'>"
         },
+        {
+            name: 'Alexander Black',
+            title: 'UX advisor',
+            imageName: 'alex-black.jpg',
+            desc: 'Alex brings to Viblio 15 years of experience in nearly every specialization associated with film and web application design, development\n\
+                deployment and testing. He runs a web and mobile app product development firm called Turing, and is also a managing director of Colorflow, post\n\
+                production facility specializing in DCI 4K DI Color Grading, HD finishing, DCI Mastering and Data Archiving.',
+            imageHTML: "<div class='teamMember-image-innerWrap' style='background-image: url(\"css/images/whoWeAre/alex-black.jpg\")'>"
+        }, 
         {
             name: 'Joe Chernesky',
             title: 'Advisory Board Member',
@@ -180,15 +191,59 @@ function( router,viblio, Mediafile, app, events, system, customDialogs, dialog )
                 }    
             });
         }
+        
+        if ( ww > 1440 ) {
+            advisors().forEach( function( member ) {
+                if ( advisors().indexOf(member) == 0 || advisors().indexOf(member) == 1 || advisors().indexOf(member) == 2 || advisors().indexOf(member) == 3 ||
+                     advisors().indexOf(member) == 8 || advisors().indexOf(member) == 9 || advisors().indexOf(member) == 10 || advisors().indexOf(member) == 11 ) {
+                    member.style('leftAligned');
+                } else {
+                    member.style('rightAligned');
+                }    
+            });
+        } else if ( ww > 1080 ) {
+            advisors().forEach( function( member ) {
+                if ( advisors().indexOf(member) == 0 || advisors().indexOf(member) == 1 || advisors().indexOf(member) == 2 ||
+                     advisors().indexOf(member) == 6 || advisors().indexOf(member) == 7 || advisors().indexOf(member) == 8) {
+                    member.style('leftAligned');
+                } else {
+                    member.style('rightAligned');
+                }    
+            });
+        } else if ( ww > 720 ) {
+            advisors().forEach( function( member ) {
+                if ( advisors().indexOf(member) == 0 || advisors().indexOf(member) == 1 ||
+                     advisors().indexOf(member) == 4 || advisors().indexOf(member) == 5 ||
+                     advisors().indexOf(member) == 8 || advisors().indexOf(member) == 9  ) {
+                    member.style('leftAligned');
+                } else {
+                    member.style('rightAligned');
+                }    
+            });
+        } else {
+            advisors().forEach( function( member ) {
+                if ( advisors().indexOf(member) % 2 == 0 ) {
+                    //For even indexes
+                    member.style('leftAligned');
+                } else {
+                    //for odd indexes
+                    member.style('rightAligned');
+                }    
+            });
+        }
     };
     
     return {
         teamMembers: teamMembers,
+        advisors: advisors,
         
         showColor: showColor,
         
         binding: function() {
             teamMembers().forEach( function( member ) {
+                member.style = ko.observable();
+            });
+            advisors().forEach( function( member ) {
                 member.style = ko.observable();
             });
             fixLayout();
