@@ -1,0 +1,42 @@
+<div class="whatWhoHow">
+    <div class="orangeTitle">
+        <h2 class="textShadowed">
+            <a href="/#whatWhoHow?showWhat=true" data-bind="css: { current: showWhat }">What We Do</a> | 
+            <a href="/#whatWhoHow?showWho=true" data-bind="css: { current: showWho }">Who We Are</a> |
+            <a href="/#whatWhoHow?showHow=true" data-bind="css: { current: showHow }">How to Get in Touch</a>
+        </h2>
+    </div>
+
+    <!-- ko if: showWhat -->
+        <div class='what mocksWhiteBG bottomBorder-Thick font18'>
+            <p>
+                A short while ago, a group of Silicon Valley "parentpreneurs" and "videologists" grew frustrated. While they
+                could capture fleeting moments on video with ease that was once unimaginable, they had no control over how
+                to find them again and who could see them. So they developed a platform to solve the problem. With VIBLIO,
+                you can easily tag your videos, store them in the cloud and create private groups and communities for sharing
+                life's best moments privately and as [browsing and buying through Amazon!].
+            </p>
+            <br />
+            <p>
+                VIBLIO uses proprietary technology, called Magic Tagging™, to automatically categorize your video digital videos
+                by a person in the video, certain activities, date or location. The application makes it easy to filter through
+                videos in your VIBLIO library, and provides a private environment for you to share your videos to specific groups
+                and communities that you create.
+            </p>
+            <br />
+            <p>
+                VIBLIO makes your digital memories more manageable. 
+            </p>
+        </div>
+    <!-- /ko -->
+
+    <!-- ko if: showWho -->   
+        <!-- ko compose: whoWeAre --><!-- /ko -->
+    <!-- /ko -->
+
+    <!-- ko if: showHow -->
+        <div class="how mocksWhiteBG bottomBorder-Thick paddedDiv">
+
+        </div>
+    <!-- /ko -->    
+</div>

@@ -4225,3 +4225,22 @@ div.fstrip {
     -webkit-box-shadow: none;
     box-shadow: none;
 }
+
+/************ whatWhoHow **************/
+
+.whatWhoHow h2 a {
+    font-weight: 200;
+    color: white;
+    margin: 0 25px;
+}
+
+.whatWhoHow h2 a.current {
+    font-weight: 600;
+}
+
+.whatWhoHow .what {
+    width: 80%;
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 50px;
+}
