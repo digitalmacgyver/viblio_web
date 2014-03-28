@@ -805,6 +805,10 @@ input:-moz-placeholder {
     margin-top: 15px;
 }
 
+.marginT50 {
+    margin-top: 50px;
+}
+
 .marginT-20 {
     margin-top: -20px;
 }
@@ -4254,9 +4258,40 @@ div.fstrip {
     font-weight: 600;
 }
 
-.whatWhoHow .what {
+.whatWhoHow .orangeTitle {
+    //margin-bottom: 50px;
+}
+
+
+.whatWhoHow .what,
+.whatWhoHow .how,
+.whatWhoHow .vote {
     width: 80%;
     max-width: 800px;
     margin: 50px auto;
+}
+
+.whatWhoHow .what .bottomBorder-Thick,
+.whatWhoHow .how form,
+.whatWhoHow .vote form {
     padding: 50px;
+    margin-bottom: 0;
+}
+
+.howFormTabs {
+    margin-top: 10px;
+}
+
+.whatWhoHow .how form input,
+.whatWhoHow .how form textarea {
+    width: 100%;
+}
+
+.whatWhoHow .how form textarea {
+    max-width: 100%;
+    height: 150px;
+}
+
+option.opt-group-header {
+    background-color: red;
 }

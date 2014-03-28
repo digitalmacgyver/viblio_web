@@ -8,25 +8,27 @@
     </div>
 
     <!-- ko if: showWhat -->
-        <div class='what mocksWhiteBG bottomBorder-Thick font18'>
-            <p>
-                A short while ago, a group of Silicon Valley "parentpreneurs" and "videologists" grew frustrated. While they
-                could capture fleeting moments on video with ease that was once unimaginable, they had no control over how
-                to find them again and who could see them. So they developed a platform to solve the problem. With VIBLIO,
-                you can easily tag your videos, store them in the cloud and create private groups and communities for sharing
-                life's best moments privately and as [browsing and buying through Amazon!].
-            </p>
-            <br />
-            <p>
-                VIBLIO uses proprietary technology, called Magic Tagging™, to automatically categorize your video digital videos
-                by a person in the video, certain activities, date or location. The application makes it easy to filter through
-                videos in your VIBLIO library, and provides a private environment for you to share your videos to specific groups
-                and communities that you create.
-            </p>
-            <br />
-            <p>
-                VIBLIO makes your digital memories more manageable. 
-            </p>
+        <div class='what mocksWhiteBG font18'>
+            <div class="bottomBorder-Thick">
+                <p>
+                    A short while ago, a group of Silicon Valley "parentpreneurs" and "videologists" grew frustrated. While they
+                    could capture fleeting moments on video with ease that was once unimaginable, they had no control over how
+                    to find them again and who could see them. So they developed a platform to solve the problem. With VIBLIO,
+                    you can easily tag your videos, store them in the cloud and create private groups and communities for sharing
+                    life's best moments privately and as easy as [browsing and buying through Amazon]!
+                </p>
+                <br />
+                <p>
+                    VIBLIO uses proprietary technology, called Magic Tagging™, to automatically categorize your digital videos
+                    by a person in the video, certain activities, date or location. The application makes it easy to filter through
+                    videos in your VIBLIO library, and provides a private environment for you to share your videos to specific groups
+                    and communities that you create.
+                </p>
+                <br />
+                <p>
+                    VIBLIO makes your digital memories more manageable. 
+                </p>    
+            </div>
         </div>
     <!-- /ko -->
 
@@ -35,8 +37,64 @@
     <!-- /ko -->
 
     <!-- ko if: showHow -->
-        <div class="how mocksWhiteBG bottomBorder-Thick paddedDiv">
-
+        <h3 class="centered textShadowed marginT50">Want to get in touch?  So do we!</h3>
+        <div class="how mocksWhiteBG">
+            <ul class="howFormTabs nav nav-tabs">
+                <li id="support" data-bind="css: { 'active': selected() == 'support' }"><a href="#" data-bind="click: selectSupport"><i class='icon-envelope'></i> Contact Support</a></li>
+                <li id="feedback" data-bind="css: { 'active': selected() == 'feedback' }"><a href="#" data-bind="click: selectFeedback"><i class='icon-lightbulb'></i> Give Feedback</a></li>
+                <li id="media" data-bind="css: { 'active': selected() == 'media' }"><a href="#" data-bind="click: selectMedia"><i class='icon-question'></i> Media Inquiries</a></li>
+            </ul>
+            <form id="howForm" class="bottomBorder-Thick">
+                <div class="centeredEl">
+                    <label for="name">Name *required</label>
+                    <input type="text" data-bind="value: name, valueUpdate: 'keyup'" 
+                        name="name" class="text" id="how_name" 
+                        placeholder="Enter your name" required />
+                    <label for="email">Email *required</label>
+                    <input type="email" data-bind="value: email, valueUpdate: 'keyup'" 
+                        name="email" class="email" id="how_email" 
+                        placeholder="Enter your email address" required />
+                    <label for="website">Website</label>
+                    <input type="text" data-bind="value: website, valueUpdate: 'keyup'" 
+                        name="website" class="text" id="how_website" 
+                        placeholder="Your website" />
+                    <label for="comment">Comment *required</label>
+                    <textarea id="comment" data-bind="value: comment, valueUpdate: 'keyup'" placeholder="Comment" required></textarea>
+                    <button type="submit" class="btn btn-secondary btn-small" data-bind="click: send_comment, enable: formReady">Submit</button>
+                </div>
+            </form>
         </div>
-    <!-- /ko -->    
+    <!-- /ko --> 
+    
+    <div class='vote mocksWhiteBG'>
+        <form id='activityForm' class="bottomBorder-Thick">
+            <h4 class="centered textShadowed">Vote on which activity we should add to our library to automatically tag in videos!</h4>
+            <select name='activityList' form='activityForm' data-bind="value: chosenVote">
+                <option class="opt-group-header">Choose...</option>
+                <!-- ko foreach: options -->
+                    <option class="opt-group-header" disabled>---------------------------------------</option>
+                    <option class="opt-group-header" data-bind="text: $data.name" disabled></option>
+                    <option class="opt-group-header" disabled>---------------------------------------</option>
+                    <!-- ko foreach: $data.list -->
+                        <option data-bind="text: $data, value: $data"></option>
+                    <!-- /ko -->
+                <!-- /ko -->
+                <option class="opt-group-header" disabled>---------------------------------------</option>
+                <option value="other">Other</option>
+            </select>
+            
+            <div data-bind="visible: chosenVote() == 'other' ">
+                Please enter your suggestion:<br />
+                <input type="text" data-bind="value: ownActivity, valueUpdate: 'keyup'" 
+                        name="ownActivity" class="text" id="activityForm_ownActivity" 
+                        placeholder="Your suggestion" />
+            </div>
+            <br />            
+            <button type="submit" class="btn btn-secondary btn-small" data-bind="click: send_vote, enable: activityFormReady">Submit</button>
+        </form>
+        
+        
+        
+    </div>
+    
 </div>
