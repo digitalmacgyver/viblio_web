@@ -1,6 +1,7 @@
 (function($) {
 
     var IE = (head.browser.ie && head.browser.version < 10);
+    var ios = head.browser.ios;
 
     $.widget( 'viblio.viblio_uploader', {
 	options: {
@@ -303,7 +304,13 @@
             
 	    self.options.uuid = self.options.uuid || viblio.vid();
 	    self.options.endpoint = self.options.endpoint || viblio.service('/files');
-	    if ( ! IE ) {
+	    if ( ios ) {
+		// There is a BUG in IOS that prevents multiple file uploads.  See
+		// https://github.com/blueimp/jQuery-File-Upload/issues/2627
+		// https://github.com/moxiecode/plupload/issues/894
+		$('<input type="file" name="files[]" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;" />').appendTo( elem );
+	    }
+	    else if ( ! IE ) {
 		$('<input type="file" name="files[]" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;" multiple />').appendTo( elem );
 	    }
 	    elem.append( self.options.template || self._html( IE ) );

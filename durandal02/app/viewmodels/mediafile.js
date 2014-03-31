@@ -115,27 +115,15 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	self.trigger( 'mediafile:composed', self );
 
 	if ( self.options.show_preview ) {
-	    if ( typeof viblio.cached_gifs[ self.media().uuid ] == 'undefined' ) {
-		viblio.api( '/services/mediafile/get_animated_gif', { mid: self.media().uuid } ).then( function( data ) {
-		    if ( data.url ) {
-			var image = new Image();
-			image.src = data.url;
-			viblio.cached_gifs[ self.media().uuid ] = data.url;
-		    }
-		    else {
-			viblio.cached_gifs[ self.media().uuid ] = 'none';
-		    }
+	    if ( self.media().views.poster_animated.url ) {
+		$(view).on( 'mouseover', function() {
+		    self.image( self.media().views.poster_animated.url );
+		});
+
+		$(view).on( 'mouseleave', function() {
+		    self.image( self.media().views.poster.url );
 		});
 	    }
-	    
-	    $(view).on( 'mouseover', function() {
-		if ( viblio.cached_gifs[ self.media().uuid ] && viblio.cached_gifs[ self.media().uuid ] != 'none' ) 
-		    self.image( viblio.cached_gifs[ self.media().uuid ] );
-	    });
-
-	    $(view).on( 'mouseleave', function() {
-		self.image( self.media().views.poster.url );
-	    });
 	}
         
         if ( self.options.show_delete_mode ) {
