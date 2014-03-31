@@ -4322,3 +4322,12 @@ div.fstrip {
     max-width: 100%;
     height: 150px;
 }
+
+@media (max-width: 775px) {    
+    .wwh-divider {
+        display: none;
+    }
+    .whatWhoHow h2 a {
+        display: block;
+    }
+}
