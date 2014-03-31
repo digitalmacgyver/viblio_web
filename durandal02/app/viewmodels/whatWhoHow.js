@@ -5,11 +5,11 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
     var showHow = ko.observable(false);
     
     var socialActivities = ko.observableArray([
-        'Parties (birthdays, weddings, dinner parties, …)', 'Performances', 'Pets (cats, dogs)', 'Children (any activity with lots of kids)',
-        'Animals (elephants, giraffes, lions,…)', 'Water wildlife (fish, seals, dophins, …)', 'Presentations'
+        'Parties (birthdays, weddings, dinner parties,…)', 'Performances', 'Pets (cats, dogs)', 'Children (any activity with lots of kids)',
+        'Animals (elephants, giraffes, lions,…)', 'Water wildlife (fish, seals, dophins,…)', 'Presentations'
     ]);
     var sports = ko.observableArray([
-        'Water sports (swimming, surfing, …)', 'Snow sports (skiing, snowboarding,…)', 'Bicyclng', 'Running'
+        'Water sports (swimming, surfing,…)', 'Snow sports (skiing, snowboarding,…)', 'Bicyclng', 'Running'
     ]);
     var places = ko.observableArray([
         'City', 'Beach', 'Woods', 'Inside'
@@ -21,11 +21,32 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
     ]);
     var chosenVote = ko.observable(null);
     var ownActivity = ko.observable(null);
+    var isOwnActivityValid = ko.computed( function() {
+        if ( ownActivity() && ownActivity().length <= 20 ) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    var ownActivityCharsLeft = ko.computed( function() {
+        if ( chosenVote() == 'other' && ownActivity() ) {
+            return 20 - ownActivity().length;
+        } else {
+            return 20;
+        }
+    });
+    var voteToSubmit = ko.computed( function() {
+        if ( chosenVote() && chosenVote() == 'other' ) {
+            return 'Other: ' + ownActivity();
+        } else {
+            return chosenVote();
+        }
+    });
     var activityFormReady = ko.computed(function() {
-        if ( chosenVote() && chosenVote() != 'Choose...') {
+        if ( chosenVote() && chosenVote() != 'Choose...' ) {
             if ( chosenVote() != 'other' ) {
                 return true;
-            } else if ( ownActivity() ) {
+            } else if ( ownActivity() && isOwnActivityValid() ) {
                 return true;
             } else {
                 return false;
@@ -85,8 +106,7 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
             contentType: 'application/json;charset=utf-8',
             data: JSON.stringify({
                 subject: subject,
-                //to: [{ email: 'notifications@viblio.com', name: 'Notifications' }],
-                to: [{ email: 'jesse@viblio.com', name: 'Jesse Garrison' }],
+                to: [{ email: 'notifications@viblio.com', name: 'Notifications' }],
                 body: '<p>From: ' + name() +'</p>\n\
                        <p>Email: ' + email() + '</p>\n\
                        <p>Website: ' + website() + '</p>\n\
@@ -109,15 +129,14 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
             contentType: 'application/json;charset=utf-8',
             data: JSON.stringify({
                 subject: subject,
-                //to: [{ email: 'notifications@viblio.com', name: 'Notifications' }],
-                to: [{ email: 'jesse@viblio.com', name: 'Jesse Garrison' }],
-                body: '<p>Chosen vote: ' + chosenVote() + '</p>'
+                to: [{ email: 'notifications@viblio.com', name: 'Notifications' }],
+                body: '<p>Chosen vote: ' + voteToSubmit() + '</p>'
             })
         }).always( function() {
             // dont stress over the result
             viblio.notify( 'Email Sent', 'success' );
         }).then( function() {
-            resetForm();
+            chosenVote('Choose...');
         });
     }
     
@@ -131,6 +150,8 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
         options: options,
         chosenVote: chosenVote,
         ownActivity: ownActivity,
+        isOwnActivityValid: isOwnActivityValid,
+        ownActivityCharsLeft: ownActivityCharsLeft,
         activityFormReady: activityFormReady,
         
         //-------------- How Section ----------------//

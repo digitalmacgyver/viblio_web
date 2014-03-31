@@ -15,7 +15,7 @@
                     could capture fleeting moments on video with ease that was once unimaginable, they had no control over how
                     to find them again and who could see them. So they developed a platform to solve the problem. With VIBLIO,
                     you can easily tag your videos, store them in the cloud and create private groups and communities for sharing
-                    life's best moments privately and as easy as [browsing and buying through Amazon]!
+                    life's best moments privately and as easy as browsing and buying through Amazon!
                 </p>
                 <br />
                 <p>
@@ -84,10 +84,11 @@
             </select>
             
             <div data-bind="visible: chosenVote() == 'other' ">
-                Please enter your suggestion:<br />
-                <input type="text" data-bind="value: ownActivity, valueUpdate: 'keyup'" 
+                Please enter your suggestion: *required<br />
+                <input type="text" data-bind="value: ownActivity, valueUpdate: 'keydown'" 
                         name="ownActivity" class="text" id="activityForm_ownActivity" 
-                        placeholder="Your suggestion" />
+                        placeholder="20 Characters max" maxLength="20"/>
+                <span data-bind="text: ownActivityCharsLeft"></span> characters left
             </div>
             <br />            
             <button type="submit" class="btn btn-secondary btn-small" data-bind="click: send_vote, enable: activityFormReady">Submit</button>
