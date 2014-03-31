@@ -101,6 +101,7 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
             comment: comment()
         };
         
+        // Need api call to make this actaully happen
         viblio.api( args).then(function() {
             resetForm();
         });
