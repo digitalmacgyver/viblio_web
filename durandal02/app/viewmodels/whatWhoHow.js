@@ -4,20 +4,6 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
     var showWho = ko.observable(false);
     var showHow = ko.observable(false);
     
-    
-    
-    var Country = function(name, population) {
-        this.countryName = name;
-        this.countryPopulation = population;
-    };
-    var availableCountries = ko.observableArray([
-            new Country("UK", 65000000),
-            new Country("USA", 320000000),
-            new Country("Sweden", 29000000)
-        ]);
-    var selectedCountry = ko.observable(); // Nothing selected by default
-    
-    
     var socialActivities = ko.observableArray([
         'Parties (birthdays, weddings, dinner parties, …)', 'Performances', 'Pets (cats, dogs)', 'Children (any activity with lots of kids)',
         'Animals (elephants, giraffes, lions,…)', 'Water wildlife (fish, seals, dophins, …)', 'Presentations'
@@ -93,32 +79,49 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
             subject = 'Media Inquiries email';
         }
         
-        var args = {
-            subject: subject,
-            name: name(),
-            email: email(),
-            website: website(),
-            comment: comment()
-        };
-        
-        // Need api call to make this actaully happen
-        viblio.api( args).then(function() {
+        $.ajax({
+            url: '/services/na/emailer',
+            method: 'POST',
+            contentType: 'application/json;charset=utf-8',
+            data: JSON.stringify({
+                subject: subject,
+                //to: [{ email: 'notifications@viblio.com', name: 'Notifications' }],
+                to: [{ email: 'jesse@viblio.com', name: 'Jesse Garrison' }],
+                body: '<p>From: ' + name() +'</p>\n\
+                       <p>Email: ' + email() + '</p>\n\
+                       <p>Website: ' + website() + '</p>\n\
+                       <p>Comment: ' + comment() + '</p>'
+            })
+        }).always( function() {
+            // dont stress over the result
+            viblio.notify( 'Email Sent', 'success' );
+        }).then( function() {
             resetForm();
         });
     };
     //-------------- End How Section ----------------//
     
     function send_vote() {
-        
+        var subject = 'Next activity vote submission'
+        $.ajax({
+            url: '/services/na/emailer',
+            method: 'POST',
+            contentType: 'application/json;charset=utf-8',
+            data: JSON.stringify({
+                subject: subject,
+                //to: [{ email: 'notifications@viblio.com', name: 'Notifications' }],
+                to: [{ email: 'jesse@viblio.com', name: 'Jesse Garrison' }],
+                body: '<p>Chosen vote: ' + chosenVote() + '</p>'
+            })
+        }).always( function() {
+            // dont stress over the result
+            viblio.notify( 'Email Sent', 'success' );
+        }).then( function() {
+            resetForm();
+        });
     }
     
     return {
-        
-        availableCountries: availableCountries,
-        selectedCountry: selectedCountry,
-        
-        
-        
         whoWeAre: whoWeAre,
         
         showWhat: showWhat,
