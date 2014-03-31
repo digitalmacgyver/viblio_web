@@ -1224,7 +1224,7 @@ input:-moz-placeholder {
     margin-bottom: 22px;
 }
 
-#forgotPasswordLink {
+.forgotPasswordLink {
     display: inline-block;
     text-decoration: none;
     cursor: pointer;

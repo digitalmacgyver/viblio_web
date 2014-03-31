@@ -18,14 +18,19 @@
           <span data-bind="css: { error: password_entry_error() }">
             <input id="loginPassword" type="password" name="pword" class="text" data-bind="value: password" placeholder="Password" />
           </span>
-          <a id='forgotPasswordLink' class='turquoiseFont' href="#forgotPassword">Forgot Password?</a>
+          <a class="forgotPasswordLink turquoiseFont" href="#forgotPassword">Forgot Password?</a>
           <button class="btn btn-primary pull-right" data-bind="click: nativeAuthenticate">
             Log In
           </button>
         </div>
+	<div style="text-align: center">
+	  <a class="forgotPasswordLink turquoiseFont" 
+	     style="margin-top: 20px; margin-bottom: 0px; font-size: 23px;"
+	     href="#signup">Don't have an account?  Sign up today!</a>
+	</div>
       </form>
     </div>
-
+<!--
     <div id="noAccount-Wrap" class="yellowBG" data-bind="visible: orsignup() == false">
       <div class="bottomBorder-Thick">
         <div id="noAccount" class="centeredEl paddedDiv">
@@ -58,6 +63,7 @@
         </div>
       </div>
     </div>
-        
+-->
+      
   </div>          
 </div>
