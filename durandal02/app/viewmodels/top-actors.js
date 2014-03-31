@@ -124,6 +124,12 @@ function (Events, router, app, system, viblio, Face, VideosFor, dialogs) {
 	search();
     });
 
+    app.on( 'top-actor:remove', function( uuid ) {
+	faces.remove( function(f) {
+	    return( f.data.uuid == uuid );
+	});
+    });
+
     return {
 	title: title,
 	subtitle: subtitle,
