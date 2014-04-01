@@ -115,7 +115,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	self.trigger( 'mediafile:composed', self );
 
 	if ( self.options.show_preview ) {
-	    if ( self.media().views.poster_animated.url ) {
+	    if ( self.media().views.poster_animated && 
+		 self.media().views.poster_animated.url ) {
 		$(view).on( 'mouseover', function() {
 		    self.image( self.media().views.poster_animated.url );
 		});
