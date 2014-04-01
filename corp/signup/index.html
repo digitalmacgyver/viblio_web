@@ -110,6 +110,10 @@
                             <div id="site-title" class="assistive-text">Viblio</div>
                             <div id="site-description" class="assistive-text">Magic Tagging finds who&#039;s in your Videos</div>
                         </div>
+                        
+                        <div class="kickstarter-Wrap textShadowed">
+                            <span>Our Kickstarter Project Launches April 14!</span>
+                        </div>
 
 
                         <!-- !- Navigation -->	
@@ -126,10 +130,14 @@
                                     <span class="wf-phone-visible">&nbsp;</span>
                             </a>
                         </nav>
-
+                        
                 </div><!-- .wf-table -->
             </div><!-- .wf-wrap -->
         </header><!-- #masthead -->
+        
+        <div class="kickstarter-Wrap-small textShadowed">
+            <span>Our Kickstarter Project Launches April 14!</span>
+        </div>
 
         <div id='slider-Wrap'>
             <ul class="bxslider">
@@ -399,6 +407,7 @@ mixpanel.init("404b9a0b96b8147b5050c165dfc809b3");</script><!-- end Mixpanel -->
     
     jQuery('.bxslider').bxSlider({
           auto: true,
+          pause: 8000,
           onSliderLoad: function(){
               jQuery('.bxslider').css("visibility","visible");
           }

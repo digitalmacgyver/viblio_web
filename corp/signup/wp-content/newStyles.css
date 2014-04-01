@@ -13,6 +13,33 @@ and open the template in the editor.
     padding: 0px;
 }
 
+.kickstarter-Wrap {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    margin-left: -156px;
+    color: rgb(133, 136, 143);
+    font-size: 18px;
+}
+
+.kickstarter-Wrap-small {
+    text-align: center;
+    font-size: 18px;
+    display: none;
+    padding-bottom: 10px;
+}
+
+/* When nav bar is collapsed */
+@media (max-width: 900px) {
+    .kickstarter-Wrap {
+        display: none;
+    }
+    .kickstarter-Wrap-small {
+        display: block;
+        background-color: rgb(50, 53, 68)
+    }    
+}
+
 .bxslider {
     visibility: hidden;
     max-height: 100%;
