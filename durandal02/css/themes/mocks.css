@@ -1134,6 +1134,7 @@ input:-moz-placeholder {
     text-align: center;
     font-size: 18px;
     display: none;
+    padding-bottom: 10px;
 }
 
 /* When nav bar is collapsed */
@@ -4300,6 +4301,11 @@ div.fstrip {
     width: 80%;
     max-width: 800px;
     margin: 50px auto;
+}
+
+.whatWhoHow .what {   
+    font-size: 24px;
+    line-height: 1;
 }
 
 .whatWhoHow .what .bottomBorder-Thick,
