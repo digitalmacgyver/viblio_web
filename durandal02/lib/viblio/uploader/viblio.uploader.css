@@ -56,6 +56,9 @@
 .vup-instructions .line2 {
     font-size: 25px;
 }
+.vup-instructions .line3 {
+    font-size: 18px;
+}
 
 /* applied to the vup-file-progress-column when the
    file is done uploading. */
