@@ -185,6 +185,9 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
           
             { route: 'whoWeAre',   moduleId: 'whoWeAre',     title: 'Who We Are',
+	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
+          
+            { route: 'whatWhoHow',   moduleId: 'whatWhoHow',     title: 'What, Who and How',
 	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header }
 
         ]).buildNavigationModel();

@@ -805,6 +805,10 @@ input:-moz-placeholder {
     margin-top: 15px;
 }
 
+.marginT50 {
+    margin-top: 50px;
+}
+
 .marginT-20 {
     margin-top: -20px;
 }
@@ -915,6 +919,12 @@ input:-moz-placeholder {
     outline: none;
 }
 
+@media (max-width: 1000px) {
+    .navbar .nav > li > a {
+        padding: 10px 5px 10px;
+    }
+}
+
 @media (max-width: 900px) {
     .navbar-fixed-top, .navbar-fixed-bottom {
     position: relative;
@@ -973,7 +983,7 @@ input:-moz-placeholder {
         filter: none;
     }
 }
-
+    
 #page-header .navbar .nav li.dropdown.open > .dropdown-toggle,
 #page-header .navbar .nav li.dropdown.active > .dropdown-toggle,
 #page-header .navbar .nav li.dropdown.open.active > .dropdown-toggle,
@@ -1111,6 +1121,31 @@ input:-moz-placeholder {
     height: 43px;
 }
 
+.kickstarter-Wrap {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    margin-left: -156px;
+    color: rgb(133, 136, 143);
+    font-size: 18px;
+}
+
+.kickstarter-Wrap-small {
+    text-align: center;
+    font-size: 18px;
+    display: none;
+}
+
+/* When nav bar is collapsed */
+@media (max-width: 900px) {
+    .kickstarter-Wrap {
+        display: none;
+    }
+    .kickstarter-Wrap-small {
+        display: block;
+    }    
+}
+
 .landingHeaderTitle {
     line-height: 1;
     padding: 15px 20px 20px;
@@ -1220,7 +1255,7 @@ input:-moz-placeholder {
     margin-bottom: 22px;
 }
 
-#forgotPasswordLink {
+.forgotPasswordLink {
     display: inline-block;
     text-decoration: none;
     cursor: pointer;
@@ -4240,4 +4275,104 @@ div.fstrip {
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
+}
+
+/************ whatWhoHow **************/
+
+.whatWhoHow h2 a {
+    font-weight: 200;
+    color: white;
+    margin: 0 25px;
+}
+
+.whatWhoHow h2 a.current {
+    font-weight: 600;
+}
+
+.whatWhoHow .orangeTitle {
+    //margin-bottom: 50px;
+}
+
+
+.whatWhoHow .what,
+.whatWhoHow .how,
+.whatWhoHow .vote {
+    width: 80%;
+    max-width: 800px;
+    margin: 50px auto;
+}
+
+.whatWhoHow .what .bottomBorder-Thick,
+.whatWhoHow .how form,
+.whatWhoHow .vote form {
+    padding: 50px;
+    margin-bottom: 0;
+}
+
+.howFormTabs {
+    margin-top: 10px;
+}
+
+.whatWhoHow .how form input,
+.whatWhoHow .how form textarea {
+    width: 100%;
+}
+
+.whatWhoHow .how form textarea {
+    max-width: 100%;
+    height: 150px;
+}
+
+@media (max-width: 775px) {    
+    .wwh-divider {
+        display: none;
+    }
+    .whatWhoHow h2 a {
+        display: block;
+    }
+}
+
+@media (max-width: 500px) {    
+    .nav-tabs > li {
+        float: none;
+    }
+
+    .nav-tabs > li > a {
+        margin-right: 0;
+    }
+
+    .nav-tabs {
+        border-bottom: 0;
+    }
+
+    .nav-tabs > li > a {
+        border: 1px solid #ddd;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+    }
+
+    .nav-tabs > li:first-child > a {
+        -webkit-border-top-right-radius: 4px;
+        border-top-right-radius: 4px;
+        -webkit-border-top-left-radius: 4px;
+        border-top-left-radius: 4px;
+        -moz-border-radius-topright: 4px;
+        -moz-border-radius-topleft: 4px;
+    }
+
+    .nav-tabs > li:last-child > a {
+        -webkit-border-bottom-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        -webkit-border-bottom-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+        -moz-border-radius-bottomright: 4px;
+        -moz-border-radius-bottomleft: 4px;
+    }
+
+    .nav-tabs > li > a:hover,
+    .nav-tabs > li > a:focus {
+        z-index: 2;
+        border-color: #ddd;
+    }
 }
