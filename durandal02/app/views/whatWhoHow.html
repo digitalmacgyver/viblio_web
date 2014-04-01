@@ -8,7 +8,7 @@
     </div>
 
     <!-- ko if: showWhat -->
-        <div class='what mocksWhiteBG font18'>
+        <div class='what mocksWhiteBG'>
             <div class="bottomBorder-Thick">
                 <p>
                     A short while ago, a group of Silicon Valley "parentpreneurs" and "videologists" grew frustrated. While they
@@ -68,7 +68,8 @@
     
     <div class='vote mocksWhiteBG'>
         <form id='activityForm' class="bottomBorder-Thick">
-            <h4 class="centered textShadowed">Vote on which activity we should add to our library to automatically tag in videos!</h4>
+            <h3 class="centered textShadowed">Vote on which activity we should add to our library to automatically tag in videos!</h3>
+            <br />
             <select name='activityList' form='activityForm' data-bind="value: chosenVote">
                 <option class="opt-group-header">Choose...</option>
                 <!-- ko foreach: options -->
