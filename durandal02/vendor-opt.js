@@ -35,7 +35,8 @@ new compressor.minify({
 	'lib/ICanHaz.min.js',
 	'lib/jquery.ba-throttle-debounce.min.js',
         'lib/jquery.placeholder.js',
-	'lib/jquery.autosize.min.js'
+	'lib/jquery.autosize.min.js',
+	'lib/jquery.cookie.js'
     ],
     fileOut: 'build/lib/vendor.all.js',
     callback: function(err, min){

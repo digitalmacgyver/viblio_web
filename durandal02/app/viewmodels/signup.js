@@ -37,6 +37,35 @@ function( router, app, system, config, viblio, dialog ) {
 	// mixpanel event
 	viblio.mpEvent( via );
 
+	// Facebook campaign tracking
+	if ( $.cookie( 'vb_facebook_referal' ) ) {
+	    $.removeCookie( 'vb_facebook_referal', { path: '/' } );
+	    
+	    var fb_param = {};
+	    fb_param.pixel_id = '6013854542305';
+	    fb_param.value = '1.00';
+	    fb_param.currency = 'USD';
+	    try {
+		if ( typeof fb_param!='undefined' && fb_param.pixel_id ) {
+		    var a='https://www.facebook.com/offsite_event.php', b=a+'?id='+fb_param.pixel_id;
+		    if ( fb_param.value )
+			b+='&value='+encodeURIComponent(fb_param.value);
+		    if( fb_param.currency )
+			b+='&currency='+encodeURIComponent(fb_param.currency);
+		    var c = new Image();
+		    c.src=b;
+		}
+	    } catch (e) {
+		new Image().src="http:\/\/www.facebook.com\/" + 
+		    'common/scribe_endpoint.php?c=jssdk_error&m='+
+		    encodeURIComponent('{"error":"LOAD", "extra": {"name":"'+e.name+
+				       '","line":"'+(e.lineNumber||e.line)+
+				       '","script":"'+(e.fileName||e.sourceURL||e.script)+
+				       '","stack":"'+(e.stackTrace||e.stack)+
+				       '","revision":"1186068","message":"'+e.message+'"}}');
+	    }
+	}
+
 	// either go to the personal channel page, or
 	// do a pass thru to the page the user was
 	// trying to get to.
@@ -130,6 +159,14 @@ function( router, app, system, config, viblio, dialog ) {
         
 	nativeSignup: nativeSignup,
 	facebookSignup: facebookSignup,
+
+	activate: function( args ) {
+	    if ( args && args.source && args.source == 'facebook' ) {
+		// Set a cookie so we know this signup page came
+		// from a link with source=facebook.  
+		$.cookie( 'vb_facebook_referal', 'true', { expires: 1, path: '/' } );
+	    }
+	}
 
     };
 });

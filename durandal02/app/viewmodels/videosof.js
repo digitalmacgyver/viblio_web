@@ -49,11 +49,11 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'vie
 			    yy( contact_id ),
                             av( contact_id )
 			 ).then( function( h1, h2, h3 ) {
-			     self.hits = h1;
-                             system.log ( h1.mediafiles() );
+			     //self.hits = h1;
+                             //system.log ( h1.mediafiles() );
 			     //self.yir  = h2;
                              self.allVids  = h3;
-			     self.strips.push( h1 );
+			     //self.strips.push( h1 );
 			     //self.strips.push( h2 );
                              self.strips.push( h3 );
 			     dfd.resolve();
