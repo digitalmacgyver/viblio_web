@@ -144,8 +144,7 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
             contentType: 'application/json;charset=utf-8',
             data: JSON.stringify({
                 subject: subject,
-                //to: [{ email: 'notifications@viblio.com', name: 'Notifications' }],
-                to: [{ email: 'jesse@viblio.com', name: 'Notifications' }],
+                to: [{ email: 'notifications@viblio.com', name: 'Notifications' }],
                 body: '<p>Email: ' + voteEmail() + '</p>\n\\n\
                        <p>Chosen vote: ' + voteToSubmit() + '</p>'
             })
