@@ -108,11 +108,11 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
     function send_comment() {
         var subject;
         if ( selected() == 'support' ) {
-            subject = 'Contact Support email';
+            subject = 'CONTACT SUPPORT from Get in Touch Web Page';
         } else if ( selected() == 'feedback' ) {
-            subject = 'Feedback email';
+            subject = 'FEEDBACK from Get in Touch Web Page';
         } else {
-            subject = 'Media Inquiries email';
+            subject = 'MEDIA INQUIRIES from Get in Touch Web Page';
         }
         
         $.ajax({
@@ -145,7 +145,7 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
             data: JSON.stringify({
                 subject: subject,
                 to: [{ email: 'notifications@viblio.com', name: 'Notifications' }],
-                body: '<p>Email: ' + voteEmail() + '</p>\n\\n\
+                body: '<p>Email: ' + voteEmail() + '</p>\n\
                        <p>Chosen vote: ' + voteToSubmit() + '</p>'
             })
         }).always( function() {
