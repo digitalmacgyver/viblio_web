@@ -4,6 +4,14 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
     var showWho = ko.observable(false);
     var showHow = ko.observable(false);
     
+    var voteEmail = ko.observable('');
+    var voteEmailValid = ko.computed (function() {
+        if ( voteEmail() && $('#vote_email')[0].checkValidity() ) {
+            return true;
+        } else {
+            return false;
+        }
+    });
     var socialActivities = ko.observableArray([
         'Parties (birthdays, weddings, dinner parties,…)', 'Performances', 'Pets (cats, dogs)', 'Children (any activity with lots of kids)',
         'Animals (elephants, giraffes, lions,…)', 'Water wildlife (fish, seals, dophins,…)', 'Presentations'
@@ -43,7 +51,7 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
         }
     });
     var activityFormReady = ko.computed(function() {
-        if ( chosenVote() && chosenVote() != 'Choose...' ) {
+        if ( voteEmailValid() && chosenVote() && chosenVote() != 'Choose...' ) {
             if ( chosenVote() != 'other' ) {
                 return true;
             } else if ( ownActivity() && isOwnActivityValid() ) {
@@ -60,6 +68,13 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
     var selected = ko.observable('support');
     var name = ko.observable('');
     var email = ko.observable('');
+    var emailValid = ko.computed (function() {
+        if ( email() && $('#how_email')[0].checkValidity() ) {
+            return true;
+        } else {
+            return false;
+        }
+    });
     var website = ko.observable('');
     var comment = ko.observable('');
     
@@ -76,7 +91,7 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
     };
     
     var formReady = ko.computed( function() {
-       if ( name() != '' && email() != '' && comment() != '' ) {
+       if ( name() != '' && emailValid() && comment() != '' ) {
            return true;
        } else {
            return false;
@@ -129,13 +144,16 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
             contentType: 'application/json;charset=utf-8',
             data: JSON.stringify({
                 subject: subject,
-                to: [{ email: 'notifications@viblio.com', name: 'Notifications' }],
-                body: '<p>Chosen vote: ' + voteToSubmit() + '</p>'
+                //to: [{ email: 'notifications@viblio.com', name: 'Notifications' }],
+                to: [{ email: 'jesse@viblio.com', name: 'Notifications' }],
+                body: '<p>Email: ' + voteEmail() + '</p>\n\\n\
+                       <p>Chosen vote: ' + voteToSubmit() + '</p>'
             })
         }).always( function() {
             // dont stress over the result
             viblio.notify( 'Email Sent', 'success' );
         }).then( function() {
+            voteEmail('');
             chosenVote('Choose...');
         });
     }
@@ -147,6 +165,7 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
         showWho: showWho,
         showHow: showHow,
         
+        voteEmail: voteEmail,
         options: options,
         chosenVote: chosenVote,
         ownActivity: ownActivity,

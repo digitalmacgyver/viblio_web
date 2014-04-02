@@ -70,6 +70,11 @@
         <form id='activityForm' class="bottomBorder-Thick">
             <h3 class="centered textShadowed">Vote on which activity we should add to our library to automatically tag in videos!</h3>
             <br />
+            <label for="voteEmail">Email *required</label>
+                    <input type="email" data-bind="value: voteEmail, valueUpdate: 'keyup'" 
+                        name="voteEmail" class="email" id="vote_email" 
+                        placeholder="Enter your email address" required /><br />
+            <label for="activityList">Chosen Vote *required</label>
             <select name='activityList' form='activityForm' data-bind="value: chosenVote">
                 <option class="opt-group-header">Choose...</option>
                 <!-- ko foreach: options -->
