@@ -43,7 +43,7 @@ function( router, app, system, config, viblio, dialog ) {
 	    
 	    var fb_param = {};
 	    fb_param.pixel_id = '6013854542305';
-	    fb_param.value = '1.00';
+	    fb_param.value = '0.01';
 	    fb_param.currency = 'USD';
 	    try {
 		if ( typeof fb_param!='undefined' && fb_param.pixel_id ) {
