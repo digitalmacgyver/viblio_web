@@ -62,10 +62,13 @@
   <div class="table">
       <!-- ko if: !showShared() && !isActiveFlag() -->
             
-               <form class="pull-right search">
+              <form class="pull-right search">
                   <div class="input-append">
                       <input type="text" class="span2 search-query" placeholder="Search" data-bind="value: searchQuery">
                       <button type="submit" class="btn btn-white" data-bind="click: newVidsSearch"><i class="icon-search"></i></button>
+                      <!-- ko if: searchFilterIsActive() -->
+                      <button class="btn btn-secondary" data-bind="click: showAllVideos, tooltip: {title:'Show All Vids'}"><i class="icon-remove"></i></button>
+                      <!-- /ko -->
                   </div>
               </form>
                             
@@ -131,7 +134,7 @@
     
   <div class="table allVidsInner clearfix">
       
-      <div class="dates" data-bind="if: !showShared()">
+      <div class="dates" data-bind="if: !showShared() && !searchFilterIsActive()">
         <div class="scroller">
             <div class="wrapper textShadowed">
                 <!-- ko foreach: datesLabels -->

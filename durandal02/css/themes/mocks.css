@@ -3969,7 +3969,19 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .search .btn {
     height: 40px;
     padding: 0 10px;
+    border-radius: 0;
+    margin-left: 0;
     border: 1px solid rgba(0, 0, 0, 0.3);
+    border-left: none;
+    border-right: none;
+}
+
+.search .btn:last-of-type {
+    border-right: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.search .btn-secondary {
+    border-left: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .albumThumbTitle {

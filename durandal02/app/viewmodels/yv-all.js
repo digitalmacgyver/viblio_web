@@ -171,7 +171,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             self.resetSearchPager();
             self.currentSearch = self.searchQuery();
             self.vidsSearch();
-            self.searchQuery(null);
         }
     };
     
@@ -618,6 +617,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	    t.selected( false );
 	});
         self.searchFilterIsActive( false );
+        self.searchQuery(null);
         self.tagFilterIsActive( false );
         self.selectedTags.removeAll();
         self.currentlySelectedTag('All');
