@@ -95,6 +95,14 @@ input[type="color"],
     box-sizing: border-box;
 }
 
+.input-append .add-on:last-child, 
+.input-append .btn:last-child, 
+.input-append .btn-group:last-child > .dropdown-toggle {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
 .editable-input > .dropdown-menu {
     max-height: 300px;
     overflow-y: auto;
@@ -3956,6 +3964,12 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .yv-secondary-nav .tags .btn {
     margin: 0;
+}
+
+.search .btn {
+    height: 40px;
+    padding: 0 10px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .albumThumbTitle {
