@@ -154,7 +154,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         self.searchPager = {
             next_page: 1,
-            entries_per_page: 2,
+            entries_per_page: 20,
             total_entries: -1 /* currently unknown */
         };
     };
