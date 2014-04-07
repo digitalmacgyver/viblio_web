@@ -250,6 +250,7 @@
 	},
 
 	notify: function( msg, append ) {
+            var self = this;
 	    var elem = this.element;
 	    if ( append )
 		elem.find('.vup-alert span').append(msg);
@@ -266,6 +267,9 @@
 		    elem.find('.vup-alert').unbind( 'click.vup' );
 		});
 	    });
+            $('#backHomeLink').on('click', function() {
+                self._trigger( 'close', null, null );
+            });
 	},
 
 	reset: function() {
@@ -483,7 +487,8 @@
                     self._vpin_progress -= 1;
 		    if ( self._vpin_progress == 0 || IE ) {
 			self._trigger( 'finished', null, null );
-			self.notify( 'Your uploaded videos are now being processed to find and bring out the magic!' );
+			self.notify( 'Your uploaded videos are now being processed to find and bring out the magic! We\'ll send you an email when your videos are ready.\n\
+                                      <br /><a id="backHomeLink" class="btn btn-primary" href="#/home">Back to Home</a>' );
 			elem.find( '.vup-cancel-column').empty();
 		    }
                     data.context.find(".vup-file-progress-column .bar").html( self.options.done_message );

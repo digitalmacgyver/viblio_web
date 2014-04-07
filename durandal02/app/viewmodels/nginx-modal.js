@@ -51,6 +51,7 @@ define(['lib/viblio','lib/config','plugins/dialog','durandal/events'],function(v
             });
         },
 	compositionComplete: function( view ) {
+            var self = this;
 	    this.view = view;
 	    $(view).find( '.vup' ).viblio_uploader({
 		uuid: viblio.getUser().uuid,
@@ -71,6 +72,10 @@ define(['lib/viblio','lib/config','plugins/dialog','durandal/events'],function(v
                     firstUploadComplete( true );
                 }
 		viblio.localStorage( 'firstUploadComplete', true );
+	    });
+            
+            $(view).find( '.vup' ).bind( 'viblio_uploaderclose', function() {
+                self.close();
 	    });
 
 	    $(view).find('.vup-cancel-all')
