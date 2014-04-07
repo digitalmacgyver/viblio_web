@@ -67,7 +67,9 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	    entries_per_page: 20,
 	    total_entries: -1 /* currently unknown */
 	};
-	
+        
+        self.searchPager = {};
+                	
 	// An edit/done label to use on the GUI
 	self.editLabel = ko.observable( '<i class="icon-minus"></i> Remove...' );
         
@@ -78,6 +80,11 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 return false;
             }
         });
+        
+        // Search section
+        self.searchFilterIsActive = ko.observable();
+        self.searchQuery = ko.observable(null);
+        self.currentSearch = null;
         
         events.includeIn( this );
     };    
@@ -107,6 +114,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             };
             self.videos.removeAll();
             self.tagFilterIsActive( true );
+            self.searchFilterIsActive(false);
             self.allVidsIsSelected( false );
             if (self.selectedTags().length > 1 ) {
                 self.currentlySelectedTag('Multiple');
@@ -140,6 +148,78 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         }
         self.datesLabels.push( { shortMonth: shortName, longMonth: longName, year: year, label: month, selected: ko.observable(false) } );        
     }
+    
+    allVids.prototype.resetSearchPager = function() {
+        var self = this;
+        
+        self.searchPager = {
+            next_page: 1,
+            entries_per_page: 20,
+            total_entries: -1 /* currently unknown */
+        };
+    };
+    
+    allVids.prototype.newVidsSearch = function() {
+        var self = this;
+        
+        if ( !self.searchQuery() ) {
+            return;
+        } else {
+            self.searchFilterIsActive(true);
+            self.tagFilterIsActive( false );
+            self.videos.removeAll();
+            self.resetSearchPager();
+            self.currentSearch = self.searchQuery();
+            self.vidsSearch();
+        }
+    };
+    
+    allVids.prototype.vidsSearch = function() {
+        var self = this;
+        
+        var args = {
+            q: self.currentSearch
+        };
+        self.isActiveFlag(true);
+        return system.defer( function( dfd ) {
+            if ( self.searchPager.next_page )   {
+                args.page = self.searchPager.next_page;
+                args.rows = self.searchPager.entries_per_page;
+                viblio.api( '/services/mediafile/search_by_title_or_description', args )
+                    .then( function( json ) {
+                        self.hits ( json.pager.total_entries );
+                        self.datesLabels.removeAll();
+                        self.searchPager = json.pager;
+                        json.media.forEach( function( mf ) {
+                            var m = new Mediafile( mf, { show_share_badge: true, show_delete_mode: self.deleteModeOn() } );
+                            m.on( 'mediafile:play', function( m ) {
+                                router.navigate( 'new_player?mid=' + m.media().uuid );
+                            });
+                            m.on( 'mediafile:delete', function( m ) {
+                                viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function(json) {
+                                    viblio.mpEvent( 'delete_video' );
+                                    self.videos.remove( m );
+                                    if ( json && json.contacts ) {
+                                        json.contacts.forEach( function( contact ) {
+                                            app.trigger( 'top-actor:remove', contact );
+                                        });
+                                    }
+                                });
+                            });
+                            self.videos.push(m);
+                        });
+                        dfd.resolve();
+                    });
+            }
+            else {
+                dfd.resolve();
+            }
+        }).promise().then(function(){
+            self.isActiveFlag(false);
+            self.stickyDates();
+        });    
+        
+    };
     
     allVids.prototype.tagVidsSearch = function( month, year, cid ) {
 	var self = this;
@@ -536,6 +616,8 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.tags().forEach( function( t ) {
 	    t.selected( false );
 	});
+        self.searchFilterIsActive( false );
+        self.searchQuery(null);
         self.tagFilterIsActive( false );
         self.selectedTags.removeAll();
         self.currentlySelectedTag('All');
@@ -570,7 +652,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                     self.tagVidsSearch();
                 }
             }
-        } else if ( !self.showShared() ) {
+        } else if ( !self.showShared() && !self.searchFilterIsActive() ) {
             // If a month is not selected use the search function, else use monthVidsSearch
             if( !self.aMonthIsSelected() ) {
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
@@ -581,6 +663,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                     self.monthVidsSearch( self.selectedMonth() );
                 }
             }    
+        } else {
+            if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
+                    self.vidsSearch();
+                }
         }
     };
 
