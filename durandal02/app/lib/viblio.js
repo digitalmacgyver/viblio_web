@@ -16,6 +16,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 		// Add this identity to mixpanel
 		mixpanel.identify( u.uuid );  // unique key is user uuid
 		mixpanel.register({ uuid: u.uuid }); // send user uuid on every event
+		mixpanel.alias( u.uuid ); // aliases our uuids to mixpanels uuids
 	    }
 	    if ( u.displayname != user().displayname ) {
 		user( u );
