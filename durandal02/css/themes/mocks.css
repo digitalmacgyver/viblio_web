@@ -3023,7 +3023,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .mediafile .media-share-badge {
     position: absolute;
-    right: 3px;
+    right: 0;
     padding-top: 10px;
     padding-bottom: 6px;
     padding-right: 11px;
