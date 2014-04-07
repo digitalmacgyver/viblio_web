@@ -61,42 +61,44 @@
 
   <div class="table">
       <!-- ko if: !showShared() && !isActiveFlag() -->
-            
-              <form class="pull-right search">
-                  <div class="input-append">
-                      <input type="text" class="span2 search-query" placeholder="Search" data-bind="value: searchQuery">
-                      <button type="submit" class="btn btn-white" data-bind="click: newVidsSearch"><i class="icon-search"></i></button>
-                      <!-- ko if: searchFilterIsActive() -->
-                      <button class="btn btn-secondary" data-bind="click: showAllVideos, tooltip: {title:'Show All Vids'}"><i class="icon-remove"></i></button>
-                      <!-- /ko -->
-                  </div>
-              </form>
-                            
-              <div style="display: block; text-align: center;" class="mainTitle textShadowed">
-                You have <span data-bind="text: hits"></span>
-                <span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span>
-                <!-- ko if: !tagFilterIsActive() -->
-                    <!-- ko if: searchFilterIsActive() -->
-                    that<span data-bind="text: hits() == 1 ? ' matches' : ' match'"></span> your search criteria.
-                    <!-- /ko -->
-                    <!-- ko if: !aMonthIsSelected() && !searchFilterIsActive() -->
-                        <span data-bind="text: name() ? ' of ' + name() : '' "></span> in your private Viblio Library.
-                    <!-- /ko -->
-                    <!-- ko if: aMonthIsSelected() && !searchFilterIsActive() -->
-                        <span data-bind="text: selectedMonth() == 'Missing dates' ? ' without dates ' : ' from ' + selectedMonth()"></span>.
-                    <!-- /ko -->
-                <!-- /ko -->
-                
-                <!-- ko if: tagFilterIsActive() -->
-                    <span data-bind="text: name() ? ' of ' + name() : '' "></span> that <span data-bind="text: hits() == 1 ? 'matches' : 'match'"></span> your search criteria
-                    <!-- ko if: !aMonthIsSelected() -->
-                    .    
-                    <!-- /ko -->
-                    <!-- ko if: aMonthIsSelected() -->
-                        <span data-bind="text: selectedMonth() == 'Missing dates' ? ' without dates ' : ' from ' + selectedMonth()"></span>.
-                    <!-- /ko -->
-                <!-- /ko -->
+          
+      <div class="clearfix">
+          <form class="search" data-bind="css: {active: searchQuery()}">
+              <div class="input-append">
+                  <input type="text" class="search-query" placeholder="Search" data-bind="value: searchQuery">
+                  <button type="submit" class="btn btn-white" data-bind="click: newVidsSearch"><i class="icon-search"></i></button>
+                  <!-- ko if: searchFilterIsActive() -->
+                  <button class="btn btn-secondary" data-bind="click: showAllVideos, tooltip: {title:'Show All Vids'}"><i class="icon-remove"></i></button>
+                  <!-- /ko -->
               </div>
+          </form>
+
+          <div style="display: block; text-align: center;" class="mainTitle textShadowed">
+            You have <span data-bind="text: hits"></span>
+            <span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span>
+            <!-- ko if: !tagFilterIsActive() -->
+                <!-- ko if: searchFilterIsActive() -->
+                that<span data-bind="text: hits() == 1 ? ' matches' : ' match'"></span> your search criteria.
+                <!-- /ko -->
+                <!-- ko if: !aMonthIsSelected() && !searchFilterIsActive() -->
+                    <span data-bind="text: name() ? ' of ' + name() : '' "></span> in your private Viblio Library.
+                <!-- /ko -->
+                <!-- ko if: aMonthIsSelected() && !searchFilterIsActive() -->
+                    <span data-bind="text: selectedMonth() == 'Missing dates' ? ' without dates ' : ' from ' + selectedMonth()"></span>.
+                <!-- /ko -->
+            <!-- /ko -->
+
+            <!-- ko if: tagFilterIsActive() -->
+                <span data-bind="text: name() ? ' of ' + name() : '' "></span> that <span data-bind="text: hits() == 1 ? 'matches' : 'match'"></span> your search criteria
+                <!-- ko if: !aMonthIsSelected() -->
+                .    
+                <!-- /ko -->
+                <!-- ko if: aMonthIsSelected() -->
+                    <span data-bind="text: selectedMonth() == 'Missing dates' ? ' without dates ' : ' from ' + selectedMonth()"></span>.
+                <!-- /ko -->
+            <!-- /ko -->
+          </div>
+      </div>
                
       <!-- /ko -->
 
@@ -134,7 +136,7 @@
     
   <div class="table allVidsInner clearfix">
       
-      <div class="dates" data-bind="if: !showShared() && !searchFilterIsActive()">
+      <div class="dates" data-bind="visible: !showShared() && !searchFilterIsActive()">
         <div class="scroller">
             <div class="wrapper textShadowed">
                 <!-- ko foreach: datesLabels -->
