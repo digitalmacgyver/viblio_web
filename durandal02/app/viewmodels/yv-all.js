@@ -216,7 +216,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             }
         }).promise().then(function(){
             self.isActiveFlag(false);
-            self.stickyDates();
+            //self.stickyDates();
         });    
         
     };
