@@ -157,7 +157,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
         
         localStorage: function( key, val ) {
             var deferred = $.Deferred();
-            
+            key = user().uuid + ':' + key;
             if ( val ) {
                 localStorage.setItem( key, val );
                 deferred.resolve();
