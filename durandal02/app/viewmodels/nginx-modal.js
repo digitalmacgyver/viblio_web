@@ -70,6 +70,7 @@ define(['lib/viblio','lib/config','plugins/dialog','durandal/events'],function(v
                 if( !firstUploadMessageHasBeenShown() ) {
                     firstUploadComplete( true );
                 }
+                viblio.mpEvent( 'ui_upload_complete' );
 		viblio.localStorage( 'firstUploadComplete', true );
 	    });
 
