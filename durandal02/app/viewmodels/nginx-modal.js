@@ -62,6 +62,7 @@ define(['lib/viblio','lib/config','plugins/dialog','durandal/events'],function(v
 
 	    $(view).find( '.vup' ).bind( 'viblio_uploaderstarted', function() {
 		viblio.mpEvent( 'ui_upload_started' );
+                viblio.mpPeopleIncrement( 'UI uploads started' );
                 viblio.mpPeopleSet({'Last Video Upload Date': new Date() });
 	    });
             
@@ -71,6 +72,7 @@ define(['lib/viblio','lib/config','plugins/dialog','durandal/events'],function(v
                     firstUploadComplete( true );
                 }
                 viblio.mpEvent( 'ui_upload_complete' );
+                viblio.mpPeopleIncrement( 'UI uploads completed' );
 		viblio.localStorage( 'firstUploadComplete', true );
 	    });
 
