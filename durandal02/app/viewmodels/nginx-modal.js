@@ -62,12 +62,18 @@ define(['lib/viblio','lib/config','plugins/dialog','durandal/events'],function(v
 	    });
 
 	    $(view).find( '.vup' ).bind( 'viblio_uploaderstarted', function() {
-		viblio.mpEvent( 'upload_started' );
+		viblio.mpEvent( 'ui_upload_started' );
+                viblio.mpPeopleIncrement( 'UI uploads started' );
                 viblio.mpPeopleSet({'Last Video Upload Date': new Date() });
 	    });
             
             //After first successful upload mark 'firstUploadComplete' as true 
-	    $(view).find( '.vup' ).bind( 'viblio_uploaderfinished', function() {
+	    $(view).find( '.vup' ).bind( 'viblio_uploadercompleted', function() {
+                viblio.mpEvent( 'ui_upload_complete' );
+                viblio.mpPeopleIncrement( 'UI uploads completed' );
+	    });
+            
+            $(view).find( '.vup' ).bind( 'viblio_uploaderfinished', function() {
                 if( !firstUploadMessageHasBeenShown() ) {
                     firstUploadComplete( true );
                 }

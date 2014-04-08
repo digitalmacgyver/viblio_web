@@ -485,6 +485,7 @@
 		done: function(e, data) {
 		    $(data.context[0]).data( 'done', true );
                     self._vpin_progress -= 1;
+                    self._trigger( 'completed', null, null );
 		    if ( self._vpin_progress == 0 || IE ) {
 			self._trigger( 'finished', null, null );
 			self.notify( 'Your uploaded videos are now being processed to find and bring out the magic! We\'ll send you an email when your videos are ready.\n\
