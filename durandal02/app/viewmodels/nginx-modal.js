@@ -67,12 +67,15 @@ define(['lib/viblio','lib/config','plugins/dialog','durandal/events'],function(v
 	    });
             
             //After first successful upload mark 'firstUploadComplete' as true 
-	    $(view).find( '.vup' ).bind( 'viblio_uploaderfinished', function() {
+	    $(view).find( '.vup' ).bind( 'viblio_uploadercompleted', function() {
+                viblio.mpEvent( 'ui_upload_complete' );
+                viblio.mpPeopleIncrement( 'UI uploads completed' );
+	    });
+            
+            $(view).find( '.vup' ).bind( 'viblio_uploaderfinished', function() {
                 if( !firstUploadMessageHasBeenShown() ) {
                     firstUploadComplete( true );
                 }
-                viblio.mpEvent( 'ui_upload_complete' );
-                viblio.mpPeopleIncrement( 'UI uploads completed' );
 		viblio.localStorage( 'firstUploadComplete', true );
 	    });
 
