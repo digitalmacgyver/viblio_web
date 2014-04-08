@@ -61,7 +61,7 @@ define(['lib/viblio','lib/config','plugins/dialog','durandal/events'],function(v
 	    });
 
 	    $(view).find( '.vup' ).bind( 'viblio_uploaderstarted', function() {
-		viblio.mpEvent( 'upload_started' );
+		viblio.mpEvent( 'ui_upload_started' );
                 viblio.mpPeopleSet({'Last Video Upload Date': new Date() });
 	    });
             
