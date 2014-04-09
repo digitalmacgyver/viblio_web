@@ -1145,6 +1145,10 @@ input:-moz-placeholder {
     padding-bottom: 10px;
 }
 
+.kickstarter-Wrap.whiteText {
+   color: white; 
+}
+
 /* When nav bar is collapsed */
 @media (max-width: 900px) {
     .kickstarter-Wrap {
@@ -4350,10 +4354,9 @@ div.fstrip {
     //margin-bottom: 50px;
 }
 
-
 .whatWhoHow .what,
 .whatWhoHow .how,
-.whatWhoHow .vote {
+.vote {
     width: 80%;
     max-width: 1000px;
     margin: 50px auto;
@@ -4366,7 +4369,7 @@ div.fstrip {
 
 .whatWhoHow .what .bottomBorder-Thick,
 .whatWhoHow .how form,
-.whatWhoHow .vote form {
+.vote form {
     padding: 50px;
     margin-bottom: 0;
 }
@@ -4578,4 +4581,63 @@ div.fstrip {
     #TOS-page .mocksWhiteBG {
 	padding: 20px;
     }
+}
+
+/************ Kickstarter ***************/
+.ksLanding {
+    width: 100%;
+    height: 100%;
+}
+
+.ksLanding .content {
+    width: 80%;
+    max-width: 1000px;
+    margin: 50px auto;    
+}
+
+.ksLanding .paddedDiv {
+    padding: 50px;
+}
+
+.ksLanding strong {
+    color: black;
+}
+
+.ksLanding button {
+    box-shadow: 0 0 6px 1px rgba(0,0,0,0.3);
+    padding: 8px 20px;
+}
+
+button.facebook,
+button.facebook:hover,
+button.facebook:focus,
+button.facebook:active {
+    color: white;
+    background-color: rgb(59, 89, 152);
+}
+
+button.twitter,
+button.twitter:hover,
+button.twitter:focus,
+button.twitter:active {
+    color: white;
+    background-color: rgb(85, 172, 238);
+}
+
+button.linkedin,
+button.linkedin:hover,
+button.linkedin:focus,
+button.linkedin:active {
+    color: white;
+    background-color: rgb(14, 118, 168);
+}
+
+.ksLanding button:hover {
+    -moz-box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
+    -webkit-box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
+    box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
+}
+
+.ksThankYouModal {
+    position: relative;
 }
