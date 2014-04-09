@@ -38,6 +38,17 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
     router.guardRoute = function( instance, instruction ) {
 	// Log it to analytics
 	viblio.mpPage( instruction.config.title, '/' + instruction.config.route ); 
+
+	// #logout will log you out.
+	if ( instruction.config.route == 'logout' ) {
+	    return system.defer( function( dfd ) {
+		viblio.api( '/services/na/logout' ).then( function() {
+		    viblio.setUser( null );
+		    dfd.resolve( 'login' );
+		});
+	    });
+	}
+
 	if ( instruction.config.authenticated ) {
 	    // If the route is marked authenticated, then do a server
 	    // round trip to make sure we have a session.  If we do
@@ -67,7 +78,11 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	}
         else {
 	    // Not authenticated, so go!
-	    if ( instruction.config.route != 'login' && instruction.config.route != 'register' )
+	    if ( instruction.config.route != 'login' &&
+		 instruction.config.route != 'signup' && 
+		 instruction.config.route != 'TOS' &&
+		 instruction.config.route != 'forgotPassword' &&
+		 instruction.config.route != 'register' )
 		viblio.setLastAttempt( null );
 
 	    if ( instruction.config.route == '' && 
@@ -119,6 +134,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 
             { route: 'login',              moduleId: 'login',              title: 'Log in to your Viblio account',
 	      showFooter: ( small_screen ? false : true ), nav: false,   authenticated: false,  header: ( small_screen ? null : landing_header ) },
+	    { route: 'logout', moduleId: 'logout', nav: false },
 
             { route: 'signup',              moduleId: 'signup',              title: 'Sign up for a Viblio account',
 	      showFooter: ( small_screen ? false : true ), nav: false,   authenticated: false,  header: ( small_screen ? null : landing_header ) },
