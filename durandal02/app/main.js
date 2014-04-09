@@ -44,6 +44,11 @@ define(['viewmodels/header', 'viewmodels/landing_header', 'durandal/app', 'duran
     // Create a custom, animated dialog type
     dialog.addContext( 'animated', animatedDialogContext );
 
+    // Set a bit that the rest of the app can use indicating if
+    // the user is accessing us from a small screen device (like
+    // a phone).  This bit can be used to make radical decisions.
+    app.small_screen = ( head.mobile && (head.screen.width <= 480) );
+
     app.start().then(function() {
         //Replace 'viewmodels' in the moduleId with 'views' to locate the view.
         //Look for partial views in a 'views' folder in the root.

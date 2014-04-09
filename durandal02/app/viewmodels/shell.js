@@ -3,6 +3,8 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
     var header = ko.observable( );
     var location = ko.observable();
     var showFooter = ko.observable();
+
+    var small_screen = app.small_screen;
     
     router.on('router:route:activating').then(function(instance, instruction, router){
         location(instruction.config.title);
@@ -116,10 +118,10 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      showFooter: true, nav: false,    authenticated: true,   header: page_header },
 
             { route: 'login',              moduleId: 'login',              title: 'Log in to your Viblio account',
-	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
+	      showFooter: ( small_screen ? false : true ), nav: false,   authenticated: false,  header: ( small_screen ? null : landing_header ) },
 
             { route: 'signup',              moduleId: 'signup',              title: 'Sign up for a Viblio account',
-	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
+	      showFooter: ( small_screen ? false : true ), nav: false,   authenticated: false,  header: ( small_screen ? null : landing_header ) },
 
             { route: 'confirmed',          moduleId: 'confirmed',          title: 'Account Confirmation',
 	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
@@ -152,19 +154,22 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      showFooter: false, nav: false,   authenticated: true,   header: page_header },
 
             { route: 'forgotPassword',     moduleId: 'forgotPassword',     title: 'Forgot your Password?',
-	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
+	      showFooter: ( small_screen ? false : true ), nav: false,   authenticated: false,  header: ( small_screen ? null : landing_header ) },
 
             { route: 'web_player',         moduleId: 'pp',         title: 'Video Player',
 	      showFooter: false, nav: false,   authenticated: false,   header: conditional_header },
+
+            { route: 'phone',         moduleId: 'phone',         title: 'Video Player',
+	      showFooter: false, nav: false,   authenticated: false,   header: null },
           
             { route: 'loggedOut',           moduleId: 'loggedOut',         title: 'Log out successful',
 	      showFooter: true, nav: false,   authenticated: true,   header: landing_header },
 
             { route: 'register',           moduleId: 'register',           title: 'Registration',
-	      showFooter: true, nav: false,   authenticated: false,   header: landing_header },
+	      showFooter: ( small_screen ? false : true), nav: false,   authenticated: false,   header: ( small_screen ? null : landing_header ) },
           
             { route: 'TOS',           moduleId: 'TOS',           title: 'Viblio Terms of Service',
-	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
+	      showFooter: true, nav: false,   authenticated: false,   header: ( small_screen ? null : conditional_header ) },
           
             { route: 'getApp',           moduleId: 'getApp',     title: 'Download Viblio',
                 showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
@@ -204,6 +209,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             //You can add custom options too. Also, it returns a promise for the user's response.
             app.showMessage('Search not yet implemented...');
         },
+
         activate: function ( args ) {
 	    /* Application Entry
 	       Check with the main server if this user is logged in.  If not, take them to

@@ -1273,6 +1273,12 @@ input:-moz-placeholder {
     font-weight: 600;
 }
 
+.signupLink {
+    margin-top: 20px; 
+    margin-bottom: 0px; 
+    font-size: 23px;
+}
+
 #loginArea form {
     padding: 20px 52px 40px;
 }
@@ -4406,5 +4412,146 @@ div.fstrip {
     .nav-tabs > li > a:focus {
         z-index: 2;
         border-color: #ddd;
+    }
+}
+
+/**
+   The iPhone interface, when someone hits the site from
+   a share link on their mobile phone.
+**/
+.videocontent {
+    text-align: center;
+    position: relative;
+    width: 100%;
+    background: black;
+}
+.video-js {
+    position: relative;
+}
+.phone-video-finished {
+    z-index: 10000; 
+    display: none; 
+    position: absolute; 
+    top: 0; left: 0;
+    background-color: white;
+}
+
+.phone-video-finished > div {
+    padding: 20px;
+}
+ 
+/* For iPhone login, signup and register pages.  Alll so if we 
+   share a video and the sharee opens on a iPhone, we get a reasonable
+   experience */
+@media (max-width: 480px) {
+    .landingHeaderTitle {
+	font-size: 32px;
+	padding: 12px 20px 6px;
+    }
+    .orangeBG-Header {
+	height: 6px;
+    }
+    #login-page .content-Wrap {
+	padding-top: 12px;
+    }
+    #forgotPassword-Wrap .content-Wrap {
+	padding-top: 12px;
+	margin-top: 0;
+    }
+    #fbBtn-Wrap {
+	padding: 24px 0;
+    }
+    #facebookLoginBtn {
+	font-size: 17px;
+	max-width: 87%;
+    }
+    #facebookLoginBtn img {
+	margin: 0 25px 0 28px;
+    }
+    #or-Wrap p {
+	font-size: 20px;
+    }
+    #loginArea form {
+	padding: 2px 20px 6px;
+    }
+    .signupLink {
+	margin-top: 2px;
+	font-size: 20px;
+    }
+    #login-page .content-Wrap > div,
+    #register-page .content-Wrap > div,
+    #forgotPassword-Wrap .content-Wrap > div {
+	margin-bottom: 0;
+    }
+    .page-host {
+	min-height: inherit;
+    }
+    #forgotPassword-Wrap .content-Wrap .paddedDiv:first-of-type {
+	padding-top: 19px;
+    }
+    #forgotPassword-Wrap .content-Wrap .paddedDiv {
+	padding: 2px 20px 40px;
+    }
+
+    #register-page .content-Wrap {
+	padding-top: 0;
+	max-width: inherit;
+	width: inherit;
+    }
+    #register-Wrap, #videoPoster-Wrap, #register-page #loginArea {
+	display: block;
+	width: inherit;
+    }
+    #videoPoster-Wrap {
+	padding: 15px 20px 10px;
+    }
+    #register-page .mediafile {
+	width: 150px;
+	margin: 5px 0;
+	padding-right: 14px;
+	float: left;
+    }
+    #register-page .mediafile img {
+	height: 113px;
+    }
+    #videoPoster-Wrap p {
+	margin: 5px 0 0 0;
+    }
+    #register-page .mediafile .information {
+	height: 29px;
+	padding: 5px 2px;
+    }
+    #register-page .mediafile .information .aux {
+	width: 29px;
+	height: 29px;
+    }
+    #register-page .mediafile .information .aux img {
+	width: 17px;
+	height: 11px;
+    }
+    #register-page .mediafile .information .aux span {
+	font-size: 14px;
+    }
+    #register-page .truncate {
+	width: 109px;
+    }
+    #register-Wrap #loginArea form {
+	padding-bottom: 20px;
+    }
+    #toLogin {
+	margin: 15px 0 15px;
+    }
+    #TOS-page h2 {
+	font-size: 18.5px;
+    }
+    .TOS-PP-header a {
+	margin: 0 2px;
+    }
+    #TOS-page .title-Wrap {
+	padding: 2px;
+	margin-bottom: 12px;
+    }
+    #TOS-page .mocksWhiteBG {
+	padding: 20px;
     }
 }
