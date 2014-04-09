@@ -3972,6 +3972,30 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     margin: 0;
 }
 
+.search {
+    position: absolute;
+    left: 100%;
+    margin-left: -243px;
+    margin-bottom: 0;
+    float: right;
+}
+
+.search.active {
+    margin-left: -277px;
+}
+
+@media (max-width: 1300px) {
+    .search {
+        margin-left: 0;
+        position: static;
+        text-align: center;
+        float: none;
+    }
+    .search.active {
+        margin-left: 0;
+    }
+}
+
 .search .btn {
     height: 40px;
     padding: 0 10px;
