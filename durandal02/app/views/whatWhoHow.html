@@ -66,7 +66,7 @@
         </div>
     <!-- /ko --> 
     
-    <div class='vote mocksWhiteBG'>
+    <!--<div class='vote mocksWhiteBG'>
         <form id='activityForm' class="bottomBorder-Thick">
             <h3 class="centered textShadowed">Vote on which activity we should add to our library to automatically tag in videos!</h3>
             <br />
@@ -78,14 +78,14 @@
             <select name='activityList' form='activityForm' data-bind="value: chosenVote">
                 <option class="opt-group-header">Choose...</option>
                 <!-- ko foreach: options -->
-                    <option class="opt-group-header" disabled>---------------------------------------</option>
+                    <!--<option class="opt-group-header" disabled>---------------------------------------</option>
                     <option class="opt-group-header" data-bind="text: $data.name" disabled></option>
                     <option class="opt-group-header" disabled>---------------------------------------</option>
                     <!-- ko foreach: $data.list -->
-                        <option data-bind="text: $data, value: $data"></option>
+                        <!--<option data-bind="text: $data, value: $data"></option>
                     <!-- /ko -->
                 <!-- /ko -->
-                <option class="opt-group-header" disabled>---------------------------------------</option>
+                <!--<option class="opt-group-header" disabled>---------------------------------------</option>
                 <option value="other">Other</option>
             </select>
             
@@ -98,10 +98,7 @@
             </div>
             <br />            
             <button type="submit" class="btn btn-secondary btn-small" data-bind="click: send_vote, enable: activityFormReady">Submit</button>
-        </form>
-        
-        
-        
-    </div>
+        </form>       
+    </div>-->
     
 </div>

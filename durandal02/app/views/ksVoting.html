@@ -1,0 +1,43 @@
+<style>
+    body {
+        background-color: rgb(239,85,65);
+    }
+</style>
+<div class='vote mocksWhiteBG'>
+    <form id='activityForm' class="bottomBorder-Thick">
+        <h3 class="centered textShadowed">Vote on which activity we should add to our library to automatically tag in videos!</h3>
+        <br />
+        <label for="voteEmail">Email *required</label>
+                <input type="email" data-bind="value: voteEmail, valueUpdate: 'keyup'" 
+                    name="voteEmail" class="email" id="vote_email" 
+                    placeholder="Enter your email address" required /><br />
+        <label for="voteCode">Kickstarter Backer Code *required</label>
+                <input type="text" data-bind="value: voteCode, valueUpdate: 'keyup'" 
+                    name="voteCode" class="text" id="vote_code" 
+                    placeholder="Kickstarter Backer Code" required /><br />        
+        <label for="activityList">Chosen Vote *required</label>
+        <select name='activityList' form='activityForm' data-bind="value: chosenVote">
+            <option class="opt-group-header">Choose...</option>
+            <!-- ko foreach: options -->
+                <option class="opt-group-header" disabled>---------------------------------------</option>
+                <option class="opt-group-header" data-bind="text: $data.name" disabled></option>
+                <option class="opt-group-header" disabled>---------------------------------------</option>
+                <!-- ko foreach: $data.list -->
+                    <option data-bind="text: $data, value: $data"></option>
+                <!-- /ko -->
+            <!-- /ko -->
+            <option class="opt-group-header" disabled>---------------------------------------</option>
+            <option value="other">Other</option>
+        </select>
+
+        <div data-bind="visible: chosenVote() == 'other' ">
+            Please enter your suggestion: *required<br />
+            <input type="text" data-bind="value: ownActivity, valueUpdate: 'keydown'" 
+                    name="ownActivity" class="text" id="activityForm_ownActivity" 
+                    placeholder="20 Characters max" maxLength="20"/>
+            <span data-bind="text: ownActivityCharsLeft"></span> characters left
+        </div>
+        <br />            
+        <button type="submit" class="btn btn-secondary btn-small" data-bind="click: send_vote, enable: activityFormReady">Submit</button>
+    </form>       
+</div>

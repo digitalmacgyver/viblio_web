@@ -1,4 +1,18 @@
-define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','viewmodels/conditional_header','lib/viblio','lib/customDialogs','viewmodels/emailtest','lib/config','viewmodels/footer','facebook'], function (router, app, system, page_header, landing_header, conditional_header, viblio, customDialogs,emailtest,config,footer) {
+define(['plugins/router',
+        'durandal/app',
+        'durandal/system',
+        'viewmodels/header',
+        'viewmodels/landing_header',
+        'viewmodels/conditional_header',
+        'viewmodels/ks_landing_header',
+        'lib/viblio',
+        'lib/customDialogs',
+        'viewmodels/emailtest',
+        'lib/config',
+        'viewmodels/footer',
+        'facebook'], 
+    
+    function (router, app, system, page_header, landing_header, conditional_header, ks_landing_header, viblio, customDialogs,emailtest,config,footer) {
 
     var header = ko.observable( );
     var location = ko.observable();
@@ -188,7 +202,13 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
           
             { route: 'whatWhoHow',   moduleId: 'whatWhoHow',     title: 'What, Who and How',
-	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header }
+	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
+          
+            { route: 'ksLanding',        moduleId: 'ksLanding',     title: 'Thanks for supporting VIBLIO',
+	      showFooter: true, nav: false,   authenticated: false,   header: ks_landing_header },
+          
+            { route: 'ksVoting',        moduleId: 'ksVoting',     title: 'VIBLIO Activity Vote',
+	      showFooter: true, nav: false,   authenticated: false,   header: ks_landing_header }
 
         ]).buildNavigationModel();
     }
