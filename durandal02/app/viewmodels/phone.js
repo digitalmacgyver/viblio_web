@@ -80,6 +80,7 @@ function(app,system,router,config,viblio,customDialogs) {
 		$("#m1").css( 'display', 'block' );
 	    });
 	    resize();
+	    document.getElementById('videojs').setAttribute('poster', mf.views.poster.url );
 	    $(window).resize( function() {
 		setTimeout( function() {
 		    resize();
