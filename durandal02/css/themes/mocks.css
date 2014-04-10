@@ -4362,8 +4362,7 @@ div.fstrip {
 }
 
 .whatWhoHow .what .bottomBorder-Thick,
-.whatWhoHow .how form,
-.vote form {
+.whatWhoHow .how form {
     padding: 50px;
     margin-bottom: 0;
 }
@@ -4437,26 +4436,33 @@ div.fstrip {
 }
 
 /************ Kickstarter ***************/
-.ksLanding {
-    width: 100%;
-    height: 100%;
-}
 
-.ksLanding .content {
+.ksLanding .content,
+.ksVoting .content {
     width: 80%;
     max-width: 1000px;
     margin: 50px auto;    
 }
 
-.ksLanding .paddedDiv {
+.ksLanding .paddedDiv,
+.ksVoting .paddedDiv {
     padding: 50px;
 }
 
-.ksLanding strong {
+.ksLanding strong,
+.ksVoting strong {
     color: black;
 }
 
-.ksLanding button {
+.ksbody {
+    font-weight: 400;
+    line-height: 1.25;
+}
+
+.ksLanding .actions button,
+.ksVoting .actions button {
+    -moz-box-shadow: 0 0 6px 1px rgba(0,0,0,0.3);
+    -webkit-box-shadow: 0 0 6px 1px rgba(0,0,0,0.3);
     box-shadow: 0 0 6px 1px rgba(0,0,0,0.3);
     padding: 8px 20px;
 }
@@ -4493,4 +4499,62 @@ button.linkedin:active {
 
 .ksThankYouModal {
     position: relative;
+}
+
+.ksLanding h1,
+.ksVoting  h1 {
+    color: #fff;
+    padding: 10px;
+    margin: 0px 0px 30px 0px;
+    text-align: center;
+}
+
+.ksLanding h3,
+.ksVoting  h3 {
+    color: #000;
+    margin: 0px 0px 20px 0px;
+    padding: 0px;
+}
+
+.ksLanding .actions,
+.ksVoting .actions {
+    display: table;
+    padding: 0px;
+    overflow: hidden;
+    list-style-type: none;
+}
+
+.ksLanding .actions li,
+.ksVoting .actions li {
+    display: table-cell;
+    width: 33%;
+    padding: 10px;
+    text-align: center;
+    border-right: 1px solid rgb(187, 187, 187);
+    border-left: 1px solid rgb(187, 187, 187);
+}
+
+.ksLanding .actions li:nth-child(1),
+.ksVoting .actions li:nth-child(1){
+    border-left: none;
+}
+
+.ksLanding .actions li:nth-child(2),
+.ksVoting .actions li:nth-child(2){
+    width: 34%;
+}
+
+.ksLanding .actions li:nth-child(3),
+.ksVoting .actions li:nth-child(3){
+    border-right: none;
+}
+
+#activityForm .control-group {
+    display: inline-block;
+    margin-right: 34px;
+}
+
+#activityForm button {
+    padding: 8px 20px;
+    margin-bottom: 10px;
 }
