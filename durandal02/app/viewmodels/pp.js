@@ -729,6 +729,9 @@ define(["durandal/app",
 	    if ( args && args.mid ) {
 		if ( route == 'web_player' ) {
 		    return system.defer( function( dfd ) {
+			// If we're on a phone-size screen, go to a special
+			// page for playing video without all the crift.
+			if ( app.small_screen ) return dfd.resolve({redirect:'phone?mid='+args.mid});
 			viblio.setLastAttempt( 'web_player?mid=' + args.mid );
 			viblio.api( '/services/na/media_shared', args, 
 				    function( error ) {
@@ -742,7 +745,7 @@ define(["durandal/app",
 					    var mf = data.media;
 					    // Set now playing
 					    playing( new Mediafile( mf ) );
-					    title( mf.title || 'Untitled' );
+				    title( mf.title || 'Untitled' );
 					    description( mf.description || '' );
 
 					    if ( mf.lat )
