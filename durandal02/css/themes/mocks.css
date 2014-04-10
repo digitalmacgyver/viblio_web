@@ -4460,11 +4460,17 @@ div.fstrip {
     display: none; 
     position: absolute; 
     top: 0; left: 0;
-    background-color: white;
 }
 
-.phone-video-finished > div {
-    padding: 20px;
+.phone-video-finished .landingHeaderTitle {
+    margin: 8px;
+    margin-top: 20px;
+}
+
+@media screen and (orientation:landscape) {
+    .phone-video-finished .landingHeaderTitle {
+	font-size: 28px;
+    }
 }
  
 /* For iPhone login, signup and register pages.  Alll so if we 

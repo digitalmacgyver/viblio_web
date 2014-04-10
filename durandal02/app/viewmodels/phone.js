@@ -9,7 +9,7 @@ function(app,system,router,config,viblio,customDialogs) {
     var height  = ko.observable();
     var poster  = ko.observable();
     var src  = ko.observable();
-    var player;
+    var player, mf;
 
     function resize() {
 	var width = $(window).width();
@@ -27,6 +27,9 @@ function(app,system,router,config,viblio,customDialogs) {
 	$("#videojs").css( 'height', height + 'px' );
 	$("#videojs").css( 'top', top + 'px' );
 	$(".videocontent").height( $(window).height() );
+
+	$("#m1").width( $(window).width() );
+	$("#m1").height( $(window).height() );
     }
 
     return {
@@ -46,12 +49,13 @@ function(app,system,router,config,viblio,customDialogs) {
 			    dfd.resolve({redirect:'login'});
 			}
 			else {
-			    var mf = data.media;
-			    
+			    mf = data.media;
 			    width( head.screen.width );
 			    height( head.screen.height );
 			    poster( mf.views.poster.url );
+			    //poster( config.site_server + '/s/ip/' + mf.views.poster.uri );
 			    src( mf.views.main.url );
+			    viblio.mpEvent( 'mobile_share_view' );
 			    
 			    dfd.resolve( true );
 			}
@@ -66,6 +70,7 @@ function(app,system,router,config,viblio,customDialogs) {
 
 	compositionComplete: function() {
 	    var self = this;
+
 
 	    player = $("#videojs");
 	    player.on( 'ended', function() {
