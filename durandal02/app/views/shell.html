@@ -1,23 +1,13 @@
 <div>
+  <!-- ko if: header -->
   <div data-bind="compose:header"></div>
-  <div class="scrollBarContainer container-fluid page-host">
-      <div id="innerPadding" data-bind="router: { model: router.activeItem, afterCompose: router.afterCompose}">
-          <!-- innerPadding needed in order to keep outer and inner element scrollbars from overlapping -->
-      </div>
-  </div>
-  <!-- ko if: showFooter() -->
-    <!-- ko compose: footer --><!-- /ko -->
   <!-- /ko -->
-</div>
-<!--
-<div class="feedback-slide">
-  <div class="feedback-inner">
-    <div>Feedback?</div>
-    <div>
-      <a data-bind="attr:{href:feedback_email}">
-	Great! Send us some email...
-      </a>
+  <div class="scrollBarContainer container-fluid page-host">
+    <div id="innerPadding" data-bind="router: { model: router.activeItem, afterCompose: router.afterCompose}">
+      <!-- innerPadding needed in order to keep outer and inner element scrollbars from overlapping -->
     </div>
   </div>
+  <!-- ko if: showFooter() -->
+  <!-- ko compose: footer --><!-- /ko -->
+  <!-- /ko -->
 </div>
--->

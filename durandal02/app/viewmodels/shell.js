@@ -1,8 +1,24 @@
-define(['plugins/router','durandal/app','durandal/system','viewmodels/header','viewmodels/landing_header','viewmodels/conditional_header','lib/viblio','lib/customDialogs','viewmodels/emailtest','lib/config','viewmodels/footer','facebook'], function (router, app, system, page_header, landing_header, conditional_header, viblio, customDialogs,emailtest,config,footer) {
+define(['plugins/router',
+        'durandal/app',
+        'durandal/system',
+        'viewmodels/header',
+        'viewmodels/landing_header',
+        'viewmodels/conditional_header',
+        'viewmodels/ks_landing_header',
+        'lib/viblio',
+        'lib/customDialogs',
+        'viewmodels/emailtest',
+        'lib/config',
+        'viewmodels/footer',
+        'facebook'], 
+    
+    function (router, app, system, page_header, landing_header, conditional_header, ks_landing_header, viblio, customDialogs,emailtest,config,footer) {
 
     var header = ko.observable( );
     var location = ko.observable();
     var showFooter = ko.observable();
+
+    var small_screen = app.small_screen;
     
     router.on('router:route:activating').then(function(instance, instruction, router){
         location(instruction.config.title);
@@ -36,6 +52,17 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
     router.guardRoute = function( instance, instruction ) {
 	// Log it to analytics
 	viblio.mpPage( instruction.config.title, '/' + instruction.config.route ); 
+
+	// #logout will log you out.
+	if ( instruction.config.route == 'logout' ) {
+	    return system.defer( function( dfd ) {
+		viblio.api( '/services/na/logout' ).then( function() {
+		    viblio.setUser( null );
+		    dfd.resolve( 'login' );
+		});
+	    });
+	}
+
 	if ( instruction.config.authenticated ) {
 	    // If the route is marked authenticated, then do a server
 	    // round trip to make sure we have a session.  If we do
@@ -65,7 +92,11 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	}
         else {
 	    // Not authenticated, so go!
-	    if ( instruction.config.route != 'login' && instruction.config.route != 'register' )
+	    if ( instruction.config.route != 'login' &&
+		 instruction.config.route != 'signup' && 
+		 instruction.config.route != 'TOS' &&
+		 instruction.config.route != 'forgotPassword' &&
+		 instruction.config.route != 'register' )
 		viblio.setLastAttempt( null );
 
 	    if ( instruction.config.route == '' && 
@@ -116,10 +147,11 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      showFooter: true, nav: false,    authenticated: true,   header: page_header },
 
             { route: 'login',              moduleId: 'login',              title: 'Log in to your Viblio account',
-	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
+	      showFooter: ( small_screen ? false : true ), nav: false,   authenticated: false,  header: ( small_screen ? null : landing_header ) },
+	    { route: 'logout', moduleId: 'logout', nav: false },
 
             { route: 'signup',              moduleId: 'signup',              title: 'Sign up for a Viblio account',
-	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
+	      showFooter: ( small_screen ? false : true ), nav: false,   authenticated: false,  header: ( small_screen ? null : landing_header ) },
 
             { route: 'confirmed',          moduleId: 'confirmed',          title: 'Account Confirmation',
 	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
@@ -152,19 +184,22 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      showFooter: false, nav: false,   authenticated: true,   header: page_header },
 
             { route: 'forgotPassword',     moduleId: 'forgotPassword',     title: 'Forgot your Password?',
-	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
+	      showFooter: ( small_screen ? false : true ), nav: false,   authenticated: false,  header: ( small_screen ? null : landing_header ) },
 
             { route: 'web_player',         moduleId: 'pp',         title: 'Video Player',
 	      showFooter: false, nav: false,   authenticated: false,   header: conditional_header },
+
+            { route: 'phone',         moduleId: 'phone',         title: 'Video Player',
+	      showFooter: false, nav: false,   authenticated: false,   header: null },
           
             { route: 'loggedOut',           moduleId: 'loggedOut',         title: 'Log out successful',
 	      showFooter: true, nav: false,   authenticated: true,   header: landing_header },
 
             { route: 'register',           moduleId: 'register',           title: 'Registration',
-	      showFooter: true, nav: false,   authenticated: false,   header: landing_header },
+	      showFooter: ( small_screen ? false : true), nav: false,   authenticated: false,   header: ( small_screen ? null : landing_header ) },
           
             { route: 'TOS',           moduleId: 'TOS',           title: 'Viblio Terms of Service',
-	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
+	      showFooter: true, nav: false,   authenticated: false,   header: ( small_screen ? null : conditional_header ) },
           
             { route: 'getApp',           moduleId: 'getApp',     title: 'Download Viblio',
                 showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
@@ -188,7 +223,13 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
 	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
           
             { route: 'whatWhoHow',   moduleId: 'whatWhoHow',     title: 'What, Who and How',
-	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header }
+	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
+          
+            { route: 'ksLanding',        moduleId: 'ksLanding',     title: 'Thanks for supporting VIBLIO',
+	      showFooter: true, nav: false,   authenticated: false,   header: ks_landing_header },
+          
+            { route: 'ksVoting',        moduleId: 'ksVoting',     title: 'VIBLIO Activity Vote',
+	      showFooter: true, nav: false,   authenticated: false,   header: ks_landing_header }
 
         ]).buildNavigationModel();
     }
@@ -204,6 +245,7 @@ define(['plugins/router','durandal/app','durandal/system','viewmodels/header','v
             //You can add custom options too. Also, it returns a promise for the user's response.
             app.showMessage('Search not yet implemented...');
         },
+
         activate: function ( args ) {
 	    /* Application Entry
 	       Check with the main server if this user is logged in.  If not, take them to
