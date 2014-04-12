@@ -36,6 +36,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	var viblio = require( 'lib/viblio' );
 	viblio.api( '/services/mediafile/add_share', { mid: self.mediafile.media().uuid } ).then( function() {
 	    viblio.mpEvent( 'share', { type: 'public', network: network } );
+            viblio.mpPeopleIncrement('Video Shares from Browser', 1);
 	});
 	return true; // let the href do its thing too!
     };
@@ -106,6 +107,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 		      private: self.private() } ).then( function() {
 			  // log it to google analytics
 			  viblio.mpEvent( 'share', { type: 'private' } );
+                          viblio.mpPeopleIncrement('Video Shares from Browser', 1);
 			  viblio.notify( 'Share email sent', 'success' );
 		      });
 	self.closeModal();
@@ -170,6 +172,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	self.clip = new ZeroClipboard.Client();
 	self.clip.addEventListener( 'complete', function( client, text ) {
 	    viblio.mpEvent( 'share', { type: 'hidden' } );
+            viblio.mpPeopleIncrement('Video Shares from Browser', 1);
 	});
 	self.clip.setText( '' );
 	self.clip.glue( 'copyShareLink', 'shareVidModal' );

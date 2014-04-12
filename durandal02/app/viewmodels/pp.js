@@ -308,6 +308,7 @@ define(["durandal/app",
                 provider: 'rtmp',
                 onStart: function( clip ) {
                     viblio.mpEvent( 'play', { action: 'play' } );
+                    viblio.mpPeopleIncrement('Video Plays from Browser', 1);
                     hidePlayerOverlay();
                 },
                 onPause: function( clip ) {
