@@ -36,7 +36,8 @@ new compressor.minify({
 	'lib/jquery.ba-throttle-debounce.min.js',
         'lib/jquery.placeholder.js',
 	'lib/jquery.autosize.min.js',
-	'lib/jquery.cookie.js'
+	'lib/jquery.cookie.js',
+	'lib/jquery.ui.touch-punch.min.js'
     ],
     fileOut: 'build/lib/vendor.all.js',
     callback: function(err, min){
