@@ -17,7 +17,13 @@ and open the template in the editor.
     position: absolute;
     top: 20px;
     left: 50%;
-    margin-left: -168px;
+    margin-left: -105px;
+    color: rgb(133, 136, 143);
+    font-size: 18px;
+}
+
+.kickstarter-Wrap-small a,
+.kickstarter-Wrap a {
     color: rgb(133, 136, 143);
     font-size: 18px;
 }

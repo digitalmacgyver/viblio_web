@@ -19,7 +19,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
                 $('.number').text(percent + '%');
             });
 
-            var ksurl = 'https://viblio.com';
+            var ksurl = 'http://kck.st/1n5BQBk';
             
             $('.facebook').on('click', function() {
                 var w = 580, h = 300,
