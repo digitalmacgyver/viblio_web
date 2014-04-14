@@ -89,11 +89,11 @@
 	    <!-- ko foreach: albums -->
 	    <div class="a-drop-box" data-bind="highlightChange: !$root.no_albums">
               <div class="marginB10">
-                <div class="a-drop-view pull-right font20" data-bind="click: $parent.viewAlbum">
+                <a class="a-drop-view pull-right font20" data-bind="click: $parent.viewAlbum">
                   <i class="icon-eye-open"></i>&nbsp;View
-                </div>
+                </a>
                 <div class="a-drop-name whiteText textShadowed font20" data-bind="liveEditor: name">
-                    <div class="view vidTitle title" data-bind="click: name.edit, text: name() ? name() : 'Click to add title', tooltip:{title:'Click to edit name'}"></div>
+                    <a class="view vidTitle title" data-bind="click: name.edit, text: name() ? name() : 'Click to add title', tooltip:{title:'Click to edit name'}"></a>
                     <div class="editTitle-Wrap">
                         <div class="inputMirror" data-bind="text: name, visible: name.editing"></div>
                         <input type="text" class="edit" data-bind="value: name, 
@@ -138,9 +138,9 @@
                 <!-- ko foreach: sharedAlbums -->
                 <div class="a-drop-box" data-bind="highlightChange: !$root.no_albums">
                   <div class="marginB10">
-                    <div class="a-drop-view pull-right font20" data-bind="click: $parent.viewAlbum">
+                    <a class="a-drop-view pull-right font20" data-bind="click: $parent.viewAlbum">
                       <i class="icon-eye-open"></i>&nbsp;View
-                    </div>
+                    </a>
                     <div class="a-drop-name whiteText textShadowed font20" data-bind="text: name"></div>
                     <span class="a-drop-number lightWeightFont font20">
                         <span>(</span><span data-bind="text: (media().length <= 0 ? '0' : media().length)"></span>

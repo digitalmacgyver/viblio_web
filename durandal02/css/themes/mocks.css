@@ -3609,6 +3609,15 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     display: inline-block;
 }
 
+.a-drop-name a {
+    color: white;
+}
+
+.a-drop-name a:hover,
+.a-drop-view a:hover {
+    color: white;
+}
+
 .a-drop-box .a-drop {
     /* width: 99%; */
     border: 1px dashed rgba(255,255,255,.5);
@@ -3645,7 +3654,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .a-drop-box .highlight,
 .a-drop-about-to-drop .a-instruction,
-.a-drop-box:hover .a-instruction {
+.a-drop:hover .a-instruction {
     background-color: rgba(50,53,68,.75);
 }    
 
@@ -3658,11 +3667,12 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .a-drop-about-to-drop .a-poster,
-.a-drop-box:hover .a-poster {
+.a-drop:hover .a-poster {
     opacity: .65;
 }
 
 .a-drop-view {
+    color: white;
     cursor: pointer;
     width: 180px;
     text-align: right;
