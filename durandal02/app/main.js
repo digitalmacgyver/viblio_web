@@ -48,7 +48,6 @@ define(['viewmodels/header', 'viewmodels/landing_header', 'durandal/app', 'duran
     // the user is accessing us from a small screen device (like
     // a phone).  This bit can be used to make radical decisions.
     app.small_screen = ( head.mobile && (head.screen.width <= 480) );
-    app.small_screen = true;
 
     app.start().then(function() {
         //Replace 'viewmodels' in the moduleId with 'views' to locate the view.

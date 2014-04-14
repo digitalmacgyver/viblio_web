@@ -12,7 +12,7 @@ define(['plugins/router',
         'viewmodels/footer',
         'facebook'], 
     
-    function (router, app, system, page_header, landing_header, conditional_header, ks_landing_header, viblio, customDialogs,emailtest,config,footer) {
+function (router, app, system, page_header, landing_header, conditional_header, ks_landing_header, viblio, customDialogs,emailtest,config,footer) {
 
     var header = ko.observable( );
     var location = ko.observable();
