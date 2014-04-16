@@ -5,13 +5,13 @@
       <span class="starRank textShadowed" data-bind="visible: star, html: star_power() "></span>
     </div>
     <div data-bind="if: rightBadgeOn()">
-        <a data-bind="css:rightBadgeIcon,click:rightBadgeClick">
-            <i class="right-badge"></i>
+        <a class="right-badge" data-bind="click:rightBadgeClick">
+            <i data-bind="css:rightBadgeIcon"></i>
         </a>
     </div>
     <div data-bind="if: leftBadgeOn()">
-        <a class="left-badge" data-bind="css:leftBadgeIcon,click:leftBadgeClick">
-            <i class="left-badge"></i>
+        <a class="left-badge" data-bind="click:leftBadgeClick">
+            <i data-bind="css:leftBadgeIcon"></i>
         </a>
     </div>
     <div data-bind="css:{pointer:clickable()}, click:select">
