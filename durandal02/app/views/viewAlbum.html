@@ -43,7 +43,7 @@
                     <a href="#albums" class="btn btn-primary marginT-20">Add videos to album &raquo;</a>
                 <!-- /ko -->
                 <!-- ko if: showAllVids() && allVids().length > 0 -->
-                    <p class="mainTitle textShadowed">All Videos in this Album</p>
+                    <p class="mainTitle textShadowed"><span data-bind="text: allVids().length"></span> Videos in this Album</p>
                 <!-- /ko -->
                 <!-- ko if: !showAllVids() && allVids().length > 0 -->
                     <p class="mainTitle textShadowed">All Videos from <span data-bind="text: selectedYear"></span> in this Album</p>
