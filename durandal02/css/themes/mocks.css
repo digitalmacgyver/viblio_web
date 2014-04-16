@@ -260,7 +260,8 @@ input[type="color"],
     -moz-text-shadow: 1px 1px rgba(0,0,0,.2);
     -webkit-text-shadow: 1px 1px rgba(0,0,0,.2);
     text-shadow: 1px 1px rgba(0,0,0,.2);
-
+    
+    text-decoration: none;
 }
 
 .person .left-badge {
@@ -276,7 +277,8 @@ input[type="color"],
     -moz-text-shadow: 1px 1px rgba(0,0,0,.2);
     -webkit-text-shadow: 1px 1px rgba(0,0,0,.2);
     text-shadow: 1px 1px rgba(0,0,0,.2);
-
+    
+    text-decoration: none;
 }
 
 .person .star {
@@ -3645,7 +3647,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .a-drop-box .highlight,
 .a-drop-about-to-drop .a-instruction,
-.a-drop-box:hover .a-instruction {
+.a-drop:hover .a-instruction {
     background-color: rgba(50,53,68,.75);
 }    
 
@@ -3658,7 +3660,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .a-drop-about-to-drop .a-poster,
-.a-drop-box:hover .a-poster {
+.a-drop:hover .a-poster {
     opacity: .65;
 }
 
