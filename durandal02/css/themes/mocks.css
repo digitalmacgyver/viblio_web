@@ -260,7 +260,8 @@ input[type="color"],
     -moz-text-shadow: 1px 1px rgba(0,0,0,.2);
     -webkit-text-shadow: 1px 1px rgba(0,0,0,.2);
     text-shadow: 1px 1px rgba(0,0,0,.2);
-
+    
+    text-decoration: none;
 }
 
 .person .left-badge {
@@ -276,7 +277,8 @@ input[type="color"],
     -moz-text-shadow: 1px 1px rgba(0,0,0,.2);
     -webkit-text-shadow: 1px 1px rgba(0,0,0,.2);
     text-shadow: 1px 1px rgba(0,0,0,.2);
-
+    
+    text-decoration: none;
 }
 
 .person .star {
