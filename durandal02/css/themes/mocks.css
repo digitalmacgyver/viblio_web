@@ -3613,8 +3613,14 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     color: white;
 }
 
-.a-drop-name a:hover,
-.a-drop-view a:hover {
+a.a-drop-name:hover,
+a.a-drop-view:hover,
+a.a-drop-name:active,
+a.a-drop-view:active,
+a.a-drop-name:visited,
+a.a-drop-view:visited,
+a.a-drop-name:focus,
+a.a-drop-view:focus{
     color: white;
 }
 
