@@ -2931,6 +2931,22 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
         //height: 238px;    /* 16:9 */
         height: 317px       /* 4:3 */
     }
+
+@media (max-width: 1024px) {
+
+    .allAlbumVids .mediafile {
+        width: 212px;
+    }
+        .allAlbumVids .mediafile img {
+            //height: 238px;    /* 16:9 */
+            height: 159px       /* 4:3 */
+        }
+        
+        .mainVidSection .mediafile {
+            margin-right: 15px;
+        }
+}
+
     
 #map-page .leaflet-popup-content-wrapper {
     //height: 193px; /* 16:9 */
@@ -3133,6 +3149,12 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .mainVidSection .mediafile {
     margin-right: 25px;
+}
+
+@media (max-width: 1024px) {        
+    .mainVidSection .mediafile {
+        margin-right: 15px;
+    }
 }
 
 .mainVidSection .mediafile.selected {
