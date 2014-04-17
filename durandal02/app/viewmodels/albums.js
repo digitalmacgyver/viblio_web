@@ -534,13 +534,19 @@ function( app, router, viblio, dialogs, Mediafile, Album, system ) {
             }));
             
 	    if ( head.mobile ) {
-		$(view).find( '.a-content' ).kinetic();
+		$(view).find( '.a-content' ).kinetic({
+                    filterTarget: function(target, e){
+                        if (!/down|start/.test(e.type)){
+                            return !(/area|a|input/i.test(target.tagName));
+                        }
+                    }
+                });
 	    } 
             
 	    $(window).on( 'resize', resizeColumns );
 	    resizeColumns();
             
             
-	}
+        }
     };
 });

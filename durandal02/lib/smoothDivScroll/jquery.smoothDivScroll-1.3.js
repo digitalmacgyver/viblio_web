@@ -188,7 +188,12 @@
 				    if (el.data("scrollableAreaWidth") <= (el.data("scrollWrapper").innerWidth() + el.data("scrollWrapper").scrollLeft())) {
 					self._trigger("scrollerRightLimitReached");
 				    }
-				})
+				}),
+                                filterTarget: function(target, e){
+                                    if (!/down|start/.test(e.type)){
+                                        return !(/area|a|input/i.test(target.tagName));
+                                    }
+                                }
 			    });
 			}
 
@@ -446,7 +451,7 @@
 				self._trigger("setupComplete");
 
 			});
-
+                        
 		},
 
 	    // (qp) added by aqpeeb, bound to $(window) resize
