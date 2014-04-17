@@ -1252,6 +1252,12 @@ input:-moz-placeholder {
     text-decoration: none;
 }
 
+#fbBtn-Wrap .btn-blue {
+    width: 70%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
 #or-Wrap p {
     width: 40px;
     margin: 0 auto;
@@ -1266,7 +1272,7 @@ input:-moz-placeholder {
     color: rgba(117,117,128,1);
 }
 
-#loginArea form div {
+#loginArea form .center {
     width: 100%;
 }
 

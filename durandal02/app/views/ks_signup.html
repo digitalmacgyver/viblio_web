@@ -1,0 +1,43 @@
+<div id="login-page">
+  <p class="landingHeaderTitle darkBlueBG">Sign up <span>for a</span> Viblio account</p>
+  <div class="orangeBG-Header bottomBorder-Thin"></div>
+  <div class="content-Wrap centeredEl">
+        
+    <div id="loginArea" class="mocksWhiteBG centeredEl">
+      <div id="fbBtn-Wrap" class="bottomBorder">
+        <!--<a id="facebookLoginBtn" class="centeredEl" 
+	   data-bind="click: facebookSignup"><img src="css/images/FBf.png" /> Sign up using Facebook </a>-->
+        <a class="btn btn-blue centeredEl" href='http://kck.st/1n5BQBk' target="blank">Support us on Kickstarter to Join our Beta</a>
+      </div>
+      <form class="bottomBorder-Thick">
+        <div class="centeredEl">
+          <input type="email" data-bind="value: signup_email, valueUpdate: 'keyup'" 
+		 name="EMAIL" class="email" id="signup_email" 
+		 placeholder="Enter your email" required />
+          <input type="password" data-bind="value: signup_pw1, valueUpdate: 'keyup'" 
+		 name="pw1" class="password" id="signup_pw1" 
+		 placeholder="Enter a password" required />
+	  <input type="password" data-bind="value: signup_pw2, valueUpdate: 'keyup'" 
+		 name="pw2" class="password" id="signup_pw2" 
+		 placeholder="Confirm password" required />
+          <input type="text" data-bind="value: signup_displayname, valueUpdate: 'keyup'" 
+		 name="displayname" class="displayname" id="signup_displayname" 
+		 placeholder="Your name" required />
+          <input type="text" data-bind="value: signup_ksCode, valueUpdate: 'keyup', popover: {title:'Want a Kickstarter Backer Code?', content: 'Support us on Kickstarter by clicking on the link above to get one.', placement: 'bottom'}" 
+		 name="ksCode" class="text" id="signup_ksCode" 
+		 placeholder="Kickstarter Backer Code" required />
+	  <div style="text-align: center;" class="centeredEl">
+            <button class="btn btn-primary" data-bind="click: nativeSignup, enable: signup_valid">
+              Create Account
+            </button>
+	  </div>
+	  <div class="clearfix"></div>
+	  <div style="text-align: center; margin-top: 8px;">          
+	    <a id='forgotPasswordLink' class='turquoiseFont' href="#login">Already have an account?</a>
+	  </div>
+        </div>
+      </form>
+    </div>
+
+  </div>          
+</div>

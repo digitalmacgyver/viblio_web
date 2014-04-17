@@ -152,6 +152,9 @@ function (router, app, system, page_header, landing_header, conditional_header, 
 
             { route: 'signup',              moduleId: 'signup',              title: 'Sign up for a Viblio account',
 	      showFooter: ( small_screen ? false : true ), nav: false,   authenticated: false,  header: ( small_screen ? null : landing_header ) },
+          
+            { route: 'ks_signup',              moduleId: 'ks_signup',              title: 'Sign up for a Viblio account',
+	      showFooter: ( small_screen ? false : true ), nav: false,   authenticated: false,  header: ( small_screen ? null : landing_header ) },
 
             { route: 'confirmed',          moduleId: 'confirmed',          title: 'Account Confirmation',
 	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
