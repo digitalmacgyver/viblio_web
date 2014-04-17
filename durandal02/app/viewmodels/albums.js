@@ -282,6 +282,7 @@ function( app, router, viblio, dialogs, Mediafile, Album, system ) {
             } else {
                 dialogs.showMessage( 'Please add a video to this album before viewing it.', 'Album' );
             }
+            return true;
         },
         
 	// A new album is not committed to the database until the first
