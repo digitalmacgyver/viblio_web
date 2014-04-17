@@ -134,7 +134,7 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'plugins/dialog']
                 $('.number').text(percent + '%');
             });
             
-            var ksurl = 'http://kck.st/1n5BQBk';
+            var ksurl = 'http://kck.st/1gu4doU';
             
             $('.facebook').on('click', function() {
                 var w = 580, h = 300,
