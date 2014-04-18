@@ -1,13 +1,22 @@
-<div id="login-page">
+<div id="login-page" class="kickstarter_signup">
   <p class="landingHeaderTitle darkBlueBG">Sign up <span>for a</span> Viblio account</p>
   <div class="orangeBG-Header bottomBorder-Thin"></div>
   <div class="content-Wrap centeredEl">
         
     <div id="loginArea" class="mocksWhiteBG centeredEl">
-      <div id="fbBtn-Wrap" class="bottomBorder">
-        <!--<a id="facebookLoginBtn" class="centeredEl" 
-	   data-bind="click: facebookSignup"><img src="css/images/FBf.png" /> Sign up using Facebook </a>-->
-        <a class="btn btn-blue centeredEl" href='http://kck.st/1n5BQBk' target="blank">Support us on Kickstarter to Join our Beta</a>
+      <div id="fbBtn-Wrap_ks" class="bottomBorder">
+          <a class="btn btn-blue centeredEl" href='http://kck.st/1n5BQBk' target="blank">Support us on Kickstarter to get a Kickstarter Backer Code</a>
+          <form>
+              <div class="centeredEl">
+                <input type="text" data-bind="value: signup_fb_ksCode, valueUpdate: 'keyup', popover: {title:'Want a Kickstarter Backer Code?', content: 'Support us on Kickstarter by clicking on the link above to get one.', placement: 'bottom'}" 
+                    name="ksFBCode" class="text" id="signup_fb_ksCode" 
+                    placeholder="Kickstarter Backer Code" required />
+                <button class="centeredEl ks facebookLoginBtn" data-bind="click: facebookSignup, enable: fbReady"><img src="css/images/FBf.png" /> Sign up using Facebook </button>            
+              </div>
+          </form>
+      </div>
+      <div id='or-Wrap'>
+        <p>or</p>
       </div>
       <form class="bottomBorder-Thick">
         <div class="centeredEl">

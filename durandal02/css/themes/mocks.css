@@ -1209,7 +1209,11 @@ input:-moz-placeholder {
     padding: 48px 0;
 }
 
-#facebookLoginBtn {
+#fbBtn-Wrap_ks {
+    padding: 48px 0 0;
+}
+
+.facebookLoginBtn {
     max-width: 100%;
     display: block;
     background: none;
@@ -1239,8 +1243,12 @@ input:-moz-placeholder {
     position: relative;
 }
 
+.facebookLoginBtn:disabled{
+    opacity: 0.65;
+    cursor: default;
+}
 
-#facebookLoginBtn img {
+.facebookLoginBtn img {
     margin: 0 41px 0 28px;
     border-right: 1px solid rgba(0,0,0,.3);
     padding: 21px 26px 19px 0;
@@ -1248,12 +1256,16 @@ input:-moz-placeholder {
     top: -2px;
 }
 
-#facebookLoginBtn:hover {
+.facebookLoginBtn.ks img {
+    margin: 0;
+    margin-right: 35px;
+}
+
+.facebookLoginBtn:hover {
     text-decoration: none;
 }
 
-#fbBtn-Wrap .btn-blue {
-    width: 70%;
+#fbBtn-Wrap_ks .btn-blue {
     padding-top: 20px;
     padding-bottom: 20px;
 }

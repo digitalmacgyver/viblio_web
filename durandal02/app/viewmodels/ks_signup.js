@@ -6,7 +6,14 @@ define( ['plugins/router',
 	 'lib/customDialogs', 
 	 'facebook'], 
 function( router, app, system, config, viblio, dialog ) {
-
+    var signup_fb_ksCode = ko.observable();
+    var fbReady = ko.computed( function() {
+        if( signup_fb_ksCode() && signup_fb_ksCode() === spw ) {
+            return true;
+        } else {
+            return false;
+        }
+    });
     var signup_email = ko.observable();
     var signup_pw1 = ko.observable();
     var signup_pw2 = ko.observable();
@@ -133,7 +140,8 @@ function( router, app, system, config, viblio, dialog ) {
             if (response.authResponse) {
 		viblio.api( '/services/na/new_user', { via: 'facebook',
 						       realm: 'facebook',
-						       access_token: response.authResponse.accessToken },
+						       access_token: response.authResponse.accessToken,
+                                                       kickstarter_backer: true },
 			    handleLoginFailure )
 		    .then( function( data ) {
 			loginSuccessful( data.user, 'signup_via_facebook' );
@@ -147,13 +155,16 @@ function( router, app, system, config, viblio, dialog ) {
 					       realm: 'db',
                                                email: signup_email(),
                                                password: signup_pw1(),
-                                               displayname: signup_displayname() }, handleLoginFailure )
+                                               displayname: signup_displayname(),
+                                               kickstarter_backer: true }, handleLoginFailure )
             .then( function( data ) {
 		loginSuccessful( data.user, 'signup_via_native' );
             });
     };
 
     return {
+        signup_fb_ksCode: signup_fb_ksCode,
+        fbReady: fbReady,
 	signup_email: signup_email,
 	signup_pw1: signup_pw1,
 	signup_pw2: signup_pw2,
