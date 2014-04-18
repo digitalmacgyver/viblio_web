@@ -4434,6 +4434,13 @@ div.fstrip {
     height: 150px;
 }
 
+.vidLink {
+    width: 400px;
+    max-width: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
 @media (max-width: 775px) {    
     .wwh-divider {
         display: none;
