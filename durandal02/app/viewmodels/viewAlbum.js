@@ -229,7 +229,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
 	var self = this;
         
 	// Create a new Mediafile with the data from the server - Only albums owned by the viewer will be given the share badge
-	var m = new Mediafile( mf, mfOwnedByViewer(mf) ? { show_share_badge: true, show_preview: true, delete_title: 'unshare' } : { show_preview: true, delete_title: 'remove' } );
+	var m = new Mediafile( mf, mfOwnedByViewer(mf) ? { show_share_badge: true, show_preview: true, delete_title: albumIsShared() ? 'unshare' : 'remove' } : { show_preview: true, delete_title: 'remove' } );
 
 	// Register a callback for when a Mediafile is selected.
 	// This is so we can deselect the previous one to create
