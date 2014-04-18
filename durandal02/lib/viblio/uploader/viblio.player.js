@@ -128,7 +128,12 @@
 			//console.log( $(this).scrollTop(), $(this).innerHeight(), $(this)[0].scrollHeight, $(this).scrollTop() + $(this).innerHeight() );
 			if (settings.scrollTop + $(this).innerHeight() >= ( $(this)[0].scrollHeight - self.options.scroll_offset ) )
 			    self._search();
-		    }
+		    },
+                    filterTarget: function(target, e){
+                        if (!/down|start/.test(e.type)){
+                            return !(/area|a|input/i.test(target.tagName));
+                        }
+                    }
 		});
 	    }
 	    else {
