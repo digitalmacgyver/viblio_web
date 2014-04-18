@@ -228,12 +228,15 @@ function( system, app, router, viblio, dialogs, Album ) {
                 });
             }
 	},
-
+        
 	compositionComplete: function( view ) {
 	    var self = this;
 	    resetPager();
 	    albums.removeAll();
-            if( !showShared() ) {
+            if( showShared() ) {
+                getNumShared();
+                getShared();
+            } else {
                 search();
             }
             
