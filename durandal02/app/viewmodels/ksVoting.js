@@ -5,8 +5,8 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'plugins/dialog']
     var voteEmail = ko.observable('');
     var voteCode = ko.observable('');
     
-    // Backer code needed
-    var backerCode = '';
+   
+    var backerCode = 'action';
     
     var voteCodeValid = ko.computed (function() {
         if ( voteCode() && voteCode() === backerCode ) {
