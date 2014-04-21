@@ -1243,6 +1243,10 @@ input:-moz-placeholder {
     position: relative;
 }
 
+.facebookLoginBtn:hover {
+    color: white;
+}
+
 .facebookLoginBtn:disabled{
     opacity: 0.65;
     cursor: default;
@@ -2950,7 +2954,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
         height: 317px       /* 4:3 */
     }
 
-@media (max-width: 1024px) {
+@media (max-width: 1280px) {
 
     .allAlbumVids .mediafile {
         width: 212px;
