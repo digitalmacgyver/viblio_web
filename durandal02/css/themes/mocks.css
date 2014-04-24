@@ -3,6 +3,7 @@ body {
     color: rgba(117,117,128,1);
     padding-top: 57px; /* match header height */
     font-family: 'Source Sans Pro', sans-serif;
+    font-size: 18px;
 }
 
 .page-host {
@@ -1816,7 +1817,7 @@ input:-moz-placeholder {
 #comments .comment-editor > p,
 #comments .comment > p {
     font-weight: 400;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 #comments .comment-editor {
