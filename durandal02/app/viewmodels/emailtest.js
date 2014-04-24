@@ -20,7 +20,8 @@ define(['lib/viblio'],function(viblio) {
         '20-newVideoAddedToAlbum.tt',
 	'firstVideosUploaded.tt',                 
         'weeklyDigest.tt',       
-        'newVideos.tt'    
+        'newVideos.tt',
+	'viblio-app.tt'
     ]);
     var forceStaging = ko.observable( true );
 
