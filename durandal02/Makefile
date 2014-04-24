@@ -36,6 +36,7 @@ optimize: $(WEYLAND) $(NODE_MINIFY)
 		-o -name "*.woff" \
 		-o -name "*.swf"` | (cd build; tar zxf -)
 	cp -f index-opt.html build/index.html
+	cp -Rf builds build
 	# Optimize the styles.css file
 	$(RJS) -o opt-css.js
 	# Optimize the vendor javascript
