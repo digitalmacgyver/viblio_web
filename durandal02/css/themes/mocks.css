@@ -3,6 +3,7 @@ body {
     color: rgba(117,117,128,1);
     padding-top: 57px; /* match header height */
     font-family: 'Source Sans Pro', sans-serif;
+    font-size: 16px;
 }
 
 .page-host {
@@ -1820,7 +1821,7 @@ input:-moz-placeholder {
 #comments .comment-editor > p,
 #comments .comment > p {
     font-weight: 400;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 #comments .comment-editor {
@@ -1950,6 +1951,7 @@ p.comment-text,
 p.vidDescription {
     //font-family: monospace;
     white-space: pre-wrap;
+    font-size: 18px;
 }
 
 .edit,
@@ -1987,7 +1989,7 @@ input.edit,
 
 #title-desc textarea {
     height: 14px;
-    font-size: 14px;
+    font-size: 18px;
     line-height: 20px;
     margin: 10px 0;
     font-family: inherit;
@@ -3866,6 +3868,7 @@ a.a-drop-view:focus{
     position: absolute;
     right: 0;
     border-bottom: 3px inset rgba(0, 0, 0, 0.2);
+    font-size: 14px;
 }
 
 .helptab:hover {
