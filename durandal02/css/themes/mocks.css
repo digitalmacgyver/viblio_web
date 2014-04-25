@@ -2759,6 +2759,10 @@ ul.token-input-list-facebook {
     box-shadow: 3px 1px 0px 1px rgba(0,0,0,.2);
 }
 
+.leaflet-container {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
 #map-page .leaflet-popup-content-wrapper {
     width: 272px;
     padding: 0;
@@ -3006,6 +3010,9 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     .leaflet-popup-content .thumb-wrap {
         //height: 152px; /* 16:9 */
         height: 203px; /* 4:3 */
+    }
+    #map-page .leaflet-popup-content-wrapper .truncate {
+        width: 212px;
     }
 
  /******* General Mediafile CSS ********/
