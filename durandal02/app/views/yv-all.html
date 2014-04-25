@@ -120,9 +120,15 @@
       <!-- /ko -->
 
       <div data-bind="if: hits() < 1 && !showShared() && !isActiveFlag()">
-        <p class="font24 tomatoFont doubleSpaced">
-	  C’mon!  Videos are the best way to capture those small moments that are your life!  
-	  Go take a few and let us be the keeper of your videochron!
+        <!-- ko ifnot: searchFilterIsActive() --> 
+            <p class="font24 tomatoFont doubleSpaced">
+              C’mon!  Videos are the best way to capture those small moments that are your life!  
+              Go take a few and let us be the keeper of your videochron!
+            </p>
+            <button class="btn btn-primary" data-bind="click: add_videos">Upload some videos &raquo;</button>
+        <!-- /ko -->
+        <p class="font24 tomatoFont doubleSpaced" data-bind="if: searchFilterIsActive()">
+	  Bummer, I can’t find a video that matches this search.
 	</p>
       </div>
 
@@ -185,7 +191,7 @@
         </div>
     <!-- /ko -->
 
-    <div class="" data-bind="if: currentlySelectedTag() == 'All' && allVidsIsSelected() && hits() <= 2 && !showShared() && !searchFilterIsActive() && !isActiveFlag()">
+    <div class="" data-bind="if: currentlySelectedTag() == 'All' && allVidsIsSelected() && hits() > 1 && hits() <= 2 && !showShared() && !searchFilterIsActive() && !isActiveFlag()">
         <div class="yirHeading-Wrap" data-bind="if: !hasCID()">
             <p class="mainTitle textShadowed">Got any more videos?</p>
             <p class="font20 doubleSpaced">We noticed you 
