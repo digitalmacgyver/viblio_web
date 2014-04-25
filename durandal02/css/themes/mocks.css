@@ -477,6 +477,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
     height: 321px;
 }
 
+.sd-fscroll .mediafile .truncate {
+    width: 278px;
+}
+
 .faces-container.horizontal-scroller {
     height: 208px;
 }
@@ -2906,6 +2910,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
         //height: 197px; /* 16:9 */
         height: 263px;  /* 4:3 */  
     }
+    
+    .mediafile .truncate {
+        width: 278px;
+    }
 
 .pp-related-column-related-videos .mediafile {
     width: 270px;
@@ -2914,6 +2922,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
         //height: 152px;    /* 16:9 */
         height: 203px       /* 4:3 */
     }
+    
+    .pp-related-column-related-videos .mediafile .truncate {
+        width: 198px;
+    }
 
 #register-page .mediafile {
     width: 252px;
@@ -2921,6 +2933,9 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     #register-page .mediafile img {
         //height: 152px;    /* 16:9 */
         height: 189px;      /* 4:3 */
+    }
+    #register-page .mediafile .truncate {
+        width: 194px;
     }
 
 .albums .mediafile {
@@ -2937,6 +2952,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     .albumOverlay p {
         //padding: 60px; /* 16:9 */
         padding: 100px 60px 0; /* 4:3 */
+    }
+    .albums .mediafile .truncate {
+        //height: 101px;    /* 16:9 */
+        width: 160px;      /* 4:3 */
     }
     
 .a-drop-box .a-drop {
@@ -2955,6 +2974,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
         //height: 238px;    /* 16:9 */
         height: 317px       /* 4:3 */
     }
+    
+    .allAlbumVids .mediafile .truncate {
+        width: 351px;
+    }
 
 @media (max-width: 1280px) {
 
@@ -2968,6 +2991,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
         
         .mainVidSection .mediafile {
             margin-right: 15px;
+        }
+        
+        .allAlbumVids .mediafile .truncate {
+            width: 140px;
         }
 }
 
