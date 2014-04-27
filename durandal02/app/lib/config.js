@@ -11,7 +11,8 @@ define( function() {
 	    csponge: '24DEYTURHGHAP7XL5ARS',
 	    cloudfront: 's3vrmtwctzbu8n.cloudfront.net',
 	    email: 'support.viblio.com',
-	    uploader: 'viblio.com'
+	    uploader: 'viblio.com',
+	    mixpanel: '404b9a0b96b8147b5050c165dfc809b3'
 	},
 	'cat.viblio.com': {
 	    facebook: '613586332021367',
@@ -25,7 +26,8 @@ define( function() {
 	    csponge: 'VPP8BMSQ5AK6JLNRPKCV',
 	    cloudfront: 's2gdj4u4bxrah6.cloudfront.net',
 	    email: 'support-staging.viblio.com',
-	    uploader: 'staging.viblio.com'
+	    uploader: 'staging.viblio.com',
+	    mixpanel: '6954c354aa38909f812ed12d1b425e60'
 	},
 	'prod.viblio.com': {
 	    facebook: '538791729508064',
@@ -102,6 +104,9 @@ define( function() {
 	    if ( ! site[the_host] ) return the_host;
 	    if ( ! site[the_host][the_svc] ) return the_host;
 	    return site[the_host][the_svc];
+	},
+	mixpanel_appid: function() {
+	    return service( window.location.hostname, 'mixpanel' );
 	}
     };
 });
