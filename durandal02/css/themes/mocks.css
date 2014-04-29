@@ -2906,17 +2906,17 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 /* New mediafile CSS */
 
 /********* New Sizing section ********/
-
+    
 .mediafile {
-    width: 350px;
+    width: 270px;
 }
     .mediafile img {
         //height: 197px; /* 16:9 */
-        height: 263px;  /* 4:3 */  
+        height: 203px;  /* 4:3 */  
     }
     
     .mediafile .truncate {
-        width: 278px;
+        width: 198px;
     }
 
 .pp-related-column-related-videos .mediafile {
@@ -2969,18 +2969,6 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     .a-drop-box .a-poster img {
         //height: 101px; /* 16:9 */
         height: 135px; /* 4:3 */
-    }
-
-.allAlbumVids .mediafile {
-    width: 423px;
-}
-    .allAlbumVids .mediafile img {
-        //height: 238px;    /* 16:9 */
-        height: 317px       /* 4:3 */
-    }
-    
-    .allAlbumVids .mediafile .truncate {
-        width: 351px;
     }
 
 @media (max-width: 1280px) {
@@ -3125,16 +3113,21 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .mediafile .information .aux {
-    background-color: rgba(211,246,253,1);
+    //background-color: rgba(211,246,253,1);
     position: absolute;
     top: 0;
     right: 0;
     margin: 0;
-    padding: 0;
-    color: rgba(82,152,189,1);
+    line-height: 0.75;
+    padding: 2px 0 0;
+    //color: rgba(82,152,189,1);
     text-align: center;
     width: 54px;
     height: 54px;
+}
+
+.mediafile .information .aux i {
+    font-size: 30px;
 }
 
 .mediafile .information .aux img {
@@ -3207,14 +3200,14 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 /************/
 
 .mainVidSection .mediafile {
-    margin-right: 25px;
+    margin-right: 10px;
 }
 
-@media (max-width: 1024px) {        
+/*@media (max-width: 1024px) {        
     .mainVidSection .mediafile {
         margin-right: 15px;
     }
-}
+}*/
 
 .mainVidSection .mediafile.selected {
     background-color: #24b8d1;
@@ -3231,7 +3224,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .allVidsPage .mediafile {
-    margin: 0 25px 25px 0;
+    margin: 0 10px 25px 0;
     float: left;
 }
 
@@ -4125,7 +4118,7 @@ a.a-drop-view:focus{
 }
 
 .albumThumbTitle {
-    width: 350px;
+    width: 270px;
     height: 25px;
     padding-left: 3px;
 }
@@ -4143,7 +4136,7 @@ a.a-drop-view:focus{
 .albumThumbTitle > div > div:first-of-type,
 .albumThumbTitle > span:first-of-type {
     height: 23px;
-    max-width: 265px;
+    max-width: 184px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
