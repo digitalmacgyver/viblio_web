@@ -456,7 +456,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 
 .mapSD-scroll.horizontal-scroller {
     //height: 272px; /* 16:9 */
-    height: 347px  /* 4:3 */
+    height: 274px  /* 4:3 */
 }
 
 .horizontal-scroller {
@@ -474,11 +474,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 }
 
 .sd-fscroll.horizontal-scroller {
-    height: 321px;
+    height: 270px;
 }
 
 .sd-fscroll .mediafile .truncate {
-    width: 278px;
+    width: 206px;
 }
 
 .faces-container.horizontal-scroller {
@@ -1050,6 +1050,12 @@ input:-moz-placeholder {
 
 #userNameText-Wrap {
     margin-top: 2px
+}
+
+#userNameText-Wrap .truncate {
+    width: 102px;
+    display: inline-block;
+    line-height: .8;
 }
 
 .navbar .nav > li > a {
@@ -2795,6 +2801,7 @@ ul.token-input-list-facebook {
     position: absolute;
     padding: 10px;
     font-weight: 600;
+    font-size: 14px;
 }
  
 .leaflet-popup-content .vidTitle:hover {
@@ -2807,13 +2814,17 @@ ul.token-input-list-facebook {
     right: 0;
     width: 41px;
     height: 41px;
-    background-color: rgba(211,246,253,1);
     text-align: center;
     overflow: hidden;
+    line-height: .75;
 }
  
 .leaflet-popup-content .aux img {
    width: 30px;
+}
+
+.leaflet-popup-content .aux i {
+   font-size: 24px;
 }
 
 #map-page .scrollWrapper {
@@ -3120,7 +3131,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     margin: 0;
     line-height: 0.75;
     padding: 2px 0 0;
-    //color: rgba(82,152,189,1);
+    color: rgb(94, 95, 105);
     text-align: center;
     width: 54px;
     height: 54px;
@@ -3196,6 +3207,9 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     border: none;
 }
 
+#register-page .mediafile .information .aux i {
+    font-size: 22px; 
+}
 
 /************/
 
@@ -3254,7 +3268,9 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     height: 22px;
     margin: 2px auto -4px;
 }
-
+.pp-related-column-related .mediafile .information .aux i {
+    font-size: 22px;
+}
     
 /**************************************/
 
@@ -3725,7 +3741,7 @@ a.a-drop-view:focus{
 
 .a-drop-box .a-instruction {
     position: absolute;
-    top: 32px;
+    top: 45px;
     left: 50%;
     margin-left: -102px;
     font-size: 20px;
