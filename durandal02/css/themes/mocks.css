@@ -2158,9 +2158,9 @@ li.token-input-token-facebook {
 }
 
 .allVidsPage .mfLoader {
-    width: 350px;
-    height: 171px;
-    margin: 0 25px 25px 0;
+    width: 276px;
+    height: 263px;
+    margin: 0 5px 5px 0;
     float: left;
     text-align: center;
     padding-top: 80px;
@@ -3214,7 +3214,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 /************/
 
 .mainVidSection .mediafile {
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 /*@media (max-width: 1024px) {        
@@ -3238,12 +3238,12 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .allVidsPage .mediafile {
-    margin: 0 10px 25px 0;
+    margin: 0 5px 5px 0;
     float: left;
 }
 
 #map-page .mediafile {
-    margin-right: 10px;
+    margin-right: 5px;
     float: left;
 }
 
@@ -3368,7 +3368,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     position: relative;
 }
 .pp-related-column-related-videos .mediafile {
-    margin-bottom: 25px;
+    margin-bottom: 5px;
 }
 .pp-info-faces-wrapper,
 .pp-info-right-column {
@@ -3646,8 +3646,8 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .albums .mediafile {
     float: left;
-    margin-right: 15px;
-    margin-bottom: 15px;
+    margin-right: 5px;
+    margin-bottom: 5px;
     z-index: 2;
 }
 
@@ -3857,7 +3857,7 @@ a.a-drop-view:focus{
 
 .allAlbumVids .mediafile {
     float: left;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 /********** Help Tab *************/
