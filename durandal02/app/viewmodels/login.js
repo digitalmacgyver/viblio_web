@@ -71,8 +71,10 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	    msg += "first time creating a Viblio account, start by downloading the ";
 	    msg += '<a href="/services/na/download_trayapp">VIBLIO APP</a>.  ';
 	    msg += "Otherwise, please re-enter the correct account information.";*/
-            msg  = "Your email or password was entered incorrectly. If this is ";
-	    msg += "your first time creating a VIBLIO account, register for our Beta below.";
+            msg  = "We do not have an account for the credentials you entered. ";
+            msg += "If you don't have a VIBLIO account yet, "
+            msg += "<a class='tomatoFont' id='ksLoginLink' href='/#ks_signup'>get on it</a>! ";
+            msg += "Otherwise, re-enter the correct account information.";
 	}
 	else if ( code == "NOLOGIN_PASSWORD_MISMATCH" ) {
 	    msg  = "The password you entered does not match the password we have on record for ";
