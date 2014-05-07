@@ -3098,6 +3098,22 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     //cursor: default;
 }
 
+.mediafile .media-select-badge {
+    position: absolute;
+    right: 0;
+    padding-top: 10px;
+    padding-bottom: 6px;
+    padding-right: 13px;
+    padding-left: 7px;
+    font-size: 30px;
+    //cursor: default;
+}
+
+.mediafile.selected .media-select-badge {
+    padding-right: 3px;
+    padding-left: 13px;
+}
+
 /*.mediafile .media-shared-badge:hover {
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
@@ -4041,15 +4057,19 @@ a.a-drop-view:focus{
     margin-bottom: 20px;
 }
 
+.yv-secondary-nav .navControl {
+    margin: 0 5px 10px;
+}
+
 .yv-secondary-nav .btn-secondary {
     min-width: 132px;
-    margin: 0 5px 10px;
-    padding: 5px 0;
+    margin: 0;
+    padding: 5px;
 }
 
 .yv-secondary-nav .tagLabel {
     text-overflow: ellipsis;
-    width: 80px;
+    width: 78%;
     white-space: nowrap;
     overflow: hidden;
 }
@@ -4062,9 +4082,8 @@ a.a-drop-view:focus{
 
 .yv-secondary-nav .dropdown-menu {
     min-width: 0;
-    width: 128px;
+    width: 100%;
     top: 33px;
-    left: 5px;
 }
 
 .yv-secondary-nav .dropdown-menu li {
@@ -4073,13 +4092,13 @@ a.a-drop-view:focus{
 }
 
 .yv-secondary-nav .dropdown.open li.btn {
-   width: 128px;
+   width: 100%;
    padding: 10px 0;
    text-align: center;
 }
 
 .yv-secondary-nav .tags .tagsScrollWrapper {
-    height: 80px;
+    height: 130px;
 }
 
 .yv-secondary-nav .tags .tagsScrollWrapper .scroller {
@@ -4832,4 +4851,12 @@ button.linkedin:active {
 #activityForm button {
     padding: 8px 20px;
     margin-bottom: 10px;
+}
+
+/******* createAlbum *******/
+
+.yv-secondary-nav .dropdown-menu.albumList {
+    width: 100%;
+    left: 0px;
+    top: 39px;    
 }

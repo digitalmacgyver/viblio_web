@@ -1,0 +1,201 @@
+<div class="allVidsPage clearfix">
+
+  <div class="yv-secondary-nav">
+    
+    <button class="btn btn-small btn-secondary navControl" data-bind="click: function(){ recentVidsSearch( true ); }">Recent Uploads</button>
+
+    <div style="display: inline-block;" class="dropdown navControl" data-bind="ifnot: isActiveFlag">
+        <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-calendar"></i> Filter by Date <span data-bind="if: dateFilterIsActive">(<span data-bind="text: selectedMonth() ? selectedMonth() : 'All'"></span>)</span></a>
+        <ul class="dropdown-menu tags" role="menu">
+          <!--<li data-bind="click: showAllVideos">
+              <a>
+                  <div class="inline" data-bind="if: allVidsIsSelected()">
+                      <i class="icon-check"></i>
+                  </div>
+                  <div class="inline" data-bind="ifnot: allVidsIsSelected()">
+                      <i class="icon-unchecked"></i>
+                  </div>
+                  <div id="allVids" class="textShadowed inline" data-bind="css:{sel: allVidsIsSelected()}">All Dates</div>
+              </a>
+          </li>-->
+          <li class="tagsScrollWrapper">
+              <div class="scroller">
+                  <div class="wrapper">
+                      <ul class="tags-inner">
+                        <!-- ko foreach: datesLabels -->
+                            <li data-bind="click: $parent.monthSelected.bind( $data, $parent ), clickBubble: false">
+                                <a>
+                                    <div class="inline" data-bind="if: $data.selected()">
+                                        <i class="icon-check"></i>
+                                    </div>
+                                    <div class="inline" data-bind="ifnot: $data.selected()">
+                                        <i class="icon-unchecked"></i>
+                                    </div>
+                                    <div class="inline tagLabel" data-bind="text: $data.shortMonth + ' ' + $data.year, css:{sel: $data.selected()}"></div>
+                                </a>
+                            </li>
+                        <!-- /ko -->
+                      </ul>    
+                  </div>                  
+              </div>
+          </li>        
+          <li class="btn btn-primary" data-bind="click: function(){ monthVidsSearch( true ); }">
+              <div class="textShadowed inline">Confirm</div>
+          </li>
+        </ul>
+    </div>
+    
+    <div style="display: inline-block;" class="dropdown navControl" data-bind="ifnot: isActiveFlag">
+        <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-user"></i> Filter by Face <span data-bind="if: faceFilterIsActive">(<span data-bind="text: selectedFace() ? selectedFace().contact_name : 'All' "></span>)</span></a>
+        <ul class="dropdown-menu tags" role="menu">
+          <!--<li data-bind="click: showAllVideos">
+              <a>
+                  <div class="inline" data-bind="if: allVidsIsSelected()">
+                      <i class="icon-check"></i>
+                  </div>
+                  <div class="inline" data-bind="ifnot: allVidsIsSelected()">
+                      <i class="icon-unchecked"></i>
+                  </div>
+                  <div id="allVids" class="textShadowed inline" data-bind="css:{sel: allVidsIsSelected()}">All Faces</div>
+              </a>
+          </li>-->
+          <li class="tagsScrollWrapper">
+              <div class="scroller">
+                  <div class="wrapper">
+                      <ul class="tags-inner">
+                        <!-- ko foreach: facesLabels -->
+                            <li data-bind="click: $parent.faceSelected.bind( $data, $parent ), clickBubble: false">
+                                <a>
+                                    <div class="inline" data-bind="if: $data.selected()">
+                                        <i class="icon-check"></i>
+                                    </div>
+                                    <div class="inline" data-bind="ifnot: $data.selected()">
+                                        <i class="icon-unchecked"></i>
+                                    </div>
+                                    <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
+                                </a>
+                            </li>
+                        <!-- /ko -->
+                      </ul>    
+                  </div>                  
+              </div>
+          </li>        
+          <li class="btn btn-primary" data-bind="click: function(){ faceVidsSearch( true ); }">
+              <div class="textShadowed inline">Confirm</div>
+          </li>
+        </ul>
+    </div>
+    
+    <div style="display: inline-block; float: right;" class="dropdown" data-bind="ifnot: isActiveFlag">
+        <a class="btn btn-primary dropdown-toggle" href="#" data-toggle="dropdown">Add to/Create Album</a>
+        <ul class="dropdown-menu tags albumList" role="menu">
+          <!--<li data-bind="click: createNewAlbum">
+              <a>
+                  <div class="inline" data-bind="if: allVidsIsSelected()">
+                      <i class="icon-check"></i>
+                  </div>
+                  <div class="inline" data-bind="ifnot: allVidsIsSelected()">
+                      <i class="icon-unchecked"></i>
+                  </div>
+                  <div id="allVids" class="textShadowed inline" data-bind="css:{sel: allVidsIsSelected()}">New Album</div>
+              </a>
+          </li>-->
+          <li class="tagsScrollWrapper">
+              <div class="scroller">
+                  <div class="wrapper">
+                      <ul class="tags-inner">
+                        <!-- ko foreach: albumLabels -->
+                            <li data-bind="click: $parent.albumSelected.bind( $data, $parent ), clickBubble: false">
+                                <a>
+                                    <div class="inline" data-bind="if: $data.selected()">
+                                        <i class="icon-check"></i>
+                                    </div>
+                                    <div class="inline" data-bind="ifnot: $data.selected()">
+                                        <i class="icon-unchecked"></i>
+                                    </div>
+                                    <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
+                                </a>
+                            </li>
+                        <!-- /ko -->
+                      </ul>    
+                  </div>                  
+              </div>
+          </li>        
+          <li class="btn btn-primary" data-bind="click: addOrCreateAlbum">
+              <div class="textShadowed inline">Confirm</div>
+          </li>
+        </ul>
+    </div>
+    
+  </div>
+
+  <div class="table">
+      <!-- ko if: !isActiveFlag() -->
+          
+      <div class="clearfix">
+          <form class="search" data-bind="css: {active: searchQuery()}">
+              <div class="input-append">
+                  <input type="text" class="search-query" placeholder="Search" data-bind="value: searchQuery">
+                  <button type="submit" class="btn btn-white" data-bind="click: newVidsSearch"><i class="icon-search"></i></button>
+                  <!-- ko if: searchFilterIsActive() -->
+                  <button class="btn btn-secondary" data-bind="click: clearSearch, tooltip: {title:'Clear search'}"><i class="icon-remove"></i></button>
+                  <!-- /ko -->
+              </div>
+          </form>
+          
+          <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: noFiltersAreActive() && !searchFilterIsActive()">
+              Use the filters above to choose the videos you want to add to a new or existing album.
+          </div>
+          
+          <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: !isActiveFlag() && !noFiltersAreActive() || searchFilterIsActive()">
+            You have <span data-bind="text: hits"></span>
+            <span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span>
+                that<span data-bind="text: hits() == 1 ? ' matches' : ' match'"></span> your search criteria.           
+          </div>
+      </div>
+               
+      <!-- /ko -->
+
+       <div data-bind="if: hits() < 1 && !isActiveFlag()">
+        <!-- ko ifnot: searchFilterIsActive() --> 
+            <p class="font24 tomatoFont doubleSpaced">
+              C’mon!  Videos are the best way to capture those small moments that are your life!  
+              Go take a few and let us be the keeper of your videochron!
+            </p>
+            <button class="btn btn-primary" data-bind="click: add_videos">Upload some videos &raquo;</button>
+        <!-- /ko -->
+        <p class="font24 tomatoFont doubleSpaced" data-bind="if: searchFilterIsActive()">
+	  Bummer, I can’t find a video that matches this search.
+	</p>
+      </div>
+    
+  </div>
+    
+  <div class="table allVidsInner clearfix">    
+    
+    <div id="allVidsWrap" class="clearfix">
+        <!-- ko foreach: videos -->
+            <!-- ko compose: $data --><!--/ko-->
+        <!-- /ko -->
+        <!-- ko if: isActiveFlag() -->
+        <div class="mfLoader">
+            <i class="icon-spinner icon-5x icon-spin active"></i>
+            <p class='font18'>Loading...</p>
+        </div>
+        <!-- /ko -->
+    </div>
+
+    <div class="" data-bind="if: allVidsIsSelected() && hits() > 1 && hits() <= 2 && !searchFilterIsActive() && !isActiveFlag()">
+        <div class="yirHeading-Wrap" data-bind="if: !hasCID()">
+            <p class="mainTitle textShadowed">Got any more videos?</p>
+            <p class="font20 doubleSpaced">We noticed you 
+                <span data-bind="if: hits() == 0 ">don't have any videos yet. </span>
+                <span data-bind="if: hits() != 0 "><span data-bind="text: hits() == 1 ? 'only have one ' : 'only have two '"></span><span data-bind="text: hits() == 1 ? ' video. ' : ' videos. '"></span></span> 
+                If you have videos you haven’t uploaded to your private VIBLIO library yet, take a moment to start uploading them now.
+            </p>
+            <button class="btn btn-primary" data-bind="click: add_videos">Upload more videos &raquo;</button>
+        </div>
+    </div>
+    
+  </div>
+</div>
