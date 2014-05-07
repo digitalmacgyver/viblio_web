@@ -122,7 +122,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         var face = self.selectedFace();
         
         var args = {
-            q: self.currentSearch
+            contact_uuid: face.uuid
         };
         
         self.isActiveFlag(true);
@@ -143,11 +143,11 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             if ( self.facesPager.next_page )   {
                 args.page = self.facesPager.next_page;
                 args.rows = self.facesPager.entries_per_page;
-                viblio.api( '/services/faces/media_face_appears_in', { contact_uuid: face.uuid } )
+                viblio.api( '/services/faces/media_face_appears_in', args )
                     .then( function( json ) {
                         console.log( json );
-                        //self.hits ( json.pager.total_entries );
-                        //self.facesPager = json.pager;
+                        self.hits ( json.pager.total_entries );
+                        self.facesPager = json.pager;
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                         });
@@ -221,7 +221,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 		dfd.resolve();
 	    }
 	}).promise().then(function(){
-             // reset active filters
+            // reset active filters
             self.recentUploadsIsActive(false);
             self.dateFilterIsActive(true);
             self.faceFilterIsActive(false);
@@ -296,6 +296,15 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.searchFilterIsActive( false );
         self.searchQuery(null);
         self.videos.removeAll();
+        
+        // reset active filters
+        self.recentUploadsIsActive(false);
+        self.dateFilterIsActive(false);
+        self.selectedMonth('');
+        self.faceFilterIsActive(false);
+        self.selectedFace('');
+        self.allVidsIsSelected(false);
+        self.currentlySelectedCity('');
     }
     
     createAlbum.prototype.nameMonths = function( month ) {
