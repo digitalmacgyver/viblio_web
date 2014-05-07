@@ -1548,8 +1548,44 @@ input:-moz-placeholder {
     padding: 35px 0 40px 0;
 }
 
-.fstrip .btn-primary {
+.fstrip > div > .btn-primary {
     margin-left: 35px;
+}
+
+.fstrip .albumsList {
+    width: 226px;
+    margin-left: 35px;
+    display: inline-block;
+}
+
+.fstrip .dropdown-menu {
+    min-width: 0;
+    width: 100%;
+    top: 39px;
+    left: -3px;
+}
+
+.fstrip .dropdown-menu li {
+   text-align: left;
+   cursor: pointer;
+}
+
+.fstrip .dropdown-menu .scroller {
+    max-height: 281px;
+    overflow: auto;
+}
+
+.fstrip .tagLabel {
+    text-overflow: ellipsis;
+    width: 78%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.fstrip .dropdown.open li.btn {
+   width: 100%;
+   padding: 10px 0;
+   text-align: center;
 }
 
 .sd-fscroll .scrollWrapper {
