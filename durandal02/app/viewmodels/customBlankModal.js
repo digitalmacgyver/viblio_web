@@ -8,8 +8,15 @@ define(['lib/viblio','lib/config','plugins/dialog','plugins/router'],function(vi
             dialog.close( this );
 	},
         
-         activate: function( x ) {
+        activate: function( x ) {
             message( x );
-         }
+        },
+        
+        compositionComplete: function() {
+            var self = this;
+            $('a').click(function(){
+                self.close();
+            });
+        }
     };
 });
