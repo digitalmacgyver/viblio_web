@@ -4057,14 +4057,16 @@ a.a-drop-view:focus{
     margin-bottom: 20px;
 }
 
-.yv-secondary-nav .navControl {
-    margin: 0 5px 10px;
-}
-
 .yv-secondary-nav .btn-secondary {
     min-width: 132px;
     margin: 0;
     padding: 5px;
+}
+
+.yv-secondary-nav > .btn-secondary,
+.yv-secondary-nav .navControl {
+    margin: 0 5px 10px;
+    vertical-align: top;
 }
 
 .yv-secondary-nav .tagLabel {
@@ -4859,4 +4861,30 @@ button.linkedin:active {
     width: 100%;
     left: 0px;
     top: 39px;    
+}
+
+.yv-secondary-nav .navControl.albumsList {
+    position: absolute;
+    left: 100%;
+    margin-left: -226px;
+    margin-right: 0;
+    top: 10px;
+}
+
+.createAlbumDesc {
+    width: 60%;
+    margin: 0 auto;
+}
+
+@media (max-width: 1300px) {   
+    .yv-secondary-nav .navControl.albumsList {
+        margin-left: 0;
+        position: static;
+        text-align: center;
+        float: none;
+    }
+    .createAlbumDesc {
+        width: 80%;
+        margin: 0 auto;
+    }
 }
