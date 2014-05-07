@@ -456,7 +456,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 
 .mapSD-scroll.horizontal-scroller {
     //height: 272px; /* 16:9 */
-    height: 347px  /* 4:3 */
+    height: 274px  /* 4:3 */
 }
 
 .horizontal-scroller {
@@ -474,11 +474,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 }
 
 .sd-fscroll.horizontal-scroller {
-    height: 321px;
+    height: 270px;
 }
 
 .sd-fscroll .mediafile .truncate {
-    width: 278px;
+    width: 206px;
 }
 
 .faces-container.horizontal-scroller {
@@ -1050,6 +1050,12 @@ input:-moz-placeholder {
 
 #userNameText-Wrap {
     margin-top: 2px
+}
+
+#userNameText-Wrap .truncate {
+    width: 102px;
+    display: inline-block;
+    line-height: .8;
 }
 
 .navbar .nav > li > a {
@@ -2152,9 +2158,9 @@ li.token-input-token-facebook {
 }
 
 .allVidsPage .mfLoader {
-    width: 350px;
-    height: 171px;
-    margin: 0 25px 25px 0;
+    width: 276px;
+    height: 263px;
+    margin: 0 5px 5px 0;
     float: left;
     text-align: center;
     padding-top: 80px;
@@ -2795,6 +2801,7 @@ ul.token-input-list-facebook {
     position: absolute;
     padding: 10px;
     font-weight: 600;
+    font-size: 14px;
 }
  
 .leaflet-popup-content .vidTitle:hover {
@@ -2807,13 +2814,17 @@ ul.token-input-list-facebook {
     right: 0;
     width: 41px;
     height: 41px;
-    background-color: rgba(211,246,253,1);
     text-align: center;
     overflow: hidden;
+    line-height: .75;
 }
  
 .leaflet-popup-content .aux img {
    width: 30px;
+}
+
+.leaflet-popup-content .aux i {
+   font-size: 24px;
 }
 
 #map-page .scrollWrapper {
@@ -2906,17 +2917,17 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 /* New mediafile CSS */
 
 /********* New Sizing section ********/
-
+    
 .mediafile {
-    width: 350px;
+    width: 270px;
 }
     .mediafile img {
         //height: 197px; /* 16:9 */
-        height: 263px;  /* 4:3 */  
+        height: 203px;  /* 4:3 */  
     }
     
     .mediafile .truncate {
-        width: 278px;
+        width: 198px;
     }
 
 .pp-related-column-related-videos .mediafile {
@@ -2969,18 +2980,6 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     .a-drop-box .a-poster img {
         //height: 101px; /* 16:9 */
         height: 135px; /* 4:3 */
-    }
-
-.allAlbumVids .mediafile {
-    width: 423px;
-}
-    .allAlbumVids .mediafile img {
-        //height: 238px;    /* 16:9 */
-        height: 317px       /* 4:3 */
-    }
-    
-    .allAlbumVids .mediafile .truncate {
-        width: 351px;
     }
 
 @media (max-width: 1280px) {
@@ -3125,16 +3124,21 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .mediafile .information .aux {
-    background-color: rgba(211,246,253,1);
+    //background-color: rgba(211,246,253,1);
     position: absolute;
     top: 0;
     right: 0;
     margin: 0;
-    padding: 0;
-    color: rgba(82,152,189,1);
+    line-height: 0.75;
+    padding: 2px 0 0;
+    color: rgb(94, 95, 105);
     text-align: center;
     width: 54px;
     height: 54px;
+}
+
+.mediafile .information .aux i {
+    font-size: 30px;
 }
 
 .mediafile .information .aux img {
@@ -3203,18 +3207,21 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     border: none;
 }
 
+#register-page .mediafile .information .aux i {
+    font-size: 22px; 
+}
 
 /************/
 
 .mainVidSection .mediafile {
-    margin-right: 25px;
+    margin-right: 5px;
 }
 
-@media (max-width: 1024px) {        
+/*@media (max-width: 1024px) {        
     .mainVidSection .mediafile {
         margin-right: 15px;
     }
-}
+}*/
 
 .mainVidSection .mediafile.selected {
     background-color: #24b8d1;
@@ -3231,12 +3238,12 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .allVidsPage .mediafile {
-    margin: 0 25px 25px 0;
+    margin: 0 5px 5px 0;
     float: left;
 }
 
 #map-page .mediafile {
-    margin-right: 10px;
+    margin-right: 5px;
     float: left;
 }
 
@@ -3261,7 +3268,9 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     height: 22px;
     margin: 2px auto -4px;
 }
-
+.pp-related-column-related .mediafile .information .aux i {
+    font-size: 22px;
+}
     
 /**************************************/
 
@@ -3359,7 +3368,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     position: relative;
 }
 .pp-related-column-related-videos .mediafile {
-    margin-bottom: 25px;
+    margin-bottom: 5px;
 }
 .pp-info-faces-wrapper,
 .pp-info-right-column {
@@ -3637,8 +3646,8 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .albums .mediafile {
     float: left;
-    margin-right: 15px;
-    margin-bottom: 15px;
+    margin-right: 5px;
+    margin-bottom: 5px;
     z-index: 2;
 }
 
@@ -3732,7 +3741,7 @@ a.a-drop-view:focus{
 
 .a-drop-box .a-instruction {
     position: absolute;
-    top: 32px;
+    top: 45px;
     left: 50%;
     margin-left: -102px;
     font-size: 20px;
@@ -3848,7 +3857,7 @@ a.a-drop-view:focus{
 
 .allAlbumVids .mediafile {
     float: left;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 /********** Help Tab *************/
@@ -4125,7 +4134,7 @@ a.a-drop-view:focus{
 }
 
 .albumThumbTitle {
-    width: 350px;
+    width: 270px;
     height: 25px;
     padding-left: 3px;
 }
@@ -4143,7 +4152,7 @@ a.a-drop-view:focus{
 .albumThumbTitle > div > div:first-of-type,
 .albumThumbTitle > span:first-of-type {
     height: 23px;
-    max-width: 265px;
+    max-width: 184px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

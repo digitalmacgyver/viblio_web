@@ -26,7 +26,18 @@ requirejs.onError = function (err) {
 define('jquery', function () { return jQuery; });
 define('knockout', ko);
 
-define(['viewmodels/header', 'viewmodels/landing_header', 'durandal/app', 'durandal/viewLocator', 'durandal/system', 'plugins/router','plugins/dialog','lib/animatedDialogContext','lib/custom_bindings','lib/viblio'], function(page_header, landing_header, app, viewLocator, system, router, dialog, animatedDialogContext) {
+define(['viewmodels/header', 
+	'viewmodels/landing_header', 
+	'durandal/app', 
+	'durandal/viewLocator', 
+	'durandal/system', 
+	'plugins/router',
+	'plugins/dialog',
+	'lib/animatedDialogContext',
+	'lib/config',
+	'lib/custom_bindings',
+	'lib/viblio'], 
+function(page_header, landing_header, app, viewLocator, system, router, dialog, animatedDialogContext, config) {
 
     //>>excludeStart("build", true);
     system.debug(true);
@@ -48,6 +59,9 @@ define(['viewmodels/header', 'viewmodels/landing_header', 'durandal/app', 'duran
     // the user is accessing us from a small screen device (like
     // a phone).  This bit can be used to make radical decisions.
     app.small_screen = ( head.mobile && (head.screen.width <= 480) );
+
+    // Initialize mixpanel
+    mixpanel.init( config.mixpanel_appid() );
 
     app.start().then(function() {
         //Replace 'viewmodels' in the moduleId with 'views' to locate the view.

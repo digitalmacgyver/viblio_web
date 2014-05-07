@@ -205,8 +205,8 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
                                         <img src="' + marker.feature.properties.url + '" />\n\
                                     </div>\n\
                                    <div class="information">\n\
-                                        <div class="aux pull-right muted">\n\
-                                            <img src="css/images/viewsEye.png"/><br>\n\
+                                        <div class="aux pull-right" title="View count">\n\
+                                            <i class="icon-eye-open"></i><br>\n\
                                             <span>' + marker.feature.properties.eyes + '</span>\n\
                                         </div>\n\
                                         <div data-bind="liveEditor: title, ifnot: ro">\n\
