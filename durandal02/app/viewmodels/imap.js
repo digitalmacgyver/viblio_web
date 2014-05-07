@@ -53,9 +53,10 @@ define(['plugins/dialog'], function(dialog) {
 	    viblio.api( '/services/geo/change_latlng', 
 			{ mid: self.media().uuid,
 			  lat: latlng.lat,
-			  lng: latlng.lng } ).then( function() {
+			  lng: latlng.lng } ).then( function( result ) {
 			      self.media().lat = latlng.lat;
 			      self.media().lng = latlng.lng;
+			      self.media().geo_address = result.address;
 			      if ( self.options.doneCallback )
 				  self.options.doneCallback( self.media() );
 			      self.dismiss();
@@ -126,26 +127,18 @@ define(['plugins/dialog'], function(dialog) {
 	    viblio.api( '/services/geo/change_latlng', 
 			{ mid: self.media().uuid,
 			  lat: latlng.lat,
-			  lng: latlng.lng } ).then( function() {
+			  lng: latlng.lng } ).then( function( result ) {
 			      self.media().lat = latlng.lat;
 			      self.media().lng = latlng.lng;
+			      self.media().geo_address = result.address;
+			      self.isNear( result.address || '' );
 			      if ( self.options.doneCallback )
 				  self.options.doneCallback( self.media() );
 			      self.dismiss();
 			  });
 	}, function( latlng ) {
 	    self.dropped( true );
-	    var viblio = require( "lib/viblio" );
 	    self.lastLatLng = latlng;
-	    viblio.api( '/services/geo/location', { lat: latlng.lat, lng: latlng.lng } ).then( function( res ) {
-		if ( res && res.length ) {
-		    var str = getCountry( res );
-		    self.isNear( str );
-		}
-		else {
-		    self.isNear('');
-		}
-	    });
 	});
     };
 

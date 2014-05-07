@@ -447,23 +447,13 @@ define(["durandal/app",
     function near( m ) {
         map.removeAllMarkers();
         // map.disableSetLocation();
-        if ( m.lat ) {
-            viblio.api( '/services/na/geo_loc', { lat: m.lat, lng: m.lng } ).then( function( res ) {
-                if ( res && res.length ) {
-                    nolocation( false );
-                    isNear( getCountry( res ) );
-                    map.addMarker( m.lat, m.lng, m, true );
-                    // ensures all map tiles are shown when the map is shown
-                    map.data("map").invalidateSize();
-                    resizePlayer();
-                }
-                else {
-                    isNear( 'Find in map' );
-                    // comingSoon(m);
-                    nolocation( true );
-                    resizePlayer();
-                }
-            });
+        if ( m.geo_address ) {
+            nolocation( false );
+            isNear( m.geo_address );
+            map.addMarker( m.lat, m.lng, m, true );
+            // ensures all map tiles are shown when the map is shown
+            map.data("map").invalidateSize();
+            resizePlayer();
         }
         else {
             isNear( 'Find in map' );
@@ -479,9 +469,10 @@ define(["durandal/app",
             viblio.api( '/services/geo/change_latlng', 
                         { mid: playing().media().uuid,
                           lat: latlng.lat,
-                          lng: latlng.lng } ).then( function() {
+                          lng: latlng.lng } ).then( function( result ) {
                               playing().media().lat = latlng.lat;
                               playing().media().lng = latlng.lng;
+			      playing().media().geo_address = result.address;
                               near( playing().media() );
                           });
         });
