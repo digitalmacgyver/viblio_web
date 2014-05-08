@@ -3,26 +3,57 @@
     <div class="orangeTitle">
         <h2>Your Videos on the Map</h2>    
     </div>
-    <div data-bind="slideVisible: showVidStrip, hscroller:{}" class="mapSD-scroll">
-        <!-- ko foreach: pointsInRange -->
-            <div class="mediafile" data-bind="attr:{id:$data.uuid}">
-                <div>
-                    <a class="mplay-icon pointer" data-bind="click: $root.play">
-                       <i class="icon-play-circle"></i> 
-                    </a>
-                    <i class="icon-ok-sign"></i>
-                    <div class='pointer' data-bind="click: $root.play">
-                        <img data-bind="attr:{src:$data.url}" alt="video poster"/>
-                    </div>
-                    <div class="information">
-                        <div class="aux pull-right" title="View count"><i class="icon-eye-open"></i><br><span data-bind="html: $data.eyes">0</span></div>
-                        <div>
-                            <div class="view title truncate" data-bind="text: $data.title || 'Click to edit title'"></div> 
+    <div data-bind="slideVisible: showVidStrip" >
+        <div class="dropdown navControl albumsList">
+            <a class="btn btn-primary dropdown-toggle" href="#" data-toggle="dropdown">Add to/Create Album</a>
+            <ul class="dropdown-menu" role="menu">
+              <li class="tagsScrollWrapper">
+                  <div class="scroller">
+                      <div class="wrapper">
+                          <ul class="tags-inner">
+                            <!-- ko foreach: albumLabels -->
+                                <li data-bind="click: $parent.albumSelected.bind( $data, $parent ), clickBubble: false">
+                                    <a>
+                                        <div class="inline" data-bind="if: $data.selected()">
+                                            <i class="icon-check"></i>
+                                        </div>
+                                        <div class="inline" data-bind="ifnot: $data.selected()">
+                                            <i class="icon-unchecked"></i>
+                                        </div>
+                                        <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
+                                    </a>
+                                </li>
+                            <!-- /ko -->
+                          </ul>    
+                      </div>                  
+                  </div>
+              </li>        
+              <li class="btn btn-primary" data-bind="click: addOrCreateAlbum">
+                  <div class="textShadowed inline">Confirm</div>
+              </li>
+            </ul>
+        </div>
+        <div data-bind="hscroller:{}" class="mapSD-scroll">
+            <!-- ko foreach: pointsInRange -->
+                <div class="mediafile" data-bind="attr:{id:$data.uuid}">
+                    <div>
+                        <a class="mplay-icon pointer" data-bind="click: $root.play">
+                           <i class="icon-play-circle"></i> 
+                        </a>
+                        <i class="icon-ok-sign"></i>
+                        <div class='pointer' data-bind="click: $root.play">
+                            <img data-bind="attr:{src:$data.url}" alt="video poster"/>
+                        </div>
+                        <div class="information">
+                            <div class="aux pull-right" title="View count"><i class="icon-eye-open"></i><br><span data-bind="html: $data.eyes">0</span></div>
+                            <div>
+                                <div class="view title truncate" data-bind="text: $data.title || 'Click to edit title'"></div> 
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        <!-- /ko -->
+            <!-- /ko -->
+        </div>    
     </div>
     
     <div id="mapContainer" class="map-wrap bottomBorder-Thin">

@@ -213,7 +213,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
         } else {
             self.addToAlbum( self, self.selectedAlbum(), function() {
                 var vidOrVids = self.mediafiles().length == 1 ? ' video' : ' videos';
-                var msg = self.mediafiles().length + vidOrVids + ' successfully added to "' + self.selectedAlbum().label + '"';
+                var msg = self.mediafiles().length + vidOrVids + ' successfully added to your "' + self.selectedAlbum().label + '" Album';
                 viblio.notify( msg, 'success' );
             });
             // Used to close the dropdown

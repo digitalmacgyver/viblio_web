@@ -108,7 +108,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         var self = this;
         
         var args = {
-            days: 14
+            days: 30
         };
         
         self.isActiveFlag(true);
@@ -143,8 +143,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 dfd.resolve();
             }
         }).promise().then(function(){
-            // reset active filters
-            self.clearSearch( true );
+            self.searchQuery(null);
             self.recentUploadsIsActive(true);
             
             self.isActiveFlag(false);
@@ -624,7 +623,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         } else {
             self.addToAlbum( self, self.selectedAlbum(), function() {
                 var vidOrVids = self.selectedVideos().length == 1 ? ' video' : ' videos';
-                var msg = self.selectedVideos().length + vidOrVids + ' successfully added to "' + self.selectedAlbum().label + '"';
+                var msg = self.selectedVideos().length + vidOrVids + ' successfully added to your "' + self.selectedAlbum().label + '" Album';
                 viblio.notify( msg, 'success' );
             });
             // Used to close the dropdown

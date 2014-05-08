@@ -12,6 +12,10 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
         
         self.showVidStrip = ko.observable(false);
         
+        // used to add to or create new album from videos
+        self.albumLabels = ko.observableArray();
+        self.selectedAlbum = ko.observable();
+        
 	// When a new video appears in the system, add its location
 	// to the map.
 	var self = this;
@@ -69,9 +73,103 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
 	    }
 	});
     };
+    
+    Map.prototype.getAllAlbumsLabels = function() {
+        var self = this;
+        var args = {};
+        args = {
+            cid: self.cid
+        };
+        self.albumLabels.removeAll();
+        viblio.api( '/services/album/list', args ).then( function(data) {
+            data.albums.forEach( function( album ) {
+                var _album = album;
+                _album.label = album.title;
+                _album.selected = ko.observable( false );
+                
+                self.albumLabels.push( _album );
+            });
+            self.albumLabels.unshift( {label: "Create New Album", selected: ko.observable(false)} );
+        });
+    };
+    
+    Map.prototype.addToAlbum = function( parent, album, callback ) {
+        var self = this;
+        
+        var albumMedia;
+        
+        if ( parent.pointsInRange().length > 0 ) {
+            // Get a fresh list of media in album every time new media is added
+            viblio.api( 'services/album/get?aid=' + album.uuid ).then( function( data ) {
+                albumMedia = data.album.media;
+                
+                parent.pointsInRange().forEach( function( mf ) {
+                    var present = false;
+                    albumMedia.forEach( function( albumMf ) {
+                       if( mf.uuid === albumMf.uuid ) {
+                           present = true;
+                       } 
+                    });
+
+                   if ( present ) {
+                        // No dups!
+                        return;
+                   } else {
+                       viblio.api( '/services/album/add_media', { aid: album.uuid, mid: mf.uuid } ).then( function() {
+                            app.trigger('album:newMediaAdded', album);
+                        });
+                   }
+                });
+                if( callback ) {
+                    callback();
+                }
+            });    
+        }
+    };
+    
+    Map.prototype.createNewAlbum = function() {
+        var self = this;
+        
+        console.log(self.pointsInRange());
+        
+        if ( self.pointsInRange().length > 0 ) {
+            viblio.api( '/services/album/create', { name: 'Click to name this album', initial_mid: self.pointsInRange()[0].uuid } ).then( function( data ) {
+                self.addToAlbum( self, data.album, function() {
+                    router.navigate( 'viewAlbum?aid=' + data.album.uuid );
+                });
+            });
+        }
+    };
+    
+    Map.prototype.albumSelected = function( self, album ) {
+        self.albumLabels().forEach( function( a ) {
+            a.selected( false );
+        });
+        album.selected( true );
+        self.selectedAlbum( album );     
+    };
+    
+    Map.prototype.addOrCreateAlbum = function() {
+        var self = this;
+        
+        if( self.selectedAlbum().label === 'Create New Album' ) {
+            self.createNewAlbum();
+        } else {
+            self.addToAlbum( self, self.selectedAlbum(), function() {
+                var vidOrVids = self.pointsInRange().length == 1 ? ' video' : ' videos';
+                var msg = self.pointsInRange().length + vidOrVids + ' successfully added to your "' + self.selectedAlbum().label + '" Album';
+                viblio.notify( msg, 'success' );
+            });
+            // Used to close the dropdown
+            $("body").trigger("click");
+        }
+    };
 
     Map.prototype.activate = function() {
 	var self = this;
+        
+        self.getAllAlbumsLabels();
+        
 	// Obtain the list of points to display.  Need to make
 	// a string out of lat, lng to work with knockout, and
 	// need to add asset uuid so we can play the video when
