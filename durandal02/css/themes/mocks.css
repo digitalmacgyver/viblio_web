@@ -2867,6 +2867,11 @@ ul.token-input-list-facebook {
     padding: 5px 0 10px;
 }
 
+#map-page .albumsList {
+    margin: 10px;
+    display: inline-block;
+}
+
 .vstrip-query-in-progress i {
     margin-left: 122px;
     margin-bottom: 20px;
