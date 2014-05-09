@@ -7,7 +7,7 @@
     <button class="btn btn-small btn-secondary" data-bind="click: toggleEditMode, css: { active: deleteModeOn() == true }, html: editLabel"></button>
     <!-- /ko -->
 
-    <div style="display: inline-block;" class="dropdown navControl" data-bind="ifnot: isActiveFlag">
+    <!--<div style="display: inline-block;" class="dropdown navControl" data-bind="ifnot: isActiveFlag">
         <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-tags"></i> Tags (<span data-bind="text: currentlySelectedTag"></span>)</a>
         <ul class="dropdown-menu tags" role="menu">
           <li data-bind="click: showAllVideos">
@@ -26,7 +26,7 @@
                   <div class="wrapper">
                       <ul class="tags-inner">
                         <!-- ko foreach: tags -->
-                            <li data-bind="click: $parent.tagSelected.bind( $data, $parent ), clickBubble: false">
+                            <!--<li data-bind="click: $parent.tagSelected.bind( $data, $parent ), clickBubble: false">
                                 <a>
                                     <div class="inline" data-bind="if: $data.selected()">
                                         <i class="icon-check"></i>
@@ -38,7 +38,7 @@
                                 </a>
                             </li>
                         <!-- /ko -->
-                      </ul>    
+                      <!--</ul>    
                   </div>                  
               </div>
           </li>        
@@ -46,7 +46,7 @@
               <div class="textShadowed inline">Confirm</div>
           </li>
         </ul>
-    </div>
+    </div>-->
   </div>
 
   <div class="table">
