@@ -108,7 +108,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         var self = this;
         
         var args = {
-            days: 30
+            //days: 30
         };
         
         self.isActiveFlag(true);
@@ -526,12 +526,8 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     
     createAlbum.prototype.getAllAlbumsLabels = function() {
         var self = this;
-        var args = {};
-        args = {
-            cid: self.cid
-        };
         self.albumLabels.removeAll();
-        viblio.api( '/services/album/list', args ).then( function(data) {
+        viblio.api( '/services/album/album_names').then( function(data) {
             data.albums.forEach( function( album ) {
                 var _album = album;
                 _album.label = album.title;
@@ -543,7 +539,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         });
     };
     
-    createAlbum.prototype.getSelectedVids = function( view ) {
+    createAlbum.prototype.getSelectedVidUUIDs = function( view ) {
         var self = view;
         
         if ( self.selectedVideos().length > 0 ) {
@@ -552,59 +548,9 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         self.videos().forEach(function(vid) {
             if( vid.selected() ) {
-                self.selectedVideos.push(vid);
+                self.selectedVideos.push(vid.view.id);
             }
         });
-    };
-    
-    createAlbum.prototype.addToAlbum = function( parent, album, callback ) {
-        var self = this;
-        
-        var albumMedia;
-        
-        self.getSelectedVids( parent );
-        
-        if ( parent.selectedVideos().length > 0 ) {
-            // Get a fresh list of media in album every time new media is added
-            viblio.api( 'services/album/get?aid=' + album.uuid ).then( function( data ) {
-                albumMedia = data.album.media;
-
-                parent.selectedVideos().forEach( function( mf ) {
-                    var present = false;
-                    albumMedia.forEach( function( albumMf ) {
-                       if( mf.view.id === albumMf.uuid ) {
-                           present = true;
-                       } 
-                    });
-
-                   if ( present ) {
-                        // No dups!
-                        return;
-                   } else {
-                       viblio.api( '/services/album/add_media', { aid: album.uuid, mid: mf.view.id } ).then( function() {
-                            app.trigger('album:newMediaAdded', album);
-                        });
-                   }
-                });
-                if( callback ) {
-                    callback();
-                }
-            });    
-        }
-    };
-    
-    createAlbum.prototype.createNewAlbum = function() {
-        var self = this;
-        
-        self.getSelectedVids( self );
-        
-        if ( self.selectedVideos().length > 0 ) {
-            viblio.api( '/services/album/create', { name: 'Click to name this album', initial_mid: self.selectedVideos()[0].media().uuid } ).then( function( data ) {
-                self.addToAlbum( self, data.album, function() {
-                    router.navigate( 'viewAlbum?aid=' + data.album.uuid );
-                });
-            });
-        }
     };
     
     createAlbum.prototype.albumSelected = function( self, album ) {
@@ -618,14 +564,24 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     createAlbum.prototype.addOrCreateAlbum = function() {
         var self = this;
         
+        self.getSelectedVidUUIDs( self );
+        console.log( self.selectedVideos() );
+        // Create a new album
         if( self.selectedAlbum().label === 'Create New Album' ) {
-            self.createNewAlbum();
+            if ( self.selectedVideos().length > 0 ) {
+                viblio.api( '/services/album/create', { name: 'Click to name this album', list: self.selectedVideos() } ).then( function( data ) {
+                    router.navigate( 'viewAlbum?aid=' + data.album.uuid );
+                });
+            }
         } else {
-            self.addToAlbum( self, self.selectedAlbum(), function() {
-                var vidOrVids = self.selectedVideos().length == 1 ? ' video' : ' videos';
-                var msg = self.selectedVideos().length + vidOrVids + ' successfully added to your "' + self.selectedAlbum().label + '" Album';
-                viblio.notify( msg, 'success' );
-            });
+            // Add to an existing album
+            if ( self.selectedVideos().length > 0 ) {
+                viblio.api( '/services/album/create', { aid: self.selectedAlbum().uuid, list: self.selectedVideos() } ).then( function( data ) {
+                    var vidOrVids = self.selectedVideos().length == 1 ? ' video' : ' videos';
+                    var msg = self.selectedVideos().length + vidOrVids + ' successfully added to your "' + self.selectedAlbum().label + '" Album';
+                    viblio.notify( msg, 'success' );
+                });
+            }
             // Used to close the dropdown
             $("body").trigger("click");
         }

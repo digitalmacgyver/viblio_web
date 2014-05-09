@@ -1055,7 +1055,7 @@ input:-moz-placeholder {
 #userNameText-Wrap .truncate {
     width: 102px;
     display: inline-block;
-    line-height: .8;
+    margin-bottom: -4px;
 }
 
 .navbar .nav > li > a {
@@ -2073,7 +2073,7 @@ input.edit,
     height: 25px;
     font-size: 20px;
     font-weight: 600;
-    max-width: 260px;
+    max-width: 184px;
     background-color: transparent;
 }
 
@@ -4288,7 +4288,7 @@ div.fstrip {
 .unnamed .pp-info-faces-wrapper {
     min-height: inherit;
     height: 220px;
-    width: inherit;
+    width: 300px;
     padding-top: 24px;
     padding-left: 23px;
 }
