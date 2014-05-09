@@ -39,7 +39,12 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	this.edittable = ko.observable( false );
 	this.ro       = ko.observable( this.options.ro );  // If true, then cannot edit title
         this.shared_style = ko.observable( this.options.shared_style );
-        this.owner_avatar = "/services/na/avatar?uid=" + data.owner_uuid + "&y=36";
+        this.owner_avatar = "/services/na/avatar?uid=" + data.owner_uuid + "&y=40";
+        this.owner_name = ko.computed( function(){
+            if( data.owner ) {
+                return data.owner.displayname;
+            }
+        });
 	this.show_share_badge = ko.observable( this.options.show_share_badge );
         this.show_select_badge = ko.observable( this.options.show_select_badge );
         this.show_delete_mode = ko.observable( this.options.show_delete_mode );
@@ -140,6 +145,17 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         if ( self.options.show_delete_mode ) {
             $( '.media-share-badge' ).addClass( 'hideme' );
             $( '.dbtn' ).show();
+        }
+        
+        if ( self.options.shared_style ) {
+            $(view).hover(
+                function () {
+                  $(view).find('.sharedOwnerWrap').stop(true, true).animate({ 'bottom': '0' }, 'fast');
+                }, 
+                function () {
+                  $(view).find('.sharedOwnerWrap').stop(true, true).animate({ 'bottom': '-60px' }, 'fast');
+                }
+            );
         }
     };
     

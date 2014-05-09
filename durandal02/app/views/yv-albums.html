@@ -1,13 +1,8 @@
 <div class="allVidsPage">
   <div class="yv-secondary-nav">
     <button class="btn btn-small btn-secondary" data-bind="click: add"><i class="icon-edit"></i> Add/Edit...</button>
-    <!-- ko if: showShared() -->
-    <button class="btn btn-small btn-secondary" data-bind="visible: sections().length > 0, click: toggleEditMode, html: editLabel, css: {'active': deleteModeOn()}"></button>
-    <!-- /ko -->
-    <!-- ko ifnot: showShared() -->
     <button class="btn btn-small btn-secondary" data-bind="visible: albums().length > 0, click: toggleEditMode, html: editLabel, css: {'active': deleteModeOn()}"></button>
-    <!-- /ko -->
-    <button class="btn btn-small btn-secondary" data-bind="click: function(data, event){ toggleShared() }, html: sharedLabel, css: {'active': showShared()}"></button>
+
   </div>
     
   <!-- ko if: searching() -->
@@ -16,8 +11,7 @@
       <p class="font18">Loading...</p>
     </div>
   <!-- /ko -->  
-
-  <!-- ko if: !showShared() -->  
+ 
   <div data-bind="visible: albums().length > 0">
     <div style="display: block; text-align: center;" class="mainTitle textShadowed">
       Your media organized into albums.
@@ -32,38 +26,12 @@
       </div>
     </div>
   </div>
-  <!-- /ko -->
   
-  <div data-bind="visible: searching()==false && albums().length == 0 && !showShared()">
+  <div data-bind="visible: searching()==false && albums().length == 0">
     <p class="font24 tomatoFont doubleSpaced">
       Create albums to organize and share your video collection.  Click the add button above to get started!
     </p>
   </div>
  
-  <!-- ko if: showShared() && !searching() -->
-  <div class="shared-page-wrap mainVidSection yir">
-      <div style="display: block; text-align: center;" class="mainTitle textShadowed">You have <span data-bind="text: numShared"></span> <span data-bind="text: numShared() == 1 ? 'album' : 'albums' "></span> that <span data-bind="text: numShared() == 1 ? 'has' : 'have' "></span> been shared with you.</div>
-    <!-- ko foreach: sections -->
-      <div class="month-heading textShadowed">
-      <img class="boxShadowed avatar" data-bind="attr:{src:$data.owner.avatar}" />
-      <span class="month-name heavyWeightFont" data-bind="text: $data.owner.displayname"></span>
-      <span class="num-videos" data-bind="text: '(' + $data.album().length + ( $data.album().length == 1 ? ' album)' : ' albums)' )"></span>
-      </div>
-      <!-- ko foreach: album -->
-        <div class="albumWrap pull-left">
-            <!-- ko compose: $data --><!--/ko-->
-        </div>
-	<!-- /ko -->
-      <div class="clearfix"></div>
-    <!-- /ko -->    
-  </div>
-  <!-- /ko -->
-  
-  <div data-bind="visible: searching()==false && sections().length == 0 && showShared">
-    <p class="font24 tomatoFont doubleSpaced">
-      It looks like you don't have any albums that have been shared with you yet.
-    </p>
-  </div>  
-
 </div>
 

@@ -589,7 +589,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 } else {
                     apiCall = viblio.api( '/services/mediafile/list_all', 
 			    { 
-				//views: ['poster'],
+				views: ['poster'],
 				page: self.allVidsPager.next_page, 
 				rows: self.allVidsPager.entries_per_page } );
                 }

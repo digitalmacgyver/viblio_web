@@ -23,6 +23,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	this.options = $.extend({
             animated: true, // cycle through videos in album on mouse over
 	    ro: false,
+            shared_style: false, // if album is shared with user show different style
             show_shared_badge: true,
 	    show_share_badge: false,
 	    share_action: 'modal', // 'modal' to popup showShareAlbumModal, 'trigger' to trigger mediafile:share, function as a callback
@@ -34,6 +35,13 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	this.selected = ko.observable( false );
 	this.edittable = ko.observable( false );
 	this.ro       = ko.observable( this.options.ro );  // If true, then cannot edit title
+        this.shared_style = ko.observable( this.options.shared_style );
+        this.owner_avatar = "/services/na/avatar?uid=" + data.owner_uuid + "&y=40";
+        this.owner_name = ko.computed( function(){
+            if( data.owner ) {
+                return data.owner.displayname;
+            }
+        });
         this.show_shared_badge = ko.observable( this.options.show_shared_badge );
 	this.show_share_badge = ko.observable( this.options.show_share_badge );
         this.show_delete_mode = ko.observable( this.options.show_delete_mode );
@@ -184,6 +192,17 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	var self = this;
 	self.view = view;
 	self.trigger( 'album:composed', self );
+        
+        if ( self.options.shared_style ) {
+            $(view).hover(
+                function () {
+                  $(view).find('.sharedOwnerWrap').stop(true, true).animate({ 'bottom': '0' }, 'fast');
+                }, 
+                function () {
+                  $(view).find('.sharedOwnerWrap').stop(true, true).animate({ 'bottom': '-60px' }, 'fast');
+                }
+            );
+        }
     };
 
     Album.prototype.change_poster = function( url ) {

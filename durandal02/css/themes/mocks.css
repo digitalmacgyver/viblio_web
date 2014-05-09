@@ -3146,6 +3146,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     padding-right: 11px;
     padding-left: 11px;
     font-size: 30px;
+    z-index: 1;
     //cursor: default;
 }
 
@@ -3188,6 +3189,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     padding-right: 11px;
     padding-left: 11px;
     font-size: 30px;
+    z-index: 1;
 }
 
 .mediafile .information .aux {
@@ -3243,6 +3245,33 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 
+}
+
+.mediafile .sharedOwnerWrap {
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+    bottom: -60px;
+    color: rgb(255, 255, 255);
+    padding: 10px;
+     -moz-box-sizing:border-box; /* Firefox */
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.mediafile .sharedOwnerWrap img {
+    height: 40px;
+    width: 40px;
+    margin-top: 0;
+    margin-right: 10px;
+}
+
+.mediafile .sharedOwnerWrap .truncate {
+    max-width: 197px;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 /************/
