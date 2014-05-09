@@ -17,6 +17,9 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 
 	// List of mediafile view/models to manage
 	self.mediafiles = ko.observableArray([]);
+        
+        // list of video uuids used to create new album
+        self.selectedVideos = ko.observableArray();
 
 	// Currently selected mediafile (if we use)
 	self.currentSelection = null;
@@ -32,6 +35,10 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
             entries_per_page: 15,
             total_entries: -1 /* currently unknown */
         };
+        
+        // used to add to or create new album from videos
+        self.albumLabels = ko.observableArray();
+        self.selectedAlbum = ko.observable(); 
 
 	self.contact_id = null;
         
@@ -127,9 +134,74 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 		});
 	    });
     };
+    
+    FScroll.prototype.getAllAlbumsLabels = function() {
+        var self = this;
+        self.albumLabels.removeAll();
+        viblio.api( '/services/album/album_names' ).then( function(data) {
+            data.albums.forEach( function( album ) {
+                var _album = album;
+                _album.label = album.title;
+                _album.selected = ko.observable( false );
+                
+                self.albumLabels.push( _album );
+            });
+            self.albumLabels.unshift( {label: "Create New Album", selected: ko.observable(false)} );
+        });
+    };
+    
+    FScroll.prototype.getVidUUIDs = function() {
+        var self = this;
+        
+        if ( self.selectedVideos().length > 0 ) {
+            self.selectedVideos.removeAll();
+        }
+        
+        self.mediafiles().forEach(function(vid) {
+            console.log( vid );
+            self.selectedVideos.push(vid.view.id);
+        });
+    };
+    
+    FScroll.prototype.albumSelected = function( self, album ) {
+        self.albumLabels().forEach( function( a ) {
+            a.selected( false );
+        });
+        album.selected( true );
+        self.selectedAlbum( album );     
+    };
+    
+    FScroll.prototype.addOrCreateAlbum = function() {
+        var self = this;
+        
+        self.getVidUUIDs( self );
+        console.log( self.selectedAlbum().uuid );
+        console.log( self.selectedVideos() );
+        
+        if ( self.selectedVideos().length > 0 ) {
+            // Create a new album
+            if( self.selectedAlbum().label === 'Create New Album' ) {          
+                viblio.api( '/services/album/create', { name: 'Click to name this album', list: self.selectedVideos() } ).then( function( data ) {
+                    router.navigate( 'viewAlbum?aid=' + data.album.uuid );
+                });
+            } else {
+                // Add to an existing album
+                viblio.api( '/services/album/create', { aid: self.selectedAlbum().uuid, list: self.selectedVideos() } ).then( function( data ) {
+                    var vidOrVids = self.selectedVideos().length == 1 ? ' video' : ' videos';
+                    var msg = self.selectedVideos().length + vidOrVids + ' successfully added to your "' + self.selectedAlbum().label + '" Album';
+                    viblio.notify( msg, 'success' );
+                });        
+                // Used to close the dropdown
+                $("body").trigger("click");
+            }    
+        }
+    };
 
     FScroll.prototype.activate = function() {
 	var self = this;
+        
+        // get list of albums to create dropdown menu
+        self.getAllAlbumsLabels();
     };
 
     FScroll.prototype.seeAll = function() {

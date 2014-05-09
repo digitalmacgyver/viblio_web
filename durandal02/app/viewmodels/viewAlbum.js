@@ -113,13 +113,13 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
         updatedTitle( mf.uuid );
     });
     
-    app.on( 'album:name_changed', function( album ) {
+    /*app.on( 'album:name_changed', function( album ) {
         var changedAid = album.uuid;
         if( changedAid == album_id ) {
             showBOH( false );
             refresh( true );
         }
-    });
+    });*/
     
     function checkOwner() {
         if( ownerUUID() == viblio.user().uuid ){
@@ -128,6 +128,10 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
             ownedByViewer( false );
         }
     };
+    
+    app.on( 'album:name_changed', function( album ) {
+        viblio.api( '/services/album/change_title', { aid: album_id, title: albumTitle() } );
+    });
     
     function mfOwnedByViewer( mf ) {
         if( mf.owner_uuid == viblio.user().uuid ){

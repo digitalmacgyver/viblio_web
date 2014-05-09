@@ -42,6 +42,7 @@ function( system, app, router, viblio, dialogs, Album ) {
 	return system.defer( function( dfd ) {
 	    if ( pager.next_page ) {
 		viblio.api( '/services/album/list', { views: ['poster'], page: pager.next_page, rows: pager.entries_per_page } ).then( function( data ) {
+                    console.log(data);
 		    pager = data.pager;
 		    data.albums.forEach( function( album ) {
 			var a = new Album( album, {  ro: false,
@@ -239,7 +240,6 @@ function( system, app, router, viblio, dialogs, Album ) {
             } else {
                 search();
             }
-            
             // Add click event to secondary buttons to toggle active class
             /*$('.yv-secondary-nav .btn').on('click', function(){
                 $(this).toggleClass('active');

@@ -12,6 +12,13 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
         
         self.showVidStrip = ko.observable(false);
         
+        // used to add to or create new album from videos
+        self.albumLabels = ko.observableArray();
+        self.selectedAlbum = ko.observable();
+        
+        // list of video uuids used to create new album
+        self.selectedVideos = ko.observableArray();
+        
 	// When a new video appears in the system, add its location
 	// to the map.
 	var self = this;
@@ -69,9 +76,76 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
 	    }
 	});
     };
+    
+    Map.prototype.getAllAlbumsLabels = function() {
+        var self = this;
+        var args = {};
+        args = {
+            cid: self.cid
+        };
+        self.albumLabels.removeAll();
+        viblio.api( '/services/album/list', args ).then( function(data) {
+            data.albums.forEach( function( album ) {
+                var _album = album;
+                _album.label = album.title;
+                _album.selected = ko.observable( false );
+                
+                self.albumLabels.push( _album );
+            });
+            self.albumLabels.unshift( {label: "Create New Album", selected: ko.observable(false)} );
+        });
+    };
+    
+    Map.prototype.getVidUUIDs = function() {
+        var self = this;
+        
+        if ( self.selectedVideos().length > 0 ) {
+            self.selectedVideos.removeAll();
+        }
+        
+        self.pointsInRange().forEach(function(vid) {
+            console.log( vid );
+            self.selectedVideos.push(vid.uuid);
+        });
+    };
+    
+    Map.prototype.albumSelected = function( self, album ) {
+        self.albumLabels().forEach( function( a ) {
+            a.selected( false );
+        });
+        album.selected( true );
+        self.selectedAlbum( album );     
+    };
+    
+    Map.prototype.addOrCreateAlbum = function() {
+        var self = this;
+        
+        self.getVidUUIDs( self );
+        
+        if ( self.selectedVideos().length > 0 ) {
+            // Create a new album
+            if( self.selectedAlbum().label === 'Create New Album' ) {          
+                viblio.api( '/services/album/create', { name: 'Click to name this album', list: self.selectedVideos() } ).then( function( data ) {
+                    router.navigate( 'viewAlbum?aid=' + data.album.uuid );
+                });
+            } else {
+                // Add to an existing album
+                viblio.api( '/services/album/create', { aid: self.selectedAlbum().uuid, list: self.selectedVideos() } ).then( function( data ) {
+                    var vidOrVids = self.selectedVideos().length == 1 ? ' video' : ' videos';
+                    var msg = self.selectedVideos().length + vidOrVids + ' successfully added to your "' + self.selectedAlbum().label + '" Album';
+                    viblio.notify( msg, 'success' );
+                });        
+                // Used to close the dropdown
+                $("body").trigger("click");
+            }    
+        }
+    };
 
     Map.prototype.activate = function() {
 	var self = this;
+        
+        self.getAllAlbumsLabels();
+        
 	// Obtain the list of points to display.  Need to make
 	// a string out of lat, lng to work with knockout, and
 	// need to add asset uuid so we can play the video when

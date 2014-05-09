@@ -456,7 +456,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 
 .mapSD-scroll.horizontal-scroller {
     //height: 272px; /* 16:9 */
-    height: 274px  /* 4:3 */
+    height: 330px  /* 4:3 */
 }
 
 .horizontal-scroller {
@@ -1055,7 +1055,7 @@ input:-moz-placeholder {
 #userNameText-Wrap .truncate {
     width: 102px;
     display: inline-block;
-    line-height: .8;
+    margin-bottom: -4px;
 }
 
 .navbar .nav > li > a {
@@ -1548,8 +1548,44 @@ input:-moz-placeholder {
     padding: 35px 0 40px 0;
 }
 
-.fstrip .btn-primary {
+.fstrip > div > .btn-primary {
     margin-left: 35px;
+}
+
+.fstrip .albumsList {
+    width: 226px;
+    margin-left: 35px;
+    display: inline-block;
+}
+
+.fstrip .dropdown-menu {
+    min-width: 0;
+    width: 100%;
+    top: 39px;
+    left: -3px;
+}
+
+.fstrip .dropdown-menu li {
+   text-align: left;
+   cursor: pointer;
+}
+
+.fstrip .dropdown-menu .scroller {
+    max-height: 281px;
+    overflow: auto;
+}
+
+.fstrip .tagLabel {
+    text-overflow: ellipsis;
+    width: 78%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.fstrip .dropdown.open li.btn {
+   width: 100%;
+   padding: 10px 0;
+   text-align: center;
 }
 
 .sd-fscroll .scrollWrapper {
@@ -2037,7 +2073,7 @@ input.edit,
     height: 25px;
     font-size: 20px;
     font-weight: 600;
-    max-width: 260px;
+    max-width: 184px;
     background-color: transparent;
 }
 
@@ -2831,6 +2867,21 @@ ul.token-input-list-facebook {
     padding: 5px 0 10px;
 }
 
+#map-page .albumsList {
+    margin: 10px;
+    display: inline-block;
+    float: right;
+    z-index: 1001;
+}
+
+#map-page .albumsList .btn-primary {
+    width: 100%
+}
+
+#map-page .horizontal-scroller .btn-nav {
+    top: 43%;
+}
+
 .vstrip-query-in-progress i {
     margin-left: 122px;
     margin-bottom: 20px;
@@ -3096,6 +3147,22 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     padding-left: 11px;
     font-size: 30px;
     //cursor: default;
+}
+
+.mediafile .media-select-badge {
+    position: absolute;
+    right: 0;
+    padding-top: 10px;
+    padding-bottom: 6px;
+    padding-right: 13px;
+    padding-left: 7px;
+    font-size: 30px;
+    //cursor: default;
+}
+
+.mediafile.selected .media-select-badge {
+    padding-right: 3px;
+    padding-left: 13px;
 }
 
 /*.mediafile .media-shared-badge:hover {
@@ -3878,6 +3945,10 @@ a.a-drop-view:focus{
     z-index: 900;
 }
 
+#map-page .helpContainer.stickyTop {
+    z-index: 1002;
+}
+
 .helpContainer.active {
     z-index: 1002;
 }
@@ -3891,7 +3962,7 @@ a.a-drop-view:focus{
 
 .helpBody {
     position: relative;
-    z-index: 1001;
+    z-index: 1002;
     display: none;
     width: 300px;
     background-color: white;
@@ -3902,7 +3973,7 @@ a.a-drop-view:focus{
 }
 
 .helptab {
-    z-index: 1001;
+    z-index: 1002;
     background-color: white;
     padding: 2px 8px;
     width: 85px;
@@ -4043,13 +4114,19 @@ a.a-drop-view:focus{
 
 .yv-secondary-nav .btn-secondary {
     min-width: 132px;
+    margin: 0;
+    padding: 5px;
+}
+
+.yv-secondary-nav > .btn-secondary,
+.yv-secondary-nav .navControl {
     margin: 0 5px 10px;
-    padding: 5px 0;
+    vertical-align: top;
 }
 
 .yv-secondary-nav .tagLabel {
     text-overflow: ellipsis;
-    width: 80px;
+    width: 78%;
     white-space: nowrap;
     overflow: hidden;
 }
@@ -4062,9 +4139,8 @@ a.a-drop-view:focus{
 
 .yv-secondary-nav .dropdown-menu {
     min-width: 0;
-    width: 128px;
+    width: 100%;
     top: 33px;
-    left: 5px;
 }
 
 .yv-secondary-nav .dropdown-menu li {
@@ -4073,13 +4149,13 @@ a.a-drop-view:focus{
 }
 
 .yv-secondary-nav .dropdown.open li.btn {
-   width: 128px;
+   width: 100%;
    padding: 10px 0;
    text-align: center;
 }
 
 .yv-secondary-nav .tags .tagsScrollWrapper {
-    height: 80px;
+    height: 130px;
 }
 
 .yv-secondary-nav .tags .tagsScrollWrapper .scroller {
@@ -4226,7 +4302,7 @@ div.fstrip {
 .unnamed .pp-info-faces-wrapper {
     min-height: inherit;
     height: 220px;
-    width: inherit;
+    width: 300px;
     padding-top: 24px;
     padding-left: 23px;
 }
@@ -4832,4 +4908,38 @@ button.linkedin:active {
 #activityForm button {
     padding: 8px 20px;
     margin-bottom: 10px;
+}
+
+/******* createAlbum *******/
+
+.yv-secondary-nav .dropdown-menu.albumList {
+    width: 100%;
+    left: 0px;
+    top: 39px;    
+}
+
+.yv-secondary-nav .navControl.albumsList {
+    position: absolute;
+    left: 100%;
+    margin-left: -226px;
+    margin-right: 0;
+    top: 10px;
+}
+
+.createAlbumDesc {
+    width: 60%;
+    margin: 0 auto;
+}
+
+@media (max-width: 1300px) {   
+    .yv-secondary-nav .navControl.albumsList {
+        margin-left: 0;
+        position: static;
+        text-align: center;
+        float: none;
+    }
+    .createAlbumDesc {
+        width: 80%;
+        margin: 0 auto;
+    }
 }

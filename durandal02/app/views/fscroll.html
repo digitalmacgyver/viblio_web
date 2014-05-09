@@ -4,8 +4,36 @@
   <div>
     <p class="mainTitle marginL45 textShadowed whiteText" data-bind="html: title"></p>
     <button class="btn btn-primary" data-bind="click: seeAll">See All &raquo;</button>
-
-    <button class="btn btn-primary" data-bind="click: mkAlbum">Make Album Of</button>
+    
+    <div class="dropdown navControl albumsList">
+        <a class="btn btn-primary dropdown-toggle" href="#" data-toggle="dropdown">Add to/Create Album</a>
+        <ul class="dropdown-menu" role="menu">
+          <li class="tagsScrollWrapper">
+              <div class="scroller">
+                  <div class="wrapper">
+                      <ul class="tags-inner">
+                        <!-- ko foreach: albumLabels -->
+                            <li data-bind="click: $parent.albumSelected.bind( $data, $parent ), clickBubble: false">
+                                <a>
+                                    <div class="inline" data-bind="if: $data.selected()">
+                                        <i class="icon-check"></i>
+                                    </div>
+                                    <div class="inline" data-bind="ifnot: $data.selected()">
+                                        <i class="icon-unchecked"></i>
+                                    </div>
+                                    <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
+                                </a>
+                            </li>
+                        <!-- /ko -->
+                      </ul>    
+                  </div>                  
+              </div>
+          </li>        
+          <li class="btn btn-primary" data-bind="click: addOrCreateAlbum">
+              <div class="textShadowed inline">Confirm</div>
+          </li>
+        </ul>
+    </div>
 
   </div>
 

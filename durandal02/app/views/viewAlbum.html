@@ -14,7 +14,15 @@
         </div>
         <!-- /ko -->
         <img src="css/images/folderImage.png" />
-        <span class="textShadowed albumTitle" data-bind="text: albumTitle"></span>
+        <!--<span class="textShadowed albumTitle" data-bind="text: albumTitle"></span>-->
+        <div class="textShadowed albumTitle" data-bind="liveEditor: albumTitle">
+            <div class="view heavyWeightFont" data-bind="click: albumTitle.edit, text: albumTitle() ? albumTitle() : 'Click to add album title', tooltip:{title:'Click to edit album title'}"></div>
+            <div class="editAlbumTitle-Wrap">
+                <input type="text" class="edit" data-bind="value: albumTitle, 
+                                     hasFocus: albumTitle.editing, 
+                                     event: { blur: function() { albumTitle.stopEditing(); albumTitle.save( null, this, 'album:name_changed' ); } }" />
+            </div>  
+        </div>
         <!-- ko if: ownedByViewer -->
         <span class='whiteText font20 textShadowed lightWeightFont albumSubTitle' data-bind="text: sharedWithDisplayname() ? ' - Shared with ' + sharedWithDisplayname() : '' "></span>
         <!-- /ko -->

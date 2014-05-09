@@ -26,6 +26,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	    ro: false,
             shared_style: false, // if mf is shared with user show different style
 	    show_share_badge: false,
+            show_select_badge: false,
+            selected: false,
 	    share_action: 'modal', // 'modal' to popup showShareVidModal, 'trigger' to trigger mediafile:share, function as a callback
 	    show_preview: true,    // show animated gif, if available, on hover.
             show_delete_mode: false,
@@ -33,12 +35,13 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	}, options );
         
 	this.media    = ko.observable( data );
-	this.selected = ko.observable( false );
+	this.selected = ko.observable( this.options.selected );
 	this.edittable = ko.observable( false );
 	this.ro       = ko.observable( this.options.ro );  // If true, then cannot edit title
         this.shared_style = ko.observable( this.options.shared_style );
         this.owner_avatar = "/services/na/avatar?uid=" + data.owner_uuid + "&y=36";
 	this.show_share_badge = ko.observable( this.options.show_share_badge );
+        this.show_select_badge = ko.observable( this.options.show_select_badge );
         this.show_delete_mode = ko.observable( this.options.show_delete_mode );
 
 	this.tags = ko.observableArray( data.tags );
@@ -76,7 +79,11 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
     // Toggle selected state and send an event.
     Video.prototype.select = function() {
 	this.selected( this.selected() ? false : true );
-	this.trigger( 'mediafile:selected', this );
+        if( this.selected() ){ 
+            this.trigger( 'mediafile:selected', this );
+        } else {
+            this.trigger( 'mediafile:unselected', this );
+        }
     };
 
     // User clicked on play(), send an event.
