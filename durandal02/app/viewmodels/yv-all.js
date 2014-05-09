@@ -34,14 +34,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             }
         });
         
-        //shared videos section
-        self.sharedLabel = ko.observable( '<i class="icon-share"></i> Shared with me' );
-        self.showShared = ko.observable( false );
-        self.sections = ko.observableArray([]);
-        self.numVids = ko.observable(0);
-        self.showShareBtn = ko.observable(true);
-        self.sharedAlreadyFetched = false;
-        
         self.allVidsIsSelected = ko.observable( true );
         self.aMonthIsSelected = ko.observable(false);
         self.selectedMonth = ko.observable();
@@ -283,75 +275,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         router.navigate( 'getApp?from=allVideos' );
     };
     
-    allVids.prototype.showLoggedOutTellFriendsModal = function() {
-        var args = {};
-        args.placeholder = "I discovered Viblio, a great way to privately organize and share videos.  I'd love it if you signed up and shared some of your videos with me.";
-        args.logout = false;
-        args.template = 15;
-        dialog.showModal('viewmodels/loggedOutTellFriendsModal', args);
-    };
-    
-    allVids.prototype.getShared = function() {
-        var self = this;
-        self.isActiveFlag(true);
-        var args = {};
-        if(self.cid) {
-            args = {
-                cid: self.cid
-            };
-        }
-        return viblio.api( '/services/mediafile/all_shared', args ).then( function( data ) {
-            var shared = data.shared;
-            
-            self.sections.removeAll();
-            shared.forEach( function( share ) {
-                self.numVids( self.numVids() + share.media.length );
-                var mediafiles = ko.observableArray([]);
-                share.media.forEach( function( mf ) {
-                    var m = new Mediafile( mf, { ro: true, show_delete_mode: self.deleteModeOn() } ); //m.ro( true );
-                    m.on( 'mediafile:play', function( m ) {
-                        router.navigate( 'web_player?mid=' + m.media().uuid );
-                    });
-                    m.on( 'mediafile:delete', function( m ) {
-                        viblio.api( '/services/mediafile/delete_share', { mid: m.media().uuid } ).then( function( data ) {
-                            viblio.mpEvent( 'delete_share' );
-                            self.sections().forEach( function( section ) {
-                                section.media.remove( m );
-                            });
-                        });
-                    });
-                    mediafiles.push( m );
-                });
-                share.owner.avatar = "/services/na/avatar?uid=" + share.owner.uuid + "&y=36";
-                self.sections.push({ owner: share.owner, media: mediafiles });
-            });
-            self.sharedAlreadyFetched = true;
-            self.isActiveFlag(false);
-            /*if( self.numVids() < 3 ) {
-                self.showShareBtn(true);
-            } else {
-                self.showShareBtn(false);
-            }*/
-        });
-    };
-    
-     allVids.prototype.toggleShared = function() {
-	var self = this;
-	if ( self.sharedLabel() === 'My Videos' ) {
-	    self.sharedLabel( '<i class="icon-share"></i> Shared with me' );
-            self.showShared( false );
-            self.editLabel( '<i class="icon-minus"></i> Remove...' );
-        } else {
-	    self.sharedLabel( 'My Videos' )
-            self.showShared( true );
-            //only fetch the shared videos once
-            if(self.sharedAlreadyFetched === false) {
-                self.getShared();
-            }
-            self.editLabel( '<i class="icon-minus"></i> Remove...' );
-        }
-    };
-    
     // Toggle edit mode.  This will put all of media
     // files in the strip into/out of edit mode.  I'm thinking
     // this will be the way user's can delete their media files
@@ -362,17 +285,11 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	else
 	    self.editLabel( '<i class="icon-minus"></i> Remove...' );
         
-        if( self.sharedLabel() === 'My Videos' ) {
-            self.sections().forEach( function( section ) {
-		section.media().forEach( function( mf ) {
-                    mf.toggleEditMode();
-		});
-            });
-        } else {
-            self.videos().forEach( function( mf ) {
-                mf.toggleEditMode();
-            });
-        }
+
+        self.videos().forEach( function( mf ) {
+            mf.toggleEditMode();
+        });
+        
     };
  
    allVids.prototype.monthSelected = function( self, month ) {
@@ -615,21 +532,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         });
     };
     
-    allVids.prototype.isClipAvailable = function( idx ) {
-	var self = this;
-	if ( self.allVidsager.total_entries == -1 )
-	    return false;
-	return( idx >= 0 && idx < self.allVidsPager.total_entries );
-    };
-    
-    // Scroll to the mediafile specified.
-    allVids.prototype.scrollTo = function( m ) {
-	var self = this;
-	var scroller = $(self.element).find(".media-container");
-	var item = scroller.find('#'+m.media().uuid);
-	scroller.scrollTop( item.position().top + scroller.scrollTop() );
-    };
-    
     allVids.prototype.showAllVideos = function() {
         var self = this;
         $("body").trigger("click");
@@ -672,7 +574,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                     self.tagVidsSearch();
                 }
             }
-        } else if ( !self.showShared() && !self.searchFilterIsActive() ) {
+        } else if ( !self.searchFilterIsActive() ) {
             // If a month is not selected use the search function, else use monthVidsSearch
             if( !self.aMonthIsSelected() ) {
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
