@@ -3945,6 +3945,10 @@ a.a-drop-view:focus{
     z-index: 900;
 }
 
+#map-page .helpContainer.stickyTop {
+    z-index: 1002;
+}
+
 .helpContainer.active {
     z-index: 1002;
 }
@@ -3958,7 +3962,7 @@ a.a-drop-view:focus{
 
 .helpBody {
     position: relative;
-    z-index: 1001;
+    z-index: 1002;
     display: none;
     width: 300px;
     background-color: white;
@@ -3969,7 +3973,7 @@ a.a-drop-view:focus{
 }
 
 .helptab {
-    z-index: 1001;
+    z-index: 1002;
     background-color: white;
     padding: 2px 8px;
     width: 85px;
