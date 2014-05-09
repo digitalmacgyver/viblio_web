@@ -239,24 +239,23 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
         self.getVidUUIDs( self );
         console.log( self.selectedAlbum().uuid );
         console.log( self.selectedVideos() );
-        // Create a new album
-        if( self.selectedAlbum().label === 'Create New Album' ) {
-            if ( self.selectedVideos().length > 0 ) {
+        
+        if ( self.selectedVideos().length > 0 ) {
+            // Create a new album
+            if( self.selectedAlbum().label === 'Create New Album' ) {          
                 viblio.api( '/services/album/create', { name: 'Click to name this album', list: self.selectedVideos() } ).then( function( data ) {
                     router.navigate( 'viewAlbum?aid=' + data.album.uuid );
                 });
-            }
-        } else {
-            // Add to an existing album
-            if ( self.selectedVideos().length > 0 ) {
+            } else {
+                // Add to an existing album
                 viblio.api( '/services/album/create', { aid: self.selectedAlbum().uuid, list: self.selectedVideos() } ).then( function( data ) {
                     var vidOrVids = self.selectedVideos().length == 1 ? ' video' : ' videos';
                     var msg = self.selectedVideos().length + vidOrVids + ' successfully added to your "' + self.selectedAlbum().label + '" Album';
                     viblio.notify( msg, 'success' );
-                });
-            }
-            // Used to close the dropdown
-            $("body").trigger("click");
+                });        
+                // Used to close the dropdown
+                $("body").trigger("click");
+            }    
         }
     };
 
