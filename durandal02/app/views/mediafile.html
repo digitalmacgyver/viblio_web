@@ -11,6 +11,9 @@
       <i class="icon-ok-sign"></i>
       <div class='pointer' data-bind="click:play">
         <img data-bind="attr:{src:image}" />
+        <div class="sharedOwnerWrap" data-bind="if: shared_style">
+            <img class="boxShadowed avatar" data-bind="attr: {src: owner_avatar}" />
+        </div>
       </div>
       <div class="video-tags"
 	   style="position: absolute; bottom: 3px; left: 8px;"

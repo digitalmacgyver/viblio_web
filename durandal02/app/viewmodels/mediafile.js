@@ -24,6 +24,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 
 	this.options = $.extend({
 	    ro: false,
+            shared_style: false, // if mf is shared with user show different style
 	    show_share_badge: false,
 	    share_action: 'modal', // 'modal' to popup showShareVidModal, 'trigger' to trigger mediafile:share, function as a callback
 	    show_preview: true,    // show animated gif, if available, on hover.
@@ -35,6 +36,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	this.selected = ko.observable( false );
 	this.edittable = ko.observable( false );
 	this.ro       = ko.observable( this.options.ro );  // If true, then cannot edit title
+        this.shared_style = ko.observable( this.options.shared_style );
+        this.owner_avatar = "/services/na/avatar?uid=" + data.owner_uuid + "&y=36";
 	this.show_share_badge = ko.observable( this.options.show_share_badge );
         this.show_delete_mode = ko.observable( this.options.show_delete_mode );
 

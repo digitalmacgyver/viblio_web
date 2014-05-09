@@ -526,34 +526,50 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     allVids.prototype.addMediaFile = function( mf ) {
 	var self = this;
         
-	// Create a new Mediafile with the data from the server
-	var m = new Mediafile( mf, { show_share_badge: true, show_delete_mode: self.deleteModeOn() } );
-
-	// Register a callback for when a Mediafile is selected.
-	// This is so we can deselect the previous one to create
-	// a radio behavior.
-	m.on( 'mediafile:selected',  function( sel ) {
-	    self.mediaSelected( sel );
-	});
-
-	// Proxy the mediafile play event and send it along to
-	// our parent.
-	m.on( 'mediafile:play', function( m ) {
-	    router.navigate( 'new_player?mid=' + m.media().uuid );
-	});
-        
-        m.on( 'mediafile:delete', function( m ) {
-                    viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function( json ) {
-                        viblio.mpEvent( 'delete_video' );
-                        self.videos.remove( m );
-			if ( json && json.contacts ) {
-			    json.contacts.forEach( function( contact ) {
-				app.trigger( 'top-actor:remove', contact );
-			    });
-			}
+        if( mf.is_shared == 1 ) {
+            // Shared with user
+            var m = new Mediafile( mf, { ro: true, show_delete_mode: self.deleteModeOn(), shared_style: true, owner_uuid: mf.owner_uuid } ); //m.ro( true );
+            m.on( 'mediafile:play', function( m ) {
+                router.navigate( 'web_player?mid=' + m.media().uuid );
+            });
+            m.on( 'mediafile:delete', function( m ) {
+                viblio.api( '/services/mediafile/delete_share', { mid: m.media().uuid } ).then( function( data ) {
+                    viblio.mpEvent( 'delete_share' );
+                    self.sections().forEach( function( section ) {
+                        section.media.remove( m );
                     });
-                });         
+                });
+            });    
+        } else {
+            // Owned by user
+            var m = new Mediafile( mf, { show_share_badge: true, show_delete_mode: self.deleteModeOn() } );
 
+            // Register a callback for when a Mediafile is selected.
+            // This is so we can deselect the previous one to create
+            // a radio behavior.
+            m.on( 'mediafile:selected',  function( sel ) {
+                self.mediaSelected( sel );
+            });
+
+            // Proxy the mediafile play event and send it along to
+            // our parent.
+            m.on( 'mediafile:play', function( m ) {
+                router.navigate( 'new_player?mid=' + m.media().uuid );
+            });
+
+            m.on( 'mediafile:delete', function( m ) {
+                viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function( json ) {
+                    viblio.mpEvent( 'delete_video' );
+                    self.videos.remove( m );
+                    if ( json && json.contacts ) {
+                        json.contacts.forEach( function( contact ) {
+                            app.trigger( 'top-actor:remove', contact );
+                        });
+                    }
+                });
+            });
+        }
+        	         
 	// Add it to the list
 	self.videos.push( m );
     };
@@ -571,15 +587,19 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                             rows: self.allVidsPager.entries_per_page};
                     apiCall = viblio.api( '/services/faces/media_face_appears_in', args );
                 } else {
-                    apiCall = viblio.api( '/services/mediafile/list', 
+                    apiCall = viblio.api( '/services/mediafile/list_all', 
 			    { 
-				views: ['poster'],
+				//views: ['poster'],
 				page: self.allVidsPager.next_page, 
 				rows: self.allVidsPager.entries_per_page } );
                 }
 		apiCall.then( function( json ) {
+                    console.log(json);
                         self.hits ( json.pager.total_entries );
 			self.allVidsPager = json.pager;
+                        if(json.albums){
+                            json.media = json.albums;
+                        }
 			json.media.forEach( function( mf ) {
 			    self.addMediaFile( mf );
 			});
