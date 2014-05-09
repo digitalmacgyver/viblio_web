@@ -16,6 +16,9 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
         self.albumLabels = ko.observableArray();
         self.selectedAlbum = ko.observable();
         
+        // list of video uuids used to create new album
+        self.selectedVideos = ko.observableArray();
+        
 	// When a new video appears in the system, add its location
 	// to the map.
 	var self = this;
@@ -93,52 +96,17 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
         });
     };
     
-    Map.prototype.addToAlbum = function( parent, album, callback ) {
+    Map.prototype.getVidUUIDs = function() {
         var self = this;
         
-        var albumMedia;
-        
-        if ( parent.pointsInRange().length > 0 ) {
-            // Get a fresh list of media in album every time new media is added
-            viblio.api( 'services/album/get?aid=' + album.uuid ).then( function( data ) {
-                albumMedia = data.album.media;
-                
-                parent.pointsInRange().forEach( function( mf ) {
-                    var present = false;
-                    albumMedia.forEach( function( albumMf ) {
-                       if( mf.uuid === albumMf.uuid ) {
-                           present = true;
-                       } 
-                    });
-
-                   if ( present ) {
-                        // No dups!
-                        return;
-                   } else {
-                       viblio.api( '/services/album/add_media', { aid: album.uuid, mid: mf.uuid } ).then( function() {
-                            app.trigger('album:newMediaAdded', album);
-                        });
-                   }
-                });
-                if( callback ) {
-                    callback();
-                }
-            });    
+        if ( self.selectedVideos().length > 0 ) {
+            self.selectedVideos.removeAll();
         }
-    };
-    
-    Map.prototype.createNewAlbum = function() {
-        var self = this;
         
-        console.log(self.pointsInRange());
-        
-        if ( self.pointsInRange().length > 0 ) {
-            viblio.api( '/services/album/create', { name: 'Click to name this album', initial_mid: self.pointsInRange()[0].uuid } ).then( function( data ) {
-                self.addToAlbum( self, data.album, function() {
-                    router.navigate( 'viewAlbum?aid=' + data.album.uuid );
-                });
-            });
-        }
+        self.pointsInRange().forEach(function(vid) {
+            console.log( vid );
+            self.selectedVideos.push(vid.uuid);
+        });
     };
     
     Map.prototype.albumSelected = function( self, album ) {
@@ -152,16 +120,24 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
     Map.prototype.addOrCreateAlbum = function() {
         var self = this;
         
-        if( self.selectedAlbum().label === 'Create New Album' ) {
-            self.createNewAlbum();
-        } else {
-            self.addToAlbum( self, self.selectedAlbum(), function() {
-                var vidOrVids = self.pointsInRange().length == 1 ? ' video' : ' videos';
-                var msg = self.pointsInRange().length + vidOrVids + ' successfully added to your "' + self.selectedAlbum().label + '" Album';
-                viblio.notify( msg, 'success' );
-            });
-            // Used to close the dropdown
-            $("body").trigger("click");
+        self.getVidUUIDs( self );
+        
+        if ( self.selectedVideos().length > 0 ) {
+            // Create a new album
+            if( self.selectedAlbum().label === 'Create New Album' ) {          
+                viblio.api( '/services/album/create', { name: 'Click to name this album', list: self.selectedVideos() } ).then( function( data ) {
+                    router.navigate( 'viewAlbum?aid=' + data.album.uuid );
+                });
+            } else {
+                // Add to an existing album
+                viblio.api( '/services/album/create', { aid: self.selectedAlbum().uuid, list: self.selectedVideos() } ).then( function( data ) {
+                    var vidOrVids = self.selectedVideos().length == 1 ? ' video' : ' videos';
+                    var msg = self.selectedVideos().length + vidOrVids + ' successfully added to your "' + self.selectedAlbum().label + '" Album';
+                    viblio.notify( msg, 'success' );
+                });        
+                // Used to close the dropdown
+                $("body").trigger("click");
+            }    
         }
     };
 

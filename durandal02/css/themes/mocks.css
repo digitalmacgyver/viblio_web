@@ -456,7 +456,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 
 .mapSD-scroll.horizontal-scroller {
     //height: 272px; /* 16:9 */
-    height: 274px  /* 4:3 */
+    height: 330px  /* 4:3 */
 }
 
 .horizontal-scroller {
@@ -2870,6 +2870,16 @@ ul.token-input-list-facebook {
 #map-page .albumsList {
     margin: 10px;
     display: inline-block;
+    float: right;
+    z-index: 1001;
+}
+
+#map-page .albumsList .btn-primary {
+    width: 100%
+}
+
+#map-page .horizontal-scroller .btn-nav {
+    top: 43%;
 }
 
 .vstrip-query-in-progress i {
