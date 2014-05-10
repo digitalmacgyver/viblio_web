@@ -80,6 +80,8 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 		selectionLimitMessage: 'To prevent spam detection, please select 20 or less contacts at one time',
 		displaySelectAllNone: false, // do not show the select all/nune links
 
+		sources: ['yahoo','gmail','windowslive','aol','plaxo' ],
+
 		afterSubmitContacts: function( contacts, source, owner ) {
 		    contacts.forEach( function( c ) {
 			$(self.view).find( "#friendsEmails" ).tokenInput( "add", {
