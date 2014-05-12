@@ -1,6 +1,6 @@
 define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', 'durandal/events', 'durandal/system', 'lib/customDialogs'], function( router,viblio, Mediafile, app, events, system, dialog ) {
 
-    var createAlbum = function( cid, name ) {
+    var createAlbum = function() {
 	var self = this;
         
         self.recentUploadsIsActive = ko.observable(false);
@@ -41,11 +41,21 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             }
         });
         
-	self.cid = cid;
-        
         self.getVidsData = ko.observable();
         
-        self.name = ko.observable(name);
+        /*self.name = ko.computed(function() {
+            if( self.noFiltersAreActive() ) {
+                return self.searchQuery();
+            } else {
+                if( self.dateFilterIsActive() ) {
+                    return self.selectedMonth();
+                } else if( self.faceFilterIsActive() ) {
+                    return self.selectedFace();
+                } else {
+                    return self.selectedCity();
+                }
+            }
+        });*/
         
         self.hits = ko.observable();
         
@@ -115,7 +125,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         // Only remove all vids and reset pager if it's a new search
         if( newSearch ) {
-            self.unselectOtherFilters(null);
+            self.clearfilters();
             self.videos.removeAll();
             // reset pager
             self.recentPager = {
@@ -561,6 +571,24 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.selectedAlbum( album );     
     };
     
+    createAlbum.prototype.getAlbumName = function() {
+        var self = this;
+        
+        if( self.noFiltersAreActive() ) {
+            return self.searchQuery();
+        } else {
+            if( self.recentUploadsIsActive() ) {
+                return 'Recent Uploads';
+            } else if( self.dateFilterIsActive() ) {
+                return self.selectedMonth();
+            } else if( self.faceFilterIsActive() ) {
+                return self.selectedFace().contact_name;
+            } else {
+                return self.selectedCity();
+            }
+        }
+    };
+    
     createAlbum.prototype.addOrCreateAlbum = function() {
         var self = this;
         
@@ -570,7 +598,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         if ( self.selectedVideos().length > 0 ) {
             // Create a new album
             if( self.selectedAlbum().label === 'Create New Album' ) {          
-                viblio.api( '/services/album/create', { name: 'Click to name this album', list: self.selectedVideos() } ).then( function( data ) {
+                viblio.api( '/services/album/create', { name: self.getAlbumName(), list: self.selectedVideos() } ).then( function( data ) {
                     router.navigate( 'viewAlbum?aid=' + data.album.uuid );
                 });
             } else {
@@ -728,6 +756,9 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         // get albums and create list
         self.getAllAlbumsLabels();
+        
+        // default to recent uplaods
+        self.recentVidsSearch( true );
     };   
 
     // In attached, attach the mCustomScrollbar we're presently

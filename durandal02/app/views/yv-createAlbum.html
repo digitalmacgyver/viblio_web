@@ -2,10 +2,10 @@
 
   <div class="yv-secondary-nav">
     
-    <button class="btn btn-small btn-secondary navControl" data-bind="click: function(){ recentVidsSearch( true ); }"><i class="icon-time"></i> Recent Uploads</button>
+    <button class="btn btn-small btn-secondary navControl" data-bind="css: { active: recentUploadsIsActive }, click: function(){ recentVidsSearch( true ); }"><i class="icon-time"></i> Recent Uploads</button>
 
     <div style="display: inline-block;" class="dropdown navControl">
-        <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-calendar"></i> Filter by Date <span data-bind="if: dateFilterIsActive">(<span data-bind="text: selectedMonth() ? selectedMonth() : 'All'"></span>)</span></a>
+        <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: dateFilterIsActive }"><i class="icon-calendar"></i> Filter by Date <span data-bind="if: dateFilterIsActive">(<span data-bind="text: selectedMonth() ? selectedMonth() : 'All'"></span>)</span></a>
         <ul class="dropdown-menu tags" role="menu">
           <li class="tagsScrollWrapper">
               <div class="scroller">
@@ -35,7 +35,7 @@
     </div>
     
     <div style="display: inline-block;" class="dropdown navControl">
-        <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-user"></i> Filter by Face <span data-bind="if: faceFilterIsActive">(<span data-bind="text: selectedFace() ? selectedFace().contact_name : 'All' "></span>)</span></a>
+        <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: faceFilterIsActive }"><i class="icon-user"></i> Filter by Face <span data-bind="if: faceFilterIsActive">(<span data-bind="text: selectedFace() ? selectedFace().contact_name : 'All' "></span>)</span></a>
         <ul class="dropdown-menu tags" role="menu">
           <li class="tagsScrollWrapper">
               <div class="scroller">
@@ -65,7 +65,7 @@
     </div>
     
     <div style="display: inline-block;" class="dropdown navControl">
-        <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-map-marker"></i> Filter by City <span data-bind="if: cityFilterIsActive">(<span data-bind="text: selectedCity() ? selectedCity() : 'All' "></span>)</span></a>
+        <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: cityFilterIsActive }"><i class="icon-map-marker"></i> Filter by City <span data-bind="if: cityFilterIsActive">(<span data-bind="text: selectedCity() ? selectedCity() : 'All' "></span>)</span></a>
         <ul class="dropdown-menu tags" role="menu">
           <li class="tagsScrollWrapper">
               <div class="scroller">
@@ -147,7 +147,10 @@
           <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: !isActiveFlag() && !noFiltersAreActive() || searchFilterIsActive()">
             You have <span data-bind="text: hits"></span>
             <span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span>
-                that<span data-bind="text: hits() == 1 ? ' matches' : ' match'"></span> your search criteria.           
+            that<span data-bind="text: hits() == 1 ? ' matches' : ' match'"></span> your
+                <span data-bind="if: !noFiltersAreActive(), text: getAlbumName() + '  Filter' "></span>
+                <span data-bind="if: searchFilterIsActive()">search criteria</span>
+                .           
           </div>
       </div>
                

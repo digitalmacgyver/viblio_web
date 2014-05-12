@@ -1,6 +1,6 @@
-define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'viewmodels/mediafile'], function (router, app, system, viblio, Mediafile) {
+define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'viewmodels/mediafile', 'durandal/events'], function (router, app, system, viblio, Mediafile, Events) {
 
-    var FScroll = function( title, subtitle ) {
+    var FScroll = function( title, subtitle, name ) {
 	var self = this;
 
 	// The view element, used to manipulate the scroller mostly
@@ -9,6 +9,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	// Passed in title and subtitle
 	self.title = ko.observable(title);
 	self.subtitle = ko.observable(subtitle || '&nbsp;' );
+        self.name = ko.observable(name);
 
 	// Used to show and hide this strip
 	self.isvisible = ko.observable( false );
@@ -43,6 +44,8 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 	self.contact_id = null;
         
         self.showFwd = ko.observable( true );
+        
+        Events.includeIn( self );
     };
         
     // We may not use selection in the GUI, but if we do,
@@ -175,18 +178,19 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
         var self = this;
         
         self.getVidUUIDs( self );
-        console.log( self.selectedAlbum().uuid );
-        console.log( self.selectedVideos() );
         
         if ( self.selectedVideos().length > 0 ) {
             // Create a new album
             if( self.selectedAlbum().label === 'Create New Album' ) {          
-                viblio.api( '/services/album/create', { name: 'Click to name this album', list: self.selectedVideos() } ).then( function( data ) {
+                viblio.api( '/services/album/create', { name: self.name(), list: self.selectedVideos() } ).then( function( data ) {
                     router.navigate( 'viewAlbum?aid=' + data.album.uuid );
                 });
             } else {
                 // Add to an existing album
                 viblio.api( '/services/album/create', { aid: self.selectedAlbum().uuid, list: self.selectedVideos() } ).then( function( data ) {
+                    // trigger event so the album title area showing the numb of vids in album can be updated in GUI
+                    app.trigger( 'album:new_videos_added', self.selectedAlbum() );
+                    
                     var vidOrVids = self.selectedVideos().length == 1 ? ' video' : ' videos';
                     var msg = self.selectedVideos().length + vidOrVids + ' successfully added to your "' + self.selectedAlbum().label + '" Album';
                     viblio.notify( msg, 'success' );
@@ -259,6 +263,10 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
 
     FScroll.prototype.setTitle = function( title ) {
 	this.title( title );
+    };
+    
+    FScroll.prototype.setName = function( name ) {
+	this.name( name );
     };
     
     return FScroll;

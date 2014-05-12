@@ -38,7 +38,7 @@ function (Events, router, app, system, viblio, Face, VideosFor, dialogs) {
         $(view).find( ".sd-pscroll").trigger( 'children-changed' );
     });
 
-    var videosFor = ko.observable( new VideosFor( 'n Videos with Anonymous', '' ) );
+    var videosFor = ko.observable( new VideosFor( 'n Videos with Anonymous', '', '' ) );
 
     function face_selected( face, pos ) {
 	var videoOrVideos = null;
@@ -58,6 +58,7 @@ function (Events, router, app, system, viblio, Face, VideosFor, dialogs) {
             videosFor().setTitle( face.data.appears_in + ' ' + 
 				  videoOrVideos +' with ' + 
 				  face.data.contact_name );
+            videosFor().setName( face.data.contact_name );     
             videosFor().show( pos );
             viblio.mpEvent( 'videos_for_actor' );
         }

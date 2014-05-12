@@ -69,7 +69,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
                 self.albumPosterViews = media.view_count;
             }
         });
-        this.albumLength = this.media().media.length;
+        this.albumLength = ko.observable( this.media().media.length );
         this.videoOrVideos = ko.computed(function() {
             if( self.albumLength == 1 ) {
                 return 'Video';
@@ -86,6 +86,15 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
             //viblio.log( album );
             if ( album.uuid && this.albumTitle() ) {
                 viblio.api( '/services/album/change_title', { aid: album.uuid, title: this.albumTitle() } );
+            }
+        });
+        
+        // When new videos are added to an album, update the number shwon in the title area of album
+        app.on( 'album:new_videos_added', function( album )  {
+            if( self.media().uuid == album.uuid ) {
+                viblio.api( 'services/album/get?aid=' + album.uuid ).then( function( data ) {
+                    self.albumLength( data.album.media.length );
+                });
             }
         });
         

@@ -8,6 +8,8 @@ define(['durandal/app',
     var unamed_is_visible = false;
     var firstTime = ko.observable();
     var yvSection;
+    
+    var showFaces = ko.observable(true);
    
     // Used to handle message from email to open upload modal
     var user = viblio.user;
@@ -62,6 +64,8 @@ define(['durandal/app',
 
     return{
         yvSection: yvSection,
+        
+        showFaces: showFaces,
         
         activate: function( args ) {
             // When user is routed from email link for 'upload' capture that and open upload modal on login
