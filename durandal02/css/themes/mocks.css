@@ -3961,6 +3961,87 @@ a.a-drop-view:focus{
     margin-bottom: 5px;
 }
 
+.albumView .albumsList {
+    position: absolute;
+    height: 100%;
+    right: -40px;
+    top: 0;
+    bottom: 0px;
+    z-index: 1000;
+    width: auto;
+    max-width: 100px;
+    background-color: rgba(239,239,232,.9);
+    -webkit-transition: max-width 300ms ease;
+    -moz-transition: max-width 300ms ease;
+    -ms-transition: max-width 300ms ease;
+    -o-transition: max-width 300ms ease;
+    transition: max-width 300ms ease;
+}
+
+.albumView .albumsList .scroller {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.albumView .albumsList.stuck {
+    position: fixed;
+    right: 0;
+    top: 65px;
+}
+
+@media (max-width: 900px) {
+    .albumView .albumsList.stuck {
+        top: 0;
+    }
+}
+
+.albumView .albumsList:hover {
+    max-width: 500px;
+}
+
+.albumView .albumsList .year h1 {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 30px;
+    font-weight: normal;
+    color: rgb(158, 176, 188);
+    margin: 5px 0px;
+    padding: 0px 4px;
+    cursor: pointer;
+    -webkit-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    -moz-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    -ms-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    -o-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+}
+
+.albumView .albumsList:hover .year h1 {
+    font-size: 27px;
+    padding: 0px 18px;
+}
+
+.albumView .albumsList .year .truncate {
+    width: auto;
+    max-width: 72px;
+    -webkit-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    -moz-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    -ms-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    -o-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+}
+
+.albumView .albumsList:hover .year .truncate {
+    max-width: 500px;
+}
+
+.albumView .albumsList .year h1.sel,
+.albumView .albumsList .year h1:hover {
+    color: rgb(112, 113, 123);
+}
+
+.albumView .albumsList .year .months {
+    display: inline-block;
+}
 /********** Help Tab *************/
 
 .orangeBG .helpContainer{
@@ -4962,6 +5043,10 @@ button.linkedin:active {
     top: 39px;    
 }
 
+.tags-inner > li > a {
+    padding: 5px;
+}
+
 .yv-secondary-nav .navControl.albumsList {
     position: absolute;
     left: 100%;
@@ -4986,86 +5071,4 @@ button.linkedin:active {
         width: 80%;
         margin: 0 auto;
     }
-}
-
-.albumView .albumsList {
-    position: absolute;
-    height: 100%;
-    right: -40px;
-    top: 0;
-    bottom: 0px;
-    z-index: 1000;
-    width: auto;
-    max-width: 100px;
-    background-color: rgba(239,239,232,.9);
-    -webkit-transition: max-width 300ms ease;
-    -moz-transition: max-width 300ms ease;
-    -ms-transition: max-width 300ms ease;
-    -o-transition: max-width 300ms ease;
-    transition: max-width 300ms ease;
-}
-
-.albumView .albumsList .scroller {
-    height: 100%;
-    overflow-y: auto;
-}
-
-.albumView .albumsList.stuck {
-    position: fixed;
-    right: 0;
-    top: 65px;
-}
-
-@media (max-width: 900px) {
-    .albumView .albumsList.stuck {
-        top: 0;
-    }
-}
-
-.albumView .albumsList:hover {
-    max-width: 500px;
-}
-
-.albumView .albumsList .year h1 {
-    display: inline-block;
-    font-size: 14px;
-    line-height: 30px;
-    font-weight: normal;
-    color: rgb(158, 176, 188);
-    margin: 5px 0px;
-    padding: 0px 4px;
-    cursor: pointer;
-    -webkit-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
-    -moz-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
-    -ms-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
-    -o-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
-    transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
-}
-
-.albumView .albumsList:hover .year h1 {
-    font-size: 27px;
-    padding: 0px 18px;
-}
-
-.albumView .albumsList .year .truncate {
-    width: auto;
-    max-width: 72px;
-    -webkit-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
-    -moz-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
-    -ms-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
-    -o-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
-    transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
-}
-
-.albumView .albumsList:hover .year .truncate {
-    max-width: 500px;
-}
-
-.albumView .albumsList .year h1.sel,
-.albumView .albumsList .year h1:hover {
-    color: rgb(112, 113, 123);
-}
-
-.albumView .albumsList .year .months {
-    display: inline-block;
 }
