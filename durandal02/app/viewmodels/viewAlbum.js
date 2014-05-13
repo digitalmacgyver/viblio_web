@@ -31,6 +31,9 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
     var viewerOwnsAVideo = ko.observable( false );
     var vidsOwnedByViewerNum = ko.observable( 0 );
     
+    var albumLabels = ko.observableArray();
+    var selectedAlbum = ko.observable(); 
+    
     var albumIsShared = ko.observable();
     var sharedWithDisplayname = ko.observable();
     var sharedWithMembers = ko.observableArray();
@@ -174,34 +177,58 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
         });
     }
     
-    // Makes the dates 'sometimes sticky'
-    function stickyDates() {       
+    function getAllAlbumsLabels() {
+        albumLabels.removeAll();
+        viblio.api( '/services/album/album_names').then( function(data) {
+            data.albums.forEach( function( album ) {
+                var _album = album;
+                _album.label = album.title;
+                _album.selected = ko.observable( false );
+                
+                albumLabels.push( _album );
+                //albumLabels.sort(function(left, right) { return left.label == right.label ? 0 : (left.label < right.label ? -1 : 1) });
+            });
+        });
+    };
+    
+   function albumSelected( album, self ) {
+        albumLabels().forEach( function( a ) {
+            a.selected( false );
+        });
+        album.selected( true );
+        selectedAlbum( album );
+        
+        router.navigate( 'viewAlbum?aid=' + album.uuid );
+    };
+    
+    // Makes the albumsList 'sometimes sticky'
+    function stickyAlbumsList() {       
         var maxPos = 65; //height of header
         
         var scrollTop = $(window).scrollTop(),
-        elementOffset = $('.dates').offset().top,
+        elementOffset = $('.albumsList').offset().top,
         distance      = (elementOffset - scrollTop),
         footerHeight  = ( $('#footer').offset().top ) - scrollTop;
 
         if( distance <= maxPos ){
-            $('.dates').addClass('stuck');
-            // keep the dates section above the footer
+            $('.albumsList').addClass('stuck');
+            // keep the albumsList section above the footer
             if ( $(window).width() >= 900 ) {
-                $('.dates').css( { 'height': footerHeight - 65, 'max-height': $(window).height() - 65 } );
+                $('.albumsList').css( { 'height': footerHeight - 65, 'max-height': $(window).height() - 65 } );
             } else {
-                $('.dates').css( { 'height': footerHeight, 'max-height': $(window).height() } );
+                $('.albumsList').css( { 'height': footerHeight, 'max-height': $(window).height() } );
             }            
         }
         
         if ( $(window).width() >= 900 ) {
             if ( ( $('.viewAlbumInner').offset().top ) - scrollTop >= 65 ){
-                $('.dates').removeClass('stuck');
-                $('.dates').css( { 'height': '100%' } );
+                $('.albumsList').removeClass('stuck');
+                $('.albumsList').css( { 'height': '100%' } );
             }    
         } else {
             if ( ( $('.viewAlbumInner').offset().top ) - scrollTop >= 0 ){
-                $('.dates').removeClass('stuck');
-                $('.dates').css( { 'height': '100%' } );
+                $('.albumsList').removeClass('stuck');
+                $('.albumsList').css( { 'height': '100%' } );
             }
         }
         
@@ -357,6 +384,9 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
         viewerOwnsAVideo: viewerOwnsAVideo,
         vidsOwnedByViewerNum: vidsOwnedByViewerNum,
         
+        albumLabels: albumLabels,
+        albumSelected: albumSelected,
+        
         albumIsShared: albumIsShared,
         sharedWithDisplayname: sharedWithDisplayname,
         sharedWithMembers: sharedWithMembers,
@@ -414,14 +444,16 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                 albumTitle('');
             }
             //getFilterLabels();
+            
+            getAllAlbumsLabels();
         },
 	
         attached: function() {
-            $(window).scroll( this, stickyDates );
+            $(window).scroll( this, stickyAlbumsList );
         },
 
         detached: function() {
-            $(window).off( "scroll", stickyDates );
+            $(window).off( "scroll", stickyAlbumsList );
         },
         
 	compositionComplete: function( view, parent ) {

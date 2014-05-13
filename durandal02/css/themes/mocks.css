@@ -2186,6 +2186,7 @@ li.token-input-token-facebook {
 
 .viewAlbumInner,
 .allVidsInner {
+    min-height: 583px;
     position: relative;
 }
 
@@ -3934,6 +3935,10 @@ a.a-drop-view:focus{
     margin-right: 20px;
 }
 
+.air {
+    min-height: 670px;
+}
+
 @media (max-width: 921px) {
     .air .btn-primary {
         margin-left: 45px;
@@ -4074,7 +4079,7 @@ a.a-drop-view:focus{
     right: -40px;
     top: 0;
     bottom: 0px;
-    z-index: 10;
+    z-index: 1000;
     width: 80px;
     background-color: rgba(239,239,232,.9);
     -webkit-transition: width 300ms ease;
@@ -4155,7 +4160,7 @@ a.a-drop-view:focus{
 
 .yv-secondary-nav .tagLabel {
     text-overflow: ellipsis;
-    width: 78%;
+    //width: 78%;
     white-space: nowrap;
     overflow: hidden;
 }
@@ -4167,8 +4172,8 @@ a.a-drop-view:focus{
 }
 
 .yv-secondary-nav .dropdown-menu {
-    min-width: 0;
-    width: 100%;
+    //min-width: 0;
+    //width: 100%;
     top: 33px;
 }
 
@@ -4184,12 +4189,14 @@ a.a-drop-view:focus{
 }
 
 .yv-secondary-nav .tags .tagsScrollWrapper {
-    height: 130px;
+    //height: 130px;
+    max-height: 500px;
+    overflow-y: auto;
 }
 
 .yv-secondary-nav .tags .tagsScrollWrapper .scroller {
     height: 100%;
-    overflow-y: auto;
+    //overflow-y: auto;
 }
 
 .yv-secondary-nav .tags .btn {
@@ -4950,7 +4957,7 @@ button.linkedin:active {
 /******* createAlbum *******/
 
 .yv-secondary-nav .dropdown-menu.albumList {
-    width: 100%;
+    //width: 100%;
     left: 0px;
     top: 39px;    
 }
@@ -4970,13 +4977,95 @@ button.linkedin:active {
 
 @media (max-width: 1300px) {   
     .yv-secondary-nav .navControl.albumsList {
-        margin-left: 0;
-        position: static;
-        text-align: center;
-        float: none;
+        position: relative;
+        left: 50%;
+        margin-left: -115px;
+        width: 230px;
     }
     .createAlbumDesc {
         width: 80%;
         margin: 0 auto;
     }
+}
+
+.albumView .albumsList {
+    position: absolute;
+    height: 100%;
+    right: -40px;
+    top: 0;
+    bottom: 0px;
+    z-index: 1000;
+    width: auto;
+    max-width: 100px;
+    background-color: rgba(239,239,232,.9);
+    -webkit-transition: max-width 300ms ease;
+    -moz-transition: max-width 300ms ease;
+    -ms-transition: max-width 300ms ease;
+    -o-transition: max-width 300ms ease;
+    transition: max-width 300ms ease;
+}
+
+.albumView .albumsList .scroller {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.albumView .albumsList.stuck {
+    position: fixed;
+    right: 0;
+    top: 65px;
+}
+
+@media (max-width: 900px) {
+    .albumView .albumsList.stuck {
+        top: 0;
+    }
+}
+
+.albumView .albumsList:hover {
+    max-width: 500px;
+}
+
+.albumView .albumsList .year h1 {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 30px;
+    font-weight: normal;
+    color: rgb(158, 176, 188);
+    margin: 5px 0px;
+    padding: 0px 4px;
+    cursor: pointer;
+    -webkit-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    -moz-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    -ms-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    -o-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+}
+
+.albumView .albumsList:hover .year h1 {
+    font-size: 27px;
+    padding: 0px 18px;
+}
+
+.albumView .albumsList .year .truncate {
+    width: auto;
+    max-width: 72px;
+    -webkit-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    -moz-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    -ms-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    -o-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+}
+
+.albumView .albumsList:hover .year .truncate {
+    max-width: 500px;
+}
+
+.albumView .albumsList .year h1.sel,
+.albumView .albumsList .year h1:hover {
+    color: rgb(112, 113, 123);
+}
+
+.albumView .albumsList .year .months {
+    display: inline-block;
 }

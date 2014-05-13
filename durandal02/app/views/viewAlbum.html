@@ -14,7 +14,7 @@
         </div>
         <!-- /ko -->
         <img src="css/images/folderImage.png" />
-        <!--<span class="textShadowed albumTitle" data-bind="text: albumTitle"></span>-->
+        <!-- ko if: ownedByViewer -->
         <div class="textShadowed albumTitle" data-bind="liveEditor: albumTitle">
             <div class="view heavyWeightFont" data-bind="click: albumTitle.edit, text: albumTitle() ? albumTitle() : 'Click to add album title', tooltip:{title:'Click to edit album title'}"></div>
             <div class="editAlbumTitle-Wrap">
@@ -23,6 +23,12 @@
                                      event: { blur: function() { albumTitle.stopEditing(); albumTitle.save( null, this, 'album:name_changed' ); } }" />
             </div>  
         </div>
+        <!-- /ko -->
+        
+        <!-- ko ifnot: ownedByViewer -->
+        <span class="textShadowed albumTitle" data-bind="text: albumTitle"></span>
+        <!-- /ko -->
+        
         <!-- ko if: ownedByViewer -->
         <span class='whiteText font20 textShadowed lightWeightFont albumSubTitle' data-bind="text: sharedWithDisplayname() ? ' - Shared with ' + sharedWithDisplayname() : '' "></span>
         <!-- /ko -->
@@ -74,24 +80,38 @@
                                    
             <div class="viewAlbumInner clearfix">
                 
-                <div class="dates">
+                <div class="albumsList">
+                    <div class="scroller">
+                        <div class="wrapper textShadowed">
+                            <!-- ko foreach: albumLabels -->
+                            <div class="year">
+                                <h1 class="truncate" data-bind="click: function(){ $parent.albumSelected( $data, $parent ); }, css:{sel: $data.selected() }">
+                                    <span data-bind="text: $data.label"></span>
+                                </h1>
+                            </div>               
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!--<div class="dates">
                     <div class="scroller">
                         <div class="wrapper textShadowed">
                             <!-- ko foreach: years -->
-                            <div class="year">
+                            <!--<div class="year">
                                 <h1 data-bind="click: function(){ $parent.yearSelected( $data, $parent ); $parent.showAllVids(false); }, css:{sel: $data.selected() }">
                                     <span data-bind="text: $data.label"></span>
                                 </h1>
                             </div>               
                             <!-- /ko -->
-                            <div class="year">
+                            <!--<div class="year">
                                 <h1 data-bind="click: getAllVids, css:{sel: showAllVids()}">
                                     <span>All</span>
                                 </h1>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
                 
                 <!-- ko if: showAllVids -->
                 <div class='allAlbumVids' data-bind="highlightChange: allVids().length > 0">
