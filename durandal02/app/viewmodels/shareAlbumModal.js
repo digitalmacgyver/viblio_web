@@ -144,6 +144,8 @@ function( router, app, system, config, viblio, dialog ) {
 	    selectionLimitMessage: 'To prevent spam detection, please select 20 or less contacts at one time',
 	    displaySelectAllNone: false, // do not show the select all/nune links
 
+	    sources: ['yahoo','gmail','aol','plaxo' ],
+
             afterSubmitContacts: function( contacts, source, owner ) {
                 contacts.forEach( function( c ) {
                     $(view).find( "#shareVidEmail" ).tokenInput( "add", {
