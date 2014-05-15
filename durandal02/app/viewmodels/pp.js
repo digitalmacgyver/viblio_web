@@ -285,7 +285,7 @@ define(["durandal/app",
 	resizeColumns();
     }
 
-    function resizeColumns() {
+    /*function resizeColumns() {
 	var player_height = $('.pp-tv').height();
 	// The faces/map column dictates the height of the other columns
 	var faces_map_height = $('.pp-info-faces-wrapper').height();
@@ -294,7 +294,19 @@ define(["durandal/app",
 	var title_height = $('.pp-info-title').height();
 	$('.all-comments').height( faces_map_height - title_height - (comment_header_height+24+10+21));
 	$('.pp-related-column-related-videos').height( faces_map_height + (player_height + 50) - (related_column_header + 20) + 315 );
+    }*/
+    
+    function resizeColumns() {
+        var player_h = $('.pp-tv').height();
+        var player_lower_h = $('.player_lower').height();
+        var footer_h = $('#footer').height();
+        var faces_h = $('.pp-info-faces-wrapper').height();
+        
+        var player_column_h = player_h + player_lower_h + footer_h + 50 + 90;
+        
+        $('.pp-related-column-related-videos').height( player_column_h - faces_h );
     }
+    
 
     function should_simulate() {
 	var videoel = document.createElement("video"),

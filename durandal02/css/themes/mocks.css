@@ -3593,8 +3593,9 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .pp .comments-header .views span{
     display: block;
 }
-.pp-info-left-column .all-comments {
+.all-comments {
     /* max-height: 250px; */
+    min-height: 100px;
     height: 100%;
     overflow-y: scroll;
 }
