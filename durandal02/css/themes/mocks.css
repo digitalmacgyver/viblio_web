@@ -3228,6 +3228,32 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     margin-left: 5px;
 }
 
+// viblio gifts 
+.mediafile.gift .information {
+    background-color: rgb(239,85,65);
+}
+
+.mediafile.gift .information {
+    background-color: rgb(239,85,65);
+}
+
+.mediafile.gift .information .title,
+.mediafile.gift .information .aux,
+.mediafile.shared .information .title,
+.mediafile.shared .information .aux {
+    color: white;
+}
+
+// shared with user
+
+.mediafile.shared .information {
+    background-color: rgb(49, 53, 67);
+}
+
+.mediafile.shared .information {
+    background-color: rgb(49, 53, 67);
+}
+
 .mediafile .video-tags span {
     color: white;
     background: green;
@@ -3245,7 +3271,6 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
-
 }
 
 .mediafile .sharedOwnerWrap {
@@ -4333,7 +4358,7 @@ div.fstrip {
     position: absolute;
     width: 100%;
     display: none;
-    z-index: 1000;
+    z-index: 1001;
 }
 
 /** unnamed **/
@@ -4383,6 +4408,12 @@ div.fstrip {
 .unnamed .editable-container .editable-buttons button {
     width: 25px;
     height: 25px;
+}
+
+.unnamed .contactSource {
+    font-weight: normal;
+    font-size: 14px;
+    margin-bottom: 0;
 }
 
 /* For the viblio uploader plugin */
