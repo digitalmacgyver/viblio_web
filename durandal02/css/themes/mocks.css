@@ -1130,7 +1130,7 @@ input:-moz-placeholder {
 /********************  Landing Page Header Section  *****************************/
 
 #landing-header .navbar {
-    min-height: 57px;
+    min-height: 65px;
 }
 
 .landingBrand {

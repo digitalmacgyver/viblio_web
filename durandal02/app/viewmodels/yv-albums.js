@@ -81,7 +81,6 @@ function( system, app, router, viblio, dialogs, Album ) {
 	return system.defer( function( dfd ) {
 	    if ( pager.next_page ) {
 		viblio.api( '/services/album/list_all', { views: ['poster'], page: pager.next_page, rows: pager.entries_per_page } ).then( function( data ) {
-                    console.log(data);
 		    pager = data.pager;
 		    data.albums.forEach( function( album ) {
 			addAlbum( album );

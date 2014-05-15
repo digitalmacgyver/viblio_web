@@ -593,7 +593,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         var self = this;
         
         self.getSelectedVidUUIDs( self );
-        console.log( self.selectedVideos() );
         
         if ( self.selectedVideos().length > 0 ) {
             // Create a new album
