@@ -180,13 +180,22 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
     function getAllAlbumsLabels() {
         albumLabels.removeAll();
         viblio.api( '/services/album/album_names').then( function(data) {
+            var arr = [];
             data.albums.forEach( function( album ) {
                 var _album = album;
                 _album.label = album.title;
                 _album.selected = ko.observable( false );
                 
-                albumLabels.push( _album );
-                //albumLabels.sort(function(left, right) { return left.label == right.label ? 0 : (left.label < right.label ? -1 : 1) });
+                arr.push( _album );
+            });
+            //alphabetically sort the list - toLowerCase() makes sure this works as expected
+            arr.sort(function(left, right) { return left.label.toLowerCase() == right.label.toLowerCase() ? 0 : (left.label.toLowerCase() < right.label.toLowerCase() ? -1 : 1) });
+            albumLabels( arr );
+            
+            albumLabels().forEach(function(album) {
+                if( album.uuid == album_id ){
+                    album.selected(true);
+                }
             });
         });
     };
@@ -203,7 +212,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
     
     // Makes the albumsList 'sometimes sticky'
     function stickyAlbumsList() {       
-        var maxPos = 65; //height of header
+        var maxPos = 105; //height of header (65) + 40 (top offset of albums list)
         
         var scrollTop = $(window).scrollTop(),
         elementOffset = $('.albumsList').offset().top,
@@ -221,12 +230,12 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
         }
         
         if ( $(window).width() >= 900 ) {
-            if ( ( $('.viewAlbumInner').offset().top ) - scrollTop >= 65 ){
+            if ( ( $('.viewAlbumInner').offset().top ) - scrollTop >= 105 ){
                 $('.albumsList').removeClass('stuck');
                 $('.albumsList').css( { 'height': '100%' } );
             }    
         } else {
-            if ( ( $('.viewAlbumInner').offset().top ) - scrollTop >= 0 ){
+            if ( ( $('.viewAlbumInner').offset().top ) - scrollTop >= 40 ){
                 $('.albumsList').removeClass('stuck');
                 $('.albumsList').css( { 'height': '100%' } );
             }
@@ -530,6 +539,8 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
             if( prevAlbum() == null ) {
                 prevAlbum( currAlbum() );
             }
+            
+            stickyAlbumsList();
             
             refresh( true );
 	}

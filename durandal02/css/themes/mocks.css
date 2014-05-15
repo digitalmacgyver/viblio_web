@@ -4992,11 +4992,11 @@ button.linkedin:active {
     position: absolute;
     height: 100%;
     right: -40px;
-    top: 0;
+    top: -40px;
     bottom: 0px;
     z-index: 1000;
     width: auto;
-    max-width: 100px;
+    max-width: 108px;
     background-color: rgba(239,239,232,.9);
     -webkit-transition: max-width 300ms ease;
     -moz-transition: max-width 300ms ease;
@@ -5029,7 +5029,7 @@ button.linkedin:active {
 .albumView .albumsList .year h1 {
     display: inline-block;
     font-size: 14px;
-    line-height: 30px;
+    line-height: 33px;
     font-weight: normal;
     color: rgb(158, 176, 188);
     margin: 5px 0px;
@@ -5040,6 +5040,18 @@ button.linkedin:active {
     -ms-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
     -o-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
     transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+}
+
+.albumView .albumsList .year h1.albumLabelsTitle {
+    font-size: 18px;
+    font-weight: bold;
+    cursor: initial;
+}
+
+.albumView .albumsList hr {
+    margin: 0;
+    border-bottom: none;
+    border-top: 1px solid rgb(190,190,190);
 }
 
 .albumView .albumsList:hover .year h1 {
@@ -5059,6 +5071,10 @@ button.linkedin:active {
 
 .albumView .albumsList:hover .year .truncate {
     max-width: 500px;
+}
+
+.albumView .albumsList .year h1.sel {
+    font-weight: bold;
 }
 
 .albumView .albumsList .year h1.sel,
