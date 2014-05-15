@@ -15,7 +15,6 @@ define(["durandal/app",
     var route;
 
     var playing = ko.observable();
-    var map;
     var isNear = ko.observable();
     var nolocation = ko.observable( true );
 
@@ -38,8 +37,15 @@ define(["durandal/app",
     var share_button_visible = ko.observable();
     var get_the_app_button_visible = ko.observable();
     var get_the_app_overlay_logic = ko.observable();
-    var map_location_editable = ko.observable();
     var new_face_addable = ko.observable();
+    
+    var tagLabels = ko.observableArray([{label: 'Animals', selected: ko.observable(false)},{label: 'At home', selected: ko.observable(false)},{label: 'Beach', selected: ko.observable(false)},
+        {label: 'Children', selected: ko.observable(false)},{label: 'On the road', selected: ko.observable(false)},{label: 'Outdoors', selected: ko.observable(false)},{label: 'Parties', selected: ko.observable(false)},
+        {label: 'Performances', selected: ko.observable(false)},{label: 'Pets', selected: ko.observable(false)},{label: 'Presentations', selected: ko.observable(false)}, {label: 'Sports - balls', selected: ko.observable(false)},
+        {label: 'Sports - snow', selected: ko.observable(false)}, {label: 'Sports – water', selected: ko.observable(false)},{label: 'Vacation', selected: ko.observable(false)},{label: 'New Tag', selected: ko.observable(false)}]);
+    
+    var tags = ko.observableArray();
+    var selectedTag = ko.observable();
 
     // Initialize all of the visibility/editable conditionals
     // to a new_player configuration.
@@ -57,7 +63,6 @@ define(["durandal/app",
 	share_button_visible( true );
 	get_the_app_button_visible( false );
 	get_the_app_overlay_logic( false );
-	map_location_editable( true );
 	new_face_addable( true );
     }
     initialize_conditionals();
@@ -192,6 +197,8 @@ define(["durandal/app",
         setupComments( m.media() );
         setupFaces( m.media() );
         near( m.media() );
+        
+        setupTags( m.media() );
 
         // We don't nessesarily have the main urls needed to stream
         // the video.  If we don't, go get them and save them in the
@@ -392,6 +399,84 @@ define(["durandal/app",
             }
         });
     }
+    
+    var showTags = ko.observable(false);
+    function toggleTags() {
+        showTags() ? showTags(false) : showTags(true);
+    }
+    function setupTags( m ) {
+        tags.removeAll();
+        if( m.tags && m.tags.length > 0 ){
+            m.tags.forEach( function(tag) {
+                tags.push(tag);
+            });
+        }
+    };
+    
+    //var newTagSelected = ko.observable(false);
+    var newTagSelected = ko.computed( function() {
+        if( selectedTag() == 'New Tag' ) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    var newTag = ko.observable(null);
+    
+    function tagSelected( parent, data ) {
+        if( data.selected() ) {
+            data.selected( false );
+            selectedTag( null );
+        } else {
+            tagLabels().forEach( function( t ) {
+                t.selected( false );
+            });
+            data.selected( true );
+            selectedTag( data.label );
+        }   
+    };
+    
+    function addTag( parent, event ) {
+        var args = {
+            mid: playing().media().uuid,
+            tag: newTagSelected() ? newTag() : selectedTag()
+        };
+        
+        if( args.tag ) {
+            // check to see if video already has selectred tag
+            var present = false;
+            tags().forEach( function( t ) {
+                if( t == args.tag ) {
+                    present = true;
+                }
+            });
+            
+            if( present ) {
+                // already exists, no dups
+                return
+            } else {
+                // tag does not exist, so add it
+                viblio.api(' /services/mediafile/add_tag', args).then( function() {
+                    tags.push( args.tag );
+                    tagLabels().forEach( function( t ) {
+                        t.selected( false );
+                    });
+                    selectedTag( null );
+                    newTag( null );
+                });
+            }           
+        }
+    };
+    
+    function removeTag( tag ) {
+        var args = {
+            mid: playing().media().uuid,
+            tag: tag
+        };
+        viblio.api('/services/mediafile/rm_tag', args).then( function() {
+            tags.remove( tag );
+        });
+    };
 
     // This gets triggered when a new user comment has been entered.
     //
@@ -445,37 +530,15 @@ define(["durandal/app",
     // address from http://maps.googleapis.com) and center/zoom to it on the
     // map.
     function near( m ) {
-        map.removeAllMarkers();
-        // map.disableSetLocation();
         if ( m.geo_address ) {
             nolocation( false );
             isNear( m.geo_address );
-            map.addMarker( m.lat, m.lng, m, true );
-            // ensures all map tiles are shown when the map is shown
-            map.data("map").invalidateSize();
-            resizePlayer();
         }
         else {
-            isNear( 'Find in map' );
+            isNear( 'No location available' );
             // comingSoon(m);
             nolocation( true );
-            resizePlayer();
         }
-    }
-
-    function comingSoon( m ) {
-        map.centerDefault();
-        map.enableSetLocation( function( latlng ) {
-            viblio.api( '/services/geo/change_latlng', 
-                        { mid: playing().media().uuid,
-                          lat: latlng.lat,
-                          lng: latlng.lng } ).then( function( result ) {
-                              playing().media().lat = latlng.lat;
-                              playing().media().lng = latlng.lng;
-			      playing().media().geo_address = result.address;
-                              near( playing().media() );
-                          });
-        });
     }
 
     function addFace( face ) {
@@ -661,9 +724,19 @@ define(["durandal/app",
 	share_button_visible: share_button_visible,
 	get_the_app_button_visible: get_the_app_button_visible,
 	get_the_app_overlay_logic: get_the_app_overlay_logic,
-	map_location_editable: map_location_editable,
 	new_face_addable: new_face_addable,
         
+        showTags: showTags,
+        toggleTags: toggleTags,
+        tagLabels: tagLabels,
+        tags: tags,
+        newTagSelected: newTagSelected,
+        newTag: newTag,
+        
+        tagSelected: tagSelected,
+        addTag: addTag,
+        removeTag: removeTag,
+                
         shouldShowInteractiveMap: function() {
             if( nolocation() ) {
                 this.showInteractiveMap();
@@ -769,7 +842,6 @@ define(["durandal/app",
 					    share_button_visible( false );
 					    get_the_app_button_visible( true );
 					    get_the_app_overlay_logic( true );
-					    map_location_editable( false );
 					    new_face_addable( false );
 
 					    if ( share_type == 'private' && loggedIn() ) {
@@ -830,6 +902,10 @@ define(["durandal/app",
 		    setOwner( json.owner );
 		});
 	    }
+            
+            /*tagLabels.forEach(function(tag) {
+                tag.selected = ko.observable(false);
+            });*/
 	},
 
 	detached: function () {
@@ -837,18 +913,18 @@ define(["durandal/app",
 	    if(flowplayer()){
                 flowplayer().unload();
             }
-	    if ( map ) map.destroy();
 	},
 
 	compositionComplete: function() {
 	    setupFlowplayer( '.pp-tv', playing().media() );
 	    setupFaces( playing().media() );
 	    setupComments( playing().media() );
-	    map = $("#geo-map").vibliomap({
-                disableZoomControl: true
-            });
             
-	    // center/zoom to media file location
+            setupTags( playing().media() );
+            
+            console.log( playing().media() );
+            
+	    // update address in GUI to match playing video's location
             near( playing().media() );
 
 	    $(window).bind('resize', resizePlayer );
@@ -916,7 +992,12 @@ define(["durandal/app",
                     }
 		});
 	    }
-
+            
+            // prevents tags dropdown from closing when clicking into input
+            $('.newTagInput').click( function(e) {
+                e.stopPropagation();
+            });
+            
 	    playing( playing() ); // tickles formatted_date
 	}
     };
