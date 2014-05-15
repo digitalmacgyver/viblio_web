@@ -4993,6 +4993,10 @@ button.linkedin:active {
     top: 39px;    
 }
 
+.tags-inner > li > a {
+    padding: 5px;
+}
+
 .yv-secondary-nav .navControl.albumsList {
     position: absolute;
     left: 100%;
