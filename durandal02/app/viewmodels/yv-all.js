@@ -511,7 +511,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 				rows: self.allVidsPager.entries_per_page } );
                 }
 		apiCall.then( function( json ) {
-                    console.log(json);
                         self.hits ( json.pager.total_entries );
 			self.allVidsPager = json.pager;
                         if(json.albums){

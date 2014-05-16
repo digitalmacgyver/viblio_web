@@ -104,7 +104,6 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
         }
         
         self.pointsInRange().forEach(function(vid) {
-            console.log( vid );
             self.selectedVideos.push(vid.uuid);
         });
     };

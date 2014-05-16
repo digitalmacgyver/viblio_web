@@ -39,6 +39,13 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	this.edittable = ko.observable( false );
 	this.ro       = ko.observable( this.options.ro );  // If true, then cannot edit title
         this.shared_style = ko.observable( this.options.shared_style );
+        this.gift_style = ko.computed( function() {
+            if( data.is_viblio_created == 1 ) {
+                return true;
+            } else {
+                return false;
+            }
+        });
         this.owner_avatar = "/services/na/avatar?uid=" + data.owner_uuid + "&y=40";
         this.owner_name = ko.computed( function(){
             if( data.owner ) {

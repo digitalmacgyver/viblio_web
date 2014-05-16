@@ -160,9 +160,8 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
             self.selectedVideos.removeAll();
         }
         
-        self.mediafiles().forEach(function(vid) {
-            console.log( vid );
-            self.selectedVideos.push(vid.view.id);
+        self.mediafiles().forEach( function( vid ) {
+            self.selectedVideos.push( vid.view.id );
         });
     };
     
