@@ -12,7 +12,7 @@
     <!-- /ko -->
     <span>(<span data-bind="text: albumLength"></span> <span data-bind="text: videoOrVideos()"></span>)</span>
 </div>
-<div class="mediafile" data-bind="attr:{id:media().uuid}">
+<div class="mediafile" data-bind="attr:{id:media().uuid}, css:{shared: shared_style}"">
     <div>
         <!-- ko if: noVideos -->
         <div class="albumOverlay">
