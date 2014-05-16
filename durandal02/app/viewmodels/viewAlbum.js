@@ -133,7 +133,16 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
     };
     
     app.on( 'album:name_changed', function( album ) {
-        viblio.api( '/services/album/change_title', { aid: album_id, title: albumTitle() } );
+        viblio.api( '/services/album/change_title', { aid: album_id, title: albumTitle() } ).then(function() {
+            albumLabels().forEach( function( a ){
+                if( a.uuid == album_id ) {
+                    a.title = albumTitle();
+                    a.label( albumTitle() );
+                }
+            });
+            // resort the labels
+            albumLabels( albumLabels().sort(function(left, right) { return left.label().toLowerCase() == right.label().toLowerCase() ? 0 : (left.label().toLowerCase() < right.label().toLowerCase() ? -1 : 1) }) );
+        });
     });
     
     function mfOwnedByViewer( mf ) {
@@ -183,13 +192,13 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
             var arr = [];
             data.albums.forEach( function( album ) {
                 var _album = album;
-                _album.label = album.title;
+                _album.label = ko.observable( album.title );
                 _album.selected = ko.observable( false );
                 
                 arr.push( _album );
             });
             //alphabetically sort the list - toLowerCase() makes sure this works as expected
-            arr.sort(function(left, right) { return left.label.toLowerCase() == right.label.toLowerCase() ? 0 : (left.label.toLowerCase() < right.label.toLowerCase() ? -1 : 1) });
+            arr.sort(function(left, right) { return left.label().toLowerCase() == right.label().toLowerCase() ? 0 : (left.label().toLowerCase() < right.label().toLowerCase() ? -1 : 1) });
             albumLabels( arr );
             
             albumLabels().forEach(function(album) {
