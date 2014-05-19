@@ -1,4 +1,4 @@
-<div class="allVidsPage clearfix">
+<div class="allVidsPage clearfix createAlbum">
 
   <div class="yv-secondary-nav">
     
@@ -151,6 +151,10 @@
                 <span data-bind="if: !noFiltersAreActive(), text: getAlbumName() + '  Filter' "></span>
                 <span data-bind="if: searchFilterIsActive()">search criteria</span>
                 .           
+          </div>
+          <div class="vidSelectControls">
+              <button class="btn btn-white btn-small" data-bind="click: unselectAll">Unselect All - <i class="icon-unchecked"></i></button>
+              <button class="btn btn-white btn-small" data-bind="click: selectAll">Select All - <i class="icon-check"></i></button>
           </div>
       </div>
                

@@ -549,6 +549,22 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         });
     };
     
+    createAlbum.prototype.selectAll = function() {
+        var self = this;
+        
+        self.videos().forEach( function(video) {
+            video.selected(true);
+        });
+    }
+    
+    createAlbum.prototype.unselectAll = function() {
+        var self = this;
+        
+        self.videos().forEach( function(video) {
+            video.selected(false);
+        });
+    }
+    
     createAlbum.prototype.getSelectedVidUUIDs = function( view ) {
         var self = view;
         
