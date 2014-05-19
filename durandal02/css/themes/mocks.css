@@ -5023,6 +5023,10 @@ button.linkedin:active {
     }
 }
 
+.createAlbum .vidSelectControls button:first-of-type {
+    margin-right: 10px;
+}
+
 .albumView .albumsList {
     position: absolute;
     height: 100%;
