@@ -2061,6 +2061,10 @@ input:-moz-placeholder {
 
 /********************  Video Title and Description Section  *****************************/
 
+.recording-date {
+    margin-top: 8px;
+}
+
 .recording-date.editable:hover,
 .vidTitle:hover,
 .vidDescription:hover {

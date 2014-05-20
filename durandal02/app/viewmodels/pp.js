@@ -789,7 +789,7 @@ define(["durandal/app",
 				uri: data.contact.picture_uri,
 				contact: data.contact };
 			    addFace( f );
-			    add_face_to_video(); // reset the observable name
+			    add_face_to_video(null); // reset the observable name
 			});
 	},
 
