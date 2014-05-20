@@ -114,6 +114,18 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         events.includeIn( this );
     };
     
+    createAlbum.prototype.toggleRecentVids = function() {
+        var self = this;
+        
+        if( self.recentUploadsIsActive() ) {
+            self.recentUploadsIsActive( false );
+            self.showAllVideos();
+        } else {
+            self.recentVidsSearch( true );
+            self.recentUploadsIsActive( true );
+        }
+    };
+    
     createAlbum.prototype.recentVidsSearch = function( newSearch ) {
         var self = this;
         
@@ -187,7 +199,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             //clear the search contents
             self.clearSearch();
             self.unselectOtherFilters('dates');
-            self.videos.removeAll();
+            //self.videos.removeAll();
             // reset pager
             self.monthPager = {
                 next_page: 1,
@@ -254,7 +266,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             //clear the search contents
             self.clearSearch();
             self.unselectOtherFilters('faces');
-            self.videos.removeAll();
+            //self.videos.removeAll();
             // reset pager
             self.facesPager = {
                 next_page: 1,
@@ -321,7 +333,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             //clear the search contents
             self.clearSearch();
             self.unselectOtherFilters('cities');
-            self.videos.removeAll();
+            //self.videos.removeAll();
             // reset pager
             self.cityPager = {
                 next_page: 1,
@@ -630,12 +642,18 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     };
     
     // Add a new mediafile to our managed list of mediafiles
-    createAlbum.prototype.addMediaFile = function( mf ) {
+    createAlbum.prototype.addMediaFile = function( mf, options ) {
 	var self = this;
         
-	// Create a new Mediafile with the data from the server
-	var m = new Mediafile( mf, { show_select_badge: true, selected: true } );
-
+        var m;
+        
+        // Create a new Mediafile with the data from the server
+        if( options ) {
+            m = new Mediafile( mf, options );
+        } else {
+            m = new Mediafile( mf, { show_select_badge: true, selected: true } );
+        }
+        
 	// Register a callback for when a Mediafile is selected.
 	// This is so we can deselect the previous one to create
 	// a radio behavior.
@@ -680,7 +698,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                         self.hits ( json.pager.total_entries );
 			self.allVidsPager = json.pager;
 			json.media.forEach( function( mf ) {
-			    self.addMediaFile( mf );
+			    self.addMediaFile( mf, {show_select_badge: true, selected: false} );
 			});
 			dfd.resolve();
 		    });
@@ -739,8 +757,14 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 }
             }    
         } else {
-            if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                self.vidsSearch();
+            if( self.searchFilterIsActive() ) {
+                if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
+                    self.vidsSearch();
+                }    
+            } else {
+                if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
+                    self.search();
+                } 
             }
         }
     };
@@ -771,9 +795,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         // get albums and create list
         self.getAllAlbumsLabels();
-        
-        // default to recent uplaods
-        self.recentVidsSearch( true );
     };   
 
     // In attached, attach the mCustomScrollbar we're presently
@@ -784,7 +805,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         // At this point (and only at this point!) we have an accurate
 	// height dimension for the scroll area and its item container.
-	//self.search();
+	self.search();
     };
 
     createAlbum.prototype.add_videos = function() {
