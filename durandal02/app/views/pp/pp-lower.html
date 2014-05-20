@@ -14,7 +14,7 @@
                 <div id="geo-title" class="textShadowed centered">
                     <!-- ko ifnot: nolocation -->
                         <span data-bind="visible: isNear() != 'Find in map' ">This video was taken at </span><br />
-                        <span data-bind="text: isNear()"></span>
+                        <span class="currentAddress" data-bind="text: isNear(), click: relocate, tooltip:{title:'Click to edit location'}"></span>
                     <!-- /ko -->
                     <!-- ko if: nolocation -->
                         <span data-bind="click: showInteractiveMap">Click to add a location</span>

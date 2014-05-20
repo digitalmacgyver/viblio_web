@@ -1870,6 +1870,14 @@ input:-moz-placeholder {
     margin-right: 5px;
 }
 
+.currentAddress {
+    cursor: pointer;
+}
+
+.currentAddress:hover {
+    text-decoration: underline;
+}
+
 .tagsToggle {
     font-size: 30px;
     margin-top: 14px;
