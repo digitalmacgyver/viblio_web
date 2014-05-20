@@ -1,8 +1,7 @@
 <div class="allVidsPage clearfix createAlbum">
 
   <div class="yv-secondary-nav">
-    
-    <button class="btn btn-small btn-secondary navControl" data-bind="css: { active: recentUploadsIsActive }, click: function(){ recentVidsSearch( true ); }"><i class="icon-time"></i> Recent Uploads</button>
+      <button class="btn btn-small btn-secondary navControl" data-bind="css: { active: recentUploadsIsActive }, click: toggleRecentVids"><i class="icon-time"></i> Recent Uploads <span data-bind="if: recentUploadsIsActive">(On)</span></button>
 
     <div style="display: inline-block;" class="dropdown navControl">
         <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: dateFilterIsActive }"><i class="icon-calendar"></i> Filter by Date <span data-bind="if: dateFilterIsActive">(<span data-bind="text: selectedMonth() ? selectedMonth() : 'All'"></span>)</span></a>
@@ -135,13 +134,14 @@
                   <input type="text" class="search-query" placeholder="Search" data-bind="value: searchQuery">
                   <button type="submit" class="btn btn-white" data-bind="click: newVidsSearch"><i class="icon-search"></i></button>
                   <!-- ko if: searchFilterIsActive() -->
-                  <button class="btn btn-secondary" data-bind="click: clearSearch, tooltip: {title:'Clear search'}"><i class="icon-remove"></i></button>
+                  <button class="btn btn-secondary" data-bind="click: showAllVideos, tooltip: {title:'Clear search'}"><i class="icon-remove"></i></button>
                   <!-- /ko -->
               </div>
           </form>
           
           <div style="display: block; text-align: center;" class="mainTitle textShadowed createAlbumDesc" data-bind="if: noFiltersAreActive() && !searchFilterIsActive()">
-              Use the filters above or the search bar to choose the videos you want to add to a new or existing album. Once the videos are selected click the "Add to/Create Album" button.
+              You have <span data-bind="text: hits"></span>
+              <span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private Viblio Library. 
           </div>
           
           <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: !isActiveFlag() && !noFiltersAreActive() || searchFilterIsActive()">
