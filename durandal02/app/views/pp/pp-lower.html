@@ -11,13 +11,13 @@
                 </div>          
             </td>
             <td>
-                <div id="geo-title" class="textShadowed centered">
+                <div id="geo-title" class="textShadowed centered" data-bind="visible: map_location_editable()">
                     <!-- ko ifnot: nolocation -->
                         <span data-bind="visible: isNear() != 'Find in map' ">This video was taken at </span><br />
                         <span class="currentAddress" data-bind="text: isNear(), click: relocate, tooltip:{title:'Click to edit location'}"></span>
                     <!-- /ko -->
                     <!-- ko if: nolocation -->
-                        <span data-bind="click: showInteractiveMap">Click to add a location</span>
+                        <span class="currentAddress" data-bind="click: showInteractiveMap">Click to add a location</span>
                     <!-- /ko -->
                 </div>
             </td>
@@ -66,6 +66,7 @@
                             <i class="icon-remove" title="Remove" data-bind="click: $parent.removeTag"></i>
                         </li>
                         <!-- /ko -->
+                        <!-- ko if: tags_editable() -->
                         <li class="tag mocksWhiteBG dropdown navControl" data-toggle="dropdown">
                             <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-plus"></i> Add Tag</a>
                             <ul class="dropdown-menu tags" role="menu">
@@ -98,6 +99,13 @@
                                 </li>
                               </ul>
                         </li>
+                        <!-- /ko -->
+                        
+                        <!-- ko if: !tags_editable() && tags().length < 1 -->
+                        <li class="tag">
+                            <span>This video does not have any tags yet.</span>
+                        </li>
+                        <!-- /ko -->
                     </ul>
                     <div class="innerComments-Wrap">
                         <div class="comment-header-wrap">

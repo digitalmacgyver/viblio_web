@@ -28,11 +28,9 @@
 
                 <!-- /ko -->
 
-                <!-- ko if: faces_fetched() && faces().length<1 -->
+                <!-- ko if: faces_fetched() && faces().length<1 && new_face_addable() -->
                 <div class="pp-no-faces">
-                  <!-- ko if: new_face_addable() -->
                   <img src="css/images/avatar.png" alt="avatar" />
-                  <!-- /ko -->
                 </div>
                 <!-- /ko -->
 

@@ -37,8 +37,10 @@ define(["durandal/app",
     var share_button_visible = ko.observable();
     var get_the_app_button_visible = ko.observable();
     var get_the_app_overlay_logic = ko.observable();
+    var map_location_editable = ko.observable();
     var new_face_addable = ko.observable();
     
+    var tags_editable = ko.observable();
     var tagLabels = ko.observableArray([{label: 'Animals', selected: ko.observable(false)},{label: 'At home', selected: ko.observable(false)},{label: 'Beach', selected: ko.observable(false)},
         {label: 'Children', selected: ko.observable(false)},{label: 'On the road', selected: ko.observable(false)},{label: 'Outdoors', selected: ko.observable(false)},{label: 'Parties', selected: ko.observable(false)},
         {label: 'Performances', selected: ko.observable(false)},{label: 'Pets', selected: ko.observable(false)},{label: 'Presentations', selected: ko.observable(false)}, {label: 'Sports - balls', selected: ko.observable(false)},
@@ -63,7 +65,9 @@ define(["durandal/app",
 	share_button_visible( true );
 	get_the_app_button_visible( false );
 	get_the_app_overlay_logic( false );
+        map_location_editable( true );
 	new_face_addable( true );
+        tags_editable( true );
     }
     initialize_conditionals();
 
@@ -588,8 +592,8 @@ define(["durandal/app",
 	var face = new Face( F, face_opts );
 
 	// If we are not going to display unidentified, dont even add them
-	if ( faces_unidentified_visible() == false && face.data.contact_name === null )
-	    return;
+	/*if ( faces_unidentified_visible() == false && face.data.contact_name === null )
+	    return;*/
 
 	face.on( 'person:composed', function() {
 	    resizeColumns();
@@ -657,6 +661,7 @@ define(["durandal/app",
 	unknown_faces.removeAll();
 	known_faces.removeAll();
 	viblio.api( '/services/na/faces_in_mediafile', { mid: m.uuid } ).then( function( data ) {
+            console.log( data );
 	    if ( data.faces && data.faces.length ) {
 		var count = data.faces.length;
 		for( var i=0; i<count; i++ ) {
@@ -736,7 +741,9 @@ define(["durandal/app",
 	share_button_visible: share_button_visible,
 	get_the_app_button_visible: get_the_app_button_visible,
 	get_the_app_overlay_logic: get_the_app_overlay_logic,
+        map_location_editable: map_location_editable,
 	new_face_addable: new_face_addable,
+        tags_editable: tags_editable,
         
         showTags: showTags,
         toggleTags: toggleTags,
@@ -854,7 +861,9 @@ define(["durandal/app",
 					    share_button_visible( false );
 					    get_the_app_button_visible( true );
 					    get_the_app_overlay_logic( true );
+                                            map_location_editable( false );
 					    new_face_addable( false );
+                                            tags_editable( false );
 
 					    if ( share_type == 'private' && loggedIn() ) {
 						pp_related_column_visible( true );
