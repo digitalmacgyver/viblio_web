@@ -5,120 +5,120 @@
 
     <div style="display: inline-block;" class="dropdown navControl">
         <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: dateFilterIsActive }"><i class="icon-calendar"></i> Filter by Date <span data-bind="if: dateFilterIsActive">(<span data-bind="text: selectedMonth() ? selectedMonth() : 'All'"></span>)</span></a>
-        <ul class="dropdown-menu tags" role="menu">
+        <ul class="style2DD dropdown-menu tags" role="menu">
           <li class="tagsScrollWrapper">
               <div class="scroller">
                   <div class="wrapper">
                       <ul class="tags-inner">
                         <!-- ko foreach: datesLabels -->
                             <li data-bind="click: $parent.monthSelected.bind( $data, $parent ), clickBubble: false">
-                                <a>
-                                    <div class="inline" data-bind="if: $data.selected()">
-                                        <i class="icon-check"></i>
-                                    </div>
-                                    <div class="inline" data-bind="ifnot: $data.selected()">
-                                        <i class="icon-unchecked"></i>
+                                <a class="checkboxedLi">
+                                    <div class="itemActive-Wrap">
+                                        <div class="itemActive" data-bind="css: {on: $data.selected()}"></div>
                                     </div>
                                     <div class="inline tagLabel" data-bind="text: $data.shortMonth + ' ' + $data.year, css:{sel: $data.selected()}"></div>
+                                    <div class="checkboxPadding"></div>
+                                    <div class="inline pull-right" data-bind="if: $data.selected()">
+                                        <i class="icon-check"></i>
+                                    </div>
+                                    <div class="inline pull-right" data-bind="ifnot: $data.selected()">
+                                        <i class="icon-unchecked"></i>
+                                    </div>
                                 </a>
                             </li>
                         <!-- /ko -->
                       </ul>    
                   </div>                  
               </div>
-          </li>        
-          <li class="btn btn-primary" data-bind="click: function(){ monthVidsSearch( true ); }">
-              <div class="textShadowed inline">Confirm</div>
           </li>
         </ul>
     </div>
     
     <div style="display: inline-block;" class="dropdown navControl">
         <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: faceFilterIsActive }"><i class="icon-user"></i> Filter by Face <span data-bind="if: faceFilterIsActive">(<span data-bind="text: selectedFace() ? selectedFace().contact_name : 'All' "></span>)</span></a>
-        <ul class="dropdown-menu tags" role="menu">
+        <ul class="style2DD dropdown-menu tags" role="menu">
           <li class="tagsScrollWrapper">
               <div class="scroller">
                   <div class="wrapper">
                       <ul class="tags-inner">
                         <!-- ko foreach: facesLabels -->
                             <li data-bind="click: $parent.faceSelected.bind( $data, $parent ), clickBubble: false">
-                                <a>
-                                    <div class="inline" data-bind="if: $data.selected()">
-                                        <i class="icon-check"></i>
-                                    </div>
-                                    <div class="inline" data-bind="ifnot: $data.selected()">
-                                        <i class="icon-unchecked"></i>
+                                <a class="checkboxedLi">
+                                    <div class="itemActive-Wrap">
+                                        <div class="itemActive" data-bind="css: {on: $data.selected()}"></div>
                                     </div>
                                     <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
+                                    <div class="checkboxPadding"></div>
+                                    <div class="checkbox-Wrap" data-bind="if: $data.selected()">
+                                        <i class="icon-check"></i>
+                                    </div>
+                                    <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
+                                        <i class="icon-unchecked"></i>
+                                    </div>                                    
                                 </a>
                             </li>
                         <!-- /ko -->
                       </ul>    
                   </div>                  
               </div>
-          </li>        
-          <li class="btn btn-primary" data-bind="click: function(){ faceVidsSearch( true ); }">
-              <div class="textShadowed inline">Confirm</div>
           </li>
         </ul>
     </div>
     
     <div style="display: inline-block;" class="dropdown navControl">
         <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: cityFilterIsActive }"><i class="icon-map-marker"></i> Filter by City <span data-bind="if: cityFilterIsActive">(<span data-bind="text: selectedCity() ? selectedCity() : 'All' "></span>)</span></a>
-        <ul class="dropdown-menu tags" role="menu">
+        <ul class="style2DD dropdown-menu tags" role="menu">
           <li class="tagsScrollWrapper">
               <div class="scroller">
                   <div class="wrapper">
                       <ul class="tags-inner">
                         <!-- ko foreach: citiesLabels -->
                             <li data-bind="click: $parent.citySelected.bind( $data, $parent ), clickBubble: false">
-                                <a>
-                                    <div class="inline" data-bind="if: $data.selected()">
-                                        <i class="icon-check"></i>
-                                    </div>
-                                    <div class="inline" data-bind="ifnot: $data.selected()">
-                                        <i class="icon-unchecked"></i>
+                                <a class="checkboxedLi">
+                                    <div class="itemActive-Wrap">
+                                        <div class="itemActive" data-bind="css: {on: $data.selected()}"></div>
                                     </div>
                                     <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
+                                    <div class="checkboxPadding"></div>
+                                    <div class="checkbox-Wrap" data-bind="if: $data.selected()">
+                                        <i class="icon-check"></i>
+                                    </div>
+                                    <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
+                                        <i class="icon-unchecked"></i>
+                                    </div>
                                 </a>
                             </li>
                         <!-- /ko -->
                       </ul>    
                   </div>                  
               </div>
-          </li>        
-          <li class="btn btn-primary" data-bind="click: function(){ cityVidsSearch( true ); }">
-              <div class="textShadowed inline">Confirm</div>
           </li>
         </ul>
     </div>
     
     <div class="dropdown navControl albumsList">
         <a class="btn btn-primary dropdown-toggle" href="#" data-toggle="dropdown">Add to/Create Album</a>
-        <ul class="dropdown-menu tags albumList" role="menu">
+        <ul class="style2DD dropdown-menu tags albumList" role="menu">
           <li class="tagsScrollWrapper">
               <div class="scroller">
                   <div class="wrapper">
                       <ul class="tags-inner">
                         <!-- ko foreach: albumLabels -->
                             <li data-bind="click: $parent.albumSelected.bind( $data, $parent ), clickBubble: false">
-                                <a>
-                                    <div class="inline" data-bind="if: $data.selected()">
+                                <a class="checkboxedLi">
+                                    <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
+                                    <!--<div class="checkbox-Wrap" data-bind="if: $data.selected()">
                                         <i class="icon-check"></i>
                                     </div>
-                                    <div class="inline" data-bind="ifnot: $data.selected()">
+                                    <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
                                         <i class="icon-unchecked"></i>
-                                    </div>
-                                    <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
+                                    </div>-->
                                 </a>
                             </li>
                         <!-- /ko -->
                       </ul>    
                   </div>                  
               </div>
-          </li>        
-          <li class="btn btn-primary" data-bind="click: addOrCreateAlbum">
-              <div class="textShadowed inline">Confirm</div>
           </li>
         </ul>
     </div>

@@ -6,30 +6,27 @@
     <div data-bind="slideVisible: showVidStrip" >
         <div class="dropdown navControl albumsList">
             <a class="btn btn-primary dropdown-toggle" href="#" data-toggle="dropdown">Add to/Create Album</a>
-            <ul class="dropdown-menu" role="menu">
+            <ul class="style2DD dropdown-menu" role="menu">
               <li class="tagsScrollWrapper">
                   <div class="scroller">
                       <div class="wrapper">
                           <ul class="tags-inner">
                             <!-- ko foreach: albumLabels -->
                                 <li data-bind="click: $parent.albumSelected.bind( $data, $parent ), clickBubble: false">
-                                    <a>
-                                        <div class="inline" data-bind="if: $data.selected()">
+                                    <a class="checkboxedLi">
+                                        <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
+                                        <!--<div class="inline" data-bind="if: $data.selected()">
                                             <i class="icon-check"></i>
                                         </div>
                                         <div class="inline" data-bind="ifnot: $data.selected()">
                                             <i class="icon-unchecked"></i>
-                                        </div>
-                                        <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
+                                        </div>-->
                                     </a>
                                 </li>
                             <!-- /ko -->
                           </ul>    
                       </div>                  
                   </div>
-              </li>        
-              <li class="btn btn-primary" data-bind="click: addOrCreateAlbum">
-                  <div class="textShadowed inline">Confirm</div>
               </li>
             </ul>
         </div>

@@ -123,6 +123,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         } else {
             self.recentVidsSearch( true );
             self.recentUploadsIsActive( true );
+            self.unselectOtherFilters();
         }
     };
     
@@ -176,11 +177,17 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     };
     
     createAlbum.prototype.monthSelected = function( self, month ) {
-        self.datesLabels().forEach( function( m ) {
-            m.selected( false );
-        });
-        month.selected( true );
-        self.selectedMonth( month.label );        
+        if( month.selected() ) {
+            month.selected(false);
+            self.showAllVideos();
+        } else {
+            self.datesLabels().forEach( function( m ) {
+                m.selected( false );
+            });
+            month.selected( true );
+            self.selectedMonth( month.label );
+            self.monthVidsSearch( true );
+        }
     };
     
     createAlbum.prototype.monthVidsSearch = function( newSearch ) {
@@ -243,11 +250,17 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     };
     
     createAlbum.prototype.faceSelected = function( self, face ) {
-        self.facesLabels().forEach( function( f ) {
-            f.selected( false );
-        });
-        face.selected( true );
-        self.selectedFace( face );    
+        if( face.selected() ) {
+            face.selected(false);
+            self.showAllVideos();
+        } else {
+            self.facesLabels().forEach( function( f ) {
+                f.selected( false );
+            });
+            face.selected( true );
+            self.selectedFace( face );
+            self.faceVidsSearch( true );
+        }    
     };
     
     createAlbum.prototype.faceVidsSearch = function( newSearch ) {
@@ -310,11 +323,17 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     };
     
     createAlbum.prototype.citySelected = function( self, city ) {
-        self.citiesLabels().forEach( function( c ) {
-            c.selected( false );
-        });
-        city.selected( true );
-        self.selectedCity( city.label );    
+        if( city.selected() ) {
+            city.selected(false);
+            self.showAllVideos();
+        } else {
+            self.citiesLabels().forEach( function( c ) {
+                c.selected( false );
+            });
+            city.selected( true );
+            self.selectedCity( city.label );
+            self.cityVidsSearch( true );
+        }         
     };
     
     createAlbum.prototype.cityVidsSearch = function( newSearch ) {
@@ -592,11 +611,16 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     };
     
     createAlbum.prototype.albumSelected = function( self, album ) {
-        self.albumLabels().forEach( function( a ) {
-            a.selected( false );
-        });
-        album.selected( true );
-        self.selectedAlbum( album );     
+        self.getSelectedVidUUIDs( self );
+        
+        if( self.selectedVideos().length > 0 ) {
+            self.albumLabels().forEach( function( a ) {
+                a.selected( false );
+            });
+            album.selected( true );
+            self.selectedAlbum( album );
+            self.addOrCreateAlbum();    
+        }
     };
     
     createAlbum.prototype.getAlbumName = function() {
@@ -620,8 +644,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     createAlbum.prototype.addOrCreateAlbum = function() {
         var self = this;
         
-        self.getSelectedVidUUIDs( self );
-        
         if ( self.selectedVideos().length > 0 ) {
             // Create a new album
             if( self.selectedAlbum().label === 'Create New Album' ) {          
@@ -637,6 +659,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 });        
                 // Used to close the dropdown
                 $("body").trigger("click");
+                // unselect albums
+                self.albumLabels().forEach( function( a ) {
+                    a.selected( false );
+                });
             }    
         }
     };
@@ -716,12 +742,14 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         $("body").trigger("click");
         self.searchFilterIsActive( false );
         self.searchQuery(null);
-        self.getAllDatesLabels();
+        /*self.getAllDatesLabels();
         self.datesLabels().forEach( function( m ) {
 	    m.selected( false );
 	});
         self.selectedMonth('');
-        self.dateFilterIsActive(false);
+        self.dateFilterIsActive(false);*/
+        self.unselectOtherFilters();
+        self.clearfilters();
         self.allVidsIsSelected(true);
         self.videos.removeAll();
         // reset pager

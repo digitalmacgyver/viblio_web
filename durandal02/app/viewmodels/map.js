@@ -109,17 +109,19 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
     };
     
     Map.prototype.albumSelected = function( self, album ) {
-        self.albumLabels().forEach( function( a ) {
-            a.selected( false );
-        });
-        album.selected( true );
-        self.selectedAlbum( album );     
+        self.getVidUUIDs( self );
+        if ( self.selectedVideos().length > 0 ) {
+            self.albumLabels().forEach( function( a ) {
+                a.selected( false );
+            });
+            album.selected( true );
+            self.selectedAlbum( album );
+            self.addOrCreateAlbum();
+        }    
     };
     
     Map.prototype.addOrCreateAlbum = function() {
         var self = this;
-        
-        self.getVidUUIDs( self );
         
         if ( self.selectedVideos().length > 0 ) {
             // Create a new album

@@ -1560,7 +1560,7 @@ input:-moz-placeholder {
 
 .fstrip .dropdown-menu {
     min-width: 0;
-    width: 100%;
+    //width: 100%;
     top: 39px;
     left: -3px;
 }
@@ -2673,6 +2673,11 @@ ul.token-input-list-facebook {
 }
 
 /**************** Map Page *******************/
+
+#map-page .style2DD {
+    left: auto;
+    right: 0;
+}
 
 #mapContainer {
     position: relative;
@@ -4993,8 +4998,55 @@ button.linkedin:active {
 
 .yv-secondary-nav .dropdown-menu.albumList {
     //width: 100%;
-    left: 0px;
+    left: auto;
+    right: 0;
     top: 39px;    
+}
+
+.yv-secondary-nav .dropdown-menu.albumList .tagLabel {
+    //max-width: 90%;
+}
+
+.tags-inner > li > a.checkboxedLi {
+    display: table;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.checkboxedLi > div {
+    display: table-cell;
+    vertical-align: middle;
+}
+.checkbox-Wrap {
+    //display: inline-block;
+    float: right;
+    margin-left: 5px;
+}
+
+.itemActive-Wrap {
+    width: 6px;
+}
+
+.itemActive {
+    height: 6px;
+    width: 6px;
+    margin-right: 5px;
+}
+
+.itemActive.on {
+    background-color: rgba(50,53,68,1);
+}
+
+.style2DD.dropdown-menu {
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(204, 204, 204);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -moz-border-radius: 6px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    left: 0;
+    right: auto;
 }
 
 .tags-inner > li > a {
@@ -5014,7 +5066,7 @@ button.linkedin:active {
     margin: 0 auto;
 }
 
-@media (max-width: 1300px) {   
+@media(max-width: 1300px) {   
     .yv-secondary-nav .navControl.albumsList {
         position: relative;
         left: 50%;

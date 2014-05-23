@@ -166,17 +166,21 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     };
     
     FScroll.prototype.albumSelected = function( self, album ) {
-        self.albumLabels().forEach( function( a ) {
-            a.selected( false );
-        });
-        album.selected( true );
-        self.selectedAlbum( album );     
+        
+        self.getVidUUIDs( self );
+        
+        if( self.selectedVideos().length > 0 ) {
+            self.albumLabels().forEach( function( a ) {
+                a.selected( false );
+            });
+            album.selected( true );
+            self.selectedAlbum( album );
+            self.addOrCreateAlbum();    
+        }      
     };
     
     FScroll.prototype.addOrCreateAlbum = function() {
         var self = this;
-        
-        self.getVidUUIDs( self );
         
         if ( self.selectedVideos().length > 0 ) {
             // Create a new album
