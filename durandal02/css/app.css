@@ -1048,3 +1048,6 @@ div.map .marker i {
 .yir .title .sel {
     font-weight: bold;
 }
+.map img {
+    max-width: none;
+}

@@ -1,33 +1,5 @@
 define(['plugins/dialog', 'lib/config'], function(dialog,config) {
 
-    // Extracts an address from the structure returned from
-    // a call on the server to http://maps.googleapis.com
-    //
-    function getCountry(results)
-    {
-	return results[0].formatted_address;
-	for (var i = 0; i < results[0].address_components.length; i++) {
-            var shortname = results[0].address_components[i].short_name;
-            var longname = results[0].address_components[i].long_name;
-            var type = results[0].address_components[i].types;
-            if (type.indexOf("country") != -1) {
-		if (!isNullOrWhitespace(shortname)) {
-                    return shortname;
-		}
-		else {
-                    return longname;
-		}
-            }
-	}
-    }
-    
-    function isNullOrWhitespace(text) {
-	if (text == null) {
-            return true;
-	}
-	return text.replace(/\s/gi, '').length < 1;
-    }
-
     var IMap = function( mediafile, options ) {
 	this.media   = mediafile;
 	this.options = options;
@@ -35,10 +7,15 @@ define(['plugins/dialog', 'lib/config'], function(dialog,config) {
 	this.dropped = ko.observable(false);
 	this.isNear  = ko.observable('');
 	this.paddr = ko.observable();
+	this.lastLatLng = null;
     };
 
     IMap.prototype.dismiss = function() {
 	dialog.close( this );
+    };
+
+    IMap.prototype.ok = function() {
+	this.useLocation();
     };
 
     IMap.prototype.help = function() {
@@ -53,10 +30,11 @@ define(['plugins/dialog', 'lib/config'], function(dialog,config) {
 	    var latlng = self.lastLatLng;
 	    viblio.api( '/services/geo/change_latlng', 
 			{ mid: self.media().uuid,
-			  lat: latlng.lat,
-			  lng: latlng.lng } ).then( function( result ) {
-			      self.media().lat = latlng.lat;
-			      self.media().lng = latlng.lng;
+			  addr: self.media().geo_address,
+			  lat: latlng.lat(),
+			  lng: latlng.lng() } ).then( function( result ) {
+			      self.media().lat = latlng.lat();
+			      self.media().lng = latlng.lng();
 			      self.media().geo_address = result.address;
 			      if ( self.options.doneCallback )
 				  self.options.doneCallback( self.media() );
@@ -102,15 +80,54 @@ define(['plugins/dialog', 'lib/config'], function(dialog,config) {
 	self.map = null;
     };
 
+    IMap.prototype.penter = function( data, event ) {
+	if ( event.keyCode == 13 ) 
+	    this.geocode( $(this.view).find('input').val() );
+    };
+
+    // Given an address, get the lat/lng and google address and plot the point
+    IMap.prototype.geocode = function( address ) {
+	var self = this;
+	if ( ! address ) return;
+	self.helpHide();  // hide the help if it is still showing
+	GMaps.geocode({
+	    address: address,
+	    callback: function( results, status ) {
+		if ( status == 'OK' ) {
+		    self.map.removeMarkers();  // remove all the other markers
+		    var latlng = results[0].geometry.location;
+		    var addr   = results[0].formatted_address;
+		    self.paddr( addr );
+		    self.map.setCenter(latlng.lat(), latlng.lng());
+		    self.map.addMarker({
+			lat: latlng.lat(),
+			lng: latlng.lng()
+		    });
+		    self.map.setZoom(15);
+		    self.lastLatLng = latlng;
+		    self.dropped( true );
+		}
+		else {
+		    self.paddr( 'Unable to map address' );
+		    self.lastLatLng = null;
+		    self.dropped( false );
+		}
+	    }
+	});
+    };
+
     IMap.prototype.compositionComplete = function(view, parent) {
 	var self = this;
 	self.view = view;
+
+	$(self.view).find('input').blur( function() {
+	    self.geocode( $(self.view).find('input').val() );
+	});
 
 	var initial_latlng = config.geoLocationOfVideoAnalytics.split(',');
 
 	if ( self.media().geo_address ) self.paddr( self.media().geo_address );
 
-	//self.map  = $(self.view).find( ".map" ).vibliomap(self.options);
 	self.map = new GMaps({
 	    div: $(self.view).find( ".map" ).get(0),
 	    lat: parseFloat( self.media().lat || initial_latlng[0] ),
@@ -118,8 +135,6 @@ define(['plugins/dialog', 'lib/config'], function(dialog,config) {
 	});
 
 	self.points.forEach( function( p ) {
-	    //var m = self.map.addMarker( p.lat, p.lng, p );
-	    //m.bindPopup( '<img src="' + p.url + '" style="width:120px;height:68px;" />' );
 	    self.map.addMarker({
 		lat: parseFloat(p.lat), lng: parseFloat(p.lng),
 		title: p.title,
@@ -129,30 +144,6 @@ define(['plugins/dialog', 'lib/config'], function(dialog,config) {
 	    });
 	});
 	self.map.fitZoom();
-
-	//$(self.view).draggable();
-	//$(self.view).find( ".map" ).resizable();
-
-	/**
-	self.map.enableSetLocation( function( latlng ) {
-	    var viblio = require( "lib/viblio" );
-	    viblio.api( '/services/geo/change_latlng', 
-			{ mid: self.media().uuid,
-			  lat: latlng.lat,
-			  lng: latlng.lng } ).then( function( result ) {
-			      self.media().lat = latlng.lat;
-			      self.media().lng = latlng.lng;
-			      self.media().geo_address = result.address;
-			      self.isNear( result.address || '' );
-			      if ( self.options.doneCallback )
-				  self.options.doneCallback( self.media() );
-			      self.dismiss();
-			  });
-	}, function( latlng ) {
-	    self.dropped( true );
-	    self.lastLatLng = latlng;
-	});
-	**/
     };
 
     return IMap;
