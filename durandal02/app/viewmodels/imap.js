@@ -1,4 +1,4 @@
-define(['plugins/dialog'], function(dialog) {
+define(['plugins/dialog', 'lib/config'], function(dialog,config) {
 
     // Extracts an address from the structure returned from
     // a call on the server to http://maps.googleapis.com
@@ -34,6 +34,7 @@ define(['plugins/dialog'], function(dialog) {
 	this.points  = [];
 	this.dropped = ko.observable(false);
 	this.isNear  = ko.observable('');
+	this.paddr = ko.observable();
     };
 
     IMap.prototype.dismiss = function() {
@@ -104,24 +105,35 @@ define(['plugins/dialog'], function(dialog) {
     IMap.prototype.compositionComplete = function(view, parent) {
 	var self = this;
 	self.view = view;
-	self.map  = $(self.view).find( ".map" ).vibliomap(self.options);
 
-	// Force the search box to be visible initially
-	setTimeout( function() {
-	    var el = $(".leaflet-control-mapbox-geocoder-toggle").get(0); 
-	    if ( el ) 
-		el.click();
-	},500);
+	var initial_latlng = config.geoLocationOfVideoAnalytics.split(',');
+
+	if ( self.media().geo_address ) self.paddr( self.media().geo_address );
+
+	//self.map  = $(self.view).find( ".map" ).vibliomap(self.options);
+	self.map = new GMaps({
+	    div: $(self.view).find( ".map" ).get(0),
+	    lat: parseFloat( self.media().lat || initial_latlng[0] ),
+	    lng: parseFloat( self.media().lng || initial_latlng[1] ),
+	});
 
 	self.points.forEach( function( p ) {
-	    var m = self.map.addMarker( p.lat, p.lng, p );
-	    m.bindPopup( '<img src="' + p.url + '" style="width:120px;height:68px;" />' );
+	    //var m = self.map.addMarker( p.lat, p.lng, p );
+	    //m.bindPopup( '<img src="' + p.url + '" style="width:120px;height:68px;" />' );
+	    self.map.addMarker({
+		lat: parseFloat(p.lat), lng: parseFloat(p.lng),
+		title: p.title,
+		infoWindow: {
+		    content: '<img src="' + p.url + '" style="width:120px;height:68px;" />',
+		}
+	    });
 	});
-	self.map.fitBounds();
+	self.map.fitZoom();
 
-	$(self.view).draggable();
-	$(self.view).find( ".map" ).resizable();
+	//$(self.view).draggable();
+	//$(self.view).find( ".map" ).resizable();
 
+	/**
 	self.map.enableSetLocation( function( latlng ) {
 	    var viblio = require( "lib/viblio" );
 	    viblio.api( '/services/geo/change_latlng', 
@@ -140,6 +152,7 @@ define(['plugins/dialog'], function(dialog) {
 	    self.dropped( true );
 	    self.lastLatLng = latlng;
 	});
+	**/
     };
 
     return IMap;
