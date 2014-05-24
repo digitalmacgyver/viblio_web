@@ -1,0 +1,151 @@
+<table class="player_lower">
+    <tbody>
+        <tr class="lightBlueBG underVidTable">
+            <td>
+                <div class="lightBlueFont clearfix mocksWhiteBG ownerDate-Wrap">
+                    
+                        <img class="boxShadowed" data-bind="attr:{src:media_owner_avatar}" />
+                    
+                    <span class="midAlign lightWeightFont">by <span class="heavyWeightFont" data-bind="text: media_owner_name"></span></span>
+                    <span class="todays-date recording-date lightWeightFont pull-right" data-bind="text: formatted_date"></span>
+                </div>          
+            </td>
+            <td>
+                <div id="geo-title" class="textShadowed centered" data-bind="visible: map_location_editable()">
+                    <!-- ko ifnot: nolocation -->
+                        <span data-bind="visible: isNear() != 'Find in map' ">This video was taken at </span><br />
+                        <span class="currentAddress" data-bind="text: isNear(), click: relocate, tooltip:{title:'Click to edit location'}"></span>
+                    <!-- /ko -->
+                    <!-- ko if: nolocation -->
+                        <span class="currentAddress" data-bind="click: showInteractiveMap">Click to add a location</span>
+                    <!-- /ko -->
+                </div>
+            </td>
+            <td>
+                <div class="pp-share">
+                    <!-- ko if: share_button_visible -->
+                    <a class="btn btn-primary" href="#" data-bind="click: showShareVidModal">
+                        <i class="icon-share"></i> Share this Video!
+                    </a>
+                    <!-- /ko -->
+                    <!-- ko if: get_the_app_button_visible -->
+                    <a class="btn btn-primary" data-bind="click: addVideos">
+                        <i class="icon-share"></i> Create Your Own Library!
+                    </a>
+                    <!-- /ko -->
+                </div>
+            </td>
+        </tr>
+        <tr class="babyBlueBG">
+            <td colspan="3">
+                <div id="comments">
+                    <div class="titleTags-Wrap">
+                        <div class="vidTitle-Wrap">
+                            <div data-bind="if: title_editable">
+                                <div data-bind="liveEditor: title">
+                                    <h3 class="view vidTitle" data-bind="click: title.edit, text: playing().title() || 'Click to edit title'"></h3>
+                                    <div class="editTitle-Wrap">
+                                        <input type="text" class="edit" data-bind="value: title, 
+                                                                           hasFocus: title.editing, 
+                                                                           event: { blur: function() { title.stopEditing(); title.save( playing(), playing().media(), 'mediaFile:TitleDescChanged' ) } }" />
+                                    </div>  
+                                </div>    
+                            </div>
+                            <div data-bind="ifnot: title_editable">
+                                <h3 data-bind="text: title()"></h3>
+                            </div>    
+                        </div>
+                        <div class="tags-Wrap">
+                            <span class="tagsToggle" data-bind="click: toggleTags" title="Toggle tags"><i class="icon-tags"></i></span>
+                        </div>
+                    </div>
+                    <ul class="currentTags" data-bind="visible: showTags()">
+                        <!-- ko foreach: tags -->
+                        <li class="tag mocksWhiteBG">
+                            <span class="tagLabel" data-bind="text: $data"></span>
+                            <i class="icon-remove" title="Remove" data-bind="click: $parent.removeTag"></i>
+                        </li>
+                        <!-- /ko -->
+                        <!-- ko if: tags_editable() -->
+                        <li class="tag mocksWhiteBG dropdown navControl" data-toggle="dropdown">
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-plus"></i> Add Tag</a>
+                            <ul class="dropdown-menu tags" role="menu">
+                                <li class="tagsScrollWrapper">
+                                    <div class="scroller">
+                                        <div class="wrapper">
+                                            <ul class="tags-inner">
+                                              <!-- ko foreach: tagLabels -->
+                                                  <li data-bind="click: $parent.tagSelected.bind( $parent, $data ), clickBubble: false">
+                                                      <a>
+                                                          <div class="inline" data-bind="if: $data.selected()">
+                                                              <i class="icon-check"></i>
+                                                          </div>
+                                                          <div class="inline" data-bind="ifnot: $data.selected()">
+                                                              <i class="icon-unchecked"></i>
+                                                          </div>
+                                                          <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
+                                                      </a>
+                                                  </li>
+                                              <!-- /ko -->
+                                              <li data-bind="visible: newTagSelected()">
+                                                <input class="newTagInput" type="text" style="padding-right: 24px;" data-bind="value: newTag" placeholder="Enter Tag"><span class="editable-clear-x" style="display: none;"></span>    
+                                              </li>
+                                            </ul>    
+                                        </div>                  
+                                    </div>
+                                </li>        
+                                <li class="btn btn-primary" data-bind="click: addTag">
+                                    <div class="textShadowed inline">Confirm</div>
+                                </li>
+                              </ul>
+                        </li>
+                        <!-- /ko -->
+                        
+                        <!-- ko if: !tags_editable() && tags().length < 1 -->
+                        <li class="tag">
+                            <span>This video does not have any tags yet.</span>
+                        </li>
+                        <!-- /ko -->
+                    </ul>
+                    <div class="innerComments-Wrap">
+                        <div class="comment-header-wrap">
+                            <div class="comment-editor" data-bind="visible: can_leave_comments, liveEditor: usercomment">
+                                <p class="view vidDescription vidComment" data-bind="click: function(){ fixHeight( usercomment.edit(), '.editComment', '.vidComment' ) }, text:'Comment on this video...'"></p>
+                                <textarea class="edit editDescription editComment" 
+                                      data-bind="jqAutoresize: {},
+                                                 value:usercomment,
+                                                 hasFocus: usercomment.editing,
+                                                 event: { blur: function() { usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment') } }">                                   
+                                </textarea>
+                                <!-- ko if: usercomment.editing-->
+                                <div class='btn btn-small btn-blue btn-Post' data-bind="click: function() {usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment')} ">Post</div>
+                            <!-- /ko -->
+                            </div>
+                            <span class="lightBlueFont" data-bind="if: usercomment.editing">To submit your comment, click the "Post" button, press tab or click anywhere outside of the input box.</span>
+                            <div class="comments-header lightBlueFont">
+                                <span class="tableCell midAlign font18 lightWeightFont" data-bind="text: comments().length ==1 ? '1 Comment' : comments().length + ' Comments'"></span>
+                                <div class="views centered tableCell topAlign" title="Number of views">
+                                    <img src="css/images/viewsEye.png" />
+                                    <span data-bind="html: playing().media().eyes"></span>
+                                </div>    
+                            </div>
+                        </div>
+
+                        <div class="all-comments" data-bind="visible: show_comments">
+                            <!-- ko foreach: comments -->
+                            <div class="comment" data-bind="if: comment.indexOf(' ') != -1 || comment.indexOf('\n') != -1 && comment != '' || comment.length < 50">
+                                <p class="comment-text bottomBorder-Thin" data-bind="html: comment"></p>
+                                <div class="comment-footer lightBlueFont">
+                                    <p class="when pull-right" data-bind="text: when"></p>
+                                    <p>by&nbsp;<span class="who heavyWeightFont" data-bind="text: who"></span></p>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                        </div>    
+                    </div>
+
+                </div>    
+            </td>
+        </tr>    
+    </tbody>
+</table>

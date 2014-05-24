@@ -412,7 +412,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 .person .editableform input[type="text"] {
     font-size: 14px;
     height: auto;
-    width: 180px;
+    width: 120px;
 }
 
 .person .editable-input ul li {
@@ -563,13 +563,13 @@ font-size: 14px;
 }
 
 .player-control {
-    width: 55px;
+    //width: 55px;
     margin-top: 200px;
     color: white;
     font-size: 28px;
     text-align: center;
-    padding-top: 23px;
-    padding-bottom: 23px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     cursor: pointer;
 }
 
@@ -1553,7 +1553,7 @@ input:-moz-placeholder {
 }
 
 .fstrip .albumsList {
-    width: 226px;
+    //width: 226px;
     margin-left: 35px;
     display: inline-block;
 }
@@ -1858,7 +1858,82 @@ input:-moz-placeholder {
     margin: 8px 0;
 }
 
+.underVidTable td {
+    padding: 10px;
+}
+
+.ownerDate-Wrap {
+    padding: 13px 8px;
+}
+
+.ownerDate-Wrap >img {
+    margin-right: 5px;
+}
+
+.currentAddress {
+    cursor: pointer;
+}
+
+.currentAddress:hover {
+    text-decoration: underline;
+}
+
+.tagsToggle {
+    font-size: 30px;
+    margin-top: 14px;
+    display: inline-block;
+    float: right;
+}
+
+.titleTags-Wrap {
+    display: table;
+    width: 100%;
+}
+
+.vidTitle-Wrap,
+.tags-Wrap {
+    display: table-cell;
+    vertical-align: top;
+}
+
+.currentTags {
+    //display: inline-block;
+    min-height: 20px;
+    padding: 19px;
+    margin-left: 0;
+    margin-bottom: 20px;
+    background-color: rgb(245, 245, 245);
+    border: 1px solid rgb(227, 227, 227);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.tag {
+    display: inline-block;
+    padding: 3px;
+    margin-bottom: 3px;
+}
+
+.tagsToggle,
+.tag > i {
+    opacity: .65;
+    cursor: pointer;
+}
+.tagsToggle:hover,
+.tag > i:hover {
+    opacity: 1;
+}
+
 /*************** Player Comments ****************/
+
+#comments {
+    padding: 10px;
+}
+
+.innerComments-Wrap {
+    padding: 10px;
+}
 
 #comments p {
  font-weight: 200;    
@@ -1985,6 +2060,10 @@ input:-moz-placeholder {
 }
 
 /********************  Video Title and Description Section  *****************************/
+
+.recording-date {
+    margin-top: 8px;
+}
 
 .recording-date.editable:hover,
 .vidTitle:hover,
@@ -2988,15 +3067,18 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     }
 
 .pp-related-column-related-videos .mediafile {
-    width: 270px;
+    //width: 270px;
+    width: 200px;
 }
     .pp-related-column-related-videos .mediafile img {
         //height: 152px;    /* 16:9 */
-        height: 203px       /* 4:3 */
+        //height: 203px;       /* 4:3 */
+        height: 150px;    
     }
     
     .pp-related-column-related-videos .mediafile .truncate {
-        width: 198px;
+        //width: 198px;
+        width: 128px;
     }
 
 #register-page .mediafile {
@@ -3463,12 +3545,14 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     width: 100%;
 }
 .pp-main .pp-left-arrow-column {
-    width: 55px;
+    width: 33px;
+    min-width: 33px;
     padding-left: 40px;
     vertical-align: top;
 }
 .pp-main .pp-right-arrow-column {
-    width: 55px;
+    width: 33px;
+    min-width: 33px;
     vertical-align: top;
     padding-right: 40px;
 }
@@ -3477,7 +3561,8 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     vertical-align: top;
 }
 .pp-main .pp-related-column {
-    width: 320px;
+    //width: 320px;
+    width: 250px;
     border-left: 4px inset rgba(0,0,0,.2);
     vertical-align: top;
     padding: 0;
@@ -3501,19 +3586,24 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .pp-related-column-related-videos .mediafile {
     margin-bottom: 5px;
 }
-.pp-info-faces-wrapper,
+/*.pp-info-faces-wrapper,
 .pp-info-right-column {
     width: 366px;
 }
-/*.pp-info-map-wrapper {
+.pp-info-map-wrapper {
     height: 320px;
     min-height: 320px;
-}*/
+}
 .pp-info-faces-wrapper {
     min-height: 600px;
-}
+}*/
 .pp-player-column table {
     width: 100%;
+}
+
+.pp-player-column .newTagInput {
+    width: 90%;
+    margin: 5px 5%;
 }
 
 .pp-tv-wrap .shareButton {
@@ -3549,8 +3639,9 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 .pp .comments-header .views span{
     display: block;
 }
-.pp-info-left-column .all-comments {
+.all-comments {
     /* max-height: 250px; */
+    min-height: 100px;
     height: 100%;
     overflow-y: scroll;
 }
@@ -3569,20 +3660,25 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 .pp-unknown-faces-container {
     background-color: rgba(255,255,255,.2);
+    border-bottom: 1px solid rgba(255,255,255,.4);
 }
 .pp-face-container {
     padding-top: 25px;
+    max-height: 400px;
+    overflow-y: auto;
 }
 .pp-new-face,
 .pp-face-container {
-    padding-left: 18px;
-    padding-right: 18px;
+    padding: 25px 18px 0;
+}
+.pp-new-face input {
+    width: 120px;
 }
 .pp-faces-need-names {
     color: rgb(0,81,128);
     margin-bottom: 30px;
     padding: 12px 0;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     border-radius: 24px;
     -moz-box-shadow: 0 2px 0 1px rgba(0,0,0,.2);
@@ -3596,7 +3692,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     border-right: 16px solid rgba(0, 0, 0, 0);
     content: "";
     display: inline-block;
-    left: 146px;
+    left: 93px;
     position: absolute;
     bottom: -16px;
 }
@@ -3607,19 +3703,19 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     border-right: 14px solid rgba(0, 0, 0, 0);
     content: "";
     display: inline-block;
-    left: 148px;
+    left: 93px;
     position: absolute;
     bottom: -12px;
 }
 .pp-info-faces-wrapper .person {
     width: 90px;
     margin-right: 0;
-    margin-bottom: 25px;
+    margin-bottom: 0;
     display: inline-block;
 }
-.pp-faces-box .person:nth-of-type(3n + 2) {
+/*.pp-faces-box .person:nth-of-type(3n + 2) {
     margin: 0 18px 25px;
-}
+}*/
 .pp-info-faces-wrapper .person > div {
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
@@ -3995,6 +4091,87 @@ a.a-drop-view:focus{
     margin-bottom: 5px;
 }
 
+.albumView .albumsList {
+    position: absolute;
+    height: 100%;
+    right: -40px;
+    top: 0;
+    bottom: 0px;
+    z-index: 1000;
+    width: auto;
+    max-width: 100px;
+    background-color: rgba(239,239,232,.9);
+    -webkit-transition: max-width 300ms ease;
+    -moz-transition: max-width 300ms ease;
+    -ms-transition: max-width 300ms ease;
+    -o-transition: max-width 300ms ease;
+    transition: max-width 300ms ease;
+}
+
+.albumView .albumsList .scroller {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.albumView .albumsList.stuck {
+    position: fixed;
+    right: 0;
+    top: 65px;
+}
+
+@media (max-width: 900px) {
+    .albumView .albumsList.stuck {
+        top: 0;
+    }
+}
+
+.albumView .albumsList:hover {
+    max-width: 500px;
+}
+
+.albumView .albumsList .year h1 {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 30px;
+    font-weight: normal;
+    color: rgb(158, 176, 188);
+    margin: 5px 0px;
+    padding: 0px 4px;
+    cursor: pointer;
+    -webkit-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    -moz-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    -ms-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    -o-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+}
+
+.albumView .albumsList:hover .year h1 {
+    font-size: 27px;
+    padding: 0px 18px;
+}
+
+.albumView .albumsList .year .truncate {
+    width: auto;
+    max-width: 72px;
+    -webkit-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    -moz-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    -ms-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    -o-transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+    transition: font-size 300ms ease,padding 300ms ease,max-width 300ms ease;
+}
+
+.albumView .albumsList:hover .year .truncate {
+    max-width: 500px;
+}
+
+.albumView .albumsList .year h1.sel,
+.albumView .albumsList .year h1:hover {
+    color: rgb(112, 113, 123);
+}
+
+.albumView .albumsList .year .months {
+    display: inline-block;
+}
 /********** Help Tab *************/
 
 .orangeBG .helpContainer{

@@ -1,0 +1,72 @@
+<div class="pp-related-column-wrapper">
+
+    <div class="pp-info-faces-wrapper bottomBorder-Thin">
+        <div class="pp-faces-box-wrapper">
+            <div class="pp-faces-box">
+
+                <!-- ko if: faces_fetched() && faces().length>0 -->
+
+                <!-- ko if: faces_identified_visible() && known_faces().length > 0 -->
+                    <div class="pp-face-container" data-bind="style: { borderBottom: unknown_faces().length > 0 ? '1px solid rgba(255,255,255,.4)' : 'none' }">
+                        <p class="pp-faces-starring whiteText centered font24 textShadowed">Starring</p>
+                        <!-- ko foreach: known_faces -->
+                        <!-- ko compose: $data --><!-- /ko -->
+                        <!-- /ko -->
+                    </div>
+                <!-- /ko -->
+
+                <!-- ko if: faces_unidentified_visible() && unknown_faces().length > 0 -->
+                    <div class="pp-face-container pp-unknown-faces-container" >
+                        <p class="pp-faces-need-names whiteBG centered">These faces need names!</p>
+                        <!-- ko foreach: unknown_faces -->
+                        <!-- ko compose: $data --><!-- /ko -->
+                        <!-- /ko -->
+                    </div>
+                <!-- /ko -->
+
+                <div class="clearfix"></div>
+
+                <!-- /ko -->
+
+                <!-- ko if: faces_fetched() && faces().length<1 && new_face_addable() -->
+                <div class="pp-no-faces">
+                  <img src="css/images/avatar.png" alt="avatar" />
+                </div>
+                <!-- /ko -->
+
+            </div>
+        </div>
+
+        <div class="pp-no-faces pp-new-face" data-bind="if: faces_fetched">
+            <!-- ko if: new_face_addable() -->
+            <p data-bind="tag3:{mode:'inline',
+                               display:false,
+                               name:add_face_to_video,
+                               changed:add_face}, 
+                               text:'Who else is in this video?'"></p>
+            <!-- /ko -->
+        </div>
+
+    </div>
+
+    <div class="pp-related-column-header">
+      <span class="related-by pull-right">by...</span>
+      <p class="relatedVideosTitle textShadowed">Related Videos</p>
+      <div class="clearfix"></div>
+    </div>
+
+    <div class="pp-related-column-related">
+      <div class="pp-related-column-related-videos">
+        <div class="no-related-videos" data-bind="if: mediafiles().length==0 && query_in_progress()==false">
+          There are no related videos.
+        </div>
+        <!-- ko foreach: mediafiles -->
+        <div data-bind="compose: $data"></div>
+        <!-- /ko -->
+        <div class="vstrip-query-in-progress" data-bind="visible: query_in_progress()">
+          <i class="icon-spinner icon-spin active"></i>
+        </div>
+      </div>
+    </div>
+
+</div>
