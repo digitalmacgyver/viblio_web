@@ -1,0 +1,44 @@
+.header {
+    color: white;
+    background-color: #323544;
+    box-shadow: none;
+}
+
+.header a.logo-v1 img {
+    margin-top: 0;
+}
+
+.header .navbar-nav li a {
+    color: white;
+}
+
+.header .nav li > a:hover,
+.header .nav li.active > a,
+.header .nav li.active:hover > a {
+    color: rgb(240, 85, 65);
+}
+.header .nav>li>a:focus, 
+.header .nav>li>a:hover {
+    color: #888;
+}
+.header .in.collapse li a:hover {
+    color: #fff;
+    background: rgb(240, 85, 65);
+}
+
+.header .in.collapse li.active > a,
+.header .in.collapse li.active:hover > a {
+    color: #fff;
+    background: rgb(240, 85, 65);
+}
+
+.slider-main {
+    height: 550px;
+    max-height: 550px !important;
+}
+
+media="screen"
+.fullwidthbanner-container .fullwidthabnner {
+    height: 550px;
+    max-height: 550px !important;
+}
