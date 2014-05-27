@@ -569,7 +569,7 @@ font-size: 14px;
     font-size: 28px;
     text-align: center;
     padding-top: 10px;
-    padding-bottom: 10px;
+    padding-bottom: 7px;
     cursor: pointer;
 }
 
@@ -577,6 +577,13 @@ font-size: 14px;
     opacity: .65;
     cursor: default;
     box-shadow: none;
+}
+
+.player-control .textShadowed
+.player-control .textShadowed {
+    moz-text-shadow: 3px 2px rgba(0,0,0,.2);
+    -webkit-text-shadow: 3px 2px rgba(0,0,0,.2);
+    text-shadow: 3px 2px rgba(0, 0, 0, 0.2);
 }
 
 .shareButton {
