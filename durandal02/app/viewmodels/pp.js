@@ -449,6 +449,7 @@ define(["durandal/app",
             });
             data.selected( true );
             selectedTag( data.label );
+            addTag();
         }   
     };
     
@@ -479,6 +480,9 @@ define(["durandal/app",
                     });
                     selectedTag( null );
                     newTag( null );
+                    
+                    // Used to close the dropdown
+                    $("body").trigger("click");
                 });
             }           
         }

@@ -5226,6 +5226,10 @@ button.linkedin:active {
     right: auto;
 }
 
+.style2DD.dropdown-menu .divider {
+    margin: 0 1px;
+}
+
 .tags-inner > li > a {
     padding: 5px;
 }

@@ -69,35 +69,28 @@
                         <!-- ko if: tags_editable() -->
                         <li class="tag mocksWhiteBG dropdown navControl" data-toggle="dropdown">
                             <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-plus"></i> Add Tag</a>
-                            <ul class="dropdown-menu tags" role="menu">
+                            <ul class="style2DD dropdown-menu tags" role="menu">
                                 <li class="tagsScrollWrapper">
                                     <div class="scroller">
                                         <div class="wrapper">
                                             <ul class="tags-inner">
                                               <!-- ko foreach: tagLabels -->
-                                                  <li data-bind="click: $parent.tagSelected.bind( $parent, $data ), clickBubble: false">
-                                                      <a>
-                                                          <div class="inline" data-bind="if: $data.selected()">
-                                                              <i class="icon-check"></i>
-                                                          </div>
-                                                          <div class="inline" data-bind="ifnot: $data.selected()">
-                                                              <i class="icon-unchecked"></i>
-                                                          </div>
+                                              <!-- ko if: $data.label == 'New Tag' --> <li class="divider"></li> <!-- /ko -->
+                                                  <li data-bind="click: $parent.tagSelected.bind( $data, $parent ), clickBubble: false">
+                                                      <a class="checkboxedLi">
+                                                          <!-- ko if: $data.label == 'New Tag' --> <i class='icon-plus'></i> <!-- /ko -->
                                                           <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
                                                       </a>
                                                   </li>
                                               <!-- /ko -->
                                               <li data-bind="visible: newTagSelected()">
-                                                <input class="newTagInput" type="text" style="padding-right: 24px;" data-bind="value: newTag" placeholder="Enter Tag"><span class="editable-clear-x" style="display: none;"></span>    
+                                                  <input class="newTagInput" type="text" style="padding-right: 24px;" data-bind="value: newTag, event: { blur: addTag }, returnKey: blur" placeholder="Enter Tag"><span class="editable-clear-x" style="display: none;"></span>    
                                               </li>
                                             </ul>    
                                         </div>                  
                                     </div>
-                                </li>        
-                                <li class="btn btn-primary" data-bind="click: addTag">
-                                    <div class="textShadowed inline">Confirm</div>
                                 </li>
-                              </ul>
+                              </ul>                           
                         </li>
                         <!-- /ko -->
                         
