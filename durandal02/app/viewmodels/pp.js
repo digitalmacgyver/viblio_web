@@ -671,7 +671,6 @@ define(["durandal/app",
 	unknown_faces.removeAll();
 	known_faces.removeAll();
 	viblio.api( '/services/na/faces_in_mediafile', { mid: m.uuid } ).then( function( data ) {
-            console.log( data );
 	    if ( data.faces && data.faces.length ) {
 		var count = data.faces.length;
 		for( var i=0; i<count; i++ ) {
@@ -838,7 +837,6 @@ define(["durandal/app",
 					else {
 					    var mf = data.media;
 					    // Set now playing
-                                            console.log( data );
 					    playing( new Mediafile( mf ) );
 				    title( mf.title || 'Untitled' );
 					    description( mf.description || '' );
@@ -953,8 +951,6 @@ define(["durandal/app",
 	    setupComments( playing().media() );
             
             setupTags( playing().media() );
-            
-            console.log( playing().media() );
             
 	    // update address in GUI to match playing video's location
             near( playing().media() );
