@@ -203,6 +203,12 @@ define(["durandal/app",
         near( m.media() );
         
         setupTags( m.media() );
+        // set ability to edit tags if mf is owned by user
+        if( m.media().owner_uuid == user().uuid ) {
+            tags_editable( true );
+        } else {
+            tags_editable( false );
+        }
 
         // We don't nessesarily have the main urls needed to stream
         // the video.  If we don't, go get them and save them in the
@@ -832,6 +838,7 @@ define(["durandal/app",
 					else {
 					    var mf = data.media;
 					    // Set now playing
+                                            console.log( data );
 					    playing( new Mediafile( mf ) );
 				    title( mf.title || 'Untitled' );
 					    description( mf.description || '' );

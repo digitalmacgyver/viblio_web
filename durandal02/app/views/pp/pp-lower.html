@@ -63,7 +63,9 @@
                         <!-- ko foreach: tags -->
                         <li class="tag mocksWhiteBG">
                             <span class="tagLabel" data-bind="text: $data"></span>
+                            <!-- ko if: $parent.tags_editable() -->
                             <i class="icon-remove" title="Remove" data-bind="click: $parent.removeTag"></i>
+                            <!-- /ko -->
                         </li>
                         <!-- /ko -->
                         <!-- ko if: tags_editable() -->
@@ -75,14 +77,14 @@
                                         <div class="wrapper">
                                             <ul class="tags-inner">
                                               <!-- ko foreach: tagLabels -->
-                                              <!-- ko if: $data.label == 'New Tag' --> <li class="divider"></li> <!-- /ko -->
-                                                  <li data-bind="click: $parent.tagSelected.bind( $data, $parent ), clickBubble: false">
-                                                      <a class="checkboxedLi">
-                                                          <!-- ko if: $data.label == 'New Tag' --> <i class='icon-plus'></i> <!-- /ko -->
-                                                          <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
-                                                      </a>
-                                                  </li>
-                                              <!-- /ko -->
+                                                <!-- ko if: $data.label == 'New Tag' --> <li class="divider"></li> <!-- /ko -->
+                                                    <li data-bind="click: $parent.tagSelected.bind( $data, $parent ), clickBubble: false">
+                                                        <a class="checkboxedLi">
+                                                            <!-- ko if: $data.label == 'New Tag' --> <i class='icon-plus'></i> <!-- /ko -->
+                                                            <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
+                                                        </a>
+                                                    </li>
+                                                <!-- /ko -->
                                               <li data-bind="visible: newTagSelected()">
                                                   <input class="newTagInput" type="text" style="padding-right: 24px;" data-bind="value: newTag, event: { blur: addTag }, returnKey: blur" placeholder="Enter Tag"><span class="editable-clear-x" style="display: none;"></span>    
                                               </li>
