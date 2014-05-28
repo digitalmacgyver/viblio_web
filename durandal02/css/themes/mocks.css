@@ -4182,10 +4182,6 @@ a.a-drop-view:focus{
 }
 /********** Help Tab *************/
 
-.orangeBG .helpContainer{
-    top: 8px;
-}
-
 .helpContainer {
     top: 0px;
     position: absolute;
