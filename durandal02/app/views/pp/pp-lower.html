@@ -1,38 +1,40 @@
 <table class="player_lower">
     <tbody>
         <tr class="lightBlueBG underVidTable">
-            <td>
-                <div class="lightBlueFont clearfix mocksWhiteBG ownerDate-Wrap">
-                    
-                        <img class="boxShadowed" data-bind="attr:{src:media_owner_avatar}" />
-                    
-                    <span class="midAlign lightWeightFont">by <span class="heavyWeightFont" data-bind="text: media_owner_name"></span></span>
-                    <span class="todays-date recording-date lightWeightFont pull-right" data-bind="text: formatted_date"></span>
-                </div>          
-            </td>
-            <td>
-                <div id="geo-title" class="textShadowed centered" data-bind="visible: map_location_editable()">
-                    <!-- ko ifnot: nolocation -->
-                        <span data-bind="visible: isNear() != 'Find in map' ">This video was taken at </span><br />
-                        <span class="currentAddress" data-bind="text: isNear(), click: relocate, tooltip:{title:'Click to edit location'}"></span>
-                    <!-- /ko -->
-                    <!-- ko if: nolocation -->
-                        <span class="currentAddress" data-bind="click: showInteractiveMap">Click to add a location</span>
-                    <!-- /ko -->
+            <td class="playerInfoStrip">
+                <div>
+                    <div class="lightBlueFont clearfix mocksWhiteBG ownerDate-Wrap">
+
+                            <img class="boxShadowed" data-bind="attr:{src:media_owner_avatar}" />
+
+                        <span class="midAlign lightWeightFont">by <span class="heavyWeightFont" data-bind="text: media_owner_name"></span></span>
+                        <span class="todays-date recording-date lightWeightFont pull-right" data-bind="text: formatted_date"></span>
+                    </div>    
                 </div>
-            </td>
-            <td>
-                <div class="pp-share">
-                    <!-- ko if: share_button_visible -->
-                    <a class="btn btn-primary" href="#" data-bind="click: showShareVidModal">
-                        <i class="icon-share"></i> Share this Video!
-                    </a>
-                    <!-- /ko -->
-                    <!-- ko if: get_the_app_button_visible -->
-                    <a class="btn btn-primary" data-bind="click: addVideos">
-                        <i class="icon-share"></i> Create Your Own Library!
-                    </a>
-                    <!-- /ko -->
+                <div>
+                    <div id="geo-title" class="textShadowed centered" data-bind="visible: map_location_editable()">
+                        <!-- ko ifnot: nolocation -->
+                            <span data-bind="visible: isNear() != 'Find in map' ">This video was taken at </span><br />
+                            <span class="currentAddress" data-bind="text: isNear(), click: relocate, tooltip:{title:'Click to edit location'}"></span>
+                        <!-- /ko -->
+                        <!-- ko if: nolocation -->
+                            <span class="currentAddress" data-bind="click: showInteractiveMap">Click to add a location</span>
+                        <!-- /ko -->
+                    </div>    
+                </div>
+                <div>
+                    <div class="pp-share">
+                        <!-- ko if: share_button_visible -->
+                        <a class="btn btn-primary" href="#" data-bind="click: showShareVidModal">
+                            <i class="icon-share"></i> Share this Video!
+                        </a>
+                        <!-- /ko -->
+                        <!-- ko if: get_the_app_button_visible -->
+                        <a class="btn btn-primary" data-bind="click: addVideos">
+                            <i class="icon-share"></i> Create Your Own Library!
+                        </a>
+                        <!-- /ko -->
+                    </div>    
                 </div>
             </td>
         </tr>

@@ -1866,8 +1866,39 @@ input:-moz-placeholder {
     margin: 8px 0;
 }
 
+
+.playerInfoStrip > div {
+    display: inline-block;
+    -moz-box-sizing:border-box; /* Firefox */
+    box-sizing: border-box;
+    width: 33%;
+    vertical-align: top;
+}
+
+.playerInfoStrip > div:nth-of-type(2) {
+    width: 34%;
+    margin-left: -4px;
+    margin-right: -4px;
+}
+
+@media (max-width: 900px) {
+    .playerInfoStrip > div {
+        display: block;
+        width: 100%;
+        margin-top: 10px;
+    }
+    .playerInfoStrip > div:nth-of-type(2) {
+        display: block;
+        width: 100%;
+        margin-top: 10px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
 .underVidTable td {
     padding: 10px;
+    box-sizing: border-box;
 }
 
 .ownerDate-Wrap {
@@ -2099,8 +2130,8 @@ input.edit,
     margin: 12px 6px;
     width: 100%;
     max-width: 100%;
-    box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
+    box-sizing: border-box;
     border: none;
     outline: none;
     webkit-appearance:none; 
