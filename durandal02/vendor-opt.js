@@ -37,7 +37,8 @@ new compressor.minify({
         'lib/jquery.placeholder.js',
 	'lib/jquery.autosize.min.js',
 	'lib/jquery.cookie.js',
-	'lib/jquery.ui.touch-punch.min.js'
+	'lib/jquery.ui.touch-punch.min.js',
+	'lib/fastclick.js'
     ],
     fileOut: 'build/lib/vendor.all.js',
     callback: function(err, min){

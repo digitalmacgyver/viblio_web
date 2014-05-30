@@ -44,7 +44,10 @@ function(page_header, landing_header, app, viewLocator, system, router, dialog, 
     //>>excludeEnd("build");
 
     app.title = 'Viblio';
-    
+
+    // For mobile 300ms delay issue
+    FastClick.attach(document.body);
+
     //specify which plugins to install and their configuration
     app.configurePlugins({
         router: true,
