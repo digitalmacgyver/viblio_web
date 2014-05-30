@@ -288,11 +288,16 @@ define(["durandal/app",
         next_available_clip( index + 1 );
         playVid( m );
     }
+    
+    var playerWidth = ko.observable();
 
     function resizePlayer() {
+        console.log( 'resizePlayer fired!' );
+        playerWidth( $(".pp-tv").width() );
 	var player_height = ($(".pp-tv").width()*9) / 16;
 	$(".pp-tv, .pp-tv video").height( player_height );
 	resizeColumns();
+        console.log( playerWidth() );
     }
 
     /*function resizeColumns() {
@@ -764,6 +769,11 @@ define(["durandal/app",
         tagSelected: tagSelected,
         addTag: addTag,
         removeTag: removeTag,
+        
+        
+        
+        playerWidth: playerWidth,
+        
                 
         shouldShowInteractiveMap: function() {
             if( nolocation() ) {
@@ -946,6 +956,9 @@ define(["durandal/app",
 	},
 
 	compositionComplete: function() {
+            
+            playerWidth( $(".pp-tv").width() );
+            
 	    setupFlowplayer( '.pp-tv', playing().media() );
 	    setupFaces( playing().media() );
 	    setupComments( playing().media() );

@@ -19,7 +19,14 @@ function(router, app, viblio, config, dialogs, Events) {
         }
     });
     
+    // content used for title of popover - adds close button so it can be dismissed
+    var pt = '<span><strong>Get Started</strong></span>'+
+                '<button type="button" id="close" class="close" onclick="$(&quot;.web-uploader-header-button&quot;).popover(&quot;hide&quot;);">&times;</button>'
+    
     return {
+        
+        pt: pt,
+        
         showPopup: showPopup,
 	router: router,
 	// Show details about the user
@@ -79,6 +86,6 @@ function(router, app, viblio, config, dialogs, Events) {
                 }
               }, this), 0);
             });
-	}
+            }
     };
 });
