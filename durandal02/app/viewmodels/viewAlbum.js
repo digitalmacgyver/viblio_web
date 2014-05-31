@@ -278,7 +278,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
 	var self = this;
         
 	// Create a new Mediafile with the data from the server - Only albums owned by the viewer will be given the share badge
-	var m = new Mediafile( mf, mfOwnedByViewer(mf) ? { show_share_badge: true, show_preview: true, delete_title: albumIsShared() ? 'unshare' : 'remove' } : { show_preview: true, delete_title: 'remove', ro: true } );
+	var m = new Mediafile( mf, mfOwnedByViewer(mf) ? { show_share_badge: true, show_preview: true, delete_title: albumIsShared() ? 'unshare' : 'remove', show_faces_tags: true, ownedByViewer: true } : { show_preview: true, delete_title: 'remove', ro: true, show_faces_tags: true, ownedByViewer: false } );
 
 	// Register a callback for when a Mediafile is selected.
 	// This is so we can deselect the previous one to create
@@ -497,7 +497,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                 //return system.defer( function( dfd ) {
                 sharedWithDisplayname('');
                 vidsOwnedByViewerNum( 0 );
-                    viblio.api( 'services/album/get?aid=' + album_id ).then( function( data ) {
+                    viblio.api( 'services/album/get?aid=' + album_id + '&include_contact_info=1&include_tags=1' ).then( function( data ) {
                         system.log(data);
                         albumIsShared( data.album.is_shared ? true : false );
                         currAlbum( data.album );

@@ -20,9 +20,12 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
     var Video = function( data, options ) {
 	//data.title = data.filename;
 	//data.description = 'no description',
+        
+        var self = this;
+        
 	data.eyes = data.view_count || 0;
 
-	this.options = $.extend({
+	self.options = $.extend({
 	    ro: false,
             shared_style: false, // if mf is shared with user show different style
 	    show_share_badge: false,
@@ -31,44 +34,66 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	    share_action: 'modal', // 'modal' to popup showShareVidModal, 'trigger' to trigger mediafile:share, function as a callback
 	    show_preview: true,    // show animated gif, if available, on hover.
             show_delete_mode: false,
-            delete_title: 'delete'
+            delete_title: 'delete',
+            show_faces_tags: false,
+            ownedByViewer: false
 	}, options );
         
-	this.media    = ko.observable( data );
-	this.selected = ko.observable( this.options.selected );
-	this.edittable = ko.observable( false );
-	this.ro       = ko.observable( this.options.ro );  // If true, then cannot edit title
-        this.shared_style = ko.observable( this.options.shared_style );
-        this.gift_style = ko.computed( function() {
+	self.media    = ko.observable( data );
+	self.selected = ko.observable( self.options.selected );
+	self.edittable = ko.observable( false );
+	self.ro       = ko.observable( self.options.ro );  // If true, then cannot edit title
+        self.shared_style = ko.observable( self.options.shared_style );
+        self.gift_style = ko.computed( function() {
             if( data.is_viblio_created == 1 ) {
                 return true;
             } else {
                 return false;
             }
         });
-        this.owner_avatar = "/services/na/avatar?uid=" + data.owner_uuid + "&y=40";
-        this.owner_name = ko.computed( function(){
+        self.owner_avatar = "/services/na/avatar?uid=" + data.owner_uuid + "&y=40";
+        self.owner_name = ko.computed( function(){
             if( data.owner ) {
                 return data.owner.displayname;
             }
         });
-	this.show_share_badge = ko.observable( this.options.show_share_badge );
-        this.show_select_badge = ko.observable( this.options.show_select_badge );
-        this.show_delete_mode = ko.observable( this.options.show_delete_mode );
+	self.show_share_badge = ko.observable( self.options.show_share_badge );
+        self.show_select_badge = ko.observable( self.options.show_select_badge );
+        self.show_delete_mode = ko.observable( self.options.show_delete_mode );
+        self.show_faces_tags = ko.observable( self.options.show_faces_tags );
+        
+        if( self.show_faces_tags() ) {
+            self.tags_editable = ko.observable( self.options.ownedByViewer );
+            self.faces = ko.observableArray( data.views.face );
+            //self.facesToShow = ko.observableArray( self.faces.slice( self.faces()[0], self.faces()[3] ) );
+            self.facesToShow = ko.computed( function() {
+                if( self.faces().length > 4 ) {
+                    return self.faces().slice( 0, 3 );
+                } else {
+                    return self.faces();
+                }          
+            });
+            self.facesLeft = ko.computed( function() {
+                console.log( self.faces().length - self.facesToShow().length );
+                return self.faces().length - self.facesToShow().length; 
+            });
+        };
+        
+        self.showFaces = ko.observable( false );
+        
+        self.showTags = ko.observable( false );
+	self.tags = ko.observableArray( data.tags );
 
-	this.tags = ko.observableArray( data.tags );
+	self.title = ko.observable( data.title );
+	self.description = ko.observable( data.description );
 
-	this.title = ko.observable( data.title );
-	this.description = ko.observable( data.description );
+	self.image = ko.observable( self.media().views.poster.url );
 
-	this.image = ko.observable( this.media().views.poster.url );
-
-	Events.includeIn( this );
+	Events.includeIn( self );
 
 	// This will be triggered by a save on the liveEdit custom
 	// binding.
-	var self = this;
-	this.on( "mediaFile:TitleDescChanged", function( data ) {
+	self.on( "mediaFile:TitleDescChanged", function( data ) {
 	    viblio.api( '/services/mediafile/set_title_description',
 			{ mid: self.media().uuid,
 			  title: self.title(),
@@ -77,7 +102,103 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 			    viblio.mpEvent( 'title_description_changed' );
 			});
 	});
+        
+        self.tagLabels = ko.observableArray([{label: 'Animals', selected: ko.observable(false)},{label: 'At home', selected: ko.observable(false)},{label: 'Beach', selected: ko.observable(false)},
+        {label: 'Children', selected: ko.observable(false)},{label: 'On the road', selected: ko.observable(false)},{label: 'Outdoors', selected: ko.observable(false)},{label: 'Parties', selected: ko.observable(false)},
+        {label: 'Performances', selected: ko.observable(false)},{label: 'Pets', selected: ko.observable(false)},{label: 'Presentations', selected: ko.observable(false)}, {label: 'Sports - balls', selected: ko.observable(false)},
+        {label: 'Sports - snow', selected: ko.observable(false)}, {label: 'Sports – water', selected: ko.observable(false)},{label: 'Vacation', selected: ko.observable(false)},{label: 'New Tag', selected: ko.observable(false)}]);
+    
+        self.selectedTag = ko.observable();
+        self.newTagSelected = ko.computed( function() {
+            if( self.selectedTag() == 'New Tag' ) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        
+        self.newTag = ko.observable(null);
 
+    };
+    
+    Video.prototype.toggleFaces = function() {
+        var self = this;
+        console.log( 'clicked' );
+        self.showFaces() ? self.showFaces( false ) : self.showFaces( true );
+    };
+    
+    Video.prototype.toggleTags = function() {
+        var self = this;
+        
+        self.showTags() ? self.showTags( false ) : self.showTags( true );
+    };
+    
+    Video.prototype.tagSelected = function( parent, data ) {
+        var self = parent;
+        
+        if( data.selected() ) {
+            data.selected( false );
+            self.selectedTag( null );
+        } else {
+            self.tagLabels().forEach( function( t ) {
+                t.selected( false );
+            });
+            data.selected( true );
+            self.selectedTag( data.label );
+            self.addTag();
+        }   
+    };
+    
+    Video.prototype.addTag = function( parent, event ) {
+        var self = this;
+        
+        var args = {
+            mid: self.media().uuid,
+            tag: self.newTagSelected() ? self.newTag() : self.selectedTag()
+        };
+        
+        if( args.tag ) {
+            // check to see if video already has selectred tag
+            var present = false;
+            self.tags().forEach( function( t ) {
+                if( t == args.tag ) {
+                    present = true;
+                }
+            });
+            
+            if( present ) {
+                // already exists, no dups
+                return
+            } else {
+                // tag does not exist, so add it
+                viblio.api(' /services/mediafile/add_tag', args).then( function() {
+                    self.tags.push( args.tag );
+                    self.tagLabels().forEach( function( t ) {
+                        t.selected( false );
+                    });
+                    self.selectedTag( null );
+                    self.newTag( null );
+                    
+                    // Used to close the dropdown
+                    $("body").trigger("click");
+                });
+            }           
+        }
+    };
+    
+    Video.prototype.removeTag = function( $parent, $data ) {
+        var self = this;
+        
+        console.log( $data );
+        console.log( $parent );
+        
+        var args = {
+            mid: $parent.media().uuid,
+            tag: $data
+        };
+        viblio.api('/services/mediafile/rm_tag', args).then( function() {
+            $parent.tags.remove( $data );
+        });
     };
 
     Video.prototype.highlight = function() {

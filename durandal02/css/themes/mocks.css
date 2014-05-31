@@ -3399,6 +3399,105 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     vertical-align: middle;
 }
 
+.facesTags {
+    border-top: 1px solid rgba(0,0,0,.2);
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    position: relative;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    padding: 6px 5px;
+    height: 54px;
+}
+
+.facesTags > i {
+    font-size: 30px;
+    vertical-align: middle;
+    cursor: pointer;
+    opacity: .65;
+}
+
+.facesTags > i:hover {
+    opacity: 1;
+}
+
+.facesTags .mfFaces {
+    width: 224px;
+    height: 40px;
+    display: inline-block;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    vertical-align: bottom;
+}
+
+.facesTags .mfFaces-Inner {
+    height: 40px;
+}
+
+.facesTags .mfFaces-Inner img {
+    height: 40px;
+    width: 40px;
+}
+
+.facesTags .newTagInput {
+    width: 90%;
+    margin: 5px 5%;
+}
+
+.facesToggle {
+    display: inline-block;
+    vertical-align: bottom;
+    color: rgba(117,117,128,.65);
+}
+
+.facesToggle:hover {
+    color: rgba(117,117,128,1);
+}
+
+.facesWrap {
+    min-height: 20px;
+    padding: 8px;
+    margin-left: 0;
+    margin-bottom: 20px;
+    background-color: rgb(245, 245, 245);
+    border: 1px solid rgb(227, 227, 227);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.facesWrap img {
+    height: 40px;
+    width: 40px;
+}
+
+.facesPopup.popover.top .arrow {
+    left: auto;
+    right: 70px;
+}
+
+.facesPopup,
+.tagsPopup {
+    position: absolute;
+    display: block;
+    width: 96%;
+    left: 4px;
+    top: auto;
+    bottom: 96%;
+    background-color: white;
+    border: 1px solid rgb(204, 204, 204);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+}
+
+.tagsPopup.popover.top .arrow {
+    left: auto;
+    right: 10px;
+}
+
 /************/
 
 #register-page .mediafile {
@@ -4182,10 +4281,6 @@ a.a-drop-view:focus{
 }
 /********** Help Tab *************/
 
-.orangeBG .helpContainer{
-    top: 8px;
-}
-
 .helpContainer {
     top: 0px;
     position: absolute;
@@ -4483,7 +4578,7 @@ a.a-drop-view:focus{
 .albumThumbTitle > div > div:first-of-type,
 .albumThumbTitle > span:first-of-type {
     height: 23px;
-    max-width: 184px;
+    max-width: 175px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -5226,7 +5321,6 @@ button.linkedin:active {
     background-color: rgb(255, 255, 255);
     border: 1px solid rgb(204, 204, 204);
     border: 1px solid rgba(0, 0, 0, 0.2);
-    -moz-border-radius: 6px;
     -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);

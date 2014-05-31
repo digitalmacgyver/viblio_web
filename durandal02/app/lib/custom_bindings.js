@@ -356,7 +356,7 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
                 if (evt.keyCode === 13) {
                     evt.preventDefault();
                     evt.target.blur();
-                    valueAccessor().call(viewModel);
+                    //valueAccessor().call(viewModel);
                 }
             });
         }
