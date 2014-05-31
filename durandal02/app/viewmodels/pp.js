@@ -291,6 +291,7 @@ define(["durandal/app",
 
     function resizePlayer() {
 	var player_height = ($(".pp-tv").width()*9) / 16;
+        $(".pp-tv").children().height(player_height).width('100%');
 	$(".pp-tv, .pp-tv video").height( player_height );
 	resizeColumns();
     }

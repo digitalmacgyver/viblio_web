@@ -315,8 +315,8 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
 	    $element.smoothDivScroll({
 		scrollingHotSpotLeftClass: "mCSB_buttonLeft",
 		scrollingHotSpotRightClass: "mCSB_buttonRight",
-		hotSpotScrolling: ( head.mobile ? false: true),
-		touchScrolling: ( head.mobile ? true : false ),
+		hotSpotScrolling: head.mobile ? false : true,
+		touchScrolling: head.mobile ? true : false,
 		visibleHotSpotBackgrounds: 'always',
 		setupComplete: function() {
 		    if ( hscroller.setupComplete )
