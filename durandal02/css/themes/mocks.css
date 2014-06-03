@@ -2105,6 +2105,10 @@ input:-moz-placeholder {
     margin-top: 8px;
 }
 
+.playerInfoStrip .datepicker-inline {
+    width: auto;
+}
+
 .recording-date.editable:hover,
 .vidTitle:hover,
 .vidDescription:hover {
