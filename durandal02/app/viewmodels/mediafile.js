@@ -62,22 +62,28 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         self.show_delete_mode = ko.observable( self.options.show_delete_mode );
         self.show_faces_tags = ko.observable( self.options.show_faces_tags );
         
-        if( self.show_faces_tags() ) {
-            self.tags_editable = ko.observable( self.options.ownedByViewer );
-            self.faces = ko.observableArray( data.views.face );
-            //self.facesToShow = ko.observableArray( self.faces.slice( self.faces()[0], self.faces()[3] ) );
-            self.facesToShow = ko.computed( function() {
+        self.winWidth = ko.observable( $(window).width() );
+        self.tags_editable = ko.observable( self.options.ownedByViewer );
+        self.faces = ko.observableArray( data.views.face );
+        self.facesToShow = ko.computed( function() {
+            if( self.winWidth() > 1280 ) {
                 if( self.faces().length > 4 ) {
+                    return self.faces().slice( 0, 4 );
+                } else {
+                    return self.faces();
+                }    
+            } else {
+                if( self.faces().length > 3 ) {
                     return self.faces().slice( 0, 3 );
                 } else {
                     return self.faces();
-                }          
-            });
-            self.facesLeft = ko.computed( function() {
-                console.log( self.faces().length - self.facesToShow().length );
-                return self.faces().length - self.facesToShow().length; 
-            });
-        };
+                }    
+            }          
+        });
+        self.facesLeft = ko.computed( function() {
+            console.log( self.faces().length - self.facesToShow().length );
+            return self.faces().length - self.facesToShow().length; 
+        });
         
         self.showFaces = ko.observable( false );
         
@@ -285,6 +291,9 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
                 }
             );
         }
+        
+        // this will trigger the number of faces to show to be correct when resizing window
+        $( window ).bind('resize', function(){ self.winWidth( $( window ).width() );} );
     };
     
     return Video;
