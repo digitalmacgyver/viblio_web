@@ -310,7 +310,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                     month.media.remove( m );
                 });
                 // Remove from boxOfficeHits
-                boxOfficeHits.remove( function(video) { return video.view.id == m.media().uuid; } );
+                boxOfficeHits.remove( function(video) { return video.media().uuid == m.media().uuid; } );
                 $( ".horizontal-scroller").trigger( 'children-changed', { enable: true } );
                 refresh( true );
                 if ( m.show_share_badge() ) {

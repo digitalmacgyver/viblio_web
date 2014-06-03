@@ -39,11 +39,10 @@
 
         <div class="pp-no-faces pp-new-face" data-bind="if: faces_fetched">
             <!-- ko if: new_face_addable() -->
-            <p data-bind="tag3:{mode:'inline',
-                               display:false,
-                               name:add_face_to_video,
-                               changed:add_face}, 
-                               text:'Who else is in this video?'"></p>
+            <p data-bind="text:'Who else is in this video?', tag3: { mode:'inline',
+                                display: false,
+                                name: add_face_to_video,
+                                changed: add_face }"></p>
             <!-- /ko -->
         </div>
 

@@ -76,6 +76,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 
     S.prototype.closeModal = function() {
         dialog.close(this);
+        app.trigger( 'shareVidModal:closeModal', this );
     };
     
     S.prototype.updateMessage = function() {

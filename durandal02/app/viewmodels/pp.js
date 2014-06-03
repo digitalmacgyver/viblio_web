@@ -131,7 +131,16 @@ define(["durandal/app",
     var showPlayerOverlay = ko.observable(false);
     function hidePlayerOverlay() {
         showPlayerOverlay(false);
+        if ( head.mobile ) {
+            $('.player').find('video').attr('controls', 'controls')
+        }
     };
+    
+    app.on( 'shareVidModal:closeModal', function( data ) {
+        if ( head.mobile ) {
+            $('.player').find('video').attr('controls', 'controls');
+        }
+    });
     
     function addVideos() {
         // save current player address along with mid of video to a variable that can be used in the else section of if statement below
@@ -340,14 +349,23 @@ define(["durandal/app",
                     viblio.mpEvent( 'play', { action: 'play' } );
                     viblio.mpPeopleIncrement('Video Plays from Browser', 1);
                     hidePlayerOverlay();
+                    if ( head.mobile ) {
+                        $('.player').find('video').attr('controls', 'controls')
+                    }
                 },
                 onPause: function( clip ) {
                     viblio.mpEvent( 'play', { action: 'pause' } );
                     showPlayerOverlay(true);
+                    if ( head.mobile ) {
+                        $('.player').find('video')[0].removeAttribute("controls");
+                    }
                 },
                 onResume: function( clip ) {
                     viblio.mpEvent( 'play', { action: 'resume' } );
                     hidePlayerOverlay();
+                    if ( head.mobile ) {
+                        $('.player').find('video').attr('controls', 'controls')
+                    }
                 },
                 onStop: function( clip ) {              
                     viblio.mpEvent( 'play', { action: 'stop' } );
@@ -355,6 +373,9 @@ define(["durandal/app",
                 onFinish: function( clip ) {
                     viblio.mpEvent( 'play', { action: 'finish' } );
                     showPlayerOverlay(true);
+                    if ( head.mobile ) {
+                        $('.player').find('video')[0].removeAttribute("controls");
+                    }
                 }
             },
             plugins: {
@@ -401,7 +422,6 @@ define(["durandal/app",
         viblio.api( '/services/na/media_comments', { mid: m.uuid } ).then( function( data ) {
 	    setOwner( data.owner );
             if ( data.comments && data.comments.length ) {
-                numComments = data.comments.length;
                 // returns now in UTC time
                 var now = new Date().getTime();
                 data.comments.forEach( function( c ) {
@@ -699,6 +719,9 @@ define(["durandal/app",
     return {
         fixHeight: fixHeight,
 	showShareVidModal: function() {
+            if ( head.mobile ) {
+                $('.player').find('video')[0].removeAttribute("controls");
+            }
             customDialogs.showShareVidModal( playing() );
         },
         footer: footer,
@@ -933,7 +956,8 @@ define(["durandal/app",
 		    setOwner( json.owner );
 		});
 	    }
-            
+            // make sure overlay is hidden
+            hidePlayerOverlay();
             /*tagLabels.forEach(function(tag) {
                 tag.selected = ko.observable(false);
             });*/
