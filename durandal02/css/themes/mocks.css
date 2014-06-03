@@ -3385,10 +3385,12 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .mediafile .video-tags span {
-    color: white;
-    background: green;
+    color: rgba(255,255,255,.6);
+    background: rgba(255,255,255,.6);
     margin-right: 3px;
+    margin-bottom: 2px;
     padding: 2px 3px;
+    display: inline-block;
 
     -moz-box-shadow: inset 0 0 0 50px rgba(0,0,0,.2);
     -webkit-box-shadow: inset 0 0 0 50px rgba(0,0,0,.2);

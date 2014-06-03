@@ -81,7 +81,6 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
             }          
         });
         self.facesLeft = ko.computed( function() {
-            console.log( self.faces().length - self.facesToShow().length );
             return self.faces().length - self.facesToShow().length; 
         });
         
