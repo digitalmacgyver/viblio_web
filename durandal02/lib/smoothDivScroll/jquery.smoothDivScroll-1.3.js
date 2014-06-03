@@ -189,10 +189,12 @@
 					self._trigger("scrollerRightLimitReached");
 				    }
 				}),
-                                filterTarget: function(target, e){
-                                    if (!/down|start/.test(e.type)){
+                                filterTarget: function(target, ev){
+                                    console.log( target, ev )
+                                    /*if (!/down|start/.test(ev.type)){
                                         return !(/area|a|input/i.test(target.tagName));
-                                    }
+                                    }*/
+                                    //return !(/area|a|input/i.test(target.tagName));
                                 }
 			    });
 			}

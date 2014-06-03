@@ -1737,6 +1737,7 @@ input:-moz-placeholder {
     color: white;
     text-align: center;
     display: block;
+    z-index: 2;
 }
 
 #cloud {
@@ -3662,6 +3663,11 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .player {
     width: 100%;
+}
+
+.player > div > video {
+    position: relative;
+    z-index: 1;
 }
 
 .player > div {
