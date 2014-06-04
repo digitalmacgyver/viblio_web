@@ -351,6 +351,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                     showBOH( true );
                     boxOfficeHits.push( addMediaFile( mf ) );
                 }
+                console.log( mf );
                 allVids.push( addMediaFile( mf ) );
                 // If one of the mf's is owned by the viewer then set viewerOwnsAVideo to true, increment vidsOwnedByViewerNum by one
                 if ( mfOwnedByViewer( mf ) ) {
@@ -388,7 +389,8 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
 	var self = this;
         
 	// Create a new Mediafile with the data from the server - Only albums owned by the viewer will be given the share badge
-	var m = new Mediafile( mf, mfOwnedByViewer(mf) ? { show_share_badge: true, show_preview: true, delete_title: albumIsShared() ? 'unshare' : 'remove' } : { show_preview: true, delete_title: 'remove', ro: true } );
+	var m = new Mediafile( mf, mfOwnedByViewer(mf) ? { show_share_badge: true, show_preview: true, delete_title: albumIsShared() ? 'unshare' : 'remove' } : { show_preview: true, delete_title: 'remove', ro: true, shared_style: true, owner_uuid: mf.owner_uuid } );
+        //var m = new Mediafile( mf, { ro: true, show_delete_mode: self.deleteModeOn(), shared_style: true, owner_uuid: mf.owner_uuid } ); //m.ro( true );
 
 	// Register a callback for when a Mediafile is selected.
 	// This is so we can deselect the previous one to create

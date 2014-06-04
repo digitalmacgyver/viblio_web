@@ -4117,6 +4117,7 @@ a.a-drop-view:focus{
 
 .albumView .albumInnerTitle {
     position: relative;
+    margin-bottom: 0;
 }
 
 .albumSubTitle {
