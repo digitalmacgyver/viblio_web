@@ -179,7 +179,17 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 args.rows = self.searchPager.entries_per_page;
                 viblio.api( '/services/mediafile/search_by_title_or_description', args )
                     .then( function( json ) {
+                        
                         self.hits ( json.pager.total_entries );
+                        self.datesLabels.removeAll();
+                        self.searchPager = json.pager;
+			json.media.forEach( function( mf ) {
+                            console.log( mf );
+			    self.addMediaFile( mf );
+			});
+			dfd.resolve();
+                        
+                        /*self.hits ( json.pager.total_entries );
                         self.datesLabels.removeAll();
                         self.searchPager = json.pager;
                         json.media.forEach( function( mf ) {
@@ -197,10 +207,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                                         });
                                     }
                                 });
-                            });
+                            });                      
                             self.videos.push(m);
                         });
-                        dfd.resolve();
+                        dfd.resolve();*/
                     });
             }
             else {
@@ -241,11 +251,18 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                             });
                         }
                         self.tagsPager = json.pager;
+                        
                         json.media.forEach( function( mf ) {
+			    self.addMediaFile( mf );
+			});
+			dfd.resolve();
+                        
+                        /*json.media.forEach( function( mf ) {
                             var m = new Mediafile( mf, { show_share_badge: true, show_delete_mode: self.deleteModeOn() } );
                             m.on( 'mediafile:play', function( m ) {
                                 router.navigate( 'new_player?mid=' + m.media().uuid );
                             });
+                        
                             m.on( 'mediafile:delete', function( m ) {
                                 viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function(json) {
                                     viblio.mpEvent( 'delete_video' );
@@ -256,10 +273,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 					});
 				    }
                                 });
-                            });
+                            });                       
                             self.videos.push(m);
                         });
-			dfd.resolve();
+			dfd.resolve();*/
 		    });
 	    }
 	    else {
@@ -342,7 +359,13 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 		    .then( function( json ) {
                         self.hits ( json.pager.total_entries );
 			self.monthPager = json.pager;
+                        
                         json.media.forEach( function( mf ) {
+			    self.addMediaFile( mf );
+			});
+			dfd.resolve();
+                        
+                        /*json.media.forEach( function( mf ) {
                             var m = new Mediafile( mf, { show_share_badge: true, show_delete_mode: self.deleteModeOn() } );
                             m.on( 'mediafile:play', function( m ) {
                                 router.navigate( 'new_player?mid=' + m.media().uuid );
@@ -360,7 +383,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                             });
                             self.videos.push(m);
                         });
-			dfd.resolve();
+			dfd.resolve();*/
 		    });
 	    }
 	    else {
@@ -517,6 +540,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                             json.media = json.albums;
                         }
 			json.media.forEach( function( mf ) {
+                            console.log( mf );
 			    self.addMediaFile( mf );
 			});
 			dfd.resolve();

@@ -4099,6 +4099,26 @@ a.a-drop-view:focus{
     vertical-align: middle;
 }
 
+.albumSearchWrap {
+    width: 100%;
+    height: 40px;
+    margin-bottom: 50px;
+}
+
+.albumView .search {
+    //position: static;
+}
+
+@media (max-width: 1300px) {
+    .albumView .search {
+        float: right;
+    }    
+}
+
+.albumView .albumInnerTitle {
+    position: relative;
+}
+
 .albumSubTitle {
     vertical-align: middle;
 }
@@ -5327,7 +5347,7 @@ button.linkedin:active {
     position: absolute;
     height: 100%;
     right: -40px;
-    top: -40px;
+    top: 50px;
     bottom: 0px;
     z-index: 1000;
     width: auto;

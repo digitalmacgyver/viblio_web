@@ -54,6 +54,10 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
     
     var mediaHasViews = ko.observable( false );
     
+    var searchQuery = ko.observable(null);
+    var albumVidSearchIsActive = ko.observable(false);
+    var hits = ko.observable(null);
+    
     // An edit/done label to use on the GUI
     var editLabel = ko.observable( 'Edit' );
     
@@ -221,7 +225,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
     
     // Makes the albumsList 'sometimes sticky'
     function stickyAlbumsList() {       
-        var maxPos = 105; //height of header (65) + 40 (top offset of albums list)
+        var maxPos = 65; //height of header (65)
         
         var scrollTop = $(window).scrollTop(),
         elementOffset = $('.albumsList').offset().top,
@@ -237,14 +241,14 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                 $('.albumsList').css( { 'height': footerHeight, 'max-height': $(window).height() } );
             }            
         }
-        
+               
         if ( $(window).width() >= 900 ) {
-            if ( ( $('.viewAlbumInner').offset().top ) - scrollTop >= 105 ){
+            if ( ( $('.viewAlbumInner').offset().top ) - scrollTop >= 20 ){
                 $('.albumsList').removeClass('stuck');
                 $('.albumsList').css( { 'height': '100%' } );
             }    
         } else {
-            if ( ( $('.viewAlbumInner').offset().top ) - scrollTop >= 40 ){
+            if ( ( $('.viewAlbumInner').offset().top ) - scrollTop >= -50 /*margin below search*/ ){
                 $('.albumsList').removeClass('stuck');
                 $('.albumsList').css( { 'height': '100%' } );
             }
@@ -266,13 +270,119 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
             });
         });
     }*/
+    var searchPager = {};
+    function resetSearchPager() {
+        
+        searchPager = {
+            next_page: 1,
+            entries_per_page: 20,
+            total_entries: -1 /* currently unknown */
+        };
+    };
+    var currentSearch;
+    function newAlbumVidsSearch() {
+        if ( !searchQuery() ) {
+            return;
+        } else {
+            albumVidSearchIsActive( true );
+            showAllVids( false )
+            allVids.removeAll();
+            resetSearchPager();
+            currentSearch = searchQuery();
+            albumVidSearch();
+        }    
+    }
+    
+    function albumVidSearch() {
+        /*viblio.api('services/mediafile/search_by_title_or_description_in_album', {aid: album_id}).then( function( data ) {
+            console.log( data );
+            allVids.removeAll();
+            data.media.forEach( function(mf) {
+                allVids.push( addMediaFile( mf ) );
+            });
+        });*/
+        
+        var args = {
+            q: currentSearch,
+            aid: album_id
+        };
+        loadingYears(true);
+        return system.defer( function( dfd ) {
+            if ( searchPager.next_page )   {
+                args.page = searchPager.next_page;
+                args.rows = searchPager.entries_per_page;
+                viblio.api( 'services/mediafile/search_by_title_or_description_in_album', args )
+                    .then( function( json ) {
+                        console.log( json );
+                        hits ( json.pager.total_entries );
+                        searchPager = json.pager;
+			json.media.forEach( function( mf ) {
+                            console.log( mf );
+			    allVids.push( addMediaFile( mf ) );
+			});
+			dfd.resolve();
+                    });
+            }
+            else {
+                dfd.resolve();
+            }
+        }).promise().then(function(){
+            loadingYears(false);
+        }); 
+        
+    };
+    
+    function showAllVideos() {
+        albumVidSearchIsActive( false );
+        showAllVids( true )
+        searchQuery( null );
+        allVids.removeAll();
+        
+        viblio.api( 'services/album/get?aid=' + album_id ).then( function( data ) {
+            system.log(data);
+            albumIsShared( data.album.is_shared ? true : false );
+            currAlbum( data.album );
+            ownerName( currAlbum().owner.displayname );
+            ownerUUID( currAlbum().owner.uuid );
+            mediaHasViews( false );
+            currAlbum().media.forEach( function( mf ) {
+                if( mf.view_count > 0 ) {
+                    mediaHasViews( true );
+                    showBOH( true );
+                    boxOfficeHits.push( addMediaFile( mf ) );
+                }
+                allVids.push( addMediaFile( mf ) );
+                // If one of the mf's is owned by the viewer then set viewerOwnsAVideo to true, increment vidsOwnedByViewerNum by one
+                if ( mfOwnedByViewer( mf ) ) {
+                    viewerOwnsAVideo(true );
+                    vidsOwnedByViewerNum( vidsOwnedByViewerNum()+1 );
+                }
+            });
+
+            //reverse the order of the sorted array
+            boxOfficeHits.reverse(boxOfficeHits.sort( function(l, r) {
+                return Number(l.media().view_count) < Number(r.media().view_count) ? -1 : 1;
+            }));
+
+            albumTitle( currAlbum().title );
+            ownerPhoto( "/services/na/avatar?uid=" + ownerUUID() + "&y=66" );
+
+            checkOwner();
+
+            if( albumIsShared() ) {
+                getSharedMembers();
+            }
+
+            //dfd.resolve();
+        });
+    };
     
     function getSharedMembers() {
         viblio.api('/services/album/shared_with', {aid: album_id}).then( function( data ) {
             sharedWithDisplayname( data.displayname );
             sharedWithMembers( data.members );
         });
-    }
+    };
     
     function addMediaFile( mf ) {
 	var self = this;
@@ -413,6 +523,13 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
         title: 'Box Office Hits',
         subtitle: 'The most popular videos in this album',
         
+        searchQuery : searchQuery,
+        newAlbumVidsSearch: newAlbumVidsSearch,
+        albumVidSearch: albumVidSearch,
+        albumVidSearchIsActive: albumVidSearchIsActive,
+        showAllVideos: showAllVideos,
+        hits: hits,
+        
         yearSelected: function( year, self ) {
             months.removeAll();
             selectedYear( year.label );
@@ -497,44 +614,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                 //return system.defer( function( dfd ) {
                 sharedWithDisplayname('');
                 vidsOwnedByViewerNum( 0 );
-                    viblio.api( 'services/album/get?aid=' + album_id ).then( function( data ) {
-                        system.log(data);
-                        albumIsShared( data.album.is_shared ? true : false );
-                        currAlbum( data.album );
-                        ownerName( currAlbum().owner.displayname );
-                        ownerUUID( currAlbum().owner.uuid );
-                        mediaHasViews( false );
-                        currAlbum().media.forEach( function( mf ) {
-                            if( mf.view_count > 0 ) {
-                                mediaHasViews( true );
-                                showBOH( true );
-                                boxOfficeHits.push( addMediaFile( mf ) );
-                            }
-                            allVids.push( addMediaFile( mf ) );
-                            // If one of the mf's is owned by the viewer then set viewerOwnsAVideo to true, increment vidsOwnedByViewerNum by one
-                            if ( mfOwnedByViewer( mf ) ) {
-                                viewerOwnsAVideo(true );
-                                vidsOwnedByViewerNum( vidsOwnedByViewerNum()+1 );
-                            }
-                        });
-
-                        //reverse the order of the sorted array
-                        boxOfficeHits.reverse(boxOfficeHits.sort( function(l, r) {
-                            return Number(l.media().view_count) < Number(r.media().view_count) ? -1 : 1;
-                        }));
-
-                        albumTitle( currAlbum().title );
-                        ownerPhoto( "/services/na/avatar?uid=" + ownerUUID() + "&y=66" );
-
-                        checkOwner();
-                        
-                        if( albumIsShared() ) {
-                            getSharedMembers();
-                        }
-
-                        //dfd.resolve();
-                    });
-                //}).promise();
+                showAllVideos();
             }
             //years.removeAll();
             //months.removeAll();
