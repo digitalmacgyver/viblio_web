@@ -294,14 +294,6 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
     }
     
     function albumVidSearch() {
-        /*viblio.api('services/mediafile/search_by_title_or_description_in_album', {aid: album_id}).then( function( data ) {
-            console.log( data );
-            allVids.removeAll();
-            data.media.forEach( function(mf) {
-                allVids.push( addMediaFile( mf ) );
-            });
-        });*/
-        
         var args = {
             q: currentSearch,
             aid: album_id
@@ -328,8 +320,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
             }
         }).promise().then(function(){
             loadingYears(false);
-        }); 
-        
+        });        
     };
     
     function showAllVideos() {
@@ -389,7 +380,8 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
 	var self = this;
         
 	// Create a new Mediafile with the data from the server - Only albums owned by the viewer will be given the share badge
-	var m = new Mediafile( mf, mfOwnedByViewer(mf) ? { show_share_badge: true, show_preview: true, delete_title: albumIsShared() ? 'unshare' : 'remove' } : { show_preview: true, delete_title: 'remove', ro: true, shared_style: true, owner_uuid: mf.owner_uuid } );
+
+	var m = new Mediafile( mf, mfOwnedByViewer(mf) ? { show_share_badge: true, show_preview: true, delete_title: albumIsShared() ? 'unshare' : 'remove', show_faces_tags: true, ownedByViewer: true } : { show_preview: true, delete_title: 'remove', ro: true, show_faces_tags: true, shared_style: true, owner_uuid: mf.owner_uuid } );
         //var m = new Mediafile( mf, { ro: true, show_delete_mode: self.deleteModeOn(), shared_style: true, owner_uuid: mf.owner_uuid } ); //m.ro( true );
 
 	// Register a callback for when a Mediafile is selected.
