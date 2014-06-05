@@ -329,7 +329,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
         searchQuery( null );
         allVids.removeAll();
         
-        viblio.api( 'services/album/get?aid=' + album_id ).then( function( data ) {
+        viblio.api( 'services/album/get?aid=' + album_id + '&include_contact_info=1&include_tags=1').then( function( data ) {
             system.log(data);
             albumIsShared( data.album.is_shared ? true : false );
             currAlbum( data.album );
@@ -408,13 +408,13 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
             viblio.api( '/services/album/remove_media?', { aid: album_id, mid: m.media().uuid } ).then( function() {
                 viblio.mpEvent( 'remove_video_from_album' );
                 // Remove from allVids
-                allVids.remove( function(video) { return video.view.id == m.media().uuid; } );
+                allVids.remove( m );
                 // Remove from months
                 months().forEach( function( month ) {
                     month.media.remove( m );
                 });
                 // Remove from boxOfficeHits
-                boxOfficeHits.remove( function(video) { return video.media().uuid == m.media().uuid; } );
+                boxOfficeHits.remove( m );
                 $( ".horizontal-scroller").trigger( 'children-changed', { enable: true } );
                 refresh( true );
                 if ( m.show_share_badge() ) {

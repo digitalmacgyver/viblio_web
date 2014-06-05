@@ -6923,7 +6923,7 @@ $(function(){
             items = $(items).map(function (i, item) {
 //                i = $(that.options.item).attr('data-value', item)
                 i = $(that.options.item).data('item', item);
-                i.find('a').html(that.highlighter(item));
+                i.find('a').html(that.highlighter(item)).addClass('needsclick');
                 return i[0];
             });
 

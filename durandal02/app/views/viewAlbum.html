@@ -60,9 +60,9 @@
                     <p class="mainTitle textShadowed"><span data-bind="text: allVids().length"></span><span data-bind="text: allVids().length == 1 ? ' Video' : ' Videos'"></span> in this Album</p>
                 <!-- /ko -->
                 <!-- ko if: albumVidSearchIsActive() && allVids().length > 0 -->
-                    <p class="mainTitle textShadowed"><span data-bind="text: hits()"></span><span data-bind="text: allVids().length == 1 ? ' Video' : ' Videos'"></span> from this Album match your search query</p>
+                    <p class="mainTitle textShadowed"><span data-bind="text: hits()"></span><span data-bind="text: allVids().length == 1 ? ' Video' : ' Videos'"></span> from this Album <span data-bind="text: allVids().length == 1 ? 'matches' : 'match'"></span> your search query</p>
                 <!-- /ko -->
-                <!-- ko if: albumVidSearchIsActive() && allVids().length == 0 -->
+                <!-- ko if: albumVidSearchIsActive() && allVids().length == 0 && !loadingYears -->
                     <p class="mainTitle textShadowed">No videos from this Album match your search query</p>
                 <!-- /ko -->
 
