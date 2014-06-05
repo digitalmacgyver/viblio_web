@@ -135,7 +135,7 @@
                 </div>-->
                 
                 <!-- ko if: allVids().length > 0 -->
-                <div class='allAlbumVids' data-bind="highlightChange: allVids().length > 0">
+                <div class='allAlbumVids' data-bind="highlightChange: showAllVids()">
                 <!-- ko foreach: allVids -->
                 <!-- ko compose: $data --><!--/ko-->
                 <!--/ko-->    

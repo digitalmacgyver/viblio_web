@@ -129,10 +129,18 @@ define(["durandal/app",
     var add_face_to_video = ko.observable();
 
     var showPlayerOverlay = ko.observable(false);
+    function showOverlay() {
+        showPlayerOverlay(true);
+        // used to fix ios bug where video tag intercepts all click events 
+        if ( head.mobile && get_the_app_overlay_logic() ) {
+            $('.player').find('video')[0].removeAttribute("controls");
+        }
+    }
     function hidePlayerOverlay() {
         showPlayerOverlay(false);
-        if ( head.mobile ) {
-            $('.player').find('video').attr('controls', 'controls')
+        // used to fix ios bug where video tag intercepts all click events
+        if ( head.mobile && get_the_app_overlay_logic() ) {
+            $('.player').find('video').attr('controls', 'controls');
         }
     };
     
@@ -349,33 +357,21 @@ define(["durandal/app",
                     viblio.mpEvent( 'play', { action: 'play' } );
                     viblio.mpPeopleIncrement('Video Plays from Browser', 1);
                     hidePlayerOverlay();
-                    if ( head.mobile ) {
-                        $('.player').find('video').attr('controls', 'controls')
-                    }
                 },
                 onPause: function( clip ) {
                     viblio.mpEvent( 'play', { action: 'pause' } );
-                    showPlayerOverlay(true);
-                    if ( head.mobile ) {
-                        $('.player').find('video')[0].removeAttribute("controls");
-                    }
+                    showOverlay();
                 },
                 onResume: function( clip ) {
                     viblio.mpEvent( 'play', { action: 'resume' } );
                     hidePlayerOverlay();
-                    if ( head.mobile ) {
-                        $('.player').find('video').attr('controls', 'controls')
-                    }
                 },
                 onStop: function( clip ) {              
                     viblio.mpEvent( 'play', { action: 'stop' } );
                 },
                 onFinish: function( clip ) {
                     viblio.mpEvent( 'play', { action: 'finish' } );
-                    showPlayerOverlay(true);
-                    if ( head.mobile ) {
-                        $('.player').find('video')[0].removeAttribute("controls");
-                    }
+                    showOverlay();
                 }
             },
             plugins: {
@@ -719,10 +715,16 @@ define(["durandal/app",
     return {
         fixHeight: fixHeight,
 	showShareVidModal: function() {
+            customDialogs.showShareVidModal( playing() ).then(function(data){
+                // used to fix ios bug where video tag intercepts all click events
+                if ( head.mobile ) {
+                    $('.player').find('video').attr('controls', 'controls');
+                }              
+            });
+            // used to fix ios bug where video tag intercepts all click events
             if ( head.mobile ) {
                 $('.player').find('video')[0].removeAttribute("controls");
             }
-            customDialogs.showShareVidModal( playing() );
         },
         footer: footer,
 	user: user,
@@ -804,7 +806,16 @@ define(["durandal/app",
                 doneCallback: function( m ) {
                     near( m );
                 }
+            }).then(function(data){
+                // used to fix ios bug where video tag intercepts all click events
+                if ( head.mobile ) {
+                    $('.player').find('video').attr('controls', 'controls');
+                }              
             });
+            // used to fix ios bug where video tag intercepts all click events
+            if ( head.mobile ) {
+                $('.player').find('video')[0].removeAttribute("controls");
+            }
         },
 
 	relocate: function() {
@@ -818,7 +829,17 @@ define(["durandal/app",
                 doneCallback: function( m ) {
                     near( m );
                 }
+            }).then(function(data){
+                // used to fix ios bug where video tag intercepts all click events
+                if ( head.mobile ) {
+                    $('.player').find('video').attr('controls', 'controls');
+                }              
             });
+            // used to fix ios bug where video tag intercepts all click events
+            if ( head.mobile ) {
+                $('.player').find('video')[0].removeAttribute("controls");
+            }
+            
         },
 
 	add_face: function( f ) {

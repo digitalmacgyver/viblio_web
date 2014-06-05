@@ -4375,6 +4375,14 @@ a.a-drop-view:focus{
 .albumView .albumsList .year .months {
     display: inline-block;
 }
+
+.albumView .mfLoader {
+    width: 276px;
+    height: 100px;
+    text-align: center;
+    padding-top: 100px;
+    float: left;
+}
 /********** Help Tab *************/
 
 .helpContainer {

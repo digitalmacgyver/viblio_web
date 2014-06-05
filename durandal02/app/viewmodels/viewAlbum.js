@@ -177,7 +177,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
     }
 
     // get the years to display in the year navigator
-    function getYears() {
+    /*function getYears() {
         loadingYears( true );
         var args = { aid: album_id };
 	viblio.api( '/services/air/years', args ).then( function( data ) {
@@ -188,7 +188,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
             years( arr );
             loadingYears( false );
         });
-    }
+    }*/
     
     function getAllAlbumsLabels() {
         albumLabels.removeAll();
@@ -305,11 +305,9 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                 args.rows = searchPager.entries_per_page;
                 viblio.api( 'services/mediafile/search_by_title_or_description_in_album', args )
                     .then( function( json ) {
-                        console.log( json );
                         hits ( json.pager.total_entries );
                         searchPager = json.pager;
 			json.media.forEach( function( mf ) {
-                            console.log( mf );
 			    allVids.push( addMediaFile( mf ) );
 			});
 			dfd.resolve();
@@ -323,49 +321,61 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
         });        
     };
     
+    function scrollHandler() {
+        if( albumVidSearchIsActive() ) {
+            if( !loadingYears() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
+                albumVidSearch();
+            }
+        }
+    }
+    
     function showAllVideos() {
         albumVidSearchIsActive( false );
         showAllVids( true )
         searchQuery( null );
         allVids.removeAll();
-        
-        viblio.api( 'services/album/get?aid=' + album_id + '&include_contact_info=1&include_tags=1').then( function( data ) {
-            system.log(data);
-            albumIsShared( data.album.is_shared ? true : false );
-            currAlbum( data.album );
-            ownerName( currAlbum().owner.displayname );
-            ownerUUID( currAlbum().owner.uuid );
-            mediaHasViews( false );
-            currAlbum().media.forEach( function( mf ) {
-                if( mf.view_count > 0 ) {
-                    mediaHasViews( true );
-                    showBOH( true );
-                    boxOfficeHits.push( addMediaFile( mf ) );
+        loadingYears(true);
+        return system.defer( function( dfd ) {
+            viblio.api( 'services/album/get?aid=' + album_id + '&include_contact_info=1&include_tags=1').then( function( data ) {
+                system.log(data);
+                albumIsShared( data.album.is_shared ? true : false );
+                currAlbum( data.album );
+                ownerName( currAlbum().owner.displayname );
+                ownerUUID( currAlbum().owner.uuid );
+                mediaHasViews( false );
+                currAlbum().media.forEach( function( mf ) {
+                    if( mf.view_count > 0 ) {
+                        mediaHasViews( true );
+                        showBOH( true );
+                        boxOfficeHits.push( addMediaFile( mf ) );
+                    }
+                    console.log( mf );
+                    allVids.push( addMediaFile( mf ) );
+                    // If one of the mf's is owned by the viewer then set viewerOwnsAVideo to true, increment vidsOwnedByViewerNum by one
+                    if ( mfOwnedByViewer( mf ) ) {
+                        viewerOwnsAVideo(true );
+                        vidsOwnedByViewerNum( vidsOwnedByViewerNum()+1 );
+                    }
+                });
+
+                //reverse the order of the sorted array
+                boxOfficeHits.reverse(boxOfficeHits.sort( function(l, r) {
+                    return Number(l.media().view_count) < Number(r.media().view_count) ? -1 : 1;
+                }));
+
+                albumTitle( currAlbum().title );
+                ownerPhoto( "/services/na/avatar?uid=" + ownerUUID() + "&y=66" );
+
+                checkOwner();
+
+                if( albumIsShared() ) {
+                    getSharedMembers();
                 }
-                console.log( mf );
-                allVids.push( addMediaFile( mf ) );
-                // If one of the mf's is owned by the viewer then set viewerOwnsAVideo to true, increment vidsOwnedByViewerNum by one
-                if ( mfOwnedByViewer( mf ) ) {
-                    viewerOwnsAVideo(true );
-                    vidsOwnedByViewerNum( vidsOwnedByViewerNum()+1 );
-                }
-            });
 
-            //reverse the order of the sorted array
-            boxOfficeHits.reverse(boxOfficeHits.sort( function(l, r) {
-                return Number(l.media().view_count) < Number(r.media().view_count) ? -1 : 1;
-            }));
-
-            albumTitle( currAlbum().title );
-            ownerPhoto( "/services/na/avatar?uid=" + ownerUUID() + "&y=66" );
-
-            checkOwner();
-
-            if( albumIsShared() ) {
-                getSharedMembers();
-            }
-
-            //dfd.resolve();
+                dfd.resolve();
+            });    
+        }).promise().then(function(){
+            loadingYears(false);
         });
     };
     
@@ -579,10 +589,12 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
 	
         attached: function() {
             $(window).scroll( this, stickyAlbumsList );
+            $(window).scroll( this, scrollHandler );
         },
 
         detached: function() {
             $(window).off( "scroll", stickyAlbumsList );
+            $(window).off( "scroll", scrollHandler );
         },
         
 	compositionComplete: function( view, parent ) {
@@ -592,9 +604,9 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
 	    });
             // only refresh the AIR section if the user is viewing a different album than before
             
-            if( refresh() ) {
+            /*if( refresh() ) {
                 getYears();
-            }
+            }*/
             
             // get the years labels for the videos in the album, select most recent year, and get months for that year
             //getYears();
