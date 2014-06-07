@@ -58,9 +58,14 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
                 return true;
             }
         });
-	this.image = ko.observable( this.media().views.poster.url );
-        
-        this.albumPosterUri = this.media().views.poster.uri.slice( 0, this.media().views.poster.uri.indexOf('/') );
+	if ( this.media() && this.media().views && this.media().views.poster ) {
+	    this.image = ko.observable( this.media().views.poster.url );
+            this.albumPosterUri = this.media().views.poster.uri.slice( 0, this.media().views.poster.uri.indexOf('/') );
+	}
+	else {
+	    this.image = '';
+	    this.albumPosterUri = '';
+	}
         this.posterTitle = ko.observable();
         // Get title and view count of poster image
         this.media().media.forEach( function( media ){
