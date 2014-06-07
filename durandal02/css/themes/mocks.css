@@ -3145,7 +3145,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     }
     .albumOverlay {
         //height: 197px; /* 16:9 */
-        height: 263px; /* 4:3 */
+        height: 257px; /* 4:3 */
     }
     .albumOverlay p {
         //padding: 60px; /* 16:9 */
@@ -4690,7 +4690,7 @@ a.a-drop-view:focus{
 
 .albumOverlay {
     position: absolute;
-    width: 350px;
+    width: 270px;
     margin: 0;
     background: rgba(0, 0, 0, 0.5);
     z-index: 101;
