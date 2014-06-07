@@ -605,7 +605,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         self.videos().forEach(function(vid) {
             if( vid.selected() ) {
-                self.selectedVideos.push(vid.view.id);
+                self.selectedVideos.push(vid.media().uuid);
             }
         });
     };
