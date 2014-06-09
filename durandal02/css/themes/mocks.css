@@ -5437,7 +5437,8 @@ button.linkedin:active {
 }
 
 .style2DD.dropdown-menu .sharedStyle {
-    color: rgb(28, 184, 209);
+    //color: rgb(50, 53, 68); /* dark blue */
+    color: rgb(28, 184, 209); /* turquoise */
 }
 
 .tags-inner > li > a {

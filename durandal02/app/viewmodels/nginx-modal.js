@@ -49,12 +49,6 @@ define(['lib/viblio','lib/config','plugins/dialog','durandal/events','plugins/ro
                     firstUploadMessageHasBeenShown( false );
                 }
             });
-            
-            console.log( router.activeItem() );
-            
-            if( router.activeItem().__moduleId__ == 'viewmodels/viewAlbum' ){
-                
-            }
         },
 	compositionComplete: function( view ) {
             var self = this;
@@ -72,13 +66,13 @@ define(['lib/viblio','lib/config','plugins/dialog','durandal/events','plugins/ro
                 viblio.mpPeopleIncrement( 'UI uploads started' );
                 viblio.mpPeopleSet({'Last Video Upload Date': new Date() });
 	    });
-            
-            //After first successful upload mark 'firstUploadComplete' as true 
+                        
 	    $(view).find( '.vup' ).bind( 'viblio_uploadercompleted', function() {
                 viblio.mpEvent( 'ui_upload_complete' );
                 viblio.mpPeopleIncrement( 'UI uploads completed' );
 	    });
             
+            //After first successful upload mark 'firstUploadComplete' as true 
             $(view).find( '.vup' ).bind( 'viblio_uploaderfinished', function() {
                 if( !firstUploadMessageHasBeenShown() ) {
                     firstUploadComplete( true );
