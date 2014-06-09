@@ -434,11 +434,12 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
         });
         
         m.on( "mediaFile:TitleDescChanged", function() {
-            var uuid = this.view.id;
+            //var uuid = this.view.id;
+            var uuid = this.media().uuid;
             var title = this.title();
             // Update name in allVids no matter what
             allVids().forEach(function( mf ) {
-                if( mf.view.id == uuid ) {
+                if( mf.media().uuid == uuid ) {
                     mf.title( title );
                 }
             });
@@ -448,7 +449,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                     if( !showAllVids() ) {
                         months().forEach( function( month ) {
                             month.media().forEach( function( mf ) {
-                                if( mf.view.id == uuid ) {
+                                if( mf.media().uuid == uuid ) {
                                     mf.title( title );
                                 }
                             });
@@ -457,7 +458,7 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                 } else {
                     // Otherwise title was updated in AIR, so update title in Box Office Hits
                     boxOfficeHits().forEach( function( mf ) {
-                        if( mf.view.id == uuid ) {
+                        if( mf.media().uuid == uuid ) {
                             mf.title( title );
                         }
                     });
