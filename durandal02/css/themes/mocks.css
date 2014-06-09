@@ -5436,6 +5436,10 @@ button.linkedin:active {
     margin: 0 1px;
 }
 
+.style2DD.dropdown-menu .sharedStyle {
+    color: rgb(28, 184, 209);
+}
+
 .tags-inner > li > a {
     padding: 5px;
 }

@@ -1,7 +1,7 @@
 // This shim model allows the nginx upload page to be used as
 // a modal popup.
 //
-define(['lib/viblio','lib/config','plugins/dialog','durandal/events'],function(viblio,config,dialog,Events){
+define(['lib/viblio','lib/config','plugins/dialog','durandal/events','plugins/router'],function(viblio,config,dialog,Events,router){
     
     var firstUploadComplete = ko.observable();
     var firstUploadMessageHasBeenShown = ko.observable();
@@ -49,6 +49,12 @@ define(['lib/viblio','lib/config','plugins/dialog','durandal/events'],function(v
                     firstUploadMessageHasBeenShown( false );
                 }
             });
+            
+            console.log( router.activeItem() );
+            
+            if( router.activeItem().__moduleId__ == 'viewmodels/viewAlbum' ){
+                
+            }
         },
 	compositionComplete: function( view ) {
             var self = this;

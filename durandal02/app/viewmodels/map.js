@@ -79,19 +79,22 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
     
     Map.prototype.getAllAlbumsLabels = function() {
         var self = this;
-        var args = {};
-        args = {
-            cid: self.cid
-        };
         self.albumLabels.removeAll();
-        viblio.api( '/services/album/list', args ).then( function(data) {
+        viblio.api( '/services/album/album_names' ).then( function(data) {
+            var arr = [];
+            console.log( data );
             data.albums.forEach( function( album ) {
                 var _album = album;
                 _album.label = album.title;
                 _album.selected = ko.observable( false );
-                
-                self.albumLabels.push( _album );
+                _album.shared = album.is_shared;
+                arr.push( _album );
             });
+            
+            //alphabetically sort the list - toLowerCase() makes sure this works as expected
+            arr.sort(function(left, right) { return left.label.toLowerCase() == right.label.toLowerCase() ? 0 : (left.label.toLowerCase() < right.label.toLowerCase() ? -1 : 1) });
+            self.albumLabels( arr );
+            
             self.albumLabels.unshift( {label: "Create New Album", selected: ko.observable(false)} );
         });
     };

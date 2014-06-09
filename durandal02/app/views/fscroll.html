@@ -15,7 +15,7 @@
                         <!-- ko foreach: albumLabels -->
                             <li data-bind="click: $parent.albumSelected.bind( $data, $parent ), clickBubble: false">
                                 <a class="checkboxedLi">
-                                    <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
+                                    <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected(), sharedStyle: $data.shared}"></div>
                                     <!--<div class="inline" data-bind="if: $data.selected()">
                                         <i class="icon-check"></i>
                                     </div>
