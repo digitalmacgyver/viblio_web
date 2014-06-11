@@ -408,11 +408,14 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
                 },
                 validate: function( value ) {
                     var v = $.trim(value);
+                    var regexp1=new RegExp('^[a-zA-Z0-9 .!?"-]+$');
+                    
                     if ( v == '' ) {
                         return 'Please input a name.';
-                    }
-                    else {
+                    } else if( regexp1.test( value ) ) {
                         return { newValue: v };
+                    } else {
+                        return 'Alphanumeric symbols only.';
                     }
                 },
                 success: function( res, newvalue ) {

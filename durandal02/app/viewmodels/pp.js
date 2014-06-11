@@ -524,7 +524,7 @@ define(["durandal/app",
     // This gets triggered when a new user comment has been entered.
     //
     app.on( 'player:newcomment', function( data ) {
-        var regexp1=new RegExp("[a-z|A-Z]|[0-9]");
+        var regexp1=new RegExp('^[a-zA-Z0-9 .!?"-]+$');
         if( regexp1.test( usercomment() ) ) {
             viblio.api( '/services/mediafile/add_comment',
                     { mid: playing().media().uuid,

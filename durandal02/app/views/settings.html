@@ -42,7 +42,7 @@
 	</div>
 	<div data-bind="if: linkedFacebook">
 	  <a href="#" data-bind="click: unlinkAccount.bind( $data, 'facebook' )" class="pull-right link-disconnect">Disconnect...</a>
-	  <i class="facebookColor icon-facebook-sign" />Connected: <span class="link-link" data-bind="html: links().facebook"></span>
+	  <i class="facebookColor icon-facebook-sign" />Connected: <span class="link-link" data-bind="text: links().facebook"></span>
 	</div>
       </div>
     </div>

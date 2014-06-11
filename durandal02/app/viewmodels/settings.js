@@ -3,7 +3,8 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
     var email   = ko.observable();
     var displayname   = ko.observable('');
     var validDisplayname = ko.computed(function(){
-        if ( displayname().length > 32 ||  displayname()[0] == ' ' || displayname() == '' ) {
+        var regexp1=new RegExp('^[a-zA-Z0-9 .!?"-]+$');
+        if ( !regexp1.test( displayname() ) || displayname().length > 32 ||  displayname()[0] == ' ' || displayname() == '' ) {
             return false;
         } else {
             return true;
@@ -61,11 +62,18 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
     });
 
     displayname.subscribe( function( v ) {
+        console.log( v );
+        console.log( escape(v) );
+        var regexp1=new RegExp('^[a-zA-Z0-9 .!?"-]+$');
+        console.log( regexp1.test( v ) );
+        
+        //v = escape(v);
 	if ( v && profile().displayname && ( v != profile().displayname ) && validDisplayname() ) {
 	    newDisplayname( v );
+            profile().displayname = v;
 	}
-	if ( v ) 
-	    profile().displayname = v;
+	/*if ( v ) 
+	    profile().displayname = v;*/
     });
 
     function linkFacebookAccount() {

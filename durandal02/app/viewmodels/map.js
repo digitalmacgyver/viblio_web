@@ -287,14 +287,8 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
                                             <i class="icon-eye-open"></i><br>\n\
                                             <span>' + marker.feature.properties.eyes + '</span>\n\
                                         </div>\n\
-                                        <div data-bind="liveEditor: title, ifnot: ro">\n\
-                                            <div class="view vidTitle title truncate" data-bind="click: title.edit">' + marker.feature.properties.title + '</div>\n\
-                                            <div class="editTitle-Wrap">\n\
-                                                <input type="text" class="edit" data-bind="value: title,hasFocus: title.editing, event: { blur: function() { title.stopEditing(); title.save( $data, media(), \'mediaFile:TitleDescChanged\' ) } }" />\n\
-                                            </div>\n\
-                                        </div>\n\
-                                        <div data-bind="if: ro">\n\
-                                          <div class="view title truncate" data-bind="text: title() || \'no title\' "></div>\n\
+                                        <div>\n\
+                                          <div class="view vidTitle title truncate">' + marker.feature.properties.title + '</div>\n\
                                         </div>\n\
                                  </div>');
             marker.bindPopup(popupContent[0],{

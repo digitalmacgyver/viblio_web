@@ -151,7 +151,7 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
 	    //var del_btn = $("<i/>").addClass( 'icon-remove-circle pull-right');
 	    var div     = $("<div></div>");
 	    var ok_btn  = $("<i/>").addClass( 'icon-thumbs-up pull-right' ).appendTo(div);
-	    var span    = $("<span/>").text( tag2.name() ).appendTo(div);
+	    var span    = $("<span class='truncate' />").text( tag2.name() ).appendTo(div);
 	    $element.empty();
 	    $element.append( div );
 	    $element.addClass( 'tag2-query' );
@@ -219,36 +219,39 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
 		},
 		validate: function( value ) {
 		    var v = $.trim(value);
+                    var regexp1=new RegExp('^[a-zA-Z0-9 .!?"-]+$');
+                    
 		    if ( v == '' ) {
 			return 'Please input a name.';
-		    }
-		    else {
-			if ( tag3.only_known ) {
-			    var e = false;
-			    $.ajax({
-				url: '/services/faces/contact_for_name',
-				data: { contact_name: v },
-				async: false,
-				success: function( data ) {
-				    if ( data && data.contact && data.contact.picture_uri ) {
-					e = false;
-				    }
-				    else {
-					e = true;
-				    }
-				},
-				error: function() {
-				    e = true;
-				}
-			    });
-			    if ( e ) 
-				return 'Please choose an existing contact';
-			    else
-				return { newValue: v };
-			}
-			else {
-			    return { newValue: v };
-			}
+		    } else if ( regexp1.test( v ) ) {
+                        if ( tag3.only_known ) {
+                                var e = false;
+                                $.ajax({
+                                    url: '/services/faces/contact_for_name',
+                                    data: { contact_name: v },
+                                    async: false,
+                                    success: function( data ) {
+                                        if ( data && data.contact && data.contact.picture_uri ) {
+                                            e = false;
+                                        }
+                                        else {
+                                            e = true;
+                                        }
+                                    },
+                                    error: function() {
+                                        e = true;
+                                    }
+                                });
+                                if ( e ) 
+                                    return 'Please choose an existing contact';
+                                else
+                                    return { newValue: v };
+                            }
+                            else {
+                                return { newValue: v };
+                            }    
+                    } else {
+			return 'Alphanumeric symbols only.'
 		    }
 		},
 		success: function( res, newvalue ) {

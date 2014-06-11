@@ -99,13 +99,18 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	// This will be triggered by a save on the liveEdit custom
 	// binding.
 	self.on( "mediaFile:TitleDescChanged", function( data ) {
-	    viblio.api( '/services/mediafile/set_title_description',
-			{ mid: self.media().uuid,
-			  title: self.title(),
-			  description: self.description()
-			}).then( function() {
-			    viblio.mpEvent( 'title_description_changed' );
-			});
+            var regexp1=new RegExp('^[a-zA-Z0-9 .!?"-]+$');
+            if( regexp1.test( self.title() ) ) {
+                viblio.api( '/services/mediafile/set_title_description',
+                            { mid: self.media().uuid,
+                              title: self.title(),
+                              description: self.description()
+                            }).then( function() {
+                                viblio.mpEvent( 'title_description_changed' );
+                            });
+            } else {
+                return;
+            }
 	});
         
         self.tagLabels = ko.observableArray([{label: 'Animals', selected: ko.observable(false)},{label: 'At home', selected: ko.observable(false)},{label: 'Beach', selected: ko.observable(false)},

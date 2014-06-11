@@ -15,7 +15,7 @@
             <ul class="nav pagesNav">
                 <!-- ko foreach: router.navigationModel -->
                 <li data-bind="css: { active: isActive }">
-                    <a data-bind="attr: { href: hash }, html: title"></a>
+                    <a data-bind="attr: { href: hash }, text: title"></a>
                 </li>
                 <!-- /ko -->                
                 <!-- ko if: showPopup -->
@@ -37,7 +37,7 @@
                             <img style="display: block;" src="/services/user/avatar?uid=-&y=37" />
                         </div>
                         <div id='userNameText-Wrap'>
-                            <span class='textShadowed'>Welcome, </span><span class='truncate textShadowed' data-bind="html: user().displayname">anonymous</span><img src='css/images/chevron-down2.png'/>
+                            <span class='textShadowed'>Welcome, </span><span class='truncate textShadowed' data-bind="text: user().displayname">anonymous</span><img src='css/images/chevron-down2.png'/>
                         </div>
                     </a>
                     <ul class="dropdown-menu pull-left">

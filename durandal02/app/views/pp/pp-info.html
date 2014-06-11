@@ -57,7 +57,7 @@
                 <span class="tableCell midAlign font18 lightWeightFont" data-bind="text: comments().length ==1 ? '1 Comment' : comments().length + ' Comments'"></span>
                 <div class="views centered tableCell topAlign">
                     <img src="css/images/viewsEye.png" />
-                    <span data-bind="html: playing().media().eyes"></span>
+                    <span data-bind="text: playing().media().eyes"></span>
                 </div>    
           </div>
 	</div>
@@ -65,7 +65,7 @@
 	<div class="all-comments" data-bind="visible: show_comments">
           <!-- ko foreach: comments -->
           <div class="comment" data-bind="if: comment.indexOf(' ') != -1 || comment.indexOf('\n') != -1 && comment != '' || comment.length < 50">
-            <p class="comment-text bottomBorder-Thin" data-bind="html: comment"></p>
+            <p class="comment-text bottomBorder-Thin" data-bind="text: comment"></p>
             <div class="comment-footer lightBlueFont">
               <p class="when pull-right" data-bind="text: when"></p>
               <p>by&nbsp;<span class="who heavyWeightFont" data-bind="text: who"></span></p>

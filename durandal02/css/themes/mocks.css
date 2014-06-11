@@ -392,6 +392,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
     cursor: pointer;
 }
 
+.person .name.tag2-query .truncate {
+    display: inline-block;
+    width: 102px
+}
+
 .person-img-editable {
     top: 49px;
 }
@@ -441,6 +446,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
     padding-top: 5px;
     margin-bottom: 0;
 }
+
+/*div.scrollableArea {
+    position: relative;
+    width: auto !important;
+    height: 100%;
+}*/
 
 .horizontal-scroller .mCSB_horizontal>.mCSB_container {
     margin-bottom: 0;
@@ -535,9 +546,9 @@ button.btn.editable-cancel {
 .editable-buttons .btn-group > .dropdown-toggle,
 .editable-buttons .btn-group > .btn,
 .editable-buttons .btn {
-padding: 0;
-width: 40px;
-height: 40px;
+    padding: 0;
+    width: 40px;
+    height: 40px;
 }
 
 .recording-date-wrapper .editable-buttons .btn-group > .btn:first-child,
@@ -550,10 +561,14 @@ height: 40px;
 .person .editable-buttons .btn-group > .dropdown-toggle,
 .person .editable-buttons .btn-group > .btn,
 .person .editable-buttons .btn {
-padding: 0;
-width: 30px;
-height: 30px;
-font-size: 14px;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+}
+
+.editable-error-block {
+    line-height: 1;
 }
 
 /***************** END OF MORE GENERAL CSS CLASSES **************************/
