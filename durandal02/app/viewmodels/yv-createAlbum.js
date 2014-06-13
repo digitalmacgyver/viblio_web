@@ -658,7 +658,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 });
             } else {
                 // Add to an existing album
-                viblio.api( '/services/album/create', { aid: self.selectedAlbum().uuid, list: self.selectedVideos() } ).then( function( data ) {
+                viblio.api( '/services/album/add_media', { aid: self.selectedAlbum().uuid, list: self.selectedVideos() } ).then( function( data ) {
                     var vidOrVids = self.selectedVideos().length == 1 ? ' video' : ' videos';
                     var msg = self.selectedVideos().length + vidOrVids + ' successfully added to your "' + self.selectedAlbum().label + '" Album';
                     viblio.notify( msg, 'success' );
