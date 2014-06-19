@@ -1703,6 +1703,44 @@ input:-moz-placeholder {
     margin-right: 10px;
 }
 
+/********************  newHome Section  ***************************/
+
+.select-nav .navbar-inner,
+.vids-nav .navbar-inner {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+.select-nav .navbar-inner {
+    background-color: rgb(239, 85, 65);
+    background-image: -moz-linear-gradient(top, #ef5541, #e22b13);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgb(239, 85, 65)), to(rgb(226,43,19)));
+    background-image: -webkit-linear-gradient(top, rgb(239, 85, 65), rgb(226,43,19));
+    background-image: -o-linear-gradient(top, #ef5541, #e22b13);
+    background-image: linear-gradient(to bottom, rgb(239, 85, 65), rgb(226,43,19));
+    border: 1px solid rgb(208,39,18);
+    color: white;
+}
+
+.select-nav .divider-vertical {
+    border-right: 1px solid rgb(239, 85, 65);
+    border-left: 1px solid rgb(226,43,19);
+}
+
+.select-nav .nav > li > a {
+    color: white;
+}
+
+.find-wrapper .navbar-search .search-query {
+    height: 30px;
+    font-size: 16px;
+}
+
+.vidsSelectedLabel {
+    padding: 10px 15px 10px;
+    display: inline-block;
+}
 /********************  Videos Of Page Section  ***************************/
 
 #videosof-page .pstrip {

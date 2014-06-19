@@ -6,6 +6,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.recentUploadsIsActive = ko.observable(false);
         
         self.show_find_options = ko.observable(false);
+        self.select_mode_on = ko.observable(false);
+        self.share_mode_on = ko.observable(false);
+        self.add_to_mode_on = ko.observable(false);
+        self.delete_mode_on = ko.observable(false);
         
         self.datesLabels  = ko.observableArray([]);
         self.showingAllDatesLabels = ko.observable(true);
@@ -20,16 +24,23 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.selectedCity = ko.observable();
         self.cityFilterIsActive = ko.observable(false);
         
+        self.albumLabels = ko.observableArray();
+        self.selectedAddToAlbum = ko.observable();
+        self.selectedAddToAlbumLabel = ko.observable();
+        
+        self.albumsFilterLabels = ko.observableArray();
+        self.selectedFilterAlbum = ko.observable();
+        self.albumFilterIsActive = ko.observable(false);
+        self.albumIsShared = ko.observable(null);
+        self.currentAlbumAid = ko.observable(null);
+        
         self.noFiltersAreActive = ko.computed( function() {
-            if( self.recentUploadsIsActive() || self.dateFilterIsActive() || self.faceFilterIsActive() || self.cityFilterIsActive() ) {
+            if( self.recentUploadsIsActive() || self.dateFilterIsActive() || self.faceFilterIsActive() || self.cityFilterIsActive() || self.albumFilterIsActive() ) {
                 return false;
             } else {
                 return true;
             }
-        });
-        
-        self.albumLabels = ko.observableArray();
-        self.selectedAlbum = ko.observable(); 
+        }); 
         
         self.videos = ko.observableArray([]);
         
@@ -239,7 +250,9 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             self.allVidsIsSelected(false);
             self.cityFilterIsActive(false);
             self.selectedCity('');
-        
+            self.albumFilterIsActive(false);
+            self.selectedFilterAlbum('');
+            
             self.isActiveFlag(false);
             
             // Used to close the dropdown
@@ -312,6 +325,8 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             self.allVidsIsSelected(false);
             self.cityFilterIsActive(false);
             self.selectedCity('');
+            self.albumFilterIsActive(false);
+            self.selectedFilterAlbum('');
             
             self.isActiveFlag(false);
             
@@ -385,6 +400,8 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             self.selectedFace('');
             self.allVidsIsSelected(false);
             self.cityFilterIsActive(true);
+            self.albumFilterIsActive(false);
+            self.selectedFilterAlbum('');
             
             self.isActiveFlag(false);
             
@@ -393,7 +410,288 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         });
     };
     
+    newHome.prototype.albumFilterSelected = function( self, album ) {
+        console.log( album );
+        if( album.selected() ) {
+            album.selected(false);
+            self.currentAlbumAid(null);
+            self.showAllVideos();
+        } else {
+            self.albumsFilterLabels().forEach( function( c ) {
+                c.selected( false );
+            });
+            album.selected( true );
+            self.selectedFilterAlbum( album.label );
+            self.currentAlbumAid( album.uuid );
+            self.albumVidsSearch( true );
+        } 
+    };
     
+    newHome.prototype.albumVidsSearch = function( newSearch ) {
+        var self = this;
+        
+        var album_id = self.currentAlbumAid();
+        
+        self.isActiveFlag(true);
+        
+        // Only remove all vids and reset pager if it's a new search
+        if( newSearch ) {
+            //clear the search contents
+            self.clearSearch();
+            self.unselectOtherFilters('albums');
+            //self.videos.removeAll();
+            // reset pager
+            /*self.albumsPager = {
+                next_page: 1,
+                entries_per_page: 20,
+                total_entries: -1 /* currently unknown */
+            //};
+        }
+        
+        return system.defer( function( dfd ) {
+            /*if ( self.albumsPager.next_page )   {
+                args.page = self.facesPager.next_page;
+                args.rows = self.facesPager.entries_per_page;*/
+                viblio.api( 'services/album/get?aid=' + album_id + '&include_contact_info=1&include_tags=1').
+                    then( function( json ) {
+                        //self.hits ( json.pager.total_entries );
+                        //self.facesPager = json.pager;
+                        self.albumIsShared( json.album.is_shared ? true : false );
+                        json.album.media.forEach( function( mf ) {
+                            self.addAlbumMediaFile ( mf );
+                        });
+                        dfd.resolve();
+                    });
+            /*}
+            else {
+                dfd.resolve();
+            }*/
+        }).promise().then(function(){
+            // reset active filters
+            self.recentUploadsIsActive(false);
+            self.dateFilterIsActive(false);
+            self.selectedMonth('');
+            self.faceFilterIsActive(false);
+            self.selectedFace('');
+            self.allVidsIsSelected(false);
+            self.cityFilterIsActive(false);
+            self.selectedCity('');
+            self.albumFilterIsActive(true);
+            
+            self.isActiveFlag(false);
+            
+            // Used to close the dropdown
+            $("body").trigger("click");
+        });
+    };
+    
+    newHome.prototype.mfOwnedByViewer = function( mf ) {
+        if( mf.owner_uuid == viblio.user().uuid ){
+            return true;
+        } else {
+            return false;
+        }
+    };
+    
+    newHome.prototype.addAlbumMediaFile = function( mf ) {
+	var self = this;
+        
+	// Create a new Mediafile with the data from the server - Only albums owned by the viewer will be given the share badge
+
+	var m = new Mediafile( mf, self.mfOwnedByViewer(mf) ? { show_share_badge: true, show_preview: true, delete_title: self.albumIsShared() ? 'unshare' : 'remove', show_faces_tags: true, ownedByViewer: true, show_select_badge: self.select_mode_on(), selected: self.select_mode_on() } : { show_preview: true, delete_title: 'remove', ro: true, show_faces_tags: true, shared_style: true, owner_uuid: mf.owner_uuid } );	
+
+	// Play a mediafile clip.  This uses the query parameter
+	// passing technique to pass in the mediafile to play.
+	m.on( 'mediafile:play', function( m ) {
+	    if ( m.media().owner_uuid == viblio.user().uuid )
+		router.navigate( 'new_player?mid=' + m.media().uuid );
+	    else
+		router.navigate( 'web_player?mid=' + m.media().uuid );
+	});
+
+        m.on( 'mediafile:delete', function( m ) {
+            viblio.api( '/services/album/remove_media?', { aid: self.currentAlbumAid(), mid: m.media().uuid } ).then( function() {
+                viblio.mpEvent( 'remove_video_from_album' );
+                // Remove from allVids
+                self.videos.remove( m );
+                if ( m.show_share_badge() ) {
+                    vidsOwnedByViewerNum( vidsOwnedByViewerNum()-1 );
+                }
+            });
+        });
+        
+        m.on( 'mediafile:selected', function( m ) {
+            self.selectedVideos.push(m.media().uuid);              
+        });
+
+        m.on( 'mediafile:unselected', function( m ) {
+            self.selectedVideos.remove(m.media().uuid);              
+        });
+        
+        m.on( "mediaFile:TitleDescChanged", function() {
+            //var uuid = this.view.id;
+            var uuid = this.media().uuid;
+            var title = this.title();
+            // Update name in allVids no matter what
+            self.videos().forEach(function( mf ) {
+                if( mf.media().uuid == uuid ) {
+                    mf.title( title );
+                }
+            });          
+        });
+
+	// Add it to the list
+	self.videos.push( m );
+    };
+    
+    // Add a new mediafile to our managed list of mediafiles
+    newHome.prototype.addMediaFile = function( mf ) {
+	var self = this;
+        
+        if( mf.is_shared == 1 ) {
+            // Shared with user
+            var m = new Mediafile( mf, { ro: true, show_delete_mode: self.delete_mode_on(), shared_style: true, owner_uuid: mf.owner_uuid } ); //m.ro( true );
+            m.on( 'mediafile:play', function( m ) {
+                router.navigate( 'web_player?mid=' + m.media().uuid );
+            });
+            m.on( 'mediafile:delete', function( m ) {
+                viblio.api( '/services/mediafile/delete_share', { mid: m.media().uuid } ).then( function( data ) {
+                    viblio.mpEvent( 'delete_share' );
+                    self.sections().forEach( function( section ) {
+                        section.media.remove( m );
+                    });
+                });
+            });    
+        } else {
+            // Owned by user
+            var m = new Mediafile( mf, { show_share_badge: true, show_delete_mode: self.delete_mode_on(), show_select_badge: self.select_mode_on(), selected: self.select_mode_on() } );
+
+            // Proxy the mediafile play event and send it along to
+            // our parent.
+            m.on( 'mediafile:play', function( m ) {
+                router.navigate( 'new_player?mid=' + m.media().uuid );
+            });
+
+            m.on( 'mediafile:delete', function( m ) {
+                viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function( json ) {
+                    viblio.mpEvent( 'delete_video' );
+                    self.videos.remove( m );
+                    if ( json && json.contacts ) {
+                        json.contacts.forEach( function( contact ) {
+                            app.trigger( 'top-actor:remove', contact );
+                        });
+                    }
+                });
+            });
+            
+            m.on( 'mediafile:selected', function( m ) {
+                self.selectedVideos.push(m.media().uuid);              
+            });
+            
+            m.on( 'mediafile:unselected', function( m ) {
+                self.selectedVideos.remove(m.media().uuid);              
+            });
+        }
+        	         
+	// Add it to the list
+	self.videos.push( m );
+    };
+    
+    newHome.prototype.mfOwnedByViewer = function( mf ) {
+        var uuid;
+        if( mf.owner_uuid ){
+            uuid = mf.owner_uuid;
+        } else if( mf.media().owner_uuid ){
+            uuid = mf.media().owner_uuid;
+        }
+        
+        if( uuid === viblio.user().uuid ){
+            return true;
+        } else {
+            return false;
+        } 
+    };
+    
+    // Toggle videos to select mode
+    newHome.prototype.activate_select_mode = function() {
+	var self = this;
+        
+        self.select_mode_on(true);
+        
+        self.videos().forEach( function( mf ) {
+            if( self.mfOwnedByViewer(mf) ) {
+                mf.turnOnSelectMode();
+            }
+        });
+    };
+    
+    newHome.prototype.deactivate_select_mode = function() {
+	var self = this;
+        
+        self.select_mode_on(false);
+        
+        self.videos().forEach( function( mf ) {
+            if( self.mfOwnedByViewer(mf) ) {
+                mf.turnOffSelectMode();
+            }
+        });
+    };
+    
+    newHome.prototype.clear_all_modes = function() {
+        var self = this;
+        
+        self.share_mode_on(false);
+        self.add_to_mode_on(false);
+        self.delete_mode_on(false);
+    };
+    
+    newHome.prototype.share_mode = function() {
+        var self = this;
+        
+        self.activate_select_mode();
+        self.clear_all_modes();
+        self.share_mode_on(true);
+    };
+    
+    newHome.prototype.add_to_mode = function() {
+        var self = this;
+        
+        self.activate_select_mode();
+        self.clear_all_modes();
+        self.add_to_mode_on(true);
+    };
+    
+    newHome.prototype.delete_mode = function() {
+        var self = this;
+        
+        self.activate_select_mode();
+        self.clear_all_modes();
+        self.delete_mode_on(true);
+    };
+    
+    newHome.prototype.done_with_select_mode = function() {
+        var self = this;
+        
+        self.select_mode_on(false);
+        self.deactivate_select_mode();
+    };
+    
+    newHome.prototype.cancel_select_mode = function() {
+        var self = this;
+        
+        // turn off select mode - hides select toolbar
+        self.select_mode_on(false);
+        // set all modes to false
+        self.clear_all_modes();
+        // hide select boxes from vids
+        self.deactivate_select_mode();
+        // make sure all vids are unselected
+        self.videos().forEach( function( mf ) {
+            mf.selected( false );
+        });
+        // clear selected vids array
+        self.selectedVideos.removeAll(); 
+    };
     
     newHome.prototype.resetSearchPager = function() {
         var self = this;
@@ -485,6 +783,12 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 c.selected( false );
             });    
         }
+        
+        if( currentFilter !== 'albums' ) {
+            self.albumsFilterLabels().forEach( function( c ) {
+                c.selected( false );
+            });    
+        }
     };
     
     newHome.prototype.clearfilters = function() {
@@ -497,7 +801,9 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.selectedFace('');
         self.allVidsIsSelected(false);
         self.cityFilterIsActive(false);
-        self.selectedCity('');   
+        self.selectedCity('');
+        self.albumFilterIsActive(false);
+        self.selectedFilterAlbum('');
     };
     
     newHome.prototype.nameMonths = function( month ) {
@@ -582,6 +888,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             arr.sort(function(left, right) { return left.label.toLowerCase() == right.label.toLowerCase() ? 0 : (left.label.toLowerCase() < right.label.toLowerCase() ? -1 : 1) });
             self.albumLabels( arr );
             
+            //also set the album filter labels
+            var clone = arr.slice(0);
+            self.albumsFilterLabels( clone );
+            
             self.albumLabels.unshift( {label: "Create New Album", selected: ko.observable(false)} );
         });
     };
@@ -616,17 +926,17 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         });
     };
     
-    newHome.prototype.albumSelected = function( self, album ) {
-        self.getSelectedVidUUIDs( self );
+    newHome.prototype.addToAlbumSelected = function( self, album ) {
+        self.albumLabels().forEach( function( a ) {
+            a.selected( false );
+        });
+        album.selected( true );
+        self.selectedAddToAlbum( album );
+        self.selectedAddToAlbumLabel( album.label );
+        self.add_to_mode();
         
-        if( self.selectedVideos().length > 0 ) {
-            self.albumLabels().forEach( function( a ) {
-                a.selected( false );
-            });
-            album.selected( true );
-            self.selectedAlbum( album );
-            self.addOrCreateAlbum();    
-        }
+        // Used to close the dropdown
+        $("body").trigger("click");
     };
     
     newHome.prototype.getAlbumName = function() {
@@ -641,6 +951,8 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 return self.selectedMonth();
             } else if( self.faceFilterIsActive() ) {
                 return self.selectedFace().contact_name;
+            } else if( self.albumFilterIsActive() ) {
+                return self.selectedFilterAlbum();    
             } else {
                 return self.selectedCity();
             }
@@ -652,15 +964,15 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         if ( self.selectedVideos().length > 0 ) {
             // Create a new album
-            if( self.selectedAlbum().label === 'Create New Album' ) {          
+            if( self.selectedAddToAlbum().label === 'Create New Album' ) {          
                 viblio.api( '/services/album/create', { name: self.getAlbumName(), list: self.selectedVideos() } ).then( function( data ) {
                     router.navigate( 'viewAlbum?aid=' + data.album.uuid );
                 });
             } else {
                 // Add to an existing album
-                viblio.api( '/services/album/create', { aid: self.selectedAlbum().uuid, list: self.selectedVideos() } ).then( function( data ) {
+                viblio.api( '/services/album/create', { aid: self.selectedAddToAlbum().uuid, list: self.selectedVideos() } ).then( function( data ) {
                     var vidOrVids = self.selectedVideos().length == 1 ? ' video' : ' videos';
-                    var msg = self.selectedVideos().length + vidOrVids + ' successfully added to your "' + self.selectedAlbum().label + '" Album';
+                    var msg = self.selectedVideos().length + vidOrVids + ' successfully added to your "' + self.selectedAddToAlbum().label + '" Album';
                     viblio.notify( msg, 'success' );
                 });        
                 // Used to close the dropdown
@@ -671,40 +983,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 });
             }    
         }
-    };
-    
-    // Add a new mediafile to our managed list of mediafiles
-    newHome.prototype.addMediaFile = function( mf, options ) {
-	var self = this;
-        
-        var m;
-        
-        // Create a new Mediafile with the data from the server
-        if( options ) {
-            m = new Mediafile( mf, options );
-        } else {
-            m = new Mediafile( mf, { show_select_badge: true, selected: true } );
-        }
-        
-	// Register a callback for when a Mediafile is selected.
-	// This is so we can deselect the previous one to create
-	// a radio behavior.
-	/*m.on( 'mediafile:selected',  function( sel ) {
-	    self.mediaSelected( m );
-	});
-        
-        m.on( 'mediafile:unselected', function( sel ) {
-            self.mediaUnselected( m );
-        });*/
-
-	// Proxy the mediafile play event and send it along to
-	// our parent.
-	m.on( 'mediafile:play', function( m ) {
-	    router.navigate( 'new_player?mid=' + m.media().uuid );
-	});
-        
-	// Add it to the list
-	self.videos.push( m );
     };
     
     newHome.prototype.search = function() {
@@ -748,12 +1026,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         $("body").trigger("click");
         self.searchFilterIsActive( false );
         self.searchQuery(null);
-        /*self.getAllDatesLabels();
-        self.datesLabels().forEach( function( m ) {
-	    m.selected( false );
-	});
-        self.selectedMonth('');
-        self.dateFilterIsActive(false);*/
         self.unselectOtherFilters();
         self.clearfilters();
         self.allVidsIsSelected(true);
@@ -785,7 +1057,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
                     self.faceVidsSearch();
                 }
-            } else {
+            } else if( self.cityFilterIsActive() ) {
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
                     self.cityVidsSearch();
                 }

@@ -254,6 +254,16 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	    $(this.view).find( '.media-share-badge' ).toggleClass( 'hideme' );
         $(this.view).find( '.dbtn' ).animate({padding: [ "toggle", "swing" ], width: [ "toggle", "swing" ]}, 300);
     };
+    
+    Video.prototype.turnOnSelectMode = function() {
+	this.show_share_badge( false );
+        this.show_select_badge( true );
+    };
+    
+    Video.prototype.turnOffSelectMode = function() {
+        this.show_share_badge( true );
+        this.show_select_badge( false );
+    };
 
     // Send an event, so those above can manage screen
     // redraws, if needed.

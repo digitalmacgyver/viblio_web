@@ -1,17 +1,18 @@
 <div class="allVidsPage clearfix">
     
-    <div class='vids-nav navbar'>
+    <div class='vids-nav navbar' data-bind='visible: select_mode_on() == false'>
         <div class='navbar-inner'>
             <ul class='navbar-left nav'>
+                <li class="divider-vertical"></li>
                 <li style="display: inline-block;" class="dropdown navControl">
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown">
                         <!-- ko if: recentUploadsIsActive -->
                         <i class='icon-time'></i>
-                        <span>Recent</span>
+                        <span> Recent</span>
                         <!-- /ko -->
                         <!-- ko ifnot: recentUploadsIsActive -->
                         <i class='icon-th'></i>
-                        <span>Library</span>
+                        <span> Library</span>
                         <!-- /ko -->
                         <i class="icon-chevron-down"></i>
                     </a>
@@ -20,16 +21,16 @@
                           <div class="scroller">
                               <div class="wrapper">
                                    <ul class="tags-inner">
-                                        <li data-bind='click: toggleRecentVids'>
+                                        <li data-bind='click: recentVidsSearch'>
                                             <a class="checkboxedLi">
                                                 <i class='icon-time'></i>
-                                                <span>Recent</span>                                        
+                                                <span> Recent</span>                                        
                                             </a>
                                         </li>
-                                        <li data-bind='click: toggleRecentVids'>
+                                        <li data-bind='click: showAllVideos'>
                                             <a class="checkboxedLi">
                                                 <i class='icon-th'></i>
-                                                <span>Library</span>                                        
+                                                <span> Library</span>                                        
                                             </a>
                                         </li>
                                    </ul>    
@@ -38,18 +39,30 @@
                       </li>
                     </ul>
                 </li>
+                <li class="divider-vertical"></li>
+                
                 <li class='find-wrapper'>
                     <ul class='nav'>
-                        <li class="" data-bind='click: toggle_find_options'>
-                            <div class="btn_text">
-                                <i class='icon-search'></i>
-                                <span>Find</span>
-                            </div>
+                        <li>
+                            <a href='#' data-bind='click: toggle_find_options'>
+                                <div class="btn_text">
+                                    <i class='icon-search'></i>
+                                    <span>Find</span>
+                                    <!-- ko if: show_find_options -->
+                                    <i class="icon-chevron-left"></i>
+                                    <!-- /ko -->
+                                    <!-- ko ifnot: show_find_options -->
+                                    <i class="icon-chevron-right"></i>
+                                    <!-- /ko -->
+                                </div>    
+                            </a>
                         </li>
 
                         
                         <li class='find-inner' data-bind="visible: show_find_options">
                             <ul class='nav'>
+                                
+                                <li class="divider-vertical"></li>
                                 <!-- people filter -->
                                 <li style="display: inline-block;" class="dropdown navControl">
                                     <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: faceFilterIsActive }"><i class="icon-user"></i> People <span data-bind="if: faceFilterIsActive">(<span data-bind="text: selectedFace() ? selectedFace().contact_name : 'All' "></span>)</span></a>
@@ -81,6 +94,7 @@
                                       </li>
                                     </ul>
                                 </li>
+                                <li class="divider-vertical"></li>
 
                                 <!-- places filter -->
                                 <li style="display: inline-block;" class="dropdown navControl">
@@ -113,17 +127,18 @@
                                       </li>
                                     </ul>
                                 </li>
+                                <li class="divider-vertical"></li>
 
                                 <!-- albums filter -->
                                 <li class="dropdown navControl albumsList">
-                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: albumFilterIsActive }"><i class=""></i> Albums <span data-bind="if: albumFilterIsActive">(<span data-bind="text: selectedAlbum() ? selectedAlbum() : 'All' "></span>)</span></a>
+                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: albumFilterIsActive }"><i class="icon-picture"></i> Albums <span data-bind="if: albumFilterIsActive">(<span data-bind="text: selectedFilterAlbum() ? selectedFilterAlbum() : 'All' "></span>)</span></a>
                                     <ul class="style2DD dropdown-menu tags albumList" role="menu">
                                       <li class="tagsScrollWrapper">
                                           <div class="scroller">
                                               <div class="wrapper">
                                                   <ul class="tags-inner">
-                                                    <!-- ko foreach: albumLabels -->
-                                                        <li data-bind="click: $parent.albumSelected.bind( $data, $parent ), clickBubble: false">
+                                                    <!-- ko foreach: albumsFilterLabels -->
+                                                        <li data-bind="click: $parent.albumFilterSelected.bind( $data, $parent ), clickBubble: false">
                                                             <a class="checkboxedLi">
                                                                 <div class="itemActive-Wrap">
                                                                     <div class="itemActive" data-bind="css: {on: $data.selected()}"></div>
@@ -145,13 +160,15 @@
                                       </li>
                                     </ul>
                                 </li>
+                                <li class="divider-vertical"></li>
 
                                 <!-- search bar -->
                                 <li>
                                     <form class="navbar-search pull-left" action="">
-                                        <input type="text" class="search-query span2" placeholder="Search by title or tag">
+                                        <input type="text" class="search-query" placeholder="Search by title or tag">
                                     </form>    
-                                </li>                           
+                                </li>
+                                <li class="divider-vertical"></li>
     
                             </ul>                           
                         </li><!-- end find-inner -->
@@ -159,68 +176,137 @@
                     </ul>
 
                 </li><!-- end find-wrapper -->
+                <!-- ko ifnot: show_find_options --> 
+                <li class="divider-vertical"></li>
+                <!-- /ko -->
 
             </ul><!-- end navbar-left -->
             
             <ul class='navbar-right nav pull-right'>
+                <li class="divider-vertical"></li>
                 <!-- share --> 
-                <li class="" data-bind='click: share_mode'>
-                    <div class="btn_text">
-                        <i class='icon-share'></i>
-                        <span>Share</span>
-                    </div>
+                <li class="">
+                    <a href='#' data-bind='click: share_mode'>
+                        <div class="btn_text">
+                            <i class='icon-share'></i>
+                            <span>Share</span>
+                        </div>    
+                    </a>
                 </li>
-
+                <li class="divider-vertical"></li>
+                
                 <!-- Add to --> 
-                <li class="dropdown navControl albumsList" data-bind='click: add_to_mode'>
-                    <div class="btn_text dropdown-toggle" data-toggle="dropdown">
-                        <i class='icon-plus'></i>
-                        <span>Add To</span>
-                        <ul class="style2DD dropdown-menu tags albumList" role="menu">
-                              <li class="tagsScrollWrapper">
-                                  <div class="scroller">
-                                      <div class="wrapper">
-                                          <ul class="tags-inner">
-                                            <!-- ko foreach: albumLabels -->
-                                                <li data-bind="click: $parent.albumSelected.bind( $data, $parent ), clickBubble: false">
-                                                    <a class="checkboxedLi">
-                                                        <div class="itemActive-Wrap">
-                                                            <div class="itemActive" data-bind="css: {on: $data.selected()}"></div>
-                                                        </div>
-                                                        <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
-                                                        <div class="checkboxPadding"></div>
-                                                        <div class="checkbox-Wrap" data-bind="if: $data.selected()">
-                                                            <i class="icon-check"></i>
-                                                        </div>
-                                                        <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
-                                                            <i class="icon-unchecked"></i>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                            <!-- /ko -->
-                                          </ul>    
-                                      </div>                  
-                                  </div>
-                              </li>
-                          </ul>
-                    </div>
+                <li class="dropdown navControl albumsList">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-plus"></i> Add To </a>
+                    <ul class="style2DD dropdown-menu tags albumList" role="menu">
+                      <li class="tagsScrollWrapper">
+                          <div class="scroller">
+                              <div class="wrapper">
+                                  <ul class="tags-inner">
+                                    <!-- ko foreach: albumLabels -->
+                                        <li data-bind="click: $parent.addToAlbumSelected.bind( $data, $parent ), clickBubble: false">
+                                            <a class="checkboxedLi">
+                                                <div class="itemActive-Wrap">
+                                                    <div class="itemActive" data-bind="css: {on: $data.selected()}"></div>
+                                                </div>
+                                                <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
+                                                <div class="checkboxPadding"></div>
+                                                <div class="checkbox-Wrap" data-bind="if: $data.selected()">
+                                                    <i class="icon-check"></i>
+                                                </div>
+                                                <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
+                                                    <i class="icon-unchecked"></i>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    <!-- /ko -->
+                                  </ul>    
+                              </div>                  
+                          </div>
+                      </li>
+                    </ul>
                 </li>
-
+                <li class="divider-vertical"></li>
+                
                 <!-- trash --> 
-                <li class="" data-bind='click: delete_mode'>
-                    <div class="btn_text">
-                        <i class='icon-trash'></i>
-                        <span>Delete</span>
-                    </div>
+                <li class="">
+                    <a href='#' data-bind='click: delete_mode'>
+                        <div class="btn_text">
+                            <i class='icon-trash'></i>
+                            <span>Delete</span>
+                        </div>    
+                    </a>
                 </li>
-
+                <li class="divider-vertical"></li>
+                
             </ul>    
         </div><!-- end navbar-inner -->       
     </div> <!-- end vids-nav -->
     
+    <div class='select-nav navbar' data-bind='visible: select_mode_on'>
+        <div class='navbar-inner'>
+            <ul class='navbar-left nav'>
+                <li class="divider-vertical"></li>
+                <li style="display: inline-block;" class="dropdown navControl">
+                    <span class="vidsSelectedLabel">
+                        <span class="badge" data-bind="text: selectedVideos().length"></span> <span data-bind="text: selectedVideos().length == 1 ? 'video' : 'videos' "></span> selected to be  
+                        <!-- ko if: delete_mode_on && !albumFilterIsActive -->
+                        <span>deleted from your account</span>
+                        <!-- /ko -->
+                        
+                        <!-- ko if: delete_mode_on && albumFilterIsActive-->
+                        <span>removed from this album</span>
+                        <!-- /ko -->
+                        
+                        <!-- ko if: share_mode_on -->
+                        <span>shared</span>
+                        <!-- /ko -->
+                        
+                        <!-- ko if: add_to_mode_on -->
+                        <span>added to the "<span data-bind="text: selectedAddToAlbumLabel"></span>" album</span>
+                        <!-- /ko -->                    
+                    </span>
+                </li>
+                <li class="divider-vertical"></li>
+            </ul><!-- end navbar-left -->
+            
+            <ul class='navbar-right nav pull-right'>
+                
+                <!-- Done -->
+                <li class="divider-vertical"></li>
+                <li class="">
+                    <a href='#' data-bind='click: done_with_select_mode'>
+                        <div class="btn_text">
+                            <span>Done</span>
+                        </div>    
+                    </a>
+                </li>
+                <li class="divider-vertical"></li>
+                <!-- Cancel --> 
+                <li class="">
+                    <a href='#' data-bind='click: cancel_select_mode'>
+                        <div class="btn_text">
+                            <i class='icon-remove'></i>
+                        </div>    
+                    </a>
+                </li>
+                <li class="divider-vertical"></li>
+                
+            </ul>    
+        </div><!-- end navbar-inner -->       
+    </div> <!-- end select-nav -->
+    
     <div class="table">
       <!-- ko if: !isActiveFlag() -->
-
+        
+      <span>select_mode_on: </span><span data-bind="text: select_mode_on"></span><br>
+      
+      <span>share_mode_on: </span><span data-bind="text: share_mode_on"></span><br>
+      <span>add_to_mode_on: </span><span data-bind="text: add_to_mode_on"></span> <span>selectedAddToAlbum: </span><span data-bind="text: selectedAddToAlbumLabel"></span><br>
+      <span>delete_mode_on: </span><span data-bind="text: delete_mode_on"></span>
+      <br>
+      <span>selectedFilterAlbum: </span><span data-bind="text: selectedFilterAlbum"></span>
+      
         <div class="clearfix">
             <div style="display: block; text-align: center;" class="mainTitle textShadowed createAlbumDesc" data-bind="if: noFiltersAreActive() && !searchFilterIsActive()">
                 You have <span data-bind="text: hits"></span>
@@ -234,10 +320,6 @@
                 <span data-bind="if: !noFiltersAreActive(), text: getAlbumName() + '  Filter' "></span>
                 <span data-bind="if: searchFilterIsActive()">search criteria</span>
                 .           
-            </div>
-            <div class="vidSelectControls">
-                <button class="btn btn-white btn-small" data-bind="click: unselectAll">Unselect All - <i class="icon-unchecked"></i></button>
-                <button class="btn btn-white btn-small" data-bind="click: selectAll">Select All - <i class="icon-check"></i></button>
             </div>
         </div>
 
