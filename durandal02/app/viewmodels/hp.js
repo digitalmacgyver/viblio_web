@@ -1,7 +1,8 @@
 define(['durandal/app',
         "plugins/router",
 	"lib/viblio",
-        "lib/customDialogs"],function(app,router,viblio,customDialogs){
+        "lib/customDialogs",
+        "viewmodels/newHome"],function(app,router,viblio,customDialogs,newHome){
     var view;
     var unnamed;
     var top_actors;
@@ -63,6 +64,7 @@ define(['durandal/app',
     };
 
     return{
+        newHome: new newHome(),
         yvSection: yvSection,
         
         showFaces: showFaces,
