@@ -7,17 +7,9 @@ define( ['plugins/router',
 
 function( router, app, system, config, viblio, dialog ) {
     
-    var S = function( mediafile, args ) {
+    var S = function( medialist, args ) {
 	var self = this;
-	self.mediafile = mediafile;
-	self.is_shared = ko.observable( self.mediafile.media().is_shared ? true: false );
-	self.shared_with = ko.observable();
-	self.members = ko.observableArray([]);
-	self.videoTitle = ko.computed(function() {
-	    var title = self.mediafile.albumTitle();
-	    title = title || 'My Viblio Album';
-	    return encodeURIComponent( title );
-	});
+	self.medialist = ko.observableArray( medialist );
         self.private = ko.observable( 'private' );
         self.shareVidEmailValid = ko.observable(false);
 	self.shareVidEmail = ko.observable();
@@ -30,7 +22,10 @@ function( router, app, system, config, viblio, dialog ) {
             self.showEmailSection( false );
         }
         self.newAlbumName = ko.observable( args && args.newAlbumName ? args.newAlbumName : null );
-        self.is_a_new_album = ko.observable( args && args.is_a_new_album ? true : false )
+        self.user = ko.observable( args && args.user ? args.user : null );
+        self.placeholder = ko.computed( function() {
+            return self.user().displayname + ' has shared a video album with you called "' + self.newAlbumName() + '"';
+        });
     };
     
     S.prototype.cimport = function() {
@@ -47,17 +42,16 @@ function( router, app, system, config, viblio, dialog ) {
     S.prototype.updateMessage = function() {
         var self = this;
         if( self.shareVidMessage() == null ) {
-            $('#shareVidMessage').val( $('#shareVidMessage').attr('placeholder') );
+            $('#shareVidMessage').val( self.placeholder() );
         };
     };
     
     S.prototype.emailLink = function() {
         var self = this;
         
-        // TODO - Add the real url that should be added as a placeholder
-        if( self.shareVidMessage() == null ) {
-            $('#shareVidMessage').val( $('#shareVidMessage').attr('placeholder') );
-        };
+        self.updateMessage();
+        
+        console.log( self.medialist() );
         
 	var message = $('#shareVidMessage').val();
 	var list = $(self.view).find( "#shareVidEmail" ).tokenInput("get");
@@ -66,18 +60,23 @@ function( router, app, system, config, viblio, dialog ) {
 	    emails.push( email.id || email.name );
 	});
 	var viblio = require( 'lib/viblio' );
-	viblio.api( '/services/album/share_album', 
-		    { aid: self.mediafile.media().uuid, 
-		      members: emails, 
-		      body: message } ).then( function() {
-			  // log it to google analytics
-			  self.is_shared( true );
-			  viblio.mpEvent( 'share', { type: 'album' } );
-			  viblio.notify( 'Share email sent', 'success' );
-                          // broadcast that album has been shared along with aid so new members can be shown in viewAlbum
-                          app.trigger('album:album_shared', self.mediafile.media().uuid);
-		      });
-	self.closeModal();
+        if( self.medialist().length > 0 ) {
+            viblio.api( '/services/album/create', { name: self.newAlbumName(), list: self.medialist() } ).done( function( data ) {
+                viblio.api( '/services/album/share_album', 
+                            { aid: data.album.uuid, 
+                              members: emails, 
+                              body: message } ).then( function() {
+                                  // log it to google analytics
+                                  viblio.mpEvent( 'share', { type: 'album' } );
+                                  viblio.notify( 'Share email sent', 'success' );
+                                  // broadcast that album has been shared along with aid so new members can be shown in viewAlbum
+                                  app.trigger('album:new_album_shared');
+                              });
+                self.closeModal();                
+            });    
+        } else {
+            self.closeModal();      
+        }       
     };
 
     S.prototype.attached = function( view, parent ) {
@@ -85,58 +84,11 @@ function( router, app, system, config, viblio, dialog ) {
             window.open($(this).attr('href'),'t','toolbar=0,resizable=1,status=0,width=640,height=528');
             return false;
         });
-    };    
-
-    S.prototype.deactivate = function() {
-    };
-
-    S.prototype.remove_member = function(a,b) {
-	$(b.target).parent().find( '.remove-member-confirm' ).css( 'display', 'inline' );
-    };
-    
-    S.prototype.unshareAlbum = function(data) {
-        var self = this;
-        var viblio = require( 'lib/viblio' );
-        viblio.api( '/services/album/delete_shared_album', { aid: data.uuid } ).then( function() {
-            app.trigger('album:album_unshared', data.uuid);
-            self.closeModal();
-        });
-    };
-        
-    S.prototype.yes_remove = function(a,b) {
-	var self = this;
-	var viblio = require( 'lib/viblio' );
-	viblio.api( '/services/album/remove_members_from_shared',
-		    { aid: self.mediafile.media().uuid,
-		      members: [ a.contact_email ] } )
-	    .then( function() {
-		self.members.remove( a );
-		if ( self.members().length == 0 ) {
-		    self.is_shared( false );
-                    self.unshareAlbum( self.mediafile.media() );
-                }
-	    });
-    };
-        
-    S.prototype.no_remove = function(a,b) {
-	$(b.target).parent().css( 'display', 'none' );
     };
         
     S.prototype.compositionComplete = function( view, parent ) {
         var self = this;
 	self.view = view;
-
-	// If this album is a shared album, then obtain the current
-	// members for display
-	if ( self.is_shared() ) {
-	    var viblio = require( 'lib/viblio' );
-	    viblio.api( '/services/album/shared_with', { aid: self.mediafile.media().uuid } ).then( function( data ) {
-		var displayname = data.displayname;
-		var members = data.members;
-		self.shared_with( displayname );
-		self.members( members );
-	    });
-	}
 
         cloudsponge.init({
             domain_key:config.cloudsponge_appid(),

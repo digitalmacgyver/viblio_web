@@ -219,14 +219,16 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	$(this.view).removeClass( 'selected' );
     };
 
-    // Toggle selected state and send an event.
+    // Toggle selected state to on and send an event.
     Video.prototype.select = function() {
-	this.selected( this.selected() ? false : true );
-        if( this.selected() ){ 
-            this.trigger( 'mediafile:selected', this );
-        } else {
-            this.trigger( 'mediafile:unselected', this );
-        }
+	this.selected( true );
+        this.trigger( 'mediafile:selected', this );
+    };
+    
+    // Toggle selected state to off and send an event.
+    Video.prototype.unselect = function() {
+	this.selected( false );
+        this.trigger( 'mediafile:unselected', this );
     };
 
     // User clicked on play(), send an event.

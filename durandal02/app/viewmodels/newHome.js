@@ -6,6 +6,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.recentUploadsIsActive = ko.observable(false);
         
         self.show_find_options = ko.observable(false);
+        self.select_all_mode_is_on = ko.observable(false);
         self.select_mode_on = ko.observable(false);
         self.share_mode_on = ko.observable(false);
         self.add_to_mode_on = ko.observable(false);
@@ -30,6 +31,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         self.albumsFilterLabels = ko.observableArray();
         self.selectedFilterAlbum = ko.observable();
+        self.currentSelectedFilterAlbum = ko.observable(null);
         self.albumFilterIsActive = ko.observable(false);
         self.albumIsShared = ko.observable(null);
         self.currentAlbumAid = ko.observable(null);
@@ -40,7 +42,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             } else {
                 return true;
             }
-        }); 
+        });
         
         self.videos = ko.observableArray([]);
         
@@ -109,6 +111,22 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.searchFilterIsActive = ko.observable(false);
         self.searchQuery = ko.observable(null);
         self.currentSearch = null;
+        
+        self.active_filter_label = ko.computed( function() {
+            if( self.dateFilterIsActive() ) {
+                return self.selectedMonth();
+            } else if( self.faceFilterIsActive() ) {
+                return self.selectedFace().label;
+            } else if( self.cityFilterIsActive() ) {
+                return self.selectedCity();
+            } else if( self.albumFilterIsActive() ) {
+                return self.selectedFilterAlbum();
+            } else if( self.searchFilterIsActive() ) {
+                return self.searchQuery();
+            } else {
+                return null;
+            }
+        });
         
         events.includeIn( this );
     };
@@ -422,6 +440,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             });
             album.selected( true );
             self.selectedFilterAlbum( album.label );
+            self.currentSelectedFilterAlbum( album );
             self.currentAlbumAid( album.uuid );
             self.albumVidsSearch( true );
         } 
@@ -485,20 +504,12 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         });
     };
     
-    newHome.prototype.mfOwnedByViewer = function( mf ) {
-        if( mf.owner_uuid == viblio.user().uuid ){
-            return true;
-        } else {
-            return false;
-        }
-    };
-    
     newHome.prototype.addAlbumMediaFile = function( mf ) {
 	var self = this;
         
 	// Create a new Mediafile with the data from the server - Only albums owned by the viewer will be given the share badge
 
-	var m = new Mediafile( mf, self.mfOwnedByViewer(mf) ? { show_share_badge: true, show_preview: true, delete_title: self.albumIsShared() ? 'unshare' : 'remove', show_faces_tags: true, ownedByViewer: true, show_select_badge: self.select_mode_on(), selected: self.select_mode_on() } : { show_preview: true, delete_title: 'remove', ro: true, show_faces_tags: true, shared_style: true, owner_uuid: mf.owner_uuid } );	
+	var m = new Mediafile( mf, self.mfOwnedByViewer(mf) ? { show_share_badge: !self.select_mode_on(), show_preview: true, show_faces_tags: true, ownedByViewer: true, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on() } : { show_preview: true, ro: true, show_faces_tags: true, shared_style: true, owner_uuid: mf.owner_uuid } );	
 
 	// Play a mediafile clip.  This uses the query parameter
 	// passing technique to pass in the mediafile to play.
@@ -514,18 +525,15 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 viblio.mpEvent( 'remove_video_from_album' );
                 // Remove from allVids
                 self.videos.remove( m );
-                if ( m.show_share_badge() ) {
-                    vidsOwnedByViewerNum( vidsOwnedByViewerNum()-1 );
-                }
             });
         });
         
         m.on( 'mediafile:selected', function( m ) {
-            self.selectedVideos.push(m.media().uuid);              
+            self.selectedVideos.push( m.media().uuid );              
         });
 
         m.on( 'mediafile:unselected', function( m ) {
-            self.selectedVideos.remove(m.media().uuid);              
+            self.selectedVideos.remove( m.media().uuid );              
         });
         
         m.on( "mediaFile:TitleDescChanged", function() {
@@ -550,7 +558,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         if( mf.is_shared == 1 ) {
             // Shared with user
-            var m = new Mediafile( mf, { ro: true, show_delete_mode: self.delete_mode_on(), shared_style: true, owner_uuid: mf.owner_uuid } ); //m.ro( true );
+            var m = new Mediafile( mf, { ro: true, shared_style: true, owner_uuid: mf.owner_uuid } ); //m.ro( true );
             m.on( 'mediafile:play', function( m ) {
                 router.navigate( 'web_player?mid=' + m.media().uuid );
             });
@@ -564,7 +572,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             });    
         } else {
             // Owned by user
-            var m = new Mediafile( mf, { show_share_badge: true, show_delete_mode: self.delete_mode_on(), show_select_badge: self.select_mode_on(), selected: self.select_mode_on() } );
+            var m = new Mediafile( mf, { show_share_badge: !self.select_mode_on(), show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on() } );
 
             // Proxy the mediafile play event and send it along to
             // our parent.
@@ -585,16 +593,23 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             });
             
             m.on( 'mediafile:selected', function( m ) {
-                self.selectedVideos.push(m.media().uuid);              
+                self.selectedVideos.push( m.media().uuid );              
             });
             
             m.on( 'mediafile:unselected', function( m ) {
-                self.selectedVideos.remove(m.media().uuid);              
+                self.selectedVideos.remove( m.media().uuid );              
             });
         }
         	         
 	// Add it to the list
 	self.videos.push( m );
+        
+        // If select all mode is on when new vids are added then add them to the selected array too - only if owned by viewer
+        if( self.select_all_mode_is_on() && self.select_mode_on() ) {
+            if( self.mfOwnedByViewer( m ) ) {
+                self.selectedVideos.push( m );
+            }
+        } 
     };
     
     newHome.prototype.mfOwnedByViewer = function( mf ) {
@@ -669,25 +684,156 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.delete_mode_on(true);
     };
     
-    newHome.prototype.done_with_select_mode = function() {
+    newHome.prototype.delete_album = function( dfd ) {
         var self = this;
         
-        self.select_mode_on(false);
-        self.deactivate_select_mode();
+        var message
+        
+        if( self.currentSelectedFilterAlbum().shared == 0 ) {
+            // owned by viewer - delete
+            message = 'If you delete this album, individual videos are not deleted, but no one you <br />shared this album with will be able to see this collection anymore. <br /> Do you want to continue?';
+            app.showMessage( message, 'Delete Confirmation', ['Yes', 'No']).then( function( data ) {
+                if( data == 'Yes' ) {
+                    viblio.api( '/services/album/delete_album', { aid: self.currentSelectedFilterAlbum().uuid } ).then( function() {
+                        viblio.mpEvent( 'delete_album' );
+                        self.albumsFilterLabels.remove( self.currentSelectedFilterAlbum() );
+                        self.albumLabels.remove( self.currentSelectedFilterAlbum() );
+                        self.showAllVideos();
+                    });    
+                } else {
+                    return;
+                }                   
+            });
+        } else {
+            // owned by another viblio user - remove share
+            message = 'If you remove this album, you will no longer be subscribed<br /> to any content the album owner adds to it. <br /> Do you want to continue?';
+            app.showMessage( message, 'Delete Confirmation', ['Yes', 'No']).then( function( data ) {
+                if( data == 'Yes' ) {
+                    viblio.api( '/services/album/remove_me_from_shared', { aid: self.currentSelectedFilterAlbum().uuid } ).then( function() {
+                        viblio.mpEvent( 'delete_album' );
+                        self.albumsFilterLabels.remove( self.currentSelectedFilterAlbum() );
+                        self.albumLabels.remove( self.currentSelectedFilterAlbum() );
+                        self.showAllVideos();
+                    });    
+                } else {
+                    return;
+                }                 
+            });
+        }
     };
     
-    newHome.prototype.cancel_select_mode = function() {
+    newHome.prototype.handle_delete = function( dfd ) {
         var self = this;
         
-        // turn off select mode - hides select toolbar
-        self.select_mode_on(false);
-        // set all modes to false
-        self.clear_all_modes();
+        var len = self.selectedVideos().length;
+        var message = 'Are you sure you want to remove ' + len + ( len == 1 ? ' video' : ' videos' ) + ' from this album?';
+        
+        app.showMessage( message, 'Delete Confirmation', ['Yes', 'No']).then( function( data ) {
+            if( data == 'Yes' ){
+                self.videos().forEach( function( mf ) {
+                    if( mf.selected() ) {
+                        mf.mfdelete();
+                    }
+                });
+                dfd.resolve();
+            } else {
+                dfd.reject();
+            }
+        });
+    };
+    
+    newHome.prototype.handle_share = function( dfd ) {
+        var self = this;
+        
+        var list = self.selectedVideos();
+        
+        if ( self.selectedVideos().length > 0 ) {
+            dialog.showShareNewAlbumModal( list, { newAlbumName: self.active_filter_label(), user: viblio.user() } ).then( function( data ) {
+                console.log( data );
+                dfd.resolve();
+            });
+        }
+    };
+    
+    newHome.prototype.clean_up_after_select_mode = function() {
+        var self = this;
+        
+        // turn off select all mode
+        self.select_all_mode_is_on( false );
         // hide select boxes from vids
         self.deactivate_select_mode();
         // make sure all vids are unselected
         self.videos().forEach( function( mf ) {
             mf.selected( false );
+        });
+        // set all modes to false
+        self.clear_all_modes();
+        // clear selected vids array
+        self.selectedVideos.removeAll();
+    }
+    
+    newHome.prototype.done_with_select_mode = function() {
+        var self = this;
+        // todo = add all functions for handling the different modes
+        
+        console.log( self.selectedVideos() );
+                
+        if ( self.share_mode_on() ) {
+            // show updated share modal with album naming area, create a new album out of all
+            // selected vids, then share that album with everyone in the list of addresses
+            return system.defer( function( dfd ) {
+                self.handle_share( dfd );
+            }).promise().done( function() {
+                self.getAllAlbumsLabels();
+                self.clean_up_after_select_mode();    
+            });            
+        } else if( self.add_to_mode_on() ) {
+            // Add all selected vids to selected album or create new album from selected vids
+            self.addOrCreateAlbum();
+        } else if ( self.delete_mode_on() ) {
+            return system.defer( function( dfd ) {
+                self.handle_delete( dfd );
+            }).promise().done( function() {
+                self.clean_up_after_select_mode();    
+            });
+        } else {
+            self.cancel_select_mode();
+        }
+        
+        if ( !self.delete_mode_on() && self.share_mode_on() ) {
+            // turn off select all mode
+            self.select_all_mode_is_on( false );
+            // hide select boxes from vids
+            self.deactivate_select_mode();
+            // make sure all vids are unselected
+            self.videos().forEach( function( mf ) {
+                mf.selected( false );
+            });
+            // set all modes to false
+            self.clear_all_modes();
+            // clear selected vids array
+            self.selectedVideos.removeAll();
+        }     
+    };
+    
+    newHome.prototype.cancel_select_mode = function() {
+        var self = this;
+        
+        // set all modes to false
+        self.clear_all_modes();
+        // turn off select all mode
+        self.select_all_mode_is_on( false );
+        // hide select boxes from vids
+        self.deactivate_select_mode();
+        // make sure all vids are unselected
+        self.videos().forEach( function( mf ) {
+            mf.selected( false );
+        });
+        // unselect the currently selected "add to" album
+        self.selectedAddToAlbumLabel( null );
+        self.selectedAddToAlbum( null );
+        self.albumLabels().forEach( function( a ) {
+            a.selected( false );
         });
         // clear selected vids array
         self.selectedVideos.removeAll(); 
@@ -874,6 +1020,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     newHome.prototype.getAllAlbumsLabels = function() {
         var self = this;
         self.albumLabels.removeAll();
+        self.albumsFilterLabels.removeAll();
         viblio.api( '/services/album/album_names').then( function(data) {
             var arr = [];
             data.albums.forEach( function( album ) {
@@ -887,30 +1034,48 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             //alphabetically sort the list - toLowerCase() makes sure this works as expected
             arr.sort(function(left, right) { return left.label.toLowerCase() == right.label.toLowerCase() ? 0 : (left.label.toLowerCase() < right.label.toLowerCase() ? -1 : 1) });
             self.albumLabels( arr );
-            
-            //also set the album filter labels
-            var clone = arr.slice(0);
-            self.albumsFilterLabels( clone );
-            
+            // add the create album option at the top of the list
             self.albumLabels.unshift( {label: "Create New Album", selected: ko.observable(false)} );
+            
+            //also set the album filter labels based on the same data returned by api call
+            //JSON.parse(JSON.stringify(arr));
+            var clone = JSON.parse(JSON.stringify(data));
+            var arr2 = [];
+            
+            clone.albums.forEach( function( album ) {
+                var _album = album;
+                _album.label = album.title;
+                _album.selected = ko.observable( false );
+                _album.shared = album.is_shared;
+                arr2.push( _album );
+            });
+            
+            //alphabetically sort the list - toLowerCase() makes sure this works as expected
+            arr2.sort(function(left, right) { return left.label.toLowerCase() == right.label.toLowerCase() ? 0 : (left.label.toLowerCase() < right.label.toLowerCase() ? -1 : 1) });           
+            self.albumsFilterLabels( arr2 );
         });
     };
     
     newHome.prototype.selectAll = function() {
         var self = this;
         
+        self.select_all_mode_is_on( true );
         self.videos().forEach( function(video) {
-            video.selected(true);
+            if( self.mfOwnedByViewer(video) ) {
+                video.select();
+            }
         });
-    }
+    };
     
     newHome.prototype.unselectAll = function() {
         var self = this;
         
+        self.select_all_mode_is_on( false );
         self.videos().forEach( function(video) {
-            video.selected(false);
+            video.unselect();
         });
-    }
+        self.selectedVideos.removeAll();
+    };
     
     newHome.prototype.getSelectedVidUUIDs = function( view ) {
         var self = view;
@@ -961,18 +1126,18 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     
     newHome.prototype.addOrCreateAlbum = function() {
         var self = this;
-        
+        var num = self.selectedVideos().length;
         if ( self.selectedVideos().length > 0 ) {
             // Create a new album
             if( self.selectedAddToAlbum().label === 'Create New Album' ) {          
                 viblio.api( '/services/album/create', { name: self.getAlbumName(), list: self.selectedVideos() } ).then( function( data ) {
-                    router.navigate( 'viewAlbum?aid=' + data.album.uuid );
+                    //router.navigate( 'viewAlbum?aid=' + data.album.uuid );
                 });
             } else {
                 // Add to an existing album
                 viblio.api( '/services/album/create', { aid: self.selectedAddToAlbum().uuid, list: self.selectedVideos() } ).then( function( data ) {
-                    var vidOrVids = self.selectedVideos().length == 1 ? ' video' : ' videos';
-                    var msg = self.selectedVideos().length + vidOrVids + ' successfully added to your "' + self.selectedAddToAlbum().label + '" Album';
+                    var vidOrVids = num == 1 ? ' video' : ' videos';
+                    var msg = num + vidOrVids + ' successfully added to your "' + self.selectedAddToAlbum().label + '" Album';
                     viblio.notify( msg, 'success' );
                 });        
                 // Used to close the dropdown
@@ -998,7 +1163,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                             rows: self.allVidsPager.entries_per_page};
                     apiCall = viblio.api( '/services/faces/media_face_appears_in', args );
                 } else {
-                    apiCall = viblio.api( '/services/mediafile/list', 
+                    apiCall = viblio.api( '/services/mediafile/list_all', 
 			    { 
 				views: ['poster'],
 				page: self.allVidsPager.next_page, 
@@ -1007,6 +1172,9 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 		apiCall.then( function( json ) {
                         self.hits ( json.pager.total_entries );
 			self.allVidsPager = json.pager;
+                        if(json.albums){
+                            json.media = json.albums;
+                        }
 			json.media.forEach( function( mf ) {
 			    self.addMediaFile( mf, {show_select_badge: true, selected: false} );
 			});
@@ -1077,10 +1245,12 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 
     newHome.prototype.attached = function() {
 	$(window).scroll( this, this.scrollHandler );
+        $(window).scroll( this, this.stickyDates );
     };
 
     newHome.prototype.detached = function() {
 	$(window).off( "scroll", this.scollHandler );
+        $(window).off( "scroll", this.stickyDates );
     };
     
     newHome.prototype.activate = function() {
@@ -1101,7 +1271,38 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         // get albums and create list
         self.getAllAlbumsLabels();
-    };   
+    };
+    
+    newHome.prototype.stickyDates = function() {       
+        var maxPos = 65; //height of header
+        
+        var scrollTop = $(window).scrollTop(),
+        elementOffset = $('.dates').offset().top,
+        distance      = (elementOffset - scrollTop),
+        footerHeight  = ( $('#footer').offset().top ) - scrollTop;
+
+        if( distance <= maxPos ){
+            $('.dates').addClass('stuck');
+            // keep the dates section above the footer
+            if ( $(window).width() >= 900 ) {
+                $('.dates').css( { 'height': footerHeight - 65, 'max-height': $(window).height() - 65 } );
+            } else {
+                $('.dates').css( { 'height': footerHeight, 'max-height': $(window).height() } );
+            }            
+        }
+        
+        if ( $(window).width() >= 900 ) {
+            if ( ( $('.allVidsInner').offset().top ) - scrollTop >= 65 ){
+                $('.dates').removeClass('stuck');
+                $('.dates').css( { 'height': '100%' } );
+            }    
+        } else {
+            if ( ( $('.allVidsInner').offset().top ) - scrollTop >= 0 ){
+                $('.dates').removeClass('stuck');
+                $('.dates').css( { 'height': '100%' } );
+            }
+        }
+    };
 
     // In attached, attach the mCustomScrollbar we're presently
     // employing for this purpose.

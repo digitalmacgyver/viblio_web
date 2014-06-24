@@ -3,29 +3,14 @@
   <div class="paddedDiv">
       <input class="text" name="newAlbumName" data-bind="value: newAlbumName" placeholder="Enter an album name" />
   </div>
-  <div class="paddedDiv">
-    <span data-bind="visible: is_shared">This album is shared with:&nbsp;
-    </span>
-    <div class="member-list well well-small" 
-	 style="max-height: 120px; overflow: auto;"
-	 data-bind="visible: is_shared, foreach: members">
-      <div>
-	<a class="remove-member" href="#" data-bind="click: $parent.remove_member">remove?</a>
-	<span class="remove-member-confirm" style="display: none">
-	  are you sure?&nbsp;<a href="#" data-bind="click: $parent.yes_remove.bind($parent,$data)">YES</a>&nbsp;
-	  <a href="#" data-bind="click: $parent.no_remove">NO</a>&nbsp;
-	</span>
-	<span data-bind="text: $data.contact_name"></span>
-      </div>
-    </div>
-  </div>
+  
   <!-- ko if: showEmailSection -->
   <form id="sendVidEmail" class="bottomBorder paddedDiv">
     <div class="centeredEl">
       <p class="bigTitle">Invite by email</p>
       <p class="cimport pull-right"><a class="tomatoFont heavyWeightFont" href="#" data-bind="click: cimport">Import from Address Book(s)</a></p>
       <p class="uitoken-input"><input id='shareVidEmail' type="text" placeholder="Email address" /></p>
-      <textarea id="shareVidMessage" class="text" data-bind="click: updateMessage, value: shareVidMessage" placeholder="Check out these videos on Viblio!"></textarea>
+      <textarea id="shareVidMessage" class="text" data-bind="click: updateMessage, value: shareVidMessage, attr: {placeholder: placeholder}" ></textarea>
       <button class="btn btn-primary" data-bind="click: emailLink, enable: shareVidEmailValid">
         Send
       </button>

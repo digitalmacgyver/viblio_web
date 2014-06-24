@@ -5,7 +5,7 @@
             <ul class='navbar-left nav'>
                 <li class="divider-vertical"></li>
                 <li style="display: inline-block;" class="dropdown navControl">
-                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: recentUploadsIsActive }">
                         <!-- ko if: recentUploadsIsActive -->
                         <i class='icon-time'></i>
                         <span> Recent</span>
@@ -143,7 +143,7 @@
                                                                 <div class="itemActive-Wrap">
                                                                     <div class="itemActive" data-bind="css: {on: $data.selected()}"></div>
                                                                 </div>
-                                                                <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
+                                                                <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected(), sharedStyle: $data.shared}"></div>
                                                                 <div class="checkboxPadding"></div>
                                                                 <div class="checkbox-Wrap" data-bind="if: $data.selected()">
                                                                     <i class="icon-check"></i>
@@ -164,8 +164,14 @@
 
                                 <!-- search bar -->
                                 <li>
-                                    <form class="navbar-search pull-left" action="">
-                                        <input type="text" class="search-query" placeholder="Search by title or tag">
+                                    <form class="navbar-form navbar-left" role="search">
+                                        <div class="input-append">
+                                            <input type="text" class="search-query" placeholder="Search by title or tag" data-bind="value: searchQuery">
+                                            <button type="submit" class="btn btn-white" data-bind="click: newVidsSearch"><i class="icon-search"></i></button>
+                                            <!-- ko if: searchFilterIsActive() -->
+                                            <button class="btn btn-secondary" data-bind="click: showAllVideos, tooltip: {title:'Clear search'}"><i class="icon-remove"></i></button>
+                                            <!-- /ko -->
+                                        </div>
                                     </form>    
                                 </li>
                                 <li class="divider-vertical"></li>
@@ -209,7 +215,7 @@
                                                 <div class="itemActive-Wrap">
                                                     <div class="itemActive" data-bind="css: {on: $data.selected()}"></div>
                                                 </div>
-                                                <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
+                                                <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected(), sharedStyle: $data.shared}"></div>
                                                 <div class="checkboxPadding"></div>
                                                 <div class="checkbox-Wrap" data-bind="if: $data.selected()">
                                                     <i class="icon-check"></i>
@@ -228,8 +234,8 @@
                 </li>
                 <li class="divider-vertical"></li>
                 
-                <!-- trash --> 
-                <li class="">
+                <!-- trash -->
+                <li style="display: inline-block;" class="dropdown navControl" data-bind="visible: !albumFilterIsActive()">
                     <a href='#' data-bind='click: delete_mode'>
                         <div class="btn_text">
                             <i class='icon-trash'></i>
@@ -237,6 +243,43 @@
                         </div>    
                     </a>
                 </li>
+                
+                <li style="display: inline-block;" class="dropdown navControl" data-bind="visible: albumFilterIsActive()">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                        <div class="btn_text">
+                            <i class='icon-trash'></i>
+                            <span>Delete</span>
+                            <i class="icon-chevron-down"></i>
+                        </div>    
+                    </a>
+                    <ul class="style2DD dropdown-menu tags" role="menu">
+                        <li class="tagsScrollWrapper">
+                          <div class="scroller">
+                              <div class="wrapper">
+                                   <ul class="tags-inner">
+                                        <li>
+                                            <a href='#' data-bind='click: delete_mode'>
+                                                <div class="btn_text">
+                                                    <i class='icon-trash'></i>
+                                                    <span> Remove videos from album</span>
+                                                </div>    
+                                            </a>    
+                                        </li>
+                                        <li>
+                                            <a href='#' data-bind='click: delete_album'>
+                                                <div class=''>
+                                                    <i class='icon-minus'></i>
+                                                    <span> Delete album</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                   </ul>    
+                              </div>                  
+                          </div>
+                        </li>
+                    </ul>
+                </li>
+                
                 <li class="divider-vertical"></li>
                 
             </ul>    
@@ -250,24 +293,49 @@
                 <li style="display: inline-block;" class="dropdown navControl">
                     <span class="vidsSelectedLabel">
                         <span class="badge" data-bind="text: selectedVideos().length"></span> <span data-bind="text: selectedVideos().length == 1 ? 'video' : 'videos' "></span> selected to be  
-                        <!-- ko if: delete_mode_on && !albumFilterIsActive -->
+                        <!-- ko if: delete_mode_on() && !albumFilterIsActive() -->
                         <span>deleted from your account</span>
                         <!-- /ko -->
                         
-                        <!-- ko if: delete_mode_on && albumFilterIsActive-->
+                        <!-- ko if: delete_mode_on() && albumFilterIsActive() -->
                         <span>removed from this album</span>
                         <!-- /ko -->
                         
-                        <!-- ko if: share_mode_on -->
+                        <!-- ko if: share_mode_on() -->
                         <span>shared</span>
                         <!-- /ko -->
                         
-                        <!-- ko if: add_to_mode_on -->
-                        <span>added to the "<span data-bind="text: selectedAddToAlbumLabel"></span>" album</span>
+                        <!-- ko if: add_to_mode_on() -->
+                            <span>added to </span>
+                            <!-- ko if: selectedAddToAlbum().label === 'Create New Album' -->
+                            <span>a new album</span>
+                            <!-- /ko -->
+                            <!-- ko ifnot: selectedAddToAlbum().label === 'Create New Album' -->
+                            <span>the "<span data-bind="text: selectedAddToAlbumLabel"></span>" album</span>
+                            <!-- /ko -->
                         <!-- /ko -->                    
                     </span>
                 </li>
                 <li class="divider-vertical"></li>
+                
+                <li>
+                    <!-- ko if: selectedVideos().length == 0 -->
+                    <a href='#' data-bind='click: selectAll'>
+                        <div class="btn_text">
+                            <i class='icon-check'></i>
+                            <span>Select All</span>
+                        </div>    
+                    </a>
+                    <!-- /ko -->
+                    <!-- ko if: selectedVideos().length > 0 -->
+                    <a href='#' data-bind='click: unselectAll'>
+                        <div class="btn_text">
+                            <i class="icon-unchecked"></i>
+                            <span>Unselect All</span>
+                        </div>    
+                    </a>
+                    <!-- /ko -->
+                </li>
             </ul><!-- end navbar-left -->
             
             <ul class='navbar-right nav pull-right'>
@@ -297,16 +365,19 @@
     </div> <!-- end select-nav -->
     
     <div class="table">
-      <!-- ko if: !isActiveFlag() -->
-        
-      <span>select_mode_on: </span><span data-bind="text: select_mode_on"></span><br>
-      
-      <span>share_mode_on: </span><span data-bind="text: share_mode_on"></span><br>
-      <span>add_to_mode_on: </span><span data-bind="text: add_to_mode_on"></span> <span>selectedAddToAlbum: </span><span data-bind="text: selectedAddToAlbumLabel"></span><br>
-      <span>delete_mode_on: </span><span data-bind="text: delete_mode_on"></span>
-      <br>
-      <span>selectedFilterAlbum: </span><span data-bind="text: selectedFilterAlbum"></span>
-      
+        <!-- ko if: !isActiveFlag() -->
+
+        <span>select_mode_on: </span><span data-bind="text: select_mode_on"></span><br>
+
+        <span>share_mode_on: </span><span data-bind="text: share_mode_on"></span><br>
+        <span>add_to_mode_on: </span><span data-bind="text: add_to_mode_on"></span> <span>selectedAddToAlbum: </span><span data-bind="text: selectedAddToAlbumLabel"></span><br>
+        <span>delete_mode_on: </span><span data-bind="text: delete_mode_on"></span>
+        <br>
+        <span>albumFilterIsActive: </span><span data-bind="text: albumFilterIsActive"></span><br>
+        <span>selectedFilterAlbum: </span><span data-bind="text: selectedFilterAlbum"></span><br>
+        <span>active_filter_label: </span><span data-bind="text: active_filter_label"></span><br>
+        <span>searchFilterIsActive: </span><span data-bind="text: searchFilterIsActive"></span>
+
         <div class="clearfix">
             <div style="display: block; text-align: center;" class="mainTitle textShadowed createAlbumDesc" data-bind="if: noFiltersAreActive() && !searchFilterIsActive()">
                 You have <span data-bind="text: hits"></span>
@@ -332,20 +403,41 @@
         </div>
 
     </div>
+    
+    <div class="containerxx">
+        <div class="table allVidsInner clearfix">    
 
-    <div class="table allVidsInner clearfix">    
-
-        <div id="allVidsWrap" class="clearfix">
-            <!-- ko foreach: videos -->
-                <!-- ko compose: $data --><!--/ko-->
-            <!-- /ko -->
-            <!-- ko if: isActiveFlag() -->
-            <div class="mfLoader">
-                <i class="icon-spinner icon-5x icon-spin active"></i>
-                <p class='font18'>Loading...</p>
+            <div class="dates" data-bind="visible: !searchFilterIsActive()">
+                <div class="scroller">
+                    <div class="wrapper textShadowed">
+                        <!-- ko foreach: datesLabels -->
+                        <div class="year">
+                            <h1 data-bind="click: $parent.monthSelected.bind( $data, $parent ), css:{sel: $data.selected()}">
+                                <span data-bind="text: $data.shortMonth"></span> <span data-bind="text: $data.year"></span>
+                            </h1>
+                        </div>               
+                        <!-- /ko -->
+                        <div class="year">
+                            <h1 data-bind="click: showAllVideos, css:{sel: !selectedMonth()}">
+                                <span>All</span>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- /ko -->
-        </div>
 
+            <div id="allVidsWrap" class="clearfix">
+                <!-- ko foreach: videos -->
+                    <!-- ko compose: $data --><!--/ko-->
+                <!-- /ko -->
+                <!-- ko if: isActiveFlag() -->
+                <div class="mfLoader">
+                    <i class="icon-spinner icon-5x icon-spin active"></i>
+                    <p class='font18'>Loading...</p>
+                </div>
+                <!-- /ko -->
+            </div>
+
+        </div>    
     </div>
 </div>
