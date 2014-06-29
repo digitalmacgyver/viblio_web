@@ -349,7 +349,6 @@ function (router, app, system, viblio, Mediafile, Album, HScroll, YIR, customDia
                         showBOH( true );
                         boxOfficeHits.push( addMediaFile( mf ) );
                     }
-                    console.log( mf );
                     allVids.push( addMediaFile( mf ) );
                     // If one of the mf's is owned by the viewer then set viewerOwnsAVideo to true, increment vidsOwnedByViewerNum by one
                     if ( mfOwnedByViewer( mf ) ) {

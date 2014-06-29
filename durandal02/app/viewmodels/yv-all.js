@@ -184,7 +184,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                         self.datesLabels.removeAll();
                         self.searchPager = json.pager;
 			json.media.forEach( function( mf ) {
-                            console.log( mf );
 			    self.addMediaFile( mf );
 			});
 			dfd.resolve();
@@ -540,7 +539,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                             json.media = json.albums;
                         }
 			json.media.forEach( function( mf ) {
-                            console.log( mf );
 			    self.addMediaFile( mf );
 			});
 			dfd.resolve();

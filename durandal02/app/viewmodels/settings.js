@@ -62,10 +62,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
     });
 
     displayname.subscribe( function( v ) {
-        console.log( v );
-        console.log( escape(v) );
         var regexp1=new RegExp('^[a-zA-Z0-9 .!?"-]+$');
-        console.log( regexp1.test( v ) );
         
         //v = escape(v);
 	if ( v && profile().displayname && ( v != profile().displayname ) && validDisplayname() ) {

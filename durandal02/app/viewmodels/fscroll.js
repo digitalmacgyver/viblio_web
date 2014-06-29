@@ -143,7 +143,6 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
         self.albumLabels.removeAll();
         viblio.api( '/services/album/album_names' ).then( function(data) {
             var arr = [];
-            console.log( data );
             data.albums.forEach( function( album ) {
                 var _album = album;
                 _album.label = album.title;
