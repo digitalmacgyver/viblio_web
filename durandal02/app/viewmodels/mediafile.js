@@ -257,13 +257,30 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         $(this.view).find( '.dbtn' ).animate({padding: [ "toggle", "swing" ], width: [ "toggle", "swing" ]}, 300);
     };
     
+    Video.prototype.mfOwnedByViewer = function( mf ) {
+        var uuid;
+        if( mf.owner_uuid ){
+            uuid = mf.owner_uuid;
+        } else if( mf.media().owner_uuid ){
+            uuid = mf.media().owner_uuid;
+        }
+        
+        if( uuid === viblio.user().uuid ){
+            return true;
+        } else {
+            return false;
+        } 
+    };
+    
     Video.prototype.turnOnSelectMode = function() {
 	this.show_share_badge( false );
         this.show_select_badge( true );
     };
     
     Video.prototype.turnOffSelectMode = function() {
-        this.show_share_badge( true );
+        if( this.mfOwnedByViewer(this) ){
+            this.show_share_badge( true );
+        }      
         this.show_select_badge( false );
     };
 

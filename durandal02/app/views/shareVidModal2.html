@@ -1,0 +1,24 @@
+<div id="shareVidModal" class="whiteBG modalBorder">
+    <div class='modalCloseX btn btn-modalGrey' data-bind="click: closeModal"><img src='css/images/closeX.png'/></div>
+    <div id="sharingDiv" class="bottomBorder paddedDiv">
+        <p class="bigTitle">Post a link to your Video</p>
+        <ul class='shareIconList' data-bind="foreach: shareNetworks">
+            <li>
+                <a data-bind="click: $parent.addPublicShare.bind($data,$parent,name), attr: { href: url, class: 'shareIcon pop ' + addClass, title: 'Share this page on ' + name }" >
+                    <img data-bind="attr: { src: 'css/images/shareIcons/' + imgName}"/>
+                </a>
+                <label data-bind="text: name"></label>
+            </li>
+        </ul>
+    </div>
+    <form id="shareVidLink">
+        <p class="bigTitle">Copy public link:</p>
+        <div id="shareLink-Wrap">
+            <input id="shareLink" type="text" class="text" data-bind="value: cut_and_paste_url" />
+            <button id="copyShareLink" class="btn textShadowed">
+                Copy
+            </button>
+        </div>
+    </form>
+
+</div>

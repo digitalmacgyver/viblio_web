@@ -1,18 +1,18 @@
 <div class="allVidsPage clearfix">
     
-    <div class='vids-nav navbar' data-bind='visible: select_mode_on() == false'>
+    <div class='vids-nav navbar toolbar' data-bind='visible: select_mode_on() == false'>
         <div class='navbar-inner'>
             <ul class='navbar-left nav'>
                 <li class="divider-vertical"></li>
                 <li style="display: inline-block;" class="dropdown navControl">
-                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: recentUploadsIsActive }">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: recentUploadsIsActive() || allVidsIsSelected() }">
                         <!-- ko if: recentUploadsIsActive -->
                         <i class='icon-time'></i>
-                        <span> Recent</span>
+                        <span data-bind="visible: wideScreen()"> Recent</span>
                         <!-- /ko -->
                         <!-- ko ifnot: recentUploadsIsActive -->
                         <i class='icon-th'></i>
-                        <span> Library</span>
+                        <span data-bind="visible: wideScreen()"> Library</span>
                         <!-- /ko -->
                         <i class="icon-chevron-down"></i>
                     </a>
@@ -45,9 +45,9 @@
                     <ul class='nav'>
                         <li>
                             <a href='#' data-bind='click: toggle_find_options'>
-                                <div class="btn_text">
+                                <div class="btn_text" title="Find">
                                     <i class='icon-search'></i>
-                                    <span>Find</span>
+                                    <span data-bind="visible: wideScreen()">Find</span>
                                     <!-- ko if: show_find_options -->
                                     <i class="icon-chevron-left"></i>
                                     <!-- /ko -->
@@ -65,7 +65,7 @@
                                 <li class="divider-vertical"></li>
                                 <!-- people filter -->
                                 <li style="display: inline-block;" class="dropdown navControl">
-                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: faceFilterIsActive }"><i class="icon-user"></i> People <span data-bind="if: faceFilterIsActive">(<span data-bind="text: selectedFace() ? selectedFace().contact_name : 'All' "></span>)</span></a>
+                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: faceFilterIsActive }" title="Filter by People"><i class="icon-user"></i><span data-bind="visible: wideScreen()"> People</span> <!--<span data-bind="if: faceFilterIsActive">(<span data-bind="text: selectedFace() ? selectedFace().contact_name : 'All' "></span>)</span>--></a>
                                     <ul class="style2DD dropdown-menu tags" role="menu">
                                       <li class="tagsScrollWrapper">
                                           <div class="scroller">
@@ -98,7 +98,7 @@
 
                                 <!-- places filter -->
                                 <li style="display: inline-block;" class="dropdown navControl">
-                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: cityFilterIsActive }"><i class="icon-map-marker"></i> Places <span data-bind="if: cityFilterIsActive">(<span data-bind="text: selectedCity() ? selectedCity() : 'All' "></span>)</span></a>
+                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: cityFilterIsActive }" title="Filter by Places"><i class="icon-map-marker"></i><span data-bind="visible: wideScreen()"> Places</span> <!--<span data-bind="if: cityFilterIsActive">(<span data-bind="text: selectedCity() ? selectedCity() : 'All' "></span>)</span>--></a>
                                     <ul class="style2DD dropdown-menu tags" role="menu">
                                       <li class="tagsScrollWrapper">
                                           <div class="scroller">
@@ -131,7 +131,7 @@
 
                                 <!-- albums filter -->
                                 <li class="dropdown navControl albumsList">
-                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: albumFilterIsActive }"><i class="icon-picture"></i> Albums <span data-bind="if: albumFilterIsActive">(<span data-bind="text: selectedFilterAlbum() ? selectedFilterAlbum() : 'All' "></span>)</span></a>
+                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: albumFilterIsActive }" title="Filter by Albums"><i class="icon-picture"></i><span data-bind="visible: wideScreen()"> Albums</span> <!--<span data-bind="if: albumFilterIsActive">(<span data-bind="text: selectedFilterAlbum() ? selectedFilterAlbum() : 'All' "></span>)</span>--></a>
                                     <ul class="style2DD dropdown-menu tags albumList" role="menu">
                                       <li class="tagsScrollWrapper">
                                           <div class="scroller">
@@ -189,13 +189,13 @@
             </ul><!-- end navbar-left -->
             
             <ul class='navbar-right nav pull-right'>
-                <li class="divider-vertical"></li>
+                <li class="divider-vertical" data-bind="visible: albumFilterIsActive() && !albumIsShared()"></li>
                 <!-- share --> 
-                <li class="">
+                <li class="" data-bind="visible: albumFilterIsActive() && !albumIsShared()">
                     <a href='#' data-bind='click: share_mode'>
-                        <div class="btn_text">
+                        <div class="btn_text" title="Share Album">
                             <i class='icon-share'></i>
-                            <span>Share</span>
+                            <span data-bind="visible: wideScreen()"> Share Album</span>
                         </div>    
                     </a>
                 </li>
@@ -203,7 +203,7 @@
                 
                 <!-- Add to --> 
                 <li class="dropdown navControl albumsList">
-                    <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-plus"></i> Add To </a>
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="tooltip: {title: 'Choose an album that you want to add videos to.'}"><i class="icon-plus"></i><span data-bind="visible: wideScreen()"> Add To </span></a>
                     <ul class="style2DD dropdown-menu tags albumList" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -237,9 +237,9 @@
                 <!-- trash -->
                 <li style="display: inline-block;" class="dropdown navControl" data-bind="visible: !albumFilterIsActive()">
                     <a href='#' data-bind='click: delete_mode'>
-                        <div class="btn_text">
+                        <div class="btn_text" title="Delete">
                             <i class='icon-trash'></i>
-                            <span>Delete</span>
+                            <span data-bind="visible: wideScreen()"> Delete</span>
                         </div>    
                     </a>
                 </li>
@@ -248,7 +248,7 @@
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown">
                         <div class="btn_text">
                             <i class='icon-trash'></i>
-                            <span>Delete</span>
+                            <span>Remove</span>
                             <i class="icon-chevron-down"></i>
                         </div>    
                     </a>
@@ -286,7 +286,7 @@
         </div><!-- end navbar-inner -->       
     </div> <!-- end vids-nav -->
     
-    <div class='select-nav navbar' data-bind='visible: select_mode_on'>
+    <div class='select-nav navbar toolbar' data-bind='visible: select_mode_on'>
         <div class='navbar-inner'>
             <ul class='navbar-left nav'>
                 <li class="divider-vertical"></li>
@@ -367,7 +367,7 @@
     <div class="table">
         <!-- ko if: !isActiveFlag() -->
 
-        <span>select_mode_on: </span><span data-bind="text: select_mode_on"></span><br>
+        <!--<span>select_mode_on: </span><span data-bind="text: select_mode_on"></span><br>
 
         <span>share_mode_on: </span><span data-bind="text: share_mode_on"></span><br>
         <span>add_to_mode_on: </span><span data-bind="text: add_to_mode_on"></span> <span>selectedAddToAlbum: </span><span data-bind="text: selectedAddToAlbumLabel"></span><br>
@@ -376,20 +376,42 @@
         <span>albumFilterIsActive: </span><span data-bind="text: albumFilterIsActive"></span><br>
         <span>selectedFilterAlbum: </span><span data-bind="text: selectedFilterAlbum"></span><br>
         <span>active_filter_label: </span><span data-bind="text: active_filter_label"></span><br>
-        <span>searchFilterIsActive: </span><span data-bind="text: searchFilterIsActive"></span>
+        <span>searchFilterIsActive: </span><span data-bind="text: searchFilterIsActive"></span>-->
 
-        <div class="clearfix">
+        <div class="clearfix newHomeTitle-Wrap">
             <div style="display: block; text-align: center;" class="mainTitle textShadowed createAlbumDesc" data-bind="if: noFiltersAreActive() && !searchFilterIsActive()">
                 You have <span data-bind="text: hits"></span>
                 <span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private Viblio Library. 
             </div>
 
-            <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: !isActiveFlag() && !noFiltersAreActive() || searchFilterIsActive()">
-                You have <span data-bind="text: hits"></span>
+            <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: !isActiveFlag() && !noFiltersAreActive() || searchFilterIsActive()"> 
+                <!-- ko if: !albumFilterIsActive() -->
+                You have
+                <span data-bind="text: hits"></span>
                 <span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span>
                 that<span data-bind="text: hits() == 1 ? ' matches' : ' match'"></span> your
-                <span data-bind="if: !noFiltersAreActive(), text: getAlbumName() + '  Filter' "></span>
-                <span data-bind="if: searchFilterIsActive()">search criteria</span>
+                "<span data-bind="text: active_filter_label()"></span>" filter
+                <!-- /ko -->
+                <!-- ko if: albumFilterIsActive() -->
+                    <!-- ko ifnot: currentSelectedFilterAlbum().shared -->
+                    <!-- ko if: albumIsShared() -->
+                    <i class='icon-users' data-bind='click: seeSharedMembers'></i>
+                    <!-- /ko -->
+                    <!-- ko ifnot: albumIsShared() -->
+                    <i class='icon-folder'></i>
+                    <!-- /ko -->
+                    You have
+                    <span data-bind="text: videos().length"></span>
+                    <span data-bind="text: videos().length == 1 ? ' video ' : ' videos'"></span>
+                    in your "<span data-bind="text: selectedFilterAlbum"></span>" album
+                    <!-- /ko -->
+                    <!-- ko if: currentSelectedFilterAlbum().shared -->
+                    There <span data-bind="text: videos().length == 1 ? 'is ' : 'are '"></span>
+                    <span data-bind="text: videos().length"></span>
+                    <span data-bind="text: videos().length == 1 ? ' video ' : ' videos'"></span>
+                    in the "<span data-bind="text: selectedFilterAlbum"></span>" album
+                    <!-- /ko -->
+                <!-- /ko -->
                 .           
             </div>
         </div>
