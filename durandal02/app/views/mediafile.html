@@ -102,13 +102,15 @@
                                             <div class="wrapper">
                                                 <ul class="tags-inner">
                                                   <!-- ko foreach: tagLabels -->
-                                                    <!-- ko if: $data.label == 'New Tag' --> <li class="divider"></li> <!-- /ko -->
-                                                        <li data-bind="click: $parent.tagSelected.bind( $data, $parent ), clickBubble: false">
-                                                            <a class="checkboxedLi">
-                                                                <!-- ko if: $data.label == 'New Tag' --> <i class='icon-plus'></i> <!-- /ko -->
-                                                                <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
-                                                            </a>
-                                                        </li>
+                                                    <!-- ko ifnot: $parent.newTagSelected() -->
+                                                        <!-- ko if: $data.label == 'New Tag' --> <li class="divider"></li> <!-- /ko -->
+                                                            <li data-bind="click: $parent.tagSelected.bind( $data, $parent ), clickBubble: false">
+                                                                <a class="checkboxedLi">
+                                                                    <!-- ko if: $data.label == 'New Tag' --> <i class='icon-plus'></i> <!-- /ko -->
+                                                                    <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
+                                                                </a>
+                                                            </li>
+                                                        <!-- /ko -->
                                                     <!-- /ko -->
                                                   <li data-bind="visible: newTagSelected()">
                                                       <input class="newTagInput" type="text" style="padding-right: 24px;" data-bind="click: function(x,e){ e.stopPropagation(); }, value: newTag, event: { blur: addTag }, returnKey: blur" placeholder="Enter Tag"><span class="editable-clear-x" style="display: none;"></span>    

@@ -1571,6 +1571,13 @@ input:-moz-placeholder {
     margin-bottom: 27px;
 }
 
+.mainTitle .subtitle {
+    color: inherit;
+    margin-left: 0;
+    font-size: 18px;
+    font-weight: 100;
+}
+
 .mainVidSection .portfolio {
     margin-bottom: 10px;
 }
@@ -2396,6 +2403,33 @@ li.token-input-token-facebook {
     background-color: rgba(152,154,160,1);
     padding: 6px 13px;
     font-size: 16px;
+}
+
+/********************  Share Album Modal Section  *************************/
+
+#sendAlbumEmail .bigTitle {
+    display: inline-block
+}
+
+#sendAlbumEmail textarea {
+    height: 65px;
+    width: 84%;
+    float: right;
+}
+
+.vertTop {
+    vertical-align: top;
+}
+
+#sendAlbumEmail .uitoken-input {
+    width: 100%;
+    display: inline-block;
+    float: right;
+    width: 92%;
+}
+
+#sendAlbumEmail .token-input-list-facebook {
+    width: 100% !important;
 }
 
 /********************  All Videos Page Section  *****************************/
@@ -4858,7 +4892,7 @@ div.fstrip {
     position: absolute;
     width: 100%;
     display: none;
-    z-index: 1001;
+    z-index: 1003;
 }
 
 /** unnamed **/
@@ -5705,4 +5739,32 @@ button.linkedin:active {
 
 .newHomeTitle-Wrap {
     margin-top: 100px;
+}
+
+.shared-icon-wrap {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.shared-icon-wrap .outer-icon {
+    font-size: 50px;
+}
+
+.shared-icon-wrap .inner-icon {
+    display: inline-block;
+    position: absolute;
+    font-size: 20px;
+    width: 33px;
+    left: 6px;
+    top: 8px;
+}
+
+.mainTitle .bigIcon {
+    font-size: 50px;
+    vertical-align: middle;
+    margin-bottom: 10px;
+    display: inline-block;
 }

@@ -10,6 +10,8 @@ define(['durandal/app',
     var firstTime = ko.observable();
     var yvSection;
     
+    var nhome = ko.observable();
+    
     var showFaces = ko.observable(true);
    
     // Used to handle message from email to open upload modal
@@ -64,7 +66,7 @@ define(['durandal/app',
     };
 
     return{
-        newHome: new newHome(),
+        newHome: nhome,
         yvSection: yvSection,
         
         showFaces: showFaces,
@@ -86,6 +88,13 @@ define(['durandal/app',
                     });
                     customDialogs.showModal( 'viewmodels/loginModal', 'Please log in before uploading new videos to your account.' );
                 }
+            }
+            
+            if( args && args.aid ){
+                console.log( args.aid );
+                nhome( new newHome( args.aid ) );
+            } else {
+                nhome( new newHome() );
             }
                        
             // Used for testing only - remove after testing is complete

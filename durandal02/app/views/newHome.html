@@ -191,7 +191,7 @@
             <ul class='navbar-right nav pull-right'>
                 <li class="divider-vertical" data-bind="visible: albumFilterIsActive() && !albumIsShared()"></li>
                 <!-- share --> 
-                <li class="" data-bind="visible: albumFilterIsActive() && !albumIsShared()">
+                <li class="" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared">
                     <a href='#' data-bind='click: share_mode'>
                         <div class="btn_text" title="Share Album">
                             <i class='icon-share'></i>
@@ -248,7 +248,7 @@
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown">
                         <div class="btn_text">
                             <i class='icon-trash'></i>
-                            <span>Remove</span>
+                            <span data-bind="visible: wideScreen()">Remove</span>
                             <i class="icon-chevron-down"></i>
                         </div>    
                     </a>
@@ -392,24 +392,32 @@
                 that<span data-bind="text: hits() == 1 ? ' matches' : ' match'"></span> your
                 "<span data-bind="text: active_filter_label()"></span>" filter
                 <!-- /ko -->
+                
                 <!-- ko if: albumFilterIsActive() -->
                     <!-- ko ifnot: currentSelectedFilterAlbum().shared -->
-                    <!-- ko if: albumIsShared() -->
-                    <i class='icon-users' data-bind='click: seeSharedMembers'></i>
-                    <!-- /ko -->
-                    <!-- ko ifnot: albumIsShared() -->
-                    <i class='icon-folder'></i>
-                    <!-- /ko -->
-                    You have
-                    <span data-bind="text: videos().length"></span>
-                    <span data-bind="text: videos().length == 1 ? ' video ' : ' videos'"></span>
-                    in your "<span data-bind="text: selectedFilterAlbum"></span>" album
+                        <!-- ko if: albumIsShared() -->
+                        <div class="shared-icon-wrap" data-bind="click: seeSharedMembers, tooltip: {title: 'Click to see shared members' }">
+                            <i class='icon-folder-close-alt outer-icon'></i>
+                            <div class="inner-icon">
+                                <i class='icon-user'></i><i class='icon-user'></i>
+                            </div>    
+                        </div>                      
+                        <!-- /ko -->
+                        <!-- ko ifnot: albumIsShared() -->
+                        <i class='icon-folder-close-alt bigIcon'></i>
+                        <!-- /ko -->
+                        You have
+                        <span data-bind="text: videos().length"></span>
+                        <span data-bind="text: videos().length == 1 ? ' video ' : ' videos'"></span>
+                        in your "<span data-bind="text: selectedFilterAlbum"></span>" album
                     <!-- /ko -->
                     <!-- ko if: currentSelectedFilterAlbum().shared -->
+                    <i class='icon-folder-close-alt bigIcon'></i>
                     There <span data-bind="text: videos().length == 1 ? 'is ' : 'are '"></span>
                     <span data-bind="text: videos().length"></span>
                     <span data-bind="text: videos().length == 1 ? ' video ' : ' videos'"></span>
-                    in the "<span data-bind="text: selectedFilterAlbum"></span>" album
+                    in the "<span data-bind="text: selectedFilterAlbum"></span>" album &mdash;
+                    <span class="subtitle">by <span data-bind="text: currentAlbum().owner.displayname"></span> <img data-bind="attr: {src: '/services/user/avatar?uid=' + currentAlbum().owner.uuid + '&y=30'}, tooltip: {title: 'Album by ' + currentAlbum().owner.displayname}"></span>
                     <!-- /ko -->
                 <!-- /ko -->
                 .           

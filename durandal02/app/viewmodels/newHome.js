@@ -1,7 +1,10 @@
 define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', 'durandal/events', 'durandal/system', 'lib/customDialogs'], function( router,viblio, Mediafile, app, events, system, dialog ) {
 
-    var newHome = function() {
+    var newHome = function( aid ) {
 	var self = this;
+        
+        self.goToAlbum = ko.observable( aid ? true : false );
+        self.albumToGoTo = ko.observable( aid );
         
         self.windowWidth = ko.observable( $(window).width() );
         self.wideScreen = ko.computed( function() {
@@ -41,6 +44,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.selectedFilterAlbum = ko.observable();
         self.currentSelectedFilterAlbum = ko.observable(null);
         self.albumFilterIsActive = ko.observable(false);
+        self.currentAlbum = ko.observable(null);
         self.albumIsShared = ko.observable(null);
         self.currentAlbumAid = ko.observable(null);
         
@@ -484,6 +488,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                         //self.hits ( json.pager.total_entries );
                         //self.facesPager = json.pager;
                         console.log( json );
+                        self.currentAlbum( json.album );
                         self.albumIsShared( json.album.is_shared ? true : false );
                         json.album.media.forEach( function( mf ) {
                             self.addAlbumMediaFile ( mf );
@@ -511,6 +516,15 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             // Used to close the dropdown
             $("body").trigger("click");
         });
+    };
+    
+    newHome.prototype.seeSharedMembers = function() {
+        var self = this;
+        
+        var album = ko.toJS ( self.currentSelectedFilterAlbum() );
+        album.is_shared = 1;
+        
+        dialog.showShareAlbumModal( album );
     };
     
     newHome.prototype.addAlbumMediaFile = function( mf ) {
@@ -1049,40 +1063,43 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         var self = this;
         self.albumLabels.removeAll();
         self.albumsFilterLabels.removeAll();
-        viblio.api( '/services/album/album_names').then( function(data) {
-            console.log( data );
-            var arr = [];
-            data.albums.forEach( function( album ) {
-                var _album = album;
-                _album.label = album.title;
-                _album.selected = ko.observable( false );
-                _album.shared = album.is_shared;
-                arr.push( _album );
-            });
-            
-            //alphabetically sort the list - toLowerCase() makes sure this works as expected
-            arr.sort(function(left, right) { return left.label.toLowerCase() == right.label.toLowerCase() ? 0 : (left.label.toLowerCase() < right.label.toLowerCase() ? -1 : 1) });
-            self.albumLabels( arr );
-            // add the create album option at the top of the list
-            self.albumLabels.unshift( {label: "Create New Album", selected: ko.observable(false)} );
-            
-            //also set the album filter labels based on the same data returned by api call
-            //JSON.parse(JSON.stringify(arr));
-            var clone = JSON.parse(JSON.stringify(data));
-            var arr2 = [];
-            
-            clone.albums.forEach( function( album ) {
-                var _album = album;
-                _album.label = album.title;
-                _album.selected = ko.observable( false );
-                _album.shared = album.is_shared;
-                arr2.push( _album );
-            });
-            
-            //alphabetically sort the list - toLowerCase() makes sure this works as expected
-            arr2.sort(function(left, right) { return left.label.toLowerCase() == right.label.toLowerCase() ? 0 : (left.label.toLowerCase() < right.label.toLowerCase() ? -1 : 1) });           
-            self.albumsFilterLabels( arr2 );
-        });
+        return system.defer( function( dfd ) {
+            viblio.api( '/services/album/album_names').then( function(data) {
+                console.log( data );
+                var arr = [];
+                data.albums.forEach( function( album ) {
+                    var _album = album;
+                    _album.label = album.title;
+                    _album.selected = ko.observable( false );
+                    _album.shared = album.is_shared;
+                    arr.push( _album );
+                });
+
+                //alphabetically sort the list - toLowerCase() makes sure this works as expected
+                arr.sort(function(left, right) { return left.label.toLowerCase() == right.label.toLowerCase() ? 0 : (left.label.toLowerCase() < right.label.toLowerCase() ? -1 : 1) });
+                self.albumLabels( arr );
+                // add the create album option at the top of the list
+                self.albumLabels.unshift( {label: "Create New Album", selected: ko.observable(false)} );
+
+                //also set the album filter labels based on the same data returned by api call
+                //JSON.parse(JSON.stringify(arr));
+                var clone = JSON.parse(JSON.stringify(data));
+                var arr2 = [];
+
+                clone.albums.forEach( function( album ) {
+                    var _album = album;
+                    _album.label = album.title;
+                    _album.selected = ko.observable( false );
+                    _album.shared = album.is_shared;
+                    arr2.push( _album );
+                });
+
+                //alphabetically sort the list - toLowerCase() makes sure this works as expected
+                arr2.sort(function(left, right) { return left.label.toLowerCase() == right.label.toLowerCase() ? 0 : (left.label.toLowerCase() < right.label.toLowerCase() ? -1 : 1) });           
+                self.albumsFilterLabels( arr2 );
+                dfd.resolve();
+            });    
+        }).promise();       
     };
     
     newHome.prototype.selectAll = function() {
@@ -1319,7 +1336,23 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.getAllCityLabels();
         
         // get albums and create list
-        self.getAllAlbumsLabels();
+        self.getAllAlbumsLabels().then( function() {
+            // If an album uuid is passed in via the url then filter to that album
+            if( self.goToAlbum() ){
+                var findAlbum = function( aid ) {
+                    var match = ko.utils.arrayFirst( self.albumsFilterLabels(), function( a ) {
+                        return a.uuid === aid;
+                    });
+                    if (match) {
+                        return match;  
+                    }    
+                };
+                self.albumFilterSelected( self, findAlbum( self.albumToGoTo() ) );
+                console.log( router.activeInstruction().queryString );
+                //document.location.hash = "#home";
+                router.activeInstruction().queryString = '';
+            }    
+        });
     };
     
     newHome.prototype.stickyDates = function() {       
@@ -1389,7 +1422,9 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         // At this point (and only at this point!) we have an accurate
 	// height dimension for the scroll area and its item container.
-	self.showAllVideos();
+        if( !self.goToAlbum() ){
+            self.showAllVideos();
+        }
     };
 
     newHome.prototype.add_videos = function() {
