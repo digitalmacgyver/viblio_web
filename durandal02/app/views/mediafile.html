@@ -81,7 +81,7 @@
         <!-- ko if: showTags -->
             <div class="tagsPopup popover top">
                 <div class="arrow"></div>
-                <h3 class="popover-title">Tags</h3>
+                <h3 class="popover-title">Tags <button type="button" id="close" class="close" data-bind="click: function(){ showTags(false); }">&times;</button></h3>
                 <div class="popover-content">
                     <div class="tagsPopup-Content">
                         <ul class="currentTags" data-bind="visible: showTags()">
@@ -94,8 +94,8 @@
                             </li>
                             <!-- /ko -->
                             <!-- ko if: tags_editable() -->
-                            <li class="tag mocksWhiteBG dropdown navControl" data-toggle="dropdown">
-                                <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-plus"></i> Add Tag</a>
+                            <li class="tag mocksWhiteBG dropdown navControl">
+                                <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="click: function(){ selectedTag( null ); }"><i class="icon-plus"></i> Add Tag</a>
                                 <ul class="style2DD dropdown-menu tags" role="menu">
                                     <li class="tagsScrollWrapper">
                                         <div class="scroller">

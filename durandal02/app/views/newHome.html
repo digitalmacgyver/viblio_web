@@ -365,6 +365,10 @@
     </div> <!-- end select-nav -->
     
     <div class="table">
+        <!-- ko if: isActiveFlag() -->
+        <div class="title-block"></div>
+        <!-- /ko -->
+        
         <!-- ko if: !isActiveFlag() -->
 
         <!--<span>select_mode_on: </span><span data-bind="text: select_mode_on"></span><br>

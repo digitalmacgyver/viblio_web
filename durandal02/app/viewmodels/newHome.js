@@ -8,7 +8,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         self.windowWidth = ko.observable( $(window).width() );
         self.wideScreen = ko.computed( function() {
-            if( self.windowWidth() > 1300 ) {
+            if( self.windowWidth() > 1340 ) {
                 return true;
             } else {
                 return false;
@@ -846,6 +846,8 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             }).promise().done( function() {
                 self.getAllAlbumsLabels();
                 self.clean_up_after_select_mode();    
+            }).fail( function() {
+                self.cancel_select_mode();
             });
         } else if ( self.delete_mode_on() ) {
             return system.defer( function( dfd ) {
@@ -1099,7 +1101,8 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 self.albumsFilterLabels( arr2 );
                 dfd.resolve();
             });    
-        }).promise();       
+        }).promise(); 
+        console.log('Got albums from function');
     };
     
     newHome.prototype.selectAll = function() {
@@ -1201,6 +1204,8 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                     a.selected( false );
                 });
             }    
+        } else {
+            dfd.reject();
         }
     };
     
@@ -1296,65 +1301,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             }
         }
     };
-    
-    newHome.prototype.getWindowWidth = function( event ) {
-        var self = event.data;
-        console.log(self);
-        self.windowWidth( $(window).width() );
-    };
-    
-    newHome.prototype.attached = function() {
-	$(window).scroll( this, this.scrollHandler );
-        $(window).scroll( this, this.stickyDates );
-        $(window).scroll( this, this.stickyToolbars );
-        $(window).resize( this, this.getWindowWidth );
-    };
-
-    newHome.prototype.detached = function() {
-	$(window).off( "scroll", this.scollHandler );
-        $(window).off( "scroll", this.stickyDates );
-        $(window).off( "scroll", this.stickyToolbars );
-        $(window).off( "resize", this.getWindowWidth );
-    };
-    
-    newHome.prototype.activate = function() {
-	var self = this;
-	var args = {};
-        args = {
-            cid: self.cid
-        };
         
-        self.videos.removeAll();
-        
-        // get months and create labels to use as selectors
-        self.getAllDatesLabels();
-        
-        // get faces and create labels to use as filters
-        self.getAllFacesLabels();
-        
-        // get cities and create labels to use as filters
-        self.getAllCityLabels();
-        
-        // get albums and create list
-        self.getAllAlbumsLabels().then( function() {
-            // If an album uuid is passed in via the url then filter to that album
-            if( self.goToAlbum() ){
-                var findAlbum = function( aid ) {
-                    var match = ko.utils.arrayFirst( self.albumsFilterLabels(), function( a ) {
-                        return a.uuid === aid;
-                    });
-                    if (match) {
-                        return match;  
-                    }    
-                };
-                self.albumFilterSelected( self, findAlbum( self.albumToGoTo() ) );
-                console.log( router.activeInstruction().queryString );
-                //document.location.hash = "#home";
-                router.activeInstruction().queryString = '';
-            }    
-        });
-    };
-    
     newHome.prototype.stickyDates = function() {       
         var maxPos = 108; //height of header 65 + toolbar 43
         
@@ -1414,6 +1361,74 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
     };
 
+    newHome.prototype.getWindowWidth = function( event ) {
+        var self = event.data;
+        console.log(self);
+        self.windowWidth( $(window).width() );
+    };
+    
+    newHome.prototype.attached = function() {
+	$(window).scroll( this, this.scrollHandler );
+        $(window).scroll( this, this.stickyDates );
+        $(window).scroll( this, this.stickyToolbars );
+        $(window).resize( this, this.getWindowWidth );
+    };
+
+    newHome.prototype.detached = function() {
+	$(window).off( "scroll", this.scollHandler );
+        $(window).off( "scroll", this.stickyDates );
+        $(window).off( "scroll", this.stickyToolbars );
+        $(window).off( "resize", this.getWindowWidth );
+    };
+    
+    newHome.prototype.activate = function() {
+        console.log( 'activate has fired');
+	var self = this;
+	var args = {};
+        args = {
+            cid: self.cid
+        };
+        
+        self.videos.removeAll();
+        
+        // get months and create labels to use as selectors
+        self.getAllDatesLabels();
+        
+        // get faces and create labels to use as filters
+        self.getAllFacesLabels();
+        
+        // get cities and create labels to use as filters
+        self.getAllCityLabels();
+        
+        // get albums and create list
+        self.getAllAlbumsLabels().then( function() {
+            console.log( 'albums are gotten' );
+            // If an album uuid is passed in via the url then filter to that album
+            if( self.goToAlbum() ){
+                var findAlbum = function( aid ) {
+                    var match = ko.utils.arrayFirst( self.albumsFilterLabels(), function( a ) {
+                        return a.uuid === aid;
+                    });
+                    if (match) {
+                        return match;  
+                    } else {
+                        return 'Error';
+                    }    
+                };
+                
+                if( findAlbum( self.albumToGoTo() ) != 'Error' ) {
+                    console.log( 'this is happening');
+                    self.albumFilterSelected( self, findAlbum( self.albumToGoTo() ) );
+                    //this strips the aid params off of the url after navigation
+                    router.navigate('#home', { trigger: false, replace: true });
+                    
+                } else {
+                    router.navigate('#home');
+                }               
+            }
+        });
+    };
+    
     // In attached, attach the mCustomScrollbar we're presently
     // employing for this purpose.
     newHome.prototype.compositionComplete = function( view ) {

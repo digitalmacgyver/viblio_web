@@ -133,13 +133,12 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
     
     Video.prototype.toggleFaces = function() {
         var self = this;
-        console.log( 'clicked' );
         self.showFaces() ? self.showFaces( false ) : self.showFaces( true );
     };
     
     Video.prototype.toggleTags = function() {
         var self = this;
-        
+        //self.selectedTag( null );
         self.showTags() ? self.showTags( false ) : self.showTags( true );
     };
     
@@ -154,8 +153,14 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
                 t.selected( false );
             });
             data.selected( true );
-            self.selectedTag( data.label );
-            self.addTag();
+            
+            if( data.label == 'New Tag' ) {
+                self.selectedTag( data.label );
+                $('.newTagInput').trigger('focus');
+            } else {
+                self.selectedTag( data.label );
+                self.addTag();
+            }            
         }   
     };
     
@@ -326,7 +331,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         }
         
         // this will trigger the number of faces to show to be correct when resizing window
-        $( window ).bind('resize', function(){ self.winWidth( $( window ).width() );} );
+        //$( window ).bind('resize', function(){ self.winWidth( $( window ).width() );} );
     };
     
     return Video;

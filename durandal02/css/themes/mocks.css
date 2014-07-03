@@ -1137,6 +1137,7 @@ input:-moz-placeholder {
 }
 
 .tags-inner {
+    min-width: 120px;
     margin: 0;
 }
 
@@ -3606,11 +3607,11 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     vertical-align: bottom;
 }
 
-@media (max-width: 1280px) {
+/*@media (max-width: 1280px) {
     .facesTags .mfFaces {
         width: 164px;
     }
-}
+}*/
 
 .facesTags .mfFaces-Inner {
     height: 40px;
@@ -3648,11 +3649,11 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 
-@media (max-width: 1280px) {
+/*@media (max-width: 1280px) {
     .facesWrap {
         padding: 1px;
     }
-}
+}*/
 
 .facesWrap img {
     height: 40px;
@@ -3664,12 +3665,12 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     right: 63px;
 }
 
-@media (max-width: 1280px) {
+/*@media (max-width: 1280px) {
     .facesPopup.popover.top .arrow {
         left: auto;
         right: 50px;
     }
-}
+}*/
 
 .facesPopup,
 .tagsPopup {
@@ -5723,7 +5724,7 @@ button.linkedin:active {
     top: 0;
     right: 0;
     left: 0;
-    z-index: 1001;
+    z-index: 1050;
 }
 
 .toolbar.stuck {
@@ -5735,6 +5736,10 @@ button.linkedin:active {
     .toolbar.stuck {
         top: 0;
     }
+}
+
+.title-block {
+    height: 167px;
 }
 
 .newHomeTitle-Wrap {
