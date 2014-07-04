@@ -8,11 +8,12 @@ define( ['durandal/app',
 	 'viewmodels/loading', 
 	 'viewmodels/change_password', 
 	 'viewmodels/imap',
-	 'viewmodels/shareVidModal', 
-	 'viewmodels/shareAlbumModal', 
+	 'viewmodels/shareVidModal2', 
+	 'viewmodels/shareAlbumModal2',
+         'viewmodels/shareNewAlbumModal',
 	 'viewmodels/webPlayerError', 
 	 'viewmodels/text_prompt'], 
-function( app, system, dialog, Loading, ChangePassword, IMap, ShareVid, ShareAlbum, WebPlayerError, TextPrompt ) {
+function( app, system, dialog, Loading, ChangePassword, IMap, ShareVid, ShareAlbum, ShareNewAlbum, WebPlayerError, TextPrompt ) {
     var loading  = null;
     return {
 	showMessage: function( msg, title, options ) {
@@ -63,6 +64,9 @@ function( app, system, dialog, Loading, ChangePassword, IMap, ShareVid, ShareAlb
 	},
 	showShareAlbumModal: function( mediafile, args ) {
 	    return dialog.showAnimated( new ShareAlbum( mediafile, args ) );
+	},
+        showShareNewAlbumModal: function( mediafile, args ) {
+	    return dialog.showAnimated( new ShareNewAlbum( mediafile, args ) );
 	},
 	showWebPlayerError: function( title, message, err ) {
 	    return dialog.showAnimated( new WebPlayerError( title, message, err ) );

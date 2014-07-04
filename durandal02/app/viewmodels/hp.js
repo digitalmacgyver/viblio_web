@@ -1,13 +1,16 @@
 define(['durandal/app',
         "plugins/router",
 	"lib/viblio",
-        "lib/customDialogs"],function(app,router,viblio,customDialogs){
+        "lib/customDialogs",
+        "viewmodels/newHome"],function(app,router,viblio,customDialogs,newHome){
     var view;
     var unnamed;
     var top_actors;
     var unamed_is_visible = false;
     var firstTime = ko.observable();
     var yvSection;
+    
+    var nhome = ko.observable();
     
     var showFaces = ko.observable(true);
    
@@ -63,6 +66,7 @@ define(['durandal/app',
     };
 
     return{
+        newHome: nhome,
         yvSection: yvSection,
         
         showFaces: showFaces,
@@ -84,6 +88,13 @@ define(['durandal/app',
                     });
                     customDialogs.showModal( 'viewmodels/loginModal', 'Please log in before uploading new videos to your account.' );
                 }
+            }
+            
+            if( args && args.aid ){
+                console.log( args.aid );
+                nhome( new newHome( args.aid ) );
+            } else {
+                nhome( new newHome() );
             }
                        
             // Used for testing only - remove after testing is complete

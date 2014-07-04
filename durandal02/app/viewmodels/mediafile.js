@@ -138,7 +138,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
     
     Video.prototype.toggleTags = function() {
         var self = this;
-        
+        //self.selectedTag( null );
         self.showTags() ? self.showTags( false ) : self.showTags( true );
     };
     
@@ -153,8 +153,14 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
                 t.selected( false );
             });
             data.selected( true );
-            self.selectedTag( data.label );
-            self.addTag();
+            
+            if( data.label == 'New Tag' ) {
+                self.selectedTag( data.label );
+                $('.newTagInput').trigger('focus');
+            } else {
+                self.selectedTag( data.label );
+                self.addTag();
+            }            
         }   
     };
     
@@ -215,14 +221,16 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	$(this.view).removeClass( 'selected' );
     };
 
-    // Toggle selected state and send an event.
+    // Toggle selected state to on and send an event.
     Video.prototype.select = function() {
-	this.selected( this.selected() ? false : true );
-        if( this.selected() ){ 
-            this.trigger( 'mediafile:selected', this );
-        } else {
-            this.trigger( 'mediafile:unselected', this );
-        }
+	this.selected( true );
+        this.trigger( 'mediafile:selected', this );
+    };
+    
+    // Toggle selected state to off and send an event.
+    Video.prototype.unselect = function() {
+	this.selected( false );
+        this.trigger( 'mediafile:unselected', this );
     };
 
     // User clicked on play(), send an event.
@@ -249,6 +257,33 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	if ( this.show_share_badge() )
 	    $(this.view).find( '.media-share-badge' ).toggleClass( 'hideme' );
         $(this.view).find( '.dbtn' ).animate({padding: [ "toggle", "swing" ], width: [ "toggle", "swing" ]}, 300);
+    };
+    
+    Video.prototype.mfOwnedByViewer = function( mf ) {
+        var uuid;
+        if( mf.owner_uuid ){
+            uuid = mf.owner_uuid;
+        } else if( mf.media().owner_uuid ){
+            uuid = mf.media().owner_uuid;
+        }
+        
+        if( uuid === viblio.user().uuid ){
+            return true;
+        } else {
+            return false;
+        } 
+    };
+    
+    Video.prototype.turnOnSelectMode = function() {
+	this.show_share_badge( false );
+        this.show_select_badge( true );
+    };
+    
+    Video.prototype.turnOffSelectMode = function() {
+        if( this.mfOwnedByViewer(this) ){
+            this.show_share_badge( true );
+        }      
+        this.show_select_badge( false );
     };
 
     // Send an event, so those above can manage screen
@@ -293,7 +328,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         }
         
         // this will trigger the number of faces to show to be correct when resizing window
-        $( window ).bind('resize', function(){ self.winWidth( $( window ).width() );} );
+        //$( window ).bind('resize', function(){ self.winWidth( $( window ).width() );} );
     };
     
     return Video;
