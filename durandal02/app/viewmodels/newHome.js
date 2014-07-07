@@ -441,7 +441,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     };
     
     newHome.prototype.albumFilterSelected = function( self, album ) {
-        console.log( album );
         if( album.selected() ) {
             album.selected(false);
             self.currentAlbumAid(null);
@@ -487,7 +486,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                     then( function( json ) {
                         //self.hits ( json.pager.total_entries );
                         //self.facesPager = json.pager;
-                        console.log( json );
                         self.currentAlbum( json.album );
                         self.albumIsShared( json.album.is_shared ? true : false );
                         json.album.media.forEach( function( mf ) {
@@ -797,7 +795,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         if ( self.selectedVideos().length > 0 ) {
             dialog.showShareNewAlbumModal( list, { newAlbumName: self.active_filter_label(), user: viblio.user() } ).then( function( data ) {
-                console.log( data );
                 dfd.resolve();
             });
         } else {
@@ -824,9 +821,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     
     newHome.prototype.done_with_select_mode = function() {
         var self = this;
-        // todo = add all functions for handling the different modes
-        
-        console.log( self.selectedVideos() );
                 
         if ( self.share_mode_on() ) {
             // show updated share modal with album naming area, create a new album out of all
@@ -1067,7 +1061,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.albumsFilterLabels.removeAll();
         return system.defer( function( dfd ) {
             viblio.api( '/services/album/album_names').then( function(data) {
-                console.log( data );
                 var arr = [];
                 data.albums.forEach( function( album ) {
                     var _album = album;
@@ -1101,8 +1094,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 self.albumsFilterLabels( arr2 );
                 dfd.resolve();
             });    
-        }).promise(); 
-        console.log('Got albums from function');
+        }).promise();
     };
     
     newHome.prototype.selectAll = function() {
@@ -1363,7 +1355,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 
     newHome.prototype.getWindowWidth = function( event ) {
         var self = event.data;
-        console.log(self);
         self.windowWidth( $(window).width() );
     };
     
@@ -1382,7 +1373,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     };
     
     newHome.prototype.activate = function() {
-        console.log( 'activate has fired');
 	var self = this;
 	var args = {};
         args = {
@@ -1402,7 +1392,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         // get albums and create list
         self.getAllAlbumsLabels().then( function() {
-            console.log( 'albums are gotten' );
             // If an album uuid is passed in via the url then filter to that album
             if( self.goToAlbum() ){
                 var findAlbum = function( aid ) {
@@ -1417,7 +1406,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 };
                 
                 if( findAlbum( self.albumToGoTo() ) != 'Error' ) {
-                    console.log( 'this is happening');
                     self.albumFilterSelected( self, findAlbum( self.albumToGoTo() ) );
                     //this strips the aid params off of the url after navigation
                     router.navigate('#home', { trigger: false, replace: true });
