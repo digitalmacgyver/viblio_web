@@ -749,7 +749,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         //self.activate_select_mode();
         self.clear_all_modes();
         self.share_mode_on(true);
-        console.log( self.currentSelectedFilterAlbum() );
         dialog.showShareAlbumModal( self.currentSelectedFilterAlbum() );
     };
     
