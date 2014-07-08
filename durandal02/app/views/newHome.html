@@ -382,8 +382,8 @@
                         You have
                         <span data-bind="text: videos().length"></span>
                         <span data-bind="text: videos().length == 1 ? ' video ' : ' videos'"></span>
-                        in your "<div class="inline newHomeAlbumTitle" data-bind="liveEditor: currentAlbumTitle">
-                                    <div class="newHomeAlbumTitleView view" data-bind="click: function(){ currentAlbumTitle.edit; setSize(); }, text: currentAlbumTitle() ? currentAlbumTitle() : 'Click to add album title', tooltip: {title:'Click to edit album title'}"></div>
+                        in your "<div class="inline newHomeAlbumTitle" data-bind="liveEditor: currentAlbumTitle, click: setSize">
+                                    <div class="newHomeAlbumTitleView view" data-bind="click: currentAlbumTitle.edit, text: currentAlbumTitle() ? currentAlbumTitle() : 'Click to add album title', tooltip: {title:'Click to edit album title'}"></div>
                                     <div class="newHomeAlbumTitle-Wrap">
                                         <input type="text" class="newHomeAlbumTitleEdit edit" data-bind="value: currentAlbumTitle, 
                                                              hasFocus: currentAlbumTitle.editing, 

@@ -5832,8 +5832,8 @@ button.linkedin:active {
     display: inline-block;
 }
 
-.newHomeAlbumTitle.edit:focus,
-.newHomeAlbumTitle.edit {
+.newHomeAlbumTitleEdit.edit:focus,
+.newHomeAlbumTitleEdit.edit {
     font-size: 32px;
     font-weight: 100;
     width: 100%;
