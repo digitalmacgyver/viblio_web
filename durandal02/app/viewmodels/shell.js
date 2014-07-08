@@ -174,7 +174,7 @@ function (router, app, system, page_header, landing_header, conditional_header, 
             { route: 'videos',             moduleId: 'your-videos',          title: 'VIDEOS',
 	      showFooter: true, nav: false,   authenticated: true,   header: page_header },
 	    
-            { route: 'people',             moduleId: 'people',             title: 'PEOPLE',
+            { route: 'people',             moduleId: 'people',             title: 'FACES',
 	      showFooter: true, nav: true,    authenticated: true,   header: page_header },
 	    
             { route: 'raw',                moduleId: 'raw',                title: 'Raw Upload',

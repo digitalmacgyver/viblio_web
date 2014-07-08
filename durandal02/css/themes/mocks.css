@@ -1158,6 +1158,11 @@ input:-moz-placeholder {
     cursor: pointer;
 }
 
+.tags-inner > li > a.on {
+    background-color: rgb(245, 245, 245);
+}
+
+.tags-inner > li > a.on:hover,
 .tags-inner > li > a:hover, .tags-inner > li > a:focus,
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus,
 .dropdown-submenu:hover > a,
@@ -1761,9 +1766,57 @@ input:-moz-placeholder {
     border-left: none;
 }
 
-.vids-nav .nav > li > a.active {
-    background-color: rgba(0, 0, 0, 0.2);
-    color: rgb(255, 255, 255);
+.vids-nav .navbar-inner {
+    background-color: rgb(49, 53, 67);
+    background-image: none;
+    border: none;
+    border-bottom: 3px solid rgb(0, 0, 0);
+    color: white;
+}
+
+.vids-nav .divider-vertical {
+    border-right: 1px solid rgb(49, 53, 67);
+    border-left: 1px solid rgb(32,35,44);
+}
+
+.vids-nav .divider-vertical-thick {
+    border-right: 3px solid rgb(49, 53, 67);
+    border-left: 3px solid rgb(32,35,44);
+}
+
+.vids-nav .nav > li > a {
+    color: white;
+}
+
+.vids-nav .nav > li > a:focus,
+.vids-nav .nav > li > a:hover {
+    color: white;
+}
+
+.vids-nav .nav > li > a.active,
+.vids-nav .nav li.dropdown.open > .dropdown-toggle,
+.vids-nav .nav li.dropdown.active > .dropdown-toggle,
+.vids-nav .nav li.dropdown.open.active > .dropdown-toggle {
+    color: white;
+    background-color: rgb(28, 184, 209);
+}
+
+.vids-nav .nav > li {
+    padding-top: 5px;
+    -moz-box-sizing:border-box; /* Firefox */
+    box-sizing: border-box;
+}
+
+.vids-nav .nav > li > a {
+    padding: 5px 10px;
+}
+
+.vids-nav .navbar-right > li > a.activated {
+    background-color: rgb(239, 85, 65);
+}
+
+.vids-nav .input-append {
+    margin-top: 0;
 }
 
 .select-nav .navbar-inner {
@@ -5738,6 +5791,11 @@ button.linkedin:active {
     }
 }
 
+.toolbar .scroller {
+    max-height: 250px;
+    overflow-y: scroll;
+}
+
 .title-block {
     height: 167px;
 }
@@ -5772,4 +5830,12 @@ button.linkedin:active {
     vertical-align: middle;
     margin-bottom: 10px;
     display: inline-block;
+}
+
+.newHomeAlbumTitle.edit:focus,
+.newHomeAlbumTitle.edit {
+    font-size: 32px;
+    font-weight: 100;
+    width: 100%;
+    margin: 0;
 }

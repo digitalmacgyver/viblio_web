@@ -7,12 +7,12 @@
                 <li style="display: inline-block;" class="dropdown navControl">
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: recentUploadsIsActive() || allVidsIsSelected() }">
                         <!-- ko if: recentUploadsIsActive -->
-                        <i class='icon-time'></i>
-                        <span data-bind="visible: wideScreen()"> Recent</span>
+                        <i class='icon-time' data-bind="visible: wideScreen()"></i>
+                        <span> Recent</span>
                         <!-- /ko -->
                         <!-- ko ifnot: recentUploadsIsActive -->
-                        <i class='icon-th'></i>
-                        <span data-bind="visible: wideScreen()"> Library</span>
+                        <i class='icon-th' data-bind="visible: wideScreen()"></i>
+                        <span> Library</span>
                         <!-- /ko -->
                         <i class="icon-chevron-down"></i>
                     </a>
@@ -41,188 +41,61 @@
                 </li>
                 <li class="divider-vertical"></li>
                 
-                <li class='find-wrapper'>
-                    <ul class='nav'>
-                        <li>
-                            <a href='#' data-bind='click: toggle_find_options'>
-                                <div class="btn_text" title="Find">
-                                    <i class='icon-search'></i>
-                                    <span data-bind="visible: wideScreen()">Find</span>
-                                    <!-- ko if: show_find_options -->
-                                    <i class="icon-chevron-left"></i>
-                                    <!-- /ko -->
-                                    <!-- ko ifnot: show_find_options -->
-                                    <i class="icon-chevron-right"></i>
-                                    <!-- /ko -->
-                                </div>    
-                            </a>
-                        </li>
-
-                        
-                        <li class='find-inner' data-bind="visible: show_find_options">
-                            <ul class='nav'>
-                                
-                                <li class="divider-vertical"></li>
-                                <!-- people filter -->
-                                <li style="display: inline-block;" class="dropdown navControl">
-                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: faceFilterIsActive }" title="Filter by People"><i class="icon-user"></i><span data-bind="visible: wideScreen()"> People</span> <!--<span data-bind="if: faceFilterIsActive">(<span data-bind="text: selectedFace() ? selectedFace().contact_name : 'All' "></span>)</span>--></a>
-                                    <ul class="style2DD dropdown-menu tags" role="menu">
-                                      <li class="tagsScrollWrapper">
-                                          <div class="scroller">
-                                              <div class="wrapper">
-                                                  <ul class="tags-inner">
-                                                    <!-- ko foreach: facesLabels -->
-                                                        <li data-bind="click: $parent.faceSelected.bind( $data, $parent ), clickBubble: false">
-                                                            <a class="checkboxedLi">
-                                                                <div class="itemActive-Wrap">
-                                                                    <div class="itemActive" data-bind="css: {on: $data.selected()}"></div>
-                                                                </div>
-                                                                <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
-                                                                <div class="checkboxPadding"></div>
-                                                                <div class="checkbox-Wrap" data-bind="if: $data.selected()">
-                                                                    <i class="icon-check"></i>
-                                                                </div>
-                                                                <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
-                                                                    <i class="icon-unchecked"></i>
-                                                                </div>                                    
-                                                            </a>
-                                                        </li>
-                                                    <!-- /ko -->
-                                                  </ul>    
-                                              </div>                  
-                                          </div>
-                                      </li>
-                                    </ul>
-                                </li>
-                                <li class="divider-vertical"></li>
-
-                                <!-- places filter -->
-                                <li style="display: inline-block;" class="dropdown navControl">
-                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: cityFilterIsActive }" title="Filter by Places"><i class="icon-map-marker"></i><span data-bind="visible: wideScreen()"> Places</span> <!--<span data-bind="if: cityFilterIsActive">(<span data-bind="text: selectedCity() ? selectedCity() : 'All' "></span>)</span>--></a>
-                                    <ul class="style2DD dropdown-menu tags" role="menu">
-                                      <li class="tagsScrollWrapper">
-                                          <div class="scroller">
-                                              <div class="wrapper">
-                                                  <ul class="tags-inner">
-                                                    <!-- ko foreach: citiesLabels -->
-                                                        <li data-bind="click: $parent.citySelected.bind( $data, $parent ), clickBubble: false">
-                                                            <a class="checkboxedLi">
-                                                                <div class="itemActive-Wrap">
-                                                                    <div class="itemActive" data-bind="css: {on: $data.selected()}"></div>
-                                                                </div>
-                                                                <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
-                                                                <div class="checkboxPadding"></div>
-                                                                <div class="checkbox-Wrap" data-bind="if: $data.selected()">
-                                                                    <i class="icon-check"></i>
-                                                                </div>
-                                                                <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
-                                                                    <i class="icon-unchecked"></i>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                    <!-- /ko -->
-                                                  </ul>    
-                                              </div>                  
-                                          </div>
-                                      </li>
-                                    </ul>
-                                </li>
-                                <li class="divider-vertical"></li>
-
-                                <!-- albums filter -->
-                                <li class="dropdown navControl albumsList">
-                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: albumFilterIsActive }" title="Filter by Albums"><i class="icon-picture"></i><span data-bind="visible: wideScreen()"> Albums</span> <!--<span data-bind="if: albumFilterIsActive">(<span data-bind="text: selectedFilterAlbum() ? selectedFilterAlbum() : 'All' "></span>)</span>--></a>
-                                    <ul class="style2DD dropdown-menu tags albumList" role="menu">
-                                      <li class="tagsScrollWrapper">
-                                          <div class="scroller">
-                                              <div class="wrapper">
-                                                  <ul class="tags-inner">
-                                                    <!-- ko foreach: albumsFilterLabels -->
-                                                        <li data-bind="click: $parent.albumFilterSelected.bind( $data, $parent ), clickBubble: false">
-                                                            <a class="checkboxedLi">
-                                                                <div class="itemActive-Wrap">
-                                                                    <div class="itemActive" data-bind="css: {on: $data.selected()}"></div>
-                                                                </div>
-                                                                <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected(), sharedStyle: $data.shared}"></div>
-                                                                <div class="checkboxPadding"></div>
-                                                                <div class="checkbox-Wrap" data-bind="if: $data.selected()">
-                                                                    <i class="icon-check"></i>
-                                                                </div>
-                                                                <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
-                                                                    <i class="icon-unchecked"></i>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                    <!-- /ko -->
-                                                  </ul>    
-                                              </div>                  
-                                          </div>
-                                      </li>
-                                    </ul>
-                                </li>
-                                <li class="divider-vertical"></li>
-
-                                <!-- search bar -->
-                                <li>
-                                    <form class="navbar-form navbar-left" role="search">
-                                        <div class="input-append">
-                                            <input type="text" class="search-query" placeholder="Search by title or tag" data-bind="value: searchQuery">
-                                            <button type="submit" class="btn btn-white" data-bind="click: newVidsSearch"><i class="icon-search"></i></button>
-                                            <!-- ko if: searchFilterIsActive() -->
-                                            <button class="btn btn-secondary" data-bind="click: showAllVideos, tooltip: {title:'Clear search'}"><i class="icon-remove"></i></button>
-                                            <!-- /ko -->
-                                        </div>
-                                    </form>    
-                                </li>
-                                <li class="divider-vertical"></li>
-    
-                            </ul>                           
-                        </li><!-- end find-inner -->
-                       
-                    </ul>
-
-                </li><!-- end find-wrapper -->
-                <!-- ko ifnot: show_find_options --> 
-                <li class="divider-vertical"></li>
-                <!-- /ko -->
-
-            </ul><!-- end navbar-left -->
-            
-            <ul class='navbar-right nav pull-right'>
-                <li class="divider-vertical" data-bind="visible: albumFilterIsActive() && !albumIsShared()"></li>
-                <!-- share --> 
-                <li class="" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared">
-                    <a href='#' data-bind='click: share_mode'>
-                        <div class="btn_text" title="Share Album">
-                            <i class='icon-share'></i>
-                            <span data-bind="visible: wideScreen()"> Share Album</span>
-                        </div>    
-                    </a>
-                </li>
-                <li class="divider-vertical"></li>
-                
-                <!-- Add to --> 
+                <!-- albums filter -->
                 <li class="dropdown navControl albumsList">
-                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="tooltip: {title: 'Choose an album that you want to add videos to.'}"><i class="icon-plus"></i><span data-bind="visible: wideScreen()"> Add To </span></a>
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: albumFilterIsActive() }, click: function(){ showMessage( 'albums' ); }" title="Filter by Albums"><i class="icon-picture" data-bind="visible: wideScreen()"></i><span> Albums</span></a>
                     <ul class="style2DD dropdown-menu tags albumList" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
                               <div class="wrapper">
                                   <ul class="tags-inner">
-                                    <!-- ko foreach: albumLabels -->
-                                        <li data-bind="click: $parent.addToAlbumSelected.bind( $data, $parent ), clickBubble: false">
-                                            <a class="checkboxedLi">
+                                    <!-- ko foreach: albumsFilterLabels -->
+                                        <li data-bind="click: $parent.albumFilterSelected.bind( $data, $parent ), clickBubble: false">
+                                            <a class="checkboxedLi" data-bind="css: { on: $data.selected() }">
                                                 <div class="itemActive-Wrap">
-                                                    <div class="itemActive" data-bind="css: {on: $data.selected()}"></div>
+                                                    <div class="itemActive" data-bind="css: { on: $data.selected() }"></div>
                                                 </div>
-                                                <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected(), sharedStyle: $data.shared}"></div>
-                                                <div class="checkboxPadding"></div>
+                                                <div class="inline tagLabel" data-bind="text: $data.label, css:{ sel: $data.selected(), sharedStyle: $data.shared }"></div>
+                                                <!--<div class="checkboxPadding"></div>
                                                 <div class="checkbox-Wrap" data-bind="if: $data.selected()">
                                                     <i class="icon-check"></i>
                                                 </div>
                                                 <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
                                                     <i class="icon-unchecked"></i>
+                                                </div>-->
+                                            </a>
+                                        </li>
+                                    <!-- /ko -->
+                                  </ul>    
+                              </div>                  
+                          </div>
+                      </li>
+                    </ul>
+                </li>
+                <li class="divider-vertical divider-vertical-thick"></li>
+                
+                <!-- people filter -->
+                <li style="display: inline-block;" class="dropdown navControl">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: faceFilterIsActive() }, click: function(){ showMessage( 'people' ); }" title="Filter by People"><i class="icon-user" data-bind="visible: wideScreen()"></i><span> People</span></a>
+                    <ul class="style2DD dropdown-menu tags" role="menu">
+                      <li class="tagsScrollWrapper">
+                          <div class="scroller">
+                              <div class="wrapper">
+                                  <ul class="tags-inner">
+                                    <!-- ko foreach: facesLabels -->
+                                        <li data-bind="click: $parent.faceSelected.bind( $data, $parent ), clickBubble: false">
+                                            <a class="checkboxedLi" data-bind="css: { on: $data.selected() }">
+                                                <div class="itemActive-Wrap">
+                                                    <div class="itemActive" data-bind="css: { on: $data.selected() }"></div>
                                                 </div>
+                                                <div class="inline tagLabel" data-bind="text: $data.label, css:{ sel: $data.selected() }"></div>
+                                                <!--<div class="checkboxPadding"></div>
+                                                <div class="checkbox-Wrap" data-bind="if: $data.selected()">
+                                                    <i class="icon-check"></i>
+                                                </div>
+                                                <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
+                                                    <i class="icon-unchecked"></i>
+                                                </div>-->                                    
                                             </a>
                                         </li>
                                     <!-- /ko -->
@@ -233,13 +106,108 @@
                     </ul>
                 </li>
                 <li class="divider-vertical"></li>
+
+                <!-- places filter -->
+                <li style="display: inline-block;" class="dropdown navControl">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: cityFilterIsActive }, click: function(){ showMessage( 'places' ); }" title="Filter by Places"><i class="icon-map-marker" data-bind="visible: wideScreen()"></i><span> Places</span></a>
+                    <ul class="style2DD dropdown-menu tags" role="menu">
+                      <li class="tagsScrollWrapper">
+                          <div class="scroller">
+                              <div class="wrapper">
+                                  <ul class="tags-inner">
+                                    <!-- ko foreach: citiesLabels -->
+                                        <li data-bind="click: $parent.citySelected.bind( $data, $parent ), clickBubble: false">
+                                            <a class="checkboxedLi" data-bind="css: { on: $data.selected() }">
+                                                <div class="itemActive-Wrap">
+                                                    <div class="itemActive" data-bind="css: { on: $data.selected() }"></div>
+                                                </div>
+                                                <div class="inline tagLabel" data-bind="text: $data.label, css:{ sel: $data.selected() }"></div>
+                                                <!--<div class="checkboxPadding"></div>
+                                                <div class="checkbox-Wrap" data-bind="if: $data.selected()">
+                                                    <i class="icon-check"></i>
+                                                </div>
+                                                <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
+                                                    <i class="icon-unchecked"></i>
+                                                </div>-->
+                                            </a>
+                                        </li>
+                                    <!-- /ko -->
+                                  </ul>    
+                              </div>                  
+                          </div>
+                      </li>
+                    </ul>
+                </li>
+                <li class="divider-vertical"></li>
+
+                <!-- search bar -->
+                <li>
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="input-append">
+                            <input type="text" class="search-query" placeholder="Search by title or tag" data-bind="value: searchQuery">
+                            <button type="submit" class="btn btn-white" data-bind="click: newVidsSearch"><i class="icon-search"></i></button>
+                            <!-- ko if: searchFilterIsActive() -->
+                            <button class="btn btn-secondary" data-bind="click: showAllVideos, tooltip: {title:'Clear search'}"><i class="icon-remove"></i></button>
+                            <!-- /ko -->
+                        </div>
+                    </form>    
+                </li>
+                <li class="divider-vertical"></li>
+
+            </ul><!-- end navbar-left -->
+            
+            <ul class='navbar-right nav pull-right'>
+                <li class="divider-vertical" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared"></li>
+                <!-- share --> 
+                <li class="" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared">
+                    <a href='#' data-bind='click: share_mode, css: { activated: albumFilterIsActive() }'>
+                        <div class="btn_text" title="Share Album">
+                            <i class='icon-share'></i>
+                            <span data-bind="visible: wideScreen()"> Share Album</span>
+                        </div>    
+                    </a>
+                </li>
+                <li class="divider-vertical"></li>
+                
+                <!-- Add to --> 
+                <li class="dropdown navControl albumsList">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="tooltip: {title: 'Choose an album that you want to add videos to.'}, css: { activated: aFilterIsActive() }"><i class="icon-plus" data-bind="visible: wideScreen()"></i><span> Add To </span></a>
+                    <ul class="style2DD dropdown-menu tags albumList" role="menu">
+                      <li class="tagsScrollWrapper">
+                          <div class="scroller">
+                              <div class="wrapper">
+                                  <ul class="tags-inner">
+                                    <!-- ko foreach: albumLabels -->
+                                        <li data-bind="click: $parent.addToAlbumSelected.bind( $data, $parent ), clickBubble: false">
+                                            <a class="checkboxedLi" data-bind="css: { on: $data.selected() }">
+                                                <div class="itemActive-Wrap">
+                                                    <div class="itemActive" data-bind="css: { on: $data.selected() }"></div>
+                                                </div>
+                                                <div class="inline tagLabel" data-bind="text: $data.label, css:{ sel: $data.selected(), sharedStyle: $data.shared }"></div>
+                                                <!--<div class="checkboxPadding"></div>
+                                                <div class="checkbox-Wrap" data-bind="if: $data.selected()">
+                                                    <i class="icon-check"></i>
+                                                </div>
+                                                <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
+                                                    <i class="icon-unchecked"></i>
+                                                </div>-->
+                                            </a>
+                                        </li>
+                                    <!-- /ko -->
+                                  </ul>
+                              </div>                  
+                          </div>
+                      </li>
+                    </ul>
+                </li>
+                <li class="divider-vertical"></li>
                 
                 <!-- trash -->
                 <li style="display: inline-block;" class="dropdown navControl" data-bind="visible: !albumFilterIsActive()">
-                    <a href='#' data-bind='click: delete_mode'>
+                    <a href='#' data-bind='click: delete_mode, css: { activated: aFilterIsActive() }'>
                         <div class="btn_text" title="Delete">
-                            <i class='icon-trash'></i>
-                            <span data-bind="visible: wideScreen()"> Delete</span>
+                            <i class='icon-trash' data-bind="visible: wideScreen()"></i>
+                            <span> Delete</span>
                         </div>    
                     </a>
                 </li>
@@ -247,8 +215,8 @@
                 <li style="display: inline-block;" class="dropdown navControl" data-bind="visible: albumFilterIsActive()">
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown">
                         <div class="btn_text">
-                            <i class='icon-trash'></i>
-                            <span data-bind="visible: wideScreen()">Remove</span>
+                            <i class='icon-trash' data-bind="visible: wideScreen()"></i>
+                            <span>Remove</span>
                             <i class="icon-chevron-down"></i>
                         </div>    
                     </a>
@@ -398,6 +366,7 @@
                 <!-- /ko -->
                 
                 <!-- ko if: albumFilterIsActive() -->
+                    <!-- album is owned by the user -->
                     <!-- ko ifnot: currentSelectedFilterAlbum().shared -->
                         <!-- ko if: albumIsShared() -->
                         <div class="shared-icon-wrap" data-bind="click: seeSharedMembers, tooltip: {title: 'Click to see shared members' }">
@@ -413,10 +382,19 @@
                         You have
                         <span data-bind="text: videos().length"></span>
                         <span data-bind="text: videos().length == 1 ? ' video ' : ' videos'"></span>
-                        in your "<span data-bind="text: selectedFilterAlbum"></span>" album
+                        in your "<div class="inline newHomeAlbumTitle" data-bind="liveEditor: currentAlbumTitle">
+                                    <div class="newHomeAlbumTitleView view" data-bind="click: function(){ currentAlbumTitle.edit; setSize(); }, text: currentAlbumTitle() ? currentAlbumTitle() : 'Click to add album title', tooltip: {title:'Click to edit album title'}"></div>
+                                    <div class="newHomeAlbumTitle-Wrap">
+                                        <input type="text" class="newHomeAlbumTitleEdit edit" data-bind="value: currentAlbumTitle, 
+                                                             hasFocus: currentAlbumTitle.editing, 
+                                                             event: { blur: function() { currentAlbumTitle.stopEditing(); currentAlbumTitle.save( null, this, 'album:name_changed' ); } }" />
+                                    </div>  
+                                </div>" album
                     <!-- /ko -->
+                    
+                    <!-- album is owned by another user and shared with viewer -->
                     <!-- ko if: currentSelectedFilterAlbum().shared -->
-                    <i class='icon-folder-close-alt bigIcon'></i>
+                    <i class='icon-folder-close bigIcon turquoiseFont' title="This album is shared with you."></i>
                     There <span data-bind="text: videos().length == 1 ? 'is ' : 'are '"></span>
                     <span data-bind="text: videos().length"></span>
                     <span data-bind="text: videos().length == 1 ? ' video ' : ' videos'"></span>
