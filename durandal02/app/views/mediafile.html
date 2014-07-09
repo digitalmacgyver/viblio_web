@@ -3,9 +3,9 @@
     <div style="position: relative; overflow: hidden;">
       <!--<button class="dbtn btn btn-danger clearfix" 
 	      data-bind="text: options.delete_title, click:mfdelete"></button>-->
-      <a class="btn btn-primary media-share-badge" alt="share" 
+      <a class="btn btn-ltGrey tomatoShadow media-share-badge" alt="share" 
 	 title="share" data-bind="visible: show_share_badge, click: share"><i class="icon-share"></i></a>
-      <a class="btn btn-primary media-select-badge" data-bind="visible: show_select_badge, click: selected() ? unselect : select">
+      <a class="btn btn-ltGrey tomatoShadow media-select-badge" data-bind="visible: show_select_badge, click: selected() ? unselect : select">
         <div class="inline" title="unselect" data-bind="if: $data.selected()">
             <i class="icon-check"></i>
         </div>
@@ -65,7 +65,7 @@
         <!-- ko if: showFaces -->
             <div class="facesPopup popover top">
                 <div class="arrow"></div>
-                <h3 class="popover-title">Faces</h3>
+                <h3 class="popover-title">Faces <button type="button" class="close" data-bind="click: function(){ showFaces(false); }">&times;</button></h3>
                 <div class="popover-content">
                     <div class="facesPopup-Content">
                         <div class="facesWrap">
@@ -81,7 +81,7 @@
         <!-- ko if: showTags -->
             <div class="tagsPopup popover top">
                 <div class="arrow"></div>
-                <h3 class="popover-title">Tags <button type="button" id="close" class="close" data-bind="click: function(){ showTags(false); }">&times;</button></h3>
+                <h3 class="popover-title">Tags <button type="button" class="close" data-bind="click: function(){ showTags(false); }">&times;</button></h3>
                 <div class="popover-content">
                     <div class="tagsPopup-Content">
                         <ul class="currentTags" data-bind="visible: showTags()">

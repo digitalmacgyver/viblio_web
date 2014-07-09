@@ -1,12 +1,12 @@
 <div class="hp">
     <div class="top-strip" data-bind="slideVisible: showFaces">
-        <div class="cont tomatoBG">
+        <div class="cont lightBlueBG">
             <div class="left"><!-- ko compose: 'viewmodels/top-actors' --><!-- /ko --></div>
         </div>
         <div class="right"><!-- ko compose: 'viewmodels/unnamed' --><!-- /ko --></div>
         <div class="clearfix"></div>
     </div>
-    <div class="facestripToggle btn btn-white" data-bind="click: showFaces() ? function(){ showFaces(false);} : function(){ showFaces(true);}, css: { 'btn-white': showFaces(), 'btn-primary': !showFaces() }">
+    <div class="facestripToggle btn btn-white" data-bind="click: showFaces() ? function(){ showFaces(false); } : function(){ showFaces(true); }, css: { 'btn-white': showFaces(), 'btn-ltGrey': !showFaces() }">
         <span data-bind="if: showFaces" title="Hide People Strip"><i class="icon-chevron-up"></i></span>
         <span data-bind="ifnot: showFaces" title="Show People Strip"><i class="icon-chevron-down"></i></span>
     </div>
