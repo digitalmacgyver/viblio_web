@@ -351,6 +351,7 @@
         <span>searchFilterIsActive: </span><span data-bind="text: searchFilterIsActive"></span>-->
 
         <div class="clearfix newHomeTitle-Wrap">
+            <!-- ko ifnot: add_to_mode_on() || delete_mode_on()-->
             <div style="display: block; text-align: center;" class="mainTitle textShadowed createAlbumDesc" data-bind="if: noFiltersAreActive() && !searchFilterIsActive()">
                 You have <span data-bind="text: hits"></span>
                 <span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private Viblio Library. 
@@ -404,9 +405,34 @@
                 <!-- /ko -->
                 .           
             </div>
+            <!-- /ko --> <!-- End ifnot: add_to_mode_on() || delete_mode_on() -->
+            
+            <!-- ko if: add_to_mode_on() || delete_mode_on() -->
+            <div style="display: block; text-align: center;" class="mainTitle textShadowed tomatoFont"><b>
+                Select the videos you want to
+                    <!-- ko if: add_to_mode_on() -->
+                        <span> add to </span>
+                        <!-- ko if: selectedAddToAlbum().label === 'Create New Album' -->
+                        <span>a new album.</span>
+                        <!-- /ko -->
+                        <!-- ko ifnot: selectedAddToAlbum().label === 'Create New Album' -->
+                        <span>the "<span data-bind="text: selectedAddToAlbumLabel"></span>" album.</span>
+                        <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: delete_mode_on() -->
+                        <!-- ko if: albumFilterIsActive() -->
+                        <span>remove from this album.</span>
+                        <!-- /ko -->
+                        <!-- ko ifnot: albumFilterIsActive() -->
+                        <span>delete from your account.</span>
+                        <!-- /ko -->
+                    <!-- /ko -->        
+            </b></div>
+            <!-- /ko --> <!-- End if: add_to_mode_on()-->
+            
         </div>
 
-        <!-- /ko -->
+        <!-- /ko --> <!-- End if: !isActiveFlag() -->
 
         <div data-bind="if: hits() < 1 && !isActiveFlag()">
             <p class="font24 tomatoFont doubleSpaced centered">
