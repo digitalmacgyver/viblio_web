@@ -254,11 +254,11 @@
         </div><!-- end navbar-inner -->       
     </div> <!-- end vids-nav -->
     
-    <div class='select-nav navbar toolbar' data-bind='visible: select_mode_on'>
+    <div class='select-nav alt navbar toolbar' data-bind='visible: select_mode_on'>
         <div class='navbar-inner'>
             <ul class='navbar-left nav'>
                 <li class="divider-vertical"></li>
-                <li style="display: inline-block;" class="dropdown navControl">
+                <li style="display: inline-block;" class="navControl">
                     <span class="vidsSelectedLabel">
                         <span class="badge" data-bind="text: selectedVideos().length"></span> <span data-bind="text: selectedVideos().length == 1 ? 'video' : 'videos' "></span> selected to be  
                         <!-- ko if: delete_mode_on() && !albumFilterIsActive() -->
@@ -288,7 +288,7 @@
                 
                 <li>
                     <!-- ko if: selectedVideos().length == 0 -->
-                    <a href='#' data-bind='click: selectAll'>
+                    <a href='#' class="activated" data-bind='click: selectAll'>
                         <div class="btn_text">
                             <i class='icon-check'></i>
                             <span>Select All</span>
@@ -296,7 +296,7 @@
                     </a>
                     <!-- /ko -->
                     <!-- ko if: selectedVideos().length > 0 -->
-                    <a href='#' data-bind='click: unselectAll'>
+                    <a href='#' class="activated" data-bind='click: unselectAll'>
                         <div class="btn_text">
                             <i class="icon-unchecked"></i>
                             <span>Unselect All</span>
