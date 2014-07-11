@@ -1451,7 +1451,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 
     newHome.prototype.getWindowWidth = function( event ) {
         var self = event.data;
-        console.log( 'getWindowWidth fired' );
         self.windowWidth( $(window).width() );
         self.toolbarHeight( self.select_mode_on() ? $('.select-nav').height() : $('.vids-nav').height() );
     };
