@@ -287,19 +287,19 @@
                 <li class="divider-vertical"></li>
                 
                 <li>
-                    <!-- ko if: selectedVideos().length == 0 -->
-                    <a href='#' class="activated" data-bind='click: selectAll'>
+                    <!-- ko ifnot: select_all_mode_is_on() -->
+                    <a href='#' class="activated" data-bind='click: selectAll' title="Click to select all">
                         <div class="btn_text">
-                            <i class='icon-check'></i>
+                            <i class='icon-unchecked'></i>
                             <span>Select All</span>
                         </div>    
                     </a>
                     <!-- /ko -->
-                    <!-- ko if: selectedVideos().length > 0 -->
-                    <a href='#' class="activated" data-bind='click: unselectAll'>
+                    <!-- ko if: select_all_mode_is_on() -->
+                    <a href='#' class="activated" data-bind='click: unselectAll' title="Click to unselect all">
                         <div class="btn_text">
-                            <i class="icon-unchecked"></i>
-                            <span>Unselect All</span>
+                            <i class="icon-check"></i>
+                            <span>Select All</span>
                         </div>    
                     </a>
                     <!-- /ko -->

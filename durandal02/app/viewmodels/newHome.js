@@ -604,11 +604,15 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         });
         
         m.on( 'mediafile:selected', function( m ) {
-            self.selectedVideos.push( m.media().uuid );              
+            // make sure video isn't already in the selectedVideos array
+            if( self.selectedVideos().indexOf( m.media().uuid ) == -1 ) {
+                self.selectedVideos.push( m.media().uuid ); 
+            }              
         });
 
         m.on( 'mediafile:unselected', function( m ) {
-            self.selectedVideos.remove( m.media().uuid );              
+            self.selectedVideos.remove( m.media().uuid );
+            self.select_all_mode_is_on(false);
         });
         
         m.on( "mediaFile:TitleDescChanged", function() {
@@ -669,11 +673,15 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         }
         
         m.on( 'mediafile:selected', function( m ) {
-            self.selectedVideos.push( m.media().uuid );              
+            // make sure video isn't already in the selectedVideos array
+            if( self.selectedVideos().indexOf( m.media().uuid ) == -1 ) {
+                self.selectedVideos.push( m.media().uuid ); 
+            }             
         });
 
         m.on( 'mediafile:unselected', function( m ) {
-            self.selectedVideos.remove( m.media().uuid );              
+            self.selectedVideos.remove( m.media().uuid );
+            self.select_all_mode_is_on(false);
         });
         
 	// Add it to the list
@@ -767,6 +775,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         var self = this;
         
         self.activate_select_mode();
+        self.selectAll();
         self.clear_all_modes();
         self.add_to_mode_on(true);
     };
