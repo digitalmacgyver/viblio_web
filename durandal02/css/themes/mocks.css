@@ -86,7 +86,7 @@ input[type="color"],
     border-top: none;
     border-right: none;
     border-left: none;
-    color: white;
+    color: rgb(112, 113, 123);
     -moz-text-shadow: 2px 2px rgba(0,0,0,.2);
     -webkit-text-shadow: 2px 2px rgba(0,0,0,.2);
     text-shadow: 2px 2px rgba(0,0,0,.2);
@@ -115,6 +115,9 @@ input[type="color"],
     font-size: 14px;
 }
 
+a.activated:focus,
+a.activated:active,
+a.activated:hover,
 .btn-primary:focus,
 .btn-primary:active,
 .btn:active,
@@ -122,6 +125,11 @@ input[type="color"],
     -moz-box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
     -webkit-box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
     box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
+}
+
+.btn:hover,
+.btn {
+    background-color: white;
 }
 
 .btn-white:hover,
@@ -134,6 +142,7 @@ input[type="color"],
 }
 
 .btn-primary {
+    color: white;
     background-color: rgba(239,85,65,1);
 }
 
@@ -159,6 +168,7 @@ input[type="color"],
 }
 
 .btn-secondary {
+    color: white;
     background-color: rgba(179,179,179,1);
 }
 
@@ -173,6 +183,7 @@ input[type="color"],
 }
 
 .btn-blue {
+    color: white;
     background-color: rgba(28,184,209,1);
 }
 
@@ -200,6 +211,20 @@ input[type="color"],
 .btn-modalGrey:hover{
     background-color: rgb(148,148,148);
     color: white;
+}
+
+.btn-ltGrey,
+.btn-ltGrey:focus,
+.btn-ltGrey:active,
+.btn-ltGrey:hover {
+    background-color: rgb(175,175,175);
+    color: white;
+}
+
+.tomatoShadow {
+    -moz-text-shadow: 2px 2px rgba(239,85,65,1);
+    -webkit-text-shadow: 2px 2px rgba(239,85,65,1);
+    text-shadow: 2px 2px rgba(239,85,65,1);
 }
 
 .fwd,
@@ -775,6 +800,10 @@ input:-moz-placeholder {
 
 .lightGreyBG {
     background-color: rgb(239, 239, 232);
+}
+
+.greyBG {
+    background-color: rgb(195,195,195);
 }
 
 .whiteBG {
@@ -1801,12 +1830,18 @@ input:-moz-placeholder {
     background-color: rgb(28, 184, 209);
 }
 
+.select-nav .nav > li,
 .vids-nav .nav > li {
     padding-top: 5px;
     -moz-box-sizing:border-box; /* Firefox */
     box-sizing: border-box;
 }
 
+.select-nav .nav > li.navControl {
+    padding-top: 0;
+}
+
+.select-nav .nav > li > a,
 .vids-nav .nav > li > a {
     padding: 5px 10px;
 }
@@ -1835,6 +1870,24 @@ input:-moz-placeholder {
     border-left: 1px solid rgb(226,43,19);
 }
 
+.select-nav.alt .navbar-inner {
+    background-color: rgb(28, 184, 209);
+    background-image: none;
+    border: none;
+    border-bottom: 3px solid rgb(23,154,174);
+    color: white;
+}
+
+.select-nav.alt .divider-vertical {
+    border-right: 1px solid rgb(28, 184, 209);
+    border-left: 1px solid rgb(23,154,174);
+}
+
+.select-nav.alt .nav > li > a.activated {
+    background-color: rgb(239, 85, 65);
+    color: white;
+}
+
 .select-nav .nav > li > a {
     color: white;
 }
@@ -1845,7 +1898,7 @@ input:-moz-placeholder {
 }
 
 .vidsSelectedLabel {
-    padding: 10px 15px 10px;
+    padding: 10px 15px 9px;
     display: inline-block;
 }
 /********************  Videos Of Page Section  ***************************/
@@ -3083,7 +3136,8 @@ ul.token-input-list-facebook {
 .shareFromMap {
     position: absolute;
     right: -1px;
-    padding: 6px;
+    padding: 4px 8px;
+    font-size: 30px;
 }
 
 .leaflet-popup-content .thumb-wrap .shareFromMap img{
@@ -3097,6 +3151,14 @@ ul.token-input-list-facebook {
     border-bottom: 3px inset rgba(0, 0, 0, 0.2);
 }
 
+.turquoiseTitle {
+    text-align: center;
+    padding: 18px 0 10px;
+    background-color: rgb(28, 184, 209); 
+    border-bottom: 3px inset rgba(0, 0, 0, 0.2);
+}
+
+.turquoiseTitle h2,
 .orangeTitle h2 {
     color: white;
     margin: 0;
@@ -4896,6 +4958,10 @@ a.a-drop-view:focus{
     margin: 40px auto 0;
 }
 
+.nginx-modal {
+    position: relative;
+}
+
 .nginx-modal .paddingDiv {
     padding: 25px 35px;
 }
@@ -4946,7 +5012,7 @@ div.fstrip {
     position: absolute;
     width: 100%;
     display: none;
-    z-index: 1003;
+    z-index: 1053;
 }
 
 /** unnamed **/
@@ -5802,6 +5868,7 @@ button.linkedin:active {
 
 .newHomeTitle-Wrap {
     margin-top: 100px;
+    padding: 0 40px;
 }
 
 .shared-icon-wrap {

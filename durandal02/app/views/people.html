@@ -1,6 +1,6 @@
 <div id="people-page">
    
-  <div class="known_faces-container horizontalStrip orangeBG bottomBorder-Thin">
+  <div class="known_faces-container horizontalStrip greyBG bottomBorder-Thin">
       <!-- ko compose: knownHelp --><!-- /ko --> 
     <div>
       <p class="mainTitle marginL45 textShadowed whiteText">Identified People</p>
@@ -41,10 +41,10 @@
     <div class="arrow"></div>
   </div>
 
-  <div class="unknown_faces-container horizontalStrip lightBlueBG bottomBorder-Thin">
+  <div class="unknown_faces-container horizontalStrip">
       <!-- ko compose: { model: unknownHelp, preserveContext: true } --><!-- /ko --> 
     <div>
-      <p class="mainTitle marginL45 textShadowed whiteText">Unknown People</p>
+      <p class="mainTitle marginL45 textShadowed ">Unknown People</p>
       <span class="subtitle">Click on a person's name to identify them.</span>
     </div>
     <!-- ko if: fetched() && unknown_faces().length < 1 -->

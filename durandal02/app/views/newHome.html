@@ -7,12 +7,12 @@
                 <li style="display: inline-block;" class="dropdown navControl">
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: recentUploadsIsActive() || allVidsIsSelected() }">
                         <!-- ko if: recentUploadsIsActive -->
-                        <i class='icon-time' data-bind="visible: wideScreen()"></i>
-                        <span> Recent</span>
+                        <i class='icon-time'></i>
+                        <span data-bind="visible: wideScreen()"> Recent</span>
                         <!-- /ko -->
                         <!-- ko ifnot: recentUploadsIsActive -->
-                        <i class='icon-th' data-bind="visible: wideScreen()"></i>
-                        <span> Library</span>
+                        <i class='icon-th'></i>
+                        <span data-bind="visible: wideScreen()"> Library</span>
                         <!-- /ko -->
                         <i class="icon-chevron-down"></i>
                     </a>
@@ -43,7 +43,7 @@
                 
                 <!-- albums filter -->
                 <li class="dropdown navControl albumsList">
-                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: albumFilterIsActive() }, click: function(){ showMessage( 'albums' ); }" title="Filter by Albums"><i class="icon-picture" data-bind="visible: wideScreen()"></i><span> Albums</span></a>
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: albumFilterIsActive() }, click: function(){ showMessage( 'albums' ); }" title="Filter by Albums"><i class="icon-picture"></i><span data-bind="visible: wideScreen()"> Albums</span></a>
                     <ul class="style2DD dropdown-menu tags albumList" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -76,7 +76,7 @@
                 
                 <!-- people filter -->
                 <li style="display: inline-block;" class="dropdown navControl">
-                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: faceFilterIsActive() }, click: function(){ showMessage( 'people' ); }" title="Filter by People"><i class="icon-user" data-bind="visible: wideScreen()"></i><span> People</span></a>
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: faceFilterIsActive() }, click: function(){ showMessage( 'people' ); }" title="Filter by People"><i class="icon-user"></i><span data-bind="visible: wideScreen()"> People</span></a>
                     <ul class="style2DD dropdown-menu tags" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -109,7 +109,7 @@
 
                 <!-- places filter -->
                 <li style="display: inline-block;" class="dropdown navControl">
-                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: cityFilterIsActive }, click: function(){ showMessage( 'places' ); }" title="Filter by Places"><i class="icon-map-marker" data-bind="visible: wideScreen()"></i><span> Places</span></a>
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: cityFilterIsActive }, click: function(){ showMessage( 'places' ); }" title="Filter by Places"><i class="icon-map-marker"></i><span data-bind="visible: wideScreen()"> Places</span></a>
                     <ul class="style2DD dropdown-menu tags" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -147,7 +147,7 @@
                             <input type="text" class="search-query" placeholder="Search by title or tag" data-bind="value: searchQuery">
                             <button type="submit" class="btn btn-white" data-bind="click: newVidsSearch"><i class="icon-search"></i></button>
                             <!-- ko if: searchFilterIsActive() -->
-                            <button class="btn btn-secondary" data-bind="click: showAllVideos, tooltip: {title:'Clear search'}"><i class="icon-remove"></i></button>
+                            <button class="btn btn-secondary" data-bind="click: showAllVideos, tooltip: {title:'Clear search', placement : 'bottom'}"><i class="icon-remove"></i></button>
                             <!-- /ko -->
                         </div>
                     </form>    
@@ -162,16 +162,16 @@
                 <li class="" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared">
                     <a href='#' data-bind='click: share_mode, css: { activated: albumFilterIsActive() }'>
                         <div class="btn_text" title="Share Album">
-                            <i class='icon-share' data-bind="visible: wideScreen()"></i>
-                            <span> Share Album</span>
+                            <i class='icon-share'></i>
+                            <span data-bind="visible: wideScreen()"> Share Album</span>
                         </div>    
                     </a>
                 </li>
-                <li class="divider-vertical"></li>
+                <li class="divider-vertical" data-bind="visible: albumFilterIsActive() ? !currentSelectedFilterAlbum().shared : true"></li>
                 
                 <!-- Add to --> 
-                <li class="dropdown navControl albumsList">
-                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="tooltip: {title: 'Choose an album that you want to add videos to.'}, css: { activated: aFilterIsActive() }"><i class="icon-plus" data-bind="visible: wideScreen()"></i><span> Add To </span></a>
+                <li class="dropdown navControl albumsList" data-bind="visible: albumFilterIsActive() ? !currentSelectedFilterAlbum().shared : true">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="tooltip: {title: 'Choose an album that you want to add videos to.', placement : 'bottom'}, css: { activated: aFilterIsActive() }"><i class="icon-plus"></i><span data-bind="visible: wideScreen()"> Add To </span></a>
                     <ul class="style2DD dropdown-menu tags albumList" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -204,10 +204,10 @@
                 
                 <!-- trash -->
                 <li style="display: inline-block;" class="dropdown navControl" data-bind="visible: !albumFilterIsActive()">
-                    <a href='#' data-bind='click: delete_mode, css: { activated: aFilterIsActive() }'>
+                    <a href='#' data-bind='click: delete_mode'>
                         <div class="btn_text" title="Delete">
-                            <i class='icon-trash' data-bind="visible: wideScreen()"></i>
-                            <span> Delete</span>
+                            <i class='icon-trash'></i>
+                            <span data-bind="visible: wideScreen()"> Delete</span>
                         </div>    
                     </a>
                 </li>
@@ -215,8 +215,8 @@
                 <li style="display: inline-block;" class="dropdown navControl" data-bind="visible: albumFilterIsActive()">
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown">
                         <div class="btn_text">
-                            <i class='icon-trash' data-bind="visible: wideScreen()"></i>
-                            <span>Remove</span>
+                            <i class='icon-trash'></i>
+                            <span data-bind="visible: wideScreen()">Remove</span>
                             <i class="icon-chevron-down"></i>
                         </div>    
                     </a>
@@ -254,11 +254,11 @@
         </div><!-- end navbar-inner -->       
     </div> <!-- end vids-nav -->
     
-    <div class='select-nav navbar toolbar' data-bind='visible: select_mode_on'>
+    <div class='select-nav alt navbar toolbar' data-bind='visible: select_mode_on'>
         <div class='navbar-inner'>
             <ul class='navbar-left nav'>
                 <li class="divider-vertical"></li>
-                <li style="display: inline-block;" class="dropdown navControl">
+                <li style="display: inline-block;" class="navControl">
                     <span class="vidsSelectedLabel">
                         <span class="badge" data-bind="text: selectedVideos().length"></span> <span data-bind="text: selectedVideos().length == 1 ? 'video' : 'videos' "></span> selected to be  
                         <!-- ko if: delete_mode_on() && !albumFilterIsActive() -->
@@ -287,19 +287,19 @@
                 <li class="divider-vertical"></li>
                 
                 <li>
-                    <!-- ko if: selectedVideos().length == 0 -->
-                    <a href='#' data-bind='click: selectAll'>
+                    <!-- ko ifnot: select_all_mode_is_on() -->
+                    <a href='#' class="activated" data-bind='click: selectAll' title="Click to select all">
                         <div class="btn_text">
-                            <i class='icon-check'></i>
+                            <i class='icon-unchecked'></i>
                             <span>Select All</span>
                         </div>    
                     </a>
                     <!-- /ko -->
-                    <!-- ko if: selectedVideos().length > 0 -->
-                    <a href='#' data-bind='click: unselectAll'>
+                    <!-- ko if: select_all_mode_is_on() -->
+                    <a href='#' class="activated" data-bind='click: unselectAll' title="Click to unselect all">
                         <div class="btn_text">
-                            <i class="icon-unchecked"></i>
-                            <span>Unselect All</span>
+                            <i class="icon-check"></i>
+                            <span>Select All</span>
                         </div>    
                     </a>
                     <!-- /ko -->
@@ -311,7 +311,7 @@
                 <!-- Done -->
                 <li class="divider-vertical"></li>
                 <li class="">
-                    <a href='#' data-bind='click: done_with_select_mode'>
+                    <a href='#' data-bind='click: done_with_select_mode' title='Done'>
                         <div class="btn_text">
                             <span>Done</span>
                         </div>    
@@ -320,7 +320,7 @@
                 <li class="divider-vertical"></li>
                 <!-- Cancel --> 
                 <li class="">
-                    <a href='#' data-bind='click: cancel_select_mode'>
+                    <a href='#' data-bind='click: cancel_select_mode' title='Cancel'>
                         <div class="btn_text">
                             <i class='icon-remove'></i>
                         </div>    
@@ -351,6 +351,7 @@
         <span>searchFilterIsActive: </span><span data-bind="text: searchFilterIsActive"></span>-->
 
         <div class="clearfix newHomeTitle-Wrap">
+            <!-- ko ifnot: add_to_mode_on() || delete_mode_on()-->
             <div style="display: block; text-align: center;" class="mainTitle textShadowed createAlbumDesc" data-bind="if: noFiltersAreActive() && !searchFilterIsActive()">
                 You have <span data-bind="text: hits"></span>
                 <span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private Viblio Library. 
@@ -404,9 +405,34 @@
                 <!-- /ko -->
                 .           
             </div>
+            <!-- /ko --> <!-- End ifnot: add_to_mode_on() || delete_mode_on() -->
+            
+            <!-- ko if: add_to_mode_on() || delete_mode_on() -->
+            <div style="display: block; text-align: center;" class="mainTitle textShadowed tomatoFont"><b>
+                Select the videos you want to
+                    <!-- ko if: add_to_mode_on() -->
+                        <span> add to </span>
+                        <!-- ko if: selectedAddToAlbum().label === 'Create New Album' -->
+                        <span>a new album.</span>
+                        <!-- /ko -->
+                        <!-- ko ifnot: selectedAddToAlbum().label === 'Create New Album' -->
+                        <span>the "<span data-bind="text: selectedAddToAlbumLabel"></span>" album.</span>
+                        <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: delete_mode_on() -->
+                        <!-- ko if: albumFilterIsActive() -->
+                        <span>remove from this album.</span>
+                        <!-- /ko -->
+                        <!-- ko ifnot: albumFilterIsActive() -->
+                        <span>delete from your account.</span>
+                        <!-- /ko -->
+                    <!-- /ko -->        
+            </b></div>
+            <!-- /ko --> <!-- End if: add_to_mode_on()-->
+            
         </div>
 
-        <!-- /ko -->
+        <!-- /ko --> <!-- End if: !isActiveFlag() -->
 
         <div data-bind="if: hits() < 1 && !isActiveFlag()">
             <p class="font24 tomatoFont doubleSpaced centered">

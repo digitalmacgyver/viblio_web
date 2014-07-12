@@ -8,12 +8,13 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         self.windowWidth = ko.observable( $(window).width() );
         self.wideScreen = ko.computed( function() {
-            if( self.windowWidth() > 1340 ) {
+            if( self.windowWidth() > 1200 ) {
                 return true;
             } else {
                 return false;
             }
         });
+        
         self.recentUploadsIsActive = ko.observable(false);
         
         self.show_find_options = ko.observable(false);
@@ -22,6 +23,8 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.share_mode_on = ko.observable(false);
         self.add_to_mode_on = ko.observable(false);
         self.delete_mode_on = ko.observable(false);
+        
+        self.toolbarHeight = ko.observable( self.select_mode_on() ? $('.select-nav').height() : $('.vids-nav').height() );
         
         self.datesLabels  = ko.observableArray([]);
         self.showingAllDatesLabels = ko.observable(true);
@@ -601,11 +604,15 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         });
         
         m.on( 'mediafile:selected', function( m ) {
-            self.selectedVideos.push( m.media().uuid );              
+            // make sure video isn't already in the selectedVideos array
+            if( self.selectedVideos().indexOf( m.media().uuid ) == -1 ) {
+                self.selectedVideos.push( m.media().uuid ); 
+            }              
         });
 
         m.on( 'mediafile:unselected', function( m ) {
-            self.selectedVideos.remove( m.media().uuid );              
+            self.selectedVideos.remove( m.media().uuid );
+            self.select_all_mode_is_on(false);
         });
         
         m.on( "mediaFile:TitleDescChanged", function() {
@@ -666,11 +673,15 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         }
         
         m.on( 'mediafile:selected', function( m ) {
-            self.selectedVideos.push( m.media().uuid );              
+            // make sure video isn't already in the selectedVideos array
+            if( self.selectedVideos().indexOf( m.media().uuid ) == -1 ) {
+                self.selectedVideos.push( m.media().uuid ); 
+            }             
         });
 
         m.on( 'mediafile:unselected', function( m ) {
-            self.selectedVideos.remove( m.media().uuid );              
+            self.selectedVideos.remove( m.media().uuid );
+            self.select_all_mode_is_on(false);
         });
         
 	// Add it to the list
@@ -708,6 +719,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	var self = this;
         
         self.select_mode_on(true);
+        // set margin above title so it's not burried by toolbar
+        setTimeout(function(){
+            self.setTitleMargin();
+        }, 300);
         
         // if allVids is passed then show select for ALL vids (including those not owned by the user)
         if( allVids ) {
@@ -729,6 +744,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	var self = this;
         
         self.select_mode_on(false);
+        // set margin above title so it's not burried by toolbar
+        setTimeout(function(){
+            self.setTitleMargin();
+        }, 300);
         
         self.videos().forEach( function( mf ) {
             mf.turnOffSelectMode();
@@ -756,6 +775,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         var self = this;
         
         self.activate_select_mode();
+        self.selectAll();
         self.clear_all_modes();
         self.add_to_mode_on(true);
     };
@@ -1311,6 +1331,9 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
 	    }
 	}).promise().then(function(){
             self.isActiveFlag(false);
+            setTimeout(function(){
+                self.setTitleMargin();
+            }, 300);
         });
     };
     
@@ -1367,17 +1390,31 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             }
         }
     };
+    
+    newHome.prototype.setTitleMargin = function() {
+        var self = this;
+        self.toolbarHeight( self.select_mode_on() ? $('.select-nav').height() : $('.vids-nav').height() );
+        var marginTop = self.toolbarHeight() > 43 ? 100 + (self.toolbarHeight() - 43) : 100;
+        $('.newHomeTitle-Wrap').css('margin-top', marginTop );
+    };
         
-    newHome.prototype.stickyDates = function() {       
-        var maxPos = 108; //height of header 65 + toolbar 43
+    newHome.prototype.stickyDates = function( event ) {
+        var self = event.data;
+        
+        // If the window width is above 900 then add header and toobar heights, else just use toolbar height
+        var maxPos = $(window).width() >= 900 ? 65 + self.toolbarHeight() : self.toolbarHeight();
         
         var scrollTop = $(window).scrollTop(),
         elementOffset = $('.dates').offset().top,
         distance      = (elementOffset - scrollTop),
         footerHeight  = ( $('#footer').offset().top ) - scrollTop;
-
-        if( distance <= maxPos ){
-            $('.dates').addClass('stuck');
+        
+        // add stuck class and set top css based on maxPos
+        $('.dates').addClass('stuck').css('top', maxPos );
+        // set margin above title so it's not burried by toolbar
+        self.setTitleMargin();
+        
+        if( distance <= maxPos ){    
             // keep the dates section above the footer
             if ( $(window).width() >= 900 ) {
                 $('.dates').css( { 'height': footerHeight - 108, 'max-height': $(window).height() - 108 } );
@@ -1386,16 +1423,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
             }            
         }
         
-        if ( $(window).width() >= 900 ) {
-            if ( ( $('.allVidsInner').offset().top ) - scrollTop >= 108 ){
-                $('.dates').removeClass('stuck');
-                $('.dates').css( { 'height': '100%' } );
-            }    
-        } else {
-            if ( ( $('.allVidsInner').offset().top ) - scrollTop >= 43 ){
-                $('.dates').removeClass('stuck');
-                $('.dates').css( { 'height': '100%' } );
-            }
+        // code to remove stuck class
+        if ( ( $('.allVidsInner').offset().top ) - scrollTop >= maxPos ){
+            $('.dates').removeClass('stuck').css('top', 0);
+            $('.dates').css( { 'height': '100%' } );
         }
     };
     
@@ -1430,6 +1461,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     newHome.prototype.getWindowWidth = function( event ) {
         var self = event.data;
         self.windowWidth( $(window).width() );
+        self.toolbarHeight( self.select_mode_on() ? $('.select-nav').height() : $('.vids-nav').height() );
     };
     
     newHome.prototype.attached = function() {
@@ -1437,6 +1469,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         $(window).scroll( this, this.stickyDates );
         $(window).scroll( this, this.stickyToolbars );
         $(window).resize( this, this.getWindowWidth );
+        $(window).resize( this, this.stickyDates );
     };
 
     newHome.prototype.detached = function() {
@@ -1444,6 +1477,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         $(window).off( "scroll", this.stickyDates );
         $(window).off( "scroll", this.stickyToolbars );
         $(window).off( "resize", this.getWindowWidth );
+        $(window).off( "resize", this.stickyDates );
     };
     
     newHome.prototype.activate = function() {
@@ -1491,6 +1525,12 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         if( !self.goToAlbum() ){
             self.showAllVideos();
         }
+        // set toolbarHeight
+        self.toolbarHeight( self.select_mode_on() ? $('.select-nav').height() : $('.vids-nav').height() );      
+        // set margin above title so it's not burried by toolbar
+        setTimeout(function(){
+            self.setTitleMargin();
+        }, 300);
     };
 
     newHome.prototype.add_videos = function() {
