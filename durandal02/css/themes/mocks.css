@@ -806,6 +806,10 @@ input:-moz-placeholder {
     background-color: rgb(195,195,195);
 }
 
+.darkGreyBG {
+    background-color: rgb(128,128,128);
+}
+
 .whiteBG {
     background-color: white;
 }
