@@ -64,7 +64,7 @@ define(["durandal/app",
 	show_face_names( true );
 	share_button_visible( true );
 	get_the_app_button_visible( false );
-	get_the_app_overlay_logic( false );
+	get_the_app_overlay_logic( true );
         map_location_editable( true );
 	new_face_addable( true );
         tags_editable( true );
@@ -143,6 +143,10 @@ define(["durandal/app",
             $('.player').find('video').attr('controls', 'controls');
         }
     };
+    
+    function createAccount() {
+        router.navigate( '#/signup' );
+    }
     
     app.on( 'shareVidModal:closeModal', function( data ) {
         if ( head.mobile ) {
@@ -735,6 +739,7 @@ define(["durandal/app",
 	pp_related_column_visible: pp_related_column_visible,
 	showPlayerOverlay: showPlayerOverlay,
 	hidePlayerOverlay: hidePlayerOverlay,
+        createAccount: createAccount,
         addVideos: addVideos,
         addAlbum: addAlbum,
 	playAgain: playAgain,

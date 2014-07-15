@@ -1,4 +1,12 @@
-define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'viewmodels/mediafile', 'durandal/events'], function (router, app, system, viblio, Mediafile, Events) {
+define(['plugins/router',
+        'durandal/app',
+        'durandal/system',
+        'lib/viblio',
+        'viewmodels/mediafile',
+        'durandal/events',
+        'viewmodels/top-actors'],
+    
+    function (router, app, system, viblio, Mediafile, Events, topActors) {
 
     var FScroll = function( title, subtitle, name ) {
 	var self = this;
@@ -219,7 +227,18 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/viblio', 'view
     };
 
     FScroll.prototype.seeAll = function() {
-	router.navigate( 'videosof?uuid=' + this.contact_id );
+        // The onld method of navigating to the faceOf page
+	//router.navigate( 'videosof?uuid=' + this.contact_id );
+        
+        var topActors = require('viewmodels/top-actors');
+        var face = {
+            uuid: this.contact_id 
+        };
+        // Hide the fscroll strip and unselect the current face
+        topActors.videosFor().hide();
+	topActors.no_select();
+        // send message that is picked up by newHome and triggers the face search
+        app.trigger('fscroll:seeAll', face);
     };
 
     FScroll.prototype.mkAlbum = function() {

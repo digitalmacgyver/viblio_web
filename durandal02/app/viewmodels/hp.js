@@ -66,7 +66,7 @@ define(['durandal/app',
     };
 
     return{
-        newHome: nhome,
+        nhome: nhome,
         yvSection: yvSection,
         
         showFaces: showFaces,
@@ -90,10 +90,17 @@ define(['durandal/app',
                 }
             }
             
-            if( args && args.aid ){
-                console.log( args.aid );
-                nhome( new newHome( args.aid ) );
+            if( args ){
+                if( args.aid ) {
+                    console.log( args.aid );
+                    console.log( 'Thing 1' );
+                    nhome( new newHome( {aid: args.aid} ) );    
+                } else if( args.fid ) {
+                    console.log( 'Thing 2' );
+                    nhome( new newHome( {fid: args.fid} ) );  
+                }               
             } else {
+                console.log( 'Thing 3' );
                 nhome( new newHome() );
             }
                        

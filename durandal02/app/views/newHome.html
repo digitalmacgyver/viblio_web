@@ -333,6 +333,11 @@
     </div> <!-- end select-nav -->
     
     <div class="table">
+        <div class="clearfix newHomeTitle-Wrap">
+            <span>isActiveFlag: </span><span data-bind="text: isActiveFlag()"></span><br>
+            <span>activateWithRegSearch: </span><span data-bind="text: activateWithRegSearch()"></span><br>
+        </div>
+        
         <!-- ko if: isActiveFlag() -->
         <div class="title-block"></div>
         <!-- /ko -->
@@ -434,7 +439,7 @@
 
         <!-- /ko --> <!-- End if: !isActiveFlag() -->
 
-        <div data-bind="if: hits() < 1 && !isActiveFlag()">
+        <div data-bind="if: searchFilterIsActive() && hits() < 1 && !isActiveFlag()">
             <p class="font24 tomatoFont doubleSpaced centered">
               Bummer, I can’t find a video that matches this search.
             </p>

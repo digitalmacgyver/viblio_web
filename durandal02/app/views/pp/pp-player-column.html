@@ -8,6 +8,16 @@
           <div class="paddedDiv bottomBorder-Thin">
             <div id="cloudImage"></div>
             <p class="landingHeaderTitle"><span>Create your own </span>VIBLIO Video Library</p>
+            
+            <!-- ko if: showPlayerOverlay()==true && get_the_app_overlay_logic()==true && !user() -->
+            <div class="button-Wrap">
+                <button class="btn btn-primary" data-bind="click: createAccount, clickBubble: false">
+                  <i class="icon-pencil"></i>  Create an Account
+                </button>
+            </div>
+            <!-- /ko -->
+            
+            <!-- ko if: showPlayerOverlay()==true && get_the_app_overlay_logic()==true && user() -->
             <table class="overlayTable">
                 <tbody>
                     <tr>
@@ -35,6 +45,8 @@
                     </tr>
                 </tbody>
             </table>
+            <!-- /ko -->
+            
             <!--<span class="font18">
                 Want faster uploads? Download the
                 <a class="whiteText heavyWeightFont" href="/#getApp?from=web_player_overlay" data-bind="click: getApp, clickBubble: false">

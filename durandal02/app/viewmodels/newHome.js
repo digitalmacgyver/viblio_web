@@ -1,10 +1,57 @@
 define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', 'durandal/events', 'durandal/system', 'lib/customDialogs'], function( router,viblio, Mediafile, app, events, system, dialog ) {
 
-    var newHome = function( aid ) {
+    var newHome = function( args ) {
 	var self = this;
         
-        self.goToAlbum = ko.observable( aid ? true : false );
-        self.albumToGoTo = ko.observable( aid );
+        // Go to a specific album - aid provided via link from an email
+        self.goToAlbum = ko.computed( function() {
+            if( args ) {
+                if( args.aid ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        });
+        self.albumToGoTo = ko.computed(function(){
+            if( args ) {
+                if( args.aid ) {
+                    return args.aid;
+                } else {
+                    return null;
+                }
+            } else {
+                return null
+            }
+        });
+        
+        // Go to a specific face - fid provided via link from an email
+        self.goToFace = ko.computed( function() {
+            if( args ) {
+                if( args.fid ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        });
+        self.faceToGoTo = ko.computed(function(){
+            if( args ) {
+                if( args.fid ) {
+                    return args.fid;
+                } else {
+                    return null;
+                }
+            } else {
+                return null
+            }
+        });
+        
+        self.activateWithRegSearch = ko.observable( args ? false : true );
         
         self.windowWidth = ko.observable( $(window).width() );
         self.wideScreen = ko.computed( function() {
@@ -99,7 +146,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 
         self.allVidsIsSelected = ko.observable( true );
         
-        self.isActiveFlag = ko.observable(false);
+        self.isActiveFlag = ko.observable(true);
         
         // Hold the pager data back from server
 	// media queries.  Initialize it here so
@@ -155,6 +202,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         });
         
         events.includeIn( this );
+        
+        app.on('fscroll:seeAll', function( face ){
+            self.faceSelected( self, self.findMatch( face.uuid, self.facesLabels() ) );
+        });
     };
     
     newHome.prototype.toggleRecentVids = function() {
@@ -305,16 +356,27 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     };
     
     newHome.prototype.faceSelected = function( self, face ) {
-        if( face.selected() ) {
-            face.selected(false);
-            self.showAllVideos();
+        console.log( 'faceSelected fired', face );
+        
+        var gettingFace;
+        
+        if( !gettingFace ) {
+            gettingFace = true;
+            if( face.selected() ) {
+                face.selected(false);
+                self.showAllVideos();
+                gettingFace = false;
+            } else {
+                self.facesLabels().forEach( function( f ) {
+                    f.selected( false );
+                });
+                face.selected( true );
+                self.selectedFace( face );
+                self.faceVidsSearch( true );
+                gettingFace = false;
+            }
         } else {
-            self.facesLabels().forEach( function( f ) {
-                f.selected( false );
-            });
-            face.selected( true );
-            self.selectedFace( face );
-            self.faceVidsSearch( true );
+            return;
         }    
     };
     
@@ -455,22 +517,32 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     };
     
     newHome.prototype.albumFilterSelected = function( self, album ) {
-        if( album.selected() ) {
-            album.selected(false);
-            self.currentAlbumAid(null);
-            self.currentAlbumTitle(null);
-            self.showAllVideos();
+        console.log( 'albumFilterSelected', album );
+        var gettingAlbum;
+        
+        if( !gettingAlbum ) {
+            gettingAlbum = true;
+            if( album.selected() ) {
+                album.selected(false);
+                self.currentAlbumAid(null);
+                self.currentAlbumTitle(null);
+                self.showAllVideos();
+                gettingAlbum = false;
+            } else {
+                self.albumsFilterLabels().forEach( function( c ) {
+                    c.selected( false );
+                });
+                album.selected( true );
+                self.selectedFilterAlbum( album.label );
+                self.currentSelectedFilterAlbum( album );
+                self.currentAlbumAid( album.uuid );
+                self.currentAlbumTitle( album.title );
+                self.albumVidsSearch( true );
+                gettingAlbum = false;
+            }
         } else {
-            self.albumsFilterLabels().forEach( function( c ) {
-                c.selected( false );
-            });
-            album.selected( true );
-            self.selectedFilterAlbum( album.label );
-            self.currentSelectedFilterAlbum( album );
-            self.currentAlbumAid( album.uuid );
-            self.currentAlbumTitle( album.title );
-            self.albumVidsSearch( true );
-        } 
+            return;
+        }        
     };
     
     newHome.prototype.albumVidsSearch = function( newSearch ) {
@@ -1096,21 +1168,36 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     };
     
     newHome.prototype.getAllFacesLabels = function() {
+        console.log( 'getAllFacesLabels fired' );
         var self = this;
         var args = {};
         args = {
             cid: self.cid
         };
         self.facesLabels.removeAll();
-        viblio.api( '/services/faces/contacts', args ).then( function(data) {
-            data.faces.forEach( function( face ) {
-                var _face = face;
-                _face.label = face.contact_name;
-                _face.selected = ko.observable( false );
-                
-                self.facesLabels.push( _face );
-            });
-        });
+        var gettingFaceLabels = false;
+        
+        if( gettingFaceLabels === false ) {
+            console.log( 'gettingFaceLabels: ', gettingFaceLabels );
+            gettingFaceLabels = true;
+            console.log( 'gettingFaceLabels: ', gettingFaceLabels );
+            
+            return system.defer( function( dfd ) {
+                viblio.api( '/services/faces/contacts', args ).then( function(data) {
+                    data.faces.forEach( function( face ) {
+                        var _face = face;
+                        _face.label = face.contact_name;
+                        _face.selected = ko.observable( false );
+
+                        self.facesLabels.push( _face );
+                    });
+                    dfd.resolve();
+                });
+                gettingFaceLabels = false;
+            }).promise();
+        } else {
+            return;
+        }        
     };
     
     newHome.prototype.getAllCityLabels = function() {
@@ -1246,11 +1333,11 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         }
     };
     
-    newHome.prototype.findAlbum = function( aid ) {
+    newHome.prototype.findMatch = function( find, inArray ) {
         var self = this;
         
-        var match = ko.utils.arrayFirst( self.albumsFilterLabels(), function( a ) {
-            return a.uuid === aid;
+        var match = ko.utils.arrayFirst( inArray, function( a ) {
+            return a.uuid === find;
         });
         if (match) {
             return match;  
@@ -1270,7 +1357,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                     var msg = num + vidOrVids + ' successfully added to your new "' + self.getAlbumName() + '" Album';
                     viblio.notify( msg, 'success' );
                     self.getAllAlbumsLabels().then( function() {
-                        self.albumFilterSelected( self, self.findAlbum( data.album.uuid ) );  
+                        self.albumFilterSelected( self, self.findMatch( data.album.uuid, self.albumsFilterLabels() ) );  
                     });
                     dfd.resolve();
                 });
@@ -1280,7 +1367,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                     var vidOrVids = num == 1 ? ' video' : ' videos';
                     var msg = num + vidOrVids + ' successfully added to your "' + self.selectedAddToAlbum().label + '" Album';
                     viblio.notify( msg, 'success' );
-                    self.albumFilterSelected( self, self.findAlbum( self.selectedAddToAlbum().uuid ) );
+                    self.albumFilterSelected( self, self.findMatch( data.album.uuid, self.albumsFilterLabels() ) );  
                     dfd.resolve();
                 });        
                 // Used to close the dropdown
@@ -1385,6 +1472,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 }    
             } else {
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
+                    console.log('firing self.search from scrollHandler');
                     self.search();
                 } 
             }
@@ -1482,10 +1570,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     
     newHome.prototype.activate = function() {
 	var self = this;
-	var args = {};
-        args = {
-            cid: self.cid
-        };
         
         self.videos.removeAll();
         
@@ -1493,7 +1577,19 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.getAllDatesLabels();
         
         // get faces and create labels to use as filters
-        self.getAllFacesLabels();
+        self.getAllFacesLabels().then( function() {
+            // If a face uuid is passed in via the url then filter to that face
+            if( self.goToFace() ){
+                console.log( 'activate goToFace fired');
+                if( self.findMatch( self.faceToGoTo(), self.facesLabels() ) != 'Error' ) {
+                    self.faceSelected( self, self.findMatch( self.faceToGoTo(), self.facesLabels() ) );
+                    //this strips the fid params off of the url after navigation
+                    //router.navigate('#home', { trigger: false, replace: true });                  
+                } else {
+                    router.navigate('#home');
+                }               
+            }
+        });
         
         // get cities and create labels to use as filters
         self.getAllCityLabels();
@@ -1502,11 +1598,11 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.getAllAlbumsLabels().then( function() {
             // If an album uuid is passed in via the url then filter to that album
             if( self.goToAlbum() ){
-                if( self.findAlbum( self.albumToGoTo() ) != 'Error' ) {
-                    self.albumFilterSelected( self, self.findAlbum( self.albumToGoTo() ) );
+                console.log( 'getAllAlbumsLabels fired, now going to if/else' );
+                if( self.findMatch( self.albumToGoTo(), self.albumsFilterLabels() ) != 'Error' ) {                
+                    self.albumFilterSelected( self, self.findMatch( self.albumToGoTo(), self.albumsFilterLabels() ) );
                     //this strips the aid params off of the url after navigation
-                    router.navigate('#home', { trigger: false, replace: true });
-                    
+                    //router.navigate('#home', { trigger: false, replace: true });                  
                 } else {
                     router.navigate('#home');
                 }               
@@ -1522,7 +1618,8 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         
         // At this point (and only at this point!) we have an accurate
 	// height dimension for the scroll area and its item container.
-        if( !self.goToAlbum() ){
+        if( self.activateWithRegSearch() ){
+            console.log( 'showAllVideos is firing' );
             self.showAllVideos();
         }
         // set toolbarHeight
