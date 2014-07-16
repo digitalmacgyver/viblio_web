@@ -204,9 +204,6 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
     Video.prototype.removeTag = function( $parent, $data ) {
         var self = this;
         
-        console.log( $data );
-        console.log( $parent );
-        
         var args = {
             mid: $parent.media().uuid,
             tag: $data
