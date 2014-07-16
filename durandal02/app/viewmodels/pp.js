@@ -9,7 +9,8 @@ define(["durandal/app",
 	"lib/related_video",
 	"viewmodels/footer",
         "lib/customDialogs"], 
-       function(app,system,router,config,viblio,Mediafile,customDialogs,Face,Related,footer,dialog) {
+    function(app,system,router,config,viblio,Mediafile,customDialogs,Face,Related,footer,dialog) {
+        
     var incoming_mid;
     var view;
     var route;
@@ -175,13 +176,12 @@ define(["durandal/app",
     
     function addAlbum() {
         if ( loggedIn() ) {
-            router.navigate('albums');
+            router.navigate('home?addAlbum=true');
         } else {
             // Set it so user will be routed to the albums page after they log in
-            viblio.setLastAttempt( 'albums' );
+            viblio.setLastAttempt( 'home?addAlbum=true' );
             dialog.showModal( 'viewmodels/loginModal', 'Please log in before creating a new album.' );
-        }
-        
+        }       
     };
 
     // default search criterion for related videos.

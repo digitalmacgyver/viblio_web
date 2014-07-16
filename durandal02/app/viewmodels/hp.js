@@ -2,7 +2,10 @@ define(['durandal/app',
         "plugins/router",
 	"lib/viblio",
         "lib/customDialogs",
-        "viewmodels/newHome"],function(app,router,viblio,customDialogs,newHome){
+        "viewmodels/newHome"],
+    
+    function(app,router,viblio,customDialogs,newHome){
+        
     var view;
     var unnamed;
     var top_actors;
@@ -91,16 +94,24 @@ define(['durandal/app',
             }
             
             if( args ){
+                // this cleans up to avoid an extra call to activate when the nhome observable is updated
+                var videos = $('#videos')[0];
+                if( videos ) {
+                    ko.cleanNode(videos);
+                }
                 if( args.aid ) {
-                    console.log( args.aid );
-                    console.log( 'Thing 1' );
                     nhome( new newHome( {aid: args.aid} ) );    
                 } else if( args.fid ) {
-                    console.log( 'Thing 2' );
                     nhome( new newHome( {fid: args.fid} ) );  
+                } else if( args.addAlbum ) {
+                    nhome( new newHome( {addAlbum: true} ) );
                 }               
             } else {
-                console.log( 'Thing 3' );
+                // this cleans up to avoid an extra call to activate when the nhome observable is updated
+                var videos = $('#videos')[0];
+                if( videos ) {
+                    ko.cleanNode(videos);
+                }
                 nhome( new newHome() );
             }
                        

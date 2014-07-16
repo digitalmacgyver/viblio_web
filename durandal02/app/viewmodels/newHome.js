@@ -1,4 +1,12 @@
-define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', 'durandal/events', 'durandal/system', 'lib/customDialogs'], function( router,viblio, Mediafile, app, events, system, dialog ) {
+define( ['plugins/router',
+         'lib/viblio',
+         'viewmodels/mediafile',
+         'durandal/app',
+         'durandal/events',
+         'durandal/system',
+         'lib/customDialogs'], 
+    
+    function( router,viblio, Mediafile, app, events, system, dialog ) {
 
     var newHome = function( args ) {
 	var self = this;
@@ -48,6 +56,18 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                 }
             } else {
                 return null
+            }
+        });
+        
+        self.addAlbum = ko.computed( function() {
+            if( args ) {
+                if( args.addAlbum ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
             }
         });
         
@@ -1570,7 +1590,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     
     newHome.prototype.activate = function() {
 	var self = this;
-        
+        console.log( 'Activate fired - newHome' );
         self.videos.removeAll();
         
         // get months and create labels to use as selectors
@@ -1607,6 +1627,11 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
                     router.navigate('#home');
                 }               
             }
+            
+            if( self.addAlbum() ){
+                self.showAllVideos();
+                $('.navbar-right').children('.albumsList').children('.dropdown-toggle').trigger('click');
+            }
         });
     };
     
@@ -1619,7 +1644,6 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         // At this point (and only at this point!) we have an accurate
 	// height dimension for the scroll area and its item container.
         if( self.activateWithRegSearch() ){
-            console.log( 'showAllVideos is firing' );
             self.showAllVideos();
         }
         // set toolbarHeight
