@@ -105,7 +105,9 @@ define(['durandal/app',
                     nhome( new newHome( {fid: args.fid} ) );  
                 } else if( args.addAlbum ) {
                     nhome( new newHome( {addAlbum: true} ) );
-                }               
+                }  else if( args.recent ) {
+                    nhome( new newHome( {recent: true} ) );
+                }              
             } else {
                 // this cleans up to avoid an extra call to activate when the nhome observable is updated
                 var videos = $('#videos')[0];

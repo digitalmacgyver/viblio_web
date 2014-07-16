@@ -71,6 +71,18 @@ define( ['plugins/router',
             }
         });
         
+        self.showRecent = ko.computed( function() {
+            if( args ) {
+                if( args.recent ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        });
+        
         self.activateWithRegSearch = ko.observable( args ? false : true );
         
         self.windowWidth = ko.observable( $(window).width() );
@@ -1604,7 +1616,7 @@ define( ['plugins/router',
                 if( self.findMatch( self.faceToGoTo(), self.facesLabels() ) != 'Error' ) {
                     self.faceSelected( self, self.findMatch( self.faceToGoTo(), self.facesLabels() ) );
                     //this strips the fid params off of the url after navigation
-                    //router.navigate('#home', { trigger: false, replace: true });                  
+                    router.navigate('#home', { trigger: false, replace: true });                  
                 } else {
                     router.navigate('#home');
                 }               
@@ -1622,7 +1634,7 @@ define( ['plugins/router',
                 if( self.findMatch( self.albumToGoTo(), self.albumsFilterLabels() ) != 'Error' ) {                
                     self.albumFilterSelected( self, self.findMatch( self.albumToGoTo(), self.albumsFilterLabels() ) );
                     //this strips the aid params off of the url after navigation
-                    //router.navigate('#home', { trigger: false, replace: true });                  
+                    router.navigate('#home', { trigger: false, replace: true });                  
                 } else {
                     router.navigate('#home');
                 }               
@@ -1631,8 +1643,14 @@ define( ['plugins/router',
             if( self.addAlbum() ){
                 self.showAllVideos();
                 $('.navbar-right').children('.albumsList').children('.dropdown-toggle').trigger('click');
+                router.navigate('#home', { trigger: false, replace: true }); 
             }
         });
+        
+        if( self.showRecent() ){
+            self.recentVidsSearch();
+            router.navigate('#home', { trigger: false, replace: true }); 
+        }
     };
     
     // In attached, attach the mCustomScrollbar we're presently
