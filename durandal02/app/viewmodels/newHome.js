@@ -59,6 +59,18 @@ define( ['plugins/router',
             }
         });
         
+        self.addAlbum = ko.computed( function() {
+            if( args ) {
+                if( args.addAlbum ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        });
+        
         self.activateWithRegSearch = ko.observable( args ? false : true );
         
         self.windowWidth = ko.observable( $(window).width() );
@@ -1615,6 +1627,11 @@ define( ['plugins/router',
                     router.navigate('#home');
                 }               
             }
+            
+            if( self.addAlbum() ){
+                self.showAllVideos();
+                $('.navbar-right').children('.albumsList').children('.dropdown-toggle').trigger('click');
+            }
         });
     };
     
@@ -1627,7 +1644,6 @@ define( ['plugins/router',
         // At this point (and only at this point!) we have an accurate
 	// height dimension for the scroll area and its item container.
         if( self.activateWithRegSearch() ){
-            console.log( 'showAllVideos is firing' );
             self.showAllVideos();
         }
         // set toolbarHeight

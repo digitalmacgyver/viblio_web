@@ -94,24 +94,24 @@ define(['durandal/app',
             }
             
             if( args ){
-                var items = $('#items')[0];
-                if( items ) {
-                    ko.cleanNode(items);
+                // this cleans up to avoid an extra call to activate when the nhome observable is updated
+                var videos = $('#videos')[0];
+                if( videos ) {
+                    ko.cleanNode(videos);
                 }
                 if( args.aid ) {
-                    console.log( args.aid );
-                    console.log( 'Thing 1' );
                     nhome( new newHome( {aid: args.aid} ) );    
                 } else if( args.fid ) {
-                    console.log( 'Thing 2' );
                     nhome( new newHome( {fid: args.fid} ) );  
+                } else if( args.addAlbum ) {
+                    nhome( new newHome( {addAlbum: true} ) );
                 }               
             } else {
-                var items = $('#items')[0];
-                if( items ) {
-                    ko.cleanNode(items);
+                // this cleans up to avoid an extra call to activate when the nhome observable is updated
+                var videos = $('#videos')[0];
+                if( videos ) {
+                    ko.cleanNode(videos);
                 }
-                console.log( 'Thing 3' );
                 nhome( new newHome() );
             }
                        
