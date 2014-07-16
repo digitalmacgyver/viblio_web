@@ -2,7 +2,10 @@ define(['durandal/app',
         "plugins/router",
 	"lib/viblio",
         "lib/customDialogs",
-        "viewmodels/newHome"],function(app,router,viblio,customDialogs,newHome){
+        "viewmodels/newHome"],
+    
+    function(app,router,viblio,customDialogs,newHome){
+        
     var view;
     var unnamed;
     var top_actors;
@@ -91,6 +94,10 @@ define(['durandal/app',
             }
             
             if( args ){
+                var items = $('#items')[0];
+                if( items ) {
+                    ko.cleanNode(items);
+                }
                 if( args.aid ) {
                     console.log( args.aid );
                     console.log( 'Thing 1' );
@@ -100,6 +107,10 @@ define(['durandal/app',
                     nhome( new newHome( {fid: args.fid} ) );  
                 }               
             } else {
+                var items = $('#items')[0];
+                if( items ) {
+                    ko.cleanNode(items);
+                }
                 console.log( 'Thing 3' );
                 nhome( new newHome() );
             }

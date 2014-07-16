@@ -1,4 +1,12 @@
-define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', 'durandal/events', 'durandal/system', 'lib/customDialogs'], function( router,viblio, Mediafile, app, events, system, dialog ) {
+define( ['plugins/router',
+         'lib/viblio',
+         'viewmodels/mediafile',
+         'durandal/app',
+         'durandal/events',
+         'durandal/system',
+         'lib/customDialogs'], 
+    
+    function( router,viblio, Mediafile, app, events, system, dialog ) {
 
     var newHome = function( args ) {
 	var self = this;
@@ -1570,7 +1578,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     
     newHome.prototype.activate = function() {
 	var self = this;
-        
+        console.log( 'Activate fired - newHome' );
         self.videos.removeAll();
         
         // get months and create labels to use as selectors
