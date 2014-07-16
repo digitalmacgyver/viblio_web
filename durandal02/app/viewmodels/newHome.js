@@ -387,9 +387,7 @@ define( ['plugins/router',
         });
     };
     
-    newHome.prototype.faceSelected = function( self, face ) {
-        console.log( 'faceSelected fired', face );
-        
+    newHome.prototype.faceSelected = function( self, face ) {      
         var gettingFace;
         
         if( !gettingFace ) {
@@ -549,7 +547,6 @@ define( ['plugins/router',
     };
     
     newHome.prototype.albumFilterSelected = function( self, album ) {
-        console.log( 'albumFilterSelected', album );
         var gettingAlbum;
         
         if( !gettingAlbum ) {
@@ -1200,7 +1197,6 @@ define( ['plugins/router',
     };
     
     newHome.prototype.getAllFacesLabels = function() {
-        console.log( 'getAllFacesLabels fired' );
         var self = this;
         var args = {};
         args = {
@@ -1210,9 +1206,7 @@ define( ['plugins/router',
         var gettingFaceLabels = false;
         
         if( gettingFaceLabels === false ) {
-            console.log( 'gettingFaceLabels: ', gettingFaceLabels );
             gettingFaceLabels = true;
-            console.log( 'gettingFaceLabels: ', gettingFaceLabels );
             
             return system.defer( function( dfd ) {
                 viblio.api( '/services/faces/contacts', args ).then( function(data) {
@@ -1504,7 +1498,6 @@ define( ['plugins/router',
                 }    
             } else {
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                    console.log('firing self.search from scrollHandler');
                     self.search();
                 } 
             }
@@ -1602,7 +1595,6 @@ define( ['plugins/router',
     
     newHome.prototype.activate = function() {
 	var self = this;
-        console.log( 'Activate fired - newHome' );
         self.videos.removeAll();
         
         // get months and create labels to use as selectors
@@ -1612,7 +1604,6 @@ define( ['plugins/router',
         self.getAllFacesLabels().then( function() {
             // If a face uuid is passed in via the url then filter to that face
             if( self.goToFace() ){
-                console.log( 'activate goToFace fired');
                 if( self.findMatch( self.faceToGoTo(), self.facesLabels() ) != 'Error' ) {
                     self.faceSelected( self, self.findMatch( self.faceToGoTo(), self.facesLabels() ) );
                     //this strips the fid params off of the url after navigation
@@ -1630,7 +1621,6 @@ define( ['plugins/router',
         self.getAllAlbumsLabels().then( function() {
             // If an album uuid is passed in via the url then filter to that album
             if( self.goToAlbum() ){
-                console.log( 'getAllAlbumsLabels fired, now going to if/else' );
                 if( self.findMatch( self.albumToGoTo(), self.albumsFilterLabels() ) != 'Error' ) {                
                     self.albumFilterSelected( self, self.findMatch( self.albumToGoTo(), self.albumsFilterLabels() ) );
                     //this strips the aid params off of the url after navigation
