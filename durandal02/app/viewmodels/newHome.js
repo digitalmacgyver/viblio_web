@@ -131,6 +131,20 @@ define( ['plugins/router',
         self.currentAlbumAid = ko.observable(null);
         self.currentAlbumTitle = ko.observable(null);
         
+        // This handles the folder icon for an album - shows the shared icon when it's been shared
+        app.on('album:album_shared', function( aid ) {
+            if( self.currentAlbumAid() === aid ) {
+                self.albumIsShared(true);
+            }
+        });
+        
+        // This handles the folder icon for an album - removes the shared icon when it's been unshared
+        app.on('album:album_unshared', function( aid ) {
+            if( self.currentAlbumAid() === aid ) {
+                self.albumIsShared(false);
+            }
+        });
+        
         // Search section
         self.searchFilterIsActive = ko.observable(false);
         self.searchQuery = ko.observable(null);
@@ -238,6 +252,7 @@ define( ['plugins/router',
         app.on('fscroll:seeAll', function( face ){
             self.faceSelected( self, self.findMatch( face.uuid, self.facesLabels() ) );
         });
+        
     };
     
     newHome.prototype.toggleRecentVids = function() {
