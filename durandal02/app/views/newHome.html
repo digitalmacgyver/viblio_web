@@ -5,7 +5,7 @@
             <ul class='navbar-left nav'>
                 <li class="divider-vertical"></li>
                 <li style="display: inline-block;" class="dropdown navControl">
-                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: recentUploadsIsActive() || allVidsIsSelected() }">
+                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: recentUploadsIsActive() || allVidsIsSelected() }, disable: isActiveFlag()">
                         <!-- ko if: recentUploadsIsActive -->
                         <i class='icon-time'></i>
                         <span data-bind="visible: wideScreen()"> Recent</span>
@@ -15,7 +15,7 @@
                         <span data-bind="visible: wideScreen()"> Library</span>
                         <!-- /ko -->
                         <i class="icon-chevron-down"></i>
-                    </a>
+                    </button>
                     <ul class="style2DD dropdown-menu tags" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -43,7 +43,7 @@
                 
                 <!-- albums filter -->
                 <li class="dropdown navControl albumsList">
-                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: albumFilterIsActive() }, click: function(){ showMessage( 'albums' ); }" title="Filter by Albums"><i class="icon-picture"></i><span data-bind="visible: wideScreen()"> Albums</span></a>
+                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: albumFilterIsActive() }, click: function(){ showMessage( 'albums' ); }, disable: isActiveFlag()" title="Filter by Albums"><i class="icon-picture"></i><span data-bind="visible: wideScreen()"> Albums</span></button>
                     <ul class="style2DD dropdown-menu tags albumList" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -76,7 +76,7 @@
                 
                 <!-- people filter -->
                 <li style="display: inline-block;" class="dropdown navControl">
-                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: faceFilterIsActive() }, click: function(){ showMessage( 'people' ); }" title="Filter by People"><i class="icon-user"></i><span data-bind="visible: wideScreen()"> People</span></a>
+                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: faceFilterIsActive() }, click: function(){ showMessage( 'people' ); }, disable: isActiveFlag()" title="Filter by People"><i class="icon-user"></i><span data-bind="visible: wideScreen()"> People</span></button>
                     <ul class="style2DD dropdown-menu tags" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -109,7 +109,7 @@
 
                 <!-- places filter -->
                 <li style="display: inline-block;" class="dropdown navControl">
-                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: cityFilterIsActive }, click: function(){ showMessage( 'places' ); }" title="Filter by Places"><i class="icon-map-marker"></i><span data-bind="visible: wideScreen()"> Places</span></a>
+                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: cityFilterIsActive }, click: function(){ showMessage( 'places' ); }, disable: isActiveFlag()" title="Filter by Places"><i class="icon-map-marker"></i><span data-bind="visible: wideScreen()"> Places</span></button>
                     <ul class="style2DD dropdown-menu tags" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -145,7 +145,7 @@
                     <form class="navbar-form navbar-left" role="search">
                         <div class="input-append">
                             <input type="text" class="search-query" placeholder="Search by title or tag" data-bind="value: searchQuery">
-                            <button type="submit" class="btn btn-white" data-bind="click: newVidsSearch"><i class="icon-search"></i></button>
+                            <button type="submit" class="btn btn-white" data-bind="click: newVidsSearch, disable: isActiveFlag()"><i class="icon-search"></i></button>
                             <!-- ko if: searchFilterIsActive() -->
                             <button class="btn btn-secondary" data-bind="click: showAllVideos, tooltip: {title:'Clear search', placement : 'bottom'}"><i class="icon-remove"></i></button>
                             <!-- /ko -->
@@ -333,6 +333,9 @@
     </div> <!-- end select-nav -->
     
     <div class="table">
+        <div class="newHomeTitle-Wrap">
+            <span>isActiveFlag(): </span><span data-bind="text: isActiveFlag()"></span>
+        </div>
         <!-- ko if: isActiveFlag() -->
         <div class="title-block"></div>
         <!-- /ko -->

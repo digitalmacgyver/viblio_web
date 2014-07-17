@@ -221,6 +221,26 @@ a.activated:hover,
     color: white;
 }
 
+.toolbar-btn {
+    background-color: transparent;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+}
+
+.toolbar-btn.active {
+    background-color: rgb(28, 184, 209);
+}
+
+.toolbar-btn:disabled {
+    color: rgb(175, 175, 175);
+    cursor: progress;
+}
+
+.navbar-form .btn-white:disabled {
+    cursor: progress;
+}
+
 .tomatoShadow {
     -moz-text-shadow: 2px 2px rgba(239,85,65,1);
     -webkit-text-shadow: 2px 2px rgba(239,85,65,1);
@@ -950,6 +970,10 @@ input:-moz-placeholder {
 
 .inline {
     display: inline-block;
+}
+
+.blankModal {
+    position: relative;
 }
 
 .blankModal .paddedDiv {

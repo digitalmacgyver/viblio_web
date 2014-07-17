@@ -434,6 +434,6 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
 	    $(element).popover( popover );
 	}
     };
-
+    
     return({});
 });
