@@ -5,8 +5,9 @@ define( ['plugins/router',
 	 'lib/viblio', 
 	 'lib/config', 
 	 'lib/customDialogs',
-         'durandal/events'], 
-function(router, app, viblio, config, dialogs, Events) {
+         'durandal/events',
+         'plugins/dialog'], 
+function(router, app, viblio, config, dialogs, Events, dialog) {
     // The header can show router navigation points.  It also has a logout
     // function.
     //
@@ -38,11 +39,17 @@ function(router, app, viblio, config, dialogs, Events) {
 	    viblio.mpEvent( 'feedback' );
 	    return true;
 	},
-
 	download_viblio: function() {
 	    viblio.mpEvent( 'download_viblio' );
 	    return true;
-	},
+	},        
+        inviteFriends: function() {
+            var args = {};
+            args.template = 15;
+            args.placeholder = "I discovered Viblio, a great way to privately organize and share videos.  I'd love it if you signed up and shared some of your videos with me.";
+            args.logout = false;
+            dialog.show('viewmodels/loggedOutTellFriendsModal', args);
+        },
 	web_uploader: function() {
             viblio.localStorage( 'hasUserPushedUploadBefore', true );
             if ( showPopup() ) {
