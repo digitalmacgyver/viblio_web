@@ -405,6 +405,9 @@ define( ['plugins/router',
     newHome.prototype.faceSelected = function( self, face ) {      
         var gettingFace;
         
+        // Used to close the dropdown
+        $("body").trigger("click");
+        
         if( !gettingFace ) {
             gettingFace = true;
             if( face.selected() ) {
@@ -480,13 +483,13 @@ define( ['plugins/router',
             self.selectedFilterAlbum('');
             
             self.isActiveFlag(false);
-            
-            // Used to close the dropdown
-            $("body").trigger("click");
         });
     };
     
     newHome.prototype.citySelected = function( self, city ) {
+        // Used to close the dropdown
+        $("body").trigger("click");
+        
         if( city.selected() ) {
             city.selected(false);
             self.showAllVideos();
@@ -555,14 +558,14 @@ define( ['plugins/router',
             self.selectedFilterAlbum('');
             
             self.isActiveFlag(false);
-            
-            // Used to close the dropdown
-            $("body").trigger("click");
         });
     };
     
     newHome.prototype.albumFilterSelected = function( self, album ) {
         var gettingAlbum;
+        
+        // Used to close the dropdown
+        $("body").trigger("click");
         
         if( !gettingAlbum ) {
             gettingAlbum = true;
@@ -643,8 +646,7 @@ define( ['plugins/router',
             
             self.isActiveFlag(false);
             
-            // Used to close the dropdown
-            $("body").trigger("click");
+            
         });
     };
     
