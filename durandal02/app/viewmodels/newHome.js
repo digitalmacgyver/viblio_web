@@ -6,7 +6,7 @@ define( ['plugins/router',
          'durandal/system',
          'lib/customDialogs'], 
     
-    function( router,viblio, Mediafile, app, events, system, dialog ) {
+    function( router,viblio, Mediafile, app, Events, system, dialog ) {
 
     var newHome = function( args ) {
 	var self = this;
@@ -246,13 +246,37 @@ define( ['plugins/router',
                 return null;
             }
         });
-        
-        events.includeIn( this );
-        
+
         app.on('fscroll:seeAll', function( face ){
             self.faceSelected( self, self.findMatch( face.uuid, self.facesLabels() ) );
         });
         
+        self.vidsInProcess = ko.observable( null );
+        self.showInProcessCount = ko.computed( function(){
+            if( self.vidsInProcess() > 0 ) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        
+        //Events.includeIn( self );
+        
+        app.on('nginxModal:closed2', function() {
+            if( document.location.hash == '#home' ) {
+                self.getVidsInProcess();
+            }
+        });
+    };
+    
+    newHome.prototype.getVidsInProcess = function() {
+        var self = this;
+        
+        viblio.api('services/mediafile/list_status').then( function( data ) {
+            //console.log( data );
+            var num = data.stats.pending + data.stats.visible;
+            self.vidsInProcess( num );
+        });
     };
     
     newHome.prototype.toggleRecentVids = function() {
@@ -617,8 +641,9 @@ define( ['plugins/router',
             /*if ( self.albumsPager.next_page )   {
                 args.page = self.facesPager.next_page;
                 args.rows = self.facesPager.entries_per_page;*/
-                viblio.api( 'services/album/get?aid=' + album_id + '&include_contact_info=1&include_tags=1').
+                viblio.api( 'services/album/get?aid=' + album_id + '&include_contact_info=1&include_tags=1&include_images=1' ).
                     then( function( json ) {
+                        console.log( json );
                         //self.hits ( json.pager.total_entries );
                         //self.facesPager = json.pager;
                         self.currentAlbum( json.album );
@@ -1658,6 +1683,8 @@ define( ['plugins/router',
             self.recentVidsSearch();
             router.navigate('#home', { trigger: false, replace: true }); 
         }
+        
+        self.getVidsInProcess();
     };
     
     // In attached, attach the mCustomScrollbar we're presently

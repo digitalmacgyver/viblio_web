@@ -882,6 +882,10 @@ input:-moz-placeholder {
     cursor: pointer;
 }
 
+.badge-turquise {
+    background-color: rgb(28,184,209);
+}
+
 .turquoiseFont,
 .turquoiseFont:hover {
     color: rgba(28,184,209,1);
@@ -5892,6 +5896,11 @@ button.linkedin:active {
 
 .title-block {
     height: 167px;
+}
+
+.vidsInProcessLabel {
+    padding-top: 5px;
+    display: inline-block;
 }
 
 .newHomeTitle-Wrap {

@@ -145,8 +145,8 @@ define(["durandal/app",
         }
     };
     
-    function createAccount() {
-        router.navigate( '#/signup' );
+    function logIn() {
+        router.navigate( '#/login' );
     }
     
     app.on( 'shareVidModal:closeModal', function( data ) {
@@ -739,7 +739,7 @@ define(["durandal/app",
 	pp_related_column_visible: pp_related_column_visible,
 	showPlayerOverlay: showPlayerOverlay,
 	hidePlayerOverlay: hidePlayerOverlay,
-        createAccount: createAccount,
+        logIn: logIn,
         addVideos: addVideos,
         addAlbum: addAlbum,
 	playAgain: playAgain,

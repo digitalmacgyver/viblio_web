@@ -3,22 +3,21 @@
     <td class="pp-tv-td">
         <span data-bind="text: add_face_to_video"></span>
       <div class="pp-tv-wrap playerOverlay-Wrap">
-        <!-- ko if: showPlayerOverlay()==true && get_the_app_overlay_logic()==true -->
+        <!-- ko if: showPlayerOverlay()==true && get_the_app_overlay_logic()==true && !user() -->
         <div class="videoOverlay" data-bind="click: hidePlayerOverlay">
           <div class="paddedDiv bottomBorder-Thin">
             <div id="cloudImage"></div>
-            <p class="landingHeaderTitle"><span>Create your own </span>VIBLIO Video Library</p>
-            
-            <!-- ko if: showPlayerOverlay()==true && get_the_app_overlay_logic()==true && !user() -->
+            <!--<p class="landingHeaderTitle"><span>Create your own </span>VIBLIO Video Library</p>-->
+            <p class="landingHeaderTitle"><span>Click below to </span>log in</p>
+                       
             <div class="button-Wrap">
-                <button class="btn btn-primary" data-bind="click: createAccount, clickBubble: false">
-                  <i class="icon-pencil"></i>  Create an Account
+                <button class="btn btn-primary" data-bind="click: logIn, clickBubble: false">
+                  Log In
                 </button>
             </div>
-            <!-- /ko -->
             
             <!-- ko if: showPlayerOverlay()==true && get_the_app_overlay_logic()==true && user() -->
-            <table class="overlayTable">
+            <!--<table class="overlayTable">
                 <tbody>
                     <tr>
                         <td colspan="2" class="bottomBorder-Thin font20">Add</td>
@@ -44,7 +43,7 @@
                         </td>
                     </tr>
                 </tbody>
-            </table>
+            </table>-->
             <!-- /ko -->
             
             <!--<span class="font18">

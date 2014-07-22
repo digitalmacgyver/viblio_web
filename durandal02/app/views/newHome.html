@@ -157,6 +157,14 @@
             </ul><!-- end navbar-left -->
             
             <ul class='navbar-right nav pull-right'>
+                <li class="divider-vertical" data-bind="visible: showInProcessCount()"></li>
+                <!-- In Process --> 
+                <li class="" data-bind="visible: showInProcessCount()">
+                    <span class="vidsInProcessLabel">
+                        <span class="badge badge-turquise" data-bind="text: vidsInProcess"></span> <span class="turquoiseFont"><span data-bind="text: vidsInProcess() == 1 ? 'Video' : 'Videos'"></span> In Process</span>
+                    </span>
+                </li>
+                
                 <li class="divider-vertical" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared"></li>
                 <!-- share --> 
                 <li class="" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared">
@@ -384,7 +392,7 @@
                         <span data-bind="text: videos().length"></span>
                         <span data-bind="text: videos().length == 1 ? ' video ' : ' videos'"></span>
                         in your "<div class="inline newHomeAlbumTitle" data-bind="liveEditor: currentAlbumTitle, click: setSize">
-                                    <div class="newHomeAlbumTitleView view" data-bind="click: currentAlbumTitle.edit, text: currentAlbumTitle() ? currentAlbumTitle() : 'Click to add album title', tooltip: {title:'Click to edit album title'}"></div>
+                                    <div class="newHomeAlbumTitleView view turquoiseFont" data-bind="click: currentAlbumTitle.edit, text: currentAlbumTitle() ? currentAlbumTitle() : 'Click to add album title', tooltip: {title:'Click to edit album title'}"></div>
                                     <div class="newHomeAlbumTitle-Wrap">
                                         <input type="text" class="newHomeAlbumTitleEdit edit" data-bind="value: currentAlbumTitle, 
                                                              hasFocus: currentAlbumTitle.editing, 
