@@ -3,16 +3,16 @@
     <td class="pp-tv-td">
         <span data-bind="text: add_face_to_video"></span>
       <div class="pp-tv-wrap playerOverlay-Wrap">
-        <!-- ko if: showPlayerOverlay()==true && get_the_app_overlay_logic()==true && !user() -->
+        <!-- ko if: showPlayerOverlay()==true && get_the_app_button_visible -->
         <div class="videoOverlay" data-bind="click: hidePlayerOverlay">
           <div class="paddedDiv bottomBorder-Thin">
             <div id="cloudImage"></div>
             <!--<p class="landingHeaderTitle"><span>Create your own </span>VIBLIO Video Library</p>-->
-            <p class="landingHeaderTitle"><span>Click below to </span>log in</p>
+            <p class="landingHeaderTitle"><span>Log in to your </span>VIBLIO Account</p>
                        
             <div class="button-Wrap">
                 <button class="btn btn-primary" data-bind="click: logIn, clickBubble: false">
-                  Log In
+                  Log Me In
                 </button>
             </div>
             
