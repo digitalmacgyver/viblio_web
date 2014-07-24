@@ -3,7 +3,7 @@
     <td class="pp-tv-td">
         <span data-bind="text: add_face_to_video"></span>
       <div class="pp-tv-wrap playerOverlay-Wrap">
-        <!-- ko if: showPlayerOverlay()==true && get_the_app_button_visible -->
+        <!-- ko if: showPlayerOverlay()==true && get_the_app_button_visible() && !loggedIn() -->
         <div class="videoOverlay" data-bind="click: hidePlayerOverlay">
           <div class="paddedDiv bottomBorder-Thin">
             <div id="cloudImage"></div>
