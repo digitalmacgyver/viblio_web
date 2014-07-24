@@ -3380,11 +3380,11 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 /********* New Sizing section ********/
     
 .mediafile {
-    width: 270px;
+    width: 272px;
 }
     .mediafile img {
         //height: 197px; /* 16:9 */
-        height: 203px;  /* 4:3 */  
+        height: 204px;  /* 4:3 */  
     }
     
     .mediafile .truncate {
@@ -3468,11 +3468,11 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     
 #map-page .leaflet-popup-content-wrapper {
     //height: 193px; /* 16:9 */
-    height: 244px; /* 4:3 */
+    height: 245px; /* 4:3 */
 }
     .leaflet-popup-content .thumb-wrap {
         //height: 152px; /* 16:9 */
-        height: 203px; /* 4:3 */
+        height: 204px; /* 4:3 */
     }
     #map-page .leaflet-popup-content-wrapper .truncate {
         width: 212px;
