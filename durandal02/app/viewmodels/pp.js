@@ -21,7 +21,9 @@ define(["durandal/app",
 
     var disable_prev = ko.observable( true );
     var disable_next = ko.observable( false );
-
+    
+    var oniOS = ko.observable( head.browser.ios )
+    
     // These control what is visible and editable, depending on
     // if this is a user video, or a shared video (and how it
     // was shared, and if the sharee is logging in)
@@ -265,6 +267,10 @@ define(["durandal/app",
         showPlayerOverlay(false);
         router.navigate('getApp?from=web_player');
     }
+    
+    function getiOSApp() {
+        window.open( 'https://itunes.apple.com/us/app/viblio/id883377114?mt=8' );
+    }
 
     // Play next related video
     function nextRelated() {
@@ -364,7 +370,9 @@ define(["durandal/app",
                 },
                 onPause: function( clip ) {
                     viblio.mpEvent( 'play', { action: 'pause' } );
-                    showOverlay();
+                    if( !loggedIn() ){
+                        showOverlay();
+                    }
                 },
                 onResume: function( clip ) {
                     viblio.mpEvent( 'play', { action: 'resume' } );
@@ -375,7 +383,9 @@ define(["durandal/app",
                 },
                 onFinish: function( clip ) {
                     viblio.mpEvent( 'play', { action: 'finish' } );
-                    showOverlay();
+                    if( !loggedIn() ){
+                        showOverlay();
+                    }
                 }
             },
             plugins: {
@@ -730,6 +740,10 @@ define(["durandal/app",
                 $('.player').find('video')[0].removeAttribute("controls");
             }
         },
+        
+        oniOS: oniOS,
+        getiOSApp: getiOSApp,
+        
         footer: footer,
 	user: user,
 	disable_next: disable_next,
@@ -997,6 +1011,9 @@ define(["durandal/app",
 	},
 
 	compositionComplete: function() {
+            oniOS( head.browser.ios ? true : false );
+            console.log( head.browser );
+            console.log( 'oniOS: ' + oniOS() );
 	    setupFlowplayer( '.pp-tv', playing().media() );
 	    setupFaces( playing().media() );
 	    setupComments( playing().media() );

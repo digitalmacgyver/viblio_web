@@ -8,13 +8,27 @@
           <div class="paddedDiv bottomBorder-Thin">
             <div id="cloudImage"></div>
             <!--<p class="landingHeaderTitle"><span>Create your own </span>VIBLIO Video Library</p>-->
+             
+            <!-- ko ifnot: oniOS() -->
             <p class="landingHeaderTitle"><span>Log in to your </span>VIBLIO Account</p>
-                       
             <div class="button-Wrap">
                 <button class="btn btn-primary" data-bind="click: logIn, clickBubble: false">
                   Log Me In
                 </button>
             </div>
+            <!-- /ko -->
+            
+            <!-- ko if: oniOS() -->
+            <p class="landingHeaderTitle"><span>Get our </span>VIBLIO iOS App!</p>
+            <div class="button-Wrap iOSDownloadBtn">
+                <!--<a class="btn btn-primary iOSDownloadBtn" href="https://itunes.apple.com/us/app/viblio/id883377114?mt=8" target="_blank">
+                  Go to the app store!
+                </a>-->
+                <button class="btn btn-primary" data-bind="click: getiOSApp, clickBubble: false">
+                  Go to the app store!
+                </button>
+            </div>
+            <!-- /ko -->
             
             <!-- ko if: showPlayerOverlay()==true && get_the_app_overlay_logic()==true && user() -->
             <!--<table class="overlayTable">
