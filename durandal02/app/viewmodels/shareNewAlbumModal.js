@@ -51,8 +51,6 @@ function( router, app, system, config, viblio, dialog ) {
         
         self.updateMessage();
         
-        console.log( self.medialist() );
-        
 	var message = $('#shareVidMessage').val();
 	var list = $(self.view).find( "#shareVidEmail" ).tokenInput("get");
 	var emails = [];

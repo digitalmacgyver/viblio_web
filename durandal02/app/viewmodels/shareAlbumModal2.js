@@ -34,7 +34,6 @@ function( router, app, system, config, viblio, dialog ) {
     
     S.prototype.getAvatar = function() {
         var viblio = require( 'lib/viblio' );
-        console.log( viblio.user() );
         //return viblio.user().displayname;
     };
     

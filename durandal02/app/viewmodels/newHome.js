@@ -643,7 +643,6 @@ define( ['plugins/router',
                 args.rows = self.facesPager.entries_per_page;*/
                 viblio.api( 'services/album/get?aid=' + album_id + '&include_contact_info=1&include_tags=1&include_images=1' ).
                     then( function( json ) {
-                        console.log( json );
                         //self.hits ( json.pager.total_entries );
                         //self.facesPager = json.pager;
                         self.currentAlbum( json.album );

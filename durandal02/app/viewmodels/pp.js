@@ -1012,8 +1012,6 @@ define(["durandal/app",
 
 	compositionComplete: function() {
             oniOS( head.browser.ios ? true : false );
-            console.log( head.browser );
-            console.log( 'oniOS: ' + oniOS() );
 	    setupFlowplayer( '.pp-tv', playing().media() );
 	    setupFaces( playing().media() );
 	    setupComments( playing().media() );
