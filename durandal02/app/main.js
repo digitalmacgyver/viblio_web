@@ -15,7 +15,7 @@ requirejs.config({
 });
 
 requirejs.onError = function (err) {
-    console.log(err);
+    //console.log(err);
     if (err.requireType === 'scripterror') {
         alert(err);
     } else {
