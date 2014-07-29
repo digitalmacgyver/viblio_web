@@ -5943,3 +5943,8 @@ button.linkedin:active {
     width: 100%;
     margin: 0;
 }
+
+.selectedFace {
+    height: 40px;
+    width: 40px;
+}

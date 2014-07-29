@@ -372,6 +372,9 @@
                 <span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span>
                 that<span data-bind="text: hits() == 1 ? ' matches' : ' match'"></span> your
                 "<span data-bind="text: active_filter_label()"></span>" filter
+                <!-- ko if: faceFilterIsActive() -->
+                . <img class="selectedFace img-circle" data-bind="attr: {src: selectedFace().url}">
+                <!-- /ko -->
                 <!-- /ko -->
                 
                 <!-- ko if: albumFilterIsActive() -->
@@ -411,7 +414,9 @@
                     <span class="subtitle">by <span data-bind="text: currentAlbum().owner.displayname"></span> <img data-bind="attr: {src: '/services/user/avatar?uid=' + currentAlbum().owner.uuid + '&y=30'}, tooltip: {title: 'Album by ' + currentAlbum().owner.displayname}"></span>
                     <!-- /ko -->
                 <!-- /ko -->
+                <!-- ko ifnot: faceFilterIsActive() -->
                 .           
+                <!-- /ko -->
             </div>
             <!-- /ko --> <!-- End ifnot: add_to_mode_on() || delete_mode_on() -->
             
