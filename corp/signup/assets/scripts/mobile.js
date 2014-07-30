@@ -25,7 +25,7 @@ var Mobile = function () {
             contentType: 'application/json;charset=utf-8',
             data: JSON.stringify({
                 subject: subject,
-                to: [{ email: 'jesse@viblio.com', name: 'Feature Request' }],
+                to: [{ email: 'notifications@viblio.com', name: 'Feature Request' }],
                 body: '<p>This form was submitted via the phone landing page form.</p>\n\
                        <p>Email: ' + $('#email').val() + '</p>'
             })
