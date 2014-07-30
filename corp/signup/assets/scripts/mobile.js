@@ -31,6 +31,7 @@ var Mobile = function () {
             })
         }).then( function() {
             $('#email').val('');
+            alert('Thanks for your input!');
         });
     };
     
