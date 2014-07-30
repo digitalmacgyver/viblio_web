@@ -1,0 +1,75 @@
+.page-container {
+    padding: 10px;
+    font-size: 18px;
+}
+
+.mobileLogo-Wrap {
+    padding: 0	10px;
+}
+
+.iOSLink-Wrap {
+    padding: 10px;
+}
+
+.iOSLink-Wrap span {
+    width: 50%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.mobileLogo-Wrap img ,
+.appImage-Wrap img {
+    max-width: 100%;
+}
+
+.login-Wrap {
+    padding: 10px 0;
+    font-size: 24px;
+}
+
+.androidApp-Wrap {
+    font-size: 14px;
+}
+
+.androidApp-Wrap i {
+    font-size: 40px;
+    color: rgb(164,198,57);
+    vertical-align: top;
+}
+
+.androidApp-text {
+    display: inline-block;
+}
+
+.androidApp-text .turquoiseFont {
+    font-size: 16px;
+}
+
+.androidApp-text .small {
+    font-size: 12px;
+}
+
+#androidForm {
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+.copyright {
+    width: 100%;
+}
+
+.tomatoFont {
+    color: rgb(239,85,65);
+}
+
+.turquoiseFont {
+    color: rgb(28,184,209);
+}
+
+.centeredEl {
+    margin: 0 auto;
+}
+
+.centered {
+    text-align: center;
+}

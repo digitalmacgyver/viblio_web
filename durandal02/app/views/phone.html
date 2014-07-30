@@ -1,5 +1,16 @@
 <div class="phone">
   <div class="videocontent">
+    <a class="brand" href="/#home">
+        <img src="css/images/viblioLogo-WhiteWText.png" />
+    </a>
+    <!-- ko if: oniOS() -->
+    <p class="landingHeaderTitle"><span>Get our </span>VIBLIO iOS App!</p>
+    <div class="button-Wrap iOSDownloadBtn">
+        <button class="btn btn-primary" data-bind="click: getiOSApp, clickBubble: false">
+          Go to the app store!
+        </button>
+    </div>
+    <!-- /ko -->
     <video id="videojs" class="video-js vjs-default-skin"
 	   controls preload="auto" width="auto" height="auto"
 	   data-bind="attr:{poster:poster}">

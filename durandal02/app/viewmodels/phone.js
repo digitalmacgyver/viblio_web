@@ -9,6 +9,7 @@ function(app,system,router,config,viblio,customDialogs) {
     var height  = ko.observable();
     var poster  = ko.observable();
     var src  = ko.observable();
+    var oniOS = ko.observable( head.browser.ios )
     var player, mf;
 
     function resize() {
@@ -31,12 +32,18 @@ function(app,system,router,config,viblio,customDialogs) {
 	$("#m1").width( $(window).width() );
 	$("#m1").height( $(window).height() );
     }
+    
+    function getiOSApp() {
+        window.open( 'https://itunes.apple.com/us/app/viblio/id883377114?mt=8' );
+    }
 
     return {
 	width: width,
 	height: height,
 	poster: poster,
 	src: src,
+        oniOS: oniOS,
+        getiOSApp: getiOSApp,
 	canActivate: function( args ) {
 	    if ( args && args.mid ) {
 		return system.defer( function( dfd ) {
@@ -71,7 +78,8 @@ function(app,system,router,config,viblio,customDialogs) {
 	compositionComplete: function() {
 	    var self = this;
 
-
+            oniOS( head.browser.ios ? true : false );
+            
 	    player = $("#videojs");
 	    player.on( 'ended', function() {
 		$("#videojs").css( 'display', 'none' );

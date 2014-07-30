@@ -22,7 +22,7 @@ define(["durandal/app",
     var disable_prev = ko.observable( true );
     var disable_next = ko.observable( false );
     
-    var oniOS = ko.observable( head.browser.ios )
+    var oniOS = ko.observable( head.browser.ios );
     
     // These control what is visible and editable, depending on
     // if this is a user video, or a shared video (and how it
