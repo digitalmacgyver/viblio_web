@@ -46,7 +46,8 @@ media="screen"
 a.signup-btn {
     display: inline-block;
     padding: 7px 14px;
-    margin-top: 12px;
+    margin-top: 6px;
+    margin-bottom: 6px;
     font-size: 24px;
     color: white;
     border-radius: 0;
@@ -58,6 +59,11 @@ a.signup-btn {
     text-shadow: 2px 2px rgba(0,0,0,.2);
     box-shadow: none;
     text-decoration: none;
+}
+
+a.signup-btn .small {
+    font-size: 60%;
+    margin-bottom: 0;
 }
 
 a.signup-btn:hover {
