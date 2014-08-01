@@ -15,18 +15,18 @@ function(app,system,router,config,viblio,customDialogs) {
     function resize() {
 	var width = $(window).width();
 	var height = ( width * 9 ) / 16;
-	var top;
+	var top = 6;
 	if ( height > $(window).height() ) {
 	    height = $(window).height();
 	    width  = (height * 16)/9;
-	    top = 0;
+	    //top = 0;
 	}
-	else {
+	/*else {
 	    top = ($(window).height() - height) / 2;
-	}
+	}*/
 	$("#videojs").css( 'width', width + 'px' );
 	$("#videojs").css( 'height', height + 'px' );
-	$("#videojs").css( 'top', top + 'px' );
+	$("#videojs").css( 'top', '6px' );
 	$(".videocontent").height( $(window).height() );
 
 	$("#m1").width( $(window).width() );
