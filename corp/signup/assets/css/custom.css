@@ -32,6 +32,26 @@
     background: rgb(240, 85, 65);
 }
 
+.tomato {
+    color: rgb(239,85,65);
+}
+
+.inline {
+    display: inline-block;
+}
+
+.getApp-Wrap {
+    margin-left: 30px;
+}
+
+@media (max-width: 1073px) {
+    .getApp-Wrap {
+        display: block;
+        margin-left: 0;
+        margin-bottom: 25px;
+    }
+}
+
 .slider-main {
     height: 550px;
     max-height: 550px !important;
