@@ -1,139 +1,146 @@
-<div class="mediafile" data-bind="attr:{id:media().uuid}, css:{selected: selected(), gift: gift_style, shared: shared_style}">
-  <div>
-    <div style="position: relative; overflow: hidden;">
-      <!--<button class="dbtn btn btn-danger clearfix" 
-	      data-bind="text: options.delete_title, click:mfdelete"></button>-->
-      <a class="btn btn-ltGrey tomatoShadow media-share-badge" alt="share" 
-	 title="share" data-bind="visible: show_share_badge, click: share"><i class="icon-share"></i></a>
-      <a class="btn btn-ltGrey tomatoShadow media-select-badge" data-bind="visible: show_select_badge, click: selected() ? unselect : select">
-        <div class="inline" title="unselect" data-bind="if: $data.selected()">
-            <i class="icon-check"></i>
-        </div>
-        <div class="inline" title="select" data-bind="ifnot: $data.selected()">
-            <i class="icon-unchecked"></i>
-        </div>
-      </a>   
-      <a class="mplay-icon pointer" data-bind="click:play">
-        <i class="icon-play-circle"></i> 
-      </a>
-      <i class="icon-ok-sign"></i>
-      <div class='pointer' data-bind="click:play">
-        <img data-bind="attr:{src:image}" />
-        <!-- ko if: shared_style -->
-        <div class="sharedOwnerWrap">
-            <img class="boxShadowed avatar" data-bind="attr: {src: owner_avatar}" />
-            <span class="truncate" data-bind="text: owner_name"></span>
+<div class="mediafile" data-bind="attr:{id:media().uuid}, css:{selected: selected(), gift: gift_style, shared: shared_style, inProcess: in_process_style}">
+    <div>
+        <!-- ko if: in_process_style() -->
+        <div style="position: relative; overflow: hidden;" class="inProcess-Content greyBG">
+            <p class="whiteText textShadowed">This video is currently in process.</p>
+            <i class="icon-spinner icon-5x icon-spin active"></i>
         </div>
         <!-- /ko -->
-      </div>
-      
-      <div class="video-tags"
-	   style="position: absolute; bottom: 3px; left: 8px;"
-	   data-bind="foreach: tags">
-	<span data-bind="text: $data"></span>
-      </div>
-      
-    </div>
-    <div class="information">
-      <div class="aux pull-right" title="View count"><i class="icon-eye-open"></i><br><span data-bind="text: media().eyes">0</span></div>
-      <div data-bind="liveEditor: title, ifnot: ro">
-        <div class="view vidTitle title truncate" data-bind="click: title.edit, text: title() || 'Click to edit title'"></div>
-        <div class="editTitle-Wrap">
-          <input type="text" class="edit" data-bind="value: title, 
-						     hasFocus: title.editing, 
-						     event: { blur: function() { title.stopEditing(); title.save( $data, media(), 'mediaFile:TitleDescChanged' ) } }" />
-        </div>  
-      </div>
-      <div data-bind="if: ro">
-	<div class="view title truncate" data-bind="text: title() || 'no title'"></div>
-      </div>
-    </div>
-    <!-- ko if: show_faces_tags -->  
-    <div class='facesTags'>
-        <div class='mfFaces'>
-            <div class='mfFaces-Inner'>
-                <!-- ko foreach: facesToShow -->
-                <img class='img-circle' data-bind="attr: {src: $data.url, title: $data.contact.contact_name}" />
-                <!-- /ko -->
-                <!-- ko if: facesLeft() > 0 -->
-                <a href="#" data-bind="click: toggleFaces" class="facesToggle">... <span data-bind="text: facesLeft"></span></a>
+        <!-- ko ifnot: in_process_style() -->
+        <div style="position: relative; overflow: hidden;">
+            <!--<button class="dbtn btn btn-danger clearfix" 
+            data-bind="text: options.delete_title, click:mfdelete"></button>-->
+            <a class="btn btn-ltGrey tomatoShadow media-share-badge" alt="share" 
+            title="share" data-bind="visible: show_share_badge, click: share"><i class="icon-share"></i></a>
+            <a class="btn btn-ltGrey tomatoShadow media-select-badge" data-bind="visible: show_select_badge, click: selected() ? unselect : select">
+                <div class="inline" title="unselect" data-bind="if: $data.selected()">
+                    <i class="icon-check"></i>
+                </div>
+                <div class="inline" title="select" data-bind="ifnot: $data.selected()">
+                    <i class="icon-unchecked"></i>
+                </div>
+            </a>   
+            <a class="mplay-icon pointer" data-bind="click:play">
+                <i class="icon-play-circle"></i> 
+            </a>
+            <i class="icon-ok-sign"></i>
+            <div class='pointer' data-bind="click:play">
+                <img data-bind="attr:{src:image}" />
+                <!-- ko if: shared_style -->
+                <div class="sharedOwnerWrap">
+                    <img class="boxShadowed avatar" data-bind="attr: {src: owner_avatar}" />
+                    <span class="truncate" data-bind="text: owner_name"></span>
+                </div>
                 <!-- /ko -->
             </div>
+
+            <div class="video-tags"
+                style="position: absolute; bottom: 3px; left: 8px;"
+                data-bind="foreach: tags">
+                <span data-bind="text: $data"></span>
+            </div>
         </div>
-        <i class='icon-tags' data-bind="click: toggleTags" title='Toggle tags'></i>
-        
-        <!-- ko if: showFaces -->
-            <div class="facesPopup popover top">
-                <div class="arrow"></div>
-                <h3 class="popover-title">Faces <button type="button" class="close" data-bind="click: function(){ showFaces(false); }">&times;</button></h3>
-                <div class="popover-content">
-                    <div class="facesPopup-Content">
-                        <div class="facesWrap">
-                        <!-- ko foreach: faces -->
-                        <img class='img-circle' data-bind="attr: {src: $data.url, title: $data.contact.contact_name}" />
-                        <!-- /ko -->
+        <!-- /ko -->
+        <div class="information">
+            <div class="aux pull-right" title="View count"><i class="icon-eye-open"></i><br><span data-bind="text: media().eyes">0</span></div>
+            <div data-bind="liveEditor: title, ifnot: ro">
+                <div class="view vidTitle title truncate" data-bind="click: title.edit, text: title() || 'Click to edit title'"></div>
+                <div class="editTitle-Wrap">
+                    <input type="text" class="edit" data-bind="value: title, 
+                                                         hasFocus: title.editing, 
+                                                         event: { blur: function() { title.stopEditing(); title.save( $data, media(), 'mediaFile:TitleDescChanged' ) } }" />
+                </div>  
+            </div>
+            <div data-bind="if: ro">
+                <div class="view title truncate" data-bind="text: title() || 'no title'"></div>
+            </div>
+        </div>
+        <!-- ko if: show_faces_tags -->  
+        <div class='facesTags'>
+            <div class='mfFaces'>
+                <div class='mfFaces-Inner'>
+                    <!-- ko foreach: facesToShow -->
+                    <img class='img-circle' data-bind="attr: {src: $data.url, title: $data.contact.contact_name}" />
+                    <!-- /ko -->
+                    <!-- ko if: facesLeft() > 0 -->
+                    <a href="#" data-bind="click: toggleFaces" class="facesToggle">... <span data-bind="text: facesLeft"></span></a>
+                    <!-- /ko -->
+                </div>
+            </div>
+            <i class='icon-tags' data-bind="click: toggleTags" title='Toggle tags'></i>
+
+            <!-- ko if: showFaces -->
+                <div class="facesPopup popover top">
+                    <div class="arrow"></div>
+                    <h3 class="popover-title">Faces <button type="button" class="close" data-bind="click: function(){ showFaces(false); }">&times;</button></h3>
+                    <div class="popover-content">
+                        <div class="facesPopup-Content">
+                            <div class="facesWrap">
+                            <!-- ko foreach: faces -->
+                            <img class='img-circle' data-bind="attr: {src: $data.url, title: $data.contact.contact_name}" />
+                            <!-- /ko -->
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        <!-- /ko -->
-        
-        <!-- ko if: showTags -->
-            <div class="tagsPopup popover top">
-                <div class="arrow"></div>
-                <h3 class="popover-title">Tags <button type="button" class="close" data-bind="click: function(){ showTags(false); }">&times;</button></h3>
-                <div class="popover-content">
-                    <div class="tagsPopup-Content">
-                        <ul class="currentTags" data-bind="visible: showTags()">
-                            <!-- ko foreach: tags -->
-                            <li class="tag mocksWhiteBG">
-                                <span class="tagLabel" data-bind="text: $data"></span>
-                                <!-- ko if: $parent.tags_editable() -->
-                                <i class="icon-remove" title="Remove" data-bind="click: $parent.removeTag.bind( $data, $parent )"></i>
-                                <!-- /ko -->
-                            </li>
-                            <!-- /ko -->
-                            <!-- ko if: tags_editable() -->
-                            <li class="tag mocksWhiteBG dropdown navControl">
-                                <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="click: function(){ selectedTag( null ); }"><i class="icon-plus"></i> Add Tag</a>
-                                <ul class="style2DD dropdown-menu tags" role="menu">
-                                    <li class="tagsScrollWrapper">
-                                        <div class="scroller">
-                                            <div class="wrapper">
-                                                <ul class="tags-inner">
-                                                  <!-- ko foreach: tagLabels -->
-                                                    <!-- ko ifnot: $parent.newTagSelected() -->
-                                                        <!-- ko if: $data.label == 'New Tag' --> <li class="divider"></li> <!-- /ko -->
-                                                            <li data-bind="click: $parent.tagSelected.bind( $data, $parent ), clickBubble: false">
-                                                                <a class="checkboxedLi">
-                                                                    <!-- ko if: $data.label == 'New Tag' --> <i class='icon-plus'></i> <!-- /ko -->
-                                                                    <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
-                                                                </a>
-                                                            </li>
-                                                        <!-- /ko -->
-                                                    <!-- /ko -->
-                                                  <li data-bind="visible: newTagSelected()">
-                                                      <input class="newTagInput" type="text" style="padding-right: 24px;" data-bind="click: function(x,e){ e.stopPropagation(); }, value: newTag, event: { blur: addTag }, returnKey: blur" placeholder="Enter Tag"><span class="editable-clear-x" style="display: none;"></span>    
-                                                  </li>
-                                                </ul>    
-                                            </div>                  
-                                        </div>
-                                    </li>
-                                  </ul>                           
-                            </li>
-                            <!-- /ko -->
+            <!-- /ko -->
 
-                            <!-- ko if: !tags_editable() && tags().length < 1 -->
-                            <li class="tag">
-                                <span>This video does not have any tags yet.</span>
-                            </li>
-                            <!-- /ko -->
-                        </ul>
+            <!-- ko if: showTags -->
+                <div class="tagsPopup popover top">
+                    <div class="arrow"></div>
+                    <h3 class="popover-title">Tags <button type="button" class="close" data-bind="click: function(){ showTags(false); }">&times;</button></h3>
+                    <div class="popover-content">
+                        <div class="tagsPopup-Content">
+                            <ul class="currentTags" data-bind="visible: showTags()">
+                                <!-- ko foreach: tags -->
+                                <li class="tag mocksWhiteBG">
+                                    <span class="tagLabel" data-bind="text: $data"></span>
+                                    <!-- ko if: $parent.tags_editable() -->
+                                    <i class="icon-remove" title="Remove" data-bind="click: $parent.removeTag.bind( $data, $parent )"></i>
+                                    <!-- /ko -->
+                                </li>
+                                <!-- /ko -->
+                                <!-- ko if: tags_editable() -->
+                                <li class="tag mocksWhiteBG dropdown navControl">
+                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="click: function(){ selectedTag( null ); }"><i class="icon-plus"></i> Add Tag</a>
+                                    <ul class="style2DD dropdown-menu tags" role="menu">
+                                        <li class="tagsScrollWrapper">
+                                            <div class="scroller">
+                                                <div class="wrapper">
+                                                    <ul class="tags-inner">
+                                                      <!-- ko foreach: tagLabels -->
+                                                        <!-- ko ifnot: $parent.newTagSelected() -->
+                                                            <!-- ko if: $data.label == 'New Tag' --> <li class="divider"></li> <!-- /ko -->
+                                                                <li data-bind="click: $parent.tagSelected.bind( $data, $parent ), clickBubble: false">
+                                                                    <a class="checkboxedLi">
+                                                                        <!-- ko if: $data.label == 'New Tag' --> <i class='icon-plus'></i> <!-- /ko -->
+                                                                        <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
+                                                                    </a>
+                                                                </li>
+                                                            <!-- /ko -->
+                                                        <!-- /ko -->
+                                                      <li data-bind="visible: newTagSelected()">
+                                                          <input class="newTagInput" type="text" style="padding-right: 24px;" data-bind="click: function(x,e){ e.stopPropagation(); }, value: newTag, event: { blur: addTag }, returnKey: blur" placeholder="Enter Tag"><span class="editable-clear-x" style="display: none;"></span>    
+                                                      </li>
+                                                    </ul>    
+                                                </div>                  
+                                            </div>
+                                        </li>
+                                      </ul>                           
+                                </li>
+                                <!-- /ko -->
+
+                                <!-- ko if: !tags_editable() && tags().length < 1 -->
+                                <li class="tag">
+                                    <span>This video does not have any tags yet.</span>
+                                </li>
+                                <!-- /ko -->
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
+            <!-- /ko -->
+        </div>
         <!-- /ko -->
     </div>
-    <!-- /ko -->
-  </div>
 </div>

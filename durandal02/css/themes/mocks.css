@@ -3724,6 +3724,19 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     }
 }
 
+.mediafile .inProcess-Content {
+    height: 204px;
+    text-align: center;
+}
+
+.mediafile .inProcess-Content p {
+    margin-top: 30px;
+}
+
+.mediafile .inProcess-Content i {
+    margin-top: 10px;
+}
+
 .facesTags {
     border-top: 1px solid rgba(0,0,0,.2);
     width: 100%;
