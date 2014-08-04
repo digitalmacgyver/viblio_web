@@ -267,6 +267,9 @@ define( ['plugins/router',
         app.on('nginxModal:closed2', function() {
             if( document.location.hash == '#home' ) {
                 self.getVidsInProcess();
+                if( self.vidsInProcess() > 0 ) {
+                    self.recentVidsSearch();
+                }
             }
         });
     };
@@ -334,6 +337,7 @@ define( ['plugins/router',
                 if( self.vidsInProcess() > 0 ) {
                     args.only_videos=1;
                     args.only_visible=0;
+                    args['status[]']=['pending', 'visible', 'complete'];
                 }
                 
                 viblio.api( '/services/mediafile/recently_uploaded', args )
@@ -492,10 +496,10 @@ define( ['plugins/router',
                 args.page = self.facesPager.next_page;
                 args.rows = self.facesPager.entries_per_page;
                 // needed for showing pending videos
-                if( self.vidsInProcess() > 0 ) {
+                /*if( self.vidsInProcess() > 0 ) {
                     args.only_videos=1;
                     args.only_visible=0;
-                }
+                }*/
                 viblio.api( '/services/faces/media_face_appears_in', args )
                     .then( function( json ) {
                         self.hits ( json.pager.total_entries );
@@ -572,10 +576,10 @@ define( ['plugins/router',
                 args.page = self.cityPager.next_page;
                 args.rows = self.cityPager.entries_per_page;
                 // needed for showing pending videos
-                if( self.vidsInProcess() > 0 ) {
+                /*if( self.vidsInProcess() > 0 ) {
                     args.only_videos=1;
                     args.only_visible=0;
-                }
+                }*/
                 viblio.api( '/services/mediafile/taken_in_city', args )
                     .then( function( json ) {
                         self.hits ( json.pager.total_entries );
@@ -847,7 +851,7 @@ define( ['plugins/router',
             self.selectedVideos.remove( m.media().uuid );
             self.select_all_mode_is_on(false);
         });
-        console.log( mf.status == 'complete' ? 'TRUE' : "FALSE" );
+        
 	// Add it to the list
 	self.videos.push( m );
         
@@ -1152,10 +1156,10 @@ define( ['plugins/router',
                 args.page = self.searchPager.next_page;
                 args.rows = self.searchPager.entries_per_page;
                 // needed for showing pending videos
-                if( self.vidsInProcess() > 0 ) {
+                /*if( self.vidsInProcess() > 0 ) {
                     args.only_videos=1;
                     args.only_visible=0;
-                }
+                }*/
                 viblio.api( '/services/mediafile/search_by_title_or_description', args )
                     .then( function( json ) {
                         self.hits ( json.pager.total_entries );
@@ -1488,10 +1492,10 @@ define( ['plugins/router',
                             page: self.allVidsPager.next_page, 
                             rows: self.allVidsPager.entries_per_page};
                     // needed for showing pending videos
-                    if( self.vidsInProcess() > 0 ) {
+                    /*if( self.vidsInProcess() > 0 ) {
                         args.only_videos=1;
                         args.only_visible=0;
-                    }
+                    }*/
                     apiCall = viblio.api( '/services/faces/media_face_appears_in', args );
                 } else {
                     apiCall = viblio.api( '/services/mediafile/list_all', 
@@ -1500,10 +1504,10 @@ define( ['plugins/router',
 				page: self.allVidsPager.next_page, 
 				rows: self.allVidsPager.entries_per_page } );
                     // needed for showing pending videos
-                    if( self.vidsInProcess() > 0 ) {
+                    /*if( self.vidsInProcess() > 0 ) {
                         args.only_videos=1;
                         args.only_visible=0;
-                    }
+                    }*/
                 }
 		apiCall.then( function( json ) {
                         self.hits ( json.pager.total_entries );
