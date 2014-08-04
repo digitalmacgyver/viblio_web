@@ -264,11 +264,12 @@ define( ['plugins/router',
         
         //Events.includeIn( self );
         
-        app.on('nginxModal:closed2', function() {
+        app.on('nginxModal:closed2', function( args ) {
+            console.log( args );
             if( document.location.hash == '#home' ) {
                 self.getVidsInProcess();
-                if( self.vidsInProcess() > 0 ) {
-                    self.recentVidsSearch();
+                if( self.vidsInProcess() > 0 /*&& args.uploadsCompleted*/ ) {
+                    self.recentVidsSearch(true);
                 }
             }
         });
@@ -336,12 +337,13 @@ define( ['plugins/router',
                 // needed for showing pending videos
                 if( self.vidsInProcess() > 0 ) {
                     args.only_videos=1;
-                    args.only_visible=0;
+                    //args.only_visible=0;
                     args['status[]']=['pending', 'visible', 'complete'];
                 }
                 
                 viblio.api( '/services/mediafile/recently_uploaded', args )
                     .then( function( json ) {
+                        console.log( args );
                         console.log( json );
                         self.hits ( json.pager.total_entries );
                         self.recentPager = json.pager;
