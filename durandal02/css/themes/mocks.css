@@ -1175,7 +1175,7 @@ input:-moz-placeholder {
     position: absolute;
     top: 100%;
     left: 0;
-    z-index: 1000;
+    z-index: 1030;
     display: none;
     min-width: 100%;
     padding: 0;
