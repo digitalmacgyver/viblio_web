@@ -268,7 +268,7 @@ define( ['plugins/router',
             console.log( args );
             if( document.location.hash == '#home' ) {
                 self.getVidsInProcess();
-                if( self.vidsInProcess() > 0 /*&& args.uploadsCompleted*/ ) {
+                if( self.vidsInProcess() > 0 && args.uploadsCompleted ) {
                     self.recentVidsSearch(true);
                 }
             }
@@ -281,7 +281,7 @@ define( ['plugins/router',
         viblio.api('services/mediafile/list_status').then( function( data ) {
             //console.log( data );
             self.numVidsPending( data.stats.pending );
-            var num = data.stats.pending + data.stats.visible;
+            var num = data.stats.pending/* + data.stats.visible*/;
             self.vidsInProcess( num );
         });
     };
