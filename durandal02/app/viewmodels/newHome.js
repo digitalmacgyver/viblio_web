@@ -265,12 +265,9 @@ define( ['plugins/router',
         //Events.includeIn( self );
         
         app.on('nginxModal:closed2', function( args ) {
-            console.log( args );
             if( document.location.hash == '#home' ) {
                 self.getVidsInProcess();
-                console.log( args.uploadsCompleted );
                 if( self.vidsInProcess() > 0 && args.uploadsCompleted) {
-                    console.log( 'should show recent vids' );
                     self.recentVidsSearch(true);
                 }
             }
@@ -345,8 +342,6 @@ define( ['plugins/router',
                 
                 viblio.api( '/services/mediafile/recently_uploaded', args )
                     .then( function( json ) {
-                        console.log( args );
-                        console.log( json );
                         self.hits ( json.pager.total_entries );
                         self.recentPager = json.pager;
                         json.media.forEach( function( mf ) {
