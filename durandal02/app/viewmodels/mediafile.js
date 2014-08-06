@@ -28,6 +28,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	self.options = $.extend({
 	    ro: false,
             shared_style: false, // if mf is shared with user show different style
+            in_process_style: false,
 	    show_share_badge: false,
             show_select_badge: false,
             selected: false,
@@ -43,6 +44,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	self.selected = ko.observable( self.options.selected );
 	self.edittable = ko.observable( false );
 	self.ro       = ko.observable( self.options.ro );  // If true, then cannot edit title
+        self.in_process_style = ko.observable( self.options.in_process_style );
         self.shared_style = ko.observable( self.options.shared_style );
         self.gift_style = ko.computed( function() {
             if( data.is_viblio_created == 1 ) {
@@ -92,7 +94,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	self.title = ko.observable( data.title );
 	self.description = ko.observable( data.description );
 
-	self.image = ko.observable( self.media().views.poster.url );
+	self.image = ko.observable( self.options.in_process_style ? null : self.media().views.poster.url );
 
 	Events.includeIn( self );
 

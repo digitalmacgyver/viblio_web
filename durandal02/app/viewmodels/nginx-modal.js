@@ -12,6 +12,7 @@ define(['lib/viblio',
         
     var firstUploadComplete = ko.observable();
     var firstUploadMessageHasBeenShown = ko.observable();
+    var uploadsCompleted = ko.observable( null );
     
     Events.includeIn( this );
     
@@ -20,10 +21,16 @@ define(['lib/viblio',
     }
     
     function sendClosedMessage2() {
-        app.trigger( 'nginxModal:closed2' );
+        var args = {
+            uploadsCompleted: uploadsCompleted()
+        };
+        
+        app.trigger( 'nginxModal:closed2', args);
     }
     
     return{
+        uploadsCompleted: uploadsCompleted,
+        
 	close: function() {
 	    var pending = $(this.view).find('.vup').viblio_uploader( 'in_progress' );
 	    if ( pending ) {
@@ -44,6 +51,8 @@ define(['lib/viblio',
 	    }  
 	},
         activate: function() {
+           // set uploadsCompleted to null 
+           uploadsCompleted( null );
            // Check if first upload has been completed
            viblio.localStorage( 'firstUploadComplete' ).then(function( data ) {
                 if ( data ) {
@@ -82,6 +91,7 @@ define(['lib/viblio',
 	    $(view).find( '.vup' ).bind( 'viblio_uploadercompleted', function() {
                 viblio.mpEvent( 'ui_upload_complete' );
                 viblio.mpPeopleIncrement( 'UI uploads completed' );
+                self.uploadsCompleted( true );
 	    });
             
             //After first successful upload mark 'firstUploadComplete' as true 

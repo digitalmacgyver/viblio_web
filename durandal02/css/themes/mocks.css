@@ -1175,7 +1175,7 @@ input:-moz-placeholder {
     position: absolute;
     top: 100%;
     left: 0;
-    z-index: 1000;
+    z-index: 1030;
     display: none;
     min-width: 100%;
     padding: 0;
@@ -3722,6 +3722,19 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     .allAlbumVids .mediafile .sharedOwnerWrap .truncate {
         max-width: 135px;
     }
+}
+
+.mediafile .inProcess-Content {
+    height: 204px;
+    text-align: center;
+}
+
+.mediafile .inProcess-Content p {
+    margin-top: 30px;
+}
+
+.mediafile .inProcess-Content i {
+    margin-top: 10px;
 }
 
 .facesTags {
