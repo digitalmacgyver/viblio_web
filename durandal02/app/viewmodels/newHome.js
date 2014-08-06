@@ -260,6 +260,10 @@ define( ['plugins/router',
             }
         });
         
+        // content used for title of popover - adds close button so it can be dismissed
+        self.pt = '<span><strong>How to Create an Album</strong></span>'+
+                '<button type="button" id="close" class="close" onclick="$(&quot;.web-uploader-header-button&quot;).popover(&quot;hide&quot;);">&times;</button>'
+        
         //Events.includeIn( self );
         
         app.on('nginxModal:closed2', function() {

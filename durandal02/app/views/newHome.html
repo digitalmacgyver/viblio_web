@@ -6,14 +6,8 @@
                 <li class="divider-vertical"></li>
                 <li style="display: inline-block;" class="dropdown navControl">
                     <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: recentUploadsIsActive() || allVidsIsSelected() }, disable: isActiveFlag()">
-                        <!-- ko if: recentUploadsIsActive -->
-                        <i class='icon-time'></i>
-                        <span data-bind="visible: wideScreen()"> Recent</span>
-                        <!-- /ko -->
-                        <!-- ko ifnot: recentUploadsIsActive -->
                         <i class='icon-th'></i>
                         <span data-bind="visible: wideScreen()"> Library</span>
-                        <!-- /ko -->
                         <i class="icon-chevron-down"></i>
                     </button>
                     <ul class="style2DD dropdown-menu tags" role="menu">
@@ -30,7 +24,7 @@
                                         <li data-bind='click: showAllVideos'>
                                             <a class="checkboxedLi">
                                                 <i class='icon-th'></i>
-                                                <span> Library</span>                                        
+                                                <span> All</span>                                        
                                             </a>
                                         </li>
                                    </ul>    
@@ -43,7 +37,7 @@
                 
                 <!-- albums filter -->
                 <li class="dropdown navControl albumsList">
-                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: albumFilterIsActive() }, click: function(){ showMessage( 'albums' ); }, disable: isActiveFlag()" title="Filter by Albums"><i class="icon-picture"></i><span data-bind="visible: wideScreen()"> Albums</span></button>
+                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: albumFilterIsActive() }, click: function(){ showMessage( 'albums' ); }, disable: isActiveFlag(), popover: {html: true, title:pt, content: 'Click me to begin using your VIBLIO account by uploading your first videos.', placement: 'bottom'}" title="Filter by Albums"><i class="icon-picture"></i><span data-bind="visible: wideScreen()"> Albums</span></button>
                     <ul class="style2DD dropdown-menu tags albumList" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
