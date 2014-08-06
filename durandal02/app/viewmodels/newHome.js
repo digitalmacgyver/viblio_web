@@ -268,7 +268,9 @@ define( ['plugins/router',
             console.log( args );
             if( document.location.hash == '#home' ) {
                 self.getVidsInProcess();
-                if( self.vidsInProcess() > 0 && args.uploadsCompleted ) {
+                console.log( args.uploadsCompleted );
+                if( self.vidsInProcess() > 0 && args.uploadsCompleted) {
+                    console.log( 'should show recent vids' );
                     self.recentVidsSearch(true);
                 }
             }
