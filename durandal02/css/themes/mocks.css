@@ -948,6 +948,11 @@ input:-moz-placeholder {
     margin-bottom: 40px;
 }
 
+.paddingTopBottom5 {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
 .font18 {
     font-size: 18px;
 }
@@ -5881,6 +5886,20 @@ button.linkedin:active {
 
 /********* New Home ***********/
 
+.titleTable {
+    margin-bottom: 0;
+}
+
+.albumsList .popover {
+    color: rgb(117, 117, 128);
+    min-width: 400px;
+    max-width: 100%;
+}
+
+.albumsList .tooltip {
+    min-width: 100px;
+}
+
 .toolbar {
     position: absolute;
     width: 100%;
@@ -5908,7 +5927,7 @@ button.linkedin:active {
 }
 
 .title-block {
-    height: 167px;
+    height: 145px;
 }
 
 .vidsInProcessLabel {
@@ -5917,8 +5936,18 @@ button.linkedin:active {
 }
 
 .newHomeTitle-Wrap {
-    margin-top: 100px;
+    margin-top: 50px;
     padding: 0 40px;
+}
+
+.newHomeTitle-Wrap .mainTitle {
+    margin-bottom: 0;
+    font-size: 28px;
+}
+
+.mainTitleP {
+    margin-bottom: 5px;
+    display: inline-block;
 }
 
 .shared-icon-wrap {

@@ -37,7 +37,7 @@
                 
                 <!-- albums filter -->
                 <li class="dropdown navControl albumsList">
-                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: albumFilterIsActive() }, click: function(){ showMessage( 'albums' ); }, disable: isActiveFlag(), popover: {html: true, title:pt, content: 'Click me to begin using your VIBLIO account by uploading your first videos.', placement: 'bottom'}" title="Filter by Albums"><i class="icon-picture"></i><span data-bind="visible: wideScreen()"> Albums</span></button>
+                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: albumFilterIsActive() }, click: function(){ showMessage( 'albums' ); }, disable: isActiveFlag()" title="Filter by Albums"><i class="icon-picture"></i><span data-bind="visible: wideScreen()"> Albums</span></button>
                     <ul class="style2DD dropdown-menu tags albumList" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -173,7 +173,12 @@
                 
                 <!-- Add to --> 
                 <li class="dropdown navControl albumsList" data-bind="visible: albumFilterIsActive() ? !currentSelectedFilterAlbum().shared : true">
-                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="tooltip: {title: 'Choose an album that you want to add videos to.', placement : 'bottom'}, css: { activated: aFilterIsActive() }"><i class="icon-plus"></i><span data-bind="visible: wideScreen()"> Add To </span></a>
+                    <!-- ko if: showPopup -->
+                    <a class="dropdown-toggle addToButton" href="#" data-toggle="dropdown" data-bind="tooltip: {title: 'Choose an album that you want to add videos to.', placement : 'bottom'}, css: { activated: aFilterIsActive() }, popover: {html: true, title:pt, content: content, placement: 'left'}"><i class="icon-plus"></i><span data-bind="visible: wideScreen()"> Add To </span></a>
+                    <!-- /ko -->
+                    <!-- ko ifnot: showPopup -->
+                    <a class="dropdown-toggle addToButton" href="#" data-toggle="dropdown" data-bind="tooltip: {title: 'Choose an album that you want to add videos to.', placement : 'bottom'}, css: { activated: aFilterIsActive() }"><i class="icon-plus"></i><span data-bind="visible: wideScreen()"> Add To </span></a>
+                    <!-- /ko -->
                     <ul class="style2DD dropdown-menu tags albumList" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -334,7 +339,7 @@
         </div><!-- end navbar-inner -->       
     </div> <!-- end select-nav -->
     
-    <div class="table">
+    <div class="table titleTable">
         <!-- ko if: isActiveFlag() -->
         <div class="title-block"></div>
         <!-- /ko -->
@@ -354,28 +359,34 @@
 
         <div class="clearfix newHomeTitle-Wrap">
             <!-- ko ifnot: add_to_mode_on() || delete_mode_on()-->
-            <div style="display: block; text-align: center;" class="mainTitle textShadowed createAlbumDesc" data-bind="if: noFiltersAreActive() && !searchFilterIsActive()">
-                You have <span data-bind="text: hits"></span>
-                <span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private Viblio Library. 
+            <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: noFiltersAreActive() && !searchFilterIsActive()">
+                <p class="mainTitleP">
+                    You have <span data-bind="text: hits"></span>
+                    <span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private Viblio Library.
+                </p>
+                <p><span class="tomatoFont mainTitleCTA" data-bind="click: createAlbumFromTitle">Create an album</span> from these videos to privately share with friends and family.</p>
             </div>
 
             <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: !isActiveFlag() && !noFiltersAreActive() || searchFilterIsActive()"> 
                 <!-- ko if: !albumFilterIsActive() -->
-                You have
-                <span data-bind="text: hits"></span>
-                <span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span>
-                that<span data-bind="text: hits() == 1 ? ' matches' : ' match'"></span> your
-                "<span data-bind="text: active_filter_label()"></span>" filter
-                <!-- ko if: faceFilterIsActive() -->
-                . <img class="selectedFace img-circle" data-bind="attr: {src: selectedFace().url}">
-                <!-- /ko -->
+                <p class="mainTitleP">
+                    You have
+                    <span data-bind="text: hits"></span>
+                    <span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span>
+                    that<span data-bind="text: hits() == 1 ? ' matches' : ' match'"></span> your
+                    "<span data-bind="text: active_filter_label()"></span>" filter.
+                    <!-- ko if: faceFilterIsActive() -->
+                     <img class="selectedFace img-circle" data-bind="attr: {src: selectedFace().url}">
+                    <!-- /ko -->
+                </p>
+                <p><span class="tomatoFont mainTitleCTA" data-bind="click: createAlbumFromTitle">Create an album</span> from these videos to privately share with friends and family.</p>
                 <!-- /ko -->
                 
                 <!-- ko if: albumFilterIsActive() -->
                     <!-- album is owned by the user -->
                     <!-- ko ifnot: currentSelectedFilterAlbum().shared -->
                         <!-- ko if: albumIsShared() -->
-                        <div class="shared-icon-wrap" data-bind="click: seeSharedMembers, tooltip: {title: 'Click to see shared members' }">
+                        <div class="shared-icon-wrap" data-bind="click: seeSharedMembers, tooltip: {title: 'Click to see shared members', placement: 'bottom' }">
                             <i class='icon-folder-close-alt outer-icon'></i>
                             <div class="inner-icon">
                                 <i class='icon-user'></i><i class='icon-user'></i>
@@ -385,37 +396,39 @@
                         <!-- ko ifnot: albumIsShared() -->
                         <i class='icon-folder-close-alt bigIcon'></i>
                         <!-- /ko -->
-                        You have
-                        <span data-bind="text: videos().length"></span>
-                        <span data-bind="text: videos().length == 1 ? ' video ' : ' videos'"></span>
-                        in your "<div class="inline newHomeAlbumTitle" data-bind="liveEditor: currentAlbumTitle, click: setSize">
-                                    <div class="newHomeAlbumTitleView view turquoiseFont" data-bind="click: currentAlbumTitle.edit, text: currentAlbumTitle() ? currentAlbumTitle() : 'Click to add album title', tooltip: {title:'Click to edit album title'}"></div>
-                                    <div class="newHomeAlbumTitle-Wrap">
-                                        <input type="text" class="newHomeAlbumTitleEdit edit" data-bind="value: currentAlbumTitle, 
-                                                             hasFocus: currentAlbumTitle.editing, 
-                                                             event: { blur: function() { currentAlbumTitle.stopEditing(); currentAlbumTitle.save( null, this, 'album:name_changed' ); } }" />
-                                    </div>  
-                                </div>" album
+                        <div class="mainTitleP">
+                            You have
+                            <span data-bind="text: videos().length"></span>
+                            <span data-bind="text: videos().length == 1 ? ' video ' : ' videos'"></span>
+                            in your "<div class="inline newHomeAlbumTitle" data-bind="liveEditor: currentAlbumTitle, click: setSize">
+                                        <div class="newHomeAlbumTitleView view turquoiseFont" data-bind="click: currentAlbumTitle.edit, text: currentAlbumTitle() ? currentAlbumTitle() : 'Click to add album title', tooltip: {title:'Click to edit album title', placement: 'bottom'}"></div>
+                                        <div class="newHomeAlbumTitle-Wrap">
+                                            <input type="text" class="newHomeAlbumTitleEdit edit" data-bind="value: currentAlbumTitle, 
+                                                                 hasFocus: currentAlbumTitle.editing, 
+                                                                 event: { blur: function() { currentAlbumTitle.stopEditing(); currentAlbumTitle.save( null, this, 'album:name_changed' ); } }" />
+                                        </div>  
+                                    </div>" album.    
+                        </div>
+                        <p data-bind="visible: !currentSelectedFilterAlbum().shared"><span class="tomatoFont mainTitleCTA" data-bind="click: share_mode">Invite friends</span> to privately see this album.</p>
                     <!-- /ko -->
                     
                     <!-- album is owned by another user and shared with viewer -->
                     <!-- ko if: currentSelectedFilterAlbum().shared -->
                     <i class='icon-folder-close bigIcon turquoiseFont' title="This album is shared with you."></i>
-                    There <span data-bind="text: videos().length == 1 ? 'is ' : 'are '"></span>
-                    <span data-bind="text: videos().length"></span>
-                    <span data-bind="text: videos().length == 1 ? ' video ' : ' videos'"></span>
-                    in the "<span data-bind="text: selectedFilterAlbum"></span>" album &mdash;
-                    <span class="subtitle">by <span data-bind="text: currentAlbum().owner.displayname"></span> <img data-bind="attr: {src: '/services/user/avatar?uid=' + currentAlbum().owner.uuid + '&y=30'}, tooltip: {title: 'Album by ' + currentAlbum().owner.displayname}"></span>
+                    <div class="mainTitleP">
+                        There <span data-bind="text: videos().length == 1 ? 'is ' : 'are '"></span>
+                        <span data-bind="text: videos().length"></span>
+                        <span data-bind="text: videos().length == 1 ? ' video ' : ' videos'"></span>
+                        in the "<span data-bind="text: selectedFilterAlbum"></span>" album &mdash;
+                        <span class="subtitle">by <span data-bind="text: currentAlbum().owner.displayname"></span> <img data-bind="attr: {src: '/services/user/avatar?uid=' + currentAlbum().owner.uuid + '&y=30'}, tooltip: {title: 'Album by ' + currentAlbum().owner.displayname, placement: 'bottom'}"></span>.
+                    </div>
                     <!-- /ko -->
-                <!-- /ko -->
-                <!-- ko ifnot: faceFilterIsActive() -->
-                .           
                 <!-- /ko -->
             </div>
             <!-- /ko --> <!-- End ifnot: add_to_mode_on() || delete_mode_on() -->
             
             <!-- ko if: add_to_mode_on() || delete_mode_on() -->
-            <div style="display: block; text-align: center;" class="mainTitle textShadowed tomatoFont"><b>
+            <div style="display: block; text-align: center;" class="mainTitle textShadowed tomatoFont paddingTopBottom5"><b>
                 Select the videos you want to
                     <!-- ko if: add_to_mode_on() -->
                         <span> add to </span>
