@@ -3,6 +3,7 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
     var showWhat = ko.observable(true);
     var showWho = ko.observable(false);
     var showHow = ko.observable(false);
+    var showPrivacy = ko.observable(false);
     
     var voteEmail = ko.observable('');
     var voteEmailValid = ko.computed (function() {
@@ -163,6 +164,7 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
         showWhat: showWhat,
         showWho: showWho,
         showHow: showHow,
+        showPrivacy: showPrivacy,
         
         voteEmail: voteEmail,
         options: options,
@@ -194,14 +196,22 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
                     showWhat( true );
                     showWho( false );
                     showHow( false );
+                    showPrivacy( false );
                 } else if ( args.showWho ) {
                     showWhat( false );
                     showWho( true );
                     showHow( false );
+                    showPrivacy( false );
+                }else if ( args.showPrivacy ) {
+                    showWhat( false );
+                    showWho( false );
+                    showHow( false );
+                    showPrivacy( true );
                 } else {
                     showWhat( false );
                     showWho( false );
                     showHow( true );
+                    showPrivacy( false );
                 }
             }
         }

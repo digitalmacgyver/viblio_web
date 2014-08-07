@@ -5324,6 +5324,7 @@ div.fstrip {
     //margin-bottom: 50px;
 }
 
+.whatWhoHow .aboutPrivacy,
 .whatWhoHow .what,
 .whatWhoHow .how,
 .vote {
@@ -5332,11 +5333,27 @@ div.fstrip {
     margin: 50px auto;
 }
 
+.whatWhoHow .aboutPrivacy,
 .whatWhoHow .what {   
     font-size: 24px;
     line-height: 1;
 }
 
+.whatWhoHow .aboutPrivacy p {
+    margin-bottom: 20px;
+}
+
+.whatWhoHow .aboutPrivacy ol {
+    margin-left: 60px;
+    margin-bottom: 30px;
+}
+
+.whatWhoHow .aboutPrivacy ol li {
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+.whatWhoHow .aboutPrivacy .bottomBorder-Thick,
 .whatWhoHow .what .bottomBorder-Thick,
 .whatWhoHow .how form {
     padding: 50px;
@@ -5945,6 +5962,10 @@ button.linkedin:active {
     font-size: 28px;
 }
 
+.mainTitleCTA {
+    cursor: pointer;
+}
+
 .mainTitleP {
     margin-bottom: 5px;
     display: inline-block;
@@ -5989,4 +6010,15 @@ button.linkedin:active {
 .selectedFace {
     height: 40px;
     width: 40px;
+}
+
+/******** Privacy Matters ********/
+
+.privacyMatters-Wrap {
+    overflow-y: scroll;
+}
+
+.inset {
+    padding-left: 40px;   
+    margin-top: 10px;
 }
