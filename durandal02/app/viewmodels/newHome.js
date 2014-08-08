@@ -279,11 +279,12 @@ define( ['plugins/router',
         
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
-                self.getVidsInProcess();
-                console.log( self.vidsInProcess(), args.uploadsCompleted);
-                if( self.vidsInProcess() > 0 && args.uploadsCompleted ) {
-                    self.recentVidsSearch(true);
-                }
+                viblio.api('services/mediafile/list_status').then( function( data ) {
+                    console.log( data, args.uploadsCompleted );
+                    if( data.stats.pending > 0 && args.uploadsCompleted ) {
+                        self.recentVidsSearch(true);
+                    }
+                });
             }
         });
     };
