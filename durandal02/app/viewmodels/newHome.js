@@ -280,7 +280,8 @@ define( ['plugins/router',
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
                 self.getVidsInProcess();
-                if( self.vidsInProcess() > 0 && args.uploadsCompleted) {
+                console.log( self.vidsInProcess(), args.uploadsCompleted);
+                if( self.vidsInProcess() > 0 && args.uploadsCompleted ) {
                     self.recentVidsSearch(true);
                 }
             }
