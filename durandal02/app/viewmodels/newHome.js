@@ -359,7 +359,7 @@ define( ['plugins/router',
                 
                 viblio.api( '/services/mediafile/recently_uploaded', args )
                     .then( function( json ) {
-                        self.hits ( json.pager.total_entries );
+                        self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
                         self.recentPager = json.pager;
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
