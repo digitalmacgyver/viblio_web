@@ -6001,7 +6001,7 @@ button.linkedin:active {
 
 .newHomeAlbumTitleEdit.edit:focus,
 .newHomeAlbumTitleEdit.edit {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 100;
     width: 100%;
     margin: 0;
@@ -6021,4 +6021,8 @@ button.linkedin:active {
 .inset {
     padding-left: 40px;   
     margin-top: 10px;
+}
+
+ul.token-input-list-facebook li input {
+    min-width: 100px;
 }

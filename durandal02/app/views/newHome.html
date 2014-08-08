@@ -361,25 +361,43 @@
             <!-- ko ifnot: add_to_mode_on() || delete_mode_on()-->
             <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: noFiltersAreActive() && !searchFilterIsActive()">
                 <p class="mainTitleP">
-                    You have <span data-bind="text: hits"></span>
-                    <span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private Viblio Library.
+                    <!--You have <span data-bind="text: hits"></span>-->
+                    ALL Videos (<span data-bind="text: hits"></span>)
+                    <!--<span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private Viblio Library.-->
                 </p>
+                <!-- ko if: hits() > 0 --> 
                 <p><span class="tomatoFont mainTitleCTA" data-bind="click: createAlbumFromTitle">Create an album</span> from these videos to privately share with friends and family.</p>
+                <!-- /ko -->
+                <!-- ko ifnot: hits() > 0 --> 
+                <p><span class="tomatoFont mainTitleCTA" data-bind="click: add_videos">Upload Videos</span></p>
+                <!-- /ko -->
             </div>
 
             <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: !isActiveFlag() && !noFiltersAreActive() || searchFilterIsActive()"> 
                 <!-- ko if: !albumFilterIsActive() -->
                 <p class="mainTitleP">
-                    You have
+                    <!--You have
                     <span data-bind="text: hits"></span>
                     <span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span>
                     that<span data-bind="text: hits() == 1 ? ' matches' : ' match'"></span> your
-                    "<span data-bind="text: active_filter_label()"></span>" filter.
+                    "<span data-bind="text: active_filter_label()"></span>" filter.-->
+                    
+                    <!-- ko if: active_filter_label() == 'Recent' -->
+                    <span data-bind="text: active_filter_label().toUpperCase()"></span> Videos (<span data-bind="text: hits"></span>)
+                    <!-- /ko -->
+                    <!-- ko ifnot: active_filter_label() == 'Recent' -->
+                    <span data-bind="text: active_filter_label().toUpperCase()"></span> Filter (<span data-bind="text: hits"></span>)
+                    <!-- /ko -->
                     <!-- ko if: faceFilterIsActive() -->
                      <img class="selectedFace img-circle" data-bind="attr: {src: selectedFace().url}">
                     <!-- /ko -->
                 </p>
+                <!-- ko if: hits() > 0 --> 
                 <p><span class="tomatoFont mainTitleCTA" data-bind="click: createAlbumFromTitle">Create an album</span> from these videos to privately share with friends and family.</p>
+                <!-- /ko -->
+                <!-- ko ifnot: hits() > 0 --> 
+                <p><span class="tomatoFont mainTitleCTA" data-bind="click: add_videos">Upload Videos</span></p>
+                <!-- /ko -->
                 <!-- /ko -->
                 
                 <!-- ko if: albumFilterIsActive() -->
@@ -391,13 +409,13 @@
                             <div class="inner-icon">
                                 <i class='icon-user'></i><i class='icon-user'></i>
                             </div>    
-                        </div>                      
+                        </div>&nbsp;                      
                         <!-- /ko -->
                         <!-- ko ifnot: albumIsShared() -->
-                        <i class='icon-folder-close-alt bigIcon'></i>
+                        <i class='icon-folder-close-alt bigIcon'></i>&nbsp;
                         <!-- /ko -->
                         <div class="mainTitleP">
-                            You have
+                            <!--You have
                             <span data-bind="text: videos().length"></span>
                             <span data-bind="text: videos().length == 1 ? ' video ' : ' videos'"></span>
                             in your "<div class="inline newHomeAlbumTitle" data-bind="liveEditor: currentAlbumTitle, click: setSize">
@@ -407,7 +425,16 @@
                                                                  hasFocus: currentAlbumTitle.editing, 
                                                                  event: { blur: function() { currentAlbumTitle.stopEditing(); currentAlbumTitle.save( null, this, 'album:name_changed' ); } }" />
                                         </div>  
-                                    </div>" album.    
+                                    </div>" album.-->
+                                    
+                             <div class="inline newHomeAlbumTitle" data-bind="liveEditor: currentAlbumTitle, click: setSize">
+                                <div class="newHomeAlbumTitleView view turquoiseFont" data-bind="click: currentAlbumTitle.edit, text: currentAlbumTitle() ? currentAlbumTitle() : 'Click to add album title', tooltip: {title:'Click to edit album title', placement: 'bottom'}"></div>
+                                <div class="newHomeAlbumTitle-Wrap">
+                                    <input type="text" class="newHomeAlbumTitleEdit edit" data-bind="value: currentAlbumTitle, 
+                                                         hasFocus: currentAlbumTitle.editing, 
+                                                         event: { blur: function() { currentAlbumTitle.stopEditing(); currentAlbumTitle.save( null, this, 'album:name_changed' ); } }" />
+                                </div>  
+                            </div> Album (<span data-bind="text: videos().length"></span>)      
                         </div>
                         <p data-bind="visible: !currentSelectedFilterAlbum().shared"><span class="tomatoFont mainTitleCTA" data-bind="click: share_mode">Invite friends</span> to privately see this album.</p>
                     <!-- /ko -->
@@ -416,10 +443,11 @@
                     <!-- ko if: currentSelectedFilterAlbum().shared -->
                     <i class='icon-folder-close bigIcon turquoiseFont' title="This album is shared with you."></i>
                     <div class="mainTitleP">
-                        There <span data-bind="text: videos().length == 1 ? 'is ' : 'are '"></span>
+                        <!--There <span data-bind="text: videos().length == 1 ? 'is ' : 'are '"></span>
                         <span data-bind="text: videos().length"></span>
                         <span data-bind="text: videos().length == 1 ? ' video ' : ' videos'"></span>
-                        in the "<span data-bind="text: selectedFilterAlbum"></span>" album &mdash;
+                        in the "<span data-bind="text: selectedFilterAlbum"></span>" album &mdash;-->
+                        <span data-bind="text: selectedFilterAlbum().toUpperCase()"></span> Album (<span data-bind="text: videos().length"></span>) &mdash;
                         <span class="subtitle">by <span data-bind="text: currentAlbum().owner.displayname"></span> <img data-bind="attr: {src: '/services/user/avatar?uid=' + currentAlbum().owner.uuid + '&y=30'}, tooltip: {title: 'Album by ' + currentAlbum().owner.displayname, placement: 'bottom'}"></span>.
                     </div>
                     <!-- /ko -->

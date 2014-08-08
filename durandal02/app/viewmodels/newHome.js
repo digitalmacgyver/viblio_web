@@ -280,7 +280,6 @@ define( ['plugins/router',
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
                 viblio.api('services/mediafile/list_status').then( function( data ) {
-                    console.log( data, args.uploadsCompleted );
                     self.numVidsPending( data.stats.pending );
                     var num = data.stats.pending/* + data.stats.visible*/;
                     self.vidsInProcess( num );
@@ -648,7 +647,7 @@ define( ['plugins/router',
                 self.selectedFilterAlbum( album.label );
                 self.currentSelectedFilterAlbum( album );
                 self.currentAlbumAid( album.uuid );
-                self.currentAlbumTitle( album.title );
+                self.currentAlbumTitle( album.title.toUpperCase() );
                 self.albumVidsSearch( true );
                 gettingAlbum = false;
             }

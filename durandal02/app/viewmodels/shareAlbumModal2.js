@@ -45,6 +45,7 @@ function( router, app, system, config, viblio, dialog ) {
     };
 
     S.prototype.closeModal = function() {
+        $('.token-input-dropdown-facebook').hide();
         dialog.close(this, this);
     };
     
@@ -70,7 +71,8 @@ function( router, app, system, config, viblio, dialog ) {
 	    emails.push( email.id || email.name );
 	});
 	var viblio = require( 'lib/viblio' );
-	viblio.api( '/services/album/share_album', 
+        if( emails.length > 0 ) {
+            viblio.api( '/services/album/share_album', 
 		    { aid: self.album.uuid, 
 		      members: emails, 
 		      body: message } ).then( function() {
@@ -81,7 +83,8 @@ function( router, app, system, config, viblio, dialog ) {
                           // broadcast that album has been shared along with aid so new members can be shown in viewAlbum
                           app.trigger('album:album_shared', self.album.uuid);
 		      });
-	self.closeModal();
+            self.closeModal();
+        }
     };
 
     S.prototype.attached = function( view, parent ) {
@@ -168,13 +171,22 @@ function( router, app, system, config, viblio, dialog ) {
             { minChars: 2,
               theme: "facebook",
               preventDuplicates: true,
+              //hintText: 'Place holder text...',
               onAdd: function() {
                   self.shareVidEmailValid(true);
+              },
+              onDelete: function() {
+                  var list = $(self.view).find( "#shareVidEmail" ).tokenInput("get");
+                  if( list.length == 0 ) {
+                    self.shareVidEmailValid(false);
+                  }
               },
               resultsFormatter: function( item ) {
                   return '<li>' + item.name + '&nbsp;(' + (item.id || item.name) + ')</li>';
               }
             });
+        
+        $("#token-input-shareVidEmail").attr("placeholder", "Email");
     };
 
     return S;

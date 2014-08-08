@@ -165,6 +165,7 @@ function( router, app, system, config, viblio, dialog ) {
             { minChars: 2,
               theme: "facebook",
               preventDuplicates: true,
+              placeholder: 'Place holder text...',
               onAdd: function() {
                   self.shareVidEmailValid(true);
               },
