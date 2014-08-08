@@ -281,7 +281,10 @@ define( ['plugins/router',
             if( document.location.hash == '#home' ) {
                 viblio.api('services/mediafile/list_status').then( function( data ) {
                     console.log( data, args.uploadsCompleted );
-                    if( data.stats.pending > 0 && args.uploadsCompleted ) {
+                    self.numVidsPending( data.stats.pending );
+                    var num = data.stats.pending/* + data.stats.visible*/;
+                    self.vidsInProcess( num );
+                    if( self.vidsInProcess() > 0 && args.uploadsCompleted ) {
                         self.recentVidsSearch(true);
                     }
                 });
