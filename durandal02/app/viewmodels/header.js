@@ -22,7 +22,11 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
     
     // content used for title of popover - adds close button so it can be dismissed
     var pt = '<span><strong>Get Started</strong></span>'+
-                '<button type="button" id="close" class="close" onclick="$(&quot;.web-uploader-header-button&quot;).popover(&quot;hide&quot;);">&times;</button>'
+                '<button type="button" id="close" class="close" onclick="$(&quot;.web-uploader-header-button&quot;).popover(&quot;hide&quot;);">&times;</button>';
+        
+    function showPrivacy() {
+        dialogs.showModal( 'viewmodels/privacyMatters' );
+    }    
     
     return {
         
@@ -30,6 +34,7 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
         
         showPopup: showPopup,
 	router: router,
+        showPrivacy: showPrivacy,
 	// Show details about the user
 	user: viblio.user,
 	feedback_email: ko.observable( 'mailto:feedback@' + config.email_domain() ),

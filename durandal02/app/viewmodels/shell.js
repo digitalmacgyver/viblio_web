@@ -225,7 +225,7 @@ function (router, app, system, page_header, landing_header, conditional_header, 
             { route: 'whoWeAre',   moduleId: 'whoWeAre',     title: 'Who We Are',
 	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
           
-            { route: 'whatWhoHow',   moduleId: 'whatWhoHow',     title: 'What, Who and How',
+            { route: 'about',   moduleId: 'whatWhoHow',     title: 'What and How',
 	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
           
             { route: 'ksLanding',        moduleId: 'ksLanding',     title: 'Thanks for supporting VIBLIO',

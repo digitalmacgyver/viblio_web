@@ -34,14 +34,18 @@
     <link href="assets/plugins/bxslider/jquery.bxslider.css" rel="stylesheet" />                
     <!-- END PAGE LEVEL PLUGIN STYLES -->
 
-    <!-- BEGIN THEME STYLES --> 
+    <!-- BEGIN THEME STYLES -->   
     <link href="assets/css/style-metronic.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/style.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/themes/viblio.css" rel="stylesheet" type="text/css" id="style_color"/>
     <link href="assets/css/style-responsive.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/custom.css" rel="stylesheet" type="text/css"/>
     <!-- END THEME STYLES -->
-
+    
+    <!-- FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Just+Another+Hand" rel="stylesheet" type="text/css">
+    <!-- END FONTS -->
+    
     <link rel="shortcut icon" href="favicon.ico" />
   </head>
   <!-- END HEAD -->
@@ -60,18 +64,24 @@
 	  </button>
 	  <!-- END RESPONSIVE MENU TOGGLER -->
 	  <!-- BEGIN LOGO (you can use logo image instead of text)-->
-	  <a class="navbar-brand logo-v1" href="index.html">
-	    <img src="assets/img/logoName.png" id="logoimg" alt="">
-	  </a>
+          <div class="logo-Wrap">
+              <a class="navbar-brand logo-v1" href="index.html">
+                <img src="assets/img/logoName.png" id="logoimg" alt="">
+              </a>
+              <div class="inBeta">
+                  <span>In Beta</span>
+              </div>
+          </div>
 	  <!-- END LOGO -->
 	</div>
 	
 	<!-- BEGIN TOP NAVIGATION MENU -->
 	<div class="navbar-collapse collapse" style="text-align: center;">
-          <a href="/#login?orsignup=true" class="signup-btn"><p class="small">In Beta</p>Sign Up Now!</a>
+          <a href="/#login?orsignup=true" class="signup-btn">Create Your Free Account</a>
 	  <ul class="nav navbar-nav">
-            <li><a href="javascript: window.location='/#whatWhoHow';">What, Who and How</a></li>
-            <li><a href="//corp.viblio.com/viblio-blog/">Viblio Blog</a></li>
+            <li><a href="javascript: window.location='/#about';">About</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="//corp.viblio.com/viblio-blog/">VIBLIO Blog</a></li>
             <li><a href="javascript: window.location='/#login';">Log In</a></li>
 	  </ul>                           
 	</div>
@@ -214,6 +224,15 @@
           </ul>
           <div class="tp-bannertimer tp-bottom"></div>
         </div>
+        <div class="getApp-Wrap">
+            <div>
+                <span>get the FREE video</span><br>
+                <span>uploader iPhone app</span>
+            </div>
+            <a href="https://itunes.apple.com/us/app/viblio/id883377114?mt=8" target="new">
+              <img src="assets/img/mobileSite/viblioApp.png" alt="Apple App Store">
+            </a>    
+        </div>  
       </div>
       <!-- END REVOLUTION SLIDER -->
       
@@ -223,7 +242,7 @@
         <!-- BEGIN BLOCKQUOTE BLOCK -->   
         <div class="row">
           <div class="col-md-12" style="text-align: center;">
-            <h1 style="margin-bottom: 25px;">If only the rest of your digital life could be this organized!</h1>
+            <h1 class="inline" style="margin-bottom: 25px;">If only the rest of your digital life could be this organized!</h1>
           </div>
         </div>
         <!-- END BLOCKQUOTE BLOCK -->

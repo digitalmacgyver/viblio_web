@@ -262,6 +262,19 @@ define( ['plugins/router',
         });
         self.pendingVidsArr = ko.observableArray([]);
         
+        self.showPopup = ko.observable( false );
+        // content used for title of popover - adds close button so it can be dismissed
+        self.btn = '<button type="button" class="close albumPopOverClose" onclick="$(&quot;.addToButton&quot;).popover(&quot;hide&quot;);">&times;</button>';
+        self.pt = '<span><strong>How to Create an Album</strong></span>'+self.btn;      
+        
+        self.content = '<p>Albums are a great way to share groups of videos privately with friends, family or your community. \n\
+                        If you’ve already uploaded videos to your library, start a new private sharing space for you and your friends.</p>\n\
+                        <ul>\n\
+                            <li>CLick on the <strong>+ Add To</strong> button to the right</li>\n\
+                            <li><strong>Create a New Album</strong> (or choose an existing album to add to)</li>\n\
+                            <li><strong>Select</strong> your videos and press <strong>DONE</strong> in the Select Toolbar</li>\n\
+                        </ul>'
+        
         //Events.includeIn( self );
         
         app.on('nginxModal:closed2', function( args ) {
@@ -691,9 +704,7 @@ define( ['plugins/router',
             self.selectedCity('');
             self.albumFilterIsActive(true);
             
-            self.isActiveFlag(false);
-            
-            
+            self.isActiveFlag(false);            
         });
     };
     
@@ -708,16 +719,30 @@ define( ['plugins/router',
         });
     });
     
+    newHome.prototype.hidePopover = function() {
+        var self = this;
+        $(".addToButton").popover("hide");
+        self.showPopup( false );
+    };
+    
     newHome.prototype.showMessage = function( type ) {
         var self = this;
         var msg;
         var showMessage = false;
         
         if( type === 'albums') {
-            if( self.albumsFilterLabels().length === 0 ) {
+            /*if( self.albumsFilterLabels().length === 0 ) {
                 showMessage = true;
             }
-            msg = "<p>You haven’t created any albums yet. Go back to your Library <img src='/css/images/messages/library.png'> and then click the Add To <img src='/css/images/messages/addTo.png'> button to start your first Album.</p>";
+            msg = "<p>You haven’t created any albums yet. Go back to your Library <img src='/css/images/messages/library.png'> and then click the Add To <img src='/css/images/messages/addTo.png'> button to start your first Album.</p>";*/
+            showMessage = false;
+            if( self.albumsFilterLabels().length === 0 ) {
+                self.showPopup( true );
+                $(".addToButton").popover("show");
+                $('.albumPopOverClose').on('click', function(){
+                    self.hidePopover();
+                });
+            }
         } else if ( type === 'people' ) {
             if( self.facesLabels().length === 0 ) {
                 showMessage = true;
@@ -1393,6 +1418,14 @@ define( ['plugins/router',
         });
     };
     
+    newHome.prototype.createAlbumFromTitle = function() {
+        var self = this;
+        
+        console.log( self.albumLabels() );
+        self.albumLabels()[0].selected(true);
+        self.addToAlbumSelected( self, self.albumLabels()[0] );
+    };
+    
     newHome.prototype.addToAlbumSelected = function( self, album ) {
         self.albumLabels().forEach( function( a ) {
             a.selected( false );
@@ -1588,7 +1621,7 @@ define( ['plugins/router',
     newHome.prototype.setTitleMargin = function() {
         var self = this;
         self.toolbarHeight( self.select_mode_on() ? $('.select-nav').height() : $('.vids-nav').height() );
-        var marginTop = self.toolbarHeight() > 43 ? 100 + (self.toolbarHeight() - 43) : 100;
+        var marginTop = self.toolbarHeight() > 43 ? 50 + (self.toolbarHeight() - 43) : 50;
         $('.newHomeTitle-Wrap').css('margin-top', marginTop );
     };
         
