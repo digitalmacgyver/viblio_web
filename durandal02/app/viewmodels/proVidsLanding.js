@@ -9,11 +9,11 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'plugins/dialog']
             contentType: 'application/json;charset=utf-8',
             data: JSON.stringify({
                 subject: "Edited Video Summary Request",
-                to: [{ email: 'jesse@viblio.com', name: 'Notifications' }],
-                body: '<p>Email: ' + email() + ' has requested an edited video summary on' + new date() + '</p>'
+                to: [{ email: 'notifications@viblio.com', name: 'Notifications' }],
+                body: '<p>Email: ' + email() + ' has requested an edited video summary on ' + new Date() + '</p>'
             })
         }).then( function() {
-            console.log( 'success' );
+            //console.log( 'success' );
         });
     };
     
@@ -28,6 +28,8 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'plugins/dialog']
         activate: function( args ) {
             // extract email address from url
             email( args.email );
+            // clean the email address from the url
+            router.navigate('#proVidsLanding', { trigger: false, replace: true });       
             // then send an email to notifiactions@viblio.com
             sendEmail();
         }
