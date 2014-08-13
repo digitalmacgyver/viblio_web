@@ -13,7 +13,7 @@ function(app,system,router,config,viblio,customDialogs) {
     var player, mf;
 
     function resize() {
-	var width = $(window).width();
+	var width = head.screen.width;
 	var height = ( width * 9 ) / 16;
 	var top = 6;
 	if ( height > $(window).height() ) {

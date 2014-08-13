@@ -261,7 +261,7 @@
         </div><!-- end navbar-inner -->       
     </div> <!-- end vids-nav -->
     
-    <div class='select-nav alt navbar toolbar' data-bind='visible: select_mode_on'>
+    <div class='select-nav alt2 navbar toolbar' data-bind='visible: select_mode_on'>
         <div class='navbar-inner'>
             <ul class='navbar-left nav'>
                 <li class="divider-vertical"></li>
@@ -318,7 +318,7 @@
                 <!-- Done -->
                 <li class="divider-vertical"></li>
                 <li class="">
-                    <a href='#' data-bind='click: done_with_select_mode' title='Done'>
+                    <a class="selectDone" href='#' data-bind='click: done_with_select_mode' title='Done'>
                         <div class="btn_text">
                             <span>Done</span>
                         </div>    
@@ -327,7 +327,7 @@
                 <li class="divider-vertical"></li>
                 <!-- Cancel --> 
                 <li class="">
-                    <a href='#' data-bind='click: cancel_select_mode' title='Cancel'>
+                    <a class="selectCancel" href='#' data-bind='click: cancel_select_mode' title='Cancel'>
                         <div class="btn_text">
                             <i class='icon-remove'></i>
                         </div>    
@@ -456,7 +456,7 @@
             <!-- /ko --> <!-- End ifnot: add_to_mode_on() || delete_mode_on() -->
             
             <!-- ko if: add_to_mode_on() || delete_mode_on() -->
-            <div style="display: block; text-align: center;" class="mainTitle textShadowed tomatoFont paddingTopBottom5"><b>
+            <div style="display: block; text-align: center;" class="mainTitle textShadowed paddingTopBottom5">
                 Select the videos you want to
                     <!-- ko if: add_to_mode_on() -->
                         <span> add to </span>
@@ -475,7 +475,7 @@
                         <span>delete from your account.</span>
                         <!-- /ko -->
                     <!-- /ko -->        
-            </b></div>
+            </div>
             <!-- /ko --> <!-- End if: add_to_mode_on()-->
             
         </div>
