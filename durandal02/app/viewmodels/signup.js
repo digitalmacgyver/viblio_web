@@ -8,6 +8,7 @@ define( ['plugins/router',
 function( router, app, system, config, viblio, dialog ) {
 
     var signup_email = ko.observable();
+    var disableEmail = ko.observable(false);
     var signup_pw1 = ko.observable();
     var signup_pw2 = ko.observable();
     var signup_displayname = ko.observable();
@@ -152,6 +153,7 @@ function( router, app, system, config, viblio, dialog ) {
 
     return {
 	signup_email: signup_email,
+        disableEmail: disableEmail,
 	signup_pw1: signup_pw1,
 	signup_pw2: signup_pw2,
 	signup_displayname: signup_displayname,
@@ -166,6 +168,10 @@ function( router, app, system, config, viblio, dialog ) {
 		// from a link with source=facebook.  
 		$.cookie( 'vb_facebook_referal', 'true', { expires: 1, path: '/' } );
 	    }
+            if( args && args.email ) {
+                signup_email( args.email );
+                disableEmail(true);
+            }
 	}
 
     };

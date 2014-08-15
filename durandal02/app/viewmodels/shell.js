@@ -235,6 +235,9 @@ function (router, app, system, page_header, landing_header, conditional_header, 
 	      showFooter: true, nav: false,   authenticated: false,   header: ks_landing_header },
           
             { route: 'proVidsLanding',   moduleId: 'proVidsLanding',     title: 'Professional Video Summary',
+	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
+          
+            { route: 'testersLanding',   moduleId: 'testersLanding',     title: 'Beta Tester Signup',
 	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header }
 
         ]).buildNavigationModel();

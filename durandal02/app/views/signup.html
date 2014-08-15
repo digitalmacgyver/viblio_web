@@ -13,7 +13,7 @@
       </div>
       <form class="bottomBorder-Thick">
         <div class="centeredEl">
-          <input type="email" data-bind="value: signup_email, valueUpdate: 'keyup'" 
+          <input type="email" data-bind="value: signup_email, valueUpdate: 'keyup', attr: {disabled: disableEmail}" 
 		 name="EMAIL" class="email" id="signup_email" 
 		 placeholder="Enter your email" required />
           <input type="password" data-bind="value: signup_pw1, valueUpdate: 'keyup'" 
