@@ -1498,10 +1498,11 @@ define( ['plugins/router',
             } else {
                 // Add to an existing album
                 viblio.api( '/services/album/add_media', { aid: self.selectedAddToAlbum().uuid, list: self.selectedVideos() } ).then( function( data ) {
+                    console.log( data );
                     var vidOrVids = num == 1 ? ' video' : ' videos';
                     var msg = num + vidOrVids + ' successfully added to your "' + self.selectedAddToAlbum().label + '" Album';
                     viblio.notify( msg, 'success' );
-                    self.albumFilterSelected( self, self.findMatch( data.album.uuid, self.albumsFilterLabels() ) );  
+                    self.albumFilterSelected( self, self.findMatch( self.selectedAddToAlbum().uuid, self.albumsFilterLabels() ) );  
                     dfd.resolve();
                 });        
                 // Used to close the dropdown
