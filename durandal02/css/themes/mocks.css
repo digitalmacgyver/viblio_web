@@ -932,6 +932,10 @@ input:-moz-placeholder {
     margin-top: -20px;
 }
 
+.marginT-10 {
+    margin-top: -10px;
+}
+
 .marginB10 {
     margin-bottom: 10px;
 }
@@ -6060,4 +6064,10 @@ button.linkedin:active {
 
 ul.token-input-list-facebook li input {
     min-width: 100px;
+}
+
+/********* testers landing *********/
+
+.testers li {
+    line-height: 1.2;
 }

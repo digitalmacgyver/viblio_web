@@ -1,24 +1,45 @@
 <div class="ksVoting">
     <div class="container">
         <div class='vote mocksWhiteBG'>
-            <div class="paddedDiv font24 ksbody bottomBorder-Thick">
+            <div class="paddedDiv font24 ksbody bottomBorder-Thick testers">
                 <p class='font24'>
-                    We’re excited to have you on board as a VIBLIO beta tester!
+                    VIBLIO is a new private video platform that makes it easy to manage and share personal videos in private groups.   
                 </p>
                 <p>
-                    VIBLIO is a new private video platform that makes it easy to manage and share personal videos in private groups. As a beta tester, you qualify for additional storage, free video mashups and a chance to win a wearable camera!
+                    If you are a video taker interested in trying this platform and helping us test VIBLIO to make it as awesome, join the Testers Club.  We’re looking for 50 testers.
                 </p>
-                <p>
-                    Get started by providing your email address below. After that, you'll be asked to create your own private VIBLIO account.  Then start using VIBLIO and give us lots of feedback!
-                </p>
-                <br>
-                <form>
+                <form class="marginT15">
                     <div class="control-group">
                         <label for="email">Email *required</label>
                         <input id="email" class="email" type='email' name='email' data-bind="value: email, valueUpdate: 'input'" placeholder='Email Address' required>
+                        <button type='submit' class='btn btn-primary marginT-10' data-bind="click: register, attr: { disabled: !emailValid() }">Next</button>
                     </div>
-                    <button type='submit' class='btn btn-primary' data-bind="click: register, attr: { disabled: !emailValid() }">Next</button>
                 </form>
+                <p>In return for helping us test the platform and giving us your feedback, you'll get</p>
+                <ul>
+                    <li>an extra 10 GB of video storage space FREE!</li>
+                    <li>one free automatically generated video mashup* for every video album you create</li>
+                </ul>
+                <p>
+                    AND if you refer another tester who signs up for the platform, we'll also give you a VIBLIO beta-backer t-shirt. You will also be entered into a draw for a free <a href="http://www.mecam.me/" target="blank">MeCam</a> wearable video camera.
+                </p>
+                <p>To join, just enter your email below, and then create your new VIBLIO account.</p>
+                <ol>
+                    <li>Start uploading, organizing and sharing your videos.</li>
+                    <li>Give us feedback through the feedback selection under your Account Settings or by sending an email to <a href="mailto:feedback@viblio.com">feedback@viblio.com</a></li>
+                    <li>Invite a friend using the “invite a friend” selection under your Account Settings to get a free VIBLIO t-shirt.</li>
+                </ol>
+                <form class="marginT15">
+                    <div class="control-group">
+                        <label for="email">Email *required</label>
+                        <input id="email2" class="email" type='email' name='email' data-bind="value: email2, valueUpdate: 'input'" placeholder='Email Address' required>
+                        <button type='submit' class='btn btn-primary marginT-10' data-bind="click: register2, attr: { disabled: !email2Valid() }">Next</button>
+                    </div>
+                </form>
+                <p>
+                    VIBLIO is private &mdash; no one can see your videos unless you specifically share a video with someone.  VIBLIO is organized &mdash; you can easily filter through your videos by where they were taken or the faces in them!  VIBLIO is community &mdash; videos are a great way to engage your friends and family and now it is easy to create community shared albums using VIBLIO.
+                </p>
+                <p>* A VIBLIO video mashup is a mashup of video clips from all the videos in your album, stitched together in a fun short summary video.</p>
             </div>       
         </div>
     </div>    

@@ -8,12 +8,24 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'plugins/dialog']
             return false;
         }
     });
+    var email2 = ko.observable();
+    var email2Valid = ko.computed( function() {
+        if( email2() && $('#email2')[0].checkValidity() ){
+            return true;
+        } else {
+            return false;
+        }
+    });
     
     function register() {
-        sendEmail();
+        sendEmail( email() );
     };
     
-    function sendEmail() {
+    function register2() {
+        sendEmail( email2() );
+    };
+    
+    function sendEmail( email ) {
         $.ajax({
             url: '/services/na/emailer',
             method: 'POST',
@@ -21,18 +33,21 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'plugins/dialog']
             data: JSON.stringify({
                 subject: "New beta user registration",
                 to: [{ email: 'notifications@viblio.com', name: 'Notifications' }],
-                body: '<p>We have a new beta tester user.  The email is: ' + email() + '</p>'
+                body: '<p>We have a new beta tester user.  The email is: ' + email + '</p>'
             })
         }).then( function() {
-            router.navigate( '#signup?email='+email() );
+            router.navigate( '#signup?email='+email );
         });
     };
     
     return {
         email: email,
         emailValid: emailValid,
+        email2: email2,
+        email2Valid: email2Valid,
         
         register: register,
+        register2: register2,
         
         activate: function(  ) {
             
