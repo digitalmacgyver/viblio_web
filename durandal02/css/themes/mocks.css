@@ -6071,3 +6071,7 @@ ul.token-input-list-facebook li input {
 .testers li {
     line-height: 1.2;
 }
+
+.testers .centered {
+    margin-top: 50px;
+}
