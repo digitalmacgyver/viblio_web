@@ -20,18 +20,20 @@
                     <i class="icon-unchecked"></i>
                 </div>
             </a>   
-            <a class="mplay-icon pointer" data-bind="click:play">
+            <a class="mplay-icon pointer fancybox" data-bind="click:play, attr:{href:image}">
                 <i class="icon-play-circle"></i> 
             </a>
             <i class="icon-ok-sign"></i>
             <div class='pointer' data-bind="click:play">
-                <img data-bind="attr:{src:image}" />
-                <!-- ko if: shared_style -->
-                <div class="sharedOwnerWrap">
-                    <img class="boxShadowed avatar" data-bind="attr: {src: owner_avatar}" />
-                    <span class="truncate" data-bind="text: owner_name"></span>
-                </div>
-                <!-- /ko -->
+                <a class="fancybox" data-bind="attr:{href:image}">
+                    <img data-bind="attr:{src:image}" />
+                    <!-- ko if: shared_style -->
+                    <div class="sharedOwnerWrap">
+                        <img class="boxShadowed avatar" data-bind="attr: {src: owner_avatar}" />
+                        <span class="truncate" data-bind="text: owner_name"></span>
+                    </div>
+                    <!-- /ko -->    
+                </a>
             </div>
 
             <div class="video-tags"

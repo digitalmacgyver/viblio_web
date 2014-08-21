@@ -6075,3 +6075,8 @@ ul.token-input-list-facebook li input {
 .testers .centered {
     margin-top: 50px;
 }
+
+/******** Popup Player *******/
+#player > div {
+    width: 100% !important;
+}

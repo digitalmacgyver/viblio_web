@@ -480,6 +480,7 @@
 
 				F.jumpto(current.index + 1, direction, 'next');
 			}
+                        F.trigger("onNext");
 		},
 
 		// Navigate to previous gallery item
@@ -493,6 +494,7 @@
 
 				F.jumpto(current.index - 1, direction, 'prev');
 			}
+                        F.trigger("onPrev");
 		},
 
 		// Navigate to gallery item by index

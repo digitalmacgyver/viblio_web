@@ -4,9 +4,10 @@ define( ['plugins/router',
          'durandal/app',
          'durandal/events',
          'durandal/system',
-         'lib/customDialogs'], 
+         'lib/customDialogs',
+         'lib/config'], 
     
-    function( router,viblio, Mediafile, app, Events, system, dialog ) {
+    function( router,viblio, Mediafile, app, Events, system, dialog, config ) {
 
     var newHome = function( args ) {
 	var self = this;
@@ -277,6 +278,10 @@ define( ['plugins/router',
         
         //Events.includeIn( self );
         
+        self.playingVid = ko.observable( null );
+        self.playingVidUUID = ko.observable( null );
+        self.playingVidIndex = ko.observable( null );
+                
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
                 viblio.api('services/mediafile/list_status').then( function( data ) {
@@ -782,11 +787,18 @@ define( ['plugins/router',
 
 	// Play a mediafile clip.  This uses the query parameter
 	// passing technique to pass in the mediafile to play.
-	m.on( 'mediafile:play', function( m ) {
+	/*m.on( 'mediafile:play', function( m ) {
 	    if ( m.media().owner_uuid == viblio.user().uuid )
 		router.navigate( 'new_player?mid=' + m.media().uuid );
 	    else
 		router.navigate( 'web_player?mid=' + m.media().uuid );
+	});*/
+        
+        m.on( 'mediafile:play', function( m ) {
+            console.log( self.videos().indexOf( m ) );
+            self.playingVid( m );
+            self.playingVidIndex( self.videos().indexOf( m ) );
+            self.playingVidUUID( m.media().uuid );
 	});
 
         m.on( 'mediafile:delete', function( m ) {
@@ -834,8 +846,14 @@ define( ['plugins/router',
         if( mf.is_shared == 1 ) {
             // Shared with user
             var m = new Mediafile( mf, { ro: true, shared_style: true, owner_uuid: mf.owner_uuid, show_select_badge: self.delete_mode_on() ? self.select_mode_on() : false, selected: self.delete_mode_on() ? self.select_all_mode_is_on() : false } ); //m.ro( true );
-            m.on( 'mediafile:play', function( m ) {
+            /*m.on( 'mediafile:play', function( m ) {
                 router.navigate( 'web_player?mid=' + m.media().uuid );
+            });*/
+            m.on( 'mediafile:play', function( m ) {
+                console.log( self.videos().indexOf( m ) );
+                self.playingVid( m );
+                self.playingVidIndex( self.videos().indexOf( m ) );
+                self.playingVidUUID( m.media().uuid );
             });
             m.on( 'mediafile:delete', function( m ) {
                 viblio.api( '/services/mediafile/delete_share', { mid: m.media().uuid } ).then( function( data ) {
@@ -850,8 +868,14 @@ define( ['plugins/router',
 
             // Proxy the mediafile play event and send it along to
             // our parent.
-            m.on( 'mediafile:play', function( m ) {
+            /*m.on( 'mediafile:play', function( m ) {
                 router.navigate( 'new_player?mid=' + m.media().uuid );
+            });*/
+            m.on( 'mediafile:play', function( m ) {
+                console.log( self.videos().indexOf( m ) );
+                self.playingVid( m );
+                self.playingVidIndex( self.videos().indexOf( m ) );
+                self.playingVidUUID( m.media().uuid );
             });
 
             m.on( 'mediafile:delete', function( m ) {
@@ -896,6 +920,7 @@ define( ['plugins/router',
     };
     
     newHome.prototype.mfOwnedByViewer = function( mf ) {
+        console.log( mf );
         var uuid;
         if( mf.owner_uuid ){
             uuid = mf.owner_uuid;
@@ -1702,6 +1727,7 @@ define( ['plugins/router',
         $(window).scroll( this, this.stickyToolbars );
         $(window).resize( this, this.getWindowWidth );
         $(window).resize( this, this.stickyDates );
+        $(window).resize( this, this.resizePlayer );
     };
 
     newHome.prototype.detached = function() {
@@ -1710,6 +1736,7 @@ define( ['plugins/router',
         $(window).off( "scroll", this.stickyToolbars );
         $(window).off( "resize", this.getWindowWidth );
         $(window).off( "resize", this.stickyDates );
+        $(window).off( "resize", this.resizePlayer );
     };
     
     newHome.prototype.activate = function() {
@@ -1764,6 +1791,69 @@ define( ['plugins/router',
         self.getVidsInProcess();
     };
     
+    newHome.prototype.resizePlayer = function() {
+        var self = this;
+        
+        console.log( 'resize fired' );
+        
+        var window_height = $('window').height();
+	var player_height = ($("#player").width()*9) / 16;
+        //$(".pp-tv").height( window_height*.9 );
+        //$(".pp-tv").width( (window_height*9)/16 );
+	$("#player, #player video, #player > div").height( player_height );
+    };
+    
+    newHome.prototype.should_simulate = function() {
+	var videoel = document.createElement("video"),
+	idevice = /ip(hone|ad|od)/i.test(navigator.userAgent),
+	noflash = flashembed.getVersion()[0] === 0,
+	simulate = !idevice && noflash && !!(videoel.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"').replace(/no/, ''));
+	return simulate;
+    };
+    
+    newHome.prototype.setUpFlowplayer = function( elem, mf ) {
+        var self = this;
+        console.log( mf );
+        $(elem).flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
+            ratio: 9/16,
+            splash: true,
+            clip: {
+                url: 'mp4:' + mf.views.main.cf_url,
+                ipadUrl: encodeURIComponent(mf.views.main.url),
+                scaling: 'fit',
+                provider: 'rtmp',
+                onStart: function( clip ) {
+                    viblio.mpEvent( 'play', { action: 'play' } );
+                    viblio.mpPeopleIncrement('Video Plays from Browser', 1);
+                    //hidePlayerOverlay();
+                },
+                onPause: function( clip ) {
+                    viblio.mpEvent( 'play', { action: 'pause' } );
+                },
+                onResume: function( clip ) {
+                    viblio.mpEvent( 'play', { action: 'resume' } );
+                },
+                onStop: function( clip ) {              
+                    viblio.mpEvent( 'play', { action: 'stop' } );
+                },
+                onFinish: function( clip ) {
+                    viblio.mpEvent( 'play', { action: 'finish' } );
+                }
+            },
+            plugins: {
+                // Cloudfront
+                rtmp: {
+                    url: 'lib/flowplayer/flowplayer.rtmp-3.2.12.swf',
+                    netConnectionUrl: 'rtmp://' + config.cf_domain() + '/cfx/st'
+                }
+            },
+            canvas: {
+                backgroundColor:'#254558',
+                backgroundGradient: [0.1, 0]
+            }
+        }).flowplayer().ipad({simulateiDevice: self.should_simulate()});
+    };
+    
     // In attached, attach the mCustomScrollbar we're presently
     // employing for this purpose.
     newHome.prototype.compositionComplete = function( view ) {
@@ -1781,6 +1871,100 @@ define( ['plugins/router',
         setTimeout(function(){
             self.setTitleMargin();
         }, 300);
+        
+        $('.fancybox').fancybox({
+            arrows: true,
+            prevEffect: 'none',
+            nextEffect: 'none',
+            helpers: {
+                title	: null,
+                buttons	: {
+                    position: 'bottom'
+                }
+            },
+            tpl: {
+              // wrap template with custom inner DIV: the empty player container
+              wrap: '<div class="fancybox-wrap" tabIndex="-1">' +
+                    '<div class="fancybox-skin">' +
+                    '<div class="fancybox-outer">' +
+                    '<div id="player">' + // player container replaces fancybox-inner
+                    '</div></div></div></div>' 
+            },
+            
+            onNext: function() {
+                if( self.playingVidIndex()+1 < self.videos().length ) {
+                    self.playingVidIndex( self.playingVidIndex()+1 );
+                    self.playingVid( self.videos()[self.playingVidIndex()] );
+                    self.playingVidUUID( self.videos()[self.playingVidIndex()].media().uuid );
+                }
+            },
+            
+            onPrev: function() {
+                if( self.playingVidIndex()-1 >= 0 ) {
+                    self.playingVidIndex( self.playingVidIndex()-1 );
+                    self.playingVid( self.videos()[self.playingVidIndex()] );
+                    self.playingVidUUID( self.videos()[self.playingVidIndex()].media().uuid );
+                }
+            },
+
+            beforeShow: function () {
+                console.log( this );
+                console.log( self.playingVid() );
+              /*var base = this.href.slice(1) + "/640x360",
+                  cdn = "http://stream.flowplayer.org/";
+
+              // install player into empty container
+              $("#player").flowplayer({
+                splash: true,
+                ratio: 9/16,
+                rtmp: "rtmp://s3b78u0kbtx79q.cloudfront.net/cfx/st",
+                playlist: [
+                  [
+                    { webm: cdn + base + ".webm" },
+                    { mp4: cdn + base + ".mp4" },
+                    { ogg: cdn + base + ".ogv" },
+                    { flash: "mp4:" + base }
+                  ]
+                ]
+              });
+              flowplayer("#player").play(0);*/
+                console.log( self.mfOwnedByViewer( self.playingVid() ) );
+                var api;
+                if( self.mfOwnedByViewer( self.playingVid() ) ) {
+                    api = '/services/mediafile/get';
+                } else {
+                    api = '/services/na/media_shared';
+                }
+                return viblio.api( api, { mid: self.playingVidUUID()  } ).then( function( json ) {
+                    var mf = json.media;
+                    // Set now playing
+                    console.log( mf );
+                    //self.playingVid( mf );
+                    //console.log( self.playingVidUUID().media() );
+                    self.setUpFlowplayer( '#player', mf );
+                    self.resizePlayer();
+                });
+
+            },
+            
+            afterLoad: function(current, previous) {
+                $('#fancybox-left-ico').css('left',"20px");
+                $('#fancybox-right-ico').css('right',"20px",'left',"auto");
+                console.info( 'Current: ' + current.href );        
+                console.info( 'Previous: ' + (previous ? previous.href : '-') );
+
+                if (previous) {
+                    console.info( 'Navigating: ' + (current.index > previous.index ? 'right' : 'left') );     
+                }
+            },
+            
+            beforeClose: function () {
+              // important! unload the player
+              if(flowplayer()){
+                  flowplayer().unload();
+              }
+            }
+        });
     };
 
     newHome.prototype.add_videos = function() {
