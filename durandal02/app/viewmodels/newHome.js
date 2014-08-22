@@ -663,7 +663,6 @@ define( ['plugins/router',
     
     newHome.prototype.albumVidsSearch = function( newSearch ) {
         var self = this;
-        console.log( 'albumVidsSearch fired', self.albumFilterIsActive() );
         var album_id = self.currentAlbumAid();
         
         self.isActiveFlag(true);
@@ -714,8 +713,6 @@ define( ['plugins/router',
             self.albumFilterIsActive(true);
             
             self.isActiveFlag(false);
-            
-            console.log( 'albumVidsSearch fired', self.albumFilterIsActive() );
         });
     };
     
@@ -797,7 +794,6 @@ define( ['plugins/router',
 	});*/
         
         m.on( 'mediafile:play', function( m ) {
-            console.log( self.videos().indexOf( m ) );
             self.playingVid( m );
             self.playingVidIndex( self.videos().indexOf( m ) );
             self.playingVidUUID( m.media().uuid );
@@ -852,7 +848,6 @@ define( ['plugins/router',
                 router.navigate( 'web_player?mid=' + m.media().uuid );
             });*/
             m.on( 'mediafile:play', function( m ) {
-                console.log( self.videos().indexOf( m ) );
                 self.playingVid( m );
                 self.playingVidIndex( self.videos().indexOf( m ) );
                 self.playingVidUUID( m.media().uuid );
@@ -874,7 +869,6 @@ define( ['plugins/router',
                 router.navigate( 'new_player?mid=' + m.media().uuid );
             });*/
             m.on( 'mediafile:play', function( m ) {
-                console.log( self.videos().indexOf( m ) );
                 self.playingVid( m );
                 self.playingVidIndex( self.videos().indexOf( m ) );
                 self.playingVidUUID( m.media().uuid );
@@ -922,7 +916,6 @@ define( ['plugins/router',
     };
     
     newHome.prototype.mfOwnedByViewer = function( mf ) {
-        console.log( mf );
         var uuid;
         if( mf.owner_uuid ){
             uuid = mf.owner_uuid;
@@ -1452,7 +1445,6 @@ define( ['plugins/router',
     newHome.prototype.createAlbumFromTitle = function() {
         var self = this;
         
-        console.log( self.albumLabels() );
         self.albumLabels()[0].selected(true);
         self.addToAlbumSelected( self, self.albumLabels()[0] );
     };
@@ -1525,7 +1517,6 @@ define( ['plugins/router',
             } else {
                 // Add to an existing album
                 viblio.api( '/services/album/add_media', { aid: self.selectedAddToAlbum().uuid, list: self.selectedVideos() } ).then( function( data ) {
-                    console.log( data );
                     var vidOrVids = num == 1 ? ' video' : ' videos';
                     var msg = num + vidOrVids + ' successfully added to your "' + self.selectedAddToAlbum().label + '" Album';
                     viblio.notify( msg, 'success' );
@@ -1796,8 +1787,6 @@ define( ['plugins/router',
     newHome.prototype.resizePlayer = function() {
         var self = this;
         
-        console.log( 'resize fired' );
-        
 	var player_height = ($("#player").width()*9) / 16;
 	$("#player, #player video, #player > div").height( player_height );
         $('.fancybox-nav').height( $("#player").height()-30 );
@@ -1813,7 +1802,6 @@ define( ['plugins/router',
     
     newHome.prototype.setUpFlowplayer = function( elem, mf ) {
         var self = this;
-        console.log( mf );
         $(elem).flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
             ratio: 9/16,
             splash: true,
@@ -1917,7 +1905,6 @@ define( ['plugins/router',
                 var F = $.fancybox;
                 var el;
                 var href;
-                console.log( self.mfOwnedByViewer( self.playingVid() ) );
                 var api;
                 if( self.mfOwnedByViewer( self.playingVid() ) ) {
                     api = '/services/mediafile/get';
@@ -1932,7 +1919,6 @@ define( ['plugins/router',
                 $('.fancyboxVidLoader').show();
                 return viblio.api( api, { mid: self.playingVidUUID()  } ).then( function( json ) {
                     var mf = json.media;
-                    console.log( mf );
                     self.setUpFlowplayer( '#player', mf );
                     self.resizePlayer();
                     $('.fancyboxVidLoader').hide();
