@@ -38,7 +38,9 @@ new compressor.minify({
 	'lib/jquery.autosize.min.js',
 	'lib/jquery.cookie.js',
 	'lib/jquery.ui.touch-punch.min.js',
-	'lib/fastclick.js'
+	'lib/fastclick.js',
+        'lib/fancybox-2.1.5/jquery.fancybox.js',
+        'lib/fancybox-2.1.5/helpers/jquery.fancybox-buttons.js'
     ],
     fileOut: 'build/lib/vendor.all.js',
     callback: function(err, min){
