@@ -1887,7 +1887,7 @@ define( ['plugins/router',
               // wrap template with custom inner DIV: the empty player container
               wrap: '<div class="fancybox-wrap" tabIndex="-1">' +
                     '<div class="fancybox-skin">' +
-                    '<div class="fancybox-outer">' +
+                    '<div class="fancybox-outer"><div class="fancyboxVidLoader centered"><div class="fancyboxVidLoader-Inner"><i class="icon-spinner icon-5x icon-spin active"></i><p class="font18">Loading...</p></div></div>' +
                     '<a title="Previous" class="fancybox-nav fancybox-prev" href="javascript:;"><span></span></a>' +
                     '<a title="Next" class="fancybox-nav fancybox-next" href="javascript:;"><span></span></a>' +
                     '<div id="player">' + // player container replaces fancybox-inner
@@ -1928,11 +1928,14 @@ define( ['plugins/router',
                 }
                 el = " &mdash; <a class='vidDetails' href='#" + href + self.playingVidUUID() + "'onclick='$.fancybox.close()'> Details</a>";
                 this.title = "<span>"+self.playingVid().title()+"</span>"+el;
+                
+                $('.fancyboxVidLoader').show();
                 return viblio.api( api, { mid: self.playingVidUUID()  } ).then( function( json ) {
                     var mf = json.media;
                     console.log( mf );
                     self.setUpFlowplayer( '#player', mf );
                     self.resizePlayer();
+                    $('.fancyboxVidLoader').hide();
                 });
             },
             
@@ -1952,6 +1955,9 @@ define( ['plugins/router',
                 $('.fancybox-next span').on('click', function() {
                     F.next();
                 });
+                
+                //($("#player").width()*9) / 16
+                $('.fancybox-outer').height( ($("#player").width()*9) / 16 )
             },
             
             beforeClose: function () {
