@@ -58,7 +58,11 @@ define( ['plugins/router',
                     dfd.resolve();
                 });    
             }).promise().then( function() {
-                app.trigger( 'albumList:visibility', true );
+                if( self.albumsFilterLabels().length > 0 ) {
+                    app.trigger( 'albumList:visibility', true );
+                } else {
+                    app.trigger( 'albumList:visibility', false );
+                }             
             });
         };
         
