@@ -1796,10 +1796,7 @@ define( ['plugins/router',
         
         console.log( 'resize fired' );
         
-        var window_height = $('window').height();
 	var player_height = ($("#player").width()*9) / 16;
-        //$(".pp-tv").height( window_height*.9 );
-        //$(".pp-tv").width( (window_height*9)/16 );
 	$("#player, #player video, #player > div").height( player_height );
         $('.fancybox-nav').height( $("#player").height()-30 );
     };
@@ -1925,18 +1922,13 @@ define( ['plugins/router',
                 }
                 return viblio.api( api, { mid: self.playingVidUUID()  } ).then( function( json ) {
                     var mf = json.media;
-                    // Set now playing
                     console.log( mf );
-                    //self.playingVid( mf );
-                    //console.log( self.playingVidUUID().media() );
                     self.setUpFlowplayer( '#player', mf );
                     self.resizePlayer();
                 });
             },
             
             afterLoad: function(current, previous) {
-                //$('#fancybox-left-ico').css('left',"20px");
-                //$('#fancybox-right-ico').css('right',"20px",'left',"auto");
                 console.info( 'Current: ' + current.href );        
                 console.info( 'Previous: ' + (previous ? previous.href : '-') );
 
