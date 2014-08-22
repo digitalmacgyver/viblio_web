@@ -1945,10 +1945,10 @@ define( ['plugins/router',
                 
                 // Needed to fire the correct functions when the nav buttons are clicked (prev and next)
                 var F = $.fancybox;
-                $('.fancybox-prev').on('click', function() {
+                $('.fancybox-prev span').on('click', function() {
                     F.prev();
                 });
-                $('.fancybox-next').on('click', function() {
+                $('.fancybox-next span').on('click', function() {
                     F.next();
                 });
             },

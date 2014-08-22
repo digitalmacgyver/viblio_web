@@ -6080,3 +6080,7 @@ ul.token-input-list-facebook li input {
 #player > div {
     width: 100% !important;
 }
+
+.fancybox-wrap {
+    position: fixed !important;
+}
