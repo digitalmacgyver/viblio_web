@@ -6084,3 +6084,7 @@ ul.token-input-list-facebook li input {
 .fancybox-wrap {
     position: fixed !important;
 }
+
+.fancybox-nav {
+    width: 20%;
+}

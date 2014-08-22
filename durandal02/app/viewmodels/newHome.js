@@ -1801,6 +1801,7 @@ define( ['plugins/router',
         //$(".pp-tv").height( window_height*.9 );
         //$(".pp-tv").width( (window_height*9)/16 );
 	$("#player, #player video, #player > div").height( player_height );
+        $('.fancybox-nav').height( $("#player").height()-30 );
     };
     
     newHome.prototype.should_simulate = function() {
@@ -1934,8 +1935,8 @@ define( ['plugins/router',
             },
             
             afterLoad: function(current, previous) {
-                $('#fancybox-left-ico').css('left',"20px");
-                $('#fancybox-right-ico').css('right',"20px",'left',"auto");
+                //$('#fancybox-left-ico').css('left',"20px");
+                //$('#fancybox-right-ico').css('right',"20px",'left',"auto");
                 console.info( 'Current: ' + current.href );        
                 console.info( 'Previous: ' + (previous ? previous.href : '-') );
 
