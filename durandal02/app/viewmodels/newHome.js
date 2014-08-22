@@ -663,7 +663,7 @@ define( ['plugins/router',
     
     newHome.prototype.albumVidsSearch = function( newSearch ) {
         var self = this;
-        
+        console.log( 'albumVidsSearch fired', self.albumFilterIsActive() );
         var album_id = self.currentAlbumAid();
         
         self.isActiveFlag(true);
@@ -713,7 +713,9 @@ define( ['plugins/router',
             self.selectedCity('');
             self.albumFilterIsActive(true);
             
-            self.isActiveFlag(false);            
+            self.isActiveFlag(false);
+            
+            console.log( 'albumVidsSearch fired', self.albumFilterIsActive() );
         });
     };
     

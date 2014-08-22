@@ -5067,7 +5067,7 @@ a.a-drop-view:focus{
 /** New Home Page **/
 
 .hp .top-strip .cont {
-    margin-right: -340px;
+    //margin-right: -340px;
     float: left;
     width: 100%;
 }
@@ -5076,7 +5076,8 @@ a.a-drop-view:focus{
 }
 .hp .top-strip .right {
     float: left;
-    width: 340px;
+    //width: 340px;
+    width: auto;
     display: none;
 }
 
@@ -6087,4 +6088,41 @@ ul.token-input-list-facebook li input {
 
 .fancybox-nav {
     width: 20%;
+}
+
+/****** AlbumList - top right of home ******/
+
+.albumList {
+    background-color: rgb(235,235,235);
+    min-width: 340px;
+    width: 340px;
+}
+
+.albumList .titleWrap {
+    //background-color: rgb(234, 234, 236);
+}
+
+.albumList .mainTitle {
+    font-size: 32px;
+    line-height: 40px;
+    font-weight: 100;
+    font-family: inherit;
+    display: inline-block;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    margin-left: 23px;
+}
+
+.albumList .scroller {
+    width: auto;
+    height: 252px;
+    overflow-y: scroll;
+}
+
+.albumList .scroller .sharedStyle {
+    color: rgb(28, 184, 209);
+}
+
+.albumList .scroller .tagLabel.truncate {
+    max-width: 160px;
 }
