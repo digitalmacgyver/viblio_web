@@ -1907,19 +1907,25 @@ define( ['plugins/router',
                     self.playingVidUUID( self.videos()[self.playingVidIndex()].media().uuid );
                 }
             },
-
+            
             beforeShow: function () {
                 if( head.mobile ) {
                     this.helpers.buttons = {position: 'bottom'};
                 }
-                this.title = self.playingVid().title();
+                var F = $.fancybox;
+                var el;
+                var href;
                 console.log( self.mfOwnedByViewer( self.playingVid() ) );
                 var api;
                 if( self.mfOwnedByViewer( self.playingVid() ) ) {
                     api = '/services/mediafile/get';
+                    href = "new_player?mid=";
                 } else {
                     api = '/services/na/media_shared';
+                    href= "web_player?mid=";
                 }
+                el = " &mdash; <a class='vidDetails' href='#" + href + self.playingVidUUID() + "'onclick='$.fancybox.close()'> Details</a>";
+                this.title = "<span>"+self.playingVid().title()+"</span>"+el;
                 return viblio.api( api, { mid: self.playingVidUUID()  } ).then( function( json ) {
                     var mf = json.media;
                     console.log( mf );

@@ -480,6 +480,7 @@
 
 				F.jumpto(current.index + 1, direction, 'next');
 			}
+                        // Added by Jesse to allow vid navigation
                         F.trigger("onNext");
 		},
 
@@ -494,6 +495,7 @@
 
 				F.jumpto(current.index - 1, direction, 'prev');
 			}
+                        // Added by Jesse to allow vid navigation
                         F.trigger("onPrev");
 		},
 
