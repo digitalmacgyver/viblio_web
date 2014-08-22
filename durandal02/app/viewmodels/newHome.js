@@ -1877,16 +1877,19 @@ define( ['plugins/router',
             prevEffect: 'none',
             nextEffect: 'none',
             helpers: {
-                title	: null,
-                buttons	: {
-                    position: 'bottom'
-                }
+                title: {
+                    type: 'inside',
+                    position: 'top'
+                },
+                buttons	: {}
             },
             tpl: {
               // wrap template with custom inner DIV: the empty player container
               wrap: '<div class="fancybox-wrap" tabIndex="-1">' +
                     '<div class="fancybox-skin">' +
                     '<div class="fancybox-outer">' +
+                    '<a title="Previous" class="fancybox-nav fancybox-prev" href="javascript:;"><span></span></a>' +
+                    '<a title="Next" class="fancybox-nav fancybox-next" href="javascript:;"><span></span></a>' +
                     '<div id="player">' + // player container replaces fancybox-inner
                     '</div></div></div></div>' 
             },
@@ -1908,26 +1911,10 @@ define( ['plugins/router',
             },
 
             beforeShow: function () {
-                console.log( this );
-                console.log( self.playingVid() );
-              /*var base = this.href.slice(1) + "/640x360",
-                  cdn = "http://stream.flowplayer.org/";
-
-              // install player into empty container
-              $("#player").flowplayer({
-                splash: true,
-                ratio: 9/16,
-                rtmp: "rtmp://s3b78u0kbtx79q.cloudfront.net/cfx/st",
-                playlist: [
-                  [
-                    { webm: cdn + base + ".webm" },
-                    { mp4: cdn + base + ".mp4" },
-                    { ogg: cdn + base + ".ogv" },
-                    { flash: "mp4:" + base }
-                  ]
-                ]
-              });
-              flowplayer("#player").play(0);*/
+                if( head.mobile ) {
+                    this.helpers.buttons = {position: 'bottom'};
+                }
+                this.title = self.playingVid().title();
                 console.log( self.mfOwnedByViewer( self.playingVid() ) );
                 var api;
                 if( self.mfOwnedByViewer( self.playingVid() ) ) {
@@ -1944,7 +1931,6 @@ define( ['plugins/router',
                     self.setUpFlowplayer( '#player', mf );
                     self.resizePlayer();
                 });
-
             },
             
             afterLoad: function(current, previous) {
@@ -1956,6 +1942,15 @@ define( ['plugins/router',
                 if (previous) {
                     console.info( 'Navigating: ' + (current.index > previous.index ? 'right' : 'left') );     
                 }
+                
+                // Needed to fire the correct functions when the nav buttons are clicked (prev and next)
+                var F = $.fancybox;
+                $('.fancybox-prev').on('click', function() {
+                    F.prev();
+                });
+                $('.fancybox-next').on('click', function() {
+                    F.next();
+                });
             },
             
             beforeClose: function () {
