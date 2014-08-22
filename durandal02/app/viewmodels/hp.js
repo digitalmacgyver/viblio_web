@@ -51,7 +51,7 @@ define(['durandal/app',
         var albumsWidth;
 	if ( visible ) {
             console.log( 'should be doing something ');
-            albumsWidth = $(view).find('.albumList').width();
+            albumsWidth = $(view).find('.albumListView').width();
             console.log( albumsWidth );
 	    $(view).find( '.top-strip .cont' ).css( 'margin-right', -albumsWidth );
 	    $(view).find( '.top-strip .right' ).css( 'display', 'block' );

@@ -6092,17 +6092,17 @@ ul.token-input-list-facebook li input {
 
 /****** AlbumList - top right of home ******/
 
-.albumList {
+.albumListView {
     background-color: rgb(235,235,235);
     min-width: 340px;
     width: 340px;
 }
 
-.albumList .titleWrap {
+.albumListView .titleWrap {
     //background-color: rgb(234, 234, 236);
 }
 
-.albumList .mainTitle {
+.albumListView .mainTitle {
     font-size: 32px;
     line-height: 40px;
     font-weight: 100;
@@ -6113,16 +6113,16 @@ ul.token-input-list-facebook li input {
     margin-left: 23px;
 }
 
-.albumList .scroller {
+.albumListView .scroller {
     width: auto;
     height: 252px;
     overflow-y: scroll;
 }
 
-.albumList .scroller .sharedStyle {
+.albumListView .scroller .sharedStyle {
     color: rgb(28, 184, 209);
 }
 
-.albumList .scroller .tagLabel.truncate {
+.albumListView .scroller .tagLabel.truncate {
     max-width: 160px;
 }
