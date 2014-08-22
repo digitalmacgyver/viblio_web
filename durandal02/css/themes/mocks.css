@@ -6088,3 +6088,14 @@ ul.token-input-list-facebook li input {
 .fancybox-nav {
     width: 20%;
 }
+
+.fancyboxVidLoader {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(220,220,220);
+    display: none;
+}
+
+.fancyboxVidLoader-Inner {
+    padding-top: 20%;
+}
