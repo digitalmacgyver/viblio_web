@@ -1788,7 +1788,7 @@ define( ['plugins/router',
         var self = this;
         
 	var player_height = ($("#player").width()*9) / 16;
-	$("#player, #player video, #player > div").height( player_height );
+	$("#player, #player video, #player > div, .fancybox-outer").height( player_height );
         $('.fancybox-nav').height( $("#player").height()-30 );
     };
     
