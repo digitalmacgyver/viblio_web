@@ -274,7 +274,7 @@ define( ['plugins/router',
                             <li>CLick on the <strong>+ Add To</strong> button to the right</li>\n\
                             <li><strong>Create a New Album</strong> (or choose an existing album to add to)</li>\n\
                             <li><strong>Select</strong> your videos and press <strong>DONE</strong> in the Select Toolbar</li>\n\
-                        </ul>'
+                        </ul>';
         
         //Events.includeIn( self );
         
