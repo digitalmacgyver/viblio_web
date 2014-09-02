@@ -27,7 +27,7 @@
 	    //
 	    // The maximum video file size to accept, in bytes
 	    maxFileSize: 10000000000, // 10G
-	    minFileSize: 100 * 1024,  // 100Kb
+	    minFileSize: 64 * 1024,  // 64Kb
 	    //
 	    // Whether to generate dynamic css classes that can be used to
 	    // animate the dropzone.
@@ -39,8 +39,8 @@
 	    // What to display when a video file has completed upload
 	    done_message: 'Done, pending review',
 	    //
-	    // What to say when a video file upload is cancelled
-	    cancel_message: 'Cancelled!',
+	    // What to say when a video file upload is canceled
+	    cancel_message: 'Canceled!',
 	    pause_message: 'Paused...',
 	    //
 	    // What to say when a video file is waiting for a slot to upload
@@ -348,7 +348,7 @@
                 dropZone: elem.find('.vup-area'),
                 acceptFileTypes: self.options.accept,
                 maxFileSize: self.options.maxFileSize,
-                minFileSize: 10, // 10 Bytes
+                minFileSize: self.options.minFileSize,
                 limitConcurrentUploads: self.options.concurrent,
 		messages: self.options.messages,
 		add: function(e, data) {
@@ -444,7 +444,8 @@
                             var xhr = new XMLHttpRequest();
                             xhr.open("POST", endpoint, false ); // sync!
                             xhr.setRequestHeader('Final-Length', file.size );
-                            xhr.send(JSON.stringify({uuid: uuid, file:{Path:file.name}}));
+			    // Todo: change skip_faces to be dynamically controlled by a checkbox.
+                            xhr.send(JSON.stringify({uuid: uuid, file:{Path:file.name}, skip_faces: false }));
 			    if ( xhr.status != 200 && xhr.status != 201 ) {
 				$(row).find(".vup-filename-column").text(filename);
 				$(row).find(".vup-file-progress-column").html('<span class="bar" style="width:100%;">Upload failed: ' + xhr.statusText + '</span>' );
