@@ -285,6 +285,7 @@ define( ['plugins/router',
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
                 viblio.api('services/mediafile/list_status').then( function( data ) {
+                    console.log( data );
                     self.numVidsPending( data.stats.pending );
                     var num = data.stats.pending/* + data.stats.visible*/;
                     self.vidsInProcess( num );
@@ -355,6 +356,8 @@ define( ['plugins/router',
             if ( self.recentPager.next_page )   {
                 args.page = self.recentPager.next_page;
                 args.rows = self.recentPager.entries_per_page;
+                args.include_tags = 1;
+                args.include_contact_info = 1;
                 // needed for showing pending videos
                 if( self.vidsInProcess() > 0 ) {
                     args.only_videos=1;
@@ -429,6 +432,8 @@ define( ['plugins/router',
 	    if ( self.monthPager.next_page )   {
                 args.page = self.monthPager.next_page;
                 args.rows = self.monthPager.entries_per_page;
+                args.include_tags = 1;
+                args.include_contact_info = 1;
 		viblio.api( '/services/yir/videos_for_month', args )
 		    .then( function( json ) {
                         self.hits ( json.pager.total_entries );
@@ -516,6 +521,8 @@ define( ['plugins/router',
             if ( self.facesPager.next_page )   {
                 args.page = self.facesPager.next_page;
                 args.rows = self.facesPager.entries_per_page;
+                args.include_tags = 1;
+                args.include_contact_info = 1;
                 // needed for showing pending videos
                 /*if( self.vidsInProcess() > 0 ) {
                     args.only_videos=1;
@@ -596,6 +603,8 @@ define( ['plugins/router',
             if ( self.cityPager.next_page )   {
                 args.page = self.cityPager.next_page;
                 args.rows = self.cityPager.entries_per_page;
+                args.include_tags = 1;
+                args.include_contact_info = 1;
                 // needed for showing pending videos
                 /*if( self.vidsInProcess() > 0 ) {
                     args.only_videos=1;
@@ -845,7 +854,7 @@ define( ['plugins/router',
         }   
         if( mf.is_shared == 1 ) {
             // Shared with user
-            var m = new Mediafile( mf, { ro: true, shared_style: true, owner_uuid: mf.owner_uuid, show_select_badge: self.delete_mode_on() ? self.select_mode_on() : false, selected: self.delete_mode_on() ? self.select_all_mode_is_on() : false } ); //m.ro( true );
+            var m = new Mediafile( mf, { ro: true, shared_style: true, owner_uuid: mf.owner_uuid, show_faces_tags: true, show_select_badge: self.delete_mode_on() ? self.select_mode_on() : false, selected: self.delete_mode_on() ? self.select_all_mode_is_on() : false } ); //m.ro( true );
             /*m.on( 'mediafile:play', function( m ) {
                 router.navigate( 'web_player?mid=' + m.media().uuid );
             });*/
@@ -864,7 +873,7 @@ define( ['plugins/router',
             });    
         } else {
             // Owned by user
-            var m = new Mediafile( mf, { show_share_badge: !self.select_mode_on(), show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on(), in_process_style: mf.status == 'pending' ? true : false } );
+            var m = new Mediafile( mf, { show_share_badge: !self.select_mode_on(), show_select_badge: self.select_mode_on(), show_faces_tags: true, ownedByViewer: true, selected: self.select_all_mode_is_on(), in_process_style: mf.status == 'pending' ? true : false } );
 
             // Proxy the mediafile play event and send it along to
             // our parent.
@@ -1208,6 +1217,8 @@ define( ['plugins/router',
             if ( self.searchPager.next_page )   {
                 args.page = self.searchPager.next_page;
                 args.rows = self.searchPager.entries_per_page;
+                args.include_tags = 1;
+                args.include_contact_info = 1;
                 // needed for showing pending videos
                 /*if( self.vidsInProcess() > 0 ) {
                     args.only_videos=1;
@@ -1564,7 +1575,10 @@ define( ['plugins/router',
 			    { 
 				views: ['poster'],
 				page: self.allVidsPager.next_page, 
-				rows: self.allVidsPager.entries_per_page } );
+				rows: self.allVidsPager.entries_per_page,
+                                include_tags: 1,
+                                include_contact_info: 1
+                            } );
                     // needed for showing pending videos
                     /*if( self.vidsInProcess() > 0 ) {
                         args.only_videos=1;
