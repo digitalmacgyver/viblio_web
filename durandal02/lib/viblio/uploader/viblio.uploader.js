@@ -66,7 +66,9 @@
                 acceptFileTypes: 'Only video file types are uploadable',
                 maxFileSize: 'This video is too large, we can only accept up to 10Gb.',
                 minFileSize: 'This video is too small to be a real video.  Please try to find the original.'
-            }
+            },
+            
+            skip_faces: false
 	},
 
 	_overall_bitrate: function( v ) {
@@ -217,6 +219,19 @@
 		self._resumeUpload(index);
             });
 	},
+        
+        // Public method. Used to set the value of the skip_faces option to true.
+        // This is used when creating the xhr header  
+        skip_faces: function() {
+            this.options.skip_faces = true;
+            //console.log( "uploader skip_faces: ", this.options.skip_faces );
+        },
+        
+        // Public method. Used to set the value of the skip_faces option to false
+        do_not_skip_faces: function() {
+            this.options.skip_faces = false;
+            //console.log( "uploader skip_faces: ", this.options.skip_faces );
+        },
 
 	// Public method.  Cancel all uploads in progress.  Might be called when
 	// leaving a page.
@@ -444,8 +459,7 @@
                             var xhr = new XMLHttpRequest();
                             xhr.open("POST", endpoint, false ); // sync!
                             xhr.setRequestHeader('Final-Length', file.size );
-			    // Todo: change skip_faces to be dynamically controlled by a checkbox.
-                            xhr.send(JSON.stringify({uuid: uuid, file:{Path:file.name}, skip_faces: false }));
+                            xhr.send(JSON.stringify({uuid: uuid, file:{Path:file.name}, skip_faces: self.options.skip_faces }));
 			    if ( xhr.status != 200 && xhr.status != 201 ) {
 				$(row).find(".vup-filename-column").text(filename);
 				$(row).find(".vup-file-progress-column").html('<span class="bar" style="width:100%;">Upload failed: ' + xhr.statusText + '</span>' );
