@@ -3983,8 +3983,13 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 /*********************************/
 
 .pp-related-column-related .mediafile .information .aux {
+    font-size: 15px;
     width: 40px;
     height: 40px;
+}
+
+.pp-related-column-related .mediafile .information .aux .small {
+    font-size: 12px;
 }
 
 /***********************************/

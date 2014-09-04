@@ -283,8 +283,9 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
                                     </div>\n\
                                    <div class="information">\n\
                                         <div class="aux pull-right" title="View count">\n\
-                                            <i class="icon-eye-open"></i><br>\n\
+                                            <!--<i class="icon-eye-open"></i><br>-->\n\
                                             <span>' + marker.feature.properties.eyes + '</span>\n\
+                                            <br><span class="small">Fan</span><br><span class="small">Views</span>\n\
                                         </div>\n\
                                         <div>\n\
                                           <div class="view vidTitle title truncate">' + marker.feature.properties.title + '</div>\n\
