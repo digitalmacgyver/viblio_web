@@ -14,7 +14,7 @@ define( ['plugins/router',
             var self = this;
             
             self.albumsFilterLabels = ko.observableArray([]);
-            // base this value on the value of the name varialbe in the newHome viewmodel
+            // base this value on the value of the name variable in the newHome viewmodel
             // newHome is accessed through the homepage (hp)'s instance of newHome (nhome())
             self.albumFilterIsActive = ko.computed( function(){
                 if( hp.nhome().albumFilterIsActive() ) {
@@ -34,6 +34,14 @@ define( ['plugins/router',
             
             app.on( 'album:name_changed', function() {
                 self.getAllAlbumsLabels();
+            });
+        };
+        
+        albumList.prototype.unselectAllAlbums = function() {
+            var self = this;
+            
+            self.albumsFilterLabels().forEach( function( c ) {
+                c.selected( false );
             });
         };
         
@@ -66,7 +74,7 @@ define( ['plugins/router',
             });
         };
         
-        // This fucntion relies on the album filter logic already in place in the newHome viewmodel. That viewmodel
+        // This function relies on the album filter logic already in place in the newHome viewmodel. That viewmodel
         // is accessed through the hp viewmodel which in turn calls in a new instance of newHome (called nhome in the hp viewmodel)
         albumList.prototype.albumFilterSelected = function( $parent, album ) {
             var self = this;
@@ -74,8 +82,12 @@ define( ['plugins/router',
             var gettingAlbum;
         
             // Used to close the dropdown
-            $("body").trigger("click");
-
+            //$("body").trigger("click");
+            
+            if( hp.nhome().select_mode_on() ){
+                hp.nhome().cancel_select_mode();
+            }
+            
             if( !gettingAlbum ) {
                 gettingAlbum = true;
                 if( album.selected() ) {

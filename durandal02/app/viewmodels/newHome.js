@@ -5,9 +5,10 @@ define( ['plugins/router',
          'durandal/events',
          'durandal/system',
          'lib/customDialogs',
-         'lib/config'], 
+         'lib/config',
+         'viewmodels/hp'], 
     
-    function( router,viblio, Mediafile, app, Events, system, dialog, config ) {
+    function( router,viblio, Mediafile, app, Events, system, dialog, config, hp ) {
 
     var newHome = function( args ) {
 	var self = this;
@@ -630,7 +631,7 @@ define( ['plugins/router',
         });
     };
     
-    newHome.prototype.albumFilterSelected = function( self, album ) {
+    /*newHome.prototype.albumFilterSelected = function( self, album ) {
         var gettingAlbum;
         
         // Used to close the dropdown
@@ -659,7 +660,7 @@ define( ['plugins/router',
         } else {
             return;
         }        
-    };
+    };*/
     
     newHome.prototype.albumVidsSearch = function( newSearch ) {
         var self = this;
@@ -691,16 +692,22 @@ define( ['plugins/router',
                         //self.facesPager = json.pager;
                         self.currentAlbum( json.album );
                         self.albumIsShared( json.album.is_shared ? true : false );
-                        json.album.media.forEach( function( mf ) {
-                            self.addAlbumMediaFile ( mf );
-                        });
-                        dfd.resolve();
+                        if( json.album.media.length > 0 ) {
+                            json.album.media.forEach( function( mf ) {
+                                self.addAlbumMediaFile ( mf );
+                            });
+                            dfd.resolve();
+                        } else {
+                            dfd.reject();
+                        }                                               
                     });
             /*}
             else {
                 dfd.resolve();
             }*/
-        }).promise().then(function(){
+        }).promise()
+        // If the album has videos in it go to it!
+          .done(function(){
             // reset active filters
             self.recentUploadsIsActive(false);
             self.dateFilterIsActive(false);
@@ -713,6 +720,16 @@ define( ['plugins/router',
             self.albumFilterIsActive(true);
             
             self.isActiveFlag(false);
+        })
+        // if the album is empty then show dialog, when button is clicked drop into select mode from all videos 
+        .fail(function(){
+            self.selectedVideos.removeAll();
+            app.showMessage( 'You have no videos in this album yet.', 'Empty Album', ['Add Videos Now']).then( function( data ) {
+                if( data == 'Add Videos Now' ) {
+                    self.showAllVideos();
+                    self.addToAlbumSelected( self, self.currentSelectedFilterAlbum() );
+                }                  
+            });
         });
     };
     
@@ -906,10 +923,10 @@ define( ['plugins/router',
         // If select all mode is on when new vids are added then add them to the selected array too - only if owned by viewer
         if( self.select_all_mode_is_on() && self.select_mode_on() ) {
             if( self.delete_mode_on() ){
-                self.selectedVideos.push( m );
+                self.selectedVideos.push( m.media().uuid );
             } else {
                 if( self.mfOwnedByViewer( m ) ) {
-                    self.selectedVideos.push( m );
+                    self.selectedVideos.push( m.media().uuid );
                 }    
             }
         } 
@@ -1143,7 +1160,8 @@ define( ['plugins/router',
     
     newHome.prototype.cancel_select_mode = function() {
         var self = this;
-        
+        var hp = require('viewmodels/hp');
+        console.log( self, self.albumLabels() );
         // set all modes to false
         self.clear_all_modes();
         // turn off select all mode
@@ -1160,6 +1178,11 @@ define( ['plugins/router',
         self.albumLabels().forEach( function( a ) {
             a.selected( false );
         });
+        self.albumFilterIsActive( false );
+        self.selectedFilterAlbum( null );
+        self.currentSelectedFilterAlbum( null );
+        console.log( hp );
+        hp.albumList().unselectAllAlbums();
         // clear selected vids array
         self.selectedVideos.removeAll(); 
     };

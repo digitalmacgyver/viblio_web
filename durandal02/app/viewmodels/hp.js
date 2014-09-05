@@ -8,7 +8,7 @@ define(['durandal/app',
         
     var view;
     var unnamed;
-    var albumList;
+    var albumList = ko.observable();
     var albumList_is_visible = false;
     var top_actors;
     var unnamed_is_visible = false;
@@ -34,7 +34,7 @@ define(['durandal/app',
     });
     
     app.on( 'albumList:composed', function( obj ) {
-	albumList = obj;
+	albumList(obj);
     });
 
     app.on( 'top-actors:composed', function( obj ) {
@@ -81,6 +81,7 @@ define(['durandal/app',
 
     return{
         nhome: nhome,
+        albumList: albumList,
         yvSection: yvSection,
         
         showFaces: showFaces,
