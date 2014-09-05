@@ -5079,6 +5079,7 @@ a.a-drop-view:focus{
     //width: 340px;
     width: auto;
     display: none;
+    position: relative;
 }
 
 /** top-actors **/
@@ -6118,14 +6119,14 @@ ul.token-input-list-facebook li input {
     font-weight: 100;
     font-family: inherit;
     display: inline-block;
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin-top: 25px;
+    margin-bottom: 27px;
     margin-left: 23px;
 }
 
 .albumListView .scroller {
     width: auto;
-    height: 252px;
+    height: 208px;
     overflow-y: scroll;
 }
 
