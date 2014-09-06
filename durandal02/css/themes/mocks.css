@@ -3305,7 +3305,7 @@ ul.token-input-list-facebook {
     height: 41px;
     text-align: center;
     overflow: hidden;
-    line-height: .75;
+    line-height: 1;
 }
  
 .leaflet-popup-content .aux img {
@@ -3651,16 +3651,22 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .mediafile .information .aux {
     //background-color: rgba(211,246,253,1);
+    font-size: 20px;
     position: absolute;
     top: 0;
     right: 0;
     margin: 0;
-    line-height: 0.75;
-    padding: 2px 0 0;
+    line-height: .75;
+    padding: 4px 0 0;
     color: rgb(94, 95, 105);
     text-align: center;
     width: 54px;
     height: 54px;
+}
+
+.mediafile .information .aux .small {
+    font-size: 14px;
+    line-height: .75;
 }
 
 .mediafile .information .aux i {
@@ -5062,6 +5068,12 @@ a.a-drop-view:focus{
 
 .nginx-modal h3 {
     display: inline-block;
+}
+
+.nginx-modal .form-group {
+    display: inline-block;
+    float: right;
+    font-size: 20px;
 }
 
 /** New Home Page **/

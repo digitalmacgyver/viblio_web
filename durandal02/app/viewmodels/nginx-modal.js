@@ -9,10 +9,28 @@ define(['lib/viblio',
         'plugins/router',
         'durandal/app'],
     function(viblio,config,dialog,Events,system,router,app){
-        
+    
+    var the_view;
     var firstUploadComplete = ko.observable();
     var firstUploadMessageHasBeenShown = ko.observable();
     var uploadsCompleted = ko.observable( null );
+    var find_faces = ko.observable( true );
+    var skip_faces = ko.computed( function() {
+        if( find_faces() ){
+            return false;
+        } else {
+            return true;
+        }
+    });
+    
+    skip_faces.subscribe( function( val ) {
+        //console.log( val );
+        if ( val ) {
+            $(the_view).find( '.vup' ).viblio_uploader( 'skip_faces' );
+        } else {
+            $(the_view).find( '.vup' ).viblio_uploader( 'do_not_skip_faces' );
+        }
+    });
     
     Events.includeIn( this );
     
@@ -30,6 +48,7 @@ define(['lib/viblio',
     
     return{
         uploadsCompleted: uploadsCompleted,
+        find_faces: find_faces,
         
 	close: function() {
 	    var pending = $(this.view).find('.vup').viblio_uploader( 'in_progress' );
@@ -74,12 +93,15 @@ define(['lib/viblio',
 	compositionComplete: function( view ) {
             var self = this;
 	    this.view = view;
+            the_view = view;
+            
 	    $(view).find( '.vup' ).viblio_uploader({
 		uuid: viblio.getUser().uuid,
 		endpoint: '/files',
 		done_message: 'Done; Processing...',
 		alert_class: 'alert-error',
-		notify_class: 'alert-success'
+		notify_class: 'alert-success',
+                skip_faces: skip_faces()
 	    });
 
 	    $(view).find( '.vup' ).bind( 'viblio_uploaderstarted', function() {

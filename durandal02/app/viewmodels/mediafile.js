@@ -37,7 +37,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
             show_delete_mode: false,
             delete_title: 'delete',
             show_faces_tags: false,
-            ownedByViewer: false
+            ownedByViewer: false,
+            popup_player: false
 	}, options );
         
 	self.media    = ko.observable( data );
@@ -59,6 +60,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
                 return data.owner.displayname;
             }
         });
+        
+        self.popup_player = ko.observable( self.options.popup_player );
 	self.show_share_badge = ko.observable( self.options.show_share_badge );
         self.show_select_badge = ko.observable( self.options.show_select_badge );
         self.show_delete_mode = ko.observable( self.options.show_delete_mode );

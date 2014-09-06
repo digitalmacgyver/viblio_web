@@ -20,12 +20,12 @@
                     <i class="icon-unchecked"></i>
                 </div>
             </a>   
-            <a class="mplay-icon pointer fancybox" data-bind="click:play, attr:{href:image}">
+            <a class="mplay-icon pointer" data-bind="click:play, attr:{href:image}, css: { fancybox: popup_player }">
                 <i class="icon-play-circle"></i> 
             </a>
             <i class="icon-ok-sign"></i>
             <div class='pointer' data-bind="click:play">
-                <a class="fancybox" data-bind="attr:{href:image}">
+                <a data-bind="attr:{href:image}, css: { fancybox: popup_player }">
                     <img data-bind="attr:{src:image}" />
                     <!-- ko if: shared_style -->
                     <div class="sharedOwnerWrap">

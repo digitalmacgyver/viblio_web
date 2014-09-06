@@ -42,6 +42,9 @@ define( function() {
 	},
 	'localhost': {
 	    csponge: 'VXKUHY8HEWA3TSXSXQL6'
+	},
+	'test.viblio.com': {
+	    facebook: '165824470255570',
 	}
     };
 
