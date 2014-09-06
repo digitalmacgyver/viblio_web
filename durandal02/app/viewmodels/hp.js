@@ -8,8 +8,10 @@ define(['durandal/app',
         
     var view;
     var unnamed;
+    var albumList = ko.observable();
+    var albumList_is_visible = false;
     var top_actors;
-    var unamed_is_visible = false;
+    var unnamed_is_visible = false;
     var firstTime = ko.observable();
     var yvSection;
     
@@ -28,7 +30,11 @@ define(['durandal/app',
     });
 
     app.on( 'unnamed:composed', function( obj ) {
-	unamed = obj;
+	unnamed = obj;
+    });
+    
+    app.on( 'albumList:composed', function( obj ) {
+	albumList(obj);
     });
 
     app.on( 'top-actors:composed', function( obj ) {
@@ -41,13 +47,18 @@ define(['durandal/app',
     });
 
     function handle_visibility( visible ) {
-	unamed_is_visible = visible;
+	albumList_is_visible = visible;
+        var albumsWidth;
 	if ( visible ) {
-	    $(view).find( '.top-strip .cont' ).css( 'margin-right', '-340px' );
+            console.log( 'should be doing something ');
+            albumsWidth = $(view).find('.albumListView').width();
+            console.log( albumsWidth );
+	    $(view).find( '.top-strip .cont' ).css( 'margin-right', -albumsWidth );
 	    $(view).find( '.top-strip .right' ).css( 'display', 'block' );
 
 	    //$(view).find( '.top-strip .cont .left' ).animate({ 'margin-right': '340px' });
-	    $(view).find( '.top-strip .cont .left' ).css('margin-right', '340px');
+	    $(view).find( '.top-strip .cont .left' ).css('margin-right', albumsWidth);
+            $(top_actors).find( ".sd-pscroll").trigger( 'children-changed' );
 	}
 	else {
 	    $(view).find( '.top-strip .right' ).css( 'display', 'none' );
@@ -56,11 +67,11 @@ define(['durandal/app',
 	    //$(view).find( '.top-strip .cont .left' ).animate({ 'margin-right': '0px' });
 	    $(view).find( '.top-strip .cont' ).css( 'margin-right', '0px' );
 	    $(view).find( '.top-strip .cont .left' ).css( 'margin-right', '0px' );
+            $(top_actors).find( ".sd-pscroll").trigger( 'children-changed' );
 	}
-	$(top_actors.view).find( ".sd-pscroll").trigger( 'children-changed' );
     }
-
-    app.on( 'unnamed:visibility', function( visible ) {
+    
+    app.on( 'albumList:visibility', function( visible ) {
 	handle_visibility( visible );
     });
     
@@ -70,6 +81,7 @@ define(['durandal/app',
 
     return{
         nhome: nhome,
+        albumList: albumList,
         yvSection: yvSection,
         
         showFaces: showFaces,
@@ -140,7 +152,7 @@ define(['durandal/app',
         
 	compositionComplete: function( _view ) {
 	    view = _view;
-	    handle_visibility( unamed_is_visible );
+	    handle_visibility( albumList_is_visible );
 	}
     };
 });

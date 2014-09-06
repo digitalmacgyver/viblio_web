@@ -5079,7 +5079,7 @@ a.a-drop-view:focus{
 /** New Home Page **/
 
 .hp .top-strip .cont {
-    margin-right: -340px;
+    //margin-right: -340px;
     float: left;
     width: 100%;
 }
@@ -5088,8 +5088,10 @@ a.a-drop-view:focus{
 }
 .hp .top-strip .right {
     float: left;
-    width: 340px;
+    //width: 340px;
+    width: auto;
     display: none;
+    position: relative;
 }
 
 /** top-actors **/
@@ -6110,4 +6112,40 @@ ul.token-input-list-facebook li input {
 
 .fancyboxVidLoader-Inner {
     padding-top: 20%;
+}
+/****** AlbumList - top right of home ******/
+
+.albumListView {
+    background-color: rgb(235,235,235);
+    min-width: 340px;
+    width: 340px;
+}
+
+.albumListView .titleWrap {
+    //background-color: rgb(234, 234, 236);
+}
+
+.albumListView .mainTitle {
+    font-size: 32px;
+    line-height: 40px;
+    font-weight: 100;
+    font-family: inherit;
+    display: inline-block;
+    margin-top: 25px;
+    margin-bottom: 27px;
+    margin-left: 23px;
+}
+
+.albumListView .scroller {
+    width: auto;
+    height: 208px;
+    overflow-y: scroll;
+}
+
+.albumListView .scroller .sharedStyle {
+    color: rgb(28, 184, 209);
+}
+
+.albumListView .scroller .tagLabel.truncate {
+    max-width: 160px;
 }

@@ -1,0 +1,28 @@
+<div class="albumListView bottomBorder-Thin">
+    <div class="titleWrap">
+        <p class="mainTitle textShadowed">My Albums</p>
+    </div>
+    <div class="scroller">
+        <div class="wrapper">
+            <ul class="tags-inner">
+            <!-- ko foreach: albumsFilterLabels -->
+                <li data-bind="click: $parent.albumFilterSelected.bind( $data, $parent ), clickBubble: false">
+                    <a class="checkboxedLi" data-bind="css: { on: $data.selected() }">
+                        <div class="itemActive-Wrap">
+                            <div class="itemActive" data-bind="css: { on: $data.selected() }"></div>
+                        </div>
+                        <div class="inline tagLabel truncate" data-bind="text: $data.label, css:{ sel: $data.selected(), sharedStyle: $data.shared }"></div>
+                        <!--<div class="checkboxPadding"></div>
+                        <div class="checkbox-Wrap" data-bind="if: $data.selected()">
+                            <i class="icon-check"></i>
+                        </div>
+                        <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
+                            <i class="icon-unchecked"></i>
+                        </div>-->
+                    </a>
+                </li>
+            <!-- /ko -->
+            </ul>    
+        </div>                  
+    </div>
+</div>

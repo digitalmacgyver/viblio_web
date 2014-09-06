@@ -5,9 +5,10 @@ define( ['plugins/router',
          'durandal/events',
          'durandal/system',
          'lib/customDialogs',
-         'lib/config'], 
+         'lib/config',
+         'viewmodels/hp'], 
     
-    function( router,viblio, Mediafile, app, Events, system, dialog, config ) {
+    function( router,viblio, Mediafile, app, Events, system, dialog, config, hp ) {
 
     var newHome = function( args ) {
 	var self = this;
@@ -274,7 +275,7 @@ define( ['plugins/router',
                             <li>CLick on the <strong>+ Add To</strong> button to the right</li>\n\
                             <li><strong>Create a New Album</strong> (or choose an existing album to add to)</li>\n\
                             <li><strong>Select</strong> your videos and press <strong>DONE</strong> in the Select Toolbar</li>\n\
-                        </ul>'
+                        </ul>';
         
         //Events.includeIn( self );
         
@@ -630,7 +631,7 @@ define( ['plugins/router',
         });
     };
     
-    newHome.prototype.albumFilterSelected = function( self, album ) {
+    /*newHome.prototype.albumFilterSelected = function( self, album ) {
         var gettingAlbum;
         
         // Used to close the dropdown
@@ -659,11 +660,10 @@ define( ['plugins/router',
         } else {
             return;
         }        
-    };
+    };*/
     
     newHome.prototype.albumVidsSearch = function( newSearch ) {
         var self = this;
-        
         var album_id = self.currentAlbumAid();
         
         self.isActiveFlag(true);
@@ -692,16 +692,22 @@ define( ['plugins/router',
                         //self.facesPager = json.pager;
                         self.currentAlbum( json.album );
                         self.albumIsShared( json.album.is_shared ? true : false );
-                        json.album.media.forEach( function( mf ) {
-                            self.addAlbumMediaFile ( mf );
-                        });
-                        dfd.resolve();
+                        if( json.album.media.length > 0 ) {
+                            json.album.media.forEach( function( mf ) {
+                                self.addAlbumMediaFile ( mf );
+                            });
+                            dfd.resolve();
+                        } else {
+                            dfd.reject();
+                        }                                               
                     });
             /*}
             else {
                 dfd.resolve();
             }*/
-        }).promise().then(function(){
+        }).promise()
+        // If the album has videos in it go to it!
+          .done(function(){
             // reset active filters
             self.recentUploadsIsActive(false);
             self.dateFilterIsActive(false);
@@ -713,7 +719,17 @@ define( ['plugins/router',
             self.selectedCity('');
             self.albumFilterIsActive(true);
             
-            self.isActiveFlag(false);            
+            self.isActiveFlag(false);
+        })
+        // if the album is empty then show dialog, when button is clicked drop into select mode from all videos 
+        .fail(function(){
+            self.selectedVideos.removeAll();
+            app.showMessage( 'You have no videos in this album yet.', 'Empty Album', ['Add Videos Now']).then( function( data ) {
+                if( data == 'Add Videos Now' ) {
+                    self.showAllVideos();
+                    self.addToAlbumSelected( self, self.currentSelectedFilterAlbum() );
+                }                  
+            });
         });
     };
     
@@ -795,7 +811,6 @@ define( ['plugins/router',
 	});*/
         
         m.on( 'mediafile:play', function( m ) {
-            console.log( self.videos().indexOf( m ) );
             self.playingVid( m );
             self.playingVidIndex( self.videos().indexOf( m ) );
             self.playingVidUUID( m.media().uuid );
@@ -850,7 +865,6 @@ define( ['plugins/router',
                 router.navigate( 'web_player?mid=' + m.media().uuid );
             });*/
             m.on( 'mediafile:play', function( m ) {
-                console.log( self.videos().indexOf( m ) );
                 self.playingVid( m );
                 self.playingVidIndex( self.videos().indexOf( m ) );
                 self.playingVidUUID( m.media().uuid );
@@ -872,7 +886,6 @@ define( ['plugins/router',
                 router.navigate( 'new_player?mid=' + m.media().uuid );
             });*/
             m.on( 'mediafile:play', function( m ) {
-                console.log( self.videos().indexOf( m ) );
                 self.playingVid( m );
                 self.playingVidIndex( self.videos().indexOf( m ) );
                 self.playingVidUUID( m.media().uuid );
@@ -910,17 +923,16 @@ define( ['plugins/router',
         // If select all mode is on when new vids are added then add them to the selected array too - only if owned by viewer
         if( self.select_all_mode_is_on() && self.select_mode_on() ) {
             if( self.delete_mode_on() ){
-                self.selectedVideos.push( m );
+                self.selectedVideos.push( m.media().uuid );
             } else {
                 if( self.mfOwnedByViewer( m ) ) {
-                    self.selectedVideos.push( m );
+                    self.selectedVideos.push( m.media().uuid );
                 }    
             }
         } 
     };
     
     newHome.prototype.mfOwnedByViewer = function( mf ) {
-        console.log( mf );
         var uuid;
         if( mf.owner_uuid ){
             uuid = mf.owner_uuid;
@@ -1148,7 +1160,8 @@ define( ['plugins/router',
     
     newHome.prototype.cancel_select_mode = function() {
         var self = this;
-        
+        var hp = require('viewmodels/hp');
+        console.log( self, self.albumLabels() );
         // set all modes to false
         self.clear_all_modes();
         // turn off select all mode
@@ -1165,6 +1178,11 @@ define( ['plugins/router',
         self.albumLabels().forEach( function( a ) {
             a.selected( false );
         });
+        self.albumFilterIsActive( false );
+        self.selectedFilterAlbum( null );
+        self.currentSelectedFilterAlbum( null );
+        console.log( hp );
+        hp.albumList().unselectAllAlbums();
         // clear selected vids array
         self.selectedVideos.removeAll(); 
     };
@@ -1450,7 +1468,6 @@ define( ['plugins/router',
     newHome.prototype.createAlbumFromTitle = function() {
         var self = this;
         
-        console.log( self.albumLabels() );
         self.albumLabels()[0].selected(true);
         self.addToAlbumSelected( self, self.albumLabels()[0] );
     };
@@ -1523,7 +1540,6 @@ define( ['plugins/router',
             } else {
                 // Add to an existing album
                 viblio.api( '/services/album/add_media', { aid: self.selectedAddToAlbum().uuid, list: self.selectedVideos() } ).then( function( data ) {
-                    console.log( data );
                     var vidOrVids = num == 1 ? ' video' : ' videos';
                     var msg = num + vidOrVids + ' successfully added to your "' + self.selectedAddToAlbum().label + '" Album';
                     viblio.notify( msg, 'success' );
@@ -1794,8 +1810,6 @@ define( ['plugins/router',
     newHome.prototype.resizePlayer = function() {
         var self = this;
         
-        console.log( 'resize fired' );
-        
 	var player_height = ($("#player").width()*9) / 16;
 	$("#player, #player video, #player > div, .fancybox-outer").height( player_height );
         $('.fancybox-nav').height( $("#player").height()-30 );
@@ -1811,7 +1825,6 @@ define( ['plugins/router',
     
     newHome.prototype.setUpFlowplayer = function( elem, mf ) {
         var self = this;
-        console.log( mf );
         $(elem).flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
             ratio: 9/16,
             splash: true,
@@ -1915,7 +1928,6 @@ define( ['plugins/router',
                 var F = $.fancybox;
                 var el;
                 var href;
-                console.log( self.mfOwnedByViewer( self.playingVid() ) );
                 var api;
                 if( self.mfOwnedByViewer( self.playingVid() ) ) {
                     api = '/services/mediafile/get';
@@ -1930,7 +1942,6 @@ define( ['plugins/router',
                 $('.fancyboxVidLoader').show();
                 return viblio.api( api, { mid: self.playingVidUUID()  } ).then( function( json ) {
                     var mf = json.media;
-                    console.log( mf );
                     self.setUpFlowplayer( '#player', mf );
                     self.resizePlayer();
                     $('.fancyboxVidLoader').hide();
