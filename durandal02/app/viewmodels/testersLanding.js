@@ -40,6 +40,12 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'plugins/dialog']
         });
     };
     
+    function resizePlayer() {
+	var player_height = $(".promo-player").width()*.362;
+        $(".promo-player").children().height(player_height).width('100%');
+	$(".promo-player, .promo-player video").height( player_height );
+    }
+    
     return {
         email: email,
         emailValid: emailValid,
@@ -49,8 +55,21 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'plugins/dialog']
         register: register,
         register2: register2,
         
-        activate: function(  ) {
-            
+        detached: function () {
+	    $(window).unbind( 'resize', resizePlayer );
+	    if(flowplayer()){
+                flowplayer().unload();
+            }
+	},
+        
+        compositionComplete: function() {
+            $(".promo-player").flowplayer({ src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
+                clip: {
+                    url: '/css/videos/viblio-promo.mp4'
+                }
+            });
+            resizePlayer();
+            $(window).bind('resize', resizePlayer );
         }
         
     };

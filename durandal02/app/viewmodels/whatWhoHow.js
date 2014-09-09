@@ -1,4 +1,4 @@
-define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router, whoWeAre, viblio ) {
+define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'lib/config',], function( router, whoWeAre, viblio, config ) {
     
     var showWhat = ko.observable(true);
     var showWho = ko.observable(false);
@@ -64,6 +64,12 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
             return false;
         }
     });
+    
+    function resizePlayer() {
+	var player_height = $(".promo-player").width()*.362;
+        $(".promo-player").children().height(player_height).width('100%');
+	$(".promo-player, .promo-player video").height( player_height );
+    }
     
     //-------------- How Section ----------------//
     var selected = ko.observable('support');
@@ -190,6 +196,13 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
         
         send_vote: send_vote,
         
+        detached: function () {
+	    $(window).unbind( 'resize', resizePlayer );
+	    if(flowplayer()){
+                flowplayer().unload();
+            }
+	},
+        
         activate: function(args) {
             if (args ) {
                 if ( args.showWhat ) {
@@ -214,6 +227,16 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio'], function( router
                     showPrivacy( false );
                 }
             }
+        },
+        
+        compositionComplete: function() {
+            $(".promo-player").flowplayer({ src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
+                clip: {
+                    url: '/css/videos/viblio-promo.mp4'
+                }
+            });
+            resizePlayer();
+            $(window).bind('resize', resizePlayer );
         }
     };
 });
