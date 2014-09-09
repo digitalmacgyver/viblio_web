@@ -65,7 +65,7 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'plugins/dialog']
         compositionComplete: function() {
             $(".promo-player").flowplayer({ src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
                 clip: {
-                    url: '/css/videos/viblio-promo.mp4'
+                    url: 'https://s3-us-west-2.amazonaws.com/viblio-external/media/corp-site/viblio-promo.mp4'
                 }
             });
             resizePlayer();
