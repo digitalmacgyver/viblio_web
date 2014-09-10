@@ -6,9 +6,10 @@ define( ['plugins/router',
          'durandal/system',
          'lib/customDialogs',
          'lib/config',
-         'viewmodels/hp'], 
+         'viewmodels/hp',
+         'viewmodels/pp'], 
     
-    function( router,viblio, Mediafile, app, Events, system, dialog, config, hp ) {
+    function( router,viblio, Mediafile, app, Events, system, dialog, config, hp, PlayerPage ) {
 
     var newHome = function( args ) {
 	var self = this;
@@ -1938,6 +1939,15 @@ define( ['plugins/router',
                 }
                 el = " &mdash; <a class='vidDetails' href='#" + href + self.playingVidUUID() + "'onclick='$.fancybox.close()'> Details</a>";
                 this.title = "<span>"+self.playingVid().title()+"</span>"+el;
+                
+                var arr = [];
+                self.videos().forEach( function(vid){
+                    if( vid != self.playingVid() ) {
+                        arr.push( vid );
+                    }
+                });
+                console.log( arr );
+                PlayerPage.relatedVids( arr );
                 
                 $('.fancyboxVidLoader').show();
                 return viblio.api( api, { mid: self.playingVidUUID()  } ).then( function( json ) {
