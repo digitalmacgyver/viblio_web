@@ -32,9 +32,9 @@ define( ['plugins/router',
                 }
             });
             
-            app.on( 'album:name_changed', function() {
+            /*app.on( 'album:name_changed', function() {
                 self.getAllAlbumsLabels();
-            });
+            });*/
         };
         
         albumList.prototype.unselectAllAlbums = function() {
@@ -45,7 +45,17 @@ define( ['plugins/router',
             });
         };
         
-        albumList.prototype.getAllAlbumsLabels = function() {
+        albumList.prototype.highlightActiveAlbum = function( aid ) {
+            var self = this;
+            console.log( 'highlightActiveAlbum fired', aid );
+            self.albumsFilterLabels().forEach( function( c ) {
+                if( c.uuid == aid ) {
+                    c.selected( true );
+                }
+            });
+        };
+        
+        albumList.prototype.getAllAlbumsLabels = function( aid ) {
             var self = this;
             self.albumsFilterLabels.removeAll();
             return system.defer( function( dfd ) {
@@ -70,7 +80,11 @@ define( ['plugins/router',
                     app.trigger( 'albumList:visibility', true );
                 } else {
                     app.trigger( 'albumList:visibility', false );
-                }             
+                }
+                // if an aid is passed in then highlight the album
+                if( aid ) {
+                    self.highlightActiveAlbum( aid );
+                }
             });
         };
         
@@ -78,6 +92,8 @@ define( ['plugins/router',
         // is accessed through the hp viewmodel which in turn calls in a new instance of newHome (called nhome in the hp viewmodel)
         albumList.prototype.albumFilterSelected = function( $parent, album ) {
             var self = this;
+            
+            console.log( 'albumList albumFilterSelected fired', album);
             
             var gettingAlbum;
         

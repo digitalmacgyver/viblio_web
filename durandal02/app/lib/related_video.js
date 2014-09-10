@@ -1,4 +1,7 @@
-define(['lib/viblio','viewmodels/mediafile','durandal/app'], function(viblio,Mediafile,app) {
+define(['lib/viblio',
+        'viewmodels/mediafile',
+        'durandal/app'],
+    function(viblio,Mediafile,app) {
 
     var mediafiles = ko.observableArray([]);
     var searching;
@@ -6,7 +9,8 @@ define(['lib/viblio','viewmodels/mediafile','durandal/app'], function(viblio,Med
     var view;
     var ro = false;
     var passedInVids;
-
+    var user = viblio.user;
+    
     var mid;
 
     /*var criterion = {
@@ -25,7 +29,13 @@ define(['lib/viblio','viewmodels/mediafile','durandal/app'], function(viblio,Med
 
     function addMediaFile( mf ) {
         // Create a new Mediafile with the data from the server
-        var m = new Mediafile( mf, { ro: ro } );
+        var m;
+        if( mf.owner_uuid != user().uuid ) {
+            console.log("shared style!", mf);
+            m = new Mediafile( mf, { shared_style: true, ro: true } )
+        } else {
+            m = new Mediafile( mf, { ro: ro } )
+        }
 
         // Proxy the mediafile play event and send it along to
         // our parent.
@@ -42,7 +52,7 @@ define(['lib/viblio','viewmodels/mediafile','durandal/app'], function(viblio,Med
         mediafiles: mediafiles,
         passedInVids: passedInVids,
         
-	init: function( elem, _mediafiles, relatedList, playingVid, _searching, _play_callback, _ro ) {
+	init: function( elem, _mediafiles, relatedList, playingVid, pp, _searching, _play_callback, _ro ) {
 	    var self = this;
 
 	    view = elem;
@@ -58,10 +68,14 @@ define(['lib/viblio','viewmodels/mediafile','durandal/app'], function(viblio,Med
                 //mediafiles( relatedList() );
                 console.log( playingVid() );
                 relatedList().forEach( function( vid ) {
-                    if( vid.media().uuid != playingVid().media().uuid ) {
+                    //if( vid.media().uuid != playingVid().media().uuid ) {
                         addMediaFile( vid.media() );
-                    }
-                })
+                    //}
+                });
+                //mediafiles()()[0].selected( true );
+                console.log( pp );
+                pp.playRelated( mediafiles()()[0] );
+                mediafiles()()[0].selected( true );
             }
             
             /*if( passedInVids().length == 0 ){

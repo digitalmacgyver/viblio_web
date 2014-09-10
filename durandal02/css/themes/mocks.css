@@ -3651,13 +3651,13 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .mediafile .information .aux {
     //background-color: rgba(211,246,253,1);
-    font-size: 20px;
+    font-size: 16px;
     position: absolute;
     top: 0;
     right: 0;
     margin: 0;
     line-height: .75;
-    padding: 4px 0 0;
+    padding: 8px 0 0;
     color: rgb(94, 95, 105);
     text-align: center;
     width: 54px;
@@ -3665,7 +3665,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .mediafile .information .aux .small {
-    font-size: 14px;
+    font-size: 12px;
     line-height: .75;
 }
 
@@ -3986,6 +3986,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     font-size: 15px;
     width: 40px;
     height: 40px;
+    padding: 3px 0 0;
 }
 
 .pp-related-column-related .mediafile .information .aux .small {

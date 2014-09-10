@@ -223,7 +223,10 @@ define(["durandal/app",
             description( playing().description() || '' );
 	}
         setupComments( m.media() );
-        setupFaces( m.media() );
+        // prevents the double faces section - only calls it if not pulling vids from related that are passed in
+        if( relatedVids().length == 0 ) {
+            setupFaces( m.media() );
+        }
         near( m.media() );
         
         setupTags( m.media() );
@@ -275,7 +278,7 @@ define(["durandal/app",
 
     // Play next related video
     function nextRelated() {
-        if( !disable_next() ) {
+        //if( !disable_next() ) {
             console.log( next_available_clip() );
             // We need to ask the vstrip if the next available clip is 
             // actually available.
@@ -284,11 +287,14 @@ define(["durandal/app",
                 Related.scrollTo( mediafiles()[ next_available_clip() ] );
                 playVid( mediafiles()[ next_available_clip() ] );
                 next_available_clip( next_available_clip() + 1 );
-                if ( ! Related.isClipAvailable( next_available_clip() ) )
-                     disable_next( true );
+                /*if ( ! Related.isClipAvailable( next_available_clip() ) )
+                     disable_next( true );*/
             }
             else {
-                disable_next( true );
+                //disable_next( true );
+                // loop back to the first video
+                playVid( mediafiles()[0] );
+                next_available_clip(1);
             }
 
             // handle prev vid
@@ -300,7 +306,7 @@ define(["durandal/app",
                 console.log( 'prev not available ')
                 disable_prev( true );
             }
-        }
+        //}
     }
 
     // Play previous related video
@@ -845,6 +851,9 @@ define(["durandal/app",
         tagSelected: tagSelected,
         addTag: addTag,
         removeTag: removeTag,
+        
+        playVid: playVid,
+        playRelated: playRelated,
                 
         shouldShowInteractiveMap: function() {
             if( nolocation() ) {
@@ -1023,15 +1032,15 @@ define(["durandal/app",
 		incoming_mid = args.mid;
 
 	    if ( route == 'new_player' ) {
-		return viblio.api( '/services/mediafile/get', { mid: incoming_mid } ).then( function( json ) {
-		    var mf = json.media;
-		    // Set now playing
-		    playing( new Mediafile( mf ) );
-		    title( mf.title || 'Click to add a title' );
-		    description( mf.description || 'Click to add a description' );
-		    setOwner( json.owner );
-		});
-	    }
+                    return viblio.api( '/services/mediafile/get', { mid: incoming_mid } ).then( function( json ) {
+                        var mf = json.media;
+                        // Set now playing
+                        playing( new Mediafile( mf ) );
+                        title( mf.title || 'Click to add a title' );
+                        description( mf.description || 'Click to add a description' );
+                        setOwner( json.owner );
+                    });
+                }
             // make sure overlay is hidden
             hidePlayerOverlay();
             /*tagLabels.forEach(function(tag) {
@@ -1065,14 +1074,14 @@ define(["durandal/app",
                 next_available_clip( 0 );
                 console.log( 'next_available_clip(): ', next_available_clip() );
                 console.log( relatedVids(), playing() );
-		Related.init( '.pp-related-column-related-videos', mediafiles, relatedVids, playing, query_in_progress, function( m ) {
+		Related.init( '.pp-related-column-related-videos', mediafiles, relatedVids, playing, this, query_in_progress, function( m ) {
 		    playRelated( m );
 		}, ( route == 'web_player' ));
 		if( relatedVids().length == 0 ) {
                     Related.search( playing().media().uuid, {}, resizePlayer );
                 } else {
                     disable_prev( true );
-                    if( relatedVids().length <= 1 ){
+                    if( relatedVids().length < 1 ){
                         disable_next( true );
                     } else {
                         disable_next( false );
