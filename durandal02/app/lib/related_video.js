@@ -123,9 +123,9 @@ define(['lib/viblio','viewmodels/mediafile','durandal/app'], function(viblio,Med
             console.log('search is being called');
 	    
             if ( _mid ) mid = _mid;
-	    var opts =  { mid: mid };
+	    var args =  { mid: mid };
             searching( true );
-            viblio.api( '/services/mediafile/related', opts )  
+            viblio.api( '/services/mediafile/related', args )  
                 .then( function( json ) {
                     console.log( json );
                     //pager = json.pager;

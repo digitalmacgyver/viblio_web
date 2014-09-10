@@ -1047,6 +1047,7 @@ define(["durandal/app",
 	},
 
 	compositionComplete: function() {
+            console.log( relatedVids() );
             oniOS( head.browser.ios ? true : false );
 	    setupFlowplayer( '.pp-tv', playing().media() );
 	    setupFaces( playing().media() );
