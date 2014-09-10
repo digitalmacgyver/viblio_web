@@ -192,6 +192,7 @@ define(["durandal/app",
 			     'by_geo' ];
 
     var mediafiles = ko.observableArray([]);
+    var relatedVids = ko.observableArray([]);
     var query_in_progress = ko.observable( false );
     var next_available_clip = ko.observable( 0 );
     
@@ -274,37 +275,53 @@ define(["durandal/app",
 
     // Play next related video
     function nextRelated() {
-        // We need to ask the vstrip if the next available clip is 
-        // actually available.  
-        if ( Related.isClipAvailable( next_available_clip() ) ) {
-            disable_prev( false );
-            Related.scrollTo( mediafiles()[ next_available_clip() ] );
-            playVid( mediafiles()[ next_available_clip() ] );
-            next_available_clip( next_available_clip() + 1 );
-            if ( ! Related.isClipAvailable( next_available_clip() ) )
-                 disable_next( true );
-        }
-        else {
-            disable_next( true );
+        if( !disable_next() ) {
+            console.log( next_available_clip() );
+            // We need to ask the vstrip if the next available clip is 
+            // actually available.
+            if ( Related.isClipAvailable( next_available_clip() ) ) {
+                //disable_prev( false );
+                Related.scrollTo( mediafiles()[ next_available_clip() ] );
+                playVid( mediafiles()[ next_available_clip() ] );
+                next_available_clip( next_available_clip() + 1 );
+                if ( ! Related.isClipAvailable( next_available_clip() ) )
+                     disable_next( true );
+            }
+            else {
+                disable_next( true );
+            }
+
+            // handle prev vid
+            console.log( "next_available_clip(): ", next_available_clip() );
+            if ( Related.isClipAvailable( next_available_clip() - 2 ) ) {
+                console.log( 'prev is available ');
+                disable_prev( false );
+            } else {
+                console.log( 'prev not available ')
+                disable_prev( true );
+            }
         }
     }
 
     // Play previous related video
     function previousRelated() {
-        var p = next_available_clip() - 2;
-        if ( p < 0 ) {
-            disable_prev( true );
-        }
-        else {
-            if ( p == 0 ) {
-                // We've transitioned to 0.  Play it but disable prev
+        if( !disable_prev() ) {
+            console.log( "previousRelated() fired");
+            var p = next_available_clip() - 2;
+            if ( p < 0 ) {
                 disable_prev( true );
             }
-            next_available_clip( p );
-            Related.scrollTo( mediafiles()[ next_available_clip() ] );
-            playVid( mediafiles()[ next_available_clip() ] );
-            next_available_clip( p + 1 );
-            disable_next( false );
+            else {
+                if ( p == 0 ) {
+                    // We've transitioned to 0.  Play it but disable prev
+                    disable_prev( true );
+                }
+                next_available_clip( p );
+                Related.scrollTo( mediafiles()[ next_available_clip() ] );
+                playVid( mediafiles()[ next_available_clip() ] );
+                next_available_clip( p + 1 );
+                disable_next( false );
+            }
         }
     }
 
@@ -312,7 +329,25 @@ define(["durandal/app",
     // play it.
     function playRelated( m ) {
         var index = mediafiles.indexOf( m );
+        console.log( index );
         next_available_clip( index + 1 );
+        var p = next_available_clip() - 2;
+        // handle next vid
+        if ( Related.isClipAvailable( next_available_clip() ) ) {
+            console.log( 'next is available ');
+            disable_next( false );
+        } else {
+            console.log( 'next not available ')
+            disable_next( true );
+        }
+        // handle prev vid
+        if ( Related.isClipAvailable( p ) ) {
+            console.log( 'prev is available ');
+            disable_prev( false );
+        } else {
+            console.log( 'prev not available ')
+            disable_prev( true );
+        }
         playVid( m );
     }
 
@@ -783,6 +818,7 @@ define(["durandal/app",
 	add_face_to_video: add_face_to_video,
 
 	mediafiles: mediafiles,
+        relatedVids: relatedVids,
 	query_in_progress: query_in_progress,
 	next_available_clip: next_available_clip,
 
@@ -1024,10 +1060,23 @@ define(["durandal/app",
 	    $(window).bind('resize', resizePlayer );
 
 	    if ( pp_related_column_visible() ) {
-		Related.init( '.pp-related-column-related-videos', mediafiles, query_in_progress, function( m ) {
+                // reset next_available_clip
+                next_available_clip( 0 );
+                console.log( 'next_available_clip(): ', next_available_clip() );
+                console.log( relatedVids(), playing() );
+		Related.init( '.pp-related-column-related-videos', mediafiles, relatedVids, playing, query_in_progress, function( m ) {
 		    playRelated( m );
 		}, ( route == 'web_player' ));
-		Related.search( playing().media().uuid, {}, resizePlayer );
+		if( relatedVids().length == 0 ) {
+                    Related.search( playing().media().uuid, {}, resizePlayer );
+                } else {
+                    disable_prev( true );
+                    if( relatedVids().length <= 1 ){
+                        disable_next( true );
+                    } else {
+                        disable_next( false );
+                    }
+                }              
 	    }
 
 	    // related video search widget

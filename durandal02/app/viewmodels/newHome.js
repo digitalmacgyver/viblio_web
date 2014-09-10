@@ -5,9 +5,10 @@ define( ['plugins/router',
          'durandal/events',
          'durandal/system',
          'lib/customDialogs',
-         'lib/config'], 
+         'lib/config',
+         'viewmodels/pp'], 
     
-    function( router,viblio, Mediafile, app, Events, system, dialog, config ) {
+    function( router,viblio, Mediafile, app, Events, system, dialog, config, PlayerPage ) {
 
     var newHome = function( args ) {
 	var self = this;
@@ -783,7 +784,7 @@ define( ['plugins/router',
         
 	// Create a new Mediafile with the data from the server - Only albums owned by the viewer will be given the share badge
 
-	var m = new Mediafile( mf, self.mfOwnedByViewer(mf) ? { show_share_badge: !self.select_mode_on(), show_preview: true, show_faces_tags: true, ownedByViewer: true, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on() } : { show_preview: true, ro: true, show_faces_tags: true, shared_style: true, owner_uuid: mf.owner_uuid, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on() } );	
+	var m = new Mediafile( mf, self.mfOwnedByViewer(mf) ? { show_share_badge: !self.select_mode_on(), show_preview: true, show_faces_tags: true, ownedByViewer: true, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on(), popup_player: true } : { show_preview: true, ro: true, show_faces_tags: true, shared_style: true, owner_uuid: mf.owner_uuid, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on(), popup_player: true } );	
 
 	// Play a mediafile clip.  This uses the query parameter
 	// passing technique to pass in the mediafile to play.
@@ -845,7 +846,7 @@ define( ['plugins/router',
         }   
         if( mf.is_shared == 1 ) {
             // Shared with user
-            var m = new Mediafile( mf, { ro: true, shared_style: true, owner_uuid: mf.owner_uuid, show_select_badge: self.delete_mode_on() ? self.select_mode_on() : false, selected: self.delete_mode_on() ? self.select_all_mode_is_on() : false } ); //m.ro( true );
+            var m = new Mediafile( mf, { ro: true, shared_style: true, owner_uuid: mf.owner_uuid, show_select_badge: self.delete_mode_on() ? self.select_mode_on() : false, selected: self.delete_mode_on() ? self.select_all_mode_is_on() : false, popup_player: true } ); //m.ro( true );
             /*m.on( 'mediafile:play', function( m ) {
                 router.navigate( 'web_player?mid=' + m.media().uuid );
             });*/
@@ -864,7 +865,7 @@ define( ['plugins/router',
             });    
         } else {
             // Owned by user
-            var m = new Mediafile( mf, { show_share_badge: !self.select_mode_on(), show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on(), in_process_style: mf.status == 'pending' ? true : false } );
+            var m = new Mediafile( mf, { show_share_badge: !self.select_mode_on(), show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on(), in_process_style: mf.status == 'pending' ? true : false, popup_player: true } );
 
             // Proxy the mediafile play event and send it along to
             // our parent.
@@ -1926,6 +1927,15 @@ define( ['plugins/router',
                 }
                 el = " &mdash; <a class='vidDetails' href='#" + href + self.playingVidUUID() + "'onclick='$.fancybox.close()'> Details</a>";
                 this.title = "<span>"+self.playingVid().title()+"</span>"+el;
+                
+                var arr = [];
+                self.videos().forEach( function(vid){
+                    if( vid != self.playingVid() ) {
+                        arr.push( vid );
+                    }
+                });
+                console.log( arr );
+                PlayerPage.relatedVids( arr );
                 
                 $('.fancyboxVidLoader').show();
                 return viblio.api( api, { mid: self.playingVidUUID()  } ).then( function( json ) {
