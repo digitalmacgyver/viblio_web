@@ -5377,7 +5377,12 @@ div.fstrip {
     //margin-bottom: 50px;
 }
 
-.promo-player,
+.promo-player {
+    width: 80%;
+    max-width: 700px;
+    margin: 50px auto;
+}
+
 .whatWhoHow .aboutPrivacy,
 .whatWhoHow .what,
 .whatWhoHow .how,
