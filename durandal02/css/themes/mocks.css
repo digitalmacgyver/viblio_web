@@ -3982,6 +3982,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 /*********************************/
 
+.pp-related-column-related .mediafile .sharedOwnerWrap .truncate {
+    max-width: 124px;
+}
+
 .pp-related-column-related .mediafile .information .aux {
     font-size: 15px;
     width: 40px;
