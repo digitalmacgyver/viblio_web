@@ -133,6 +133,7 @@ define( ['plugins/router',
         self.albumIsShared = ko.observable(null);
         self.currentAlbumAid = ko.observable(null);
         self.currentAlbumTitle = ko.observable(null);
+        self.current_album_is_empty = ko.observable( null );
         
         // This handles the folder icon for an album - shows the shared icon when it's been shared
         app.on('album:album_shared', function( aid ) {
@@ -718,6 +719,7 @@ define( ['plugins/router',
         }).promise()
         // If the album has videos in it go to it!
           .done(function(){
+            self.current_album_is_empty( false );
             // reset active filters
             self.recentUploadsIsActive(false);
             self.dateFilterIsActive(false);
@@ -733,6 +735,7 @@ define( ['plugins/router',
         })
         // if the album is empty then show dialog, when button is clicked drop into select mode from all videos 
         .fail(function(){
+            self.current_album_is_empty( true );
             self.selectedVideos.removeAll();
             app.showMessage( 'You have no videos in this album yet.', 'Empty Album', ['Add Videos Now']).then( function( data ) {
                 if( data == 'Add Videos Now' ) {
@@ -1056,7 +1059,14 @@ define( ['plugins/router',
                     viblio.api( '/services/album/delete_album', { aid: self.currentSelectedFilterAlbum().uuid } ).then( function() {
                         viblio.mpEvent( 'delete_album' );
                         hp.albumList().albumsFilterLabels.remove( self.currentSelectedFilterAlbum() );
-                        self.albumLabels.remove( self.currentSelectedFilterAlbum() );
+                        console.log( "albumLabels: ", self.albumLabels(), "album to remove: ", self.currentSelectedFilterAlbum() );
+                        //self.albumLabels.remove( self.currentSelectedFilterAlbum() );
+                        self.albumLabels().forEach( function( album ) {
+                            if( album.uuid == self.currentSelectedFilterAlbum().uuid ) {
+                                self.albumLabels.remove( album );
+                                return;
+                            }
+                        });
                         self.showAllVideos();
                     });    
                 } else {
@@ -1193,11 +1203,21 @@ define( ['plugins/router',
         self.albumLabels().forEach( function( a ) {
             a.selected( false );
         });
-        self.albumFilterIsActive( false );
-        self.selectedFilterAlbum( null );
-        self.currentSelectedFilterAlbum( null );
+        
+        console.log( self.currentSelectedFilterAlbum(), self.selectedFilterAlbum() );
+        if( self.current_album_is_empty() ) {
+            console.log( 'album was empty, go back to all vids' );
+            self.albumFilterIsActive( false );
+            self.selectedFilterAlbum( null );
+            self.currentSelectedFilterAlbum( null );
+            console.log( hp );
+            hp.albumList().unselectAllAlbums();
+        }
+        //self.albumFilterIsActive( false );
+        //self.selectedFilterAlbum( null );
+        //self.currentSelectedFilterAlbum( null );
         console.log( hp );
-        hp.albumList().unselectAllAlbums();
+        //hp.albumList().unselectAllAlbums();
         // clear selected vids array
         self.selectedVideos.removeAll(); 
     };
