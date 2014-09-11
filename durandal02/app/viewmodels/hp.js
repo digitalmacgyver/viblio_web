@@ -112,6 +112,7 @@ define(['durandal/app',
                     ko.cleanNode(videos);
                 }
                 if( args.aid ) {
+                    console.log( 'trying to go to an album', args.aid );
                     nhome( new newHome( {aid: args.aid} ) );    
                 } else if( args.fid ) {
                     nhome( new newHome( {fid: args.fid} ) );  

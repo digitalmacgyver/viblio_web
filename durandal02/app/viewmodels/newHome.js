@@ -6,9 +6,10 @@ define( ['plugins/router',
          'durandal/system',
          'lib/customDialogs',
          'lib/config',
-         'viewmodels/hp'], 
+         'viewmodels/hp',
+         'viewmodels/pp'], 
     
-    function( router,viblio, Mediafile, app, Events, system, dialog, config, hp ) {
+    function( router,viblio, Mediafile, app, Events, system, dialog, config, hp, PlayerPage ) {
 
     var newHome = function( args ) {
 	var self = this;
@@ -286,6 +287,7 @@ define( ['plugins/router',
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
                 viblio.api('services/mediafile/list_status').then( function( data ) {
+                    console.log( data );
                     self.numVidsPending( data.stats.pending );
                     var num = data.stats.pending/* + data.stats.visible*/;
                     self.vidsInProcess( num );
@@ -356,6 +358,8 @@ define( ['plugins/router',
             if ( self.recentPager.next_page )   {
                 args.page = self.recentPager.next_page;
                 args.rows = self.recentPager.entries_per_page;
+                args.include_tags = 1;
+                args.include_contact_info = 1;
                 // needed for showing pending videos
                 if( self.vidsInProcess() > 0 ) {
                     args.only_videos=1;
@@ -430,6 +434,8 @@ define( ['plugins/router',
 	    if ( self.monthPager.next_page )   {
                 args.page = self.monthPager.next_page;
                 args.rows = self.monthPager.entries_per_page;
+                args.include_tags = 1;
+                args.include_contact_info = 1;
 		viblio.api( '/services/yir/videos_for_month', args )
 		    .then( function( json ) {
                         self.hits ( json.pager.total_entries );
@@ -517,6 +523,8 @@ define( ['plugins/router',
             if ( self.facesPager.next_page )   {
                 args.page = self.facesPager.next_page;
                 args.rows = self.facesPager.entries_per_page;
+                args.include_tags = 1;
+                args.include_contact_info = 1;
                 // needed for showing pending videos
                 /*if( self.vidsInProcess() > 0 ) {
                     args.only_videos=1;
@@ -597,6 +605,8 @@ define( ['plugins/router',
             if ( self.cityPager.next_page )   {
                 args.page = self.cityPager.next_page;
                 args.rows = self.cityPager.entries_per_page;
+                args.include_tags = 1;
+                args.include_contact_info = 1;
                 // needed for showing pending videos
                 /*if( self.vidsInProcess() > 0 ) {
                     args.only_videos=1;
@@ -741,6 +751,10 @@ define( ['plugins/router',
         viblio.api( '/services/album/change_title', { aid: self.currentAlbumAid(), title: self.currentAlbumTitle() } ).then(function() {
             self.currentSelectedFilterAlbum().title = self.currentAlbumTitle();
             self.getAllAlbumsLabels();
+            /*var hp = require('viewmodels/hp');
+            if( self.albumFilterIsActive() ) {
+                hp.albumList().highlightActiveAlbum( self.currentAlbumAid() );
+            }*/
         });
     });
     
@@ -860,7 +874,7 @@ define( ['plugins/router',
         }   
         if( mf.is_shared == 1 ) {
             // Shared with user
-            var m = new Mediafile( mf, { ro: true, shared_style: true, owner_uuid: mf.owner_uuid, show_select_badge: self.delete_mode_on() ? self.select_mode_on() : false, selected: self.delete_mode_on() ? self.select_all_mode_is_on() : false, popup_player: true } ); //m.ro( true );
+            var m = new Mediafile( mf, { ro: true, shared_style: true, owner_uuid: mf.owner_uuid, show_faces_tags: true, show_select_badge: self.delete_mode_on() ? self.select_mode_on() : false, selected: self.delete_mode_on() ? self.select_all_mode_is_on() : false, popup_player: true } ); //m.ro( true );
             /*m.on( 'mediafile:play', function( m ) {
                 router.navigate( 'web_player?mid=' + m.media().uuid );
             });*/
@@ -878,7 +892,7 @@ define( ['plugins/router',
             });    
         } else {
             // Owned by user
-            var m = new Mediafile( mf, { show_share_badge: !self.select_mode_on(), show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on(), in_process_style: mf.status == 'pending' ? true : false, popup_player: true } );
+            var m = new Mediafile( mf, { show_share_badge: !self.select_mode_on(), show_select_badge: self.select_mode_on(), show_faces_tags: true, ownedByViewer: true, selected: self.select_all_mode_is_on(), in_process_style: mf.status == 'pending' ? true : false, popup_player: true } );
 
             // Proxy the mediafile play event and send it along to
             // our parent.
@@ -1032,6 +1046,7 @@ define( ['plugins/router',
         var self = this;
         
         var message
+        var hp = require('viewmodels/hp');
         
         if( self.currentSelectedFilterAlbum().shared == 0 ) {
             // owned by viewer - delete
@@ -1040,7 +1055,7 @@ define( ['plugins/router',
                 if( data == 'Yes' ) {
                     viblio.api( '/services/album/delete_album', { aid: self.currentSelectedFilterAlbum().uuid } ).then( function() {
                         viblio.mpEvent( 'delete_album' );
-                        self.albumsFilterLabels.remove( self.currentSelectedFilterAlbum() );
+                        hp.albumList().albumsFilterLabels.remove( self.currentSelectedFilterAlbum() );
                         self.albumLabels.remove( self.currentSelectedFilterAlbum() );
                         self.showAllVideos();
                     });    
@@ -1055,7 +1070,7 @@ define( ['plugins/router',
                 if( data == 'Yes' ) {
                     viblio.api( '/services/album/remove_me_from_shared', { aid: self.currentSelectedFilterAlbum().uuid } ).then( function() {
                         viblio.mpEvent( 'delete_album' );
-                        self.albumsFilterLabels.remove( self.currentSelectedFilterAlbum() );
+                        hp.albumList().albumsFilterLabels.remove( self.currentSelectedFilterAlbum() );
                         self.albumLabels.remove( self.currentSelectedFilterAlbum() );
                         self.showAllVideos();
                     });    
@@ -1142,7 +1157,7 @@ define( ['plugins/router',
             return system.defer( function( dfd ) {
                 self.addOrCreateAlbum( dfd );
             }).promise().done( function() {
-                self.getAllAlbumsLabels();
+                //self.getAllAlbumsLabels();
                 self.clean_up_after_select_mode();    
             }).fail( function() {
                 self.cancel_select_mode();
@@ -1226,6 +1241,8 @@ define( ['plugins/router',
             if ( self.searchPager.next_page )   {
                 args.page = self.searchPager.next_page;
                 args.rows = self.searchPager.entries_per_page;
+                args.include_tags = 1;
+                args.include_contact_info = 1;
                 // needed for showing pending videos
                 /*if( self.vidsInProcess() > 0 ) {
                     args.only_videos=1;
@@ -1385,7 +1402,7 @@ define( ['plugins/router',
     newHome.prototype.getAllAlbumsLabels = function() {
         var self = this;
         self.albumLabels.removeAll();
-        self.albumsFilterLabels.removeAll();
+        //self.albumsFilterLabels.removeAll();
         return system.defer( function( dfd ) {
             viblio.api( '/services/album/album_names').then( function(data) {
                 var arr = [];
@@ -1405,7 +1422,7 @@ define( ['plugins/router',
 
                 //also set the album filter labels based on the same data returned by api call
                 //JSON.parse(JSON.stringify(arr));
-                var clone = JSON.parse(JSON.stringify(data));
+                /*var clone = JSON.parse(JSON.stringify(data));
                 var arr2 = [];
 
                 clone.albums.forEach( function( album ) {
@@ -1418,8 +1435,15 @@ define( ['plugins/router',
 
                 //alphabetically sort the list - toLowerCase() makes sure this works as expected
                 arr2.sort(function(left, right) { return left.label.toLowerCase() == right.label.toLowerCase() ? 0 : (left.label.toLowerCase() < right.label.toLowerCase() ? -1 : 1) });           
-                self.albumsFilterLabels( arr2 );
-                dfd.resolve();
+                self.albumsFilterLabels( arr2 );*/
+                
+                var hp = require('viewmodels/hp');
+                // if the album filter is active then pass in the aid of the current album so it can be highlighted via albumList.js
+                if( hp.albumList() ) {
+                    hp.albumList().getAllAlbumsLabels( self.albumFilterIsActive() ? self.currentAlbumAid() : null ).then( function() {
+                        dfd.resolve();
+                    });
+                }
             });    
         }).promise();
     };
@@ -1525,6 +1549,7 @@ define( ['plugins/router',
     newHome.prototype.addOrCreateAlbum = function( dfd ) {
         var self = this;
         var num = self.selectedVideos().length;
+        var hp = require('viewmodels/hp');
         if ( self.selectedVideos().length > 0 ) {
             // Create a new album
             if( self.selectedAddToAlbum().label === 'Create New Album' ) {          
@@ -1532,8 +1557,13 @@ define( ['plugins/router',
                     var vidOrVids = num == 1 ? ' video' : ' videos';
                     var msg = num + vidOrVids + ' successfully added to your new "' + self.getAlbumName() + '" Album';
                     viblio.notify( msg, 'success' );
+                    
+                    //hp.albumList().getAllAlbumsLabels( self.albumFilterIsActive() ? self.currentAlbumAid() : null );
+                    
                     self.getAllAlbumsLabels().then( function() {
-                        self.albumFilterSelected( self, self.findMatch( data.album.uuid, self.albumsFilterLabels() ) );  
+                        console.log( data.album.uuid, self.albumsFilterLabels(), hp.albumList().albumsFilterLabels() );
+                        hp.albumList().albumFilterSelected( hp.albumList(), self.findMatch( data.album.uuid, hp.albumList().albumsFilterLabels() ) );
+                        //hp.albumList().highlightActiveAlbum( data.album.uuid );
                     });
                     dfd.resolve();
                 });
@@ -1543,15 +1573,16 @@ define( ['plugins/router',
                     var vidOrVids = num == 1 ? ' video' : ' videos';
                     var msg = num + vidOrVids + ' successfully added to your "' + self.selectedAddToAlbum().label + '" Album';
                     viblio.notify( msg, 'success' );
-                    self.albumFilterSelected( self, self.findMatch( self.selectedAddToAlbum().uuid, self.albumsFilterLabels() ) );  
+                    hp.albumList().albumFilterSelected( hp.albumList(), self.findMatch( self.selectedAddToAlbum().uuid, hp.albumList().albumsFilterLabels() ) );
+                    //hp.albumList().highlightActiveAlbum( self.selectedAddToAlbum().uuid );
                     dfd.resolve();
                 });        
                 // Used to close the dropdown
-                $("body").trigger("click");
+                //$("body").trigger("click");
                 // unselect albums
-                self.albumLabels().forEach( function( a ) {
+                /*self.albumLabels().forEach( function( a ) {
                     a.selected( false );
-                });
+                });*/
             }    
         } else {
             dfd.reject();
@@ -1580,7 +1611,10 @@ define( ['plugins/router',
 			    { 
 				views: ['poster'],
 				page: self.allVidsPager.next_page, 
-				rows: self.allVidsPager.entries_per_page } );
+				rows: self.allVidsPager.entries_per_page,
+                                include_tags: 1,
+                                include_contact_info: 1
+                            } );
                     // needed for showing pending videos
                     /*if( self.vidsInProcess() > 0 ) {
                         args.only_videos=1;
@@ -1781,10 +1815,12 @@ define( ['plugins/router',
         
         // get albums and create list
         self.getAllAlbumsLabels().then( function() {
+            var hp = require('viewmodels/hp');
             // If an album uuid is passed in via the url then filter to that album
             if( self.goToAlbum() ){
-                if( self.findMatch( self.albumToGoTo(), self.albumsFilterLabels() ) != 'Error' ) {                
-                    self.albumFilterSelected( self, self.findMatch( self.albumToGoTo(), self.albumsFilterLabels() ) );
+                if( self.findMatch( self.albumToGoTo(), hp.albumList().albumsFilterLabels() ) != 'Error' ) {                
+                    //hp.albumList().albumFilterSelected( self, self.findMatch( self.albumToGoTo(), self.albumsFilterLabels() ) );
+                    hp.albumList().albumFilterSelected( hp.albumList(), self.findMatch( self.albumToGoTo(), hp.albumList().albumsFilterLabels() ) );
                     //this strips the aid params off of the url after navigation
                     router.navigate('#home', { trigger: false, replace: true });                  
                 } else {
@@ -1938,6 +1974,17 @@ define( ['plugins/router',
                 }
                 el = " &mdash; <a class='vidDetails' href='#" + href + self.playingVidUUID() + "'onclick='$.fancybox.close()'> Details</a>";
                 this.title = "<span>"+self.playingVid().title()+"</span>"+el;
+                
+                var arr = [];
+                self.videos().forEach( function(vid){
+                    if( vid != self.playingVid() ) {
+                        arr.push( vid );
+                    }
+                });
+                // ensure that the selected video is at the top of the playlist
+                arr.unshift( self.playingVid() );
+                console.log( arr );
+                PlayerPage.relatedVids( arr );
                 
                 $('.fancyboxVidLoader').show();
                 return viblio.api( api, { mid: self.playingVidUUID()  } ).then( function( json ) {
