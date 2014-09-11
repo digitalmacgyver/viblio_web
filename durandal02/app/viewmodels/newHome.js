@@ -1060,7 +1060,6 @@ define( ['plugins/router',
                         viblio.mpEvent( 'delete_album' );
                         hp.albumList().albumsFilterLabels.remove( self.currentSelectedFilterAlbum() );
                         console.log( "albumLabels: ", self.albumLabels(), "album to remove: ", self.currentSelectedFilterAlbum() );
-                        //self.albumLabels.remove( self.currentSelectedFilterAlbum() );
                         self.albumLabels().forEach( function( album ) {
                             if( album.uuid == self.currentSelectedFilterAlbum().uuid ) {
                                 self.albumLabels.remove( album );
@@ -1081,7 +1080,12 @@ define( ['plugins/router',
                     viblio.api( '/services/album/remove_me_from_shared', { aid: self.currentSelectedFilterAlbum().uuid } ).then( function() {
                         viblio.mpEvent( 'delete_album' );
                         hp.albumList().albumsFilterLabels.remove( self.currentSelectedFilterAlbum() );
-                        self.albumLabels.remove( self.currentSelectedFilterAlbum() );
+                        self.albumLabels().forEach( function( album ) {
+                            if( album.uuid == self.currentSelectedFilterAlbum().uuid ) {
+                                self.albumLabels.remove( album );
+                                return;
+                            }
+                        });
                         self.showAllVideos();
                     });    
                 } else {
