@@ -838,6 +838,11 @@ input:-moz-placeholder {
     color: rgba(82,152,189,1);
 }
 
+.darkBlueFont,
+.darkBlueFont:hover {
+    color: rgba(50,53,68,1);
+}
+
 .heavyWeightFont {
     font-weight: 600;
 }
@@ -6164,4 +6169,18 @@ ul.token-input-list-facebook li input {
 
 .albumListView .scroller .tagLabel.truncate {
     max-width: 160px;
+}
+
+/******* emptyAlbumModal *********/
+.emptyAlbumModal p {
+    font-size: 20px;
+}
+
+.emptyAlbumModal .paddedDiv:nth-of-type(2) {
+    padding-top: 0;
+}
+
+.emptyAlbumModal a {
+    display: inline-block;
+    font-size: 14px;
 }

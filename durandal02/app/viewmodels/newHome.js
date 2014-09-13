@@ -288,7 +288,6 @@ define( ['plugins/router',
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
                 viblio.api('services/mediafile/list_status').then( function( data ) {
-                    console.log( data );
                     self.numVidsPending( data.stats.pending );
                     var num = data.stats.pending/* + data.stats.visible*/;
                     self.vidsInProcess( num );
@@ -737,10 +736,22 @@ define( ['plugins/router',
         .fail(function(){
             self.current_album_is_empty( true );
             self.selectedVideos.removeAll();
-            app.showMessage( 'You have no videos in this album yet.', 'Empty Album', ['Add Videos Now']).then( function( data ) {
+            /*app.showMessage( 'You have no videos in this album yet.', 'Empty Album', ['Add Videos Now', 'Remove album']).then( function( data ) {
                 if( data == 'Add Videos Now' ) {
                     self.showAllVideos();
                     self.addToAlbumSelected( self, self.currentSelectedFilterAlbum() );
+                } else {
+                    console.log( self.currentSelectedFilterAlbum() );
+                    self.delete_album( true );
+                }                  
+            });*/
+            
+            dialog.showModal( 'viewmodels/emptyAlbumModal' ).then( function( data ) {
+                if( data == 'Add Videos Now' ) {
+                    self.showAllVideos();
+                    self.addToAlbumSelected( self, self.currentSelectedFilterAlbum() );
+                } else {
+                    self.delete_album( true );
                 }                  
             });
         });
@@ -1045,9 +1056,8 @@ define( ['plugins/router',
         self.delete_mode_on(true);
     };
     
-    newHome.prototype.delete_album = function( dfd ) {
+    newHome.prototype.delete_album = function( album_is_empty ) {
         var self = this;
-        
         var message
         var hp = require('viewmodels/hp');
         
@@ -1059,7 +1069,6 @@ define( ['plugins/router',
                     viblio.api( '/services/album/delete_album', { aid: self.currentSelectedFilterAlbum().uuid } ).then( function() {
                         viblio.mpEvent( 'delete_album' );
                         hp.albumList().albumsFilterLabels.remove( self.currentSelectedFilterAlbum() );
-                        console.log( "albumLabels: ", self.albumLabels(), "album to remove: ", self.currentSelectedFilterAlbum() );
                         self.albumLabels().forEach( function( album ) {
                             if( album.uuid == self.currentSelectedFilterAlbum().uuid ) {
                                 self.albumLabels.remove( album );
@@ -1069,7 +1078,11 @@ define( ['plugins/router',
                         self.showAllVideos();
                     });    
                 } else {
-                    return;
+                    if( album_is_empty == true ) {
+                        self.showAllVideos();
+                    } else {
+                        return;
+                    }
                 }                   
             });
         } else {
@@ -1089,7 +1102,11 @@ define( ['plugins/router',
                         self.showAllVideos();
                     });    
                 } else {
-                    return;
+                    if( album_is_empty == true ) {
+                        self.showAllVideos();
+                    } else {
+                        return;
+                    }
                 }                 
             });
         }
@@ -1190,7 +1207,6 @@ define( ['plugins/router',
     newHome.prototype.cancel_select_mode = function() {
         var self = this;
         var hp = require('viewmodels/hp');
-        console.log( self, self.albumLabels() );
         // set all modes to false
         self.clear_all_modes();
         // turn off select all mode
@@ -1208,19 +1224,15 @@ define( ['plugins/router',
             a.selected( false );
         });
         
-        console.log( self.currentSelectedFilterAlbum(), self.selectedFilterAlbum() );
         if( self.current_album_is_empty() ) {
-            console.log( 'album was empty, go back to all vids' );
             self.albumFilterIsActive( false );
             self.selectedFilterAlbum( null );
             self.currentSelectedFilterAlbum( null );
-            console.log( hp );
             hp.albumList().unselectAllAlbums();
         }
         //self.albumFilterIsActive( false );
         //self.selectedFilterAlbum( null );
         //self.currentSelectedFilterAlbum( null );
-        console.log( hp );
         //hp.albumList().unselectAllAlbums();
         // clear selected vids array
         self.selectedVideos.removeAll(); 
@@ -1327,7 +1339,11 @@ define( ['plugins/router',
         if( currentFilter !== 'albums' ) {
             self.albumsFilterLabels().forEach( function( c ) {
                 c.selected( false );
-            });    
+            });
+            var hp = require('viewmodels/hp');
+            if( hp.albumList() ){
+                hp.albumList().unselectAllAlbums();
+            }
         }
     };
     
@@ -1585,7 +1601,6 @@ define( ['plugins/router',
                     //hp.albumList().getAllAlbumsLabels( self.albumFilterIsActive() ? self.currentAlbumAid() : null );
                     
                     self.getAllAlbumsLabels().then( function() {
-                        console.log( data.album.uuid, self.albumsFilterLabels(), hp.albumList().albumsFilterLabels() );
                         hp.albumList().albumFilterSelected( hp.albumList(), self.findMatch( data.album.uuid, hp.albumList().albumsFilterLabels() ) );
                         //hp.albumList().highlightActiveAlbum( data.album.uuid );
                     });
@@ -2007,7 +2022,6 @@ define( ['plugins/router',
                 });
                 // ensure that the selected video is at the top of the playlist
                 arr.unshift( self.playingVid() );
-                console.log( arr );
                 PlayerPage.relatedVids( arr );
                 
                 $('.fancyboxVidLoader').show();
