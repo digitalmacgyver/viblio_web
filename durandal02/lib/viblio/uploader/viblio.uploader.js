@@ -476,6 +476,7 @@
                             var xhr = new XMLHttpRequest();
                             xhr.open("POST", endpoint, false ); // sync!
                             xhr.setRequestHeader('Final-Length', file.size );
+                            console.log( JSON.stringify({uuid: uuid, file:{Path:file.name}, skip_faces: self.options.skip_faces, album_uuid: self.options.upload_to_album ? self.options.album_to_upload_to : null  }) );
                             xhr.send(JSON.stringify({uuid: uuid, file:{Path:file.name}, skip_faces: self.options.skip_faces, album_uuid: self.options.upload_to_album ? self.options.album_to_upload_to : null  }));
 			    if ( xhr.status != 200 && xhr.status != 201 ) {
 				$(row).find(".vup-filename-column").text(filename);
