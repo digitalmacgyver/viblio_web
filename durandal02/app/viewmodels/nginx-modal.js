@@ -33,7 +33,7 @@ define(['lib/viblio',
     });
     
     var albumsList = ko.observableArray([]);
-    var selectedAddToAlbum = ko.observable();
+    var selectedAddToAlbum = ko.observable(null);
     selectedAddToAlbum.subscribe( function( val ) {
         //console.log( val );
         if ( val ) {
@@ -160,6 +160,8 @@ define(['lib/viblio',
 		notify_class: 'alert-success',
                 skip_faces: skip_faces()
 	    });
+            
+            unselectAllAlbums();
 
 	    $(view).find( '.vup' ).bind( 'viblio_uploaderstarted', function() {
 		viblio.mpEvent( 'ui_upload_started' );
