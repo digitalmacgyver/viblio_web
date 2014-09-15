@@ -32,7 +32,58 @@ define(['lib/viblio',
         }
     });
     
+    var albumsList = ko.observableArray([]);
+    var selectedAddToAlbum = ko.observable();
+    selectedAddToAlbum.subscribe( function( val ) {
+        //console.log( val );
+        if ( val ) {
+            $(the_view).find( '.vup' ).viblio_uploader( 'upload_to_album',val );
+        } else {
+            $(the_view).find( '.vup' ).viblio_uploader( 'upload_to_album',null );
+        }
+    });
+    
     Events.includeIn( this );
+    
+    function getAlbumsList() {
+        albumsList.removeAll();
+        //self.albumsFilterLabels.removeAll();
+        return system.defer( function( dfd ) {
+            viblio.api( '/services/album/album_names').then( function(data) {
+                var arr = [];
+                data.albums.forEach( function( album ) {
+                    var _album = album;
+                    _album.label = album.title;
+                    _album.selected = ko.observable( false );
+                    _album.shared = album.is_shared;
+                    arr.push( _album );
+                });
+
+                //alphabetically sort the list - toLowerCase() makes sure this works as expected
+                arr.sort(function(left, right) { return left.label.toLowerCase() == right.label.toLowerCase() ? 0 : (left.label.toLowerCase() < right.label.toLowerCase() ? -1 : 1) });
+                albumsList( arr );
+            });    
+        }).promise();
+    }
+    
+    function addToAlbumSelected( self, album ) {
+        console.log( self, album );
+        albumsList().forEach( function( a ) {
+            a.selected( false );
+        });
+        album.selected( true );
+        selectedAddToAlbum( album );
+        
+        // Used to close the dropdown
+        $("body").trigger("click");
+    };
+    
+    function unselectAllAlbums() {
+        albumsList().forEach( function( a ) {
+            a.selected( false );
+        });
+        selectedAddToAlbum( null );
+    }
     
     function sendClosedMessage() {
         this.trigger( 'nginxModal:closed', this );
@@ -49,6 +100,10 @@ define(['lib/viblio',
     return{
         uploadsCompleted: uploadsCompleted,
         find_faces: find_faces,
+        albumsList: albumsList,
+        addToAlbumSelected: addToAlbumSelected,
+        unselectAllAlbums: unselectAllAlbums,
+        selectedAddToAlbum: selectedAddToAlbum,
         
 	close: function() {
 	    var pending = $(this.view).find('.vup').viblio_uploader( 'in_progress' );
@@ -89,6 +144,8 @@ define(['lib/viblio',
                     firstUploadMessageHasBeenShown( false );
                 }
             });
+            // get list of albums
+            getAlbumsList();
         },
 	compositionComplete: function( view ) {
             var self = this;

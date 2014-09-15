@@ -9,8 +9,33 @@
       </a>    
     </div>
     -->
-    <div class="paddingDiv">
-        </div>
+    <div class="dropdown navControl albumsList">
+        <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span data-bind="text: selectedAddToAlbum() != null ? selectedAddToAlbum().label : 'Choose an album to add these videos to:' "></span></a>
+        <span class="cancelX" data-bind="click: unselectAllAlbums, if: selectedAddToAlbum() != null, tooltip: {title: 'Unselect this album', placement : 'bottom'}"> &times;</span> <i class="icon-collapse"></i>
+        <ul class="style2DD dropdown-menu" role="menu">
+          <li class="tagsScrollWrapper">
+              <div class="scroller">
+                  <div class="wrapper">
+                      <ul class="tags-inner">
+                        <!-- ko foreach: albumsList -->
+                            <li data-bind="click: $parent.addToAlbumSelected.bind( $data, $parent ), clickBubble: false">
+                                <a class="checkboxedLi">
+                                    <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected(), sharedStyle: $data.shared}"></div>
+                                    <!--<div class="inline" data-bind="if: $data.selected()">
+                                        <i class="icon-check"></i>
+                                    </div>
+                                    <div class="inline" data-bind="ifnot: $data.selected()">
+                                        <i class="icon-unchecked"></i>
+                                    </div>-->
+                                </a>
+                            </li>
+                        <!-- /ko -->
+                      </ul>    
+                  </div>                  
+              </div>
+          </li>
+        </ul>
+    </div>
 
     <div class="vup"></div>
   
