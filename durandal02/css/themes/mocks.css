@@ -5092,8 +5092,9 @@ a.a-drop-view:focus{
 }
 
 .nginx-modal .albumsList {
-    font-size: 20px;
-    padding: 12px 12px 0;
+    font-size: 40px;
+    font-weight: bold;
+    padding: 40px 12px 0;
 }
 
 .nginx-modal .albumsList a {
