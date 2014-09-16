@@ -278,41 +278,34 @@ define(["durandal/app",
 
     // Play next related video
     function nextRelated() {
-        //if( !disable_next() ) {
-            console.log( next_available_clip() );
-            // We need to ask the vstrip if the next available clip is 
-            // actually available.
-            if ( Related.isClipAvailable( next_available_clip() ) ) {
-                //disable_prev( false );
-                Related.scrollTo( mediafiles()[ next_available_clip() ] );
-                playVid( mediafiles()[ next_available_clip() ] );
-                next_available_clip( next_available_clip() + 1 );
-                /*if ( ! Related.isClipAvailable( next_available_clip() ) )
-                     disable_next( true );*/
-            }
-            else {
-                //disable_next( true );
-                // loop back to the first video
-                playVid( mediafiles()[0] );
-                next_available_clip(1);
-            }
+        // We need to ask the vstrip if the next available clip is 
+        // actually available.
+        if ( Related.isClipAvailable( next_available_clip() ) ) {
+            //disable_prev( false );
+            Related.scrollTo( mediafiles()[ next_available_clip() ] );
+            playVid( mediafiles()[ next_available_clip() ] );
+            next_available_clip( next_available_clip() + 1 );
+            /*if ( ! Related.isClipAvailable( next_available_clip() ) )
+                 disable_next( true );*/
+        }
+        else {
+            //disable_next( true );
+            // loop back to the first video
+            playVid( mediafiles()[0] );
+            next_available_clip(1);
+        }
 
-            // handle prev vid
-            console.log( "next_available_clip(): ", next_available_clip() );
-            if ( Related.isClipAvailable( next_available_clip() - 2 ) ) {
-                console.log( 'prev is available ');
-                disable_prev( false );
-            } else {
-                console.log( 'prev not available ')
-                disable_prev( true );
-            }
-        //}
+        // handle prev vid
+        if ( Related.isClipAvailable( next_available_clip() - 2 ) ) {
+            disable_prev( false );
+        } else {
+            disable_prev( true );
+        }
     }
 
     // Play previous related video
     function previousRelated() {
         if( !disable_prev() ) {
-            console.log( "previousRelated() fired");
             var p = next_available_clip() - 2;
             if ( p < 0 ) {
                 disable_prev( true );
@@ -335,23 +328,18 @@ define(["durandal/app",
     // play it.
     function playRelated( m ) {
         var index = mediafiles.indexOf( m );
-        console.log( index );
         next_available_clip( index + 1 );
         var p = next_available_clip() - 2;
         // handle next vid
         if ( Related.isClipAvailable( next_available_clip() ) ) {
-            console.log( 'next is available ');
             disable_next( false );
         } else {
-            console.log( 'next not available ')
             disable_next( true );
         }
         // handle prev vid
         if ( Related.isClipAvailable( p ) ) {
-            console.log( 'prev is available ');
             disable_prev( false );
         } else {
-            console.log( 'prev not available ')
             disable_prev( true );
         }
         playVid( m );
@@ -1056,7 +1044,6 @@ define(["durandal/app",
 	},
 
 	compositionComplete: function() {
-            console.log( relatedVids() );
             oniOS( head.browser.ios ? true : false );
 	    setupFlowplayer( '.pp-tv', playing().media() );
 	    setupFaces( playing().media() );
@@ -1072,21 +1059,9 @@ define(["durandal/app",
 	    if ( pp_related_column_visible() ) {
                 // reset next_available_clip
                 next_available_clip( 0 );
-                console.log( 'next_available_clip(): ', next_available_clip() );
-                console.log( relatedVids(), playing() );
 		Related.init( '.pp-related-column-related-videos', mediafiles, relatedVids, playing, this, query_in_progress, function( m ) {
 		    playRelated( m );
 		}, ( route == 'web_player' ));
-		if( relatedVids().length == 0 ) {
-                    Related.search( playing().media().uuid, {}, resizePlayer );
-                } else {
-                    disable_prev( true );
-                    if( relatedVids().length < 1 ){
-                        disable_next( true );
-                    } else {
-                        disable_next( false );
-                    }
-                }              
 	    }
 
 	    // related video search widget

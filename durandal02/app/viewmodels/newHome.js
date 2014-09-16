@@ -2017,11 +2017,9 @@ define( ['plugins/router',
                 var arr = [];
                 self.videos().forEach( function(vid){
                     if( vid != self.playingVid() ) {
-                        arr.push( vid );
+                        arr.push( vid.media().uuid );
                     }
                 });
-                // ensure that the selected video is at the top of the playlist
-                arr.unshift( self.playingVid() );
                 PlayerPage.relatedVids( arr );
                 
                 $('.fancyboxVidLoader').show();
