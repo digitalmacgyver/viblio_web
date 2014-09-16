@@ -13,20 +13,6 @@ define(['lib/viblio',
     
     var mid;
 
-    /*var criterion = {
-        by_date: true,
-        by_faces: true,
-        by_geo: true,
-        geo_unit: 'meter',
-        geo_distance: 100
-    };
-
-    var pager = {
-        next_page: 1,
-        entries_per_page: 16,
-        total_entries: -1 /* currently unknown */
-    /*};*/
-
     function addMediaFile( mf ) {
         // Create a new Mediafile with the data from the server
         var m;
@@ -48,7 +34,6 @@ define(['lib/viblio',
     };
 
     return {
-	//criterion: criterion,
         mediafiles: mediafiles,
         passedInVids: passedInVids,
         
@@ -62,113 +47,60 @@ define(['lib/viblio',
 	    play_callback = _play_callback;
 	    ro = _ro;
             
-            console.log( relatedList());
-            if( relatedList().length > 0 ){
-                mediafiles().removeAll();
-                //mediafiles( relatedList() );
-                console.log( playingVid() );
-                relatedList().forEach( function( vid ) {
-                    //if( vid.media().uuid != playingVid().media().uuid ) {
-                        addMediaFile( vid.media() );
-                    //}
+            self.reset();
+            if( relatedList().length == 0 ) {
+                self.search( playingVid().media().uuid, {},
+                function(){
+                    pp.resizePlayer;
+                    pp.playRelated( self.mediafiles()()[0] );
+                    self.mediafiles()()[0].selected( true );
                 });
-                //mediafiles()()[0].selected( true );
-                console.log( pp );
-                pp.playRelated( mediafiles()()[0] );
-                mediafiles()()[0].selected( true );
+            } else {
+                self.search( playingVid().media().uuid, { related: relatedList() },
+                function(){
+                    pp.resizePlayer;
+                    pp.playRelated( self.mediafiles()()[0] );
+                    self.mediafiles()()[0].selected( true );
+                });
             }
-            
-            /*if( passedInVids().length == 0 ){
-                $(elem).scroll( $.throttle( 250, function() {
-                    var $this = $(this);
-                    var height = this.scrollHeight - $this.height(); // Get the height of the div
-                    var scroll = $this.scrollTop(); // Get the vertical scroll position
-
-                    if ( searching() ) return;
-                    if ( height == 0 && scroll == 0 ) return;
-
-                    var isScrolledToEnd = (scroll >= height);
-
-                    if (isScrolledToEnd) {
-                        self.search();
-                    }
-                }));
-            }*/
-	    // If its a mobile device, add a little surger
-	    if ( head.mobile ) 
-		$(elem).kinetic();
-            
-            console.log( 'from related', passedInVids() );
-            if( passedInVids().length == 0 ){
-                this.reset();
-            }   
 	},
 
 	reset: function() {
-	    mediafiles.removeAll();
-	    //pager.next_page = 1;
-	    //pager.total_entries = -1;
+	    mediafiles().removeAll();
 	},
-
-	/*search: function( _mid, options, callback ) {
-            console.log('search is being called');
-	    if ( _mid ) mid = _mid;
-	    var opts = $.extend( criterion, 
-				 { mid: mid, 
-				   page: pager.next_page, 
-				   rows: pager.entries_per_page }, 
-				 options );
-            if ( pager.next_page ) {
-                searching( true );
-                viblio.api( '/services/mediafile/related', opts ) 
-                //viblio.api( '/services/mediafile/list', opts ) 
-                    .then( function( json ) {
-                        pager = json.pager;
-                        json.media.forEach( function( mf ) {
-                            addMediaFile( mf );
-                        });
-                        searching( false );
-                        callback();
-                    });
-            }
-	},*/
         
         search: function( _mid, options, callback ) {
-            console.log('search is being called');
-	    
             if ( _mid ) mid = _mid;
-	    var args =  { mid: mid };
+	    var args =  { 
+                mid: mid,
+                'media[]': options.related
+            };
             searching( true );
             viblio.api( '/services/mediafile/related', args )  
                 .then( function( json ) {
-                    console.log( json );
-                    //pager = json.pager;
                     json.media.forEach( function( mf ) {
                         addMediaFile( mf );
                     });
                     searching( false );
-                    //callback();
+                    if( callback ) {
+                        callback();
+                    }
                 });          
 	},
 
 	isClipAvailable: function( idx ) {
-            console.log( idx, passedInVids().length, mediafiles()().length );
             if( passedInVids().length == 0 ){
-                /*if ( pager.total_entries == -1 )
-                    return false*/
                 return( idx >= 0 && idx < mediafiles()().length );
             } else {
                 if( mediafiles()().length < 1 ) {
                     return false;    
                 } else {
-                    console.log( idx >= 0 && idx < mediafiles.length );
                     return( idx >= 0 && idx < mediafiles()().length );
                 }
             }	    
 	},
 
 	scrollTo: function( m ) {
-	    var self = this;
             var scroller = $(view);
             var item = scroller.find('#'+m.media().uuid);
 	    // If its already totally visible, do nothing, else scroll to make it visible
