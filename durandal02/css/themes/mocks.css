@@ -5101,6 +5101,11 @@ a.a-drop-view:focus{
     color: rgb(117, 117, 128);
 }
 
+.nginx-modal .albumsList .scroller {
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
 .nginx-modal .cancelX {
     opacity: .65;
     cursor: pointer;

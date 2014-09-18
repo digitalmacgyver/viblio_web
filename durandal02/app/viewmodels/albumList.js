@@ -32,6 +32,14 @@ define( ['plugins/router',
                 }
             });
             
+            self.isActiveFlag = ko.computed( function(){
+                if( hp.nhome().isActiveFlag() ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            
             /*app.on( 'album:name_changed', function() {
                 self.getAllAlbumsLabels();
             });*/
@@ -93,39 +101,35 @@ define( ['plugins/router',
         albumList.prototype.albumFilterSelected = function( $parent, album ) {
             var self = this;
             
-            console.log( 'albumList albumFilterSelected fired', album);
-            
             var gettingAlbum;
-        
-            // Used to close the dropdown
-            //$("body").trigger("click");
             
-            if( hp.nhome().select_mode_on() ){
-                hp.nhome().cancel_select_mode();
-            }
-            
-            if( !gettingAlbum ) {
-                gettingAlbum = true;
-                if( album.selected() ) {
-                    album.selected(false);
-                    hp.nhome().currentAlbumAid(null);
-                    hp.nhome().currentAlbumTitle(null);
-                    hp.nhome().showAllVideos();
-                    gettingAlbum = false;
-                } else {
-                    $parent.albumsFilterLabels().forEach( function( c ) {
-                        c.selected( false );
-                    });
-                    album.selected( true );
-                    hp.nhome().selectedFilterAlbum( album.label );
-                    hp.nhome().currentSelectedFilterAlbum( album );
-                    hp.nhome().currentAlbumAid( album.uuid );
-                    hp.nhome().currentAlbumTitle( album.title.toUpperCase() );
-                    hp.nhome().albumVidsSearch( true );
-                    gettingAlbum = false;
+            if( !$parent.isActiveFlag() ) {
+                console.log( 'albumList albumFilterSelected fired', album);
+                if( hp.nhome().select_mode_on() ){
+                    hp.nhome().cancel_select_mode();
                 }
-            } else {
-                return;
+
+                if( !gettingAlbum ) {
+                    gettingAlbum = true;
+                    if( album.selected() ) {
+                        album.selected(false);
+                        hp.nhome().currentAlbumAid(null);
+                        hp.nhome().currentAlbumTitle(null);
+                        hp.nhome().showAllVideos();
+                        gettingAlbum = false;
+                    } else {
+                        $parent.albumsFilterLabels().forEach( function( c ) {
+                            c.selected( false );
+                        });
+                        album.selected( true );
+                        hp.nhome().selectedFilterAlbum( album.label );
+                        hp.nhome().currentSelectedFilterAlbum( album );
+                        hp.nhome().currentAlbumAid( album.uuid );
+                        hp.nhome().currentAlbumTitle( album.title.toUpperCase() );
+                        hp.nhome().albumVidsSearch( true );
+                        gettingAlbum = false;
+                    }
+                }
             }
         };
         
