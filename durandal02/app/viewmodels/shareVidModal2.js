@@ -9,6 +9,9 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	    return encodeURIComponent( title );
 	});
         self.private = ko.observable( 'private' );
+        self.shareVidEmailValid = ko.observable(false);
+	self.shareVidEmail = ko.observable();
+	self.shareEmail_entry_error = ko.observable( false );
 	
 	self.shareVidMessage = ko.observable( $('#shareVidMessage').val() );
 	self.shareMessage_entry_error = ko.observable( false );
@@ -27,6 +30,35 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	viblio.mpEvent( 'address_book_import' );
 	cloudsponge.launch({
 	});
+    };
+    
+    S.prototype.emailLink = function() {
+        var self = this;
+        
+        // TODO - Add the real url that should be added as a placeholder
+        if( self.shareVidMessage() == null ) {
+            $('#shareVidMessage').val( $('#shareVidMessage').attr('placeholder') );
+        };
+        
+	var message = $('#shareVidMessage').val()+ "\n" + "<a href='" + $('#shareLink').val() + "'>" + $('#shareLink').val() + "</a>";
+	var list = $(self.view).find( "#shareVidEmail" ).tokenInput("get");
+	var emails = [];
+	list.forEach( function( email ) {
+	    emails.push( email.id || email.name );
+	});
+        console.log( message );
+	var viblio = require( 'lib/viblio' );
+	viblio.api( '/services/mediafile/add_share', 
+		    { mid: self.mediafile.media().uuid, 
+		      list: emails, 
+		      body: message, 
+		      private: 'potential' } ).then( function() {
+			  // log it to google analytics
+			  viblio.mpEvent( 'share', { type: 'private' } );
+                          viblio.mpPeopleIncrement('Video Shares from Browser', 1);
+			  viblio.notify( 'Share email sent', 'success' );
+		      });
+	self.closeModal();
     };
 
     S.prototype.addPublicShare = function( self, network ) {
@@ -155,6 +187,8 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 			self.cut_and_paste_url( json.url );
 			self.clip.setText( json.url );
 		    });
+                 
+        $("#token-input-shareVidEmail").attr("placeholder", "Email");
     };
 
     return S;

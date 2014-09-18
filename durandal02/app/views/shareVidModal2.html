@@ -11,12 +11,24 @@
             </li>
         </ul>
     </div>
+    
     <form id="shareVidLink">
         <p class="bigTitle">Copy link:</p>
         <div id="shareLink-Wrap">
             <input id="shareLink" type="text" class="text" data-bind="value: cut_and_paste_url" />
             <button id="copyShareLink" class="btn textShadowed">
                 Copy
+            </button>
+        </div>
+    </form>
+    
+    <form id="sendVidEmail" class="bottomBorder paddedDiv">
+        <div class="centeredEl">
+            <p class="bigTitle">Share this link by email to:</p>
+            <p class="uitoken-input"><input id='shareVidEmail' type="text" placeholder="Email address" /></p>
+            <textarea id="shareVidMessage" class="text" data-bind="click: updateMessage, value: shareVidMessage" placeholder="Check out my new video on Viblio!"></textarea>
+            <button class="btn btn-primary" data-bind="click: emailLink, enable: shareVidEmailValid">
+                Send
             </button>
         </div>
     </form>
