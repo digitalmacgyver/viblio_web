@@ -5091,6 +5091,25 @@ a.a-drop-view:focus{
     font-size: 20px;
 }
 
+.nginx-modal .albumsList {
+    font-size: 40px;
+    font-weight: bold;
+    padding: 40px 12px 0;
+}
+
+.nginx-modal .albumsList a {
+    color: rgb(117, 117, 128);
+}
+
+.nginx-modal .cancelX {
+    opacity: .65;
+    cursor: pointer;
+}
+
+.nginx-modal .cancelX:hover {
+    opacity: 1;
+}
+
 /** New Home Page **/
 
 .hp .top-strip .cont {

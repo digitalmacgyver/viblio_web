@@ -288,6 +288,7 @@ define( ['plugins/router',
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
                 viblio.api('services/mediafile/list_status').then( function( data ) {
+                    console.log( data );
                     self.numVidsPending( data.stats.pending );
                     var num = data.stats.pending/* + data.stats.visible*/;
                     self.vidsInProcess( num );
@@ -1494,11 +1495,13 @@ define( ['plugins/router',
         self.select_all_mode_is_on( true );
         if( self.delete_mode_on() ) {
             self.videos().forEach( function(video) {
-                video.select();
+                if( video.media().status == 'complete' ) {
+                    video.select();
+                }
             });
         } else {
             self.videos().forEach( function(video) {
-                if( self.mfOwnedByViewer(video) ) {
+                if( self.mfOwnedByViewer(video) && video.media().status == 'complete' ) {
                     video.select();
                 }
             });
@@ -2017,11 +2020,9 @@ define( ['plugins/router',
                 var arr = [];
                 self.videos().forEach( function(vid){
                     if( vid != self.playingVid() ) {
-                        arr.push( vid );
+                        arr.push( vid.media().uuid );
                     }
                 });
-                // ensure that the selected video is at the top of the playlist
-                arr.unshift( self.playingVid() );
                 PlayerPage.relatedVids( arr );
                 
                 $('.fancyboxVidLoader').show();

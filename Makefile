@@ -6,6 +6,10 @@ BRANCH ?= master
 # This picks up only files under revision control
 FILES = $(shell git ls-tree -r $(BRANCH) --name-only)
 
+# Install dependencies for the rest of this build system - do once.
+install_deps:
+	npm install node-minify
+
 # package:
 # Build the tar file suitable for upgrade.pl.  Called package.tar.gz, 
 # in the current working directory.  All code must be checked in and

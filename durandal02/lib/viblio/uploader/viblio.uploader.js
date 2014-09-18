@@ -68,7 +68,10 @@
                 minFileSize: 'This video is too small to be a real video.  Please try to find the original.'
             },
             
-            skip_faces: false
+            skip_faces: false,
+            
+            upload_to_album: false,
+            album_to_upload_to: null
 	},
 
 	_overall_bitrate: function( v ) {
@@ -231,6 +234,20 @@
         do_not_skip_faces: function() {
             this.options.skip_faces = false;
             //console.log( "uploader skip_faces: ", this.options.skip_faces );
+        },
+        
+        // Public method. Used to choose an album to uplaod the videos directly into
+        // If there is an aid included then set 'upload_to_album' to true, else set to false
+        upload_to_album: function( album ) {
+            if( album ) {
+                this.options.upload_to_album = true;
+                this.options.album_to_upload_to = album.uuid;
+            } else {
+                this.options.upload_to_album = false;
+                this.options.album_to_upload_to = null;
+            }
+            
+            console.log( this.options.upload_to_album, this.options.album_to_upload_to );
         },
 
 	// Public method.  Cancel all uploads in progress.  Might be called when
@@ -459,7 +476,8 @@
                             var xhr = new XMLHttpRequest();
                             xhr.open("POST", endpoint, false ); // sync!
                             xhr.setRequestHeader('Final-Length', file.size );
-                            xhr.send(JSON.stringify({uuid: uuid, file:{Path:file.name}, skip_faces: self.options.skip_faces }));
+                            console.log( JSON.stringify({uuid: uuid, file:{Path:file.name}, skip_faces: self.options.skip_faces, album_uuid: self.options.upload_to_album ? self.options.album_to_upload_to : null  }) );
+                            xhr.send(JSON.stringify({uuid: uuid, file:{Path:file.name}, skip_faces: self.options.skip_faces, album_uuid: self.options.upload_to_album ? self.options.album_to_upload_to : null  }));
 			    if ( xhr.status != 200 && xhr.status != 201 ) {
 				$(row).find(".vup-filename-column").text(filename);
 				$(row).find(".vup-file-progress-column").html('<span class="bar" style="width:100%;">Upload failed: ' + xhr.statusText + '</span>' );
