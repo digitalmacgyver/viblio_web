@@ -35,7 +35,6 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     S.prototype.emailLink = function() {
         var self = this;
         
-        // TODO - Add the real url that should be added as a placeholder
         if( self.shareVidMessage() == null ) {
             $('#shareVidMessage').val( $('#shareVidMessage').attr('placeholder') );
         };
@@ -54,7 +53,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 		      body: message, 
 		      private: 'potential' } ).then( function() {
 			  // log it to google analytics
-			  viblio.mpEvent( 'share', { type: 'private' } );
+			  viblio.mpEvent( 'share', { type: 'potential' } );
                           viblio.mpPeopleIncrement('Video Shares from Browser', 1);
 			  viblio.notify( 'Share email sent', 'success' );
 		      });
