@@ -1494,11 +1494,13 @@ define( ['plugins/router',
         self.select_all_mode_is_on( true );
         if( self.delete_mode_on() ) {
             self.videos().forEach( function(video) {
-                video.select();
+                if( video.media().status == 'complete' ) {
+                    video.select();
+                }
             });
         } else {
             self.videos().forEach( function(video) {
-                if( self.mfOwnedByViewer(video) ) {
+                if( self.mfOwnedByViewer(video) && video.media().status == 'complete' ) {
                     video.select();
                 }
             });
