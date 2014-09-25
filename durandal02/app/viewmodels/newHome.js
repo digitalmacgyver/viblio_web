@@ -1861,7 +1861,12 @@ define( ['plugins/router',
                 if ( response.authResponse ) {
                     args.access_token = response.authResponse.accessToken;
                     viblio.api( 'services/mediafile/create_fb_album', args ).then( function( response ) {
-                        dfd.resolve( response );
+                        var url = response.fb_album_url;
+                        if( url ) {
+                            dfd.resolve( url );
+                        } else {
+                            dfd.reject();
+                        }
                     });
                 } else {
                     dfd.reject();
