@@ -7,9 +7,10 @@ define( ['plugins/router',
          'lib/customDialogs',
          'lib/config',
          'viewmodels/hp',
-         'viewmodels/pp'], 
+         'viewmodels/pp',
+         'viewmodels/photo'], 
     
-    function( router,viblio, Mediafile, app, Events, system, dialog, config, hp, PlayerPage ) {
+    function( router,viblio, Mediafile, app, Events, system, dialog, config, hp, PlayerPage, Photo ) {
 
     var newHome = function( args ) {
 	var self = this;
@@ -105,6 +106,9 @@ define( ['plugins/router',
         self.share_mode_on = ko.observable(false);
         self.add_to_mode_on = ko.observable(false);
         self.delete_mode_on = ko.observable(false);
+        self.create_new_vid_album_mode_on = ko.observable(false);
+        self.add_to_existing_vid_album_mode_on = ko.observable(false);
+        self.create_facebook_album_mode_on = ko.observable(false);
         
         self.toolbarHeight = ko.observable( self.select_mode_on() ? $('.select-nav').height() : $('.vids-nav').height() );
         
@@ -171,8 +175,10 @@ define( ['plugins/router',
         });
         
         self.videos = ko.observableArray([]);
+        self.photos = ko.observableArray([]);
         
         self.selectedVideos = ko.observableArray();
+        self.selectedPhotos = ko.observableArray([]);
         
         self.shouldBeVisible = ko.computed(function() {
             if(self.videos().length >= 1) {
@@ -284,6 +290,11 @@ define( ['plugins/router',
         self.playingVid = ko.observable( null );
         self.playingVidUUID = ko.observable( null );
         self.playingVidIndex = ko.observable( null );
+        
+        self.video_mode_on = ko.observable( true );
+        self.video_mode_on.subscribe( function( newVal ) {
+            console.log( newVal );
+        });
                 
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
@@ -342,6 +353,7 @@ define( ['plugins/router',
         };
         
         self.isActiveFlag(true);
+        self.unselectOtherFilters();
         
         // Only remove all vids and reset pager if it's a new search
         if( newSearch ) {
@@ -360,7 +372,7 @@ define( ['plugins/router',
                 args.page = self.recentPager.next_page;
                 args.rows = self.recentPager.entries_per_page;
                 args.include_tags = 1;
-                args.include_contact_info = 1;
+                args.include_images = 1;
                 // needed for showing pending videos
                 if( self.vidsInProcess() > 0 ) {
                     args.only_videos=1;
@@ -370,10 +382,16 @@ define( ['plugins/router',
                 
                 viblio.api( '/services/mediafile/recently_uploaded', args )
                     .then( function( json ) {
+                        console.log( json );
                         self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
                         self.recentPager = json.pager;
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
+                            if( mf.views.image ) {
+                                mf.views.image.forEach( function(p) {
+                                    self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
+                                });    
+                            }
                         });
                         dfd.resolve();
                     });
@@ -437,12 +455,19 @@ define( ['plugins/router',
                 args.rows = self.monthPager.entries_per_page;
                 args.include_tags = 1;
                 args.include_contact_info = 1;
+                args.include_images = 1;
 		viblio.api( '/services/yir/videos_for_month', args )
 		    .then( function( json ) {
+                        console.log( json, args );
                         self.hits ( json.pager.total_entries );
 			self.monthPager = json.pager;
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
+                            if( mf.views.image ) {
+                                mf.views.image.forEach( function(p) {
+                                    self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
+                                });    
+                            }
                         });
 			dfd.resolve();
 		    });
@@ -501,7 +526,8 @@ define( ['plugins/router',
         var face = self.selectedFace();
         
         var args = {
-            contact_uuid: face.uuid
+            contact_uuid: face.uuid,
+            include_images: 1
         };
         
         self.isActiveFlag(true);
@@ -533,10 +559,16 @@ define( ['plugins/router',
                 }*/
                 viblio.api( '/services/faces/media_face_appears_in', args )
                     .then( function( json ) {
+                        console.log( json );
                         self.hits ( json.pager.total_entries );
                         self.facesPager = json.pager;
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
+                            if( mf.views.image ) {
+                                mf.views.image.forEach( function(p) {
+                                    self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
+                                });    
+                            }
                         });
                         dfd.resolve();
                     });
@@ -608,6 +640,7 @@ define( ['plugins/router',
                 args.rows = self.cityPager.entries_per_page;
                 args.include_tags = 1;
                 args.include_contact_info = 1;
+                args.include_images = 1;
                 // needed for showing pending videos
                 /*if( self.vidsInProcess() > 0 ) {
                     args.only_videos=1;
@@ -619,6 +652,11 @@ define( ['plugins/router',
                         self.cityPager = json.pager;
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
+                            if( mf.views.image ) {
+                                mf.views.image.forEach( function(p) {
+                                    self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
+                                });    
+                            }
                         });
                         dfd.resolve();
                     });
@@ -706,6 +744,11 @@ define( ['plugins/router',
                         if( json.album.media.length > 0 ) {
                             json.album.media.forEach( function( mf ) {
                                 self.addAlbumMediaFile ( mf );
+                                if( mf.views.image ) {
+                                    mf.views.image.forEach( function(p) {
+                                        self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
+                                    });    
+                                }
                             });
                             dfd.resolve();
                         } else {
@@ -961,6 +1004,53 @@ define( ['plugins/router',
         } 
     };
     
+    newHome.prototype.addPhoto = function( ph, options ) {
+	var self = this;
+        
+	// Create a new Photo with the data from the server
+	var p = new Photo( ph, options.ownedByViewer ? { ownedByViewer: true, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on() } : { owner_uuid: options.owner_uuid } );
+
+	// Register a callback for when a Mediafile is selected.
+	// This is so we can deselect the previous one to create
+	// a radio behavior.
+	p.on( 'photo:selected', function( p ) {
+            // make sure video isn't already in the selectedVideos array
+            console.log( p.media() );
+            if( self.selectedPhotos().indexOf( p.media().uuid ) == -1 ) {
+                self.selectedPhotos.push( p.media().uuid );
+                console.log( self.selectedPhotos() );
+            }              
+        });
+
+        p.on( 'photo:unselected', function( p ) {
+            self.selectedPhotos.remove( p.media().uuid );
+            self.select_all_mode_is_on(false);
+        });
+
+	p.on( 'photo:play', function( p ) {
+            console.log( $(p.view).find('img') );
+            //$(p.view).find('img').magnificPopup({type:'image'});
+	});
+        
+        p.on( 'photo:delete', function( p ) {
+            
+        });
+
+	// Add it to the list
+	self.photos.push( p );
+        
+        // If select all mode is on when new photos are added then add them to the selected array too - only if owned by viewer
+        if( self.select_all_mode_is_on() && self.select_mode_on() ) {
+            if( self.delete_mode_on() ){
+                self.selectedVideos.push( p.media().uuid );
+            } else {
+                if( options.ownedByViewer ) {
+                    self.selectedPhotos.push( p.media().uuid );
+                }    
+            }
+        } 
+    };
+    
     newHome.prototype.mfOwnedByViewer = function( mf ) {
         var uuid;
         if( mf.owner_uuid ){
@@ -986,20 +1076,33 @@ define( ['plugins/router',
             self.setTitleMargin();
         }, 300);
         
-        // if allVids is passed then show select for ALL vids (including those not owned by the user)
-        if( allVids ) {
-            self.videos().forEach( function( mf ) {
-                mf.turnOnSelectMode();
-            });    
-        }
-        // else just show it for the user owned vids
-        else {
-            self.videos().forEach( function( mf ) {
-                if( self.mfOwnedByViewer(mf) ) {
+        // for video mode
+        if( self.video_mode_on() ) {
+            // if allVids is passed then show select for ALL vids (including those not owned by the user)
+            if( allVids ) {
+                self.videos().forEach( function( mf ) {
                     mf.turnOnSelectMode();
+                });    
+            }
+            // else just show it for the user owned vids
+            else {
+                self.videos().forEach( function( mf ) {
+                    if( self.mfOwnedByViewer(mf) ) {
+                        mf.turnOnSelectMode();
+                    }
+                });    
+            }
+        }
+        // for photo mode
+        else {
+            self.photos().forEach( function( photo ) {
+                //console.log( photo );
+                if( photo.options.ownedByViewer ) {
+                    photo.turnOnSelectMode();
                 }
-            });    
-        }      
+            });
+        }
+              
     };
     
     newHome.prototype.deactivate_select_mode = function() {
@@ -1011,9 +1114,19 @@ define( ['plugins/router',
             self.setTitleMargin();
         }, 300);
         
-        self.videos().forEach( function( mf ) {
-            mf.turnOffSelectMode();
-        });
+        // for video mode
+        if( self.video_mode_on() ) {
+            self.videos().forEach( function( mf ) {
+                mf.turnOffSelectMode();
+            });
+        }
+        // for photo mode
+        else {
+            self.photos().forEach( function( photo ) {
+                photo.turnOffSelectMode();
+            });    
+        }
+        
     };
     
     newHome.prototype.clear_all_modes = function() {
@@ -1022,6 +1135,9 @@ define( ['plugins/router',
         self.share_mode_on(false);
         self.add_to_mode_on(false);
         self.delete_mode_on(false);
+        self.create_new_vid_album_mode_on(false);
+        self.add_to_existing_vid_album_mode_on(false);
+        self.create_facebook_album_mode_on(false);
     };
     
     newHome.prototype.share_mode = function() {
@@ -1033,12 +1149,39 @@ define( ['plugins/router',
         dialog.showShareAlbumModal( self.currentSelectedFilterAlbum() );
     };
     
-    newHome.prototype.add_to_mode = function() {
+    newHome.prototype.create_new_vid_album = function() {
         var self = this;
         
         self.activate_select_mode();
         self.selectAll();
         self.clear_all_modes();
+        self.create_new_vid_album_mode_on(true);
+    };
+    
+    newHome.prototype.add_to_existing_vid_album = function() {
+        var self = this;
+        
+        self.activate_select_mode();
+        self.selectAll();
+        self.clear_all_modes();
+        self.add_to_existing_vid_album_mode_on(true);
+    };
+    
+    newHome.prototype.add_to_mode = function( type ) {
+        var self = this;
+        
+        self.activate_select_mode();
+        self.selectAll();
+        self.clear_all_modes();
+        if( type == "new" ) {
+            self.create_new_vid_album_mode_on(true);
+        }
+        if( type == "existing" ) {
+            self.add_to_existing_vid_album_mode_on(true);
+        }
+        if( type == 'facebook' ) {
+            self.create_facebook_album_mode_on(true);
+        }
         self.add_to_mode_on(true);
     };
     
@@ -1168,6 +1311,8 @@ define( ['plugins/router',
         self.clear_all_modes();
         // clear selected vids array
         self.selectedVideos.removeAll();
+        // clear selected photos array
+        self.selectedPhotos.removeAll();
     };
     
     newHome.prototype.done_with_select_mode = function() {
@@ -1186,14 +1331,25 @@ define( ['plugins/router',
             });            
         } else if( self.add_to_mode_on() ) {
             // Add all selected vids to selected album or create new album from selected vids
-            return system.defer( function( dfd ) {
-                self.addOrCreateAlbum( dfd );
-            }).promise().done( function() {
-                //self.getAllAlbumsLabels();
-                self.clean_up_after_select_mode();    
-            }).fail( function() {
-                self.cancel_select_mode();
-            });
+            // video mode on
+            if( self.video_mode_on() ){
+                return system.defer( function( dfd ) {
+                    self.addOrCreateAlbum( dfd );
+                }).promise().done( function() {
+                    //self.getAllAlbumsLabels();
+                    self.clean_up_after_select_mode();    
+                }).fail( function() {
+                    self.cancel_select_mode();
+                });
+            }
+            // photo mode on
+            else {
+                // create facebook album
+                if( self.create_facebook_album_mode_on() ) {
+                    self.create_fb_album();
+                }
+            }
+            
         } else if ( self.delete_mode_on() ) {
             return system.defer( function( dfd ) {
                 self.handle_delete( dfd );
@@ -1236,7 +1392,9 @@ define( ['plugins/router',
         //self.currentSelectedFilterAlbum( null );
         //hp.albumList().unselectAllAlbums();
         // clear selected vids array
-        self.selectedVideos.removeAll(); 
+        self.selectedVideos.removeAll();
+        // clear selected vids array
+        self.selectedPhotos.removeAll();
     };
     
     newHome.prototype.resetSearchPager = function() {
@@ -1280,6 +1438,7 @@ define( ['plugins/router',
                 args.rows = self.searchPager.entries_per_page;
                 args.include_tags = 1;
                 args.include_contact_info = 1;
+                args.include_images = 1;
                 // needed for showing pending videos
                 /*if( self.vidsInProcess() > 0 ) {
                     args.only_videos=1;
@@ -1291,6 +1450,11 @@ define( ['plugins/router',
                         self.searchPager = json.pager;
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
+                            if( mf.views.image ) {
+                                mf.views.image.forEach( function(p) {
+                                    self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
+                                });    
+                            }
                         });
                         dfd.resolve();
                     });
@@ -1310,6 +1474,7 @@ define( ['plugins/router',
         self.searchFilterIsActive( false );
         self.searchQuery(null);
         self.videos.removeAll();
+        self.photos.removeAll();
         
         if( andFilter ) {
             self.clearfilters();
@@ -1493,29 +1658,52 @@ define( ['plugins/router',
         var self = this;
         
         self.select_all_mode_is_on( true );
-        if( self.delete_mode_on() ) {
-            self.videos().forEach( function(video) {
-                if( video.media().status == 'complete' ) {
-                    video.select();
+        // for video mode
+        if( self.video_mode_on() ) {
+            if( self.delete_mode_on() ) {
+                self.videos().forEach( function(video) {
+                    if( video.media().status == 'complete' ) {
+                        video.select();
+                    }
+                });
+            } else {
+                self.videos().forEach( function(video) {
+                    if( self.mfOwnedByViewer(video) && video.media().status == 'complete' ) {
+                        video.select();
+                    }
+                });
+            }
+        } 
+        // for photo mode
+        else {
+            self.photos().forEach( function( photo ) {
+                if( photo.options.ownedByViewer ) {
+                    photo.select();
                 }
             });
-        } else {
-            self.videos().forEach( function(video) {
-                if( self.mfOwnedByViewer(video) && video.media().status == 'complete' ) {
-                    video.select();
-                }
-            });
-        }
+        }  
     };
     
     newHome.prototype.unselectAll = function() {
         var self = this;
         
         self.select_all_mode_is_on( false );
-        self.videos().forEach( function(video) {
-            video.unselect();
-        });
-        self.selectedVideos.removeAll();
+        // for video mode
+        if( self.video_mode_on() ) {
+            self.videos().forEach( function(video) {
+                video.unselect();
+            });
+            self.selectedVideos.removeAll();
+        }
+        // for photo mode
+        else {
+            self.photos().forEach( function( photo ) {
+                if( photo.options.ownedByViewer ) {
+                    photo.unselect();
+                }
+            });
+            self.selectedPhotos.removeAll();
+        }
     };
     
     newHome.prototype.getSelectedVidUUIDs = function( view ) {
@@ -1595,7 +1783,8 @@ define( ['plugins/router',
         var hp = require('viewmodels/hp');
         if ( self.selectedVideos().length > 0 ) {
             // Create a new album
-            if( self.selectedAddToAlbum().label === 'Create New Album' ) {          
+            //if( self.selectedAddToAlbum().label === 'Create New Album' ) {
+            if( self.create_new_vid_album_mode_on() ) {
                 viblio.api( '/services/album/create', { name: self.getAlbumName(), list: self.selectedVideos() } ).then( function( data ) {
                     var vidOrVids = num == 1 ? ' video' : ' videos';
                     var msg = num + vidOrVids + ' successfully added to your new "' + self.getAlbumName() + '" Album';
@@ -1611,25 +1800,79 @@ define( ['plugins/router',
                 });
             } else {
                 // Add to an existing album
-                viblio.api( '/services/album/add_media', { aid: self.selectedAddToAlbum().uuid, list: self.selectedVideos() } ).then( function( data ) {
-                    var vidOrVids = num == 1 ? ' video' : ' videos';
-                    var msg = num + vidOrVids + ' successfully added to your "' + self.selectedAddToAlbum().label + '" Album';
-                    viblio.notify( msg, 'success' );
-                    hp.albumList().albumFilterSelected( hp.albumList(), self.findMatch( self.selectedAddToAlbum().uuid, hp.albumList().albumsFilterLabels() ) );
-                    //hp.albumList().highlightActiveAlbum( self.selectedAddToAlbum().uuid );
-                    dfd.resolve();
-                });        
-                // Used to close the dropdown
-                //$("body").trigger("click");
-                // unselect albums
-                /*self.albumLabels().forEach( function( a ) {
-                    a.selected( false );
-                });*/
+                // 
+                // show new dialog with list of all albums, once an album is selected then do the rest...
+                dialog.showModal( 'viewmodels/albumListModal' ).then( function( album ) {
+                    if( album ) {
+                        console.log( album );
+                        viblio.api( '/services/album/add_media', { aid: album.uuid, list: self.selectedVideos() } ).then( function( data ) {
+                            var vidOrVids = num == 1 ? ' video' : ' videos';
+                            var msg = num + vidOrVids + ' successfully added to your "' + album.label + '" Album';
+                            viblio.notify( msg, 'success' );
+                            hp.albumList().albumFilterSelected( hp.albumList(), self.findMatch( album.uuid, hp.albumList().albumsFilterLabels() ) );
+                            dfd.resolve();
+                        });
+                    }                  
+                });
             }    
         } else {
             dfd.reject();
         }
     };
+    
+    newHome.prototype.create_video_summary = function() {
+        if( selectedPhotos().length > 0 ) {
+            var args = {
+                'images[]': selectedPhotos(),
+                'summary_type' : 'moments',
+                'title': albumTitle() + ' Summary Video'
+            };
+
+            viblio.api( 'services/mediafile/create_video_summary', args ).then( function( response ) {
+                console.log( response );
+            });
+        }
+    }
+    
+    newHome.prototype.create_fb_album = function( dfd ) {
+        var self = this;
+        
+        if( self.selectedPhotos().length > 0 ) {
+            var fb_appid   = config.facebook_appid();
+            var fb_channel = config.facebook_channel();
+
+            FB.init({
+                appId: fb_appid,
+                channelUrl: fb_channel,
+                status: true,
+                cookie: true,
+                xfbml: true
+            });
+
+            var args = {
+                'images[]': self.selectedPhotos(),
+                title: self.getAlbumName()
+            };
+            console.log( args );
+            /*FB.getAuthResponse( function( response ) {
+                console.log( response );
+                //args.access_token = 
+                /*viblio.api( 'services/mediafile/create_fb_album', args ).then( function( response ) {
+                    console.log(response);
+                });*/
+            /*});*/
+            FB.login(function(response) {
+                console.log(response);
+                if (response.authResponse) {
+                    args.access_token = response.authResponse.accessToken;
+                    viblio.api( 'services/mediafile/create_fb_album', args ).then( function( response ) {
+                        console.log(response);
+                        dfd.resolve(response);
+                    });
+                }
+            },{scope: config.facebook_ask_features()});
+        }
+    }
     
     newHome.prototype.search = function() {
 	var self = this;
@@ -1655,7 +1898,8 @@ define( ['plugins/router',
 				page: self.allVidsPager.next_page, 
 				rows: self.allVidsPager.entries_per_page,
                                 include_tags: 1,
-                                include_contact_info: 1
+                                include_contact_info: 1,
+                                include_images: 1
                             } );
                     // needed for showing pending videos
                     /*if( self.vidsInProcess() > 0 ) {
@@ -1671,6 +1915,11 @@ define( ['plugins/router',
                         }
 			json.media.forEach( function( mf ) {
 			    self.addMediaFile( mf, {show_select_badge: true, selected: false} );
+                            if( mf.views.image ) {
+                                mf.views.image.forEach( function(p) {
+                                    self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
+                                });
+                            }
 			});
 			dfd.resolve();
 		    });
@@ -1878,7 +2127,7 @@ define( ['plugins/router',
         });
         
         if( self.showRecent() ){
-            self.recentVidsSearch();
+            self.recentVidsSearch( true );
             router.navigate('#home', { trigger: false, replace: true }); 
         }
         

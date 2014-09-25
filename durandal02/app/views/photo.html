@@ -1,0 +1,25 @@
+<div class="mediafile photo" data-bind="attr:{id:media().uuid}, css:{selected: selected(), gift: gift_style, shared: shared_style}">
+    <div>
+        <div style="position: relative; overflow: hidden;">
+            <a class="btn btn-ltGrey tomatoShadow media-select-badge" data-bind="visible: show_select_badge, click: selected() ? unselect : select">
+                <div class="inline" title="unselect" data-bind="if: $data.selected()">
+                    <i class="icon-check"></i>
+                </div>
+                <div class="inline" title="select" data-bind="ifnot: $data.selected()">
+                    <i class="icon-unchecked"></i>
+                </div>
+            </a>   
+            <div class='pointer' data-bind="click:play">
+                <a data-bind="attr:{href:image}">
+                    <img data-bind="attr:{src:image}" />
+                </a>
+                <!-- ko if: shared_style -->
+                <div class="sharedOwnerWrap">
+                    <img class="boxShadowed avatar" data-bind="attr: {src: owner_avatar}" />
+                    <span class="truncate" data-bind="text: owner_name"></span>
+                </div>
+                <!-- /ko -->
+            </div>      
+        </div>      
+    </div>
+</div>

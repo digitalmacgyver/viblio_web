@@ -159,10 +159,10 @@
                     </span>
                 </li>
                 
-                <li class="divider-vertical" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared"></li>
+                <li class="divider-vertical" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared && video_mode_on()"></li>
                 <!-- share --> 
-                <li class="" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared">
-                    <a href='#' data-bind='click: share_mode, css: { activated: albumFilterIsActive() }'>
+                <li class="" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared && video_mode_on()">
+                    <a href='#' data-bind='click: share_mode'>
                         <div class="btn_text" title="Share Album">
                             <i class='icon-share'></i>
                             <span data-bind="visible: wideScreen()"> Share Album</span>
@@ -171,36 +171,37 @@
                 </li>
                 <li class="divider-vertical" data-bind="visible: albumFilterIsActive() ? !currentSelectedFilterAlbum().shared : true"></li>
                 
-                <!-- Add to --> 
+                <!-- video mode toggle -->
+                <li>
+                    <div class="onoffswitch">
+                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" data-bind="checked: video_mode_on">
+                        <label class="onoffswitch-label" for="myonoffswitch">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>    
+                </li>
+                <li class="divider-vertical" data-bind="visible: albumFilterIsActive() ? !currentSelectedFilterAlbum().shared : true"></li>
+                
+                <!-- Create -->
                 <li class="dropdown navControl albumsList" data-bind="visible: albumFilterIsActive() ? !currentSelectedFilterAlbum().shared : true">
-                    <!-- ko if: showPopup -->
-                    <a class="dropdown-toggle addToButton" href="#" data-toggle="dropdown" data-bind="tooltip: {title: 'Choose an album that you want to add videos to.', placement : 'bottom'}, css: { activated: aFilterIsActive() }, popover: {html: true, title:pt, content: content, placement: 'left'}"><i class="icon-plus"></i><span data-bind="visible: wideScreen()"> Add To </span></a>
-                    <!-- /ko -->
-                    <!-- ko ifnot: showPopup -->
-                    <a class="dropdown-toggle addToButton" href="#" data-toggle="dropdown" data-bind="tooltip: {title: 'Choose an album that you want to add videos to.', placement : 'bottom'}, css: { activated: aFilterIsActive() }"><i class="icon-plus"></i><span data-bind="visible: wideScreen()"> Add To </span></a>
-                    <!-- /ko -->
+                    <a class="dropdown-toggle addToButton" href="#" data-toggle="dropdown"><i class="icon-plus"></i><span data-bind="visible: wideScreen()"> Create </span></a>
                     <ul class="style2DD dropdown-menu tags albumList" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
                               <div class="wrapper">
-                                  <ul class="tags-inner">
-                                    <!-- ko foreach: albumLabels -->
-                                        <li data-bind="click: $parent.addToAlbumSelected.bind( $data, $parent ), clickBubble: false">
-                                            <a class="checkboxedLi" data-bind="css: { on: $data.selected() }">
-                                                <div class="itemActive-Wrap">
-                                                    <div class="itemActive" data-bind="css: { on: $data.selected() }"></div>
-                                                </div>
-                                                <div class="inline tagLabel" data-bind="text: $data.label, css:{ sel: $data.selected(), sharedStyle: $data.shared }"></div>
-                                                <!--<div class="checkboxPadding"></div>
-                                                <div class="checkbox-Wrap" data-bind="if: $data.selected()">
-                                                    <i class="icon-check"></i>
-                                                </div>
-                                                <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
-                                                    <i class="icon-unchecked"></i>
-                                                </div>-->
-                                            </a>
-                                        </li>
-                                    <!-- /ko -->
+                                  <ul class="tags-inner" data-bind="visible: video_mode_on()">
+                                      <li>
+                                          <a href="#" data-bind="click: function() { add_to_mode( 'new' ); }">New Video Album</a>
+                                      </li>
+                                      <li>
+                                          <a href="#" data-bind="click: function() { add_to_mode( 'existing' ); }">Add more videos to an existing album</a>
+                                      </li>
+                                  </ul>
+                                  <ul class="tags-inner" data-bind="visible: !video_mode_on()">
+                                      <li>
+                                          <a class="fb-icon-link" href="#" data-bind="click: function() { add_to_mode( 'facebook' ); }">Select photos to post to <img class="fb-icon" src="css/images/facebook/FB-f-Logo__blue_29.png" alt="Facebook logo"> album</a>
+                                      </li>
                                   </ul>
                               </div>                  
                           </div>
@@ -209,29 +210,29 @@
                 </li>
                 <li class="divider-vertical"></li>
                 
-                <!-- trash -->
-                <li style="display: inline-block;" class="dropdown navControl" data-bind="visible: !albumFilterIsActive()">
-                    <a href='#' data-bind='click: delete_mode'>
-                        <div class="btn_text" title="Delete">
-                            <i class='icon-trash'></i>
-                            <span data-bind="visible: wideScreen()"> Delete</span>
-                        </div>    
-                    </a>
-                </li>
-                
-                <li style="display: inline-block;" class="dropdown navControl" data-bind="visible: albumFilterIsActive()">
+                <!-- more -->
+                <li style="display: inline-block;" class="dropdown navControl" data-bind="visible: video_mode_on()">
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown">
                         <div class="btn_text">
-                            <i class='icon-trash'></i>
-                            <span data-bind="visible: wideScreen()">Remove</span>
-                            <i class="icon-chevron-down"></i>
+                            <i class='icon-list'></i>
+                            <span data-bind="visible: wideScreen()">More</span>
                         </div>    
                     </a>
-                    <ul class="style2DD dropdown-menu tags" role="menu">
+                    <ul class="style2DD dropdown-menu albumList" role="menu">
                         <li class="tagsScrollWrapper">
                           <div class="scroller">
                               <div class="wrapper">
-                                   <ul class="tags-inner">
+                                  <ul class="tags-inner" data-bind="visible: !albumFilterIsActive()">
+                                        <li>
+                                            <a href='#' data-bind='click: delete_mode'>
+                                                <div class="btn_text">
+                                                    <i class='icon-trash'></i>
+                                                    <span> Select videos to delete</span>
+                                                </div>    
+                                            </a>
+                                        </li>    
+                                  </ul>
+                                   <ul class="tags-inner" data-bind="visible: albumFilterIsActive()">
                                         <li>
                                             <a href='#' data-bind='click: delete_mode'>
                                                 <div class="btn_text">
@@ -255,7 +256,7 @@
                     </ul>
                 </li>
                 
-                <li class="divider-vertical"></li>
+                <li class="divider-vertical" data-bind="visible: video_mode_on()"></li>
                 
             </ul>    
         </div><!-- end navbar-inner -->       
@@ -266,8 +267,9 @@
             <ul class='navbar-left nav'>
                 <li class="divider-vertical"></li>
                 <li style="display: inline-block;" class="navControl">
-                    <span class="vidsSelectedLabel">
-                        <span class="badge" data-bind="text: selectedVideos().length"></span> <span data-bind="text: selectedVideos().length == 1 ? 'video' : 'videos' "></span> selected to be  
+                    <!-- videos mode -->
+                    <span class="vidsSelectedLabel" data-bind="if: video_mode_on()">
+                        <span class="selectedNum" data-bind="text: selectedVideos().length"></span> <span data-bind="text: selectedVideos().length == 1 ? 'video' : 'videos' "></span> selected to be  
                         <!-- ko if: delete_mode_on() && !albumFilterIsActive() -->
                         <span>deleted from your account</span>
                         <!-- /ko -->
@@ -282,20 +284,28 @@
                         
                         <!-- ko if: add_to_mode_on() -->
                             <span>added to </span>
-                            <!-- ko if: selectedAddToAlbum().label === 'Create New Album' -->
+                            <!-- ko if: create_new_vid_album_mode_on() -->
                             <span>a new album</span>
                             <!-- /ko -->
-                            <!-- ko ifnot: selectedAddToAlbum().label === 'Create New Album' -->
-                            <span>the "<span data-bind="text: selectedAddToAlbumLabel"></span>" album</span>
+                            <!-- ko if: add_to_existing_vid_album_mode_on() -->
+                            <span>an existing album</span>
                             <!-- /ko -->
                         <!-- /ko -->                    
+                    </span>
+                    
+                    <!-- photos mode -->
+                    <span class="vidsSelectedLabel" data-bind="if: !video_mode_on()">
+                        <span class="selectedNum" data-bind="text: selectedPhotos().length"></span> <span data-bind="text: selectedPhotos().length == 1 ? 'photo' : 'photos' "></span> selected
+                        <!-- ko if: create_facebook_album_mode_on() -->
+                        <span>for your photo album</span>
+                        <!-- /ko -->
                     </span>
                 </li>
                 <li class="divider-vertical"></li>
                 
                 <li>
                     <!-- ko ifnot: select_all_mode_is_on() -->
-                    <a href='#' class="activated" data-bind='click: selectAll' title="Click to select all">
+                    <a href='#' data-bind='click: selectAll' title="Click to select all">
                         <div class="btn_text">
                             <i class='icon-unchecked'></i>
                             <span>Select All</span>
@@ -303,7 +313,7 @@
                     </a>
                     <!-- /ko -->
                     <!-- ko if: select_all_mode_is_on() -->
-                    <a href='#' class="activated" data-bind='click: unselectAll' title="Click to unselect all">
+                    <a href='#' data-bind='click: unselectAll' title="Click to unselect all">
                         <div class="btn_text">
                             <i class="icon-check"></i>
                             <span>Select All</span>
@@ -327,7 +337,7 @@
                 <li class="divider-vertical"></li>
                 <!-- Cancel --> 
                 <li class="">
-                    <a class="selectCancel" href='#' data-bind='click: cancel_select_mode' title='Cancel'>
+                    <a href='#' data-bind='click: cancel_select_mode' title='Cancel'>
                         <div class="btn_text">
                             <i class='icon-remove'></i>
                         </div>    
@@ -346,30 +356,19 @@
         
         <!-- ko if: !isActiveFlag() -->
 
-        <!--<span>select_mode_on: </span><span data-bind="text: select_mode_on"></span><br>
-
-        <span>share_mode_on: </span><span data-bind="text: share_mode_on"></span><br>
-        <span>add_to_mode_on: </span><span data-bind="text: add_to_mode_on"></span> <span>selectedAddToAlbum: </span><span data-bind="text: selectedAddToAlbumLabel"></span><br>
-        <span>delete_mode_on: </span><span data-bind="text: delete_mode_on"></span>
-        <br>
-        <span>albumFilterIsActive: </span><span data-bind="text: albumFilterIsActive"></span><br>
-        <span>selectedFilterAlbum: </span><span data-bind="text: selectedFilterAlbum"></span><br>
-        <span>active_filter_label: </span><span data-bind="text: active_filter_label"></span><br>
-        <span>searchFilterIsActive: </span><span data-bind="text: searchFilterIsActive"></span>-->
-
         <div class="clearfix newHomeTitle-Wrap">
             <!-- ko ifnot: add_to_mode_on() || delete_mode_on()-->
             <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: noFiltersAreActive() && !searchFilterIsActive()">
                 <p class="mainTitleP">
                     <!--You have <span data-bind="text: hits"></span>-->
-                    ALL Videos (<span data-bind="text: hits ? hits : 0"></span>)
+                    ALL Videos (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: photos().length ? photos().length : 0, visible: !video_mode_on()"></span>)
                     <!--<span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private Viblio Library.-->
                 </p>
-                <!-- ko if: hits() > 0 --> 
+                <!-- ko if: hits() > 0 && video_mode_on() --> 
                 <p><span class="tomatoFont mainTitleCTA" data-bind="click: createAlbumFromTitle">Create an album</span> from these videos to privately share with friends and family.</p>
                 <!-- /ko -->
                 <!-- ko ifnot: hits() > 0 --> 
-                <p><span class="tomatoFont mainTitleCTA" data-bind="click: add_videos">Upload Videos</span></p>
+                <p><span class="tomatoFont mainTitleCTA" data-bind="click: add_videos, visible: video_mode_on()">Upload Videos</span></p>
                 <!-- /ko -->
             </div>
 
@@ -383,21 +382,23 @@
                     "<span data-bind="text: active_filter_label()"></span>" filter.-->
                     
                     <!-- ko if: active_filter_label() == 'Recent' -->
-                    <span data-bind="text: active_filter_label() ? active_filter_label().toUpperCase() : '' "></span> Videos (<span data-bind="text: hits ? hits : 0"></span>)
+                    <span data-bind="text: active_filter_label() ? active_filter_label().toUpperCase() : '' "></span> Videos (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: photos().length ? photos().length : 0, visible: !video_mode_on()"></span>)
                     <!-- /ko -->
                     <!-- ko ifnot: active_filter_label() == 'Recent' -->
-                    <span data-bind="text: active_filter_label() ? active_filter_label().toUpperCase() : '' "></span> Filter (<span data-bind="text: hits ? hits : 0"></span>)
+                    <span data-bind="text: active_filter_label() ? active_filter_label().toUpperCase() : '' "></span> Filter (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: photos().length ? photos().length : 0, visible: !video_mode_on()"></span>)
                     <!-- /ko -->
                     <!-- ko if: faceFilterIsActive() -->
                      <img class="selectedFace img-circle" data-bind="attr: {src: selectedFace().url}">
                     <!-- /ko -->
                 </p>
-                <!-- ko if: hits() > 0 --> 
-                <p><span class="tomatoFont mainTitleCTA" data-bind="click: createAlbumFromTitle">Create an album</span> from these videos to privately share with friends and family.</p>
-                <!-- /ko -->
-                <!-- ko ifnot: hits() > 0 --> 
-                <p><span class="tomatoFont mainTitleCTA" data-bind="click: add_videos">Upload Videos</span></p>
-                <!-- /ko -->
+                <!-- ko if: video_mode_on() -->
+                    <!-- ko if: hits() > 0 --> 
+                    <p><span class="tomatoFont mainTitleCTA" data-bind="click: createAlbumFromTitle">Create an album</span> from these videos to privately share with friends and family.</p>
+                    <!-- /ko -->
+                    <!-- ko ifnot: hits() > 0 --> 
+                    <p><span class="tomatoFont mainTitleCTA" data-bind="click: add_videos">Upload Videos</span></p>
+                    <!-- /ko -->
+                    <!-- /ko -->
                 <!-- /ko -->
                 
                 <!-- ko if: albumFilterIsActive() -->
@@ -434,9 +435,9 @@
                                                          hasFocus: currentAlbumTitle.editing, 
                                                          event: { blur: function() { currentAlbumTitle.stopEditing(); currentAlbumTitle.save( null, this, 'album:name_changed' ); } }" />
                                 </div>  
-                            </div> Album (<span data-bind="text: videos().length ? videos().length : 0"></span>)      
+                            </div> Album (<span data-bind="text: videos().length ? videos().length : 0, visible: video_mode_on()"></span><span data-bind="text: photos().length ? photos().length : 0, visible: !video_mode_on()"></span>)      
                         </div>
-                        <p data-bind="visible: !currentSelectedFilterAlbum().shared"><span class="tomatoFont mainTitleCTA" data-bind="click: share_mode">Invite friends</span> to privately see this album.</p>
+                        <p data-bind="visible: !currentSelectedFilterAlbum().shared && video_mode_on()"><span class="tomatoFont mainTitleCTA" data-bind="click: share_mode">Invite friends</span> to privately see this album.</p>
                     <!-- /ko -->
                     
                     <!-- album is owned by another user and shared with viewer -->
@@ -447,7 +448,7 @@
                         <span data-bind="text: videos().length"></span>
                         <span data-bind="text: videos().length == 1 ? ' video ' : ' videos'"></span>
                         in the "<span data-bind="text: selectedFilterAlbum"></span>" album &mdash;-->
-                        <span data-bind="text: selectedFilterAlbum().toUpperCase()"></span> Album (<span data-bind="text: videos().length ? videos().length : 0"></span>) &mdash;
+                        <span data-bind="text: selectedFilterAlbum().toUpperCase()"></span> Album (<span data-bind="text: videos().length ? videos().length : 0, visible: video_mode_on()"></span><span data-bind="text: photos().length ? photos().length : 0, visible: !video_mode_on()"></span>) &mdash;
                         <span class="subtitle">by <span data-bind="text: currentAlbum().owner.displayname"></span> <img class="img-circle" data-bind="attr: {src: '/services/user/avatar?uid=' + currentAlbum().owner.uuid + '&y=30'}, tooltip: {title: 'Album by ' + currentAlbum().owner.displayname, placement: 'bottom'}"></span>.
                     </div>
                     <!-- /ko -->
@@ -459,12 +460,18 @@
             <div style="display: block; text-align: center;" class="mainTitle textShadowed paddingTopBottom5">
                 Select the videos you want to
                     <!-- ko if: add_to_mode_on() -->
-                        <span> add to </span>
-                        <!-- ko if: selectedAddToAlbum().label === 'Create New Album' -->
-                        <span>a new album.</span>
+                        <!-- ko if: create_facebook_album_mode_on() -->
+                            <span> post to your <img src="css/images/facebook/FB-f-Logo__blue_29.png"> Facebook page </span>
                         <!-- /ko -->
-                        <!-- ko ifnot: selectedAddToAlbum().label === 'Create New Album' -->
-                        <span>the "<span data-bind="text: selectedAddToAlbumLabel"></span>" album.</span>
+                        
+                        <!-- ko if: !create_facebook_album_mode_on() -->
+                            <span> add to </span>
+                            <!-- ko if: create_new_vid_album_mode_on() -->
+                            <span>a new album</span>
+                            <!-- /ko -->
+                            <!-- ko if: add_to_existing_vid_album_mode_on() -->
+                            <span>an existing album</span>
+                            <!-- /ko -->
                         <!-- /ko -->
                     <!-- /ko -->
                     <!-- ko if: delete_mode_on() -->
@@ -493,7 +500,7 @@
     <div class="containerxx">
         <div class="table allVidsInner clearfix">    
 
-            <div class="dates" data-bind="visible: !searchFilterIsActive()">
+            <div class="dates" data-bind="visible: !searchFilterIsActive() && video_mode_on()">
                 <div class="scroller">
                     <div class="wrapper textShadowed">
                         <!-- ko foreach: datesLabels -->
@@ -513,8 +520,16 @@
             </div>
 
             <div id="allVidsWrap" class="clearfix">
-                <!-- ko foreach: videos -->
-                    <!-- ko compose: $data --><!--/ko-->
+                <!-- ko if: !video_mode_on() -->
+                    <!-- ko foreach: photos -->
+                        <!-- ko compose: $data --><!--/ko-->
+                    <!-- /ko -->
+                <!-- /ko -->
+                
+                <!-- ko if: video_mode_on() -->
+                    <!-- ko foreach: videos -->
+                        <!-- ko compose: $data --><!--/ko-->
+                    <!-- /ko -->
                 <!-- /ko -->
                 <!-- ko if: isActiveFlag() -->
                 <div class="mfLoader">

@@ -1947,6 +1947,11 @@ input:-moz-placeholder {
     border-left: 1px solid rgb(32,35,44);
 }
 
+.select-nav.alt2 .nav > li > a {
+    background-color: transparent;
+    color: rgb(255, 255, 255);
+}
+
 .select-nav.alt2 .nav > li > a.activated {
     background-color: rgb(239, 85, 65);
     color: white;
@@ -3790,6 +3795,15 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 
 .mediafile .inProcess-Content i {
     margin-top: 10px;
+}
+
+.mediafile.photo {
+    width: auto;
+}
+
+.mediafile.photo img {
+    width: auto;
+    height: 204px;
 }
 
 .facesTags {
@@ -6041,6 +6055,76 @@ button.linkedin:active {
     overflow-y: scroll;
 }
 
+.onoffswitch {
+    position: relative; width: 126px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+
+.onoffswitch-checkbox {
+    display: none;
+}
+
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #FFFFF; border-radius: 2px;
+}
+
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s;
+    -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s;
+}
+
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+    font-size: 15px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+
+.onoffswitch-inner:before {
+    content: "Video View";
+    padding-left: 9px;
+    background-color: rgb(28, 184, 209); color: #FFFFFF;
+}
+
+.onoffswitch-inner:after {
+    content: "Photo View";
+    padding-right: 9px;
+    background-color: #EEEEEE; color: #999999;
+    text-align: right;
+}
+
+.onoffswitch-switch {
+    display: block; width: 23px; margin: 3.5px;
+    background: #FFFFFF;
+    border: 2px solid #FFFFF; border-radius: 2px;
+    position: absolute; top: 0; bottom: 0; right: 92px;
+    -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s;
+    -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; 
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px; 
+}
+
+.fb-icon {
+    height: 18px;
+    vertical-align: top
+}
+
+.fb-icon-link {
+    padding: 5px 22px 5px 5px !important;
+}
+
+.selectedNum {
+    font-size: 20px;
+    font-weight: bold;
+}
+
 .title-block {
     height: 145px;
 }
@@ -6207,4 +6291,34 @@ ul.token-input-list-facebook li input {
 .emptyAlbumModal a {
     display: inline-block;
     font-size: 14px;
+}
+
+/******** albumListModal **********/
+
+.albumListModal .mainTitle {
+    font-size: 26px;
+    margin-bottom: 0;
+}
+
+.albumListModal .scroller {
+    max-height: 200px;
+    overflow: scroll;
+    margin: 20px 0;
+    background-color: rgb(235, 235, 235);
+}
+
+.albumListModal .scroller .truncate {
+    width: 466px;
+}
+
+.albumListModal .sharedStyle {
+    color: rgb(28, 184, 209);
+}
+
+.albumListModal .mfLoader {
+    padding-top: 50px;
+}
+
+.albumListModal .paddedDiv {
+    padding-bottom: 80px;
 }
