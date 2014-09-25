@@ -106,7 +106,7 @@
                     </ul>
                     <div class="innerComments-Wrap">
                         <div class="comment-header-wrap">
-                            <div class="comment-editor" data-bind="visible: can_leave_comments, liveEditor: usercomment">
+                            <div class="comment-editor" data-bind="visible: can_leave_comments && loggedIn(), liveEditor: usercomment">
                                 <p class="view vidDescription vidComment" data-bind="click: function(){ fixHeight( usercomment.edit(), '.editComment', '.vidComment' ) }, text:'Comment on this video...'"></p>
                                 <textarea class="edit editDescription editComment" 
                                       data-bind="jqAutoresize: {},
@@ -116,7 +116,12 @@
                                 </textarea>
                                 <!-- ko if: usercomment.editing-->
                                 <div class='btn btn-small btn-blue btn-Post' data-bind="click: function() {usercomment.stopEditing(); usercomment.save(null, null, 'player:newcomment')} ">Post</div>
-                            <!-- /ko -->
+                                <!-- /ko -->
+                            </div>
+                            <div data-bind="if: !loggedIn()">
+                                <button class="btn btn-primary" data-bind="click: logIn, clickBubble: false">
+                                    Log me in so I can add comments.
+                                </button>
                             </div>
                             <span class="lightBlueFont" data-bind="if: usercomment.editing">To submit your comment, click the "Post" button, press tab or click anywhere outside of the input box.</span>
                             <div class="comments-header lightBlueFont">

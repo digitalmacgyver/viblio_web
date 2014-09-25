@@ -3929,6 +3929,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 #register-page .mediafile .information .aux {
     width: 40px;
     height: 40px;
+    padding: 2px 0 0;
 }
 
 #register-page .mediafile .information .aux img {
