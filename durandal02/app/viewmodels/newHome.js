@@ -1012,10 +1012,8 @@ define( ['plugins/router',
 	// a radio behavior.
 	p.on( 'photo:selected', function( p ) {
             // make sure video isn't already in the selectedVideos array
-            console.log( p.media() );
             if( self.selectedPhotos().indexOf( p.media().uuid ) == -1 ) {
                 self.selectedPhotos.push( p.media().uuid );
-                console.log( self.selectedPhotos() );
             }              
         });
 
