@@ -330,7 +330,12 @@
                 <li class="">
                     <a class="selectDone" href='#' data-bind='click: done_with_select_mode' title='Done'>
                         <div class="btn_text">
+                            <!-- ko if: !create_facebook_album_mode_on -->
                             <span>Done</span>
+                            <!-- /ko -->
+                            <!-- ko if: create_facebook_album_mode_on -->
+                            <span>Post as <img class="fb-icon" src="css/images/facebook/FB-f-Logo__blue_29.png" alt="Facebook logo"/> album</span>
+                            <!-- /ko -->
                         </div>    
                     </a>
                 </li>
@@ -461,7 +466,7 @@
                 Select the videos you want to
                     <!-- ko if: add_to_mode_on() -->
                         <!-- ko if: create_facebook_album_mode_on() -->
-                            <span> post to your <img src="css/images/facebook/FB-f-Logo__blue_29.png"> Facebook page </span>
+                            <span> post to your <img src="css/images/facebook/FB-f-Logo__blue_29.png" alt="Facebook logo"> Facebook page </span>
                         <!-- /ko -->
                         
                         <!-- ko if: !create_facebook_album_mode_on() -->

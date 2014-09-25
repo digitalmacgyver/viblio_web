@@ -2558,35 +2558,35 @@ li.token-input-token-facebook {
     height: 65px;
 }
 
-#shareVidLink {
+.shareVidLink-form {
     padding: 30px 50px;
 }
 
-#shareVidLink .bigTitle {
+.shareVidLink-form .bigTitle {
     display: inline-block;
     margin-bottom: 0;
     margin-right: 20px;
 }
 
-#shareLink-Wrap {
+.shareLink-Wrap {
     position: relative;
     display: inline-block;
     border: 1px solid rgba(0,0,0,.3);
     width: 290px;
 }
 
-#shareLink {
+.shareLink {
     font-size: 15px;
     color: rgba(117,117,128,1);
     width: 218px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    border: none;
-    margin-bottom: 0;
+    border: none !important;
+    margin-bottom: 0 !important;
 }
 
-#copyShareLink {
+.copyShareLink {
     position: absolute;
     right: 5px;
     bottom: 4px;
@@ -6321,4 +6321,20 @@ ul.token-input-list-facebook li input {
 
 .albumListModal .paddedDiv {
     padding-bottom: 80px;
+}
+
+/***** facebookAlbumLinkModal ******/
+
+.facebokAlbumLinkModal {
+    position: relative;
+}
+
+.facebokAlbumLinkModal .paddedDiv {
+    padding-bottom: 0 !important;
+}
+
+.facebokLinkTitle {
+    font-size: 30px;
+    margin-bottom: 20px;
+    color: rgb(59, 89, 152);
 }

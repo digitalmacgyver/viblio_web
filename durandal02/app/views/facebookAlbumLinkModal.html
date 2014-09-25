@@ -1,0 +1,16 @@
+<div id="facebookAlbumLinkModal" class="whiteBG modalBorder facebokAlbumLinkModal">
+    <div class='modalCloseX btn btn-modalGrey' data-bind="click: closeModal"><img src='css/images/closeX.png'/></div>
+    <div class='paddedDiv'>
+        <p class='facebokLinkTitle'>SUCCESS!</p>
+        <p class='font20'>Here's the link to your new Facebook photo album</p>
+    </div>
+    <form id="shareFBAlbumLink" class="shareVidLink-form">
+        <p class="bigTitle">Copy link:</p>
+        <div id="shareFBLink-Wrap" class="shareLink-Wrap">
+            <input id="shareFBLink" type="text" class="text shareLink" data-bind="value: cut_and_paste_url" />
+            <button id="copyFBLink" class="btn textShadowed copyShareLink">
+                Copy
+            </button>
+        </div>
+    </form>
+</div>

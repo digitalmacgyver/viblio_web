@@ -292,9 +292,6 @@ define( ['plugins/router',
         self.playingVidIndex = ko.observable( null );
         
         self.video_mode_on = ko.observable( true );
-        self.video_mode_on.subscribe( function( newVal ) {
-            console.log( newVal );
-        });
                 
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
@@ -1344,9 +1341,15 @@ define( ['plugins/router',
             }
             // photo mode on
             else {
-                // create facebook album
+                // create facebook album, then present a link to the album in a modal or show an error
                 if( self.create_facebook_album_mode_on() ) {
-                    self.create_fb_album();
+                    return system.defer( function( dfd ) {
+                        self.create_fb_album( dfd );
+                    }).promise().done( function( link ) {
+                        dialog.showModal( 'viewmodels/facebookAlbumLinkModal', link );
+                    }).fail( function() {
+                        dialog.showModal( 'viewmodels/customBlankModal', 'We\'re sorry. Facebook is unable to complete your request at this time. Please try again later.' );
+                    });
                 }
             }
             
@@ -1853,22 +1856,15 @@ define( ['plugins/router',
                 'images[]': self.selectedPhotos(),
                 title: self.getAlbumName()
             };
-            console.log( args );
-            /*FB.getAuthResponse( function( response ) {
-                console.log( response );
-                //args.access_token = 
-                /*viblio.api( 'services/mediafile/create_fb_album', args ).then( function( response ) {
-                    console.log(response);
-                });*/
-            /*});*/
+            
             FB.login(function(response) {
-                console.log(response);
-                if (response.authResponse) {
+                if ( response.authResponse ) {
                     args.access_token = response.authResponse.accessToken;
                     viblio.api( 'services/mediafile/create_fb_album', args ).then( function( response ) {
-                        console.log(response);
-                        dfd.resolve(response);
+                        dfd.resolve( response );
                     });
+                } else {
+                    dfd.reject();
                 }
             },{scope: config.facebook_ask_features()});
         }
