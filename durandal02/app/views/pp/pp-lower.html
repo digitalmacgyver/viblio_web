@@ -26,12 +26,12 @@
                     <div class="pp-share">
                         <!-- ko if: share_button_visible -->
                         <a class="btn btn-primary" href="#" data-bind="click: showShareVidModal">
-                            <i class="icon-share"></i> Share this Video!
+                            <i class="fa fa-share"></i> Share this Video!
                         </a>
                         <!-- /ko -->
                         <!-- ko if: get_the_app_button_visible -->
                         <a class="btn btn-primary" data-bind="click: loggedIn() ? addAlbum : logIn">
-                            <i class="icon-share"></i> Create Your Own Library!
+                            <i class="fa fa-share"></i> Create Your Own Library!
                         </a>
                         <!-- /ko -->
                     </div>    
@@ -58,7 +58,7 @@
                             </div>    
                         </div>
                         <div class="tags-Wrap">
-                            <span class="tagsToggle" data-bind="click: toggleTags" title="Toggle tags"><i class="icon-tags"></i></span>
+                            <span class="tagsToggle" data-bind="click: toggleTags" title="Toggle tags"><i class="fa fa-tags"></i></span>
                         </div>
                     </div>
                     <ul class="currentTags" data-bind="visible: showTags()">
@@ -66,13 +66,13 @@
                         <li class="tag mocksWhiteBG">
                             <span class="tagLabel" data-bind="text: $data"></span>
                             <!-- ko if: $parent.tags_editable() -->
-                            <i class="icon-remove" title="Remove" data-bind="click: $parent.removeTag"></i>
+                            <i class="fa fa-times" title="Remove" data-bind="click: $parent.removeTag"></i>
                             <!-- /ko -->
                         </li>
                         <!-- /ko -->
                         <!-- ko if: tags_editable() -->
                         <li class="tag mocksWhiteBG dropdown navControl" data-toggle="dropdown">
-                            <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-plus"></i> Add Tag</a>
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="fa fa-plus"></i> Add Tag</a>
                             <ul class="style2DD dropdown-menu tags" role="menu">
                                 <li class="tagsScrollWrapper">
                                     <div class="scroller">
@@ -82,7 +82,7 @@
                                                 <!-- ko if: $data.label == 'New Tag' --> <li class="divider"></li> <!-- /ko -->
                                                     <li data-bind="click: $parent.tagSelected.bind( $data, $parent ), clickBubble: false">
                                                         <a class="checkboxedLi">
-                                                            <!-- ko if: $data.label == 'New Tag' --> <i class='icon-plus'></i> <!-- /ko -->
+                                                            <!-- ko if: $data.label == 'New Tag' --> <i class='fa fa-plus'></i> <!-- /ko -->
                                                             <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
                                                         </a>
                                                     </li>

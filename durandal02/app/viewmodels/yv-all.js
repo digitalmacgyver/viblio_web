@@ -63,7 +63,7 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
         self.searchPager = {};
                 	
 	// An edit/done label to use on the GUI
-	self.editLabel = ko.observable( '<i class="icon-minus"></i> Remove...' );
+	self.editLabel = ko.observable( '<i class="fa fa-minus"></i> Remove...' );
         
         self.deleteModeOn = ko.computed( function() {
             if( self.editLabel() === 'Done' ) {
@@ -296,10 +296,10 @@ define( ['plugins/router','lib/viblio','viewmodels/mediafile', 'durandal/app', '
     // this will be the way user's can delete their media files
     allVids.prototype.toggleEditMode = function() {
 	var self = this;
-	if ( self.editLabel() === '<i class="icon-minus"></i> Remove...' )
+	if ( self.editLabel() === '<i class="fa fa-minus"></i> Remove...' )
 	    self.editLabel( 'Done' );
 	else
-	    self.editLabel( '<i class="icon-minus"></i> Remove...' );
+	    self.editLabel( '<i class="fa fa-minus"></i> Remove...' );
         
 
         self.videos().forEach( function( mf ) {

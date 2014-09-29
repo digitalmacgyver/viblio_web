@@ -278,12 +278,12 @@ define(['durandal/app', 'plugins/router', 'lib/viblio', 'viewmodels/mediafile', 
                 popupContent.on('click', '.shareFromMap', shareVid);
                 popupContent.on('click', '.thumb-wrap', playVid);
                 popupContent.html('<div title="Click to watch this video" id="' + marker.feature.properties.uuid + '" class="pointer thumb-wrap">\n\
-                                        <div title="Click to share this video" class="shareFromMap btn btn-ltGrey tomatoShadow"><i class="icon-share"></i></div>\n\
+                                        <div title="Click to share this video" class="shareFromMap btn btn-ltGrey tomatoShadow"><i class="fa fa-share"></i></div>\n\
                                         <img src="' + marker.feature.properties.url + '" />\n\
                                     </div>\n\
                                    <div class="information">\n\
                                         <div class="aux pull-right" title="View count">\n\
-                                            <!--<i class="icon-eye-open"></i><br>-->\n\
+                                            <!--<i class="fa fa-eye-open"></i><br>-->\n\
                                             <span>' + marker.feature.properties.eyes + '</span>\n\
                                             <br><span class="small">Fan</span><br><span class="small">Views</span>\n\
                                         </div>\n\

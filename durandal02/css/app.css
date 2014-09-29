@@ -30,7 +30,7 @@ input[type=text], input[type=password], input[type=email] {
     text-transform: uppercase;
 }
 
-.splash .icon-spinner {
+.splash .fa-spinner {
     text-align: center;
     display: inline-block;
     font-size: 5em;

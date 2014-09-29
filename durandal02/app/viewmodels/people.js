@@ -91,7 +91,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
     //
     function addto_faces_known( contact, order ) {
 	var face = new Face( contact, { 
-	    leftBadgeIcon: 'icon-remove-circle',
+	    leftBadgeIcon: 'fa fa-times-circle-o',
 	    leftBadgeClick: removeKnown,
 	    leftBadgeMode: 'hover',
 	    show_name: true,
@@ -138,7 +138,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
     function addto_faces_unknown( contact ) {
 	var f = new Face( contact, { 
 	    clickable: false, 
-	    leftBadgeIcon: 'icon-remove-circle',
+	    leftBadgeIcon: 'fa fa-times-circle-o',
 	    leftBadgeClick: removeUnknown,
 	    leftBadgeMode: 'hover',
 	    show_name: false, 
@@ -219,7 +219,7 @@ define(['durandal/app','durandal/system','plugins/router','lib/viblio','lib/cust
     function addto_faces_for( contact ) {
 	var alt_face = new Face( contact, { 
 	    clickable: false,
-	    rightBadgeIcon: 'icon-camera',
+	    rightBadgeIcon: 'fa fa-camera',
 	    rightBadgeClick: setKeyFrame,
 	    rightBadgeMode: 'hover',
 	    show_name: false, 

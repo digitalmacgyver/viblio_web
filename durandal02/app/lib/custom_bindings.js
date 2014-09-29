@@ -148,9 +148,9 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
             }
             ko.utils.extend(tag2, value);
 
-	    //var del_btn = $("<i/>").addClass( 'icon-remove-circle pull-right');
+	    //var del_btn = $("<i/>").addClass( 'fa fa-times-circle-o pull-right');
 	    var div     = $("<div></div>");
-	    var ok_btn  = $("<i/>").addClass( 'icon-thumbs-up pull-right' ).appendTo(div);
+	    var ok_btn  = $("<i/>").addClass( 'fa fa-thumbs-up pull-right' ).appendTo(div);
 	    var span    = $("<span class='truncate' />").text( tag2.name() ).appendTo(div);
 	    $element.empty();
 	    $element.append( div );

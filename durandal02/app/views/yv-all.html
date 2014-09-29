@@ -1,22 +1,22 @@
 <div class="allVidsPage clearfix">
 
   <div class="yv-secondary-nav">
-    <button class="btn btn-small btn-secondary" data-bind="click: add_videos"><i class="icon-plus"></i> Add...</button>
+    <button class="btn btn-small btn-secondary" data-bind="click: add_videos"><i class="fa fa-plus"></i> Add...</button>
 
     <!-- ko if: hits() -->
     <button class="btn btn-small btn-secondary" data-bind="click: toggleEditMode, css: { active: deleteModeOn() == true }, html: editLabel"></button>
     <!-- /ko -->
 
     <!--<div style="display: inline-block;" class="dropdown navControl" data-bind="ifnot: isActiveFlag">
-        <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon-tags"></i> Tags (<span data-bind="text: currentlySelectedTag"></span>)</a>
+        <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown"><i class="fa fa-tags"></i> Tags (<span data-bind="text: currentlySelectedTag"></span>)</a>
         <ul class="dropdown-menu tags" role="menu">
           <li data-bind="click: showAllVideos">
               <a>
                   <div class="inline" data-bind="if: allVidsIsSelected()">
-                      <i class="icon-check"></i>
+                      <i class="fa fa-check-square-o"></i>
                   </div>
                   <div class="inline" data-bind="ifnot: allVidsIsSelected()">
-                      <i class="icon-unchecked"></i>
+                      <i class="fa fa-square-o"></i>
                   </div>
                   <div id="allVids" class="textShadowed inline" data-bind="css:{sel: allVidsIsSelected()}">All Videos</div>
               </a>
@@ -29,10 +29,10 @@
                             <!--<li data-bind="click: $parent.tagSelected.bind( $data, $parent ), clickBubble: false">
                                 <a>
                                     <div class="inline" data-bind="if: $data.selected()">
-                                        <i class="icon-check"></i>
+                                        <i class="fa fa-check-square-o"></i>
                                     </div>
                                     <div class="inline" data-bind="ifnot: $data.selected()">
-                                        <i class="icon-unchecked"></i>
+                                        <i class="fa fa-square-o"></i>
                                     </div>
                                     <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
                                 </a>
@@ -56,9 +56,9 @@
           <form class="search" data-bind="css: {active: searchQuery()}">
               <div class="input-append">
                   <input type="text" class="search-query" placeholder="Search" data-bind="value: searchQuery">
-                  <button type="submit" class="btn btn-white" data-bind="click: newVidsSearch"><i class="icon-search"></i></button>
+                  <button type="submit" class="btn btn-white" data-bind="click: newVidsSearch"><i class="fa fa-search"></i></button>
                   <!-- ko if: searchFilterIsActive() -->
-                  <button class="btn btn-secondary" data-bind="click: showAllVideos, tooltip: {title:'Show All Vids'}"><i class="icon-remove"></i></button>
+                  <button class="btn btn-secondary" data-bind="click: showAllVideos, tooltip: {title:'Show All Vids'}"><i class="fa fa-times"></i></button>
                   <!-- /ko -->
               </div>
           </form>
@@ -133,7 +133,7 @@
         <!-- /ko -->
         <!-- ko if: isActiveFlag() -->
         <div class="mfLoader">
-            <i class="icon-spinner icon-5x icon-spin active"></i>
+            <i class="fa fa-spinner fa-5x fa-spin active"></i>
             <p class='font18'>Loading...</p>
         </div>
         <!-- /ko -->

@@ -6,9 +6,9 @@
                 <li class="divider-vertical"></li>
                 <li style="display: inline-block;" class="dropdown navControl">
                     <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: recentUploadsIsActive() || allVidsIsSelected() }, disable: isActiveFlag()">
-                        <i class='icon-th'></i>
+                        <i class='fa fa-th'></i>
                         <span data-bind="visible: wideScreen()"> Library</span>
-                        <i class="icon-chevron-down"></i>
+                        <i class="fa fa-chevron-down"></i>
                     </button>
                     <ul class="style2DD dropdown-menu tags" role="menu">
                       <li class="tagsScrollWrapper">
@@ -17,13 +17,13 @@
                                    <ul class="tags-inner">
                                         <li data-bind='click: recentVidsSearch'>
                                             <a class="checkboxedLi">
-                                                <i class='icon-time'></i>
+                                                <i class='fa fa-time'></i>
                                                 <span> Recent</span>                                        
                                             </a>
                                         </li>
                                         <li data-bind='click: showAllVideos'>
                                             <a class="checkboxedLi">
-                                                <i class='icon-th'></i>
+                                                <i class='fa fa-th'></i>
                                                 <span> All</span>                                        
                                             </a>
                                         </li>
@@ -37,7 +37,7 @@
                 
                 <!-- albums filter -->
                 <!--<li class="dropdown navControl albumsList">
-                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: albumFilterIsActive() }, click: function(){ showMessage( 'albums' ); }, disable: isActiveFlag()" title="Filter by Albums"><i class="icon-picture"></i><span data-bind="visible: wideScreen()"> Albums</span></button>
+                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: albumFilterIsActive() }, click: function(){ showMessage( 'albums' ); }, disable: isActiveFlag()" title="Filter by Albums"><i class="fa fa-picture"></i><span data-bind="visible: wideScreen()"> Albums</span></button>
                     <ul class="style2DD dropdown-menu tags albumList" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -52,10 +52,10 @@
                                                 <div class="inline tagLabel" data-bind="text: $data.label, css:{ sel: $data.selected(), sharedStyle: $data.shared }"></div>
                                                 <!--<div class="checkboxPadding"></div>
                                                 <div class="checkbox-Wrap" data-bind="if: $data.selected()">
-                                                    <i class="icon-check"></i>
+                                                    <i class="fa fa-check-square-o"></i>
                                                 </div>
                                                 <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
-                                                    <i class="icon-unchecked"></i>
+                                                    <i class="fa fa-square-o"></i>
                                                 </div>-->
                                             <!--</a>
                                         </li>
@@ -70,7 +70,7 @@
                 
                 <!-- people filter -->
                 <li style="display: inline-block;" class="dropdown navControl">
-                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: faceFilterIsActive() }, click: function(){ showMessage( 'people' ); }, disable: isActiveFlag()" title="Filter by People"><i class="icon-user"></i><span data-bind="visible: wideScreen()"> People</span></button>
+                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: faceFilterIsActive() }, click: function(){ showMessage( 'people' ); }, disable: isActiveFlag()" title="Filter by People"><i class="fa fa-user"></i><span data-bind="visible: wideScreen()"> People</span></button>
                     <ul class="style2DD dropdown-menu tags" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -85,10 +85,10 @@
                                                 <div class="inline tagLabel" data-bind="text: $data.label, css:{ sel: $data.selected() }"></div>
                                                 <!--<div class="checkboxPadding"></div>
                                                 <div class="checkbox-Wrap" data-bind="if: $data.selected()">
-                                                    <i class="icon-check"></i>
+                                                    <i class="fa fa-check-square-o"></i>
                                                 </div>
                                                 <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
-                                                    <i class="icon-unchecked"></i>
+                                                    <i class="fa fa-square-o"></i>
                                                 </div>-->                                    
                                             </a>
                                         </li>
@@ -103,7 +103,7 @@
 
                 <!-- places filter -->
                 <li style="display: inline-block;" class="dropdown navControl">
-                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: cityFilterIsActive }, click: function(){ showMessage( 'places' ); }, disable: isActiveFlag()" title="Filter by Places"><i class="icon-map-marker"></i><span data-bind="visible: wideScreen()"> Places</span></button>
+                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: cityFilterIsActive }, click: function(){ showMessage( 'places' ); }, disable: isActiveFlag()" title="Filter by Places"><i class="fa fa-map-marker"></i><span data-bind="visible: wideScreen()"> Places</span></button>
                     <ul class="style2DD dropdown-menu tags" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -118,10 +118,10 @@
                                                 <div class="inline tagLabel" data-bind="text: $data.label, css:{ sel: $data.selected() }"></div>
                                                 <!--<div class="checkboxPadding"></div>
                                                 <div class="checkbox-Wrap" data-bind="if: $data.selected()">
-                                                    <i class="icon-check"></i>
+                                                    <i class="fa fa-check-square-o"></i>
                                                 </div>
                                                 <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
-                                                    <i class="icon-unchecked"></i>
+                                                    <i class="fa fa-square-o"></i>
                                                 </div>-->
                                             </a>
                                         </li>
@@ -139,9 +139,9 @@
                     <form class="navbar-form navbar-left" role="search">
                         <div class="input-append">
                             <input type="text" class="search-query" placeholder="Search by title or tag" data-bind="value: searchQuery">
-                            <button type="submit" class="btn btn-white" data-bind="click: newVidsSearch, disable: isActiveFlag()"><i class="icon-search"></i></button>
+                            <button type="submit" class="btn btn-white" data-bind="click: newVidsSearch, disable: isActiveFlag()"><i class="fa fa-search"></i></button>
                             <!-- ko if: searchFilterIsActive() -->
-                            <button class="btn btn-secondary" data-bind="click: showAllVideos, tooltip: {title:'Clear search', placement : 'bottom'}"><i class="icon-remove"></i></button>
+                            <button class="btn btn-secondary" data-bind="click: showAllVideos, tooltip: {title:'Clear search', placement : 'bottom'}"><i class="fa fa-times"></i></button>
                             <!-- /ko -->
                         </div>
                     </form>    
@@ -164,7 +164,7 @@
                 <li class="" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared">
                     <a href='#' data-bind='click: share_mode, css: { activated: albumFilterIsActive() }'>
                         <div class="btn_text" title="Share Album">
-                            <i class='icon-share'></i>
+                            <i class='fa fa-share'></i>
                             <span data-bind="visible: wideScreen()"> Share Album</span>
                         </div>    
                     </a>
@@ -174,10 +174,10 @@
                 <!-- Add to --> 
                 <li class="dropdown navControl albumsList" data-bind="visible: albumFilterIsActive() ? !currentSelectedFilterAlbum().shared : true">
                     <!-- ko if: showPopup -->
-                    <a class="dropdown-toggle addToButton" href="#" data-toggle="dropdown" data-bind="tooltip: {title: 'Choose an album that you want to add videos to.', placement : 'bottom'}, css: { activated: aFilterIsActive() }, popover: {html: true, title:pt, content: content, placement: 'left'}"><i class="icon-plus"></i><span data-bind="visible: wideScreen()"> Add To </span></a>
+                    <a class="dropdown-toggle addToButton" href="#" data-toggle="dropdown" data-bind="tooltip: {title: 'Choose an album that you want to add videos to.', placement : 'bottom'}, css: { activated: aFilterIsActive() }, popover: {html: true, title:pt, content: content, placement: 'left'}"><i class="fa fa-plus"></i><span data-bind="visible: wideScreen()"> Add To </span></a>
                     <!-- /ko -->
                     <!-- ko ifnot: showPopup -->
-                    <a class="dropdown-toggle addToButton" href="#" data-toggle="dropdown" data-bind="tooltip: {title: 'Choose an album that you want to add videos to.', placement : 'bottom'}, css: { activated: aFilterIsActive() }"><i class="icon-plus"></i><span data-bind="visible: wideScreen()"> Add To </span></a>
+                    <a class="dropdown-toggle addToButton" href="#" data-toggle="dropdown" data-bind="tooltip: {title: 'Choose an album that you want to add videos to.', placement : 'bottom'}, css: { activated: aFilterIsActive() }"><i class="fa fa-plus"></i><span data-bind="visible: wideScreen()"> Add To </span></a>
                     <!-- /ko -->
                     <ul class="style2DD dropdown-menu tags albumList" role="menu">
                       <li class="tagsScrollWrapper">
@@ -193,10 +193,10 @@
                                                 <div class="inline tagLabel" data-bind="text: $data.label, css:{ sel: $data.selected(), sharedStyle: $data.shared }"></div>
                                                 <!--<div class="checkboxPadding"></div>
                                                 <div class="checkbox-Wrap" data-bind="if: $data.selected()">
-                                                    <i class="icon-check"></i>
+                                                    <i class="fa fa-check-square-o"></i>
                                                 </div>
                                                 <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
-                                                    <i class="icon-unchecked"></i>
+                                                    <i class="fa fa-square-o"></i>
                                                 </div>-->
                                             </a>
                                         </li>
@@ -213,7 +213,7 @@
                 <li style="display: inline-block;" class="dropdown navControl" data-bind="visible: !albumFilterIsActive()">
                     <a href='#' data-bind='click: delete_mode'>
                         <div class="btn_text" title="Delete">
-                            <i class='icon-trash'></i>
+                            <i class='fa fa-trash'></i>
                             <span data-bind="visible: wideScreen()"> Delete</span>
                         </div>    
                     </a>
@@ -222,9 +222,9 @@
                 <li style="display: inline-block;" class="dropdown navControl" data-bind="visible: albumFilterIsActive()">
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown">
                         <div class="btn_text">
-                            <i class='icon-trash'></i>
+                            <i class='fa fa-trash'></i>
                             <span data-bind="visible: wideScreen()">Remove</span>
-                            <i class="icon-chevron-down"></i>
+                            <i class="fa fa-chevron-down"></i>
                         </div>    
                     </a>
                     <ul class="style2DD dropdown-menu tags" role="menu">
@@ -235,7 +235,7 @@
                                         <li>
                                             <a href='#' data-bind='click: delete_mode'>
                                                 <div class="btn_text">
-                                                    <i class='icon-trash'></i>
+                                                    <i class='fa fa-trash'></i>
                                                     <span> Remove videos from album</span>
                                                 </div>    
                                             </a>    
@@ -243,7 +243,7 @@
                                         <li>
                                             <a href='#' data-bind='click: delete_album'>
                                                 <div class=''>
-                                                    <i class='icon-minus'></i>
+                                                    <i class='fa fa-minus'></i>
                                                     <span> Delete album</span>
                                                 </div>
                                             </a>
@@ -297,7 +297,7 @@
                     <!-- ko ifnot: select_all_mode_is_on() -->
                     <a href='#' class="activated" data-bind='click: selectAll' title="Click to select all">
                         <div class="btn_text">
-                            <i class='icon-unchecked'></i>
+                            <i class='fa fa-square-o'></i>
                             <span>Select All</span>
                         </div>    
                     </a>
@@ -305,7 +305,7 @@
                     <!-- ko if: select_all_mode_is_on() -->
                     <a href='#' class="activated" data-bind='click: unselectAll' title="Click to unselect all">
                         <div class="btn_text">
-                            <i class="icon-check"></i>
+                            <i class="fa fa-check-square-o"></i>
                             <span>Select All</span>
                         </div>    
                     </a>
@@ -329,7 +329,7 @@
                 <li class="">
                     <a class="selectCancel" href='#' data-bind='click: cancel_select_mode' title='Cancel'>
                         <div class="btn_text">
-                            <i class='icon-remove'></i>
+                            <i class='fa fa-times'></i>
                         </div>    
                     </a>
                 </li>
@@ -405,14 +405,14 @@
                     <!-- ko ifnot: currentSelectedFilterAlbum().shared -->
                         <!-- ko if: albumIsShared() -->
                         <div class="shared-icon-wrap" data-bind="click: seeSharedMembers, tooltip: {title: 'Click to see shared members', placement: 'bottom' }">
-                            <i class='icon-folder-close-alt outer-icon'></i>
+                            <i class='fa fa-folder-o outer-icon'></i>
                             <div class="inner-icon">
-                                <i class='icon-user'></i><i class='icon-user'></i>
+                                <i class='fa fa-user'></i><i class='fa fa-user'></i>
                             </div>    
                         </div>&nbsp;                      
                         <!-- /ko -->
                         <!-- ko ifnot: albumIsShared() -->
-                        <i class='icon-folder-close-alt bigIcon'></i>&nbsp;
+                        <i class='fa fa-folder-o bigIcon'></i>&nbsp;
                         <!-- /ko -->
                         <div class="mainTitleP">
                             <!--You have
@@ -441,7 +441,7 @@
                     
                     <!-- album is owned by another user and shared with viewer -->
                     <!-- ko if: currentSelectedFilterAlbum().shared -->
-                    <i class='icon-folder-close bigIcon turquoiseFont' title="This album is shared with you."></i>
+                    <i class='fa fa-folder bigIcon turquoiseFont' title="This album is shared with you."></i>
                     <div class="mainTitleP">
                         <!--There <span data-bind="text: videos().length == 1 ? 'is ' : 'are '"></span>
                         <span data-bind="text: videos().length"></span>
@@ -518,7 +518,7 @@
                 <!-- /ko -->
                 <!-- ko if: isActiveFlag() -->
                 <div class="mfLoader">
-                    <i class="icon-spinner icon-5x icon-spin active"></i>
+                    <i class="fa fa-spinner fa-5x fa-spin active"></i>
                     <p class='font18'>Loading...</p>
                 </div>
                 <!-- /ko -->
