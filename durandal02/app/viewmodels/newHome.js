@@ -291,7 +291,56 @@ define( ['plugins/router',
         self.playingVidUUID = ko.observable( null );
         self.playingVidIndex = ko.observable( null );
         
+        self.visiblePhotosCount = ko.observable( 0 );
         self.video_mode_on = ko.observable( true );
+        self.video_mode_on.subscribe( function( val ) {
+            // reset counter to 0
+            /*self.visiblePhotosCount( 0 );
+            self.photos().forEach( function( p ) {
+                if( p.filter() != "some" ) {
+                    p.hideIt();
+                } else {
+                    p.showIt();
+                    self.visiblePhotosCount( self.visiblePhotosCount()+1 );
+                }
+            });*/
+            // tickle the photos filter
+            var old = self.photoViewFilter();
+            self.photoViewFilter(null);
+            self.photoViewFilter( old );
+        });
+        
+        self.photoViewFilter = ko.observable( "some" );
+        self.photoViewFilter.subscribe( function( val ) {
+            console.log( "photoViewFilter tickled" );
+            // reset counter to 0
+            self.visiblePhotosCount( 0 );
+            
+            if( val == "some" ) {
+                self.photos().forEach( function( p ) {
+                    if( p.filter() != "some" ) {
+                        p.hideIt();
+                    } else {
+                        p.showIt();
+                        self.visiblePhotosCount( self.visiblePhotosCount()+1 );
+                    }
+                });
+            } else if ( val == "more" ) {
+                self.photos().forEach( function( p ) {
+                    if( p.filter() == "all" ) {
+                        p.hideIt();
+                    } else {
+                        p.showIt();
+                        self.visiblePhotosCount( self.visiblePhotosCount()+1 );
+                    }
+                });
+            } else {
+                self.photos().forEach( function( p ) {
+                    p.showIt();
+                    self.visiblePhotosCount( self.visiblePhotosCount()+1 );
+                });
+            }
+        });
                 
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
@@ -342,6 +391,56 @@ define( ['plugins/router',
         }
     };
     
+    newHome.prototype.imageFilterFactory = function( mf, images ) {
+        var self = this;
+        
+        var i;
+        var lastVidTime = 0;
+        var arr = [];
+        // Add a filter type to each image
+        for( i = 0; i < images.length; i++ ) {
+            // face score is over 1
+            if( images[i].face_score > 1 ) {
+                // timecode is at least 30 seconds from the previous video
+                if( Number( images[i].timecode ) >= ( lastVidTime == 0 ? 0 : Number( lastVidTime )+30 ) ) {
+                    //console.log( "some: ", "lastVidTime: ", lastVidTime, "lastVidTime+30: ", Number( lastVidTime )+30, "images[i].timecode: ", Number( images[i].timecode ) );
+                    //console.log( Number( images[i].timecode ) >= ( lastVidTime == 0 ? 0 : Number( lastVidTime )+30 ) );
+                    lastVidTime = Number( images[i].timecode );
+                    images[i].filter = "some";
+                    arr.push( images[i] );
+                }
+                // timecode is at least 5 seconds from previous video
+                else if( Number( images[i].timecode ) >= ( lastVidTime == 0 ? 0 : Number( lastVidTime )+5 ) ) {
+                    lastVidTime = Number( images[i].timecode );
+                    images[i].filter = "more";
+                    arr.push( images[i] );
+                }
+                // face score is over 1
+                else {
+                    images[i].filter = "all";
+                    arr.push( images[i] );
+                }
+            }
+            // face score is less than 1
+            else {
+                // timecode is at least 30 seconds from the previous video
+                if( Number( images[i].timecode ) >= ( lastVidTime == 0 ? 0 : Number( lastVidTime )+30 ) ) {
+                    lastVidTime = Number( images[i].timecode );
+                    images[i].filter = "more";
+                    arr.push( images[i] );
+                }
+                // catch everything left
+                else {
+                    images[i].filter = "all";
+                    arr.push( images[i] );
+                }
+            }        
+        }
+        arr.forEach( function(p) {
+            self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
+        });
+    };
+    
     newHome.prototype.recentVidsSearch = function( newSearch ) {
         var self = this;
         
@@ -356,6 +455,7 @@ define( ['plugins/router',
         if( newSearch ) {
             self.clearfilters();
             self.videos.removeAll();
+            self.photos.removeAll();
             // reset pager
             self.recentPager = {
                 next_page: 1,
@@ -385,9 +485,7 @@ define( ['plugins/router',
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
-                                mf.views.image.forEach( function(p) {
-                                    self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
-                                });    
+                                self.imageFilterFactory( mf, mf.views.image );    
                             }
                         });
                         dfd.resolve();
@@ -404,6 +502,11 @@ define( ['plugins/router',
             
             // Used to close the dropdown
             $("body").trigger("click");
+            
+            // tickle the photos filter
+            var old = self.photoViewFilter();
+            self.photoViewFilter(null);
+            self.photoViewFilter( old );
         });
     };
     
@@ -461,9 +564,7 @@ define( ['plugins/router',
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
-                                mf.views.image.forEach( function(p) {
-                                    self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
-                                });    
+                                self.imageFilterFactory( mf, mf.views.image );      
                             }
                         });
 			dfd.resolve();
@@ -488,6 +589,11 @@ define( ['plugins/router',
             
             // Used to close the dropdown
             $("body").trigger("click");
+            
+            // tickle the photos filter
+            var old = self.photoViewFilter();
+            self.photoViewFilter(null);
+            self.photoViewFilter( old );
         });
     };
     
@@ -562,9 +668,7 @@ define( ['plugins/router',
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
-                                mf.views.image.forEach( function(p) {
-                                    self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
-                                });    
+                                self.imageFilterFactory( mf, mf.views.image );      
                             }
                         });
                         dfd.resolve();
@@ -586,6 +690,11 @@ define( ['plugins/router',
             self.selectedFilterAlbum('');
             
             self.isActiveFlag(false);
+            
+            // tickle the photos filter
+            var old = self.photoViewFilter();
+            self.photoViewFilter(null);
+            self.photoViewFilter( old );
         });
     };
     
@@ -650,9 +759,7 @@ define( ['plugins/router',
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
-                                mf.views.image.forEach( function(p) {
-                                    self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
-                                });    
+                                self.imageFilterFactory( mf, mf.views.image );      
                             }
                         });
                         dfd.resolve();
@@ -674,6 +781,11 @@ define( ['plugins/router',
             self.selectedFilterAlbum('');
             
             self.isActiveFlag(false);
+            
+            // tickle the photos filter
+            var old = self.photoViewFilter();
+            self.photoViewFilter(null);
+            self.photoViewFilter( old );
         });
     };
     
@@ -742,9 +854,7 @@ define( ['plugins/router',
                             json.album.media.forEach( function( mf ) {
                                 self.addAlbumMediaFile ( mf );
                                 if( mf.views.image ) {
-                                    mf.views.image.forEach( function(p) {
-                                        self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
-                                    });    
+                                    self.imageFilterFactory( mf, mf.views.image );    
                                 }
                             });
                             dfd.resolve();
@@ -772,6 +882,11 @@ define( ['plugins/router',
             self.albumFilterIsActive(true);
             
             self.isActiveFlag(false);
+            
+            // tickle the photos filter
+            var old = self.photoViewFilter();
+            self.photoViewFilter(null);
+            self.photoViewFilter( old );
         })
         // if the album is empty then show dialog, when button is clicked drop into select mode from all videos 
         .fail(function(){
@@ -1005,7 +1120,7 @@ define( ['plugins/router',
 	var self = this;
         
 	// Create a new Photo with the data from the server
-	var p = new Photo( ph, options.ownedByViewer ? { ownedByViewer: true, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on() } : { owner_uuid: options.owner_uuid } );
+	var p = new Photo( ph, options.ownedByViewer ? { ownedByViewer: true, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on() } : { owner_uuid: options.owner_uuid, show_select_badge: self.delete_mode_on() ? self.select_mode_on() : false, selected: self.delete_mode_on() ? self.select_all_mode_is_on() : false } );
 
 	// Register a callback for when a Mediafile is selected.
 	// This is so we can deselect the previous one to create
@@ -1028,7 +1143,11 @@ define( ['plugins/router',
 	});
         
         p.on( 'photo:delete', function( p ) {
-            
+            viblio.api( 'services/mediafile/delete_assets', { 'assets[]': p.media().uuid } ).then( function( json ) {
+                viblio.mpEvent( 'delete_photo' );
+                self.photos.remove( p );
+                self.visiblePhotosCount( self.visiblePhotosCount()-1 );
+            });
         });
 
 	// Add it to the list
@@ -1037,10 +1156,30 @@ define( ['plugins/router',
         // If select all mode is on when new photos are added then add them to the selected array too - only if owned by viewer
         if( self.select_all_mode_is_on() && self.select_mode_on() ) {
             if( self.delete_mode_on() ){
-                self.selectedVideos.push( p.media().uuid );
+                if( self.photoViewFilter() == "some" ) {
+                    if( p.filter() == "some" ) {
+                        self.selectedPhotos.push( p.media().uuid );
+                    }
+                } else if ( self.photoViewFilter() == "more" ) {
+                    if( p.filter() != "all" ) {
+                        self.selectedPhotos.push( p.media().uuid );
+                    }
+                } else {
+                    self.selectedPhotos.push( p.media().uuid );
+                }
             } else {
                 if( options.ownedByViewer ) {
-                    self.selectedPhotos.push( p.media().uuid );
+                    if( self.photoViewFilter() == "some" ) {
+                        if( p.filter() == "some" ) {
+                            self.selectedPhotos.push( p.media().uuid );
+                        }
+                    } else if ( self.photoViewFilter() == "more" ) {
+                        if( p.filter() != "all" ) {
+                            self.selectedPhotos.push( p.media().uuid );
+                        }
+                    } else {
+                        self.selectedPhotos.push( p.media().uuid );
+                    }
                 }    
             }
         } 
@@ -1090,12 +1229,18 @@ define( ['plugins/router',
         }
         // for photo mode
         else {
-            self.photos().forEach( function( photo ) {
-                //console.log( photo );
-                if( photo.options.ownedByViewer ) {
+            if( !self.delete_mode_on() ) {
+                self.photos().forEach( function( photo ) {
+                    //console.log( photo );
+                    if( photo.options.ownedByViewer ) {
+                        photo.turnOnSelectMode();
+                    }
+                });    
+            } else {
+                self.photos().forEach( function( photo ) {
                     photo.turnOnSelectMode();
-                }
-            });
+                }); 
+            }
         }
               
     };
@@ -1183,6 +1328,9 @@ define( ['plugins/router',
     newHome.prototype.delete_mode = function() {
         var self = this;
         
+        self.clear_all_modes();
+        self.delete_mode_on(true);
+        
         // If an album is selected AND it's not owned by the user then only select user's vids
         if( self.albumFilterIsActive() && self.currentSelectedFilterAlbum().shared == 1 ) {
             self.activate_select_mode();
@@ -1190,9 +1338,7 @@ define( ['plugins/router',
         // else select ALL vids - those owned by the user and shared with the user
         else {
             self.activate_select_mode(true);
-        }    
-        self.clear_all_modes();
-        self.delete_mode_on(true);
+        }
     };
     
     newHome.prototype.delete_album = function( album_is_empty ) {
@@ -1254,19 +1400,31 @@ define( ['plugins/router',
     newHome.prototype.handle_delete = function( dfd ) {
         var self = this;
         
-        var len = self.selectedVideos().length;
-        var albumOrAccount = self.albumFilterIsActive() ? 'this album' : 'your account'
-        var message = 'Are you sure you want to remove ' + len + ( len == 1 ? ' video' : ' videos' ) + ' from ' + albumOrAccount + '?';
+        var len = self.video_mode_on() ? self.selectedVideos().length : self.selectedPhotos().length;
+        var albumOrAccount = self.albumFilterIsActive() ? 'this album' : 'your account';
+        var message = 'Are you sure you want to remove ' + len + ( len == 1 ? (self.video_mode_on() ? ' video' : ' photo') :  (self.video_mode_on() ? ' videos' : ' photos') ) + ' from ' + albumOrAccount + '?';
         
         if( len > 0 ) {
             app.showMessage( message, 'Delete Confirmation', ['Yes', 'No']).then( function( data ) {
                 if( data == 'Yes' ){
-                    self.videos().forEach( function( mf ) {
-                        if( mf.selected() ) {
-                            mf.mfdelete();
-                        }
-                    });
-                    dfd.resolve();
+                    // videos
+                    if( self.video_mode_on() ) {
+                        self.videos().forEach( function( mf ) {
+                            if( mf.selected() ) {
+                                mf.mfdelete();
+                            }
+                        });
+                        dfd.resolve();
+                    }
+                    // photos
+                    else {
+                        self.photos().forEach( function( p ) {
+                            if( p.selected() ) {
+                                p.pdelete();
+                            }
+                        });
+                        dfd.resolve();
+                    }
                 } else {
                     dfd.reject();
                 }
@@ -1375,6 +1533,10 @@ define( ['plugins/router',
         self.videos().forEach( function( mf ) {
             mf.selected( false );
         });
+        // make sure all photos are unselected
+        self.photos().forEach( function( p ) {
+            p.selected( false );
+        });
         // unselect the currently selected "add to" album
         self.selectedAddToAlbumLabel( null );
         self.selectedAddToAlbum( null );
@@ -1452,9 +1614,7 @@ define( ['plugins/router',
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
-                                mf.views.image.forEach( function(p) {
-                                    self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
-                                });    
+                                self.imageFilterFactory( mf, mf.views.image );    
                             }
                         });
                         dfd.resolve();
@@ -1465,6 +1625,11 @@ define( ['plugins/router',
             }
         }).promise().then(function(){
             self.isActiveFlag(false);
+            
+            // tickle the photos filter
+            var old = self.photoViewFilter();
+            self.photoViewFilter(null);
+            self.photoViewFilter( old );
         });    
         
     };
@@ -1677,11 +1842,19 @@ define( ['plugins/router',
         } 
         // for photo mode
         else {
-            self.photos().forEach( function( photo ) {
-                if( photo.options.ownedByViewer ) {
-                    photo.select();
-                }
-            });
+            if( self.delete_mode_on() ) {
+                self.photos().forEach( function( photo ) {
+                    if( !photo.hidden() ) {
+                        photo.select();
+                    }
+                });
+            } else {
+                self.photos().forEach( function( photo ) {
+                    if( photo.options.ownedByViewer && !photo.hidden() ) {
+                        photo.select();
+                    }
+                });
+            }
         }  
     };
     
@@ -1699,9 +1872,7 @@ define( ['plugins/router',
         // for photo mode
         else {
             self.photos().forEach( function( photo ) {
-                if( photo.options.ownedByViewer ) {
-                    photo.unselect();
-                }
+                photo.unselect();
             });
             self.selectedPhotos.removeAll();
         }
@@ -1915,9 +2086,7 @@ define( ['plugins/router',
 			json.media.forEach( function( mf ) {
 			    self.addMediaFile( mf, {show_select_badge: true, selected: false} );
                             if( mf.views.image ) {
-                                mf.views.image.forEach( function(p) {
-                                    self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
-                                });
+                                self.imageFilterFactory( mf, mf.views.image );
                             }
 			});
 			dfd.resolve();
@@ -1928,6 +2097,12 @@ define( ['plugins/router',
 	    }
 	}).promise().then(function(){
             self.isActiveFlag(false);
+            
+            // tickle the photos filter
+            var old = self.photoViewFilter();
+            self.photoViewFilter(null);
+            self.photoViewFilter( old );
+            
             setTimeout(function(){
                 self.setTitleMargin();
             }, 300);
@@ -1943,6 +2118,7 @@ define( ['plugins/router',
         self.clearfilters();
         self.allVidsIsSelected(true);
         self.videos.removeAll();
+        self.photos.removeAll();
         // reset pager
         self.allVidsPager = {
 	    next_page: 1,

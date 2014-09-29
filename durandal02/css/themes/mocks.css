@@ -3801,6 +3801,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     width: auto;
 }
 
+.mediafile.photo.hidden {
+    display: none !important;
+}
+
 .mediafile.photo img {
     width: auto;
     height: 204px;
@@ -6056,7 +6060,7 @@ button.linkedin:active {
     overflow-y: scroll;
 }
 
-.onoffswitch {
+/*.onoffswitch {
     position: relative; width: 126px;
     -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
 }
@@ -6108,6 +6112,66 @@ button.linkedin:active {
     margin-left: 0;
 }
 
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px; 
+}*/
+
+.videoPhotoLabel {
+    color: white;
+    margin: 5px 4px 0;
+    display: inline-block;
+    vertical-align: top;
+    -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s;
+    -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s;
+}
+
+.videoPhotoLabel.active {
+    color: rgb(28, 184, 209);
+}
+
+.onoffswitch {
+    position: relative; width: 50px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+    display: inline-block;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid white; border-radius: 50px;
+    margin-top: 5px; margin-bottom: 0 !important;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s;
+    -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 17px; padding: 0; line-height: 17px;
+    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "";
+    padding-left: 10px;
+}
+.onoffswitch-inner:after {
+    content: "";
+    padding-right: 10px;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 18px; margin: 4px;
+    background: rgb(28, 184, 209);
+    border-radius: 50px;
+    position: absolute; top: 5px; bottom: 0; right: 22px;
+    -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s;
+    -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
     right: 0px; 
 }
@@ -6338,4 +6402,52 @@ ul.token-input-list-facebook li input {
     font-size: 30px;
     margin-bottom: 20px;
     color: rgb(59, 89, 152);
+}
+
+/**** photoViewFilter ****/
+
+.photoViewFilter .viewFilter {
+    width: 100px;
+    display: inline-block;
+    margin-bottom: -10px;
+}
+
+.photoViewFilter .viewFilter input {
+    display: block;
+    margin: 14px auto 4px;
+    position: relative;
+}
+
+/*the line*/
+.photoViewFilter .viewFilter input:after {
+    content: "";
+    width: 100px;
+    height: 4px;
+    position: absolute;
+    top: 30%;
+    left: -100px;
+    background-color: white;
+    z-index: 0;
+}
+
+/*the circle*/
+.photoViewFilter .viewFilter input:before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    background-color: white;
+    z-index: 1;
+}
+
+.photoViewFilter .viewFilter input#some:after {
+    content: none; 
+}
+
+.photoViewFilter .viewFilter.on input:after,
+.photoViewFilter .viewFilter.on input:before {
+    background-color: rgb(28,184,209);
 }

@@ -28,11 +28,13 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
             show_select_badge: false,
             selected: false,
             ownedByViewer: false,
-            owner_uuid: ko.observable(null)
+            owner_uuid: ko.observable(null),
+            hidden: ko.observable( true )
 	}, options );
         
 	self.media    = ko.observable( data );
 	self.selected = ko.observable( self.options.selected );
+        self.hidden = ko.observable( self.options.hidden );
 	self.edittable = ko.observable( false );
         self.shared_style = ko.observable( self.options.shared_style );
         self.gift_style = ko.computed( function() {
@@ -52,6 +54,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         
         self.winWidth = ko.observable( $(window).width() );
         self.image = ko.observable( self.media().url );
+        
+        self.filter = ko.observable( data.filter );
 
 	Events.includeIn( self );
 
@@ -63,6 +67,16 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 
     Photo.prototype.unhighlight = function() {
 	$(this.view).removeClass( 'selected' );
+    };
+    
+    Photo.prototype.showIt = function() {
+        console.log( "photo showIt fired" );
+	this.hidden( false );
+    };
+    
+    Photo.prototype.hideIt = function() {
+        console.log( "photo hideIt fired" );
+	this.hidden( true );
     };
 
     // Toggle selected state to on and send an event.
@@ -83,7 +97,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
     };
 
     // User clicked on delete(), send an event
-    Photo.prototype.mfdelete = function() {
+    Photo.prototype.pdelete = function() {
 	this.trigger( 'photo:delete', this );
     };
 
@@ -106,7 +120,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         this.show_select_badge( true );
     };
     
-    Photo.prototype.turnOffSelectMode = function() {     
+    Photo.prototype.turnOffSelectMode = function() {
         this.show_select_badge( false );
     };
 
@@ -121,7 +135,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	var self = this;
 	self.view = view;
 	self.trigger( 'photo:composed', self );
-        
+        console.log( self.filter() );
         if ( self.options.shared_style ) {
             $(view).hover(
                 function () {
