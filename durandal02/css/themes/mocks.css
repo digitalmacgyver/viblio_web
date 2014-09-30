@@ -6209,3 +6209,21 @@ ul.token-input-list-facebook li input {
     display: inline-block;
     font-size: 14px;
 }
+
+/**** refer ****/
+
+.referFriendsPage {
+    width: 80%;
+    max-width: 1000px;
+    margin: 50px auto;
+}
+
+.referFriendsPage .uitoken-input,
+.referFriendsPage textarea {
+    margin-left: 20px;
+    height: 46px;
+}
+
+.referFriendsPage .uitoken-input {
+    display: inline-block;
+}
