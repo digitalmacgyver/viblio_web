@@ -20,12 +20,12 @@
         </div>
         <!-- /ko -->
         <button class="dbtn btn btn-danger clearfix" data-bind="click:mfdelete">delete</button>
-        <a class="btn btn-primary media-shared-badge" alt="Album is Shared" title="Album is Shared" data-bind="visible: show_shared_badge, click:showShareMembers"><i class="icon-group"></i></a>
-	<a class="btn btn-primary media-share-badge" alt="share" title="share" data-bind="visible: show_share_badge, click: share"><i class="icon-share"></i></a>
+        <a class="btn btn-primary media-shared-badge" alt="Album is Shared" title="Album is Shared" data-bind="visible: show_shared_badge, click:showShareMembers"><i class="fa fa-group"></i></a>
+	<a class="btn btn-primary media-share-badge" alt="share" title="share" data-bind="visible: show_share_badge, click: share"><i class="fa fa-share"></i></a>
         <a class="mplay-icon pointer" data-bind="click:play">
-            <i class="icon-play-circle"></i> 
+            <i class="fa fa-play-circle"></i> 
         </a>
-        <i class="icon-ok-sign"></i>
+        <i class="fa fa-ok-sign"></i>
         <div style="position: relative; overflow: hidden;" class='pointer' data-bind="click:play">
             <img data-bind="attr:{src:image}" />
             <!-- ko if: shared_style -->
@@ -36,7 +36,7 @@
             <!-- /ko -->
         </div>
         <div class="information">
-            <div class="aux pull-right" title="View count"><i class="icon-eye-open"></i><br><span data-bind="text: albumViews">0</span></div>
+            <div class="aux pull-right" title="View count"><i class="fa fa-eye-open"></i><br><span data-bind="text: albumViews">0</span></div>
 	    <div class="view title truncate" data-bind="text: posterTitle() || 'No title'"></div>
         </div>
     </div>

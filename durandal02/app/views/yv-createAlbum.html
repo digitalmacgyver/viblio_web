@@ -1,10 +1,10 @@
 <div class="allVidsPage clearfix createAlbum">
 
   <div class="yv-secondary-nav">
-      <button class="btn btn-small btn-secondary navControl" data-bind="css: { active: recentUploadsIsActive }, click: toggleRecentVids"><i class="icon-time"></i> Recent Uploads <span data-bind="if: recentUploadsIsActive">(On)</span></button>
+      <button class="btn btn-small btn-secondary navControl" data-bind="css: { active: recentUploadsIsActive }, click: toggleRecentVids"><i class="fa fa-clock-o"></i> Recent Uploads <span data-bind="if: recentUploadsIsActive">(On)</span></button>
 
     <div style="display: inline-block;" class="dropdown navControl">
-        <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: dateFilterIsActive }"><i class="icon-calendar"></i> Filter by Date <span data-bind="if: dateFilterIsActive">(<span data-bind="text: selectedMonth() ? selectedMonth() : 'All'"></span>)</span></a>
+        <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: dateFilterIsActive }"><i class="fa fa-calendar"></i> Filter by Date <span data-bind="if: dateFilterIsActive">(<span data-bind="text: selectedMonth() ? selectedMonth() : 'All'"></span>)</span></a>
         <ul class="style2DD dropdown-menu tags" role="menu">
           <li class="tagsScrollWrapper">
               <div class="scroller">
@@ -19,10 +19,10 @@
                                     <div class="inline tagLabel" data-bind="text: $data.shortMonth + ' ' + $data.year, css:{sel: $data.selected()}"></div>
                                     <div class="checkboxPadding"></div>
                                     <div class="inline pull-right" data-bind="if: $data.selected()">
-                                        <i class="icon-check"></i>
+                                        <i class="fa fa-check-square-o"></i>
                                     </div>
                                     <div class="inline pull-right" data-bind="ifnot: $data.selected()">
-                                        <i class="icon-unchecked"></i>
+                                        <i class="fa fa-square-o"></i>
                                     </div>
                                 </a>
                             </li>
@@ -35,7 +35,7 @@
     </div>
     
     <div style="display: inline-block;" class="dropdown navControl">
-        <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: faceFilterIsActive }"><i class="icon-user"></i> Filter by Face <span data-bind="if: faceFilterIsActive">(<span data-bind="text: selectedFace() ? selectedFace().contact_name : 'All' "></span>)</span></a>
+        <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: faceFilterIsActive }"><i class="fa fa-user"></i> Filter by Face <span data-bind="if: faceFilterIsActive">(<span data-bind="text: selectedFace() ? selectedFace().contact_name : 'All' "></span>)</span></a>
         <ul class="style2DD dropdown-menu tags" role="menu">
           <li class="tagsScrollWrapper">
               <div class="scroller">
@@ -50,10 +50,10 @@
                                     <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
                                     <div class="checkboxPadding"></div>
                                     <div class="checkbox-Wrap" data-bind="if: $data.selected()">
-                                        <i class="icon-check"></i>
+                                        <i class="fa fa-check-square-o"></i>
                                     </div>
                                     <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
-                                        <i class="icon-unchecked"></i>
+                                        <i class="fa fa-square-o"></i>
                                     </div>                                    
                                 </a>
                             </li>
@@ -66,7 +66,7 @@
     </div>
     
     <div style="display: inline-block;" class="dropdown navControl">
-        <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: cityFilterIsActive }"><i class="icon-map-marker"></i> Filter by City <span data-bind="if: cityFilterIsActive">(<span data-bind="text: selectedCity() ? selectedCity() : 'All' "></span>)</span></a>
+        <a class="btn btn-small btn-secondary dropdown-toggle" href="#" data-toggle="dropdown" data-bind="css: { active: cityFilterIsActive }"><i class="fa fa-map-marker"></i> Filter by City <span data-bind="if: cityFilterIsActive">(<span data-bind="text: selectedCity() ? selectedCity() : 'All' "></span>)</span></a>
         <ul class="style2DD dropdown-menu tags" role="menu">
           <li class="tagsScrollWrapper">
               <div class="scroller">
@@ -81,10 +81,10 @@
                                     <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
                                     <div class="checkboxPadding"></div>
                                     <div class="checkbox-Wrap" data-bind="if: $data.selected()">
-                                        <i class="icon-check"></i>
+                                        <i class="fa fa-check-square-o"></i>
                                     </div>
                                     <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
-                                        <i class="icon-unchecked"></i>
+                                        <i class="fa fa-square-o"></i>
                                     </div>
                                 </a>
                             </li>
@@ -108,10 +108,10 @@
                                 <a class="checkboxedLi">
                                     <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected(), sharedStyle: $data.shared}"></div>
                                     <!--<div class="checkbox-Wrap" data-bind="if: $data.selected()">
-                                        <i class="icon-check"></i>
+                                        <i class="fa fa-check-square-o"></i>
                                     </div>
                                     <div class="checkbox-Wrap" data-bind="ifnot: $data.selected()">
-                                        <i class="icon-unchecked"></i>
+                                        <i class="fa fa-square-o"></i>
                                     </div>-->
                                 </a>
                             </li>
@@ -132,9 +132,9 @@
           <form class="search" data-bind="css: {active: searchQuery()}">
               <div class="input-append">
                   <input type="text" class="search-query" placeholder="Search" data-bind="value: searchQuery">
-                  <button type="submit" class="btn btn-white" data-bind="click: newVidsSearch"><i class="icon-search"></i></button>
+                  <button type="submit" class="btn btn-white" data-bind="click: newVidsSearch"><i class="fa fa-search"></i></button>
                   <!-- ko if: searchFilterIsActive() -->
-                  <button class="btn btn-secondary" data-bind="click: showAllVideos, tooltip: {title:'Clear search'}"><i class="icon-remove"></i></button>
+                  <button class="btn btn-secondary" data-bind="click: showAllVideos, tooltip: {title:'Clear search'}"><i class="fa fa-times"></i></button>
                   <!-- /ko -->
               </div>
           </form>
@@ -153,8 +153,8 @@
                 .           
           </div>
           <div class="vidSelectControls">
-              <button class="btn btn-white btn-small" data-bind="click: unselectAll">Unselect All - <i class="icon-unchecked"></i></button>
-              <button class="btn btn-white btn-small" data-bind="click: selectAll">Select All - <i class="icon-check"></i></button>
+              <button class="btn btn-white btn-small" data-bind="click: unselectAll">Unselect All - <i class="fa fa-square-o"></i></button>
+              <button class="btn btn-white btn-small" data-bind="click: selectAll">Select All - <i class="fa fa-check-square-o"></i></button>
           </div>
       </div>
                
@@ -176,7 +176,7 @@
         <!-- /ko -->
         <!-- ko if: isActiveFlag() -->
         <div class="mfLoader">
-            <i class="icon-spinner icon-5x icon-spin active"></i>
+            <i class="fa fa-spinner fa-5x fa-spin active"></i>
             <p class='font18'>Loading...</p>
         </div>
         <!-- /ko -->

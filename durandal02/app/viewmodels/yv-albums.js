@@ -20,7 +20,7 @@ function( system, app, router, viblio, dialogs, Album ) {
 
     var albums = ko.observableArray([]);
     var searching = ko.observable( true );
-    var editLabel = ko.observable( '<i class="icon-minus"></i> Remove...' );   
+    var editLabel = ko.observable( '<i class="fa fa-minus"></i> Remove...' );   
     
     var deleteModeOn = ko.computed( function() {
         if( editLabel() === 'Done' ) {
@@ -128,10 +128,10 @@ function( system, app, router, viblio, dialogs, Album ) {
         deleteModeOn: deleteModeOn,
 
 	toggleEditMode: function() {
-            if ( editLabel() === '<i class="icon-minus"></i> Remove...' )
+            if ( editLabel() === '<i class="fa fa-minus"></i> Remove...' )
                 editLabel( 'Done' );
             else
-                editLabel( '<i class="icon-minus"></i> Remove...' );
+                editLabel( '<i class="fa fa-minus"></i> Remove...' );
             
             albums().forEach( function( mf ) {
                 mf.toggleEditMode();

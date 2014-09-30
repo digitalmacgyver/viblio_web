@@ -646,7 +646,7 @@ define(["durandal/app",
 	if ( faces_taggable() ) {
 	    face_opts = { 
 		clickable: false, 
-		leftBadgeIcon: 'icon-remove-circle',
+		leftBadgeIcon: 'fa fa-times-circle-o',
 		leftBadgeClick: removePerson,
 		leftBadgeMode: 'hover',
 		show_name: false, 

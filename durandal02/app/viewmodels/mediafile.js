@@ -38,7 +38,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
             delete_title: 'delete',
             show_faces_tags: false,
             ownedByViewer: false,
-            popup_player: false
+            popup_player: false,
+            clean_style: false
 	}, options );
         
 	self.media    = ko.observable( data );
@@ -54,6 +55,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
                 return false;
             }
         });
+        self.clean_style = ko.observable( self.options.clean_style );
         self.owner_avatar = "/services/na/avatar?uid=" + data.owner_uuid + "&y=40";
         self.owner_name = ko.computed( function(){
             if( data.owner ) {
@@ -321,16 +323,27 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
             $( '.dbtn' ).show();
         }
         
+        // Handle shared ownership section
         if ( self.options.shared_style ) {
             $(view).hover(
                 function () {
-                  $(view).find('.sharedOwnerWrap').stop(true, true).animate({ 'bottom': '0' }, 'fast');
+                  $(view).find('.sharedOwnerWrap').stop(true, true).animate({ 'bottom': '54px' }, 'fast');
                 }, 
                 function () {
                   $(view).find('.sharedOwnerWrap').stop(true, true).animate({ 'bottom': '-60px' }, 'fast');
                 }
             );
         }
+        
+        // Handle information section
+        $(view).hover(
+            function () {
+              $(view).find('.clean').stop(true, true).animate({ 'bottom': '0' }, 'fast');
+            }, 
+            function () {
+              $(view).find('.clean').stop(true, true).animate({ 'bottom': '-54px' }, 'fast');
+            }
+        );
         
         // this will trigger the number of faces to show to be correct when resizing window
         //$( window ).bind('resize', function(){ self.winWidth( $( window ).width() );} );

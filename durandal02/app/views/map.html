@@ -16,10 +16,10 @@
                                     <a class="checkboxedLi">
                                         <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected(), sharedStyle: $data.shared}"></div>
                                         <!--<div class="inline" data-bind="if: $data.selected()">
-                                            <i class="icon-check"></i>
+                                            <i class="fa fa-check"></i>
                                         </div>
                                         <div class="inline" data-bind="ifnot: $data.selected()">
-                                            <i class="icon-unchecked"></i>
+                                            <i class="fa fa-unchecked"></i>
                                         </div>-->
                                     </a>
                                 </li>
@@ -35,14 +35,14 @@
                 <div class="mediafile" data-bind="attr:{id:$data.uuid}">
                     <div>
                         <a class="mplay-icon pointer" data-bind="click: $root.play">
-                           <i class="icon-play-circle"></i> 
+                           <i class="fa fa-play-circle"></i> 
                         </a>
-                        <i class="icon-ok-sign"></i>
+                        <i class="fa fa-ok-sign"></i>
                         <div class='pointer' data-bind="click: $root.play">
                             <img data-bind="attr:{src:$data.url}" alt="video poster"/>
                         </div>
                         <div class="information">
-                            <div class="aux pull-right" title="View count"><!--<i class="icon-eye-open"></i><br>--><span data-bind="text: $data.eyes">0</span><br><span class="small">Fan</span><br><span class="small">Views</span></div>
+                            <div class="aux pull-right" title="View count"><!--<i class="fa fa-eye-open"></i><br>--><span data-bind="text: $data.eyes">0</span><br><span class="small">Fan</span><br><span class="small">Views</span></div>
                             <div>
                                 <div class="view title truncate" data-bind="text: $data.title || 'Click to edit title'"></div> 
                             </div>
@@ -56,7 +56,7 @@
     <div id="mapContainer" class="map-wrap bottomBorder-Thin">
         <!--<div class="missingVideos whiteText sticky">
             <div class='tab' data-bind='click: toggleInstructions'>
-                <i class="icon-lightbulb"></i><div>Missing a video?</div>
+                <i class="fa fa-lightbulb"></i><div>Missing a video?</div>
             </div>
             <div class='mapInstructions'>
                 Only videos that have location data will appear on your map. To add location data to a video:<br>
