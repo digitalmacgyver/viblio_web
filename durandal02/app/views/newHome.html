@@ -172,7 +172,7 @@
                 <li class="divider-vertical" data-bind="visible: albumFilterIsActive() ? !currentSelectedFilterAlbum().shared : true"></li>
                 
                 <!-- video mode toggle -->
-                <li data-bind="tooltip:  {title: 'Toggle between video and photo view', placement: 'bottom' }">
+                <li data-bind="tooltip:  {title: 'Toggle between photos and the videos they are from', placement: 'bottom' }">
                     <span class="videoPhotoLabel" data-bind="css: {active: !video_mode_on()}">Photo</span>
                     <div class="onoffswitch">
                         <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" data-bind="checked: video_mode_on">
@@ -381,15 +381,21 @@
             <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: noFiltersAreActive() && !searchFilterIsActive()">
                 <!-- ko if: !video_mode_on() -->
                 <div class="btn-group photoViewFilter" data-toggle="buttons">
-                    <label class="viewFilter on">
-                        <input type="radio" name="options" value="some" id="some" data-bind="checked: photoViewFilter"> Some
-                    </label>
-                    <label class="viewFilter" data-bind="css: { on: photoViewFilter() == 'more' || photoViewFilter() == 'all' }">
-                        <input type="radio" name="options" value="more" id="more" data-bind="checked: photoViewFilter"> More
-                    </label>
-                    <label class="viewFilter" data-bind="css: { on: photoViewFilter() == 'all' }">
-                        <input type="radio" name="options" value="all" id="all" data-bind="checked: photoViewFilter"> All
-                    </label>
+                    <span class="viewFilter on">
+                        <label class="someLabel">
+                            <input type="radio" name="options" value="some" id="some" data-bind="checked: photoViewFilter">
+                        </label>    
+                    </span>
+                    <span class="viewFilter" data-bind="css: { on: photoViewFilter() == 'more' || photoViewFilter() == 'all' }">
+                        <label>
+                            <input type="radio" name="options" value="more" id="more" data-bind="checked: photoViewFilter">
+                        </label>    
+                    </span>
+                    <span class="viewFilter" data-bind="css: { on: photoViewFilter() == 'all' }">
+                        <label>
+                            <input type="radio" name="options" value="all" id="all" data-bind="checked: photoViewFilter">
+                        </label>
+                    </span>
                 </div>
                 <!-- /ko -->
                 <p class="mainTitleP">

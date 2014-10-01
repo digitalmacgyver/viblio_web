@@ -6410,44 +6410,48 @@ ul.token-input-list-facebook li input {
     width: 100px;
     display: inline-block;
     margin-bottom: -10px;
-}
-
-.photoViewFilter .viewFilter input {
-    display: block;
-    margin: 14px auto 4px;
     position: relative;
 }
 
+.photoViewFilter .viewFilter label {
+    display: block;
+    margin: 32px auto 4px;
+}
+
+.photoViewFilter .viewFilter input {
+    display: none;
+}
+
 /*the line*/
-.photoViewFilter .viewFilter input:after {
+.photoViewFilter .viewFilter label::after {
     content: "";
     width: 100px;
     height: 4px;
     position: absolute;
-    top: 30%;
-    left: -100px;
+    top: 16px;
+    left: -49px;
     background-color: white;
     z-index: 0;
 }
 
 /*the circle*/
-.photoViewFilter .viewFilter input:before {
+.photoViewFilter .viewFilter label::before {
     content: "";
     width: 20px;
     height: 20px;
     border-radius: 20px;
     position: absolute;
-    top: -3px;
-    right: -3px;
+    top: 9px;
+    right: 40px;
     background-color: white;
     z-index: 1;
 }
 
-.photoViewFilter .viewFilter input#some:after {
+.photoViewFilter .viewFilter .someLabel::after {
     content: none; 
 }
 
-.photoViewFilter .viewFilter.on input:after,
-.photoViewFilter .viewFilter.on input:before {
+.photoViewFilter .viewFilter.on label::after,
+.photoViewFilter .viewFilter.on label::before {
     background-color: rgb(28,184,209);
 }
