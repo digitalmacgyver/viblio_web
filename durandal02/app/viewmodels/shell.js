@@ -238,7 +238,10 @@ function (router, app, system, page_header, landing_header, conditional_header, 
 	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
           
             { route: 'testers',   moduleId: 'testersLanding',     title: 'Beta Tester Signup',
-	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header }
+	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
+          
+            { route: 'refer',   moduleId: 'refer',     title: 'Refer friends',
+	      showFooter: true, nav: false,   authenticated: true,   header: conditional_header }
 
         ]).buildNavigationModel();
     }

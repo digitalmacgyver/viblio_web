@@ -3,27 +3,27 @@
         <!-- ko if: in_process_style() -->
         <div style="position: relative; overflow: hidden;" class="inProcess-Content greyBG">
             <p class="whiteText textShadowed">This video is currently in process.</p>
-            <i class="icon-time icon-5x"></i>
+            <i class="fa fa-time fa-5x"></i>
         </div>
         <!-- /ko -->
         <!-- ko ifnot: in_process_style() -->
         <div style="position: relative; overflow: hidden;">
             <!--<button class="dbtn btn btn-danger clearfix" 
             data-bind="text: options.delete_title, click:mfdelete"></button>-->
-            <a class="btn btn-ltGrey tomatoShadow media-share-badge" alt="share" 
-            title="share" data-bind="visible: show_share_badge, click: share"><i class="icon-share"></i></a>
+            <a class="btn btn-ltGrey media-share-badge" alt="share" 
+                title="share" data-bind="visible: show_share_badge, click: share"><i class="fa fa-share-square-o"></i></a>
             <a class="btn btn-ltGrey tomatoShadow media-select-badge" data-bind="visible: show_select_badge, click: selected() ? unselect : select">
                 <div class="inline" title="unselect" data-bind="if: $data.selected()">
-                    <i class="icon-check"></i>
+                    <i class="fa fa-check-square-o"></i>
                 </div>
                 <div class="inline" title="select" data-bind="ifnot: $data.selected()">
-                    <i class="icon-unchecked"></i>
+                    <i class="fa fa-square-o"></i>
                 </div>
             </a>   
             <a class="mplay-icon pointer" data-bind="click:play, attr:{href:image}, css: { fancybox: popup_player }">
-                <i class="icon-play-circle"></i> 
+                <i class="fa fa-play-circle"></i> 
             </a>
-            <i class="icon-ok-sign"></i>
+            <i class="fa fa-ok-sign"></i>
             <div class='pointer' data-bind="click:play">
                 <a data-bind="attr:{href:image}, css: { fancybox: popup_player }">
                     <img data-bind="attr:{src:image}" />
@@ -32,20 +32,38 @@
                         <img class="boxShadowed avatar" data-bind="attr: {src: owner_avatar}" />
                         <span class="truncate" data-bind="text: owner_name"></span>
                     </div>
-                    <!-- /ko -->    
+                    <!-- /ko -->
+                    
+                    <!-- ko if: clean_style() -->
+                    <div class="information clean">
+                        <!-- ko if: media().eyes > 0 -->
+                        <div class="aux pull-right" title="View count"><!--<i class="fa fa-eye-open"></i><br>--><span data-bind="text: media().eyes">0</span><br><span class="small">Fan</span><br><span class="small" data-bind="text: media().eyes == 1 ? 'View' : 'Views' "></span></div>
+                        <!-- /ko -->
+                        <div data-bind="liveEditor: title, ifnot: ro">
+                            <div class="view vidTitle title truncate" data-bind="click: title.edit, clickBubble: false, text: title() || 'Click to edit title'"></div>
+                            <div class="editTitle-Wrap">
+                                <input type="text" class="edit" data-bind="value: title, 
+                                                                     hasFocus: title.editing, 
+                                                                     event: { blur: function() { title.stopEditing(); title.save( $data, media(), 'mediaFile:TitleDescChanged' ) } }" />
+                            </div>  
+                        </div>
+                        <div data-bind="if: ro">
+                            <div class="view title truncate" data-bind="text: title() || 'no title'"></div>
+                        </div>
+                    </div>
+                    <!-- /ko -->
                 </a>
             </div>
-
             <div class="video-tags"
                 style="position: absolute; bottom: 3px; left: 8px;"
                 data-bind="foreach: tags">
                 <span data-bind="text: $data"></span>
             </div>
         </div>
-        <!-- /ko -->
+        <!-- ko ifnot: clean_style() -->
         <div class="information">
             <!-- ko if: media().eyes > 0 -->
-            <div class="aux pull-right" title="View count"><!--<i class="icon-eye-open"></i><br>--><span data-bind="text: media().eyes">0</span><br><span class="small">Fan</span><br><span class="small" data-bind="text: media().eyes == 1 ? 'View' : 'Views' "></span></div>
+            <div class="aux pull-right" title="View count"><!--<i class="fa fa-eye-open"></i><br>--><span data-bind="text: media().eyes">0</span><br><span class="small">Fan</span><br><span class="small" data-bind="text: media().eyes == 1 ? 'View' : 'Views' "></span></div>
             <!-- /ko -->
             <div data-bind="liveEditor: title, ifnot: ro">
                 <div class="view vidTitle title truncate" data-bind="click: title.edit, text: title() || 'Click to edit title'"></div>
@@ -59,6 +77,9 @@
                 <div class="view title truncate" data-bind="text: title() || 'no title'"></div>
             </div>
         </div>
+        <!-- /ko -->
+        <!-- /ko -->
+        
         <!-- ko if: show_faces_tags -->  
         <div class='facesTags'>
             <div class='mfFaces'>
@@ -71,7 +92,7 @@
                     <!-- /ko -->
                 </div>
             </div>
-            <i class='icon-tags' data-bind="click: toggleTags" title='Toggle tags'></i>
+            <i class='fa fa-tags' data-bind="click: toggleTags" title='Toggle tags'></i>
 
             <!-- ko if: showFaces -->
                 <div class="facesPopup popover top">
@@ -100,13 +121,13 @@
                                 <li class="tag mocksWhiteBG">
                                     <span class="tagLabel" data-bind="text: $data"></span>
                                     <!-- ko if: $parent.tags_editable() -->
-                                    <i class="icon-remove" title="Remove" data-bind="click: $parent.removeTag.bind( $data, $parent )"></i>
+                                    <i class="fa fa-times" title="Remove" data-bind="click: $parent.removeTag.bind( $data, $parent )"></i>
                                     <!-- /ko -->
                                 </li>
                                 <!-- /ko -->
                                 <!-- ko if: tags_editable() -->
                                 <li class="tag mocksWhiteBG dropdown navControl">
-                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="click: function(){ selectedTag( null ); }"><i class="icon-plus"></i> Add Tag</a>
+                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="click: function(){ selectedTag( null ); }"><i class="fa fa-plus"></i> Add Tag</a>
                                     <ul class="style2DD dropdown-menu tags" role="menu">
                                         <li class="tagsScrollWrapper">
                                             <div class="scroller">
@@ -116,7 +137,7 @@
                                                         <!-- ko ifnot: $parent.newTagSelected() -->
                                                                 <li data-bind="click: $parent.tagSelected.bind( $data, $parent ), clickBubble: false">
                                                                     <a class="checkboxedLi">
-                                                                        <!-- ko if: $data.label == 'New Tag' --> <i class='icon-plus'></i> <!-- /ko -->
+                                                                        <!-- ko if: $data.label == 'New Tag' --> <i class='fa fa-plus'></i> <!-- /ko -->
                                                                         <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
                                                                     </a>
                                                                 </li>
