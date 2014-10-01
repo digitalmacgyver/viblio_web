@@ -70,12 +70,10 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
     };
     
     Photo.prototype.showIt = function() {
-        console.log( "photo showIt fired" );
 	this.hidden( false );
     };
     
     Photo.prototype.hideIt = function() {
-        console.log( "photo hideIt fired" );
 	this.hidden( true );
     };
 
@@ -135,7 +133,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	var self = this;
 	self.view = view;
 	self.trigger( 'photo:composed', self );
-        console.log( self.filter() );
+        console.log( self.filter(), self.media().uuid );
         if ( self.options.shared_style ) {
             $(view).hover(
                 function () {

@@ -441,6 +441,67 @@ define( ['plugins/router',
         });
     };
     
+    newHome.prototype.some_more_all = function( mf, images ) {
+        var self = this;
+        
+        var face_threshold = 1;
+        var gap_threshold = 30;
+        var face_gap_threshold = 5;
+        var prior_timecode = -99;
+        
+        var best_image_score = -1;
+        var best_image = null;
+        var some_count = 0;
+        
+        var results = [];
+        
+        for (var image in images) {
+            var timecode = images[image].timecode;
+            var face_score = images[image].face_score;
+
+            //Update the best image we've seen so far for this video.
+            if ( face_score > best_image_score ) {
+                best_image = images[image];
+                best_image_score = face_score;
+            }
+            
+            if( results.indexOf( images[image] ) < 0 ) {
+                if ( face_score >= face_threshold && ( timecode - prior_timecode ) > gap_threshold ) {
+                    //This image is in "some"
+                    images[image].filter = "some";
+                    results.push( images[image] );
+                    some_count++;
+                } else if ( ( timecode - prior_timecode ) > gap_threshold || ( ( face_score >= face_threshold ) && ( timecode - prior_timecode ) > face_gap_threshold ) ) {
+                    //This image is in "more"
+                    images[image].filter = "more";
+                    results.push( images[image] );
+                } else {
+                    //Otherwise, this image belongs to "all"
+                    images[image].filter = "all";
+                    results.push( images[image] );
+                }
+
+                prior_timecode = timecode;   
+            } 
+        }
+        
+        // check to see if there are any "some" photos yet, if not then apply the "some" filter
+        // to the best image for the video
+        if( some_count == 0 ) {
+            console.log( "best_image: ", best_image );
+            // first remove the image from the results array
+            results.splice( results.indexOf( best_image ), 1 );
+            // then re-add it with a filter of "some"
+            best_image.filter = "some";
+            results.push( best_image );
+        }
+        
+        console.log( "results.length: ", results.length );
+        results.forEach( function( p ) {
+            self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } ); 
+        });
+    };
+    
     newHome.prototype.recentVidsSearch = function( newSearch ) {
         var self = this;
         
@@ -485,7 +546,8 @@ define( ['plugins/router',
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
-                                self.imageFilterFactory( mf, mf.views.image );    
+                                //self.imageFilterFactory( mf, mf.views.image );
+                                self.some_more_all( mf, mf.views.image );
                             }
                         });
                         dfd.resolve();
@@ -564,7 +626,8 @@ define( ['plugins/router',
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
-                                self.imageFilterFactory( mf, mf.views.image );      
+                                //self.imageFilterFactory( mf, mf.views.image );
+                                self.some_more_all( mf, mf.views.image );
                             }
                         });
 			dfd.resolve();
@@ -668,7 +731,8 @@ define( ['plugins/router',
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
-                                self.imageFilterFactory( mf, mf.views.image );      
+                                //self.imageFilterFactory( mf, mf.views.image );
+                                self.some_more_all( mf, mf.views.image );
                             }
                         });
                         dfd.resolve();
@@ -759,7 +823,8 @@ define( ['plugins/router',
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
-                                self.imageFilterFactory( mf, mf.views.image );      
+                                //self.imageFilterFactory( mf, mf.views.image ); 
+                                self.some_more_all( mf, mf.views.image );
                             }
                         });
                         dfd.resolve();
@@ -854,7 +919,8 @@ define( ['plugins/router',
                             json.album.media.forEach( function( mf ) {
                                 self.addAlbumMediaFile ( mf );
                                 if( mf.views.image ) {
-                                    self.imageFilterFactory( mf, mf.views.image );    
+                                    //self.imageFilterFactory( mf, mf.views.image );
+                                    self.some_more_all( mf, mf.views.image );
                                 }
                             });
                             dfd.resolve();
@@ -1614,7 +1680,8 @@ define( ['plugins/router',
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
-                                self.imageFilterFactory( mf, mf.views.image );    
+                                //self.imageFilterFactory( mf, mf.views.image );
+                                self.some_more_all( mf, mf.views.image );
                             }
                         });
                         dfd.resolve();
@@ -2086,7 +2153,8 @@ define( ['plugins/router',
 			json.media.forEach( function( mf ) {
 			    self.addMediaFile( mf, {show_select_badge: true, selected: false} );
                             if( mf.views.image ) {
-                                self.imageFilterFactory( mf, mf.views.image );
+                                //self.imageFilterFactory( mf, mf.views.image );
+                                self.some_more_all( mf, mf.views.image );
                             }
 			});
 			dfd.resolve();

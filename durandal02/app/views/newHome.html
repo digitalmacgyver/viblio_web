@@ -17,7 +17,7 @@
                                    <ul class="tags-inner">
                                         <li data-bind='click: recentVidsSearch'>
                                             <a class="checkboxedLi">
-                                                <i class='fa fa-time'></i>
+                                                <i class='fa fa-clock-o'></i>
                                                 <span> Recent</span>                                        
                                             </a>
                                         </li>
@@ -187,7 +187,7 @@
                 
                 <!-- Create -->
                 <li class="dropdown navControl albumsList" data-bind="visible: albumFilterIsActive() ? !currentSelectedFilterAlbum().shared : true">
-                    <a class="dropdown-toggle addToButton" href="#" data-toggle="dropdown"><i class="icon-plus"></i><span data-bind="visible: wideScreen()"> Create </span></a>
+                    <a class="dropdown-toggle addToButton" href="#" data-toggle="dropdown"><i class="fa fa-plus"></i><span data-bind="visible: wideScreen()"> Create </span></a>
                     <ul class="style2DD dropdown-menu tags albumList" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -216,7 +216,7 @@
                 <li style="display: inline-block;" class="dropdown navControl">
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown">
                         <div class="btn_text">
-                            <i class='icon-list'></i>
+                            <i class='fa fa-list'></i>
                             <span data-bind="visible: wideScreen()">More</span>
                         </div>    
                     </a>
@@ -228,7 +228,7 @@
                                         <li>
                                             <a href='#' data-bind='click: delete_mode'>
                                                 <div class="btn_text">
-                                                    <i class='icon-trash'></i>
+                                                    <i class='fa fa-trash'></i>
                                                     <span> Select photos to delete</span>
                                                 </div>    
                                             </a>
@@ -238,7 +238,7 @@
                                         <li>
                                             <a href='#' data-bind='click: delete_mode'>
                                                 <div class="btn_text">
-                                                    <i class='icon-trash'></i>
+                                                    <i class='fa fa-trash'></i>
                                                     <span> Select videos to delete</span>
                                                 </div>    
                                             </a>
@@ -400,7 +400,7 @@
                 <!-- /ko -->
                 <p class="mainTitleP">
                     <!--You have <span data-bind="text: hits"></span>-->
-                    ALL Videos (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
+                    ALL <span data-bind="text: video_mode_on() ? ' Videos ' : ' Photos ' "></span>(<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
                     <!--<span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private Viblio Library.-->
                 </p>
                 <!-- ko if: hits() > 0 && video_mode_on() --> 
@@ -414,15 +414,21 @@
             <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: !isActiveFlag() && !noFiltersAreActive() || searchFilterIsActive()">
                 <!-- ko if: !video_mode_on() -->
                 <div class="btn-group photoViewFilter" data-toggle="buttons">
-                    <label class="viewFilter on">
-                        <input type="radio" name="options" value="some" id="some" data-bind="checked: photoViewFilter"> Some
-                    </label>
-                    <label class="viewFilter" data-bind="css: { on: photoViewFilter() == 'more' || photoViewFilter() == 'all' }">
-                        <input type="radio" name="options" value="more" id="more" data-bind="checked: photoViewFilter"> More
-                    </label>
-                    <label class="viewFilter" data-bind="css: { on: photoViewFilter() == 'all' }">
-                        <input type="radio" name="options" value="all" id="all" data-bind="checked: photoViewFilter"> All
-                    </label>
+                    <span class="viewFilter on">
+                        <label class="someLabel">
+                            <input type="radio" name="options" value="some" id="some" data-bind="checked: photoViewFilter">
+                        </label>    
+                    </span>
+                    <span class="viewFilter" data-bind="css: { on: photoViewFilter() == 'more' || photoViewFilter() == 'all' }">
+                        <label>
+                            <input type="radio" name="options" value="more" id="more" data-bind="checked: photoViewFilter">
+                        </label>    
+                    </span>
+                    <span class="viewFilter" data-bind="css: { on: photoViewFilter() == 'all' }">
+                        <label>
+                            <input type="radio" name="options" value="all" id="all" data-bind="checked: photoViewFilter">
+                        </label>
+                    </span>
                 </div>
                 <!-- /ko -->
                 <!-- ko if: !albumFilterIsActive() -->
@@ -434,7 +440,7 @@
                     "<span data-bind="text: active_filter_label()"></span>" filter.-->
                     
                     <!-- ko if: active_filter_label() == 'Recent' -->
-                    <span data-bind="text: active_filter_label() ? active_filter_label().toUpperCase() : '' "></span> Videos (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
+                    <span data-bind="text: active_filter_label() ? active_filter_label().toUpperCase() : '' "></span><span data-bind="text: video_mode_on() ? ' Videos ' : ' Photos ' "></span>(<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
                     <!-- /ko -->
                     <!-- ko ifnot: active_filter_label() == 'Recent' -->
                     <span data-bind="text: active_filter_label() ? active_filter_label().toUpperCase() : '' "></span> Filter (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
