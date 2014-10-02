@@ -159,17 +159,7 @@
                     </span>
                 </li>
                 
-                <li class="divider-vertical" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared && video_mode_on()"></li>
-                <!-- share --> 
-                <li class="" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared && video_mode_on()">
-                    <a href='#' data-bind='click: share_mode'>
-                        <div class="btn_text" title="Share Album">
-                            <i class='fa fa-share'></i>
-                            <span data-bind="visible: wideScreen()"> Share Album</span>
-                        </div>    
-                    </a>
-                </li>
-                <li class="divider-vertical" data-bind="visible: albumFilterIsActive() ? !currentSelectedFilterAlbum().shared : true"></li>
+                <li class="divider-vertical" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared"></li>
                 
                 <!-- video mode toggle -->
                 <li data-bind="tooltip:  {title: 'Toggle between photos and the videos they are from', placement: 'bottom' }">
@@ -400,14 +390,14 @@
                 <!-- /ko -->
                 <p class="mainTitleP">
                     <!--You have <span data-bind="text: hits"></span>-->
-                    ALL <span data-bind="text: video_mode_on() ? ' Videos ' : ' Photos ' "></span>(<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
-                    <!--<span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private Viblio Library.-->
+                    ALL Videos (<span data-bind="text: hits ? hits : 0"></span>)
+                    <!--<span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private VIBLIO Library.-->
                 </p>
-                <!-- ko if: hits() > 0 && video_mode_on() --> 
-                <p><span class="tomatoFont mainTitleCTA" data-bind="click: createAlbumFromTitle">Create an album</span> from these videos to privately share with friends and family.</p>
+                <!-- ko if: hits() > 0 --> 
+                <p><span class="btn btn-primary" data-bind="click: createAlbumFromTitle">Create an album</span> from these videos to privately share with friends and family.</p>
                 <!-- /ko -->
                 <!-- ko ifnot: hits() > 0 --> 
-                <p><span class="tomatoFont mainTitleCTA" data-bind="click: add_videos, visible: video_mode_on()">Upload Videos</span></p>
+                <p><span class="btn btn-primary" data-bind="click: add_videos">Upload Videos</span></p>
                 <!-- /ko -->
             </div>
 
@@ -449,14 +439,14 @@
                      <img class="selectedFace img-circle" data-bind="attr: {src: selectedFace().url}">
                     <!-- /ko -->
                 </p>
-                <!-- ko if: video_mode_on() -->
-                    <!-- ko if: hits() > 0 --> 
-                    <p><span class="tomatoFont mainTitleCTA" data-bind="click: createAlbumFromTitle">Create an album</span> from these videos to privately share with friends and family.</p>
-                    <!-- /ko -->
-                    <!-- ko ifnot: hits() > 0 --> 
-                    <p><span class="tomatoFont mainTitleCTA" data-bind="click: add_videos">Upload Videos</span></p>
-                    <!-- /ko -->
-                    <!-- /ko -->
+                
+                <!-- ko if: hits() > 0 --> 
+                <p><span class="btn btn-primary" data-bind="click: createAlbumFromTitle">Create an album</span> from these videos to privately share with friends and family.</p>
+                <!-- /ko -->
+                <!-- ko ifnot: hits() > 0 --> 
+                <p><span class="btn btn-primary" data-bind="click: add_videos">Upload Videos</span></p>
+                <!-- /ko -->
+                
                 <!-- /ko -->
                 
                 <!-- ko if: albumFilterIsActive() -->
@@ -495,7 +485,11 @@
                                 </div>  
                             </div> Album (<span data-bind="text: videos().length ? videos().length : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)      
                         </div>
-                        <p data-bind="visible: !currentSelectedFilterAlbum().shared && video_mode_on()"><span class="tomatoFont mainTitleCTA" data-bind="click: share_mode">Invite friends</span> to privately see this album.</p>
+                        
+                        <p data-bind="visible: !currentSelectedFilterAlbum().shared">
+                            <span class="btn btn-primary" data-bind="click: share_mode">Invite friends</span>
+                            to privately see this album.
+                        </p>
                     <!-- /ko -->
                     
                     <!-- album is owned by another user and shared with viewer -->

@@ -3,7 +3,7 @@
     <div class="table">
         <!-- ko if: !showShared() -->
             <!-- ko if: !aMonthIsSelected() -->
-                <p class="mainTitle textShadowed">You have <span data-bind="text: hits"></span><span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span><span data-bind="text: name() ? ' of ' + name() : '' "></span> in your private Viblio Library.</p>
+                <p class="mainTitle textShadowed">You have <span data-bind="text: hits"></span><span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span><span data-bind="text: name() ? ' of ' + name() : '' "></span> in your private VIBLIO Library.</p>
             <!-- /ko -->
             <!-- ko if: aMonthIsSelected() -->
                 <p class="mainTitle textShadowed">You have <span data-bind="text: vidsInSelectedMonth"></span><span data-bind="text: vidsInSelectedMonth() == 1 ? ' video ' : ' videos'"></span><span data-bind="text: name() ? ' of ' + name() : '' "></span><span data-bind="text: selectedMonth() == 'Missing dates' ? ' without dates ' : ' from ' + selectedMonth()"></span>.</p>
@@ -31,7 +31,7 @@
             <p class="font24 tomatoFont doubleSpaced">C’mon!  Videos are the best way to capture those small moments that are your life!  Go take a few and let us be the keeper of your videochron!</p>
         </div>
         <div data-bind="if: numVids() < 1 && showShared()">
-            <p class="font24 tomatoFont doubleSpaced">Want videos to show up here? The best way is to tell friends and family about Viblio!</p>
+            <p class="font24 tomatoFont doubleSpaced">Want videos to show up here? The best way is to tell friends and family about VIBLIO!</p>
         </div>
     </div>
     

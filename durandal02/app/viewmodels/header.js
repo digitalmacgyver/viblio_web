@@ -12,6 +12,7 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
     // function.
     //
     var showPopup = ko.observable();
+    var videosHaveBeenUploaded = ko.observable();
     Events.includeIn( this );
     
     this.on( 'firstTimeUserModal:closed', function() {
@@ -33,6 +34,8 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
         pt: pt,
         
         showPopup: showPopup,
+        videosHaveBeenUploaded: videosHaveBeenUploaded,
+        
 	router: router,
         showPrivacy: showPrivacy,
 	// Show details about the user
@@ -85,6 +88,16 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
                     showPopup( false );
                 } else {
                     showPopup( true );
+                }
+            });
+            viblio.localStorage( 'firstUploadMessageHasBeenShown' ).then(function( data ) {
+                console.log( data );
+                if( data ) {
+                    console.log( "videosHaveBeenUploaded is true" );
+                    videosHaveBeenUploaded( true );
+                } else {
+                    console.log( "videosHaveBeenUploaded is false" )
+                    videosHaveBeenUploaded( false );
                 }
             });
         },
