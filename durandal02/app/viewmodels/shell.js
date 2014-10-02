@@ -137,7 +137,7 @@ function (router, app, system, page_header, landing_header, conditional_header, 
             { route: 'landing',            moduleId: 'landing',            title: 'Viblio Landing Page',
 	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
 
-            { route: 'home',               moduleId: 'hp',               title: 'VIDEOS',
+            { route: 'home',               moduleId: 'hp',               title: 'HOME',
 	      showFooter: true, nav: true,    authenticated: true,   header: page_header },
 
             { route: 'oops',               moduleId: 'oops',               title: 'Oops',
@@ -214,7 +214,7 @@ function (router, app, system, page_header, landing_header, conditional_header, 
                 showFooter: true, nav: false,   authenticated: false,   header: conditional_header }, 
           
             { route: 'map',        moduleId: 'map',     title: 'MAP',
-	      showFooter: true, nav: true,   authenticated: true,   header: page_header },
+	      showFooter: true, nav: false,   authenticated: true,   header: page_header },
           
             { route: 'tutorial',        moduleId: 'tutorial',     title: 'Tray App Tutorial',
 	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
