@@ -1295,7 +1295,7 @@ define( ['plugins/router',
         }
         // for photo mode
         else {
-            if( !self.delete_mode_on() ) {
+            /*if( !self.delete_mode_on() ) {
                 self.photos().forEach( function( photo ) {
                     //console.log( photo );
                     if( photo.options.ownedByViewer ) {
@@ -1306,7 +1306,13 @@ define( ['plugins/router',
                 self.photos().forEach( function( photo ) {
                     photo.turnOnSelectMode();
                 }); 
-            }
+            }*/
+            self.photos().forEach( function( photo ) {
+                //console.log( photo );
+                if( photo.options.ownedByViewer ) {
+                    photo.turnOnSelectMode();
+                }
+            });
         }
               
     };
@@ -1909,7 +1915,7 @@ define( ['plugins/router',
         } 
         // for photo mode
         else {
-            if( self.delete_mode_on() ) {
+            /*if( self.delete_mode_on() ) {
                 self.photos().forEach( function( photo ) {
                     if( !photo.hidden() ) {
                         photo.select();
@@ -1921,7 +1927,12 @@ define( ['plugins/router',
                         photo.select();
                     }
                 });
-            }
+            }*/
+            self.photos().forEach( function( photo ) {
+                if( photo.options.ownedByViewer && !photo.hidden() ) {
+                    photo.select();
+                }
+            });
         }  
     };
     

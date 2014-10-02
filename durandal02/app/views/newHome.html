@@ -103,7 +103,7 @@
 
                 <!-- places filter -->
                 <li style="display: inline-block;" class="dropdown navControl">
-                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: cityFilterIsActive }, click: function(){ showMessage( 'places' ); }, disable: isActiveFlag()" title="Filter by Places"><i class="fa fa-map-marker"></i><span data-bind="visible: wideScreen()"> Places</span></button>
+                    <button class="dropdown-toggle toolbar-btn" data-toggle="dropdown" data-bind="css: { active: cityFilterIsActive }, click: function(){ showMessage( 'places' ); }, disable: isActiveFlag()" title="Filter by Places"><i class="fa fa-map-marker"></i><span data-bind="visible: wideScreen()"> Places</span></button>
                     <ul class="style2DD dropdown-menu tags" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -165,7 +165,7 @@
                 <li data-bind="tooltip:  {title: 'Toggle between photos and the videos they are from', placement: 'bottom' }">
                     <span class="videoPhotoLabel" data-bind="css: {active: !video_mode_on()}">Photo</span>
                     <div class="onoffswitch">
-                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" data-bind="checked: video_mode_on">
+                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" data-bind="checked: video_mode_on, disable: isActiveFlag()">
                         <label class="onoffswitch-label" for="myonoffswitch">
                             <span class="onoffswitch-inner"></span>
                             <span class="onoffswitch-switch"></span>
@@ -176,8 +176,8 @@
                 <li class="divider-vertical" data-bind="visible: albumFilterIsActive() ? !currentSelectedFilterAlbum().shared : true"></li>
                 
                 <!-- Create -->
-                <li class="dropdown navControl albumsList" data-bind="visible: albumFilterIsActive() ? !currentSelectedFilterAlbum().shared : true">
-                    <a class="dropdown-toggle addToButton" href="#" data-toggle="dropdown"><i class="fa fa-plus"></i><span data-bind="visible: wideScreen()"> Create </span></a>
+                <li class="dropdown navControl albumsList">
+                    <button class="dropdown-toggle addToButton toolbar-btn" data-toggle="dropdown" data-bind="disable: isActiveFlag()"><i class="fa fa-plus"></i><span data-bind="visible: wideScreen()"> Create </span></button>
                     <ul class="style2DD dropdown-menu tags albumList" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -204,12 +204,10 @@
                 
                 <!-- more -->
                 <li style="display: inline-block;" class="dropdown navControl">
-                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-                        <div class="btn_text">
-                            <i class='fa fa-list'></i>
-                            <span data-bind="visible: wideScreen()">More</span>
-                        </div>    
-                    </a>
+                    <button class="dropdown-toggle toolbar-btn" data-toggle="dropdown" data-bind="disable: isActiveFlag()">
+                        <i class='fa fa-list'></i>
+                        <span data-bind="visible: wideScreen()">More</span>    
+                    </button>
                     <ul class="style2DD dropdown-menu albumList" role="menu">
                         <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -390,13 +388,13 @@
                 <!-- /ko -->
                 <p class="mainTitleP">
                     <!--You have <span data-bind="text: hits"></span>-->
-                    ALL Videos (<span data-bind="text: hits ? hits : 0"></span>)
+                    ALL <span data-bind="text: video_mode_on() ? ' Videos ' : ' Photos ' "></span> (<span data-bind="text: hits ? hits : 0"></span>)
                     <!--<span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private VIBLIO Library.-->
                 </p>
-                <!-- ko if: hits() > 0 --> 
+                <!-- ko if: hits() > 0 && video_mode_on() --> 
                 <p><span class="btn btn-primary" data-bind="click: createAlbumFromTitle">Create an album</span> from these videos to privately share with friends and family.</p>
                 <!-- /ko -->
-                <!-- ko ifnot: hits() > 0 --> 
+                <!-- ko if: !hits() > 0 && video_mode_on() --> 
                 <p><span class="btn btn-primary" data-bind="click: add_videos">Upload Videos</span></p>
                 <!-- /ko -->
             </div>
@@ -440,10 +438,10 @@
                     <!-- /ko -->
                 </p>
                 
-                <!-- ko if: hits() > 0 --> 
+                <!-- ko if: hits() > 0 && video_mode_on() --> 
                 <p><span class="btn btn-primary" data-bind="click: createAlbumFromTitle">Create an album</span> from these videos to privately share with friends and family.</p>
                 <!-- /ko -->
-                <!-- ko ifnot: hits() > 0 --> 
+                <!-- ko if: !hits() > 0 && video_mode_on() --> 
                 <p><span class="btn btn-primary" data-bind="click: add_videos">Upload Videos</span></p>
                 <!-- /ko -->
                 
@@ -486,7 +484,7 @@
                             </div> Album (<span data-bind="text: videos().length ? videos().length : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)      
                         </div>
                         
-                        <p data-bind="visible: !currentSelectedFilterAlbum().shared">
+                        <p data-bind="visible: !currentSelectedFilterAlbum().shared && video_mode_on()">
                             <span class="btn btn-primary" data-bind="click: share_mode">Invite friends</span>
                             to privately see this album.
                         </p>
