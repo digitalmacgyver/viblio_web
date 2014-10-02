@@ -25,7 +25,7 @@
                 <!-- /ko -->
                 <!-- ko ifnot: showPopup -->
                 <li>
-                    <a href="#" data-bind="click: web_uploader" class="web-uploader-header-button btn btn-small btn-primary pull-right">UPLOAD VIDEOS</a>    
+                    <a href="#" data-bind="click: web_uploader, css: { 'btn btn-small btn-primary': !videosHaveBeenUploaded() }" class="web-uploader-header-button pull-right">UPLOAD VIDEOS</a>
                 </li>
                 <!-- /ko -->
             </ul>
@@ -42,6 +42,7 @@
                     </a>
                     <ul class="dropdown-menu pull-left">
                         <li><a href="#settings">Settings</a></li>
+                        <li><a href="#map">Map</a></li>
                         <!-- <li><a href="#" data-bind="click: download_viblio, attr:{href:download_link}">Get the App</a></li> -->
                         <li><a href="#" data-bind="click: inviteFriends">Invite a Friend</a></li>
                         <li><a href="https://itunes.apple.com/us/app/viblio/id883377114?mt=8" target="new">Learn about our iOS app</a></li>

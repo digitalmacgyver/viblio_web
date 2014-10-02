@@ -160,16 +160,6 @@
                 </li>
                 
                 <li class="divider-vertical" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared"></li>
-                <!-- share --> 
-                <li class="" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared">
-                    <a href='#' data-bind='click: share_mode, css: { activated: albumFilterIsActive() }'>
-                        <div class="btn_text" title="Share Album">
-                            <i class='icon-share'></i>
-                            <span data-bind="visible: wideScreen()"> Share Album</span>
-                        </div>    
-                    </a>
-                </li>
-                <li class="divider-vertical" data-bind="visible: albumFilterIsActive() ? !currentSelectedFilterAlbum().shared : true"></li>
                 
                 <!-- Add to --> 
                 <li class="dropdown navControl albumsList" data-bind="visible: albumFilterIsActive() ? !currentSelectedFilterAlbum().shared : true">
@@ -363,13 +353,13 @@
                 <p class="mainTitleP">
                     <!--You have <span data-bind="text: hits"></span>-->
                     ALL Videos (<span data-bind="text: hits ? hits : 0"></span>)
-                    <!--<span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private Viblio Library.-->
+                    <!--<span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private VIBLIO Library.-->
                 </p>
                 <!-- ko if: hits() > 0 --> 
-                <p><span class="tomatoFont mainTitleCTA" data-bind="click: createAlbumFromTitle">Create an album</span> from these videos to privately share with friends and family.</p>
+                <p><span class="btn btn-primary" data-bind="click: createAlbumFromTitle">Create an album</span> from these videos to privately share with friends and family.</p>
                 <!-- /ko -->
                 <!-- ko ifnot: hits() > 0 --> 
-                <p><span class="tomatoFont mainTitleCTA" data-bind="click: add_videos">Upload Videos</span></p>
+                <p><span class="btn btn-primary" data-bind="click: add_videos">Upload Videos</span></p>
                 <!-- /ko -->
             </div>
 
@@ -393,10 +383,10 @@
                     <!-- /ko -->
                 </p>
                 <!-- ko if: hits() > 0 --> 
-                <p><span class="tomatoFont mainTitleCTA" data-bind="click: createAlbumFromTitle">Create an album</span> from these videos to privately share with friends and family.</p>
+                <p><span class="btn btn-primary" data-bind="click: createAlbumFromTitle">Create an album</span> from these videos to privately share with friends and family.</p>
                 <!-- /ko -->
                 <!-- ko ifnot: hits() > 0 --> 
-                <p><span class="tomatoFont mainTitleCTA" data-bind="click: add_videos">Upload Videos</span></p>
+                <p><span class="btn btn-primary" data-bind="click: add_videos">Upload Videos</span></p>
                 <!-- /ko -->
                 <!-- /ko -->
                 
@@ -436,7 +426,10 @@
                                 </div>  
                             </div> Album (<span data-bind="text: videos().length ? videos().length : 0"></span>)      
                         </div>
-                        <p data-bind="visible: !currentSelectedFilterAlbum().shared"><span class="tomatoFont mainTitleCTA" data-bind="click: share_mode">Invite friends</span> to privately see this album.</p>
+                        <p data-bind="visible: !currentSelectedFilterAlbum().shared">
+                            <span class="btn btn-primary" data-bind="click: share_mode">Invite friends</span>
+                            to privately see this album.
+                        </p>
                     <!-- /ko -->
                     
                     <!-- album is owned by another user and shared with viewer -->

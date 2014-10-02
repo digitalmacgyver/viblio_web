@@ -847,6 +847,10 @@ input:-moz-placeholder {
     font-weight: 600;
 }
 
+.midWeightFont {
+    font-weight: 400;
+}
+
 .lightWeightFont {
     font-weight: 100;
 }
@@ -996,6 +1000,10 @@ input:-moz-placeholder {
 
 .blankModal .paddedDiv {
     padding-top: 50px;
+}
+
+.em {
+    font-style: italic;
 }
 
 /********************  Page Header Section  *****************************/
@@ -2612,7 +2620,7 @@ li.token-input-token-facebook {
     width: 100%;
     display: inline-block;
     float: right;
-    width: 92%;
+    //width: 92%;
 }
 
 #sendAlbumEmail .token-input-list-facebook {
