@@ -388,7 +388,7 @@
                 <!-- /ko -->
                 <p class="mainTitleP">
                     <!--You have <span data-bind="text: hits"></span>-->
-                    ALL <span data-bind="text: video_mode_on() ? ' Videos ' : ' Photos ' "></span> (<span data-bind="text: hits ? hits : 0"></span>)
+                    ALL <span data-bind="text: video_mode_on() ? ' Videos ' : ' Photos ' "></span> (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
                     <!--<span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private VIBLIO Library.-->
                 </p>
                 <!-- ko if: hits() > 0 && video_mode_on() --> 
