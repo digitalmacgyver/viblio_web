@@ -2392,7 +2392,7 @@ define( ['plugins/router',
         var self = this;
         
 	var player_height = ($("#player").width()*9) / 16;
-	$("#player, #player video, #player > div, .fancybox-outer").height( player_height );
+	$("#player, #player video, #player > div, .fancybox-outer").height( player_height ).css('max-height', head.screen.innerHeight-200);
         $('.fancybox-nav').height( $("#player").height()-30 );
     };
     
@@ -2503,6 +2503,7 @@ define( ['plugins/router',
             },
             
             beforeShow: function () {
+                console.log( self.playingVid().media() );
                 if( head.mobile ) {
                     this.helpers.buttons = {position: 'bottom'};
                 }
@@ -2518,6 +2519,7 @@ define( ['plugins/router',
                     href= "web_player?mid=";
                 }
                 el = " &mdash; <a class='vidDetails' href='#" + href + self.playingVidUUID() + "'onclick='$.fancybox.close()'> Details</a>";
+                el += "<br/><span>" + self.playingVid().media().eyes + " Fan Views</span>"
                 this.title = "<span>"+self.playingVid().title()+"</span>"+el;
                 
                 var arr = [];

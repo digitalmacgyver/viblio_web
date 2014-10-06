@@ -3855,6 +3855,36 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     height: 204px;
 }
 
+.mediafile.photo .photoDownload {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.6);
+    margin-right: 3px;
+    margin-bottom: 2px;
+    padding: 2px 3px;
+    display: inline-block;
+    -moz-box-shadow: inset 0 0 0 50px rgba(0,0,0,.2);
+    -webkit-box-shadow: inset 0 0 0 50px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 0 0 50px rgba(0, 0, 0, 0.2);
+    -moz-text-shadow: 1px 1px rgba(0,0,0,.2);
+    -webkit-text-shadow: 1px 1px rgba(0,0,0,.2);
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.mediafile.photo .photoDownload i {
+    color: white;
+    opacity: .65;
+}
+
+.mediafile.photo .photoDownload:hover i {
+    opacity: 1;
+}
+
 .facesTags {
     border-top: 1px solid rgba(0,0,0,.2);
     width: 100%;

@@ -56,6 +56,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         self.image = ko.observable( self.media().url );
         
         self.filter = ko.observable( data.filter );
+        
+        self.download_url = ko.observable( data.download_url );
 
 	Events.includeIn( self );
 
