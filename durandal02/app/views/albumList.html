@@ -11,7 +11,12 @@
                         <div class="itemActive-Wrap">
                             <div class="itemActive" data-bind="css: { on: $data.selected() }"></div>
                         </div>
-                        <div class="inline tagLabel truncate" data-bind="text: $data.label, css:{ sel: $data.selected(), sharedStyle: $data.shared }"></div>
+                        <div class="tagLabel">
+                            <span class="inline truncate" data-bind="text: $data.label, css:{sel: $data.selected()}"></span>
+                            <!-- ko if: $data.shared -->
+                            <span class="inline"> &mdash; </span> <img class="inline img-circle" data-bind="attr: {src: '/services/user/avatar?uid=' + $data.owner_uuid + '&y=20'}" alt="Album Owner Avatar"/>
+                            <!-- /ko -->
+                        </div>
                         <!--<div class="checkboxPadding"></div>
                         <div class="checkbox-Wrap" data-bind="if: $data.selected()">
                             <i class="icon-check"></i>

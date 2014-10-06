@@ -2522,6 +2522,8 @@ input.edit,
 #shareVidModal {
     width: 100%;
     position: relative;
+    height: 100%;
+    overflow-y: auto;
 }
 
 #sharingDiv {
@@ -2603,6 +2605,20 @@ li.token-input-token-facebook {
     background-color: rgba(152,154,160,1);
     padding: 6px 13px;
     font-size: 16px;
+}
+
+.embedCode-Wrap {
+    padding: 30px 50px;
+}
+
+.embedCode-Wrap .embedInstructions {
+    display: block;
+    margin-top: 10px;
+}
+
+.embedCode-Wrap textarea {
+    width: 100%;
+    margin-top: 10px;
 }
 
 /********************  Share Album Modal Section  *************************/
@@ -4117,6 +4133,10 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .alertify {
+    height: 80%;
+    background: transparent;
+    box-shadow: none;
+    border: none;
     top: 75px;
 }
 
@@ -6371,6 +6391,13 @@ ul.token-input-list-facebook li input {
 
 .albumListView .scroller .tagLabel.truncate {
     max-width: 160px;
+}
+
+.albumListView .scroller .tagLabel .truncate {
+    width: auto;
+    max-width: 260px;
+    line-height: 20px;
+    vertical-align: bottom;
 }
 
 /******* emptyAlbumModal *********/

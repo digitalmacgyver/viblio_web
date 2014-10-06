@@ -12,7 +12,7 @@
         </ul>
     </div>
     
-    <form id="shareVidLink" class="shareVidLink-form">
+    <form id="shareVidLink" class="bottomBorder shareVidLink-form">
         <p class="bigTitle">Copy link:</p>
         <div id="shareLink-Wrap" class="shareLink-Wrap">
             <input id="shareLink" type="text" class="text shareLink" data-bind="value: cut_and_paste_url" />
@@ -32,5 +32,14 @@
             </button>
         </div>
     </form>
+    
+    <div class="bottomBorder embedCode-Wrap">
+        <p class="bigTitle">Embed Code:</p>
+        <button class="btn btn-primary" data-bind="click: getEmbedCode">
+            Generate Embed Snippet
+        </button><br>
+        <span class="embedInstructions" data-bind="visible: embedCode">Copy the code below and paste it into your website.</span>
+        <textarea type="text" class="text embedCode" data-bind="value: embedCode" placeholder="Click button above to generate the embed code snippet"></textarea>
+    </div>
 
 </div>
