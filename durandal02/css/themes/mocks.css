@@ -269,7 +269,7 @@ a.activated:hover,
 }
 
 .popover {
-    z-index: 1031;
+    z-index: 1050;
 }
 
 .modalBorder {
@@ -3997,9 +3997,14 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     border-radius: 0;
 }
 
-.tagsPopup.popover.top .arrow {
+div.tagsPopup.popover.top .custom {
     left: auto;
     right: 10px;
+}
+
+.popover.editable-container.editable-popup.fade.in.top .arrow {
+    left: 50%;
+    margin-left: -11px;
 }
 
 /************/

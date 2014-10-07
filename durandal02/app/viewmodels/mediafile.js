@@ -147,6 +147,32 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         var self = this;
         //self.selectedTag( null );
         self.showTags() ? self.showTags( false ) : self.showTags( true );
+        
+        // recording date editable
+        $(self.view).find(".recording-date").editable({
+            mode: 'popup',
+            type: 'date',
+            unsavedclass: null,
+            highlight: null,
+            savenochange: true,
+            format: 'yyyy-mm-dd',
+            viewformat: 'MM yyyy',
+            showbuttons: 'bottom',
+            datepicker: {
+                todayHighlight: true
+            },
+            success: function( res, v ) {
+                // v is a Date in localtime, but what is displayed in the cal is UTC
+                var date_utc = moment.utc(v);
+                var dstring = date_utc.format( 'YYYY-MM-DD HH:mm:ss' );
+                var showDate = date_utc.format( 'MMMM YYYY' );
+                self.media().recording_date = dstring;
+                viblio.api( '/services/mediafile/change_recording_date', { mid: self.media().uuid, date: dstring } ).then( function() {
+                    //self.tags.push( showDate );
+                });
+                return null;
+            }
+        });
     };
     
     Video.prototype.tagSelected = function( parent, data ) {
