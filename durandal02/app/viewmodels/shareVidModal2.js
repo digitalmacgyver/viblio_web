@@ -116,14 +116,14 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	viblio.api( 'services/mediafile/add_share', args ).then( function( data ) {
             var url = data.embed_url;
             
-            var code = '<object width="500" height="295" id="undefined" name="undefined" data="https://releases.flowplayer.org/swf/flowplayer-3.2.18.swf" type="application/x-shockwave-flash"><param name="movie" value="https://releases.flowplayer.org/swf/flowplayer-3.2.18.swf" /><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="flashvars" value=\'config={"clip":{ "url":"' + url + '"} }\' /></object>'
+            var code = '<object height="295" id="undefined" name="undefined" data="https://releases.flowplayer.org/swf/flowplayer-3.2.18.swf" type="application/x-shockwave-flash"><param name="movie" value="https://releases.flowplayer.org/swf/flowplayer-3.2.18.swf" /><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="flashvars" value=\'config={"clip":{ "url":"' + url + '"} }\' /></object>'
             
             // add mixpanel events
 	    viblio.mpEvent( 'share', { type: 'embed' } );
             viblio.mpPeopleIncrement('Video Shares from Browser', 1);
             
             self.embedCode( code );
-            $('.embedCode').height('210px');
+            $('.embedCode').height('190px').css('display','block');
 	});
     };
 

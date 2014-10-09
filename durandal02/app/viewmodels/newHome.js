@@ -2392,7 +2392,8 @@ define( ['plugins/router',
         var self = this;
         
 	var player_height = ($("#player").width()*9) / 16;
-	$("#player, #player video, #player > div, .fancybox-outer").height( player_height ).css('max-height', head.screen.innerHeight-200);
+        var title = $('.fancybox-title').height();
+	$("#player, #player video, #player > div, .fancybox-outer").height( player_height ).css( 'max-height', head.screen.innerHeight-(200+title) );
         $('.fancybox-nav').height( $("#player").height()-30 );
     };
     
@@ -2519,7 +2520,15 @@ define( ['plugins/router',
                     href= "web_player?mid=";
                 }
                 el = " &mdash; <a class='vidDetails' href='#" + href + self.playingVidUUID() + "'onclick='$.fancybox.close()'> Details</a>";
-                el += "<br/><span>" + self.playingVid().media().eyes + " Fan Views</span>"
+                // if the vid is shared
+                if( !self.mfOwnedByViewer( self.playingVid() ) ) {
+                    console.log( self.playingVid() );
+                    el += "<br/><img class='img-circle' src='" + self.playingVid().owner_avatar + "'/><span>" + self.playingVid().owner_name() + "</span>";
+                }
+                if( self.playingVid().media().eyes > 0 ) {
+                    el += "<br/><span>" + self.playingVid().media().eyes + " Fan Views</span>";
+                }
+                
                 this.title = "<span>"+self.playingVid().title()+"</span>"+el;
                 
                 var arr = [];
@@ -2566,6 +2575,13 @@ define( ['plugins/router',
                   flowplayer().unload();
               }
             }
+        });
+        
+        // photo viewer
+        $('.photoGallery').magnificPopup({
+            delegate: '.photo .pointer a', // child items selector, by clicking on it popup will open
+            type: 'image',
+            gallery: {enabled:true}
         });
     };
 

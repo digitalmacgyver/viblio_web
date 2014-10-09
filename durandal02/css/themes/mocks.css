@@ -2614,16 +2614,27 @@ li.token-input-token-facebook {
     font-size: 16px;
 }
 
-.embedCode-Wrap {
+/*.embedCode-Wrap {
     padding: 30px 50px;
 }
 
 .embedCode-Wrap .embedInstructions {
     display: block;
     margin-top: 10px;
+}*/
+
+.embedCode-Wrap .bigTitle {
+    cursor: pointer;
+    font-size: 18px;
+    margin-bottom: 0 !important;
+}
+
+.embedCode-Wrap .bigTitle:hover {
+    text-decoration: underline;
 }
 
 .embedCode-Wrap textarea {
+    display: none;
     width: 100%;
     margin-top: 10px;
 }
@@ -6580,4 +6591,14 @@ ul.token-input-list-facebook li input {
 
 .referFriendsPage .uitoken-input {
     display: inline-block;
+}
+
+/**** Magnific-Popup ****/
+
+.mfp-bg {
+    z-index: 1052
+}
+
+.mfp-wrap {
+    z-index: 1053;
 }

@@ -20,6 +20,19 @@
                 Copy
             </button>
         </div>
+        <div class="embedCode-Wrap">
+            <p class="bigTitle" data-bind="click: getEmbedCode">Embed Code</p>
+            <textarea type="text" class="text embedCode" data-bind="value: embedCode" placeholder="Click button above to generate the embed code snippet"></textarea>
+        </div>
+        
+        <!--<div class="bottomBorder embedCode-Wrap">
+            
+            <button class="btn btn-primary" data-bind="click: getEmbedCode">
+                Generate Embed Snippet
+            </button><br>
+            <span class="embedInstructions" data-bind="visible: embedCode">Copy the code below and paste it into your website.</span>
+            <textarea type="text" class="text embedCode" data-bind="value: embedCode" placeholder="Click button above to generate the embed code snippet"></textarea>
+        </div>-->
     </form>
     
     <form id="sendVidEmail" class="bottomBorder paddedDiv">
@@ -32,14 +45,5 @@
             </button>
         </div>
     </form>
-    
-    <div class="bottomBorder embedCode-Wrap">
-        <p class="bigTitle">Embed Code:</p>
-        <button class="btn btn-primary" data-bind="click: getEmbedCode">
-            Generate Embed Snippet
-        </button><br>
-        <span class="embedInstructions" data-bind="visible: embedCode">Copy the code below and paste it into your website.</span>
-        <textarea type="text" class="text embedCode" data-bind="value: embedCode" placeholder="Click button above to generate the embed code snippet"></textarea>
-    </div>
 
 </div>
