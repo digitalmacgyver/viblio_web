@@ -167,8 +167,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
                 var dstring = date_utc.format( 'YYYY-MM-DD HH:mm:ss' );
                 var showDate = date_utc.format( 'MMMM YYYY' );
                 self.media().recording_date = dstring;
-                viblio.api( '/services/mediafile/change_recording_date', { mid: self.media().uuid, date: dstring } ).then( function() {
-                    //self.tags.push( showDate );
+                viblio.api( '/services/mediafile/change_recording_date', { mid: self.media().uuid, date: dstring } ).then( function( tagsArray ) {
+                    self.tags( tagsArray );
                 });
                 return null;
             }
