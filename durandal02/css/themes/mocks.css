@@ -1349,6 +1349,13 @@ input:-moz-placeholder {
     padding-top: 50px;
 }
 
+.orangeBG-Header p {
+    text-align: center;
+    color: rgb(255, 255, 255);
+    padding-top: 12px;
+    font-size: 20px;
+}
+
 #loginArea form {
     margin-bottom: 0;
 }
@@ -3654,19 +3661,13 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .mediafile .media-select-badge {
-    position: absolute;
-    right: 0;
-    padding-top: 10px;
-    padding-bottom: 6px;
-    padding-right: 13px;
-    padding-left: 7px;
-    font-size: 30px;
-    //cursor: default;
+    padding-right: 7px;
+    padding-left: 3px;
 }
 
 .mediafile.selected .media-select-badge {
-    padding-right: 3px;
-    padding-left: 13px;
+    padding-right: 0;
+    padding-left: 7px;
 }
 
 /*.mediafile .media-shared-badge:hover {
@@ -3685,23 +3686,9 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
 }
 
 .mediafile .media-share-badge {
-    color: rgb(235, 235, 235);
-    //color: white;
-    opacity: .65;
-    position: absolute;
-    right: 0;
-    padding-top: 10px;
-    padding-bottom: 6px;
-    padding-right: 11px;
-    padding-left: 11px;
-    font-size: 30px;
-    z-index: 1;
-    cursor: pointer;
-    //text-shadow: none !important;
-}
-
-.mediafile .media-share-badge:hover {
-    opacity: 1;
+    padding-top: 5px;
+    padding-left: 7px;
+    padding-right: 4px;
 }
 
 .mediafile .information .aux {
@@ -3855,15 +3842,14 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     height: 204px;
 }
 
-.mediafile.photo .photoDownload {
+.overlay-icon {
     position: absolute;
     top: 5px;
-    left: 5px;
     color: rgba(255, 255, 255, 0.6);
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(0, 0, 0, 0.6);
     margin-right: 3px;
     margin-bottom: 2px;
-    padding: 2px 3px;
+    padding: 5px 4px;
     display: inline-block;
     -moz-box-shadow: inset 0 0 0 50px rgba(0,0,0,.2);
     -webkit-box-shadow: inset 0 0 0 50px rgba(0, 0, 0, 0.2);
@@ -3874,14 +3860,26 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
+    font-size: 20px;
+    text-decoration: none;
+    cursor: pointer;
 }
 
-.mediafile.photo .photoDownload i {
+.overlay-icon.left {
+    left: 5px;
+}
+
+.overlay-icon.right {
+    right: 5px;
+}
+
+.overlay-icon i {
     color: white;
     opacity: .65;
+    text-decoration: none;
 }
 
-.mediafile.photo .photoDownload:hover i {
+.overlay-icon:hover i {
     opacity: 1;
 }
 
@@ -6497,10 +6495,29 @@ ul.token-input-list-facebook li input {
 
 /**** photoViewFilter ****/
 
+.photoViewFilter.btn-group {
+    font-size: 20px;
+}
+
+.photoViewFilter .meterLabel {
+    display: inline-block;
+    vertical-align: bottom;
+    margin-bottom: 6px;
+}
+
+.photoViewFilter .meterLabel.some {
+    margin-right: -38px;
+}
+
+.photoViewFilter .meterLabel.more {
+    margin-left: -38px;
+    margin-right: 20px;
+}
+
 .photoViewFilter .viewFilter {
     width: 100px;
     display: inline-block;
-    margin-bottom: -10px;
+    margin-bottom: 0;
     position: relative;
 }
 
@@ -6516,12 +6533,12 @@ ul.token-input-list-facebook li input {
 /*the line*/
 .photoViewFilter .viewFilter label::after {
     content: "";
-    width: 100px;
+    width: 84px;
     height: 4px;
     position: absolute;
-    top: 16px;
-    left: -49px;
-    background-color: white;
+    top: 17px;
+    left: -44px;
+    background-color: rgba(49, 53, 67, .3);
     z-index: 0;
 }
 
@@ -6534,7 +6551,7 @@ ul.token-input-list-facebook li input {
     position: absolute;
     top: 9px;
     right: 40px;
-    background-color: white;
+    background-color: rgba(49, 53, 67, .3);
     z-index: 1;
 }
 
@@ -6544,7 +6561,7 @@ ul.token-input-list-facebook li input {
 
 .photoViewFilter .viewFilter.on label::after,
 .photoViewFilter .viewFilter.on label::before {
-    background-color: rgb(28,184,209);
+    background-color: rgb(49, 53, 67);
 }
 
 /**** refer ****/

@@ -369,6 +369,7 @@
             <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: noFiltersAreActive() && !searchFilterIsActive()">
                 <!-- ko if: !video_mode_on() -->
                 <div class="btn-group photoViewFilter" data-toggle="buttons">
+                    <span class='meterLabel some'>Some</span>
                     <span class="viewFilter on">
                         <label class="someLabel">
                             <input type="radio" name="options" value="some" id="some" data-bind="checked: photoViewFilter">
@@ -384,6 +385,7 @@
                             <input type="radio" name="options" value="all" id="all" data-bind="checked: photoViewFilter">
                         </label>
                     </span>
+                    <span class='meterLabel more'>More</span>
                 </div>
                 <!-- /ko -->
                 <p class="mainTitleP">

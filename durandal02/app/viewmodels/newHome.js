@@ -305,6 +305,7 @@ define( ['plugins/router',
                 }
             });*/
             // tickle the photos filter
+            
             var old = self.photoViewFilter();
             self.photoViewFilter(null);
             self.photoViewFilter( old );
@@ -315,7 +316,6 @@ define( ['plugins/router',
             console.log( "photoViewFilter tickled" );
             // reset counter to 0
             self.visiblePhotosCount( 0 );
-            
             if( val == "some" ) {
                 self.photos().forEach( function( p ) {
                     if( p.filter() != "some" ) {
