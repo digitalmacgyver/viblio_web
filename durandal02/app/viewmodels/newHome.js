@@ -357,6 +357,16 @@ define( ['plugins/router',
         });
     };
     
+    newHome.prototype.toggleVideoPhotoMode = function() {
+        var self = this;
+        
+        //$('#myonoffswitch').trigger('click');
+        console.log( $('#myonoffswitch').is(':checked') );
+        //$('#myonoffswitch').is(':checked') ? $('#myonoffswitch').attr('checked', false) : $('#myonoffswitch').attr('checked', true);
+        
+        self.video_mode_on() ? self.video_mode_on(false) : self.video_mode_on(true);
+    };
+    
     newHome.prototype.getVidsInProcess = function() {
         var self = this;
         
@@ -445,7 +455,7 @@ define( ['plugins/router',
         var self = this;
         
         var face_threshold = 1;
-        var gap_threshold = 30;
+        var gap_threshold = 15.5;
         var face_gap_threshold = 5;
         var prior_timecode = -99;
         
@@ -456,6 +466,9 @@ define( ['plugins/router',
         var results = [];
         
         for (var image in images) {
+            if( !images[image] ) {
+                return;
+            }
             var timecode = images[image].timecode;
             var face_score = images[image].face_score;
 
@@ -488,7 +501,6 @@ define( ['plugins/router',
         // check to see if there are any "some" photos yet, if not then apply the "some" filter
         // to the best image for the video
         if( some_count == 0 ) {
-            console.log( "best_image: ", best_image );
             // first remove the image from the results array
             results.splice( results.indexOf( best_image ), 1 );
             // then re-add it with a filter of "some"
@@ -496,7 +508,6 @@ define( ['plugins/router',
             results.push( best_image );
         }
         
-        console.log( "results.length: ", results.length );
         results.forEach( function( p ) {
             self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } ); 
         });
@@ -2522,8 +2533,7 @@ define( ['plugins/router',
                 el = " &mdash; <a class='vidDetails' href='#" + href + self.playingVidUUID() + "'onclick='$.fancybox.close()'> Details</a>";
                 // if the vid is shared
                 if( !self.mfOwnedByViewer( self.playingVid() ) ) {
-                    console.log( self.playingVid() );
-                    el += "<br/><img class='img-circle' src='" + self.playingVid().owner_avatar + "'/><span>" + self.playingVid().owner_name() + "</span>";
+                    el += "<div class='popupPlayerOwner-Wrap pull-right'><span>" + self.playingVid().owner_name() + "</span> <img class='img-circle' src='" + self.playingVid().owner_avatar + "'/></div>";
                 }
                 if( self.playingVid().media().eyes > 0 ) {
                     el += "<br/><span>" + self.playingVid().media().eyes + " Fan Views</span>";
@@ -2549,13 +2559,6 @@ define( ['plugins/router',
             },
             
             afterLoad: function(current, previous) {
-                console.info( 'Current: ' + current.href );        
-                console.info( 'Previous: ' + (previous ? previous.href : '-') );
-
-                if (previous) {
-                    console.info( 'Navigating: ' + (current.index > previous.index ? 'right' : 'left') );     
-                }
-                
                 // Needed to fire the correct functions when the nav buttons are clicked (prev and next)
                 var F = $.fancybox;
                 $('.fancybox-prev span').on('click', function() {
@@ -2565,8 +2568,7 @@ define( ['plugins/router',
                     F.next();
                 });
                 
-                //($("#player").width()*9) / 16
-                $('.fancybox-outer').height( ($("#player").width()*9) / 16 )
+                $('.fancybox-outer').height( ($("#player").width()*9) / 16 );
             },
             
             beforeClose: function () {
@@ -2579,7 +2581,7 @@ define( ['plugins/router',
         
         // photo viewer
         $('.photoGallery').magnificPopup({
-            delegate: '.photo .pointer a', // child items selector, by clicking on it popup will open
+            delegate: '.photo:not(".hidden") .pointer a', // child items selector, by clicking on it popup will open - by including .photo:not(".hidden") only visible photos will be included in the gallery 
             type: 'image',
             gallery: {enabled:true}
         });

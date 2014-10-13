@@ -169,6 +169,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
                 self.media().recording_date = dstring;
                 viblio.api( '/services/mediafile/change_recording_date', { mid: self.media().uuid, date: dstring } ).then( function( tagsArray ) {
                     self.tags( tagsArray );
+                    // instead of showing the chosen date just show the calendar icon
+                    $('.recording-date').html( '<i class="fa fa-calendar"></i>' );
                 });
                 return null;
             }

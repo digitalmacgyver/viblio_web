@@ -92,6 +92,25 @@
     color: rgb(117, 117, 128);
 }
 
+.vup-alert .alertCloseX {
+    width: 600px;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 0;
+    text-align: right;
+    padding: 0;
+    border: none;
+    -moz-box-shadow: none; /* Firefox */
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    opacity: .65;
+}
+
+.vup-alert .alertCloseX:hover {
+    opacity: 1;
+}
+
 .vup-data-title,
 .vup-data-point { 
     text-align: left;
