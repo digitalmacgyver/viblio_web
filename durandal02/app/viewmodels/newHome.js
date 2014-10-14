@@ -280,7 +280,7 @@ define( ['plugins/router',
         self.content = '<p>Albums are a great way to share groups of videos privately with friends, family or your community. \n\
                         If you’ve already uploaded videos to your library, start a new private sharing space for you and your friends.</p>\n\
                         <ul>\n\
-                            <li>CLick on the <strong>+ Add To</strong> button to the right</li>\n\
+                            <li>Click on the <strong>+ Add To</strong> button to the right</li>\n\
                             <li><strong>Create a New Album</strong> (or choose an existing album to add to)</li>\n\
                             <li><strong>Select</strong> your videos and press <strong>DONE</strong> in the Select Toolbar</li>\n\
                         </ul>';
