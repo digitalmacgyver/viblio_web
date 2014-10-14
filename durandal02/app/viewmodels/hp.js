@@ -50,9 +50,7 @@ define(['durandal/app',
 	albumList_is_visible = visible;
         var albumsWidth;
 	if ( visible ) {
-            console.log( 'should be doing something ');
             albumsWidth = $(view).find('.albumListView').width();
-            console.log( albumsWidth );
 	    $(view).find( '.top-strip .cont' ).css( 'margin-right', -albumsWidth );
 	    $(view).find( '.top-strip .right' ).css( 'display', 'block' );
 
@@ -112,7 +110,6 @@ define(['durandal/app',
                     ko.cleanNode(videos);
                 }
                 if( args.aid ) {
-                    console.log( 'trying to go to an album', args.aid );
                     nhome( new newHome( {aid: args.aid} ) );    
                 } else if( args.fid ) {
                     nhome( new newHome( {fid: args.fid} ) );  
@@ -139,7 +136,7 @@ define(['durandal/app',
                     firstTime( false );
                 } else {
                     firstTime( true );
-                    showFirstTimeBubble();
+                    //showFirstTimeBubble();
                     viblio.localStorage( 'hasUserBeenHereBefore', true );
                 }
             });

@@ -67,7 +67,6 @@ define(['lib/viblio',
     }
     
     function addToAlbumSelected( self, album ) {
-        console.log( self, album );
         albumsList().forEach( function( a ) {
             a.selected( false );
         });

@@ -39,6 +39,7 @@ new compressor.minify({
 	'lib/jquery.cookie.js',
 	'lib/jquery.ui.touch-punch.min.js',
 	'lib/fastclick.js',
+        'lib/Magnific-Popup/jquery.magnific-popup.js',
         'lib/fancybox-2.1.5/jquery.fancybox.js',
         'lib/fancybox-2.1.5/helpers/jquery.fancybox-buttons.js'
     ],

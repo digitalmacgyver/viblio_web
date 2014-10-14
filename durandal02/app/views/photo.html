@@ -1,0 +1,28 @@
+<div class="mediafile photo" data-bind="attr:{id:media().uuid}, css:{selected: selected(), gift: gift_style, shared: shared_style, hidden: hidden}">
+    <div>
+        <div style="position: relative; overflow: hidden;">
+            <a class="overlay-icon left textShadowed" title="Download Image" data-bind="attr: { href: download_url() }">
+                <i class="fa fa-cloud-download"></i>
+            </a>
+            <a class="overlay-icon right media-select-badge" data-bind="visible: show_select_badge, click: selected() ? unselect : select">
+                <div class="inline" title="unselect" data-bind="if: $data.selected()">
+                    <i class="fa fa-check-square-o"></i>
+                </div>
+                <div class="inline" title="select" data-bind="ifnot: $data.selected()">
+                    <i class="fa fa-square-o"></i>
+                </div>
+            </a>   
+            <div class='pointer' data-bind="click:play">
+                <a data-bind="attr:{href:image}">
+                    <img data-bind="attr:{src:image}" />
+                </a>
+                <!-- ko if: shared_style -->
+                <div class="sharedOwnerWrap">
+                    <img class="boxShadowed avatar" data-bind="attr: {src: owner_avatar}" />
+                    <span class="truncate" data-bind="text: owner_name"></span>
+                </div>
+                <!-- /ko -->
+            </div>      
+        </div>      
+    </div>
+</div>

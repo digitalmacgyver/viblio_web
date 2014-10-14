@@ -1,0 +1,32 @@
+<div class="blankModal albumListModal centeredEl modalBorder">
+    <div class="modalCloseX btn btn-modalGrey" data-bind="click: close"><img src="css/images/closeX.png"/></div>
+
+    <div class="paddedDiv">
+        <div class="titleWrap">
+            <p class="mainTitle textShadowed">Select the album to add these videos to:</p>
+        </div>
+        <div class="scroller">
+            <div class="wrapper">
+                <ul class="tags-inner">
+                    <li data-bind="visible: gettingList()">
+                        <div class="mfLoader centered">
+                            <i class="icon-spinner icon-5x icon-spin active"></i>
+                            <p class='font18'>Loading...</p>
+                        </div>
+                    </li>
+                <!-- ko foreach: albumsFilterLabels -->
+                    <li data-bind="click: $parent.albumFilterSelected.bind( $data, $parent ), clickBubble: false">
+                        <a class="checkboxedLi" data-bind="css: { on: $data.selected() }">
+                            <div class="itemActive-Wrap">
+                                <div class="itemActive" data-bind="css: { on: $data.selected() }"></div>
+                            </div>
+                            <div class="inline tagLabel truncate" data-bind="text: $data.label, css:{ sel: $data.selected(), sharedStyle: $data.shared }"></div>
+                        </a>
+                    </li>
+                <!-- /ko -->
+                </ul>    
+            </div>                  
+        </div>
+        <div class="btn btn-blue pull-right" data-bind="click: done">Done</div>
+    </div>
+</div>

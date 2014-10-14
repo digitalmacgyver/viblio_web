@@ -10,9 +10,9 @@
         <div style="position: relative; overflow: hidden;">
             <!--<button class="dbtn btn btn-danger clearfix" 
             data-bind="text: options.delete_title, click:mfdelete"></button>-->
-            <a class="btn btn-ltGrey media-share-badge" alt="share" 
+            <a class="overlay-icon right media-share-badge" alt="share" 
                 title="share" data-bind="visible: show_share_badge, click: share"><i class="fa fa-share-square-o"></i></a>
-            <a class="btn btn-ltGrey tomatoShadow media-select-badge" data-bind="visible: show_select_badge, click: selected() ? unselect : select">
+            <a class="overlay-icon right media-select-badge" data-bind="visible: show_select_badge, click: selected() ? unselect : select">
                 <div class="inline" title="unselect" data-bind="if: $data.selected()">
                     <i class="fa fa-check-square-o"></i>
                 </div>
@@ -112,7 +112,7 @@
 
             <!-- ko if: showTags -->
                 <div class="tagsPopup popover top">
-                    <div class="arrow"></div>
+                    <div class="arrow custom"></div>
                     <h3 class="popover-title">Tags <button type="button" class="close" data-bind="click: function(){ showTags(false); }">&times;</button></h3>
                     <div class="popover-content">
                         <div class="tagsPopup-Content">
@@ -152,6 +152,9 @@
                                             </div>
                                         </li>
                                       </ul>                           
+                                </li>
+                                <li class="tag mocksWhiteBG recording-date editable" title="Add a date">
+                                    <i class="fa fa-calendar"></i>
                                 </li>
                                 <!-- /ko -->
 

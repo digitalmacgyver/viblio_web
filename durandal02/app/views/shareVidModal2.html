@@ -12,17 +12,30 @@
         </ul>
     </div>
     
-    <form id="shareVidLink">
+    <form id="shareVidLink" class="bottomBorder shareVidLink-form">
         <p class="bigTitle">Copy link:</p>
-        <div id="shareLink-Wrap">
-            <input id="shareLink" type="text" class="text" data-bind="value: cut_and_paste_url" />
-            <button id="copyShareLink" class="btn textShadowed">
+        <div id="shareLink-Wrap" class="shareLink-Wrap">
+            <input id="shareLink" type="text" class="text shareLink" data-bind="value: cut_and_paste_url" />
+            <button id="copyShareLink" class="btn textShadowed copyShareLink">
                 Copy
             </button>
         </div>
+        <div class="embedCode-Wrap">
+            <p class="bigTitle" data-bind="click: getEmbedCode">Embed Code</p>
+            <textarea type="text" class="text embedCode" data-bind="value: embedCode" placeholder="Click button above to generate the embed code snippet"></textarea>
+        </div>
+        
+        <!--<div class="bottomBorder embedCode-Wrap">
+            
+            <button class="btn btn-primary" data-bind="click: getEmbedCode">
+                Generate Embed Snippet
+            </button><br>
+            <span class="embedInstructions" data-bind="visible: embedCode">Copy the code below and paste it into your website.</span>
+            <textarea type="text" class="text embedCode" data-bind="value: embedCode" placeholder="Click button above to generate the embed code snippet"></textarea>
+        </div>-->
     </form>
     
-    <form id="sendVidEmail" class="bottomBorder paddedDiv">
+    <form id="sendVidEmail" class="paddedDiv">
         <div class="centeredEl">
             <p class="bigTitle">Share this link by email to:</p>
             <p class="uitoken-input"><input id='shareVidEmail' type="text" placeholder="Email address" /></p>
