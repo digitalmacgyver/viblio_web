@@ -17,6 +17,8 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'plugins/dialog']
         }
     });
     
+    var screenWidth = ko.observable( $(window).width() );
+    
     function register() {
         sendEmail( email() );
     };
@@ -41,6 +43,8 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'plugins/dialog']
     };
     
     function resizePlayer() {
+        screenWidth( $(window).width() );
+        console.log( screenWidth() );
 	var player_height = $(".promo-player").width()*.362;
         $(".promo-player").children().height(player_height).width('100%');
 	$(".promo-player, .promo-player video").height( player_height );
@@ -55,6 +59,8 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'plugins/dialog']
         register: register,
         register2: register2,
         
+        screenWidth: screenWidth,
+        
         detached: function () {
 	    $(window).unbind( 'resize', resizePlayer );
 	    if(flowplayer()){
@@ -63,6 +69,7 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'plugins/dialog']
 	},
         
         compositionComplete: function() {
+            screenWidth( $(window).width() );
             $(".promo-player").flowplayer({ src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
                 clip: {
                     url: 'https://s3-us-west-2.amazonaws.com/viblio-external/media/corp-site/viblio-promo.mp4'
