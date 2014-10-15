@@ -995,6 +995,7 @@ input:-moz-placeholder {
 }
 
 .blankModal {
+    background: white;
     position: relative;
 }
 
