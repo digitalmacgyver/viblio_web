@@ -1600,7 +1600,7 @@ define( ['plugins/router',
                     return system.defer( function( dfd ) {
                         self.create_video_summary( dfd );
                     }).promise().done( function( response ) {
-                        self.clean_up_after_select_mode();  
+                        self.clean_up_after_select_mode();
                     }).fail( function() {
                         self.cancel_select_mode();
                     });
@@ -2107,7 +2107,20 @@ define( ['plugins/router',
             };
 
             viblio.api( 'services/mediafile/create_video_summary', args ).done( function( response ) {
-                console.log( response );
+                viblio.api('services/mediafile/list_status').then( function( data ) {
+                    console.log( data );
+                    self.numVidsPending( data.stats.pending );
+                    var num = data.stats.pending/* + data.stats.visible*/;
+                    self.vidsInProcess( num );
+                    if( self.vidsInProcess() > 0 ) {
+                        // go to recent vids filter
+                        self.recentVidsSearch( true );
+                        // go to video mode
+                        self.video_mode_on( true );
+                        // scroll to the top of the page
+                        $(document).scrollTop(0);
+                    }
+                });
                 dfd.resolve( response );
             }).fail( function() {
                 dfd.reject();
