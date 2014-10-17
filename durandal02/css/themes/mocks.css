@@ -6378,6 +6378,12 @@ ul.token-input-list-facebook li input {
     margin-top: 50px;
 }
 
+.promoGif {
+    display: block;
+    margin: 50px auto 0;
+    max-width: 80%;
+}
+
 /******** Popup Player *******/
 #player > div {
     width: 100% !important;
