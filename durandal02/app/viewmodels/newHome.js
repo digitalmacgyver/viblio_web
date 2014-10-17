@@ -313,6 +313,7 @@ define( ['plugins/router',
         
         self.photoViewFilter = ko.observable( "some" );
         self.photoViewFilter.subscribe( function( val ) {
+            console.log( "photoViewFilter tickled" );
             // reset counter to 0
             self.visiblePhotosCount( 0 );
             if( val == "some" ) {
@@ -344,6 +345,7 @@ define( ['plugins/router',
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
                 viblio.api('services/mediafile/list_status').then( function( data ) {
+                    console.log( data );
                     self.numVidsPending( data.stats.pending );
                     var num = data.stats.pending/* + data.stats.visible*/;
                     self.vidsInProcess( num );
@@ -359,6 +361,7 @@ define( ['plugins/router',
         var self = this;
         
         //$('#myonoffswitch').trigger('click');
+        console.log( $('#myonoffswitch').is(':checked') );
         //$('#myonoffswitch').is(':checked') ? $('#myonoffswitch').attr('checked', false) : $('#myonoffswitch').attr('checked', true);
         
         self.video_mode_on() ? self.video_mode_on(false) : self.video_mode_on(true);
@@ -548,6 +551,7 @@ define( ['plugins/router',
                 
                 viblio.api( '/services/mediafile/recently_uploaded', args )
                     .then( function( json ) {
+                        console.log( json );
                         self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
                         self.recentPager = json.pager;
                         json.media.forEach( function( mf ) {
@@ -627,6 +631,7 @@ define( ['plugins/router',
                 args.include_images = 1;
 		viblio.api( '/services/yir/videos_for_month', args )
 		    .then( function( json ) {
+                        console.log( json, args );
                         self.hits ( json.pager.total_entries );
 			self.monthPager = json.pager;
                         json.media.forEach( function( mf ) {
@@ -731,6 +736,7 @@ define( ['plugins/router',
                 }*/
                 viblio.api( '/services/faces/media_face_appears_in', args )
                     .then( function( json ) {
+                        console.log( json );
                         self.hits ( json.pager.total_entries );
                         self.facesPager = json.pager;
                         json.media.forEach( function( mf ) {
@@ -1209,6 +1215,7 @@ define( ['plugins/router',
         });
 
 	p.on( 'photo:play', function( p ) {
+            console.log( $(p.view).find('img') );
             //$(p.view).find('img').magnificPopup({type:'image'});
 	});
         
@@ -2058,6 +2065,7 @@ define( ['plugins/router',
                 // show new dialog with list of all albums, once an album is selected then do the rest...
                 dialog.showModal( 'viewmodels/albumListModal' ).then( function( album ) {
                     if( album ) {
+                        console.log( album );
                         viblio.api( '/services/album/add_media', { aid: album.uuid, list: self.selectedVideos() } ).then( function( data ) {
                             var vidOrVids = num == 1 ? ' video' : ' videos';
                             var msg = num + vidOrVids + ' successfully added to your "' + album.label + '" Album';
@@ -2074,6 +2082,8 @@ define( ['plugins/router',
     };
     
     newHome.prototype.create_video_summary = function() {
+        var self = this;
+        
         if( selectedPhotos().length > 0 ) {
             var args = {
                 'images[]': selectedPhotos(),
@@ -2082,10 +2092,11 @@ define( ['plugins/router',
             };
 
             viblio.api( 'services/mediafile/create_video_summary', args ).then( function( response ) {
-                //console.log( response );
+                console.log( response );
+                self.recentVidsSearch();
             });
         }
-    }
+    };
     
     newHome.prototype.create_fb_album = function( dfd ) {
         var self = this;
@@ -2507,6 +2518,7 @@ define( ['plugins/router',
             },
             
             beforeShow: function () {
+                console.log( self.playingVid().media() );
                 if( head.mobile ) {
                     this.helpers.buttons = {position: 'bottom'};
                 }
