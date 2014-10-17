@@ -159,7 +159,7 @@
                     </span>
                 </li>
                 
-                <li class="divider-vertical" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared"></li>
+                <li class="divider-vertical"></li>
                 
                 <!-- video mode toggle -->
                 <li class="videoPhotoSwitch" data-bind="click: toggleVideoPhotoMode, tooltip: {title: 'Toggle between photos and the videos they are from', placement: 'bottom' }">
@@ -397,7 +397,7 @@
             <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: noFiltersAreActive() && !searchFilterIsActive()">
                 <!-- ko if: !video_mode_on() -->
                 <div class="btn-group photoViewFilter" data-toggle="buttons">
-                    <span class='meterLabel some'>Some</span>
+                    <span class='meterLabel some'>Less</span>
                     <span class="viewFilter on">
                         <label class="someLabel">
                             <input type="radio" name="options" value="some" id="some" data-bind="checked: photoViewFilter">
@@ -432,7 +432,7 @@
             <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: !isActiveFlag() && !noFiltersAreActive() || searchFilterIsActive()">
                 <!-- ko if: !video_mode_on() -->
                 <div class="btn-group photoViewFilter" data-toggle="buttons">
-                    <span class='meterLabel some'>Some</span>
+                    <span class='meterLabel some'>Less</span>
                     <span class="viewFilter on">
                         <label class="someLabel">
                             <input type="radio" name="options" value="some" id="some" data-bind="checked: photoViewFilter">

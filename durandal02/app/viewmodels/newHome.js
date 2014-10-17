@@ -2105,7 +2105,6 @@ define( ['plugins/router',
                 'summary_type' : 'moments',
                 'title': self.getAlbumName() + ' Summary Video'
             };
-
             viblio.api( 'services/mediafile/create_video_summary', args ).done( function( response ) {
                 viblio.api('services/mediafile/list_status').then( function( data ) {
                     console.log( data );
