@@ -60,11 +60,11 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
         },
 	web_uploader: function() {
             viblio.localStorage( 'hasUserPushedUploadBefore', true );
-            if ( showPopup() ) {
+            /*if ( showPopup() ) {
                 dialogs.showModal( 'viewmodels/firstTimeUserModal2' );
-            } else {
+            } else {*/
                 dialogs.showModal( 'viewmodels/nginx-modal' );
-            }
+            //}
             showPopup( false );
 	},
 	testNewVideo: function() {

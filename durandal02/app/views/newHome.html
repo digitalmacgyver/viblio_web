@@ -159,7 +159,7 @@
                     </span>
                 </li>
                 
-                <li class="divider-vertical"></li>
+                <li class="divider-vertical" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared"></li>
                 
                 <!-- video mode toggle -->
                 <li class="videoPhotoSwitch" data-bind="click: toggleVideoPhotoMode, tooltip: {title: 'Toggle between photos and the videos they are from', placement: 'bottom' }">
@@ -293,6 +293,9 @@
                             <!-- ko if: add_to_existing_vid_album_mode_on() -->
                             <span>an existing album</span>
                             <!-- /ko -->
+                            <!-- ko if: add_to_existing_blank_album_mode_on() -->
+                            <span>this blank album</span>
+                            <!-- /ko -->
                         <!-- /ko -->                    
                     </span>
                     
@@ -357,7 +360,7 @@
                             <!-- ko if: create_new_vid_album_mode_on() -->
                             <span>Create Album</span>
                             <!-- /ko -->
-                            <!-- ko if: add_to_existing_vid_album_mode_on() -->
+                            <!-- ko if: add_to_existing_vid_album_mode_on() || add_to_existing_blank_album_mode_on()-->
                             <span>Add to Album</span>
                             <!-- /ko -->
                             
@@ -397,7 +400,7 @@
             <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: noFiltersAreActive() && !searchFilterIsActive()">
                 <!-- ko if: !video_mode_on() -->
                 <div class="btn-group photoViewFilter" data-toggle="buttons">
-                    <span class='meterLabel some'>Less</span>
+                    <span class='meterLabel some'>Some</span>
                     <span class="viewFilter on">
                         <label class="someLabel">
                             <input type="radio" name="options" value="some" id="some" data-bind="checked: photoViewFilter">
@@ -432,7 +435,7 @@
             <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: !isActiveFlag() && !noFiltersAreActive() || searchFilterIsActive()">
                 <!-- ko if: !video_mode_on() -->
                 <div class="btn-group photoViewFilter" data-toggle="buttons">
-                    <span class='meterLabel some'>Less</span>
+                    <span class='meterLabel some'>Some</span>
                     <span class="viewFilter on">
                         <label class="someLabel">
                             <input type="radio" name="options" value="some" id="some" data-bind="checked: photoViewFilter">
@@ -553,6 +556,9 @@
                             <!-- /ko -->
                             <!-- ko if: add_to_existing_vid_album_mode_on() -->
                             <span>an existing album</span>
+                            <!-- /ko -->
+                            <!-- ko if: add_to_existing_blank_album_mode_on() -->
+                            <span>this blank album</span>
                             <!-- /ko -->
                             <!-- ko if: create_summary_vid_mode_on() -->
                             <span>a new summary video</span>

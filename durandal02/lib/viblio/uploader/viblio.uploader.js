@@ -265,8 +265,6 @@
         
 	alert: function( msg, append ) {
 	    var elem = this.element;
-            // add the close x to the alert area
-            elem.find('.vup-alert span').html('<p class="alertCloseX">&times;</p>');
 	    if ( append )
 		elem.find('.vup-alert span').append(msg);
 	    else
@@ -275,6 +273,10 @@
 		elem.find('.vup-alert span').removeClass( this.options.notify_class );
 	    if ( this.options.alert_class )
 		elem.find('.vup-alert span').addClass( this.options.alert_class );
+            // add the close x to the alert area, but only if it's not there yet to avoid dupes
+            if( !elem.find('.vup-alert .alertCloseX').length ) {
+                elem.find('.vup-alert span').prepend('<p class="alertCloseX">&times;</p>');
+            }
 	    elem.find('.vup-alert').slideDown();
 	    elem.find('.vup-alert').on( 'click.vup', function() {
 		elem.find('.vup-alert').slideUp(function() {
