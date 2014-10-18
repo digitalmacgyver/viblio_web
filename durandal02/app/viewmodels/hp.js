@@ -136,7 +136,7 @@ define(['durandal/app',
                     firstTime( false );
                 } else {
                     firstTime( true );
-                    //showFirstTimeBubble();
+                    showFirstTimeBubble();
                     viblio.localStorage( 'hasUserBeenHereBefore', true );
                 }
             });

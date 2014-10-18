@@ -2572,6 +2572,10 @@ li.token-input-token-facebook {
     padding: 6px;
 }
 
+div.token-input-dropdown-facebook {
+    z-index: 10009;
+}
+
 #sendVidEmail textarea {
     height: 65px;
 }
