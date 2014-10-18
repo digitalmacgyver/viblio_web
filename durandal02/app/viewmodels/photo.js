@@ -135,7 +135,6 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	var self = this;
 	self.view = view;
 	self.trigger( 'photo:composed', self );
-        console.log( self.filter(), self.media().uuid );
         if ( self.options.shared_style ) {
             $(view).hover(
                 function () {
