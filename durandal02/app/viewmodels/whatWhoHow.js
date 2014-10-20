@@ -1,9 +1,15 @@
-define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'lib/config',], function( router, whoWeAre, viblio, config ) {
+define(['plugins/router',
+        'viewmodels/whoWeAre',
+        'lib/viblio',
+        'lib/config',
+        'viewmodels/faq'], 
+    function( router, whoWeAre, viblio, config, faq ) {
     
     var showWhat = ko.observable(true);
     var showWho = ko.observable(false);
     var showHow = ko.observable(false);
     var showPrivacy = ko.observable(false);
+    var showFAQ = ko.observable(false);
     
     var voteEmail = ko.observable('');
     var voteEmailValid = ko.computed (function() {
@@ -166,11 +172,13 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'lib/config',], f
     
     return {
         whoWeAre: whoWeAre,
+        faq: faq,
         
         showWhat: showWhat,
         showWho: showWho,
         showHow: showHow,
         showPrivacy: showPrivacy,
+        showFAQ: showFAQ,
         
         voteEmail: voteEmail,
         options: options,
@@ -210,21 +218,31 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'lib/config',], f
                     showWho( false );
                     showHow( false );
                     showPrivacy( false );
+                    showFAQ( false );
                 } else if ( args.showWho ) {
                     showWhat( false );
                     showWho( true );
                     showHow( false );
                     showPrivacy( false );
-                }else if ( args.showPrivacy ) {
+                    showFAQ( false );
+                } else if ( args.showPrivacy ) {
                     showWhat( false );
                     showWho( false );
                     showHow( false );
                     showPrivacy( true );
+                    showFAQ( false );
+                } else if ( args.showFAQ ) {
+                    showWhat( false );
+                    showWho( false );
+                    showHow( false );
+                    showPrivacy( false );
+                    showFAQ( true );
                 } else {
                     showWhat( false );
                     showWho( false );
                     showHow( true );
                     showPrivacy( false );
+                    showFAQ( false );
                 }
             }
         },

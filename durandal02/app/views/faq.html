@@ -1,28 +1,92 @@
-<div id="faq-page">
-    <div class="title-Wrap turquoiseBG bottomBorder-Thin whiteText textShadowed">
-        <h2>
-            Frequently Asked Questions
-        </h2>    
+<div class="whatWhoHow">
+    <div class="orangeTitle">
+        <h2 class="textShadowed">
+            <a href="/#about?showWhat=true">What We Do</a> <span class="wwh-divider">|</span>
+            <!--<a href="/#about?showWho=true">Who We Are</a> <span class="wwh-divider">|</span>-->
+            <a href="/#about?showHow=true">How to Get in Touch</a> <span class="wwh-divider">|</span>
+            <a href="/#about?showPrivacy=true">Privacy Matters</a> <span class="wwh-divider">|</span>
+            <a class="current" href="/#faq">FAQ</a>
+        </h2>
     </div>
-    <div class="content-Wrap centeredEl">
-        <div class="mocksWhiteBG centeredEl">
-            <div class="bottomBorder paddedDiv">
-                <p class='bigTitle lightGreyFont doubleSpaced'>We are collecting our most frequently asked questions and we'll post them here shortly.</p>
-            </div>
-            <div class="bottomBorder-Thick paddedDiv">
-                <div class="centeredEl">
-                    <form id="mc-embedded-subscribe-form" action="https://viblio.us7.list-manage.com/subscribe/post?u=e046498448d5b3dac186f629b&amp;id=424f74d60a" method="post">
-                        <p class='bigTitle lightGreyFont'>Sign up to get updates on our progress.</p>
-                        <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="Email address" required>
-                        <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-                        <div style="position: absolute; left: -5000px;"><input type="text" name="b_e046498448d5b3dac186f629b_424f74d60a" value=""></div>
-                        <button class="btn btn-blue" data-bind="click: faqEnroll">
-                            Submit
-                        </button>
-                    </form>
+    <h3 class="centered textShadowed marginT50">VIBLIO FAQ</h3>
+    <div class='faq mocksWhiteBG'>
+        <!--<div class="title-Wrap turquoiseBG bottomBorder-Thin whiteText textShadowed">
+            <h2>
+                VIBLIO FAQ
+            </h2>    
+        </div>-->
+
+        <div class="bottomBorder-Thick">
+            <!--<div class="mocksWhiteBG centeredEl">
+                <div class="bottomBorder paddedDiv">
+                    <p class='bigTitle lightGreyFont doubleSpaced'>We are collecting our most frequently asked questions and we'll post them here shortly.</p>
                 </div>
+                <div class="bottomBorder-Thick paddedDiv">
+                    <div class="centeredEl">
+                        <form id="mc-embedded-subscribe-form" action="https://viblio.us7.list-manage.com/subscribe/post?u=e046498448d5b3dac186f629b&amp;id=424f74d60a" method="post">
+                            <p class='bigTitle lightGreyFont'>Sign up to get updates on our progress.</p>
+                            <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="Email address" required>
+                            <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                            <!--<div style="position: absolute; left: -5000px;"><input type="text" name="b_e046498448d5b3dac186f629b_424f74d60a" value=""></div>
+                            <button class="btn btn-blue" data-bind="click: faqEnroll">
+                                Submit
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>-->
+            <div class="faqList bottomBorder-Thin">
+                <h2>FAQs</h2>
+                <ol>
+                    <li>
+                        <a class="turquoiseFont" href="javascript:;" data-bind="click: function(){ scrollTo('#faq#photoFinder'); }">What is VIBLIO Photo Finder&TRADE;</a>
+                    </li>
+                </ol>
             </div>
-        </div>
-    </div>   
-</div>
-    
+
+            <div class="faqMain">
+                <div id='photoFinder' class="faqAnswer-Wrap bottomBorder-Thin">
+                    <h3>What is VIBLIO Photo Finder&TRADE;</h3>
+                    <div class="faqAnswer-Body">
+                        <div class="faqVid-Wrap"></div>
+                        <div class="photoFinder-Content">
+                            <p>VIBLIO Photo Finder is an easy way to get even more out of your videos! Use our free Photo Finder to automatically get photos from the videos you have in your VIBLIO account.</p>
+                            <ul>
+                                <li>Search for a set of videos in your VIBLIO account. (Remember you can search by title, date, place or face, or by tags you assigned, or by albums you created.)</li>
+                                <li>When you have the videos you want, simply move the photo/video toggle from video to photo.</li>
+                            </ul>
+                            <img class='centeredEl' src="/css/images/faq/photoFinder/photovideotoggle.png" alt="Photo Video Toggle"/>
+                            <p>It’s as easy as that.  For each video in your search results, we'll find at least one picture, and up to 30 pictures, depending on the length of the video.</p>
+                            <p>If your search pulled up a lot of long videos, you can imagine getting pages of photo results, so we help you simplify by letting you tell us how many photo you want us to create, using this simple 3-point sliding scale.</p>
+                            <img class='centeredEl' src='/css/images/faq/photoFinder/lessMore.png' alt='Less More Photo Filter'/>
+
+                            <p><b>How are the best photo shots chosen?</b></p>
+                            <p>This is where our image processing technology kicks in. First, we find a clear face in a photo because we usually love photos of the people we film! Our technology knows how to look for clear faces. VIBLIO also looks for other elements that that will make for a good photo.</p>
+                            <p>Our photo search is fully automated. (We don’t have people or tiny elves looking through your private videos!)  So we might not get it perfect. If we find a photo you don’t love, it’s easy to delete it from your photo album. Just choose the option to delete under the More tab.</p>
+                            <img class='centeredEl' src='/css/images/faq/photoFinder/moreMenu.png' alt='More Menu'/>
+
+                            <p><b>What can I do with my VIBLIO created photos?</b></p>
+                            <p>If you like a photo that we have found for you, you can download it. Just click or tap the download icon in the top left corner of the photo.</p>
+                            <img class='centeredEl' src='/css/images/faq/photoFinder/sampleImage.png' alt='Sample Photo'/>
+                            <p>Here's another fun thing you can do with your VIBLIO images.  Select the ones that you want and create a Facebook photo album with a single click. Look for that feature under the Create tab when you are in Photo mode.</p>
+                            <img class='centeredEl' src='/css/images/faq/photoFinder/createMenu.png' alt='Create Menu'/>
+
+                            <p><b>Who can see my VIBLIO created photos?</b></p>
+                            <p>No one sees your photos or your videos unless you decide to share them. Here’s how it works.</p>
+                            <ol>
+                                <li>If you share a video with someone, they'll also be able to see the photos VIBLIO finds in that video.</li>
+                                <li>Because we know that people like to share photos with their friends, we also let people that you have invited to view your video album also download the photos that you have created from that video album. But we never let them download the entire video.</li>
+                                <li>If you create a Facebook photo album through VIBLIO, that album will get shared on your Facebook timeline according to your Facebook privacy settings.</li>
+                            </ol>
+
+                            <p><b>What else do you want to do with your personal photos and videos?</b></p>
+                            <p>Email us at <a href=“mailto:feedback@viblio.com”>feedback@viblio.com</a>!  Our goal is to deliver a great personal video viewing and sharing experience in a beautiful, fun and private way!</p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div> 
+
+        </div>   
+    </div>    
+</div> 
