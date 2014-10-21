@@ -1232,7 +1232,7 @@ input:-moz-placeholder {
 .tags-inner > li > a,
 .dropdown-menu > li > a {
     display: block;
-    padding: 14px 13px;
+    padding: 7px 13px;
     clear: both;
     font-weight: 600;
     line-height: 20px;

@@ -72,9 +72,10 @@ define( ['plugins/router',
         if( router.activeInstruction().params[0] == hash ) {
             $(document.body).animate({ scrollTop: $bookmark.offset().top-65 });
         }
-        // else route to that url
+        // else add the url to the history and then scroll to that section (this is useful for a refresh since it will load on refresh, but won't cause a page reload)
         else {
-            router.navigate( url );
+            router.navigate( url, { replace: true, trigger: false } );
+            $(document.body).animate({ scrollTop: $bookmark.offset().top-65 });
         }
     }
     
