@@ -5542,20 +5542,45 @@ div.fstrip {
 .whatWhoHow .aboutPrivacy,
 .whatWhoHow .what,
 .whatWhoHow .how,
+.faq,
 .vote {
     width: 80%;
     max-width: 1000px;
     margin: 50px auto;
 }
 
+.faq,
 .whatWhoHow .aboutPrivacy,
 .whatWhoHow .what {   
     font-size: 24px;
     line-height: 1;
 }
 
+.faqList {
+    margin-bottom: 30px;
+}
+
+.faqTitle-Big {
+    font-size: 28px;
+}
+
+.faq p,
+.faq img,
 .whatWhoHow .aboutPrivacy p {
     margin-bottom: 20px;
+}
+
+.faq img {
+    max-width: 100%;
+}
+
+.faqVid-Wrap {
+    float: right;
+    width: 40%;
+    width: 360px;
+    height: 270px;
+    max-width: 100%;
+    margin: 0 0 20px 20px;
 }
 
 .whatWhoHow .aboutPrivacy ol {
@@ -5568,6 +5593,7 @@ div.fstrip {
     margin-bottom: 10px;
 }
 
+.faq .bottomBorder-Thick,
 .whatWhoHow .aboutPrivacy .bottomBorder-Thick,
 .whatWhoHow .what .bottomBorder-Thick,
 .whatWhoHow .how form {

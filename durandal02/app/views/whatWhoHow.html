@@ -4,7 +4,8 @@
             <a href="/#about?showWhat=true" data-bind="css: { current: showWhat }">What We Do</a> <span class="wwh-divider">|</span>
             <!--<a href="/#about?showWho=true" data-bind="css: { current: showWho }">Who We Are</a> <span class="wwh-divider">|</span>-->
             <a href="/#about?showHow=true" data-bind="css: { current: showHow }">How to Get in Touch</a> <span class="wwh-divider">|</span>
-            <a href="/#about?showPrivacy=true" data-bind="css: { current: showPrivacy }">Privacy Matters</a>
+            <a href="/#about?showPrivacy=true" data-bind="css: { current: showPrivacy }">Privacy Matters</a> <span class="wwh-divider">|</span>
+            <a href="/#faq">FAQ</a>
         </h2>
     </div>
 
@@ -106,6 +107,10 @@
                 </p>  
             </div>  
         </div>
+    <!-- /ko -->
+    
+    <!-- ko if: showFAQ -->   
+        <!-- ko compose: faq --><!-- /ko -->
     <!-- /ko -->
     
     <div class="vote">

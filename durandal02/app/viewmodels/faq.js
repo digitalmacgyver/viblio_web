@@ -1,6 +1,15 @@
-define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'lib/customDialogs', 'plugins/http', 'knockout'], function( router, app, system, config, viblio, dialog, http, ko ) {
+define( ['plugins/router',
+         'durandal/app',
+         'durandal/system',
+         'lib/config',
+         'lib/viblio',
+         'lib/customDialogs',
+         'plugins/http',
+         'knockout'],
+    function( router, app, system, config, viblio, dialog, http, ko ) {
     
     var signup_email = ko.observable();
+    var viewResolved = $.Deferred();
     
     function handleLoginFailure( json ) {
 	var code = json.code;
@@ -45,10 +54,74 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
         });
     };
     
+    // This will scroll to the part of the page that contains the bookmark (an id named the same as the args passed in in activate) when the page is loaded
+    function activateBookmark(bookmark) {
+        $.when(viewResolved).then(function (view) {
+            var $bookmark = $(bookmark);
+            // scroll to the top of the chosen seciton minus 65 (the height of the header);
+            $(document.body).animate({ scrollTop: $bookmark.offset().top-65 });
+        });
+    };
+    
+    // handles the scroll to when links are actually clicked on
+    function scrollTo( url ) {
+        var hash = url.slice( url.lastIndexOf('#'), url.length );
+        var $bookmark = $(hash);
+        
+        // if you're already at that URL just scroll to that position
+        if( router.activeInstruction().params[0] == hash ) {
+            $(document.body).animate({ scrollTop: $bookmark.offset().top-65 });
+        }
+        // else route to that url
+        else {
+            router.navigate( url );
+        }
+    }
+    
+    function resizePlayer() {
+	var player_height = $(".faqVid-Wrap").width()*.75;
+        $(".faqVid-Wrap").children().height(player_height).width('100%');
+	$(".faqVid-Wrap, .faqVid-Wrap video").height( player_height );
+    }
+    
     return {
 	signup_email: signup_email,
         
         faqEnroll: faqEnroll,
-        register: register
+        register: register,
+        scrollTo: scrollTo,
+        
+        activate: function( args ) {
+            var bookmark = args;
+            if (bookmark) {
+                activateBookmark(bookmark);
+            }
+        },
+        
+        compositionComplete: function(view) {
+            viewResolved.resolve(view);
+            
+            $(".faqVid-Wrap").flowplayer({ src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
+                clip: {
+                    url: 'https://viblio.com/s/e/5221DA02-565A-11E4-AFCA-4B6695BB129F'
+                },
+                onStart: function( clip ) {
+                    flowplayer().mute();    
+                },
+                // make the video loop 
+                onBeforeFinish: function() { 
+                    return false; 
+                }
+            });
+            resizePlayer();
+            $(window).bind('resize', resizePlayer );
+        },
+        
+        detached: function () {
+	    $(window).unbind( 'resize', resizePlayer );
+	    if(flowplayer()){
+                flowplayer().unload();
+            }
+	},
     };
 });
