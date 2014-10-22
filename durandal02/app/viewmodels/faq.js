@@ -115,7 +115,7 @@ define( ['plugins/router',
                 clip: {
                     url: 'https://viblio.com/s/e/5221DA02-565A-11E4-AFCA-4B6695BB129F',
                     //ipadUrl: encodeURIComponent('https://viblio.com/s/e/5221DA02-565A-11E4-AFCA-4B6695BB129F')
-                    ipadUrl: 'https://viblio.com/s/e/5221DA02-565A-11E4-AFCA-4B6695BB129F'
+                    ipadUrl: 'https://viblio.com/s/e/5221DA02-565A-11E4-AFCA-4B6695BB129F.mp4'
                 },
                 onStart: function( clip ) {
                     flowplayer().mute();    
