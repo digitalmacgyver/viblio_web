@@ -124,7 +124,7 @@ define( ['plugins/router',
                 onBeforeFinish: function() { 
                     return false; 
                 }
-            }).flowplayer().ipad({simulateiDevice: should_simulate()});;
+            }).flowplayer().ipad({simulateiDevice: should_simulate()});
             resizePlayer();
             $(window).bind('resize', resizePlayer );
         },

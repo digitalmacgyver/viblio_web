@@ -77,6 +77,15 @@ define(['plugins/router',
 	$(".promo-player, .promo-player video").height( player_height );
     }
     
+    function should_simulate() {
+	var videoel = document.createElement("video"),
+	idevice = /ip(hone|ad|od)/i.test(navigator.userAgent),
+	noflash = flashembed.getVersion()[0] === 0,
+	simulate = !idevice && noflash &&
+            !!(videoel.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"').replace(/no/, ''));
+	return simulate;
+    }
+    
     //-------------- How Section ----------------//
     var selected = ko.observable('support');
     var name = ko.observable('');
@@ -252,7 +261,7 @@ define(['plugins/router',
                 clip: {
                     url: 'https://s3-us-west-2.amazonaws.com/viblio-external/media/corp-site/viblio-promo.mp4'
                 }
-            });
+            }).flowplayer().ipad({simulateiDevice: should_simulate()});
             resizePlayer();
             $(window).bind('resize', resizePlayer );
         }
