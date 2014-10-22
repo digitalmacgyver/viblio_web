@@ -162,8 +162,8 @@
                 <li class="divider-vertical" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared"></li>
                 
                 <!-- video mode toggle -->
-                <li class="videoPhotoSwitch" data-bind="click: toggleVideoPhotoMode, tooltip: {title: 'Toggle between photos and the videos they are from', placement: 'bottom' }">
-                    <span class="videoPhotoLabel" data-bind="css: {active: !video_mode_on()}">Photo</span>
+                <li class="videoPhotoSwitch" data-bind="tooltip: {title: 'Toggle between photos and the videos they are from', placement: 'bottom' }">
+                    <!--<span class="videoPhotoLabel" data-bind="css: {active: !video_mode_on()}">Photo</span>
                     <div class="onoffswitch">
                         <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" data-bind="checked: video_mode_on, disable: isActiveFlag()">
                         <label class="onoffswitch-label" for="myonoffswitch">
@@ -171,7 +171,13 @@
                             <span class="onoffswitch-switch"></span>
                         </label>
                     </div>
-                    <span class="videoPhotoLabel" data-bind="css: {active: video_mode_on()}">Video</span>
+                    <span class="videoPhotoLabel" data-bind="css: {active: video_mode_on()}">Video</span>-->
+                    
+                    <p class="field switch">
+                        <label class="cb-disable" data-bind="click: function(){ video_mode_on(true) }, css: {selected: video_mode_on()}"><span>Videos</span></label>
+                        <label class="cb-enable" data-bind="click: function(){ video_mode_on(false) }, css: {selected: !video_mode_on()}"><span>Photos</span></label>
+                        <input type="checkbox" id="checkbox" class="checkbox" name="field2" data-bind="checked: video_mode_on, disable: isActiveFlag()" />
+                    </p>
                 </li>
                 <li class="divider-vertical" data-bind="visible: albumFilterIsActive() ? !currentSelectedFilterAlbum().shared : true"></li>
                 
