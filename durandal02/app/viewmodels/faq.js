@@ -114,7 +114,7 @@ define( ['plugins/router',
             $(".faqVid-Wrap").flowplayer({ src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
                 clip: {
                     url: 'https://viblio.com/s/e/5221DA02-565A-11E4-AFCA-4B6695BB129F',
-                    ipadUrl: encodeURIComponent('https://viblio.com/s/e/5221DA02-565A-11E4-AFCA-4B6695BB129F')
+                    //ipadUrl: encodeURIComponent('https://viblio.com/s/e/5221DA02-565A-11E4-AFCA-4B6695BB129F')
                 },
                 onStart: function( clip ) {
                     flowplayer().mute();    
