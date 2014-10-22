@@ -210,7 +210,8 @@ function (router, app, system, page_header, landing_header, conditional_header, 
             { route: 'iosApp',           moduleId: 'iosApp',     title: 'Download Viblio iOS App',
                 showFooter: false, nav: false,   authenticated: false,   header: 'ios_header.html' },
             
-            { route: 'faq',           moduleId: 'faq',     title: 'Viblio FAQ',
+            // this type of route allows the page to have additional info passed in after a # - that is then used to scroll to a particular seciton of the page
+            { route: 'faq*details',     moduleId: 'faq',     title: 'Viblio FAQ', hash: '#faq',
                 showFooter: true, nav: false,   authenticated: false,   header: conditional_header }, 
           
             { route: 'map',        moduleId: 'map',     title: 'MAP',

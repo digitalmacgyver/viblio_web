@@ -1,9 +1,15 @@
-define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'lib/config',], function( router, whoWeAre, viblio, config ) {
+define(['plugins/router',
+        'viewmodels/whoWeAre',
+        'lib/viblio',
+        'lib/config',
+        'viewmodels/faq'], 
+    function( router, whoWeAre, viblio, config, faq ) {
     
     var showWhat = ko.observable(true);
     var showWho = ko.observable(false);
     var showHow = ko.observable(false);
     var showPrivacy = ko.observable(false);
+    var showFAQ = ko.observable(false);
     
     var voteEmail = ko.observable('');
     var voteEmailValid = ko.computed (function() {
@@ -69,6 +75,15 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'lib/config',], f
 	var player_height = $(".promo-player").width()*.362;
         $(".promo-player").children().height(player_height).width('100%');
 	$(".promo-player, .promo-player video").height( player_height );
+    }
+    
+    function should_simulate() {
+	var videoel = document.createElement("video"),
+	idevice = /ip(hone|ad|od)/i.test(navigator.userAgent),
+	noflash = flashembed.getVersion()[0] === 0,
+	simulate = !idevice && noflash &&
+            !!(videoel.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"').replace(/no/, ''));
+	return simulate;
     }
     
     //-------------- How Section ----------------//
@@ -166,11 +181,13 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'lib/config',], f
     
     return {
         whoWeAre: whoWeAre,
+        faq: faq,
         
         showWhat: showWhat,
         showWho: showWho,
         showHow: showHow,
         showPrivacy: showPrivacy,
+        showFAQ: showFAQ,
         
         voteEmail: voteEmail,
         options: options,
@@ -210,21 +227,31 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'lib/config',], f
                     showWho( false );
                     showHow( false );
                     showPrivacy( false );
+                    showFAQ( false );
                 } else if ( args.showWho ) {
                     showWhat( false );
                     showWho( true );
                     showHow( false );
                     showPrivacy( false );
-                }else if ( args.showPrivacy ) {
+                    showFAQ( false );
+                } else if ( args.showPrivacy ) {
                     showWhat( false );
                     showWho( false );
                     showHow( false );
                     showPrivacy( true );
+                    showFAQ( false );
+                } else if ( args.showFAQ ) {
+                    showWhat( false );
+                    showWho( false );
+                    showHow( false );
+                    showPrivacy( false );
+                    showFAQ( true );
                 } else {
                     showWhat( false );
                     showWho( false );
                     showHow( true );
                     showPrivacy( false );
+                    showFAQ( false );
                 }
             }
         },
@@ -234,7 +261,7 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'lib/config',], f
                 clip: {
                     url: 'https://s3-us-west-2.amazonaws.com/viblio-external/media/corp-site/viblio-promo.mp4'
                 }
-            });
+            }).flowplayer().ipad({simulateiDevice: should_simulate()});
             resizePlayer();
             $(window).bind('resize', resizePlayer );
         }

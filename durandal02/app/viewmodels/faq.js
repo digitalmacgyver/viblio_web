@@ -1,6 +1,15 @@
-define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'lib/customDialogs', 'plugins/http', 'knockout'], function( router, app, system, config, viblio, dialog, http, ko ) {
+define( ['plugins/router',
+         'durandal/app',
+         'durandal/system',
+         'lib/config',
+         'lib/viblio',
+         'lib/customDialogs',
+         'plugins/http',
+         'knockout'],
+    function( router, app, system, config, viblio, dialog, http, ko ) {
     
     var signup_email = ko.observable();
+    var viewResolved = $.Deferred();
     
     function handleLoginFailure( json ) {
 	var code = json.code;
@@ -45,10 +54,84 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
         });
     };
     
+    // This will scroll to the part of the page that contains the bookmark (an id named the same as the args passed in in activate) when the page is loaded
+    function activateBookmark(bookmark) {
+        $.when(viewResolved).then(function (view) {
+            var $bookmark = $(bookmark);
+            // scroll to the top of the chosen seciton minus 65 (the height of the header);
+            $(document.body).animate({ scrollTop: $bookmark.offset().top-65 });
+        });
+    };
+    
+    // handles the scroll to when links are actually clicked on
+    function scrollTo( url ) {
+        var hash = url.slice( url.lastIndexOf('#'), url.length );
+        var $bookmark = $(hash);
+        
+        // if you're already at that URL just scroll to that position
+        if( router.activeInstruction().params[0] == hash ) {
+            $(document.body).animate({ scrollTop: $bookmark.offset().top-65 });
+        }
+        // else add the url to the history and then scroll to that section (this is useful for a refresh since it will load on refresh, but won't cause a page reload)
+        else {
+            router.navigate( url, { replace: true, trigger: false } );
+            $(document.body).animate({ scrollTop: $bookmark.offset().top-65 });
+        }
+    }
+    
+    function resizePlayer() {
+	var player_height = $(".faqVid-Wrap").width()*.75;
+        $(".faqVid-Wrap").children().height(player_height).width('100%');
+	$(".faqVid-Wrap, .faqVid-Wrap video").height( player_height );
+    }
+    
+    function should_simulate() {
+	var videoel = document.createElement("video"),
+	idevice = /ip(hone|ad|od)/i.test(navigator.userAgent),
+	noflash = flashembed.getVersion()[0] === 0,
+	simulate = !idevice && noflash &&
+            !!(videoel.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"').replace(/no/, ''));
+	return simulate;
+    }
+    
     return {
 	signup_email: signup_email,
         
         faqEnroll: faqEnroll,
-        register: register
+        register: register,
+        scrollTo: scrollTo,
+        
+        activate: function( args ) {
+            var bookmark = args;
+            if (bookmark) {
+                activateBookmark(bookmark);
+            }
+        },
+        
+        compositionComplete: function(view) {
+            viewResolved.resolve(view);
+            
+            $(".faqVid-Wrap").flowplayer({ src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
+                clip: {
+                    url: 'https://s3-us-west-2.amazonaws.com/viblio-external/media/corp-site/photos_from_videos.mp4​'
+                },
+                onStart: function( clip ) {
+                    flowplayer().mute();    
+                },
+                // make the video loop 
+                onBeforeFinish: function() { 
+                    return false; 
+                }
+            }).flowplayer().ipad({simulateiDevice: should_simulate()});
+            resizePlayer();
+            $(window).bind('resize', resizePlayer );
+        },
+        
+        detached: function () {
+	    $(window).unbind( 'resize', resizePlayer );
+	    if(flowplayer()){
+                flowplayer().unload();
+            }
+	},
     };
 });

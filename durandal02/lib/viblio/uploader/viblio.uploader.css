@@ -150,3 +150,7 @@
     text-align: center;
 }
 
+.iosUploader {
+    opacity: 0;
+}
+

@@ -247,7 +247,7 @@
                 this.options.album_to_upload_to = null;
             }
             
-            console.log( this.options.upload_to_album, this.options.album_to_upload_to );
+            //console.log( this.options.upload_to_album, this.options.album_to_upload_to );
         },
 
 	// Public method.  Cancel all uploads in progress.  Might be called when
@@ -265,8 +265,6 @@
         
 	alert: function( msg, append ) {
 	    var elem = this.element;
-            // add the close x to the alert area
-            elem.find('.vup-alert span').html('<p class="alertCloseX">&times;</p>');
 	    if ( append )
 		elem.find('.vup-alert span').append(msg);
 	    else
@@ -275,6 +273,10 @@
 		elem.find('.vup-alert span').removeClass( this.options.notify_class );
 	    if ( this.options.alert_class )
 		elem.find('.vup-alert span').addClass( this.options.alert_class );
+            // add the close x to the alert area, but only if it's not there yet to avoid dupes
+            if( !elem.find('.vup-alert .alertCloseX').length ) {
+                elem.find('.vup-alert span').prepend('<p class="alertCloseX">&times;</p>');
+            }
 	    elem.find('.vup-alert').slideDown();
 	    elem.find('.vup-alert').on( 'click.vup', function() {
 		elem.find('.vup-alert').slideUp(function() {
@@ -321,9 +323,11 @@
 	    if ( ! IE ) {
 		self.element.find('.vup-area').on( 'click.VUP-AREA', function() {
 		    self.element.find('input[type=file]').click();
+                    self.element.find('.uploaderInput').click();
 		});
 		self.element.find('.vup-instructions').on( 'click.VUP-AREA', function() {
 		    self.element.find('input[type=file]').click();
+                    self.element.find('.uploaderInput').click();
 		});
 	    }
 	},
@@ -347,7 +351,7 @@
 		// There is a BUG in IOS that prevents multiple file uploads.  See
 		// https://github.com/blueimp/jQuery-File-Upload/issues/2627
 		// https://github.com/moxiecode/plupload/issues/894
-		$('<input type="file" name="files[]" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;" />').appendTo( elem );
+		$('<input class="uploaderInput" type="file" name="files[]" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;" />').appendTo( elem );
 	    }
 	    else if ( ! IE ) {
 		$('<input type="file" name="files[]" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;" multiple />').appendTo( elem );
@@ -478,7 +482,7 @@
                             var xhr = new XMLHttpRequest();
                             xhr.open("POST", endpoint, false ); // sync!
                             xhr.setRequestHeader('Final-Length', file.size );
-                            console.log( JSON.stringify({uuid: uuid, file:{Path:file.name}, skip_faces: self.options.skip_faces, album_uuid: self.options.upload_to_album ? self.options.album_to_upload_to : null  }) );
+                            //console.log( JSON.stringify({uuid: uuid, file:{Path:file.name}, skip_faces: self.options.skip_faces, album_uuid: self.options.upload_to_album ? self.options.album_to_upload_to : null  }) );
                             xhr.send(JSON.stringify({uuid: uuid, file:{Path:file.name}, skip_faces: self.options.skip_faces, album_uuid: self.options.upload_to_album ? self.options.album_to_upload_to : null  }));
 			    if ( xhr.status != 200 && xhr.status != 201 ) {
 				$(row).find(".vup-filename-column").text(filename);
@@ -680,7 +684,7 @@
 	_html: function( ie ) {
 	    if ( ! ie ) 
 		return ('\
-      <div class="vup-instructions"><div><p class="line1">Drop videos here</p><p class="line2">(or click)</p><br><br><p class="line3">On an iPad or iPhone touch and hold</p></div></div>\
+      <div class="vup-instructions"><div><p class="line1">Drop videos here</p><p class="line2">(or click)</p><br><br></div></div>\
       <div class="vup-alert"><span class="alert"></span></div>\
       <div class="vup-area">\
 	<table class="vup-files">\

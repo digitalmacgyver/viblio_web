@@ -4,12 +4,14 @@
             <a href="/#about?showWhat=true" data-bind="css: { current: showWhat }">What We Do</a> <span class="wwh-divider">|</span>
             <!--<a href="/#about?showWho=true" data-bind="css: { current: showWho }">Who We Are</a> <span class="wwh-divider">|</span>-->
             <a href="/#about?showHow=true" data-bind="css: { current: showHow }">How to Get in Touch</a> <span class="wwh-divider">|</span>
-            <a href="/#about?showPrivacy=true" data-bind="css: { current: showPrivacy }">Privacy Matters</a>
+            <a href="/#about?showPrivacy=true" data-bind="css: { current: showPrivacy }">Privacy Matters</a> <span class="wwh-divider">|</span>
+            <a href="/#faq">FAQ</a>
         </h2>
     </div>
 
     <!-- ko if: showWhat -->
-        <div class="promo-player"></div>
+        <!--<div class="promo-player"></div>-->
+        <img class="promoGif" src="https://s3-us-west-2.amazonaws.com/viblio-external/media/corp-site/viblio-promo.gif" alt="Viblio Promo"/>
         <div class='what mocksWhiteBG'>
             <div class="bottomBorder-Thick">
                 <p>
@@ -106,6 +108,10 @@
                 </p>  
             </div>  
         </div>
+    <!-- /ko -->
+    
+    <!-- ko if: showFAQ -->   
+        <!-- ko compose: faq --><!-- /ko -->
     <!-- /ko -->
     
     <div class="vote">

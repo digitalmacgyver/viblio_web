@@ -108,6 +108,7 @@ define( ['plugins/router',
         self.delete_mode_on = ko.observable(false);
         self.create_new_vid_album_mode_on = ko.observable(false);
         self.add_to_existing_vid_album_mode_on = ko.observable(false);
+        self.add_to_existing_blank_album_mode_on = ko.observable(false);
         self.create_facebook_album_mode_on = ko.observable(false);
         
         self.toolbarHeight = ko.observable( self.select_mode_on() ? $('.select-nav').height() : $('.vids-nav').height() );
@@ -313,6 +314,7 @@ define( ['plugins/router',
         
         self.photoViewFilter = ko.observable( "some" );
         self.photoViewFilter.subscribe( function( val ) {
+            console.log( "photoViewFilter tickled" );
             // reset counter to 0
             self.visiblePhotosCount( 0 );
             if( val == "some" ) {
@@ -344,6 +346,7 @@ define( ['plugins/router',
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
                 viblio.api('services/mediafile/list_status').then( function( data ) {
+                    console.log( data );
                     self.numVidsPending( data.stats.pending );
                     var num = data.stats.pending/* + data.stats.visible*/;
                     self.vidsInProcess( num );
@@ -359,6 +362,7 @@ define( ['plugins/router',
         var self = this;
         
         //$('#myonoffswitch').trigger('click');
+        console.log( $('#myonoffswitch').is(':checked') );
         //$('#myonoffswitch').is(':checked') ? $('#myonoffswitch').attr('checked', false) : $('#myonoffswitch').attr('checked', true);
         
         self.video_mode_on() ? self.video_mode_on(false) : self.video_mode_on(true);
@@ -548,6 +552,7 @@ define( ['plugins/router',
                 
                 viblio.api( '/services/mediafile/recently_uploaded', args )
                     .then( function( json ) {
+                        console.log( json );
                         self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
                         self.recentPager = json.pager;
                         json.media.forEach( function( mf ) {
@@ -627,6 +632,7 @@ define( ['plugins/router',
                 args.include_images = 1;
 		viblio.api( '/services/yir/videos_for_month', args )
 		    .then( function( json ) {
+                        console.log( json, args );
                         self.hits ( json.pager.total_entries );
 			self.monthPager = json.pager;
                         json.media.forEach( function( mf ) {
@@ -731,6 +737,7 @@ define( ['plugins/router',
                 }*/
                 viblio.api( '/services/faces/media_face_appears_in', args )
                     .then( function( json ) {
+                        console.log( json );
                         self.hits ( json.pager.total_entries );
                         self.facesPager = json.pager;
                         json.media.forEach( function( mf ) {
@@ -976,7 +983,8 @@ define( ['plugins/router',
             dialog.showModal( 'viewmodels/emptyAlbumModal' ).then( function( data ) {
                 if( data == 'Add Videos Now' ) {
                     self.showAllVideos();
-                    self.addToAlbumSelected( self, self.currentSelectedFilterAlbum() );
+                    //self.addToAlbumSelected( self, self.currentSelectedFilterAlbum() );
+                    self.add_to_mode( 'existing-blank' );
                 } else {
                     self.delete_album( true );
                 }                  
@@ -1209,6 +1217,7 @@ define( ['plugins/router',
         });
 
 	p.on( 'photo:play', function( p ) {
+            console.log( $(p.view).find('img') );
             //$(p.view).find('img').magnificPopup({type:'image'});
 	});
         
@@ -1353,6 +1362,7 @@ define( ['plugins/router',
         self.delete_mode_on(false);
         self.create_new_vid_album_mode_on(false);
         self.add_to_existing_vid_album_mode_on(false);
+        self.add_to_existing_blank_album_mode_on(false);
         self.create_facebook_album_mode_on(false);
     };
     
@@ -1363,24 +1373,6 @@ define( ['plugins/router',
         self.clear_all_modes();
         self.share_mode_on(true);
         dialog.showShareAlbumModal( self.currentSelectedFilterAlbum() );
-    };
-    
-    newHome.prototype.create_new_vid_album = function() {
-        var self = this;
-        
-        self.activate_select_mode();
-        self.selectAll();
-        self.clear_all_modes();
-        self.create_new_vid_album_mode_on(true);
-    };
-    
-    newHome.prototype.add_to_existing_vid_album = function() {
-        var self = this;
-        
-        self.activate_select_mode();
-        self.selectAll();
-        self.clear_all_modes();
-        self.add_to_existing_vid_album_mode_on(true);
     };
     
     newHome.prototype.add_to_mode = function( type ) {
@@ -1394,6 +1386,9 @@ define( ['plugins/router',
         }
         if( type == "existing" ) {
             self.add_to_existing_vid_album_mode_on(true);
+        }
+        if( type == "existing-blank" ) {
+            self.add_to_existing_blank_album_mode_on(true);
         }
         if( type == 'facebook' ) {
             self.create_facebook_album_mode_on(true);
@@ -1982,6 +1977,7 @@ define( ['plugins/router',
     };
     
     newHome.prototype.addToAlbumSelected = function( self, album ) {
+        console.log( 'addToAlbumSelected fired', self, album )
         self.albumLabels().forEach( function( a ) {
             a.selected( false );
         });
@@ -2052,21 +2048,32 @@ define( ['plugins/router',
                     });
                     dfd.resolve();
                 });
-            } else {
-                // Add to an existing album
-                // 
-                // show new dialog with list of all albums, once an album is selected then do the rest...
-                dialog.showModal( 'viewmodels/albumListModal' ).then( function( album ) {
-                    if( album ) {
-                        viblio.api( '/services/album/add_media', { aid: album.uuid, list: self.selectedVideos() } ).then( function( data ) {
-                            var vidOrVids = num == 1 ? ' video' : ' videos';
-                            var msg = num + vidOrVids + ' successfully added to your "' + album.label + '" Album';
-                            viblio.notify( msg, 'success' );
-                            hp.albumList().albumFilterSelected( hp.albumList(), self.findMatch( album.uuid, hp.albumList().albumsFilterLabels() ) );
-                            dfd.resolve();
-                        });
-                    }                  
-                });
+            }
+            // Add to an existing album that will be chosen from a list
+            else {
+                function handleAdd( album ) {
+                    viblio.api( '/services/album/add_media', { aid: album.uuid, list: self.selectedVideos() } ).then( function( data ) {
+                        var vidOrVids = num == 1 ? ' video' : ' videos';
+                        var msg = num + vidOrVids + ' successfully added to your "' + album.label + '" Album';
+                        viblio.notify( msg, 'success' );
+                        hp.albumList().albumFilterSelected( hp.albumList(), self.findMatch( album.uuid, hp.albumList().albumsFilterLabels() ) );
+                        dfd.resolve();
+                    });
+                }
+                
+                // Add to an existing BLANK album
+                if( self.add_to_existing_blank_album_mode_on() ) {
+                    handleAdd( self.currentSelectedFilterAlbum() );
+                }
+                // show new dialog with list of all albums, once an album is selected then handle the add...
+                else if( self.add_to_existing_vid_album_mode_on() ) {
+                    dialog.showModal( 'viewmodels/albumListModal' ).then( function( album ) {
+                        if( album ) {
+                            console.log( album );
+                            handleAdd( album );
+                        }                  
+                    });    
+                }
             }    
         } else {
             dfd.reject();
@@ -2074,6 +2081,8 @@ define( ['plugins/router',
     };
     
     newHome.prototype.create_video_summary = function() {
+        var self = this;
+        
         if( selectedPhotos().length > 0 ) {
             var args = {
                 'images[]': selectedPhotos(),
@@ -2082,10 +2091,11 @@ define( ['plugins/router',
             };
 
             viblio.api( 'services/mediafile/create_video_summary', args ).then( function( response ) {
-                //console.log( response );
+                console.log( response );
+                self.recentVidsSearch();
             });
         }
-    }
+    };
     
     newHome.prototype.create_fb_album = function( dfd ) {
         var self = this;
@@ -2507,6 +2517,7 @@ define( ['plugins/router',
             },
             
             beforeShow: function () {
+                console.log( self.playingVid().media() );
                 if( head.mobile ) {
                     this.helpers.buttons = {position: 'bottom'};
                 }

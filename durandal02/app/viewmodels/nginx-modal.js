@@ -96,6 +96,10 @@ define(['lib/viblio',
         app.trigger( 'nginxModal:closed2', args);
     }
     
+    function vupClicks() {
+        console.log( 'vup clicked' );
+    }
+    
     return{
         uploadsCompleted: uploadsCompleted,
         find_faces: find_faces,
@@ -103,6 +107,8 @@ define(['lib/viblio',
         addToAlbumSelected: addToAlbumSelected,
         unselectAllAlbums: unselectAllAlbums,
         selectedAddToAlbum: selectedAddToAlbum,
+        
+        vupClicks: vupClicks,
         
 	close: function() {
 	    var pending = $(this.view).find('.vup').viblio_uploader( 'in_progress' );
