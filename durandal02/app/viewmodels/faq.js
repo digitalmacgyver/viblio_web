@@ -113,7 +113,8 @@ define( ['plugins/router',
             
             $(".faqVid-Wrap").flowplayer({ src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
                 clip: {
-                    url: 'https://viblio-external.s3.amazonaws.com/media/corp-site/photos_from_videos.mp4'
+                    url: 'https://viblio-external.s3.amazonaws.com/media/corp-site/photos_from_videos.mp4',
+                    ipadUrl: encodeURIComponent('https://viblio-external.s3.amazonaws.com/media/corp-site/photos_from_videos.mp4')
                 },
                 onStart: function( clip ) {
                     flowplayer().mute();    
