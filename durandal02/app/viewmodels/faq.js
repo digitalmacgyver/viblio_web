@@ -85,6 +85,15 @@ define( ['plugins/router',
 	$(".faqVid-Wrap, .faqVid-Wrap video").height( player_height );
     }
     
+    function should_simulate() {
+	var videoel = document.createElement("video"),
+	idevice = /ip(hone|ad|od)/i.test(navigator.userAgent),
+	noflash = flashembed.getVersion()[0] === 0,
+	simulate = !idevice && noflash &&
+            !!(videoel.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"').replace(/no/, ''));
+	return simulate;
+    }
+    
     return {
 	signup_email: signup_email,
         
@@ -104,7 +113,8 @@ define( ['plugins/router',
             
             $(".faqVid-Wrap").flowplayer({ src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
                 clip: {
-                    url: 'https://viblio.com/s/e/5221DA02-565A-11E4-AFCA-4B6695BB129F'
+                    url: 'https://viblio.com/s/e/5221DA02-565A-11E4-AFCA-4B6695BB129F',
+                    ipadUrl: encodeURIComponent('https://viblio.com/s/e/5221DA02-565A-11E4-AFCA-4B6695BB129F')
                 },
                 onStart: function( clip ) {
                     flowplayer().mute();    
@@ -113,7 +123,7 @@ define( ['plugins/router',
                 onBeforeFinish: function() { 
                     return false; 
                 }
-            });
+            }).flowplayer().ipad({simulateiDevice: should_simulate()});;
             resizePlayer();
             $(window).bind('resize', resizePlayer );
         },

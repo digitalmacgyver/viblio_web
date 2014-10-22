@@ -431,7 +431,7 @@ define(["durandal/app",
         }).flowplayer().ipad({simulateiDevice: should_simulate()});
 	resizePlayer();
     }
-
+    
     // Show the difference between to dates in a nice way
     function prettyWhen( n, d ) {
         if (( n - d ) == 0) return "now";
