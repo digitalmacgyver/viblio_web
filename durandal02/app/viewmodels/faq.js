@@ -113,7 +113,8 @@ define( ['plugins/router',
             
             $(".faqVid-Wrap").flowplayer({ src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
                 clip: {
-                    url: 'https://viblio.com/s/e/5221DA02-565A-11E4-AFCA-4B6695BB129F'
+                    url: 'https://viblio.com/s/e/5221DA02-565A-11E4-AFCA-4B6695BB129F',
+                    ipadUrl: encodeURIComponent('https://s3-us-west-2.amazonaws.com/viblio-external/media/corp-site/photos_from_videos.mp4​')
                 },
                 onStart: function( clip ) {
                     flowplayer().mute();    
