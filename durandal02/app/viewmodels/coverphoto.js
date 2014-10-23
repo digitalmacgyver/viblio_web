@@ -53,7 +53,11 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
         backgroundImageUrl: backgroundImageUrl,
         
         activate: function() {
-            getBackgroundImage()
+            getBackgroundImage();
+        },
+        
+        detached: function() {
+            $('#fileupload').fileupload('destroy');
         },
         
         compositionComplete: function( _view ) {
