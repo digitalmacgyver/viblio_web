@@ -2376,14 +2376,16 @@ define( ['plugins/router',
             var hp = require('viewmodels/hp');
             // If an album uuid is passed in via the url then filter to that album
             if( self.goToAlbum() ){
-                if( self.findMatch( self.albumToGoTo(), hp.albumList().albumsFilterLabels() ) != 'Error' ) {                
-                    //hp.albumList().albumFilterSelected( self, self.findMatch( self.albumToGoTo(), self.albumsFilterLabels() ) );
-                    hp.albumList().albumFilterSelected( hp.albumList(), self.findMatch( self.albumToGoTo(), hp.albumList().albumsFilterLabels() ) );
-                    //this strips the aid params off of the url after navigation
-                    router.navigate('#home', { trigger: false, replace: true });                  
-                } else {
-                    router.navigate('#home');
-                }               
+                app.on( 'albumList:composed', function( obj ) {
+                    if( self.findMatch( self.albumToGoTo(), hp.albumList().albumsFilterLabels() ) != 'Error' ) {                
+                        //hp.albumList().albumFilterSelected( self, self.findMatch( self.albumToGoTo(), self.albumsFilterLabels() ) );
+                        hp.albumList().albumFilterSelected( hp.albumList(), self.findMatch( self.albumToGoTo(), hp.albumList().albumsFilterLabels() ) );
+                        //this strips the aid params off of the url after navigation
+                        router.navigate('#home', { trigger: false, replace: true });                  
+                    } else {
+                        router.navigate('#home');
+                    }
+                });               
             }
             
             if( self.addAlbum() ){
