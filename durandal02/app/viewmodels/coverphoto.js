@@ -7,8 +7,8 @@ define( ['plugins/router',
          'plugins/dialog'], 
 function(router, app, viblio, config, dialogs, Events, dialog) {
     
-    var backgroundImageUrl = ko.observable(null);
-    var albumOrUser = ko.observable();
+    var backgroundImageUrl = ko.observable('../css/images/wide-wallpaper.jpg');
+    var albumOrUser = ko.observable("user");
     var user = viblio.user();
     var view;
     
@@ -37,6 +37,13 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
             services/mediafile/get 
             mid = banner_uuid
             The result->media->views->banner->url is where we can get the image from.*/
+            console.log( user );
+            if( user.banner_uuid ) {
+                viblio.api('services/mediafile/get', user.banner_uuid).then( function( res ) {
+                    console.log( res );
+                    backgroundImageUrl( res );
+                });
+            }
         } else {
             //I've set things so that any time a poster is requested, banners will also be returned.
         }
@@ -45,9 +52,54 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
     return {
         backgroundImageUrl: backgroundImageUrl,
         
+        activate: function() {
+            getBackgroundImage()
+        },
+        
         compositionComplete: function( _view ) {
 	    view = _view;
 	    app.trigger( 'coverPhoto:composed', this );
+            
+            // jqueryFileUpload
+            // avatar
+	    $(view).find(".bannerAvatar").on( 'click', function() {
+		$(view).find(".avatarUpload").click();
+	    });
+	    $(view).find(".avatarUpload").fileupload({
+		dataType: 'json',
+		start: function() {
+		    $(".bannerAvatar div i").css( 'visibility', 'visible' );
+		},
+		done: function(e, data) {
+                    console.log( e, data );
+		    $('<img class="newPic">').load( function() {
+			$(".bannerAvatar img").replaceWith( data );
+			$(".bannerAvatar div i").css( 'visibility', 'hidden' );
+		    }).attr( 'src', "/services/user/avatar?uid=-&y=120" );
+		}
+	    });
+            
+            // cover photo
+            $(view).find(".bannerEdit-Wrap").on( 'click', function() {
+		$(view).find(".coverUpload").click();
+	    });
+	    $(view).find(".coverUpload").fileupload({
+		dataType: 'json',
+		/*add: function (e, data) {
+                    console.log( e, data );
+                    var args = data.value;
+                    data.process().done(function() {
+			return $(this).fileupload('process', data);
+                    }).always(function( data ) {
+                        viblio.api( "/services/user/add_or_replace_banner_photo/", data ).then( function( res ) {
+                            console.log( res );
+                        });
+                    });
+                },*/
+                done: function(e, data) {
+                    console.log( data );
+                }
+	    });
 	}
     
     };
