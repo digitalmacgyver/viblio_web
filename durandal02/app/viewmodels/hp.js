@@ -9,6 +9,7 @@ define(['durandal/app',
     var view;
     var unnamed;
     var albumList = ko.observable();
+    var albumListResolved = $.Deferred();
     var albumList_is_visible = false;
     var top_actors;
     var unnamed_is_visible = false;
@@ -28,13 +29,14 @@ define(['durandal/app',
             return false;
         }
     });
-
+    
     app.on( 'unnamed:composed', function( obj ) {
 	unnamed = obj;
     });
     
     app.on( 'albumList:composed', function( obj ) {
 	albumList(obj);
+        albumListResolved.resolve();
     });
 
     app.on( 'top-actors:composed', function( obj ) {
@@ -45,7 +47,32 @@ define(['durandal/app',
     this.on( 'nginxModal:closed', function() {
 	customDialogs.showModal( 'viewmodels/firstTimeUploadModal' ); 
     });
-
+    
+    function findMatch( find, inArray ) {
+        console.log( 'looking for',find, "in", inArray)
+        var match = ko.utils.arrayFirst( inArray, function( a ) {
+            return a.uuid === find;
+        });
+        if (match) {
+            return match;  
+        } else {
+            return 'Error';
+        }    
+    };
+    
+    // 
+    function activateAlbum( aid ) {
+        $.when(albumListResolved).then(function () {
+            if( findMatch( aid, albumList().albumsFilterLabels() ) != 'Error' ) {
+                albumList().albumFilterSelected( albumList(), findMatch( aid, albumList().albumsFilterLabels() ) );
+                //this strips the aid params off of the url after navigation
+                router.navigate('#home', { trigger: false, replace: true });                  
+            } else {
+                router.navigate('#home');
+            }
+        });
+    };
+    
     function handle_visibility( visible ) {
 	albumList_is_visible = visible;
         var albumsWidth;
@@ -61,8 +88,6 @@ define(['durandal/app',
 	else {
 	    $(view).find( '.top-strip .right' ).css( 'display', 'none' );
 
-	    //$(view).find( '.top-strip .cont' ).animate({ 'margin-right': '0px' });
-	    //$(view).find( '.top-strip .cont .left' ).animate({ 'margin-right': '0px' });
 	    $(view).find( '.top-strip .cont' ).css( 'margin-right', '0px' );
 	    $(view).find( '.top-strip .cont .left' ).css( 'margin-right', '0px' );
             $(top_actors).find( ".sd-pscroll").trigger( 'children-changed' );
@@ -110,7 +135,8 @@ define(['durandal/app',
                     ko.cleanNode(videos);
                 }
                 if( args.aid ) {
-                    nhome( new newHome( {aid: args.aid} ) );    
+                    nhome( new newHome( {aid: args.aid} ) );
+                    activateAlbum( args.aid );
                 } else if( args.fid ) {
                     nhome( new newHome( {fid: args.fid} ) );  
                 } else if( args.addAlbum ) {

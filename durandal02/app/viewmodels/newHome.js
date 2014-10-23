@@ -15,30 +15,6 @@ define( ['plugins/router',
     var newHome = function( args ) {
 	var self = this;
         
-        // Go to a specific album - aid provided via link from an email
-        self.goToAlbum = ko.computed( function() {
-            if( args ) {
-                if( args.aid ) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        });
-        self.albumToGoTo = ko.computed(function(){
-            if( args ) {
-                if( args.aid ) {
-                    return args.aid;
-                } else {
-                    return null;
-                }
-            } else {
-                return null
-            }
-        });
-        
         // Go to a specific face - fid provided via link from an email
         self.goToFace = ko.computed( function() {
             if( args ) {
@@ -2373,21 +2349,6 @@ define( ['plugins/router',
         
         // get albums and create list
         self.getAllAlbumsLabels().then( function() {
-            var hp = require('viewmodels/hp');
-            // If an album uuid is passed in via the url then filter to that album
-            if( self.goToAlbum() ){
-                app.on( 'albumList:composed', function( obj ) {
-                    if( self.findMatch( self.albumToGoTo(), hp.albumList().albumsFilterLabels() ) != 'Error' ) {                
-                        //hp.albumList().albumFilterSelected( self, self.findMatch( self.albumToGoTo(), self.albumsFilterLabels() ) );
-                        hp.albumList().albumFilterSelected( hp.albumList(), self.findMatch( self.albumToGoTo(), hp.albumList().albumsFilterLabels() ) );
-                        //this strips the aid params off of the url after navigation
-                        router.navigate('#home', { trigger: false, replace: true });                  
-                    } else {
-                        router.navigate('#home');
-                    }
-                });               
-            }
-            
             if( self.addAlbum() ){
                 self.showAllVideos();
                 $('.navbar-right').children('.albumsList').children('.dropdown-toggle').trigger('click');

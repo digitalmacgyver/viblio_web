@@ -39,10 +39,6 @@ define( ['plugins/router',
                     return false;
                 }
             });
-            
-            /*app.on( 'album:name_changed', function() {
-                self.getAllAlbumsLabels();
-            });*/
         };
         
         albumList.prototype.unselectAllAlbums = function() {
@@ -133,15 +129,11 @@ define( ['plugins/router',
             }
         };
         
-        albumList.prototype.activate = function() {
-            var self = this;
-            
-            self.getAllAlbumsLabels();
-            //self.albumFilterIsActive( hp.nhome().albumFilterIsActive() );
-        };
-        
         albumList.prototype.compositionComplete = function() {
-            app.trigger( 'albumList:composed', this );
+            var self = this;
+            $.when( self.getAllAlbumsLabels() ).then( function() {
+                app.trigger( 'albumList:composed', self );
+            });
         };
         
         return albumList;
