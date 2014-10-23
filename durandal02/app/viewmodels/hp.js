@@ -30,6 +30,8 @@ define(['durandal/app',
         }
     });
     
+    var gotToAlbum = ko.observable( null );
+    
     app.on( 'unnamed:composed', function( obj ) {
 	unnamed = obj;
     });
@@ -49,7 +51,6 @@ define(['durandal/app',
     });
     
     function findMatch( find, inArray ) {
-        console.log( 'looking for',find, "in", inArray)
         var match = ko.utils.arrayFirst( inArray, function( a ) {
             return a.uuid === find;
         });
@@ -62,9 +63,18 @@ define(['durandal/app',
     
     // 
     function activateAlbum( aid ) {
-        $.when(albumListResolved).then(function () {
+        var def = $.Deferred();
+        $.when(albumListResolved).then(function() {
             if( findMatch( aid, albumList().albumsFilterLabels() ) != 'Error' ) {
-                albumList().albumFilterSelected( albumList(), findMatch( aid, albumList().albumsFilterLabels() ) );
+                var album = findMatch( aid, albumList().albumsFilterLabels() );
+                nhome().selectedFilterAlbum( album.label );
+                nhome().currentSelectedFilterAlbum( album );
+                nhome().currentAlbumAid( album.uuid );
+                nhome().currentAlbumTitle( album.title.toUpperCase() );
+                $.when( nhome().albumVidsSearch( true ) ).then( function(){
+                    albumList().highlightActiveAlbum( aid );
+                });
+                
                 //this strips the aid params off of the url after navigation
                 router.navigate('#home', { trigger: false, replace: true });                  
             } else {
@@ -136,7 +146,7 @@ define(['durandal/app',
                 }
                 if( args.aid ) {
                     nhome( new newHome( {aid: args.aid} ) );
-                    activateAlbum( args.aid );
+                    gotToAlbum(args.aid);
                 } else if( args.fid ) {
                     nhome( new newHome( {fid: args.fid} ) );  
                 } else if( args.addAlbum ) {
@@ -176,6 +186,9 @@ define(['durandal/app',
         
 	compositionComplete: function( _view ) {
 	    view = _view;
+            if( gotToAlbum() ) {
+                activateAlbum( gotToAlbum() );
+            }
 	    handle_visibility( albumList_is_visible );
 	}
     };

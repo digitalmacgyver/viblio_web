@@ -13,6 +13,8 @@ define( ['plugins/router',
         var albumList = function( args ) {
             var self = this;
             
+            self.view;
+            
             self.albumsFilterLabels = ko.observableArray([]);
             // base this value on the value of the name variable in the newHome viewmodel
             // newHome is accessed through the homepage (hp)'s instance of newHome (nhome())
@@ -51,7 +53,6 @@ define( ['plugins/router',
         
         albumList.prototype.highlightActiveAlbum = function( aid ) {
             var self = this;
-            console.log( 'highlightActiveAlbum fired', aid );
             self.albumsFilterLabels().forEach( function( c ) {
                 if( c.uuid == aid ) {
                     c.selected( true );
@@ -100,7 +101,6 @@ define( ['plugins/router',
             var gettingAlbum;
             
             if( !$parent.isActiveFlag() ) {
-                console.log( 'albumList albumFilterSelected fired', album);
                 if( hp.nhome().select_mode_on() ){
                     hp.nhome().cancel_select_mode();
                 }
@@ -111,8 +111,9 @@ define( ['plugins/router',
                         album.selected(false);
                         hp.nhome().currentAlbumAid(null);
                         hp.nhome().currentAlbumTitle(null);
-                        hp.nhome().showAllVideos();
-                        gettingAlbum = false;
+                        $.when( hp.nhome().showAllVideos() ).then( function() {
+                            gettingAlbum = false;
+                        });
                     } else {
                         $parent.albumsFilterLabels().forEach( function( c ) {
                             c.selected( false );
@@ -122,15 +123,18 @@ define( ['plugins/router',
                         hp.nhome().currentSelectedFilterAlbum( album );
                         hp.nhome().currentAlbumAid( album.uuid );
                         hp.nhome().currentAlbumTitle( album.title.toUpperCase() );
-                        hp.nhome().albumVidsSearch( true );
-                        gettingAlbum = false;
+                        $.when( hp.nhome().albumVidsSearch( true ) ).then( function() {
+                            gettingAlbum = false;
+                        });
                     }
                 }
             }
         };
         
-        albumList.prototype.compositionComplete = function() {
+        albumList.prototype.compositionComplete = function( _view ) {
             var self = this;
+            self.view = _view;
+            
             $.when( self.getAllAlbumsLabels() ).then( function() {
                 app.trigger( 'albumList:composed', self );
             });
