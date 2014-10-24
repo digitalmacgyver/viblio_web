@@ -237,6 +237,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 		    $(".avatar div i").css( 'visibility', 'visible' );
 		},
 		done: function(e, data) {
+                    console.log( data, $(this) );
 		    $('<img class="newPic">').load( function() {
 			$(".avatar img").replaceWith( $(this) );
 			$(".avatar div i").css( 'visibility', 'hidden' );

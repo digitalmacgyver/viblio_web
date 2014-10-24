@@ -109,13 +109,21 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
                 }
 	    });*/
             $('.coverUpload').fileupload({
-                /*change: function (e, data) {
+                change: function (e, data) {
+                    console.log( data );
                     $.each(data.files, function (index, file) {
                         alert('Selected file: ' + file.name);
                     });
-                },*/
+                    /*viblio.api( '/services/user/add_or_replace_banner_photo', data ).then( function( res ) {
+                        console.log( res );
+                    });*/
+                },
                 add: function (e, data) {
+                    console.log( data );
                     data.submit();
+                },
+                done: function (e, data) {
+                    console.log( data, data.result );
                 }
             });
             
