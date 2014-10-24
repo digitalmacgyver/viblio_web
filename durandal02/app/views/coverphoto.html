@@ -7,7 +7,21 @@
             <!--<div class="editButton">
                 <i class="fa fa-pencil"></i> Edit cover photo
             </div>-->
-            <input class="coverUpload" type="file" name="coverUpload" data-url="/services/user/add_or_replace_banner_photo/" />
+            <input class="coverUpload" type="file" name="files[]" data-url="/services/user/add_or_replace_banner_photo/" />
+            
+            <!-- sample code -->
+            <span class="btn btn-success fileinput-button">
+                <i class="glyphicon glyphicon-plus"></i>
+                <span>Select files...</span>
+                <!-- The file input field used as target for the file upload widget -->
+                <input id="fileupload" type="file" name="files[]" multiple="">
+            </span>
+            <div id="progress" class="progress">
+                <div class="progress-bar progress-bar-success"></div>
+            </div>
+            <div id="files" class="files"></div>
+            <!-- end smaple code -->
+            
         </div>
         <!-- ko if: !backgroundImageUrl() -->
         <div class="stockBanner centered whiteText">
