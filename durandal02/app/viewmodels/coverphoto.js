@@ -38,10 +38,16 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
             mid = banner_uuid
             The result->media->views->banner->url is where we can get the image from.*/
             console.log( user );
+            var args;
+            
             if( user.banner_uuid ) {
-                viblio.api('services/mediafile/get', user.banner_uuid).then( function( res ) {
+                args = {
+                    mid: user.banner_uuid
+                };
+                
+                viblio.api('services/mediafile/get', args).then( function( res ) {
                     console.log( res );
-                    backgroundImageUrl( res );
+                    backgroundImageUrl( res.media.views.banner.url );
                 });
             }
         } else {
