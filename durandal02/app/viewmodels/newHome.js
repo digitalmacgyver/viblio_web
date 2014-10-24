@@ -2037,7 +2037,7 @@ define( ['plugins/router',
             if( self.create_new_vid_album_mode_on() ) {
                 viblio.api( '/services/album/create', { name: self.getAlbumName(), list: self.selectedVideos() } ).then( function( data ) {
                     var vidOrVids = num == 1 ? ' video' : ' videos';
-                    var msg = num + vidOrVids + ' successfully added to your new "' + self.getAlbumName() + '" Album';
+                    var msg = num + vidOrVids + ' successfully added to your new "' + data.album.title + '" Album';
                     viblio.notify( msg, 'success' );
                     
                     //hp.albumList().getAllAlbumsLabels( self.albumFilterIsActive() ? self.currentAlbumAid() : null );
