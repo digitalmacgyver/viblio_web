@@ -15,30 +15,6 @@ define( ['plugins/router',
     var newHome = function( args ) {
 	var self = this;
         
-        // Go to a specific album - aid provided via link from an email
-        self.goToAlbum = ko.computed( function() {
-            if( args ) {
-                if( args.aid ) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        });
-        self.albumToGoTo = ko.computed(function(){
-            if( args ) {
-                if( args.aid ) {
-                    return args.aid;
-                } else {
-                    return null;
-                }
-            } else {
-                return null
-            }
-        });
-        
         // Go to a specific face - fid provided via link from an email
         self.goToFace = ko.computed( function() {
             if( args ) {
@@ -314,7 +290,7 @@ define( ['plugins/router',
         
         self.photoViewFilter = ko.observable( "some" );
         self.photoViewFilter.subscribe( function( val ) {
-            console.log( "photoViewFilter tickled" );
+            //console.log( "photoViewFilter tickled" );
             // reset counter to 0
             self.visiblePhotosCount( 0 );
             if( val == "some" ) {
@@ -346,7 +322,7 @@ define( ['plugins/router',
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
                 viblio.api('services/mediafile/list_status').then( function( data ) {
-                    console.log( data );
+                    //console.log( data );
                     self.numVidsPending( data.stats.pending );
                     var num = data.stats.pending/* + data.stats.visible*/;
                     self.vidsInProcess( num );
@@ -552,7 +528,7 @@ define( ['plugins/router',
                 
                 viblio.api( '/services/mediafile/recently_uploaded', args )
                     .then( function( json ) {
-                        console.log( json );
+                        //console.log( json );
                         self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
                         self.recentPager = json.pager;
                         json.media.forEach( function( mf ) {
@@ -632,7 +608,7 @@ define( ['plugins/router',
                 args.include_images = 1;
 		viblio.api( '/services/yir/videos_for_month', args )
 		    .then( function( json ) {
-                        console.log( json, args );
+                        //console.log( json, args );
                         self.hits ( json.pager.total_entries );
 			self.monthPager = json.pager;
                         json.media.forEach( function( mf ) {
@@ -737,7 +713,7 @@ define( ['plugins/router',
                 }*/
                 viblio.api( '/services/faces/media_face_appears_in', args )
                     .then( function( json ) {
-                        console.log( json );
+                        //console.log( json );
                         self.hits ( json.pager.total_entries );
                         self.facesPager = json.pager;
                         json.media.forEach( function( mf ) {
@@ -1217,7 +1193,7 @@ define( ['plugins/router',
         });
 
 	p.on( 'photo:play', function( p ) {
-            console.log( $(p.view).find('img') );
+            //console.log( $(p.view).find('img') );
             //$(p.view).find('img').magnificPopup({type:'image'});
 	});
         
@@ -1977,7 +1953,7 @@ define( ['plugins/router',
     };
     
     newHome.prototype.addToAlbumSelected = function( self, album ) {
-        console.log( 'addToAlbumSelected fired', self, album )
+        //console.log( 'addToAlbumSelected fired', self, album )
         self.albumLabels().forEach( function( a ) {
             a.selected( false );
         });
@@ -2069,7 +2045,6 @@ define( ['plugins/router',
                 else if( self.add_to_existing_vid_album_mode_on() ) {
                     dialog.showModal( 'viewmodels/albumListModal' ).then( function( album ) {
                         if( album ) {
-                            console.log( album );
                             handleAdd( album );
                         }                  
                     });    
@@ -2091,7 +2066,7 @@ define( ['plugins/router',
             };
 
             viblio.api( 'services/mediafile/create_video_summary', args ).then( function( response ) {
-                console.log( response );
+                //console.log( response );
                 self.recentVidsSearch();
             });
         }
@@ -2373,19 +2348,6 @@ define( ['plugins/router',
         
         // get albums and create list
         self.getAllAlbumsLabels().then( function() {
-            var hp = require('viewmodels/hp');
-            // If an album uuid is passed in via the url then filter to that album
-            if( self.goToAlbum() ){
-                if( self.findMatch( self.albumToGoTo(), hp.albumList().albumsFilterLabels() ) != 'Error' ) {                
-                    //hp.albumList().albumFilterSelected( self, self.findMatch( self.albumToGoTo(), self.albumsFilterLabels() ) );
-                    hp.albumList().albumFilterSelected( hp.albumList(), self.findMatch( self.albumToGoTo(), hp.albumList().albumsFilterLabels() ) );
-                    //this strips the aid params off of the url after navigation
-                    router.navigate('#home', { trigger: false, replace: true });                  
-                } else {
-                    router.navigate('#home');
-                }               
-            }
-            
             if( self.addAlbum() ){
                 self.showAllVideos();
                 $('.navbar-right').children('.albumsList').children('.dropdown-toggle').trigger('click');
@@ -2517,7 +2479,7 @@ define( ['plugins/router',
             },
             
             beforeShow: function () {
-                console.log( self.playingVid().media() );
+                //console.log( self.playingVid().media() );
                 if( head.mobile ) {
                     this.helpers.buttons = {position: 'bottom'};
                 }
