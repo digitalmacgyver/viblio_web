@@ -62,7 +62,6 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
         
         compositionComplete: function( _view ) {
 	    view = _view;
-	    app.trigger( 'coverPhoto:composed', this );
             
             // jqueryFileUpload
             // avatar
@@ -104,6 +103,8 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
                     console.log( data );
                 }
 	    });
+            
+            app.trigger( 'coverphoto:composed', this );
 	}
     
     };
