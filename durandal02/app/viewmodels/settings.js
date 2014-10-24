@@ -237,13 +237,10 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 		    $(".avatar div i").css( 'visibility', 'visible' );
 		},
 		done: function(e, data) {
-		    /*$('<img class="newPic">').load( function() {
+		    $('<img class="newPic">').load( function() {
 			$(".avatar img").replaceWith( $(this) );
 			$(".avatar div i").css( 'visibility', 'hidden' );
-		    }).attr( 'src', "/services/user/avatar?uid=-&y=120" );*/
-                    console.log( e, data );
-                    $(".bannerAvatar div i").css( 'visibility', 'hidden' );
-                    $('.bannerAvatar img').attr( 'src', "/services/user/avatar?uid=-&x=120" );
+		    }).attr( 'src', "/services/user/avatar?uid=-&y=120" );
 		}
 	    });
         }
