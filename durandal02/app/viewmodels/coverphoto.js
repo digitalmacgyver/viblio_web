@@ -131,7 +131,7 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
             
                 
                 // Change this to the location of your server-side upload handler:
-                var url = '/services/user/add_or_replace_banner_photo/';
+                var url = 'https://staging.viblio.com/services/user/add_or_replace_banner_photo/';
                 $('#fileupload').fileupload({
                     url: url,
                     dataType: 'json',
