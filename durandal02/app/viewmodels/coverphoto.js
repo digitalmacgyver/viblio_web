@@ -133,6 +133,7 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
                 },
                 done: function (e, data) {
                     console.log( data, data.result );
+                    backgroundImageUrl( data.result.views.banner.url );
                 }
             });
             
