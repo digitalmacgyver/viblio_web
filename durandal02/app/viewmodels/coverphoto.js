@@ -75,16 +75,19 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
 		},
 		done: function(e, data) {
                     console.log( e, data );
-		    $('<img class="newPic">').load( function() {
+		    /*$('<img class="newPic">').load( function() {
 			$(".bannerAvatar img").replaceWith( data );
 			$(".bannerAvatar div i").css( 'visibility', 'hidden' );
-		    }).attr( 'src', "/services/user/avatar?uid=-&y=120" );
+		    }).attr( 'src', "/services/user/avatar?uid=-&y=120" );*/
+                    
+                    $(".bannerAvatar div i").css( 'visibility', 'hidden' );
+                    $('.bannerAvatar img').attr( 'src', "/services/user/avatar?uid=-&y=120" );
 		}
 	    });
             
             // cover photo
-            $(view).find(".bannerEdit-Wrap").on( 'click', function() {
-		//$(view).find(".coverUpload").click();
+            $(".editIcon-Wrap").on( 'click', function() {
+		$(".coverUpload").click();
 	    });
 	    /*$(view).find(".coverUpload").fileupload({
 		//dataType: 'json',
@@ -112,7 +115,7 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
                 change: function (e, data) {
                     console.log( data );
                     $.each(data.files, function (index, file) {
-                        alert('Selected file: ' + file.name);
+                        console.log('Selected file: ' + file.name);
                     });
                     /*viblio.api( '/services/user/add_or_replace_banner_photo', data ).then( function( res ) {
                         console.log( res );
