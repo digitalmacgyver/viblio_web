@@ -154,7 +154,7 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
             /*global window, $ */
             'use strict';
             // Change this to the location of your server-side upload handler:
-            var url = 'https://staging.viblio.com/services/user/add_or_replace_banner_photo/',
+            var url = 'https://staging.viblio.com/services/user/add_or_replace_banner_photo',
                 uploadButton = $('<button/>')
                     .addClass('btn btn-primary')
                     .prop('disabled', true)
