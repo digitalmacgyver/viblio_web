@@ -84,11 +84,11 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
             
             // cover photo
             $(view).find(".bannerEdit-Wrap").on( 'click', function() {
-		$(view).find(".coverUpload").click();
+		//$(view).find(".coverUpload").click();
 	    });
-	    $(view).find(".coverUpload").fileupload({
-		dataType: 'json',
-		/*add: function (e, data) {
+	    /*$(view).find(".coverUpload").fileupload({
+		//dataType: 'json',
+		add: function (e, data) {
                     console.log( e, data );
                     var args = data.value;
                     data.process().done(function() {
@@ -98,11 +98,33 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
                             console.log( res );
                         });
                     });
-                },*/
+                },
+                change: function (e, data) {
+                    $.each(data.files, function (index, file) {
+                        alert('Selected file: ' + file.name);
+                    });
+                },
                 done: function(e, data) {
                     console.log( data );
                 }
-	    });
+	    });*/
+            $('.coverUpload').fileupload({
+                /*change: function (e, data) {
+                    $.each(data.files, function (index, file) {
+                        alert('Selected file: ' + file.name);
+                    });
+                },*/
+                add: function (e, data) {
+                    data.submit();
+                }
+            });
+            
+            /*$('.randomInput').bind('change', function (e) {
+                console.log( $(this) );
+                $('.coverUpload').fileupload('add', {
+                    fileInput: $(this)
+                });
+            });*/
             
             app.trigger( 'coverphoto:composed', this );
 	}
