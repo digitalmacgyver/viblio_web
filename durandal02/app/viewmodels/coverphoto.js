@@ -136,7 +136,7 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
                 //url: url,
                 dataType: 'json',
                 done: function (e, data) {
-                    console.log( data.result );
+                    console.log( data, data.result );
                     $.each(data.result.files, function (index, file) {
                         $('<p/>').text(file.name).appendTo('#files');
                     });
