@@ -20,6 +20,13 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
         backgroundImageUrl( album.views.banner ? album.views.banner.url : null );
     });
     
+    app.on( 'albumList:notactive', function() {
+        albumOrUser( 'user' );
+        currentAlbum( null );
+        console.log( 'message received', currentAlbum() );
+        getBackgroundImage();
+    });
+    
     Events.includeIn( this );
     
     function setBackgroundImage() {
@@ -62,6 +69,7 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
         backgroundImageUrl: backgroundImageUrl,
         
         activate: function() {
+            $('.bannerAvatar img').attr( 'src', "" );
             getBackgroundImage();
         },
         
@@ -72,25 +80,48 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
         compositionComplete: function( _view ) {
 	    view = _view;
             
+            $('.bannerAvatar img').attr( 'src', "/services/user/avatar?uid=-&x=120&y=120" );
+            
             // jqueryFileUpload
             // avatar
 	    $(view).find(".bannerAvatar").on( 'click', function() {
 		$(view).find(".avatarUpload").click();
 	    });
 	    $(view).find(".avatarUpload").fileupload({
+                options: {
+                    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
+                },
 		dataType: 'json',
 		start: function() {
+                    // show spinner
 		    $(".bannerAvatar div i").css( 'visibility', 'visible' );
 		},
 		done: function(e, data) {
-                    console.log( e, data );
-		    /*$('<img class="newPic">').load( function() {
-			$(".bannerAvatar img").replaceWith( data );
-			$(".bannerAvatar div i").css( 'visibility', 'hidden' );
-		    }).attr( 'src', "/services/user/avatar?uid=-&y=120" );*/
-                    
+                    // hide spinner
                     $(".bannerAvatar div i").css( 'visibility', 'hidden' );
-                    $('.bannerAvatar img').attr( 'src', "/services/user/avatar?uid=-&y=120" );
+                    
+                    $('.bannerAvatar img').attr( 'src', "/services/user/avatar?uid=-&x=120&y=120" );
+                    $('#userNamePicNav .avatar img').attr( 'src', "/services/user/avatar?uid=-&x=37&y=37" );
+                    
+                    // check to see if the image src already has a zoom parameter in it, if so then take it out - this is used to ensure that the
+                    // new image is shown. The src needs to be different than before
+                    /*if( $('.bannerAvatar img').attr( 'src' ) == "/services/user/avatar?uid=-&zoom=0&x=120&y=120" ) {
+                        // update image
+                        $('.bannerAvatar img').attr( 'src', "/services/user/avatar?uid=-&x=120&y=120" );
+                    } else {
+                        // update image
+                        $('.bannerAvatar img').attr( 'src', "/services/user/avatar?uid=-&zoom=0&x=120&y=120" );
+                    }
+                    
+                    // check to see if the image src already has a zoom parameter in it, if so then take it out - this is used to ensure that the
+                    // new image is shown. The src needs to be different than before
+                    if( $('#userNamePicNav .avatar img').attr( 'src' ) == "/services/user/avatar?uid=-&zoom=0&x=37&y=37" ) {
+                        // update header image
+                        $('#userNamePicNav .avatar img').attr( 'src', "/services/user/avatar?uid=-&x=37&y=37" );
+                    } else {
+                        // update header image
+                        $('#userNamePicNav .avatar img').attr( 'src', "/services/user/avatar?uid=-&zoom=0&x=37&y=37" );
+                    }*/
 		}
 	    });
             
@@ -111,18 +142,13 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
                 add: function (e, data) {
                     console.log( data );
                     if( albumOrUser() == "album" ) {
-                        
-                        // This section needs work
-                        
                         var aid = currentAlbum().uuid;
-                        var file = data.files[0];
-                        var xhr = new XMLHttpRequest();
-                        xhr.open("POST", '/services/user/add_or_replace_banner_photo', false ); // sync!
-                        xhr.setRequestHeader('Final-Length', file.size );
-                        xhr.send( JSON.stringify( {aid: aid, file:{Path:file.name} } ) );
-                    } else {
-                        data.submit();
+                        data.formData = {
+                            aid: aid,
+                            upload: data.files[0]
+                        }
                     }
+                    data.submit();
                 },
                 done: function (e, data) {
                     console.log( data );

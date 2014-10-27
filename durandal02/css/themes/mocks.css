@@ -6727,12 +6727,20 @@ ul.token-input-list-facebook li input {
 }
 
 .bannerImage-Wrap .bannerEdit-Wrap:hover .editIcon-Wrap,
-.bannerImage-Wrap .bannerEdit-Wrap .editButton{
+.bannerImage-Wrap .bannerEdit-Wrap .editButton {
     //display: none;
 }
 
 .bannerImage-Wrap .bannerEdit-Wrap:hover .editButton {
     //display: block;
+}
+
+.stockBanner p {
+    margin-top: 50px;
+}
+
+.stockBanner {
+    margin-top: 80px;
 }
 
 .bannerImage {

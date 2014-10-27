@@ -191,6 +191,8 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	    var self = this;
 	    self.view = view;
             
+            $('#apic').attr( 'src', "" );
+            
 	    return viblio.api( '/services/user/profile' ).then( function( json ) {
 
 		var p = { uuid: json.profile.uuid,
@@ -227,6 +229,9 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	},
         
         compositionComplete: function(view) {
+            
+            $('#apic').attr( 'src', "/services/user/avatar?uid=-&x=120&y=120" );
+            
 	    // jqueryFileUpload
 	    $(view).find(".avatar").on( 'click', function() {
 		$(view).find(".fileupload").click();
@@ -234,14 +239,33 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	    $(view).find(".fileupload").fileupload({
 		dataType: 'json',
 		start: function() {
+                    // show spinner
 		    $(".avatar div i").css( 'visibility', 'visible' );
 		},
 		done: function(e, data) {
-                    console.log( data, $(this) );
-		    $('<img class="newPic">').load( function() {
-			$(".avatar img").replaceWith( $(this) );
-			$(".avatar div i").css( 'visibility', 'hidden' );
-		    }).attr( 'src', "/services/user/avatar?uid=-&y=120" );
+		    // hide spinner
+                    $(".avatar div i").css( 'visibility', 'hidden' );
+                    
+                    $('#apic').attr( 'src', "/services/user/avatar?uid=-&x=120&y=120" );
+                    $('#userNamePicNav .avatar img').attr( 'src', "/services/user/avatar?uid=-&x=37&y=37" );
+                    
+                    // check to see if the image src already has a zoom parameter in it, if so then take it out - this is used to ensure that the
+                    // new image is shown. The src needs to be different than before
+                    /*if( $('#apic').attr( 'src' ) == "/services/user/avatar?uid=-&zoom=0&x=120&y=120" ) {
+                        // update image
+                        $('#apic').attr( 'src', "/services/user/avatar?uid=-&x=120&y=120" );
+                    } else {
+                        // update image
+                        $('#apic').attr( 'src', "/services/user/avatar?uid=-&zoom=0&x=120&y=120" );
+                    }
+                    
+                    if( $('#userNamePicNav .avatar img').attr( 'src' ) == "/services/user/avatar?uid=-&zoom=0&x=37&y=37" ) {
+                        // update header image
+                        $('#userNamePicNav .avatar img').attr( 'src', "/services/user/avatar?uid=-&x=37&y=37" );
+                    } else {
+                        // update header image
+                        $('#userNamePicNav .avatar img').attr( 'src', "/services/user/avatar?uid=-&zoom=0&x=37&y=37" );
+                    }*/
 		}
 	    });
         }
