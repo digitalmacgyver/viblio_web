@@ -923,6 +923,9 @@ define( ['plugins/router',
         }).promise()
         // If the album has videos in it go to it!
           .done(function(){
+            // send a message that includes the newly activated album object
+            app.trigger( 'albumList:gotalbum', self.currentAlbum() );
+            
             self.current_album_is_empty( false );
             // reset active filters
             self.recentUploadsIsActive(false);

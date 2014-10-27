@@ -9,8 +9,16 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
     
     var backgroundImageUrl = ko.observable('../css/images/wide-wallpaper.jpg');
     var albumOrUser = ko.observable("user");
+    var currentAlbum = ko.observable( null )
     var user = viblio.user();
     var view;
+    
+    app.on( 'albumList:gotalbum', function( album ) {
+        albumOrUser( 'album' );
+        currentAlbum( album );
+        console.log( 'message received', currentAlbum() );
+        backgroundImageUrl( album.views.banner ? album.views.banner.url : null );
+    });
     
     Events.includeIn( this );
     
@@ -22,7 +30,7 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
             result->{views}->{banner}->{url} 
             There is the banner URL.*/
             
-        } else {
+        } else if( albumOrUser() == "album" ) {
             /*services/album/add_or_replace_banner_photo
             This takes the same parameters as the method above, and one additional one:
             aid = the uuid of the album whose banner is being set.
@@ -32,12 +40,6 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
     
     function getBackgroundImage() {
         if( albumOrUser() == "user" ) {
-            /*The user object now has a new field: banner_uuid, this is the UUID of a mediafile.
-            You can get information about this mediafile in any way you usually get mediafile information, probably most simply by:
-            services/mediafile/get 
-            mid = banner_uuid
-            The result->media->views->banner->url is where we can get the image from.*/
-            console.log( user );
             var args;
             
             if( user.banner_uuid ) {
@@ -45,13 +47,14 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
                     mid: user.banner_uuid
                 };
                 
-                viblio.api('services/mediafile/get', args).then( function( res ) {
+                return viblio.api('services/mediafile/get', args).then( function( res ) {
                     console.log( res );
                     backgroundImageUrl( res.media.views.banner.url );
                 });
             }
         } else {
             //I've set things so that any time a poster is requested, banners will also be returned.
+            
         }
     }
     
@@ -95,79 +98,37 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
             $(".editIcon-Wrap").on( 'click', function() {
 		$(".coverUpload").click();
 	    });
-	    /*$(view).find(".coverUpload").fileupload({
-		//dataType: 'json',
-		add: function (e, data) {
-                    console.log( e, data );
-                    var args = data.value;
-                    data.process().done(function() {
-			return $(this).fileupload('process', data);
-                    }).always(function( data ) {
-                        viblio.api( "/services/user/add_or_replace_banner_photo/", data ).then( function( res ) {
-                            console.log( res );
-                        });
-                    });
-                },
-                change: function (e, data) {
-                    $.each(data.files, function (index, file) {
-                        alert('Selected file: ' + file.name);
-                    });
-                },
-                done: function(e, data) {
-                    console.log( data );
-                }
-	    });*/
             $('.coverUpload').fileupload({
+                options: {
+                    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
+                },
                 change: function (e, data) {
                     console.log( data );
                     $.each(data.files, function (index, file) {
                         console.log('Selected file: ' + file.name);
                     });
-                    /*viblio.api( '/services/user/add_or_replace_banner_photo', data ).then( function( res ) {
-                        console.log( res );
-                    });*/
                 },
                 add: function (e, data) {
                     console.log( data );
-                    data.submit();
+                    if( albumOrUser() == "album" ) {
+                        
+                        // This section needs work
+                        
+                        var aid = currentAlbum().uuid;
+                        var file = data.files[0];
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", '/services/user/add_or_replace_banner_photo', false ); // sync!
+                        xhr.setRequestHeader('Final-Length', file.size );
+                        xhr.send( JSON.stringify( {aid: aid, file:{Path:file.name} } ) );
+                    } else {
+                        data.submit();
+                    }
                 },
                 done: function (e, data) {
-                    console.log( data, data.result );
+                    console.log( data );
                     backgroundImageUrl( data.result[0].views.banner.url );
                 }
-            });
-            
-            /*$('.randomInput').bind('change', function (e) {
-                console.log( $(this) );
-                $('.coverUpload').fileupload('add', {
-                    fileInput: $(this)
-                });
-            });*/
-            
-            
-            
-            
-                
-            // Change this to the location of your server-side upload handler:
-            //var url = 'https://staging.viblio.com/services/user/add_or_replace_banner_photo';
-            $('#fileupload').fileupload({
-                //url: url,
-                dataType: 'json',
-                done: function (e, data) {
-                    console.log( data, data.result );
-                    $.each(data.result.files, function (index, file) {
-                        $('<p/>').text(file.name).appendTo('#files');
-                    });
-                },
-                progressall: function (e, data) {
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-                    $('#progress .progress-bar').css(
-                        'width',
-                        progress + '%'
-                    );
-                }
-            }).prop('disabled', !$.support.fileInput)
-                .parent().addClass($.support.fileInput ? undefined : 'disabled');    
+            });    
             
             app.trigger( 'coverphoto:composed', this );
 	}
