@@ -1404,6 +1404,7 @@ define( ['plugins/router',
             }           
             self.searchFilterIsActive(true);
             self.videos.removeAll();
+            self.photos.removeAll();
             self.resetSearchPager();
             self.currentSearch = self.searchQuery();
             self.vidsSearch();
