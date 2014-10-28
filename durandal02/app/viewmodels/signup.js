@@ -129,13 +129,13 @@ function( router, app, system, config, viblio, dialog ) {
 
 	FB.login(function(response) {
             if (response.authResponse) {
-		viblio.api( '/services/na/new_user', { via: 'facebook',
-						       realm: 'facebook',
-						       access_token: response.authResponse.accessToken },
-			    handleLoginFailure )
-		    .then( function( data ) {
-			loginSuccessful( data.user, 'signup_via_facebook' );
-		    });
+		viblio.api( '/services/na/authenticate',
+			    { realm: 'facebook',
+                              access_token: response.authResponse.accessToken },
+			    handleLoginFailure
+			  ).then( function( json ) {
+			      loginSuccessful( json.user );
+			  });
 	    }
 	},{scope: config.facebook_ask_features()});
     };
