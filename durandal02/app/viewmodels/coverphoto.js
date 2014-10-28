@@ -17,7 +17,7 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
         albumOrUser( 'album' );
         currentAlbum( album );
         console.log( 'message received', currentAlbum() );
-        backgroundImageUrl( album.views.banner ? album.views.banner.url : null );
+        backgroundImageUrl( album.views.banner ? album.views.banner[0].url : null );
     });
     
     app.on( 'albumList:notactive', function() {
@@ -125,11 +125,18 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
 		}
 	    });
             
-            // cover photo
+            
+            // cover photos - decide which input to use based on if the user is looking at an album or not
             $(".editIcon-Wrap").on( 'click', function() {
-		$(".coverUpload").click();
+                if( albumOrUser() == "album" ) {
+                    $(".albumCoverUpload").click();
+                } else {
+                    $(".userCoverUpload").click();
+                }
 	    });
-            $('.coverUpload').fileupload({
+            
+            // user cover photo
+            $('.userCoverUpload').fileupload({
                 options: {
                     acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
                 },
@@ -141,20 +148,39 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
                 },
                 add: function (e, data) {
                     console.log( data );
-                    if( albumOrUser() == "album" ) {
-                        var aid = currentAlbum().uuid;
-                        data.formData = {
-                            aid: aid,
-                            upload: data.files[0]
-                        }
-                    }
                     data.submit();
                 },
                 done: function (e, data) {
                     console.log( data );
                     backgroundImageUrl( data.result[0].views.banner.url );
                 }
-            });    
+            });
+            
+            // album cover photo
+            $('.albumCoverUpload').fileupload({
+                options: {
+                    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
+                },
+                change: function (e, data) {
+                    console.log( data );
+                    $.each(data.files, function (index, file) {
+                        console.log('Selected file: ' + file.name);
+                    });
+                },
+                add: function (e, data) {
+                    console.log( data );
+                    var aid = currentAlbum().uuid;
+                    data.formData = {
+                        aid: aid,
+                        upload: data.files[0]
+                    }
+                    data.submit();
+                },
+                done: function (e, data) {
+                    console.log( data );
+                    backgroundImageUrl( data.result[0].views.banner[0].url );
+                }
+            });
             
             app.trigger( 'coverphoto:composed', this );
 	}
