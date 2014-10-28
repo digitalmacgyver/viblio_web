@@ -17,7 +17,7 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
         albumOrUser( 'album' );
         currentAlbum( album );
         console.log( 'message received', currentAlbum() );
-        backgroundImageUrl( album.views.banner ? album.views.banner[0].url : null );
+        backgroundImageUrl( album.views.banner ? album.views.banner.url : null );
     });
     
     app.on( 'albumList:notactive', function() {
@@ -178,7 +178,7 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
                 },
                 done: function (e, data) {
                     console.log( data );
-                    backgroundImageUrl( data.result[0].views.banner[0].url );
+                    backgroundImageUrl( data.result[0].views.banner.url );
                 }
             });
             
