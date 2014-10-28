@@ -6491,9 +6491,17 @@ ul.token-input-list-facebook li input {
 /****** AlbumList - top right of home ******/
 
 .albumListView {
+    position: relative;
     background-color: rgb(235,235,235);
     min-width: 340px;
     width: 340px;
+}
+
+.albumListView .activeBlockout {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,.4);
 }
 
 .albumListView .titleWrap {

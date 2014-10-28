@@ -378,56 +378,6 @@ define( ['plugins/router',
         }
     };
     
-    newHome.prototype.imageFilterFactory = function( mf, images ) {
-        var self = this;
-        
-        var i;
-        var lastVidTime = 0;
-        var arr = [];
-        // Add a filter type to each image
-        for( i = 0; i < images.length; i++ ) {
-            // face score is over 1
-            if( images[i].face_score > 1 ) {
-                // timecode is at least 30 seconds from the previous video
-                if( Number( images[i].timecode ) >= ( lastVidTime == 0 ? 0 : Number( lastVidTime )+30 ) ) {
-                    //console.log( "some: ", "lastVidTime: ", lastVidTime, "lastVidTime+30: ", Number( lastVidTime )+30, "images[i].timecode: ", Number( images[i].timecode ) );
-                    //console.log( Number( images[i].timecode ) >= ( lastVidTime == 0 ? 0 : Number( lastVidTime )+30 ) );
-                    lastVidTime = Number( images[i].timecode );
-                    images[i].filter = "some";
-                    arr.push( images[i] );
-                }
-                // timecode is at least 5 seconds from previous video
-                else if( Number( images[i].timecode ) >= ( lastVidTime == 0 ? 0 : Number( lastVidTime )+5 ) ) {
-                    lastVidTime = Number( images[i].timecode );
-                    images[i].filter = "more";
-                    arr.push( images[i] );
-                }
-                // face score is over 1
-                else {
-                    images[i].filter = "all";
-                    arr.push( images[i] );
-                }
-            }
-            // face score is less than 1
-            else {
-                // timecode is at least 30 seconds from the previous video
-                if( Number( images[i].timecode ) >= ( lastVidTime == 0 ? 0 : Number( lastVidTime )+30 ) ) {
-                    lastVidTime = Number( images[i].timecode );
-                    images[i].filter = "more";
-                    arr.push( images[i] );
-                }
-                // catch everything left
-                else {
-                    images[i].filter = "all";
-                    arr.push( images[i] );
-                }
-            }        
-        }
-        arr.forEach( function(p) {
-            self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
-        });
-    };
-    
     newHome.prototype.some_more_all = function( mf, images ) {
         var self = this;
         
@@ -535,7 +485,6 @@ define( ['plugins/router',
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
-                                //self.imageFilterFactory( mf, mf.views.image );
                                 self.some_more_all( mf, mf.views.image );
                             }
                         });
@@ -616,7 +565,6 @@ define( ['plugins/router',
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
-                                //self.imageFilterFactory( mf, mf.views.image );
                                 self.some_more_all( mf, mf.views.image );
                             }
                         });
@@ -720,9 +668,8 @@ define( ['plugins/router',
                         self.hits ( json.pager.total_entries );
                         self.facesPager = json.pager;
                         json.media.forEach( function( mf ) {
-                            self.addMediaFile ( mf );
+                            self.addMediaFile( mf );
                             if( mf.views.image ) {
-                                //self.imageFilterFactory( mf, mf.views.image );
                                 self.some_more_all( mf, mf.views.image );
                             }
                         });
@@ -813,9 +760,8 @@ define( ['plugins/router',
                         self.hits ( json.pager.total_entries );
                         self.cityPager = json.pager;
                         json.media.forEach( function( mf ) {
-                            self.addMediaFile ( mf );
-                            if( mf.views.image ) {
-                                //self.imageFilterFactory( mf, mf.views.image ); 
+                            self.addMediaFile( mf );
+                            if( mf.views.image ) { 
                                 self.some_more_all( mf, mf.views.image );
                             }
                         });
@@ -846,37 +792,6 @@ define( ['plugins/router',
             self.photoViewFilter( old );
         });
     };
-    
-    /*newHome.prototype.albumFilterSelected = function( self, album ) {
-        var gettingAlbum;
-        
-        // Used to close the dropdown
-        $("body").trigger("click");
-        
-        if( !gettingAlbum ) {
-            gettingAlbum = true;
-            if( album.selected() ) {
-                album.selected(false);
-                self.currentAlbumAid(null);
-                self.currentAlbumTitle(null);
-                self.showAllVideos();
-                gettingAlbum = false;
-            } else {
-                self.albumsFilterLabels().forEach( function( c ) {
-                    c.selected( false );
-                });
-                album.selected( true );
-                self.selectedFilterAlbum( album.label );
-                self.currentSelectedFilterAlbum( album );
-                self.currentAlbumAid( album.uuid );
-                self.currentAlbumTitle( album.title.toUpperCase() );
-                self.albumVidsSearch( true );
-                gettingAlbum = false;
-            }
-        } else {
-            return;
-        }        
-    };*/
     
     newHome.prototype.albumVidsSearch = function( newSearch ) {
         var self = this;
@@ -912,14 +827,13 @@ define( ['plugins/router',
                             json.album.media.forEach( function( mf ) {
                                 self.addAlbumMediaFile ( mf );
                                 if( mf.views.image ) {
-                                    //self.imageFilterFactory( mf, mf.views.image );
                                     self.some_more_all( mf, mf.views.image );
                                 }
                             });
                             self.videos.valueHasMutated();
                             dfd.resolve();
                         } else {
-                            dfd.reject();
+                            dfd.resolve();
                         }                                               
                     });
             /*}
@@ -941,7 +855,13 @@ define( ['plugins/router',
             self.selectedCity('');
             self.albumFilterIsActive(true);
             
-            self.isActiveFlag(false);
+            if( self.videos().length > 0 ) {
+                $.when( self.videos()[self.videos().length-1].viewResolved ).then( function() {
+                    self.isActiveFlag(false);
+                });
+            } else {
+                self.isActiveFlag(false);
+            }
             
             // tickle the photos filter
             var old = self.photoViewFilter();
@@ -1670,7 +1590,6 @@ define( ['plugins/router',
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
-                                //self.imageFilterFactory( mf, mf.views.image );
                                 self.some_more_all( mf, mf.views.image );
                             }
                         });
@@ -2162,7 +2081,6 @@ define( ['plugins/router',
 			json.media.forEach( function( mf ) {
 			    self.addMediaFile( mf, {show_select_badge: true, selected: false} );
                             if( mf.views.image ) {
-                                //self.imageFilterFactory( mf, mf.views.image );
                                 self.some_more_all( mf, mf.views.image );
                             }
 			});
@@ -2174,7 +2092,13 @@ define( ['plugins/router',
 		dfd.resolve();
 	    }
 	}).promise().then(function(){
-            self.isActiveFlag(false);
+            if( self.videos().length > 0 ) {
+                $.when( self.videos()[self.videos().length-1].viewResolved ).then( function() {
+                    self.isActiveFlag(false);
+                });
+            } else {
+                self.isActiveFlag(false);
+            }
             
             // tickle the photos filter
             var old = self.photoViewFilter();
