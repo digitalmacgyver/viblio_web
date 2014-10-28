@@ -14,7 +14,7 @@ new compressor.minify({
 	'lib/jquery/jquery-1.9.1.js',
 	'lib/jquery/jquery.easing.1.3.js',
 	'lib/jquery/jquery-ui-1.10.3.custom.min.js',
-	'lib/knockout/knockout-2.3.0.js',
+	'lib/knockout/knockout-3.0.0.js',
 	'lib/bootstrap/js/bootstrap.js',
 	'lib/bootstrap/js/bootstrap-editable.js',
 	'lib/bootstrap/js/moment.min.js',

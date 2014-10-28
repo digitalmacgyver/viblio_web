@@ -488,6 +488,7 @@ define( ['plugins/router',
         results.forEach( function( p ) {
             self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } ); 
         });
+        self.photos.valueHasMutated();
     };
     
     newHome.prototype.recentVidsSearch = function( newSearch ) {
@@ -538,6 +539,7 @@ define( ['plugins/router',
                                 self.some_more_all( mf, mf.views.image );
                             }
                         });
+                        self.videos.valueHasMutated();
                         dfd.resolve();
                     });
             }
@@ -618,6 +620,7 @@ define( ['plugins/router',
                                 self.some_more_all( mf, mf.views.image );
                             }
                         });
+                        self.videos.valueHasMutated();
 			dfd.resolve();
 		    });
 	    }
@@ -723,6 +726,7 @@ define( ['plugins/router',
                                 self.some_more_all( mf, mf.views.image );
                             }
                         });
+                        self.videos.valueHasMutated();
                         dfd.resolve();
                     });
             }
@@ -815,6 +819,7 @@ define( ['plugins/router',
                                 self.some_more_all( mf, mf.views.image );
                             }
                         });
+                        self.videos.valueHasMutated();
                         dfd.resolve();
                     });
             }
@@ -911,6 +916,7 @@ define( ['plugins/router',
                                     self.some_more_all( mf, mf.views.image );
                                 }
                             });
+                            self.videos.valueHasMutated();
                             dfd.resolve();
                         } else {
                             dfd.reject();
@@ -1087,8 +1093,9 @@ define( ['plugins/router',
             });          
         });
 
-	// Add it to the list
-	self.videos.push( m );
+	// Add it to the list - push directly into the underlying array, not the observable
+        var innerArray = self.videos()
+	innerArray.push( m );
     };
     
     // Add a new mediafile to our managed list of mediafiles
@@ -1156,8 +1163,9 @@ define( ['plugins/router',
             self.select_all_mode_is_on(false);
         });
         
-	// Add it to the list
-	self.videos.push( m );
+	// Add it to the list - push directly into the underlying array, not the observable
+        var innerArray = self.videos()
+	innerArray.push( m );
         
         // If select all mode is on when new vids are added then add them to the selected array too - only if owned by viewer
         if( self.select_all_mode_is_on() && self.select_mode_on() ) {
@@ -1205,8 +1213,9 @@ define( ['plugins/router',
             });
         });
 
-	// Add it to the list
-	self.photos.push( p );
+        // Add it to the list - push directly into the underlying array, not the observable
+        var innerArray = self.photos()
+	innerArray.push( p );
         
         // If select all mode is on when new photos are added then add them to the selected array too - only if owned by viewer
         if( self.select_all_mode_is_on() && self.select_mode_on() ) {
@@ -1665,6 +1674,7 @@ define( ['plugins/router',
                                 self.some_more_all( mf, mf.views.image );
                             }
                         });
+                        self.videos.valueHasMutated();
                         dfd.resolve();
                     });
             }
@@ -2156,6 +2166,7 @@ define( ['plugins/router',
                                 self.some_more_all( mf, mf.views.image );
                             }
 			});
+                        self.videos.valueHasMutated();
 			dfd.resolve();
 		    });
 	    }
