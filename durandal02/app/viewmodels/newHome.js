@@ -262,8 +262,6 @@ define( ['plugins/router',
                             <li><strong>Select</strong> your videos and press <strong>DONE</strong> in the Select Toolbar</li>\n\
                         </ul>';
         
-        //Events.includeIn( self );
-        
         self.playingVid = ko.observable( null );
         self.playingVidUUID = ko.observable( null );
         self.playingVidIndex = ko.observable( null );
@@ -271,18 +269,6 @@ define( ['plugins/router',
         self.visiblePhotosCount = ko.observable( 0 );
         self.video_mode_on = ko.observable( true );
         self.video_mode_on.subscribe( function( val ) {
-            // reset counter to 0
-            /*self.visiblePhotosCount( 0 );
-            self.photos().forEach( function( p ) {
-                if( p.filter() != "some" ) {
-                    p.hideIt();
-                } else {
-                    p.showIt();
-                    self.visiblePhotosCount( self.visiblePhotosCount()+1 );
-                }
-            });*/
-            // tickle the photos filter
-            
             var old = self.photoViewFilter();
             self.photoViewFilter(null);
             self.photoViewFilter( old );
@@ -512,6 +498,7 @@ define( ['plugins/router',
     };
     
     newHome.prototype.monthSelected = function( self, month ) {
+        var args;
         if( month.selected() ) {
             month.selected(false);
             self.showAllVideos();
@@ -521,29 +508,35 @@ define( ['plugins/router',
             });
             month.selected( true );
             self.selectedMonth( month.label );
-            self.monthVidsSearch( true );
+            args = {
+                month: self.selectedMonth(),
+                cid: self.cid
+            };
+            self.filterVidsSearch( 'dates', 'self.monthPager', args, '/services/yir/videos_for_month', true );
         }
     };
     
-    newHome.prototype.monthVidsSearch = function( newSearch ) {
+    /*
+     * @param {string} type - one of: "dates", "faces", "cities"
+     * @param {string} pager - a pager object for the search type being used - 
+     *                         one of: self.monthPager, self.facesPager, self.cityPager
+     * @param {object} args - the args to be sent along with the api call
+     * @param {string} api - the endpoint to call
+     * @param {bool} newSearch - whether or not to run a fresh search or not
+     */
+    newHome.prototype.filterVidsSearch = function( type, pager, args, api, newSearch ) {
 	var self = this;
         
-        var month = self.selectedMonth();
-        
-        var args = {
-            month: month,
-            cid: self.cid
-        };
         self.isActiveFlag(true);
         
         // Only remove all vids and reset pager if it's a new search
         if( newSearch ) {
             //clear the search contents
             self.clearSearch();
-            self.unselectOtherFilters('dates');
+            self.unselectOtherFilters(type);
             //self.videos.removeAll();
             // reset pager
-            self.monthPager = {
+            pager = {
                 next_page: 1,
                 entries_per_page: 20,
                 total_entries: -1 /* currently unknown */
@@ -551,17 +544,17 @@ define( ['plugins/router',
         }
         
 	return system.defer( function( dfd ) {
-	    if ( self.monthPager.next_page )   {
-                args.page = self.monthPager.next_page;
-                args.rows = self.monthPager.entries_per_page;
+	    if ( pager.next_page )   {
+                args.page = pager.next_page;
+                args.rows = pager.entries_per_page;
                 args.include_tags = 1;
                 args.include_contact_info = 1;
                 args.include_images = 1;
-		viblio.api( '/services/yir/videos_for_month', args )
+		viblio.api( api, args )
 		    .then( function( json ) {
                         //console.log( json, args );
                         self.hits ( json.pager.total_entries );
-			self.monthPager = json.pager;
+			pager = json.pager;
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
@@ -577,20 +570,9 @@ define( ['plugins/router',
 	    }
 	}).promise().then(function(){
             // reset active filters
-            self.recentUploadsIsActive(false);
-            self.dateFilterIsActive(true);
-            self.faceFilterIsActive(false);
-            self.selectedFace('');
-            self.allVidsIsSelected(false);
-            self.cityFilterIsActive(false);
-            self.selectedCity('');
-            self.albumFilterIsActive(false);
-            self.selectedFilterAlbum('');
+            self.resetOtherFilters( type );
             
             self.isActiveFlag(false);
-            
-            // Used to close the dropdown
-            $("body").trigger("click");
             
             // tickle the photos filter
             var old = self.photoViewFilter();
@@ -599,8 +581,38 @@ define( ['plugins/router',
         });
     };
     
+    newHome.prototype.resetOtherFilters = function( exception ) {
+        var self = this;
+        
+        if( exception == "dates" ) {
+            self.dateFilterIsActive(true);
+            self.faceFilterIsActive(false);
+            self.selectedFace('');
+            self.cityFilterIsActive(false);
+            self.selectedCity('');
+        } else if ( exception == "faces" ) {
+            self.dateFilterIsActive(false);
+            self.selectedMonth('');
+            self.faceFilterIsActive(true);
+            self.cityFilterIsActive(false);
+            self.selectedCity('');
+        } else if ( exception == "cities" ) {
+            self.dateFilterIsActive(false);
+            self.selectedMonth('');
+            self.faceFilterIsActive(false);
+            self.selectedFace('');
+            self.cityFilterIsActive(true);
+        }
+        
+        self.recentUploadsIsActive(false);
+        self.allVidsIsSelected(false);
+        self.albumFilterIsActive(false);
+        self.selectedFilterAlbum('');
+    };
+    
     newHome.prototype.faceSelected = function( self, face ) {      
         var gettingFace;
+        var args;
         
         // Used to close the dropdown
         $("body").trigger("click");
@@ -617,91 +629,20 @@ define( ['plugins/router',
                 });
                 face.selected( true );
                 self.selectedFace( face );
-                self.faceVidsSearch( true );
+                //self.faceVidsSearch( true );
+                args = {
+                    contact_uuid: self.selectedFace().uuid
+                };
+                self.filterVidsSearch( 'faces', 'self.facesPager', args, '/services/faces/media_face_appears_in', true );
                 gettingFace = false;
             }
         } else {
             return;
         }    
     };
-    
-    newHome.prototype.faceVidsSearch = function( newSearch ) {
-        var self = this;
         
-        var face = self.selectedFace();
-        
-        var args = {
-            contact_uuid: face.uuid,
-            include_images: 1
-        };
-        
-        self.isActiveFlag(true);
-        
-        // Only remove all vids and reset pager if it's a new search
-        if( newSearch ) {
-            //clear the search contents
-            self.clearSearch();
-            self.unselectOtherFilters('faces');
-            //self.videos.removeAll();
-            // reset pager
-            self.facesPager = {
-                next_page: 1,
-                entries_per_page: 20,
-                total_entries: -1 /* currently unknown */
-            };
-        }
-        
-        return system.defer( function( dfd ) {
-            if ( self.facesPager.next_page )   {
-                args.page = self.facesPager.next_page;
-                args.rows = self.facesPager.entries_per_page;
-                args.include_tags = 1;
-                args.include_contact_info = 1;
-                // needed for showing pending videos
-                /*if( self.vidsInProcess() > 0 ) {
-                    args.only_videos=1;
-                    args.only_visible=0;
-                }*/
-                viblio.api( '/services/faces/media_face_appears_in', args )
-                    .then( function( json ) {
-                        //console.log( json );
-                        self.hits ( json.pager.total_entries );
-                        self.facesPager = json.pager;
-                        json.media.forEach( function( mf ) {
-                            self.addMediaFile( mf );
-                            if( mf.views.image ) {
-                                self.some_more_all( mf, mf.views.image );
-                            }
-                        });
-                        self.videos.valueHasMutated();
-                        dfd.resolve();
-                    });
-            }
-            else {
-                dfd.resolve();
-            }
-        }).promise().then(function(){
-            // reset active filters
-            self.recentUploadsIsActive(false);
-            self.dateFilterIsActive(false);
-            self.selectedMonth('');
-            self.faceFilterIsActive(true);
-            self.allVidsIsSelected(false);
-            self.cityFilterIsActive(false);
-            self.selectedCity('');
-            self.albumFilterIsActive(false);
-            self.selectedFilterAlbum('');
-            
-            self.isActiveFlag(false);
-            
-            // tickle the photos filter
-            var old = self.photoViewFilter();
-            self.photoViewFilter(null);
-            self.photoViewFilter( old );
-        });
-    };
-    
     newHome.prototype.citySelected = function( self, city ) {
+        var args;
         // Used to close the dropdown
         $("body").trigger("click");
         
@@ -714,85 +655,14 @@ define( ['plugins/router',
             });
             city.selected( true );
             self.selectedCity( city.label );
-            self.cityVidsSearch( true );
+            //self.cityVidsSearch( true );
+            args = {
+                q: self.selectedCity()
+            }
+            self.filterVidsSearch( 'cities', 'self.cityPager', args, '/services/mediafile/taken_in_city', true );
         }         
     };
-    
-    newHome.prototype.cityVidsSearch = function( newSearch ) {
-        var self = this;
         
-        var city = self.selectedCity();
-        
-        var args = {
-            q: city
-        };
-        
-        self.isActiveFlag(true);
-        
-        // Only remove all vids and reset pager if it's a new search
-        if( newSearch ) {
-            //clear the search contents
-            self.clearSearch();
-            self.unselectOtherFilters('cities');
-            //self.videos.removeAll();
-            // reset pager
-            self.cityPager = {
-                next_page: 1,
-                entries_per_page: 20,
-                total_entries: -1 /* currently unknown */
-            };
-        }
-        
-        return system.defer( function( dfd ) {
-            if ( self.cityPager.next_page )   {
-                args.page = self.cityPager.next_page;
-                args.rows = self.cityPager.entries_per_page;
-                args.include_tags = 1;
-                args.include_contact_info = 1;
-                args.include_images = 1;
-                // needed for showing pending videos
-                /*if( self.vidsInProcess() > 0 ) {
-                    args.only_videos=1;
-                    args.only_visible=0;
-                }*/
-                viblio.api( '/services/mediafile/taken_in_city', args )
-                    .then( function( json ) {
-                        self.hits ( json.pager.total_entries );
-                        self.cityPager = json.pager;
-                        json.media.forEach( function( mf ) {
-                            self.addMediaFile( mf );
-                            if( mf.views.image ) { 
-                                self.some_more_all( mf, mf.views.image );
-                            }
-                        });
-                        self.videos.valueHasMutated();
-                        dfd.resolve();
-                    });
-            }
-            else {
-                dfd.resolve();
-            }
-        }).promise().then(function(){
-            // reset active filters
-            self.recentUploadsIsActive(false);
-            self.dateFilterIsActive(false);
-            self.selectedMonth('');
-            self.faceFilterIsActive(false);
-            self.selectedFace('');
-            self.allVidsIsSelected(false);
-            self.cityFilterIsActive(true);
-            self.albumFilterIsActive(false);
-            self.selectedFilterAlbum('');
-            
-            self.isActiveFlag(false);
-            
-            // tickle the photos filter
-            var old = self.photoViewFilter();
-            self.photoViewFilter(null);
-            self.photoViewFilter( old );
-        });
-    };
-    
     newHome.prototype.albumVidsSearch = function( newSearch ) {
         var self = this;
         var album_id = self.currentAlbumAid();
@@ -804,42 +674,28 @@ define( ['plugins/router',
             //clear the search contents
             self.clearSearch();
             self.unselectOtherFilters('albums');
-            //self.videos.removeAll();
-            // reset pager
-            /*self.albumsPager = {
-                next_page: 1,
-                entries_per_page: 20,
-                total_entries: -1 /* currently unknown */
-            //};
         }
         
         return system.defer( function( dfd ) {
-            /*if ( self.albumsPager.next_page )   {
-                args.page = self.facesPager.next_page;
-                args.rows = self.facesPager.entries_per_page;*/
-                viblio.api( 'services/album/get?aid=' + album_id + '&include_contact_info=1&include_tags=1&include_images=1' ).
-                    then( function( json ) {
-                        //self.hits ( json.pager.total_entries );
-                        //self.facesPager = json.pager;
-                        self.currentAlbum( json.album );
-                        self.albumIsShared( json.album.is_shared ? true : false );
-                        if( json.album.media.length > 0 ) {
-                            json.album.media.forEach( function( mf ) {
-                                self.addAlbumMediaFile ( mf );
-                                if( mf.views.image ) {
-                                    self.some_more_all( mf, mf.views.image );
-                                }
-                            });
-                            self.videos.valueHasMutated();
-                            dfd.resolve();
-                        } else {
-                            dfd.resolve();
-                        }                                               
-                    });
-            /*}
-            else {
-                dfd.resolve();
-            }*/
+            viblio.api( 'services/album/get?aid=' + album_id + '&include_contact_info=1&include_tags=1&include_images=1' ).
+                then( function( json ) {
+                    //self.hits ( json.pager.total_entries );
+                    //self.facesPager = json.pager;
+                    self.currentAlbum( json.album );
+                    self.albumIsShared( json.album.is_shared ? true : false );
+                    if( json.album.media.length > 0 ) {
+                        json.album.media.forEach( function( mf ) {
+                            self.addAlbumMediaFile ( mf );
+                            if( mf.views.image ) {
+                                self.some_more_all( mf, mf.views.image );
+                            }
+                        });
+                        self.videos.valueHasMutated();
+                        dfd.resolve();
+                    } else {
+                        dfd.resolve();
+                    }                                               
+                });
         }).promise()
         // If the album has videos in it go to it!
           .done(function(){
@@ -872,15 +728,6 @@ define( ['plugins/router',
         .fail(function(){
             self.current_album_is_empty( true );
             self.selectedVideos.removeAll();
-            /*app.showMessage( 'You have no videos in this album yet.', 'Empty Album', ['Add Videos Now', 'Remove album']).then( function( data ) {
-                if( data == 'Add Videos Now' ) {
-                    self.showAllVideos();
-                    self.addToAlbumSelected( self, self.currentSelectedFilterAlbum() );
-                } else {
-                    console.log( self.currentSelectedFilterAlbum() );
-                    self.delete_album( true );
-                }                  
-            });*/
             
             dialog.showModal( 'viewmodels/emptyAlbumModal' ).then( function( data ) {
                 if( data == 'Add Videos Now' ) {
@@ -902,10 +749,6 @@ define( ['plugins/router',
         viblio.api( '/services/album/change_title', { aid: self.currentAlbumAid(), title: self.currentAlbumTitle() } ).then(function() {
             self.currentSelectedFilterAlbum().title = self.currentAlbumTitle();
             self.getAllAlbumsLabels();
-            /*var hp = require('viewmodels/hp');
-            if( self.albumFilterIsActive() ) {
-                hp.albumList().highlightActiveAlbum( self.currentAlbumAid() );
-            }*/
         });
     });
     
@@ -1526,10 +1369,6 @@ define( ['plugins/router',
             self.currentSelectedFilterAlbum( null );
             hp.albumList().unselectAllAlbums();
         }
-        //self.albumFilterIsActive( false );
-        //self.selectedFilterAlbum( null );
-        //self.currentSelectedFilterAlbum( null );
-        //hp.albumList().unselectAllAlbums();
         // clear selected vids array
         self.selectedVideos.removeAll();
         // clear selected vids array
@@ -1578,11 +1417,6 @@ define( ['plugins/router',
                 args.include_tags = 1;
                 args.include_contact_info = 1;
                 args.include_images = 1;
-                // needed for showing pending videos
-                /*if( self.vidsInProcess() > 0 ) {
-                    args.only_videos=1;
-                    args.only_visible=0;
-                }*/
                 viblio.api( '/services/mediafile/search_by_title_or_description', args )
                     .then( function( json ) {
                         self.hits ( json.pager.total_entries );
@@ -1768,23 +1602,6 @@ define( ['plugins/router',
                 self.albumLabels( arr );
                 // add the create album option at the top of the list
                 self.albumLabels.unshift( {label: "Create New Album", selected: ko.observable(false)} );
-
-                //also set the album filter labels based on the same data returned by api call
-                //JSON.parse(JSON.stringify(arr));
-                /*var clone = JSON.parse(JSON.stringify(data));
-                var arr2 = [];
-
-                clone.albums.forEach( function( album ) {
-                    var _album = album;
-                    _album.label = album.title;
-                    _album.selected = ko.observable( false );
-                    _album.shared = album.is_shared;
-                    arr2.push( _album );
-                });
-
-                //alphabetically sort the list - toLowerCase() makes sure this works as expected
-                arr2.sort(function(left, right) { return left.label.toLowerCase() == right.label.toLowerCase() ? 0 : (left.label.toLowerCase() < right.label.toLowerCase() ? -1 : 1) });           
-                self.albumsFilterLabels( arr2 );*/
                 
                 var hp = require('viewmodels/hp');
                 // if the album filter is active then pass in the aid of the current album so it can be highlighted via albumList.js
@@ -1938,18 +1755,14 @@ define( ['plugins/router',
         var hp = require('viewmodels/hp');
         if ( self.selectedVideos().length > 0 ) {
             // Create a new album
-            //if( self.selectedAddToAlbum().label === 'Create New Album' ) {
             if( self.create_new_vid_album_mode_on() ) {
                 viblio.api( '/services/album/create', { name: self.getAlbumName(), list: self.selectedVideos() } ).then( function( data ) {
                     var vidOrVids = num == 1 ? ' video' : ' videos';
                     var msg = num + vidOrVids + ' successfully added to your new "' + data.album.title + '" Album';
                     viblio.notify( msg, 'success' );
                     
-                    //hp.albumList().getAllAlbumsLabels( self.albumFilterIsActive() ? self.currentAlbumAid() : null );
-                    
                     self.getAllAlbumsLabels().then( function() {
                         hp.albumList().albumFilterSelected( hp.albumList(), self.findMatch( data.album.uuid, hp.albumList().albumsFilterLabels() ) );
-                        //hp.albumList().highlightActiveAlbum( data.album.uuid );
                     });
                     dfd.resolve();
                 });
@@ -2050,11 +1863,6 @@ define( ['plugins/router',
                     args = {contact_uuid: self.cid,
                             page: self.allVidsPager.next_page, 
                             rows: self.allVidsPager.entries_per_page};
-                    // needed for showing pending videos
-                    /*if( self.vidsInProcess() > 0 ) {
-                        args.only_videos=1;
-                        args.only_visible=0;
-                    }*/
                     apiCall = viblio.api( '/services/faces/media_face_appears_in', args );
                 } else {
                     apiCall = viblio.api( '/services/mediafile/list_all', 
@@ -2066,11 +1874,6 @@ define( ['plugins/router',
                                 include_contact_info: 1,
                                 include_images: 1
                             } );
-                    // needed for showing pending videos
-                    /*if( self.vidsInProcess() > 0 ) {
-                        args.only_videos=1;
-                        args.only_visible=0;
-                    }*/
                 }
 		apiCall.then( function( json ) {
                         self.hits ( json.pager.total_entries );
@@ -2134,7 +1937,8 @@ define( ['plugins/router',
     // Uses flag to determine if fetch is already in process, if so a new one will not be made 
     newHome.prototype.scrollHandler = function( event ) {
         var self = event.data;
-
+        var args;
+        
         if ( !self.noFiltersAreActive() ) {
             if( self.recentUploadsIsActive() ) {
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
@@ -2142,15 +1946,25 @@ define( ['plugins/router',
                 }
             } else if ( self.dateFilterIsActive() ) {
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                    self.monthVidsSearch();
+                    args = {
+                        month: self.selectedMonth(),
+                        cid: self.cid
+                    };
+                    self.filterVidsSearch( 'dates', 'self.monthPager', args, '/services/yir/videos_for_month' );
                 }
             } else if( self.faceFilterIsActive() ) {
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                    self.faceVidsSearch();
+                    args = {
+                        contact_uuid: self.selectedFace().uuid
+                    };
+                    self.filterVidsSearch( 'faces', 'self.facesPager', args, '/services/faces/media_face_appears_in' );
                 }
             } else if( self.cityFilterIsActive() ) {
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                    self.cityVidsSearch();
+                    args = {
+                        q: self.selectedCity()
+                    }
+                    self.filterVidsSearch( 'cities', 'self.cityPager', args, '/services/mediafile/taken_in_city' );
                 }
             }    
         } else {
