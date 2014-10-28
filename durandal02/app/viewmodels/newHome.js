@@ -741,6 +741,13 @@ define( ['plugins/router',
         });
     };
     
+    newHome.prototype.addToEmptyAlbum = function() {
+        var self = this;
+        
+        self.showAllVideos();
+        self.add_to_mode( 'existing-blank' );
+    };
+    
     newHome.prototype.setSize = function() {
         $('.newHomeAlbumTitleEdit').width( $('.newHomeAlbumTitleView').width() );
     };
