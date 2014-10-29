@@ -1134,7 +1134,10 @@ define( ['plugins/router',
         var self = this;
         
         self.activate_select_mode();
-        self.selectAll();
+        //only select all vids if the recent filter is on
+        if( self.recentUploadsIsActive() ) {
+            self.selectAll();
+        }
         self.clear_all_modes();
         if( type == "new" ) {
             self.create_new_vid_album_mode_on(true);
