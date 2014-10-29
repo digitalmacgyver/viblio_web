@@ -135,7 +135,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         });
         
         self.newTag = ko.observable(null);
-
+        
+        self.viewResolved = $.Deferred();
     };
     
     Video.prototype.toggleFaces = function() {
@@ -375,6 +376,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         
         // this will trigger the number of faces to show to be correct when resizing window
         //$( window ).bind('resize', function(){ self.winWidth( $( window ).width() );} );
+        
+        self.viewResolved.resolve();
     };
     
     return Video;

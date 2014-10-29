@@ -512,7 +512,10 @@
                                                          hasFocus: currentAlbumTitle.editing, 
                                                          event: { blur: function() { currentAlbumTitle.stopEditing(); currentAlbumTitle.save( null, this, 'album:name_changed' ); } }" />
                                 </div>  
-                            </div> Album (<span data-bind="text: videos().length ? videos().length : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)      
+                            </div> Album (<span data-bind="text: videos().length ? videos().length : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
+                            <!-- ko if: videos().length == 0 -->
+                            <div class="btn btn-primary" data-bind="click: addToEmptyAlbum">Add videos to this empty album</div>
+                            <!-- /ko -->
                         </div>
                         
                         <p data-bind="visible: !currentSelectedFilterAlbum().shared && video_mode_on()">
@@ -533,6 +536,7 @@
                         <span class="subtitle">by <span data-bind="text: currentAlbum().owner.displayname"></span> <img class="img-circle" data-bind="attr: {src: '/services/user/avatar?uid=' + currentAlbum().owner.uuid + '&y=30'}, tooltip: {title: 'Album by ' + currentAlbum().owner.displayname, placement: 'bottom'}"></span>.
                     </div>
                     <!-- /ko -->
+                    
                 <!-- /ko -->
             </div>
             <!-- /ko --> <!-- End ifnot: add_to_mode_on() || delete_mode_on() -->

@@ -184,7 +184,7 @@ function( router, app, system, config, viblio, dialog ) {
               resultsFormatter: function( item ) {
                   return '<li>' + item.name + '&nbsp;(' + (item.id || item.name) + ')</li>';
               }
-            });
+        });
         
         $("#token-input-shareVidEmail").attr("placeholder", "Email");
     };

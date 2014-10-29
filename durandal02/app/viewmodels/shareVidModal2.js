@@ -60,6 +60,8 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 			  viblio.notify( 'Share email sent', 'success' );
 		      });
 	self.closeModal();
+        
+        $('.token-input-dropdown-facebook').css('display','none');
     };
 
     S.prototype.addPublicShare = function( self, network ) {
@@ -191,11 +193,18 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
               preventDuplicates: true,
               onAdd: function() {
                   self.shareVidEmailValid(true);
+                  $("body").trigger("click");
+              },
+              onDelete: function() {
+                  var list = $(self.view).find( "#shareVidEmail" ).tokenInput("get");
+                  if( list.length == 0 ) {
+                      self.shareVidEmailValid(false);
+                  }
               },
               resultsFormatter: function( item ) {
                   return '<li>' + item.name + '&nbsp;(' + (item.id || item.name) + ')</li>';
               }
-            });
+        });
         
 	// This is the copy-to-clipboard support
 	var viblio = require( 'lib/viblio' );
