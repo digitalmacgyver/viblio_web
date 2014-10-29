@@ -120,23 +120,6 @@ define(['durandal/app',
         showFaces: showFaces,
         
         activate: function( args ) {
-            // When user is routed from email link for 'upload' capture that and open upload modal on login
-            if ( args && args.addVideos ) {
-                var last_URL = router.activeInstruction().config.route + "?" + router.activeInstruction().queryString;
-                if ( loggedIn() ) {
-                    customDialogs.showModal( 'viewmodels/nginx-modal' );
-                } else {
-                    // Set the last attempt to a function that will route the user to the home page and will open the add vids modal
-                    viblio.setLastAttempt( function() {
-                        router.navigate( last_URL );
-                        setTimeout( function(){
-                            customDialogs.showModal( 'viewmodels/nginx-modal' );
-                        },1000);
-                        viblio.setLastAttempt( null );
-                    });
-                    customDialogs.showModal( 'viewmodels/loginModal', 'Please log in before uploading new videos to your account.' );
-                }
-            }
             
             if( args ){
                 // this cleans up to avoid an extra call to activate when the nhome observable is updated
@@ -144,6 +127,7 @@ define(['durandal/app',
                 if( videos ) {
                     ko.cleanNode(videos);
                 }
+                
                 if( args.aid ) {
                     nhome( new newHome( {aid: args.aid} ) );
                     gotToAlbum(args.aid);
@@ -153,13 +137,31 @@ define(['durandal/app',
                     nhome( new newHome( {addAlbum: true} ) );
                 }  else if( args.recent ) {
                     nhome( new newHome( {recent: true} ) );
-                }              
+                } else if( args.addVideos ) {
+                    nhome( new newHome() );
+                    // When user is routed from email link for 'upload' capture that and open upload modal on login
+                    var last_URL = router.activeInstruction().config.route + "?" + router.activeInstruction().queryString;
+                    if ( loggedIn() ) {
+                        customDialogs.showModal( 'viewmodels/nginx-modal' );
+                    } else {
+                        // Set the last attempt to a function that will route the user to the home page and will open the add vids modal
+                        viblio.setLastAttempt( function() {
+                            router.navigate( last_URL );
+                            setTimeout( function(){
+                                customDialogs.showModal( 'viewmodels/nginx-modal' );
+                            },1000);
+                            viblio.setLastAttempt( null );
+                        });
+                        customDialogs.showModal( 'viewmodels/loginModal', 'Please log in before uploading new videos to your account.' );
+                    }
+                }             
             } else {
                 // this cleans up to avoid an extra call to activate when the nhome observable is updated
                 var videos = $('#videos')[0];
                 if( videos ) {
                     ko.cleanNode(videos);
                 }
+                
                 nhome( new newHome() );
             }
                        
