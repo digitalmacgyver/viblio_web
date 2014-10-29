@@ -11,6 +11,7 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
     // The header can show router navigation points.  It also has a logout
     // function.
     //
+    var avatar = ko.observable( "/services/user/avatar?uid=-&y=37" );
     var showPopup = ko.observable();
     var videosHaveBeenUploaded = ko.observable();
     Events.includeIn( this );
@@ -33,6 +34,7 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
         
         pt: pt,
         
+        avatar: avatar,
         showPopup: showPopup,
         videosHaveBeenUploaded: videosHaveBeenUploaded,
         
@@ -42,6 +44,11 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
 	user: viblio.user,
 	feedback_email: ko.observable( 'mailto:feedback@' + config.email_domain() ),
         download_link: ko.observable( config.site_server + '/#getApp?from=menu' ),
+        
+        updateAvatar: function() {
+            avatar( null );
+            avatar( "/services/user/avatar?uid=-&y=37" );
+        },
 
 	sent_feedback: function() {
 	    viblio.mpEvent( 'feedback' );

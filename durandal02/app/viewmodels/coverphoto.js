@@ -1,15 +1,14 @@
-define( ['plugins/router', 
-	 'durandal/app', 
-	 'lib/viblio', 
-	 'lib/config', 
-	 'lib/customDialogs',
+define( ['durandal/app', 
+	 'lib/viblio',
          'durandal/events',
-         'plugins/dialog'], 
-function(router, app, viblio, config, dialogs, Events, dialog) {
+         'viewmodels/header',
+        'viewmodels/conditional_header'], 
+function(app, viblio, Events, header, c_header) {
     
     var backgroundImageUrl = ko.observable('../css/images/wide-wallpaper.jpg');
     var albumOrUser = ko.observable("user");
-    var currentAlbum = ko.observable( null )
+    var currentAlbum = ko.observable( null );
+    var avatar = ko.observable( "/services/user/avatar?uid=-&x=120&y=120" );
     var user = viblio.user();
     var view;
     
@@ -67,9 +66,9 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
     
     return {
         backgroundImageUrl: backgroundImageUrl,
+        avatar: avatar,
         
         activate: function() {
-            $('.bannerAvatar img').attr( 'src', "" );
             getBackgroundImage();
         },
         
@@ -79,8 +78,6 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
         
         compositionComplete: function( _view ) {
 	    view = _view;
-            
-            $('.bannerAvatar img').attr( 'src', "/services/user/avatar?uid=-&x=120&y=120" );
             
             // jqueryFileUpload
             // avatar
@@ -98,30 +95,13 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
 		},
 		done: function(e, data) {
                     // hide spinner
-                    $(".bannerAvatar div i").css( 'visibility', 'hidden' );
+                    $(".avatar div i").css( 'visibility', 'hidden' );
                     
-                    $('.bannerAvatar img').attr( 'src', "/services/user/avatar?uid=-&x=120&y=120" );
-                    $('#userNamePicNav .avatar img').attr( 'src', "/services/user/avatar?uid=-&x=37&y=37" );
-                    
-                    // check to see if the image src already has a zoom parameter in it, if so then take it out - this is used to ensure that the
-                    // new image is shown. The src needs to be different than before
-                    /*if( $('.bannerAvatar img').attr( 'src' ) == "/services/user/avatar?uid=-&zoom=0&x=120&y=120" ) {
-                        // update image
-                        $('.bannerAvatar img').attr( 'src', "/services/user/avatar?uid=-&x=120&y=120" );
-                    } else {
-                        // update image
-                        $('.bannerAvatar img').attr( 'src', "/services/user/avatar?uid=-&zoom=0&x=120&y=120" );
-                    }
-                    
-                    // check to see if the image src already has a zoom parameter in it, if so then take it out - this is used to ensure that the
-                    // new image is shown. The src needs to be different than before
-                    if( $('#userNamePicNav .avatar img').attr( 'src' ) == "/services/user/avatar?uid=-&zoom=0&x=37&y=37" ) {
-                        // update header image
-                        $('#userNamePicNav .avatar img').attr( 'src', "/services/user/avatar?uid=-&x=37&y=37" );
-                    } else {
-                        // update header image
-                        $('#userNamePicNav .avatar img').attr( 'src', "/services/user/avatar?uid=-&zoom=0&x=37&y=37" );
-                    }*/
+                    // update avatar in settings and the headers
+                    avatar( null );
+                    avatar( "/services/user/avatar?uid=-&x=120&y=120" );
+                    header.updateAvatar();
+                    c_header.updateAvatar();
 		}
 	    });
             

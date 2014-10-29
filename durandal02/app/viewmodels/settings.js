@@ -1,7 +1,18 @@
-define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDialogs','plugins/dialog','facebook'],function(app,router,viblio,config,customDialogs,dialog) {
+define(['durandal/app',
+        'plugins/router',
+        'lib/viblio',
+        'lib/config',
+        'lib/customDialogs',
+        'plugins/dialog',
+        'viewmodels/header',
+        'viewmodels/conditional_header',
+        'facebook'],
+    function(app,router,viblio,config,customDialogs,dialog,header, c_header) {
+        
     var profile = ko.observable({});
     var email   = ko.observable();
     var displayname   = ko.observable('');
+    var avatar = ko.observable( "/services/user/avatar?uid=-&x=120&y=120" );
     var validDisplayname = ko.computed(function(){
         var regexp1=new RegExp('^[a-zA-Z0-9 .!?"-]+$');
         if ( !regexp1.test( displayname() ) || displayname().length > 32 ||  displayname()[0] == ' ' || displayname() == '' ) {
@@ -124,6 +135,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	profile: profile,
 	email: email,
 	displayname: displayname,
+        avatar: avatar,
         validDisplayname: validDisplayname,
 	links: links,
 	linkedFacebook: linkedFacebook,
@@ -191,8 +203,6 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	    var self = this;
 	    self.view = view;
             
-            $('#apic').attr( 'src', "" );
-            
 	    return viblio.api( '/services/user/profile' ).then( function( json ) {
 
 		var p = { uuid: json.profile.uuid,
@@ -229,9 +239,6 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	},
         
         compositionComplete: function(view) {
-            
-            $('#apic').attr( 'src', "/services/user/avatar?uid=-&x=120&y=120" );
-            
 	    // jqueryFileUpload
 	    $(view).find(".avatar").on( 'click', function() {
 		$(view).find(".fileupload").click();
@@ -246,26 +253,11 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 		    // hide spinner
                     $(".avatar div i").css( 'visibility', 'hidden' );
                     
-                    $('#apic').attr( 'src', "/services/user/avatar?uid=-&x=120&y=120" );
-                    $('#userNamePicNav .avatar img').attr( 'src', "/services/user/avatar?uid=-&x=37&y=37" );
-                    
-                    // check to see if the image src already has a zoom parameter in it, if so then take it out - this is used to ensure that the
-                    // new image is shown. The src needs to be different than before
-                    /*if( $('#apic').attr( 'src' ) == "/services/user/avatar?uid=-&zoom=0&x=120&y=120" ) {
-                        // update image
-                        $('#apic').attr( 'src', "/services/user/avatar?uid=-&x=120&y=120" );
-                    } else {
-                        // update image
-                        $('#apic').attr( 'src', "/services/user/avatar?uid=-&zoom=0&x=120&y=120" );
-                    }
-                    
-                    if( $('#userNamePicNav .avatar img').attr( 'src' ) == "/services/user/avatar?uid=-&zoom=0&x=37&y=37" ) {
-                        // update header image
-                        $('#userNamePicNav .avatar img').attr( 'src', "/services/user/avatar?uid=-&x=37&y=37" );
-                    } else {
-                        // update header image
-                        $('#userNamePicNav .avatar img').attr( 'src', "/services/user/avatar?uid=-&zoom=0&x=37&y=37" );
-                    }*/
+                    // update avatar in settings and the headers
+                    avatar( null );
+                    avatar( "/services/user/avatar?uid=-&x=120&y=120" );
+                    header.updateAvatar();
+                    c_header.updateAvatar();
 		}
 	    });
         }
