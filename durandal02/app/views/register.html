@@ -6,19 +6,19 @@
         <div id="register-Wrap" class='centeredEl'>
            <div id="videoPoster-Wrap" class='bottomBorder-Thick'>    
                 <div id="shareFrom">
-                    <img class="boxShadowed" data-bind="attr:{src:avatar}" />
-		    <!-- ko if: media().is_album == 1 -->
+                    <img class="boxShadowed" data-bind="attr: { src: avatar }" />
+		    <!-- ko if: media() && media().is_album == 1 -->
                     <p><strong><span data-bind="text: displayname()"></span></strong> shared an Album with you!</p>
 		    <!-- /ko -->
-		    <!-- ko if: media().is_album == 0 -->
+		    <!-- ko if: media() && media().is_album == 0 -->
                     <p><strong><span data-bind="text: displayname()"></span></strong> shared a Video with you!</p>
 		    <!-- /ko -->
                 </div>
 		<div class="clearfix"></div>
-                <div class="mediafile" data-bind="attr:{id:media().uuid}">
+                <div class="mediafile" data-bind="attr: { id: media().uuid }">
                     <div class="boxShadowed">
                         <div>
-                            <img data-bind="attr:{src:media().views.poster.url}" />
+                            <img data-bind="attr: { src: media().views.poster ? media().views.poster.url : '' }" />
                         </div>
                         <div class="information">
                             <!-- ko if: media().eyes > 0 -->
