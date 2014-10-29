@@ -1875,11 +1875,30 @@ define( ['plugins/router',
         // for video mode
         if( self.video_mode_on() ) {
             if( self.delete_mode_on() ) {
-                self.videos().forEach( function(video) {
-                    if( video.media().status == 'complete' ) {
-                        video.select();
+                if( self.albumFilterIsActive() ) {
+                    // if the current album has been shared with the user only allow them to delete their own videos
+                    if( self.currentSelectedFilterAlbum().shared ) {
+                        self.videos().forEach( function(video) {
+                            if( self.mfOwnedByViewer(video) && video.media().status == 'complete' ) {
+                                video.select();
+                            }
+                        });    
                     }
-                });
+                    // else it's their album - they can remove any videos
+                    else {
+                        self.videos().forEach( function(video) {
+                            if( video.media().status == 'complete' ) {
+                                video.select();
+                            }
+                        });
+                    }
+                } else {
+                    self.videos().forEach( function(video) {
+                        if( video.media().status == 'complete' ) {
+                            video.select();
+                        }
+                    });
+                }
             } else {
                 self.videos().forEach( function(video) {
                     if( self.mfOwnedByViewer(video) && video.media().status == 'complete' ) {

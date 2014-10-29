@@ -3811,6 +3811,16 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
      -moz-box-sizing:border-box; /* Firefox */
     box-sizing: border-box;
     overflow: hidden;
+    -webkit-transition: bottom .3s;
+    transition: bottom .3s;
+}
+
+.mediafile:hover .sharedOwnerWrap {
+    bottom: 54px;
+}
+
+.pp-related-column-related-videos .mediafile:hover .sharedOwnerWrap {
+    bottom: 0;
 }
 
 .mediafile .sharedOwnerWrap img {

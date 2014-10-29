@@ -224,9 +224,10 @@ define(["durandal/app",
 	}
         setupComments( m.media() );
         // prevents the double faces section - only calls it if not pulling vids from related that are passed in
-        if( relatedVids().length == 0 ) {
+        /*if( relatedVids().length == 0 ) {
             setupFaces( m.media() );
-        }
+        }*/
+        setupFaces( m.media() );
         near( m.media() );
         
         setupTags( m.media() );

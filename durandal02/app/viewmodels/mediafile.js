@@ -352,7 +352,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         }
         
         // Handle shared ownership section
-        if ( self.options.shared_style ) {
+        /*if ( self.options.shared_style ) {
             $(view).hover(
                 function () {
                   $(view).find('.sharedOwnerWrap').stop(true, true).animate({ 'bottom': '54px' }, 'fast');
@@ -361,7 +361,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
                   $(view).find('.sharedOwnerWrap').stop(true, true).animate({ 'bottom': '-60px' }, 'fast');
                 }
             );
-        }
+        }*/
         
         // Handle information section
         $(view).hover(
