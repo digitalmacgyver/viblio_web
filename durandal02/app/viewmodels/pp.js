@@ -1017,6 +1017,11 @@ define(["durandal/app",
 	},
 
 	activate: function( args ) {
+            faces_fetched( false );
+            faces.removeAll();
+            unknown_faces.removeAll();
+            known_faces.removeAll();
+            
 	    if ( args ) 
 		incoming_mid = args.mid;
 
@@ -1047,7 +1052,7 @@ define(["durandal/app",
 	compositionComplete: function() {
             oniOS( head.browser.ios ? true : false );
 	    setupFlowplayer( '.pp-tv', playing().media() );
-	    setupFaces( playing().media() );
+	    //setupFaces( playing().media() );
 	    setupComments( playing().media() );
             
             setupTags( playing().media() );
