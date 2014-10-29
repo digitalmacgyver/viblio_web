@@ -255,7 +255,7 @@ define(['durandal/app',
                     
                     // update avatar in settings and the headers
                     avatar( null );
-                    avatar( "/services/user/avatar?uid=-&x=120&y=120" );
+                    avatar( "/services/user/avatar?uid=-&x=120&y=120"+new Date() );
                     header.updateAvatar();
                     c_header.updateAvatar();
 		}

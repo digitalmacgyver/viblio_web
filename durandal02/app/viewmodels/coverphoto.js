@@ -95,11 +95,11 @@ function(app, viblio, Events, header, c_header) {
 		},
 		done: function(e, data) {
                     // hide spinner
-                    $(".avatar div i").css( 'visibility', 'hidden' );
+                    $(".bannerAvatar div i").css( 'visibility', 'hidden' );
                     
                     // update avatar in settings and the headers
                     avatar( null );
-                    avatar( "/services/user/avatar?uid=-&x=120&y=120" );
+                    avatar( "/services/user/avatar?uid=-&x=120&y=120"+new Date() );
                     header.updateAvatar();
                     c_header.updateAvatar();
 		}
