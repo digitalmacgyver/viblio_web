@@ -622,40 +622,32 @@ define( ['plugins/router',
     newHome.prototype.resetOtherFilters = function( exception ) {
         var self = this;
         
+        self.dateFilterIsActive(false);
+        self.faceFilterIsActive(false);
+        self.cityFilterIsActive(false);
+        self.recentUploadsIsActive(false);
+        self.allVidsIsSelected(false);
+        self.albumFilterIsActive(false);
+        self.selectedFilterAlbum('');    
+            
         if( exception == "dates" ) {
             self.dateFilterIsActive(true);
-            self.faceFilterIsActive(false);
             self.selectedFace('');
-            self.cityFilterIsActive(false);
             self.selectedCity('');
-            self.recentUploadsIsActive(false);
         } else if ( exception == "faces" ) {
-            self.dateFilterIsActive(false);
             self.selectedMonth('');
             self.faceFilterIsActive(true);
-            self.cityFilterIsActive(false);
             self.selectedCity('');
-            self.recentUploadsIsActive(false);
         } else if ( exception == "cities" ) {
-            self.dateFilterIsActive(false);
             self.selectedMonth('');
-            self.faceFilterIsActive(false);
             self.selectedFace('');
             self.cityFilterIsActive(true);
-            self.recentUploadsIsActive(false);
         } else if ( exception == "recent" ) {
-            self.dateFilterIsActive(false);
             self.selectedMonth('');
-            self.faceFilterIsActive(false);
             self.selectedFace('');
-            self.cityFilterIsActive(false);
             self.selectedCity('');
             self.recentUploadsIsActive(true);
         }
-        
-        self.allVidsIsSelected(false);
-        self.albumFilterIsActive(false);
-        self.selectedFilterAlbum('');
     };
         
     newHome.prototype.albumVidsSearch = function( newSearch ) {
