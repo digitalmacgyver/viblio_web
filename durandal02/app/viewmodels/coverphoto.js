@@ -17,6 +17,13 @@ function(app, viblio, Events, header, c_header) {
         currentAlbum( album );
         console.log( 'message received', currentAlbum() );
         backgroundImageUrl( album.views.banner ? album.views.banner.url : null );
+        if( backgroundImageUrl() ) {
+            $('.bannerImage').backstretch( backgroundImageUrl() );
+        } else {
+            if( $('.bannerImage').data('backstretch') ) {
+                $('.bannerImage').backstretch("destroy", false);
+            }
+        }
     });
     
     app.on( 'albumList:notactive', function() {
@@ -56,6 +63,7 @@ function(app, viblio, Events, header, c_header) {
                 return viblio.api('services/mediafile/get', args).then( function( res ) {
                     console.log( res );
                     backgroundImageUrl( res.media.views.banner.url );
+                    $('.bannerImage').backstretch( backgroundImageUrl() );
                 });
             }
         } else {
@@ -133,6 +141,7 @@ function(app, viblio, Events, header, c_header) {
                 done: function (e, data) {
                     console.log( data );
                     backgroundImageUrl( data.result[0].views.banner.url );
+                    $('.bannerImage').backstretch( backgroundImageUrl() );
                 }
             });
             
@@ -159,8 +168,11 @@ function(app, viblio, Events, header, c_header) {
                 done: function (e, data) {
                     console.log( data );
                     backgroundImageUrl( data.result[0].views.banner.url );
+                    $('.bannerImage').backstretch( backgroundImageUrl() );
                 }
             });
+            
+            $('.bannerImage').backstretch( backgroundImageUrl() );
             
             app.trigger( 'coverphoto:composed', this );
 	}
