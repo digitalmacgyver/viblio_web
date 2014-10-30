@@ -546,8 +546,8 @@ define( ['plugins/router',
             // reset pager
             self.thePager({
                 next_page: 1,
-                entries_per_page: 20,
-                total_entries: -1, /* currently unknown */
+                entries_per_page: 2,
+                total_entries: -1 /* currently unknown */
             });
         }
         
@@ -641,13 +641,13 @@ define( ['plugins/router',
             }
 
             if( self.cityFilterIsActive() ) {
-                args.q = self.selectedCity()
+                args.q = self.selectedCity();
                 self.filterVidsSearch( 'cities', args, '/services/mediafile/taken_in_city' );
             }
             
             if( self.searchFilterIsActive() ) {
                 self.currentSearch = self.searchQuery();
-                args.q = self.currentSearch
+                args.q = self.currentSearch;
                 self.filterVidsSearch( null, args, '/services/mediafile/search_by_title_or_description' );
             }
             
