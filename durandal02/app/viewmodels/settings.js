@@ -1,7 +1,18 @@
-define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDialogs','plugins/dialog','facebook'],function(app,router,viblio,config,customDialogs,dialog) {
+define(['durandal/app',
+        'plugins/router',
+        'lib/viblio',
+        'lib/config',
+        'lib/customDialogs',
+        'plugins/dialog',
+        'viewmodels/header',
+        'viewmodels/conditional_header',
+        'facebook'],
+    function(app,router,viblio,config,customDialogs,dialog,header, c_header) {
+        
     var profile = ko.observable({});
     var email   = ko.observable();
     var displayname   = ko.observable('');
+    var avatar = ko.observable( "/services/user/avatar?uid=-&x=120&y=120" );
     var validDisplayname = ko.computed(function(){
         var regexp1=new RegExp('^[a-zA-Z0-9 .!?"-]+$');
         if ( !regexp1.test( displayname() ) || displayname().length > 32 ||  displayname()[0] == ' ' || displayname() == '' ) {
@@ -124,6 +135,7 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	profile: profile,
 	email: email,
 	displayname: displayname,
+        avatar: avatar,
         validDisplayname: validDisplayname,
 	links: links,
 	linkedFacebook: linkedFacebook,
@@ -234,13 +246,18 @@ define(['durandal/app','plugins/router','lib/viblio','lib/config','lib/customDia
 	    $(view).find(".fileupload").fileupload({
 		dataType: 'json',
 		start: function() {
+                    // show spinner
 		    $(".avatar div i").css( 'visibility', 'visible' );
 		},
 		done: function(e, data) {
-		    $('<img class="newPic">').load( function() {
-			$(".avatar img").replaceWith( $(this) );
-			$(".avatar div i").css( 'visibility', 'hidden' );
-		    }).attr( 'src', "/services/user/avatar?uid=-&y=120" );
+		    // hide spinner
+                    $(".avatar div i").css( 'visibility', 'hidden' );
+                    
+                    // update avatar in settings and the headers
+                    avatar( null );
+                    avatar( "/services/user/avatar?uid=-&x=120&y=120"+new Date() );
+                    header.updateAvatar();
+                    c_header.updateAvatar();
 		}
 	    });
         }

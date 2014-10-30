@@ -10,11 +10,14 @@ define( ['plugins/router',
 function(router, app, viblio, config, dialogs, dialog) {
     // The header can show router navigation points.  It also has a logout
     // function.
-    //
+    
+    var avatar = ko.observable( "/services/user/avatar?uid=-&y=37" );
+    
     return {
 	router: router,
 	// Show details about the user
 	user: viblio.user,
+        avatar: avatar,
         feedback_email: ko.observable( 'mailto:feedback@' + config.email_domain() ),
         download_link: ko.observable( config.site_server + '/#getApp?from=menu' ),
         
@@ -29,6 +32,11 @@ function(router, app, viblio, config, dialogs, dialog) {
 		}
 	    });
 	},
+        
+        updateAvatar: function() {
+            avatar( null );
+            avatar( "/services/user/avatar?uid=-&y=37"+new Date() );
+        },
         
         sent_feedback: function() {
 	    viblio.mpEvent( 'feedback' );
@@ -75,4 +83,3 @@ function(router, app, viblio, config, dialogs, dialog) {
 	}
     };
 });
-
