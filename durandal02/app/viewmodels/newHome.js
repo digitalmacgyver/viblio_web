@@ -185,6 +185,7 @@ define( ['plugins/router',
 	// media queries.  Initialize it here so
 	// the first fetch works.
         self.thePager = ko.observable({});
+        self.pager_pages = ko.observableArray([]);
         
         self.active_filter_label = ko.computed( function() {
             if( self.dateFilterIsActive() ) {
@@ -509,14 +510,10 @@ define( ['plugins/router',
         
         args = {};
         if( self.cid ) {
-            args = {
-                contact_uuid: self.cid
-            };
+            args.contact_uuid = self.cid;
             apiCall = '/services/faces/media_face_appears_in';
         } else {
-            args = { 
-                views: ['poster']
-            };
+            args.views = ['poster'];
             apiCall = '/services/mediafile/list_all';
         }
         self.filterVidsSearch( 'all', args, apiCall, true );
@@ -532,6 +529,8 @@ define( ['plugins/router',
 	var self = this;
         self.isActiveFlag(true);
         
+        console.log( type, args, api, newSearch );
+        
         // Only remove all vids and reset pager if it's a new search
         if( newSearch ) {
             //clear the search contents - only if there is a type - if type is null this means it's a search, so keep the current search term
@@ -539,7 +538,7 @@ define( ['plugins/router',
                 self.clearSearch();
             }
             
-            if( !type || type == "all" ) {
+            if( !type || type != "all" ) {
                 self.clearfilters();
             }
             
@@ -548,37 +547,33 @@ define( ['plugins/router',
             self.thePager({
                 next_page: 1,
                 entries_per_page: 20,
-                total_entries: -1 /* currently unknown */
-            });    
+                total_entries: -1, /* currently unknown */
+            });
         }
         
 	return system.defer( function( dfd ) {
-	    if ( self.thePager().next_page )   {
-                args.page = self.thePager().next_page;
-                args.rows = self.thePager().entries_per_page;
-                args.include_tags = 1;
-                args.include_contact_info = 1;
-                args.include_images = 1;
-		viblio.api( api, args )
-		    .then( function( json ) {
-                        self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
-			self.thePager(json.pager);
-                        if(json.albums){
-                            json.media = json.albums;
+            args.rows = self.thePager().entries_per_page;
+            args.include_tags = 1;
+            args.include_contact_info = 1;
+            args.include_images = 1;
+            viblio.api( api, args )
+                .then( function( json ) {
+                    console.log( json );
+                    self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
+                    //self.thePager(json.pager);
+                    self.handlePager( json.pager, newSearch );
+                    if(json.albums){
+                        json.media = json.albums;
+                    }
+                    json.media.forEach( function( mf ) {
+                        self.addMediaFile ( mf );
+                        if( mf.views.image ) {
+                            self.some_more_all( mf, mf.views.image );
                         }
-                        json.media.forEach( function( mf ) {
-                            self.addMediaFile ( mf );
-                            if( mf.views.image ) {
-                                self.some_more_all( mf, mf.views.image );
-                            }
-                        });
-                        self.videos.valueHasMutated();
-			dfd.resolve();
-		    });
-	    }
-	    else {
-		dfd.resolve();
-	    }
+                    });
+                    self.videos.valueHasMutated();
+                    dfd.resolve();
+                });
 	}).promise().then(function(){
             // reset active filters
             if( type && type != "all" ) {
@@ -604,6 +599,77 @@ define( ['plugins/router',
                 }, 300);    
             }
         });
+    };
+    
+    newHome.prototype.handlePager = function( pager, newSearch ) {
+        var self = this;
+        
+        self.thePager( pager );
+        console.log( self.thePager() );
+        if( newSearch ) {
+            // clear out pager
+            self.pager_pages.removeAll();
+            while( self.pager_pages().length < pager.last_page ) {
+                self.pager_pages.push( { page_number: self.pager_pages().length+1 } );
+            }
+        }
+    };
+    
+    newHome.prototype.filterVidsSearchPage = function( page ) {
+        var self = this;
+        var args = {
+            page: page
+        }
+        var apiCall;
+        
+        console.log( page );
+        
+        if ( (page && page <= self.thePager().last_page) && (page && page != self.thePager().current_page) )   {
+            // clear out current videos
+            self.videos.removeAll();
+            self.photos.removeAll();
+
+            if( self.dateFilterIsActive() ) {
+                args.month = self.selectedMonth();
+                args.cid = self.cid;
+                self.filterVidsSearch( 'dates', args, '/services/yir/videos_for_month' );
+            }
+
+            if( self.faceFilterIsActive() ) {
+                args.contact_uuid = self.selectedFace().uuid;
+                self.filterVidsSearch( 'faces', args, '/services/faces/media_face_appears_in' );
+            }
+
+            if( self.cityFilterIsActive() ) {
+                args.q = self.selectedCity()
+                self.filterVidsSearch( 'cities', args, '/services/mediafile/taken_in_city' );
+            }
+            
+            if( self.searchFilterIsActive() ) {
+                self.currentSearch = self.searchQuery();
+                args.q = self.currentSearch
+                self.filterVidsSearch( null, args, '/services/mediafile/search_by_title_or_description' );
+            }
+            
+            if( self.recentUploadsIsActive() ) {
+                if( self.vidsInProcess() > 0 ) {
+                    args.only_videos = 1;
+                    args['status[]'] = ['pending', 'visible', 'complete'];
+                }
+                self.filterVidsSearch( 'recent', args, '/services/mediafile/recently_uploaded' );
+            }
+
+            if( self.allVidsIsSelected() ) {
+                if( self.cid ) {
+                    args.contact_uuid = self.cid;
+                    apiCall = '/services/faces/media_face_appears_in';
+                } else {
+                    args.views = ['poster'];
+                    apiCall = '/services/mediafile/list_all';
+                }
+                self.filterVidsSearch( 'all', args, apiCall );
+            }
+        }
     };
     
     newHome.prototype.clearSearch = function( andFilter ) {
@@ -1795,7 +1861,7 @@ define( ['plugins/router',
 
     // bind to scroll() event and when scroll is 150px or less from bottom fetch more data.
     // Uses flag to determine if fetch is already in process, if so a new one will not be made 
-    newHome.prototype.scrollHandler = function( event ) {
+    /*newHome.prototype.scrollHandler = function( event ) {
         var self = event.data;
         var args;
         var apiCall;
@@ -1853,7 +1919,7 @@ define( ['plugins/router',
                 } 
             }
         }
-    };
+    };*/
     
     newHome.prototype.setTitleMargin = function() {
         var self = this;
@@ -1929,7 +1995,7 @@ define( ['plugins/router',
     };
     
     newHome.prototype.attached = function() {
-	$(window).scroll( this, this.scrollHandler );
+	//$(window).scroll( this, this.scrollHandler );
         $(window).scroll( this, this.stickyDates );
         $(window).scroll( this, this.stickyToolbars );
         $(window).resize( this, this.getWindowWidth );
@@ -1938,7 +2004,7 @@ define( ['plugins/router',
     };
 
     newHome.prototype.detached = function() {
-	$(window).off( "scroll", this.scollHandler );
+	//$(window).off( "scroll", this.scollHandler );
         $(window).off( "scroll", this.stickyDates );
         $(window).off( "scroll", this.stickyToolbars );
         $(window).off( "resize", this.getWindowWidth );
