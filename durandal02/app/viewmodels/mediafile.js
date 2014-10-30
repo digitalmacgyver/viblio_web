@@ -96,7 +96,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         self.showTags = ko.observable( false );
 	self.tags = ko.observableArray( data.tags );
 
-	self.title = ko.observable( data.title );
+	self.title = ko.observable( viblio.unescapeHtml( data.title ) );
 	self.description = ko.observable( data.description );
 
 	self.image = ko.observable( self.options.in_process_style ? null : self.media().views.poster.url );
@@ -106,8 +106,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	// This will be triggered by a save on the liveEdit custom
 	// binding.
 	self.on( "mediaFile:TitleDescChanged", function( data ) {
-            var regexp1=new RegExp('^[a-zA-Z0-9 .!?"-]+$');
-            if( regexp1.test( self.title() ) ) {
+            //var regexp1=new RegExp('^[a-zA-Z0-9 .!?"-]+$');
+            //if( regexp1.test( self.title() ) ) {
                 viblio.api( '/services/mediafile/set_title_description',
                             { mid: self.media().uuid,
                               title: self.title(),
@@ -115,9 +115,9 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
                             }).then( function() {
                                 viblio.mpEvent( 'title_description_changed' );
                             });
-            } else {
+            /*} else {
                 return;
-            }
+            }*/
 	});
         
         self.tagLabels = ko.observableArray([{label: 'New Tag', selected: ko.observable(false)},{label: 'Animals', selected: ko.observable(false)},{label: 'At home', selected: ko.observable(false)},{label: 'Beach', selected: ko.observable(false)},

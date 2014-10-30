@@ -45,7 +45,7 @@
                         <div class="vidTitle-Wrap">
                             <div data-bind="if: title_editable">
                                 <div data-bind="liveEditor: title">
-                                    <h3 class="view vidTitle" data-bind="click: title.edit, text: playing().title() || 'Click to edit title'"></h3>
+                                    <h3 class="view vidTitle" data-bind="click: title.edit, text: title() || 'Click to edit title'"></h3>
                                     <div class="editTitle-Wrap">
                                         <input type="text" class="edit" data-bind="value: title, 
                                                                            hasFocus: title.editing, 

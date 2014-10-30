@@ -215,11 +215,11 @@ define(["durandal/app",
         playing().highlight();
 
 	if ( title_editable() ) {
-            title( playing().title() || 'Click to add a title.' );
+            title( viblio.unescapeHtml( playing().title() ) || 'Click to add a title.' );
             description( playing().description() || 'Click to add a description.' );
 	}
 	else {
-            title( playing().title() || 'Untitled' );
+            title( viblio.unescapeHtml( playing().title()) || 'Untitled' );
             description( playing().description() || '' );
 	}
         setupComments( m.media() );
@@ -465,7 +465,7 @@ define(["durandal/app",
                 // returns now in UTC time
                 var now = new Date().getTime();
                 data.comments.forEach( function( c ) {
-                    var hash = { comment: c.comment };
+                    var hash = { comment: viblio.unescapeHtml(c.comment) };
                     hash['who'] = c.who || 'anonymous';
                     // create a date format that is usable
                     var temp = c.created_date.replace(/-/g,',').replace(/ /g, ",").replace(/:/g, ",");
@@ -564,12 +564,13 @@ define(["durandal/app",
             tags.remove( tag );
         });
     };
-
+    
     // This gets triggered when a new user comment has been entered.
     //
     app.on( 'player:newcomment', function( data ) {
-        var regexp1=new RegExp('^[a-zA-Z0-9 .!?"-]+$');
-        if( regexp1.test( usercomment() ) ) {
+        //var regexp1=new RegExp('^[a-zA-Z0-9 .!?"-]+$');
+        //if( regexp1.test( usercomment() ) ) {
+        
             viblio.api( '/services/mediafile/add_comment',
                     { mid: playing().media().uuid,
                       txt: usercomment()
@@ -582,7 +583,7 @@ define(["durandal/app",
                         comments.unshift( hash );
                         viblio.mpEvent( 'comment' );
                     });
-        }
+        //}
     });
     
     // Extracts an address from the structure returned from
@@ -936,7 +937,7 @@ define(["durandal/app",
 					    var mf = data.media;
 					    // Set now playing
 					    playing( new Mediafile( mf ) );
-				    title( mf.title || 'Untitled' );
+				    title( viblio.unescapeHtml( mf.title ) || 'Untitled' );
 					    description( mf.description || '' );
 
 					    if ( mf.lat )
@@ -1030,7 +1031,7 @@ define(["durandal/app",
                         var mf = json.media;
                         // Set now playing
                         playing( new Mediafile( mf ) );
-                        title( mf.title || 'Click to add a title' );
+                        title( viblio.unescapeHtml( mf.title ) || 'Click to add a title' );
                         description( mf.description || 'Click to add a description' );
                         setOwner( json.owner );
                     });

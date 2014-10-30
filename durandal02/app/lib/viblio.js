@@ -274,6 +274,22 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 	    });
 
 	    return promise;
-	}
+	},
+        
+        // Use the browser's built-in functionality to quickly and safely escape the
+        // string
+        escapeHtml: function(str) {
+            var div = document.createElement('div');
+            div.appendChild(document.createTextNode(str));
+            return div.innerHTML;
+        },
+
+        // UNSAFE with unsafe strings; only use on previously-escaped ones!
+        unescapeHtml: function(escapedStr) {
+            var div = document.createElement('div');
+            div.innerHTML = escapedStr;
+            var child = div.childNodes[0];
+            return child ? child.nodeValue : '';
+        }
     };
 });
