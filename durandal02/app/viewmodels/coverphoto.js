@@ -53,6 +53,7 @@ function(app, viblio, Events, header, c_header, hp) {
     }
     
     function handleBackstretch( photos ) {
+        console.log( photos );
         if( backgroundImageUrl() ) {
             $('.bannerImage').backstretch( backgroundImageUrl() );
         } else {
@@ -60,7 +61,7 @@ function(app, viblio, Events, header, c_header, hp) {
                 $('.bannerImage').backstretch("destroy", false);
             }
             
-            if( photos ) {
+            if( photos && photos.length > 0 ) {
                 $('.bannerImage').backstretch( photos );
             }
         }
