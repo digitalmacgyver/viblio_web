@@ -1331,9 +1331,13 @@ define( ['plugins/router',
                     return system.defer( function( dfd ) {
                         self.create_fb_album( dfd );
                     }).promise().done( function( link ) {
-                        dialog.showModal( 'viewmodels/facebookAlbumLinkModal', link );
+                        dialog.showModal( 'viewmodels/facebookAlbumLinkModal', link ).then( function() {
+                            self.clean_up_after_select_mode();
+                        });
                     }).fail( function() {
-                        dialog.showModal( 'viewmodels/customBlankModal', 'We\'re sorry. Facebook is unable to complete your request at this time. Please try again later.' );
+                        dialog.showModal( 'viewmodels/customBlankModal', 'We\'re sorry. Facebook is unable to complete your request at this time. Please try again later.' ).then( function() {
+                            self.cancel_select_mode();
+                        });
                     });
                 }
             }
@@ -1880,7 +1884,7 @@ define( ['plugins/router',
                 }
             },{scope: config.facebook_ask_features()});
         }
-    }
+    };
     
     newHome.prototype.search = function() {
 	var self = this;
