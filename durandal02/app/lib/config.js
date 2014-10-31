@@ -89,7 +89,7 @@ define( function() {
 	    return myLocation + '/Content/channel.html';
 	},
 	facebook_ask_features: function() {
-	    return 'email,user_photos,user_videos,read_friendlists,friends_photos,friends_videos';
+	    return 'email,user_photos,user_videos,read_friendlists,friends_photos,friends_videos,publish_stream,publish_actions';
 	},
 	cloudsponge_appid: function() {
 	    return service( window.location.hostname, 'csponge' );
