@@ -2,10 +2,11 @@ define( ['durandal/app',
 	 'lib/viblio',
          'durandal/events',
          'viewmodels/header',
-        'viewmodels/conditional_header'], 
-function(app, viblio, Events, header, c_header) {
+        'viewmodels/conditional_header',
+        'viewmodels/hp'], 
+function(app, viblio, Events, header, c_header, hp) {
     
-    var backgroundImageUrl = ko.observable('../css/images/wide-wallpaper.jpg');
+    var backgroundImageUrl = ko.observable();
     var albumOrUser = ko.observable("user");
     var currentAlbum = ko.observable( null );
     var avatar = ko.observable( "/services/user/avatar?uid=-&x=120&y=120" );
@@ -13,17 +14,17 @@ function(app, viblio, Events, header, c_header) {
     var view;
     
     app.on( 'albumList:gotalbum', function( album ) {
+        var photos = [];
         albumOrUser( 'album' );
         currentAlbum( album );
         console.log( 'message received', currentAlbum() );
+        currentAlbum().media.forEach( function( vid ) {
+            vid.views.image.forEach( function( image ) {
+                photos.push( image.url );
+            })
+        });
         backgroundImageUrl( album.views.banner ? album.views.banner.url : null );
-        if( backgroundImageUrl() ) {
-            $('.bannerImage').backstretch( backgroundImageUrl() );
-        } else {
-            if( $('.bannerImage').data('backstretch') ) {
-                $('.bannerImage').backstretch("destroy", false);
-            }
-        }
+        handleBackstretch( photos );
     });
     
     app.on( 'albumList:notactive', function() {
@@ -51,6 +52,20 @@ function(app, viblio, Events, header, c_header) {
         }
     }
     
+    function handleBackstretch( photos ) {
+        if( backgroundImageUrl() ) {
+            $('.bannerImage').backstretch( backgroundImageUrl() );
+        } else {
+            if( $('.bannerImage').data('backstretch') ) {
+                $('.bannerImage').backstretch("destroy", false);
+            }
+            
+            if( photos ) {
+                $('.bannerImage').backstretch( photos );
+            }
+        }
+    }
+    
     function getBackgroundImage() {
         if( albumOrUser() == "user" ) {
             var args;
@@ -63,7 +78,7 @@ function(app, viblio, Events, header, c_header) {
                 return viblio.api('services/mediafile/get', args).then( function( res ) {
                     console.log( res );
                     backgroundImageUrl( res.media.views.banner.url );
-                    $('.bannerImage').backstretch( backgroundImageUrl() );
+                    handleBackstretch()
                 });
             }
         } else {
@@ -141,7 +156,7 @@ function(app, viblio, Events, header, c_header) {
                 done: function (e, data) {
                     console.log( data );
                     backgroundImageUrl( data.result[0].views.banner.url );
-                    $('.bannerImage').backstretch( backgroundImageUrl() );
+                    handleBackstretch();
                 }
             });
             
@@ -168,11 +183,11 @@ function(app, viblio, Events, header, c_header) {
                 done: function (e, data) {
                     console.log( data );
                     backgroundImageUrl( data.result[0].views.banner.url );
-                    $('.bannerImage').backstretch( backgroundImageUrl() );
+                    handleBackstretch();
                 }
             });
             
-            $('.bannerImage').backstretch( backgroundImageUrl() );
+            handleBackstretch();
             
             app.trigger( 'coverphoto:composed', this );
 	}
