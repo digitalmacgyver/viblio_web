@@ -159,7 +159,7 @@
                     </span>
                 </li>
                 
-                <li class="divider-vertical" data-bind="visible: albumFilterIsActive() && !currentSelectedFilterAlbum().shared"></li>
+                <li class="divider-vertical"></li>
                 
                 <!-- video mode toggle -->
                 <li class="videoPhotoSwitch" data-bind="tooltip: {title: 'Toggle between photos and the videos they are from', placement: 'bottom' }">
@@ -179,7 +179,7 @@
                         <input type="checkbox" id="checkbox" class="checkbox" name="field2" data-bind="checked: video_mode_on, disable: isActiveFlag()" />
                     </p>
                 </li>
-                <li class="divider-vertical" data-bind="visible: albumFilterIsActive() ? !currentSelectedFilterAlbum().shared : true"></li>
+                <li class="divider-vertical"></li>
                 
                 <!-- Create -->
                 <li class="dropdown navControl albumsList">
@@ -514,7 +514,7 @@
                                 </div>  
                             </div> Album (<span data-bind="text: videos().length ? videos().length : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
                             <!-- ko if: videos().length == 0 -->
-                            <div class="btn btn-primary" data-bind="click: addToEmptyAlbum">Add videos to this empty album</div>
+                            <div class="btn btn-primary" data-bind="click: add_videos_to_empty_album">Add videos to this empty album</div>
                             <!-- /ko -->
                         </div>
                         
