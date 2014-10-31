@@ -110,7 +110,19 @@ define( ['plugins/router',
         self.selectedFilterAlbum = ko.observable();
         self.currentSelectedFilterAlbum = ko.observable(null);
         self.albumFilterIsActive = ko.observable(false);
+        self.albumFilterIsActive.subscribe( function( val ) {
+            // send a message that says the album filter is not active
+            if( !val ) {
+                app.trigger( 'albumList:notactive' );
+            }
+        });
         self.currentAlbum = ko.observable(null);
+        self.currentAlbum.subscribe( function( val ) {
+            // send a message that includes the newly activated album object
+            if( val ) {
+                app.trigger( 'albumList:gotalbum', val );
+            }
+        });
         self.albumIsShared = ko.observable(null);
         self.currentAlbumAid = ko.observable(null);
         self.currentAlbumTitle = ko.observable(null);

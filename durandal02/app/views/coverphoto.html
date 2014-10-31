@@ -1,0 +1,31 @@
+<div class="bannerImage-Wrap turquoiseBG">
+    <div class="bannerImage">
+        <div class="bannerEdit-Wrap" data-bind="tooltip: {title: 'Edit cover photo', placement: 'left'}">
+            <div class="editIcon-Wrap">
+                <i class="fa fa-pencil"></i>
+            </div>
+            <!--<div class="editButton">
+                <i class="fa fa-pencil"></i> Edit cover photo
+            </div>-->
+            <input class="userCoverUpload" style="position: absolute; width:0; height:0; top:0; left:0; visibility:hidden;"  type="file" name="upload" data-url="/services/user/add_or_replace_banner_photo" /> 
+            <input class="albumCoverUpload" style="position: absolute; width:0; height:0; top:0; left:0; visibility:hidden;"  type="file" name="upload" data-url="/services/album/add_or_replace_banner_photo" /> 
+        </div>
+        <!-- ko if: !backgroundImageUrl() -->
+        <div class="stockBanner centered whiteText">
+            <h2>Videos tell the best stories!</h2>
+            <p class="stockTagLine">watch, share, extract photos, make mashups, learn connect!</p>
+        </div>
+        <!-- /ko -->    
+    </div>
+    
+    <div class="bannerAvatar-Wrap">
+        <div class="bannerAvatar">
+            <img data-bind="attr: {src: avatar}" />
+            <div style="position: relative;" class="darkBlueBG fileinput-button">
+                <span>Change Avatar</span>&nbsp;
+                <i class="fa fa-spinner fa-spin"></i>
+            </div>
+        </div>
+        <input style="position: absolute; width:0; height:0; top:0; left:0; visibility:hidden;" class="avatarUpload" type="file" name="upload" data-url="/services/user/add_or_replace_profile_photo" />
+    </div>
+</div>
