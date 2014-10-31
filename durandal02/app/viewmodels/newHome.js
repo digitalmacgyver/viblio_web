@@ -2187,6 +2187,14 @@ define( ['plugins/router',
 	dialog.showModal( 'viewmodels/nginx-modal' );
     };
     
+    newHome.prototype.add_videos_to_empty_album = function() {
+        var self = this;
+        var args = {
+            album: self.currentAlbum() 
+        }
+	dialog.showModal( 'viewmodels/nginx-modal', args );
+    };
+    
     // Animation callbacks
     this.showElement = function(elem) { if (elem.nodeType === 1) $(elem).hide().fadeIn('slow'); };
     this.hideElement = function(elem) { if (elem.nodeType === 1) $(elem).fadeOut(function() { $(elem).remove(); }); };
