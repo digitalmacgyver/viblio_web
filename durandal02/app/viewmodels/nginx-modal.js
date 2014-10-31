@@ -34,6 +34,8 @@ define(['lib/viblio',
     
     var albumsList = ko.observableArray([]);
     var selectedAddToAlbum = ko.observable(null);
+    var albumToAddTo = ko.observable(null);
+    
     selectedAddToAlbum.subscribe( function( val ) {
         //console.log( val );
         if ( val ) {
@@ -62,11 +64,18 @@ define(['lib/viblio',
                 //alphabetically sort the list - toLowerCase() makes sure this works as expected
                 arr.sort(function(left, right) { return left.label.toLowerCase() == right.label.toLowerCase() ? 0 : (left.label.toLowerCase() < right.label.toLowerCase() ? -1 : 1) });
                 albumsList( arr );
+                dfd.resolve();
             });    
-        }).promise();
+        }).promise().then( function() {
+            if( albumToAddTo() ) {
+                var a = findMatch( albumToAddTo().uuid, albumsList() );
+                addToAlbumSelected( this, a );
+            }
+        });
     }
     
     function addToAlbumSelected( self, album ) {
+        console.log( album );
         albumsList().forEach( function( a ) {
             a.selected( false );
         });
@@ -100,6 +109,17 @@ define(['lib/viblio',
         console.log( 'vup clicked' );
     }
     
+    function findMatch( find, inArray ) {
+        var match = ko.utils.arrayFirst( inArray, function( a ) {
+            return a.uuid === find;
+        });
+        if (match) {
+            return match;  
+        } else {
+            return 'Error';
+        }    
+    };
+    
     return{
         uploadsCompleted: uploadsCompleted,
         find_faces: find_faces,
@@ -129,28 +149,33 @@ define(['lib/viblio',
 		return true;
 	    }  
 	},
-        activate: function() {
-           // set uploadsCompleted to null 
-           uploadsCompleted( null );
-           // Check if first upload has been completed
-           viblio.localStorage( 'firstUploadComplete' ).then(function( data ) {
-                if ( data ) {
-                    firstUploadComplete( true );
-                } else {
-                    firstUploadComplete( false );
-                }
-            });
+        activate: function( args ) {
+             // if there is an album passed in, then set albumToAddTo() to it so the uploader will upload directly into it
+            if( args && args.album ) {
+                albumToAddTo( args.album );
+            }
             
-            // Check if first Upload Message Has Been Shown
-            viblio.localStorage( 'firstUploadMessageHasBeenShown' ).then(function( data ) {
-                if ( data ) {
-                    firstUploadMessageHasBeenShown( true );
-                } else {
-                    firstUploadMessageHasBeenShown( false );
-                }
-            });
-            // get list of albums
-            getAlbumsList();
+            // set uploadsCompleted to null 
+            uploadsCompleted( null );
+            // Check if first upload has been completed
+            viblio.localStorage( 'firstUploadComplete' ).then(function( data ) {
+                 if ( data ) {
+                     firstUploadComplete( true );
+                 } else {
+                     firstUploadComplete( false );
+                 }
+             });
+
+             // Check if first Upload Message Has Been Shown
+             viblio.localStorage( 'firstUploadMessageHasBeenShown' ).then(function( data ) {
+                 if ( data ) {
+                     firstUploadMessageHasBeenShown( true );
+                 } else {
+                     firstUploadMessageHasBeenShown( false );
+                 }
+             });
+             // get list of albums
+             getAlbumsList();
         },
 	compositionComplete: function( view ) {
             var self = this;
@@ -166,7 +191,10 @@ define(['lib/viblio',
                 skip_faces: skip_faces()
 	    });
             
-            unselectAllAlbums();
+            // if an album isn't passed in, then unselect all albums
+            if( !albumToAddTo() ) {
+                unselectAllAlbums();
+            }
 
 	    $(view).find( '.vup' ).bind( 'viblio_uploaderstarted', function() {
 		viblio.mpEvent( 'ui_upload_started' );
@@ -216,6 +244,11 @@ define(['lib/viblio',
 	    var available_height = $(window).height() - 200 - 40 - $(view).height();
 	    if ( available_height < 250 ) available_height = 250;
 	    $(view).find( ".vup-area").height( available_height );
-	}
+	},
+        
+        detached: function() {
+            unselectAllAlbums();
+            albumToAddTo(null);
+        }
     };
 });
