@@ -11,6 +11,7 @@ function(app, viblio, Events, header, c_header, hp) {
     var currentAlbum = ko.observable( null );
     var avatar = ko.observable( "/services/user/avatar?uid=-&x=120&y=120" );
     var user = viblio.user();
+    var hideEdit = ko.observable(null); /* controls visibility on the change avatar button */
     var view;
     
     app.on( 'albumList:gotalbum', function( album ) {
@@ -25,6 +26,17 @@ function(app, viblio, Events, header, c_header, hp) {
         });
         backgroundImageUrl( album.views.banner ? album.views.banner.url : null );
         handleBackstretch( photos );
+        
+        // the album is shared with the user so show the owner's avatar
+        if( album.owner_uuid != user.uuid ) {
+            hideEdit( true );
+            avatar( "/services/user/avatar?uid=" + album.owner_uuid + "&x=120&y=120" );
+        }
+        // else it's owned by the viewer, so show the user's avatar
+        else {
+            hideEdit( false );
+            avatar( "/services/user/avatar?uid=-&x=120&y=120"+new Date() );
+        }
     });
     
     app.on( 'albumList:notactive', function() {
@@ -32,6 +44,18 @@ function(app, viblio, Events, header, c_header, hp) {
         currentAlbum( null );
         console.log( 'message received', currentAlbum() );
         getBackgroundImage();
+    });
+    
+    app.on( 'selectedFace:active', function( face ) {
+        console.log( 'face filter is on', face );
+        hideEdit( true )
+        avatar( face.url );
+    });
+    
+    app.on( 'selectedFace:notactive', function() {
+        console.log( 'face filter is off, show regular avatar' );
+        hideEdit( false );
+        avatar( "/services/user/avatar?uid=-&x=120&y=120"+new Date() );
     });
     
     Events.includeIn( this );
@@ -53,7 +77,7 @@ function(app, viblio, Events, header, c_header, hp) {
     }
     
     function handleBackstretch( photos ) {
-        console.log( photos );
+        console.log( "photos", photos );
         if( backgroundImageUrl() ) {
             $('.bannerImage').backstretch( backgroundImageUrl() );
         } else {
@@ -91,6 +115,8 @@ function(app, viblio, Events, header, c_header, hp) {
     return {
         backgroundImageUrl: backgroundImageUrl,
         avatar: avatar,
+        albumOrUser: albumOrUser,
+        hideEdit: hideEdit,
         
         activate: function() {
             getBackgroundImage();
@@ -105,7 +131,7 @@ function(app, viblio, Events, header, c_header, hp) {
             
             // jqueryFileUpload
             // avatar
-	    $(view).find(".bannerAvatar").on( 'click', function() {
+	    $(view).find(".changeBannerAvatar").on( 'click', function() {
 		$(view).find(".avatarUpload").click();
 	    });
 	    $(view).find(".avatarUpload").fileupload({
@@ -115,11 +141,11 @@ function(app, viblio, Events, header, c_header, hp) {
 		dataType: 'json',
 		start: function() {
                     // show spinner
-		    $(".bannerAvatar div i").css( 'visibility', 'visible' );
+		    $(".changeBannerAvatar i").css( 'visibility', 'visible' );
 		},
 		done: function(e, data) {
                     // hide spinner
-                    $(".bannerAvatar div i").css( 'visibility', 'hidden' );
+                    $(".changeBannerAvatar i").css( 'visibility', 'hidden' );
                     
                     // update avatar in settings and the headers
                     avatar( null );

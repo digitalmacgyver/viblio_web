@@ -6512,6 +6512,7 @@ ul.token-input-list-facebook li input {
     height: 100%;
     width: 100%;
     background-color: rgba(0,0,0,.4);
+    cursor: not-allowed;
 }
 
 .albumListView .titleWrap {
@@ -6781,6 +6782,16 @@ ul.token-input-list-facebook li input {
     font-size: 14px;
 }
 
-.bannerAvatar i {
+.coverAvatar {
+    width: 120px;
+    height: 120px;
+}
+
+.changeBannerAvatar {
+    cursor: pointer;
+    color: white;
+}
+
+.changeBannerAvatar i {
     visibility: hidden;
 }

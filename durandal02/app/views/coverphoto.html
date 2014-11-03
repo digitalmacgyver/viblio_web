@@ -1,4 +1,4 @@
-<div class="bannerImage-Wrap turquoiseBG">
+<div class="bannerImage-Wrap darkBlueBG">
     <div class="bannerImage">
         <div class="bannerEdit-Wrap" data-bind="tooltip: {title: 'Edit cover photo', placement: 'left'}">
             <div class="editIcon-Wrap">
@@ -20,8 +20,8 @@
     
     <div class="bannerAvatar-Wrap">
         <div class="bannerAvatar">
-            <img data-bind="attr: {src: avatar}" />
-            <div style="position: relative;" class="darkBlueBG fileinput-button">
+            <img class="coverAvatar" data-bind="attr: {src: avatar}" />
+            <div style="position: relative;" class="darkBlueBG fileinput-button changeBannerAvatar" data-bind="visible: !hideEdit() ">
                 <span>Change Avatar</span>&nbsp;
                 <i class="fa fa-spinner fa-spin"></i>
             </div>

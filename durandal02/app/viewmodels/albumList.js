@@ -41,6 +41,14 @@ define( ['plugins/router',
                     return false;
                 }
             });
+            
+            self.showBlockout = ko.observable( false );
+            app.on( 'select_mode:on', function() {
+                self.showBlockout( true );
+            });
+            app.on( 'select_mode:off', function() {
+                self.showBlockout( false );
+            });
         };
         
         albumList.prototype.unselectAllAlbums = function() {
