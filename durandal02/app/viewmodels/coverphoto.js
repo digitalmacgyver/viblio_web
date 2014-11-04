@@ -131,7 +131,7 @@ function(app, viblio, Events, header, c_header, hp) {
             
             // jqueryFileUpload
             // avatar
-	    $(view).find(".changeBannerAvatar").on( 'click', function() {
+	    $(view).find(".changeBannerAvatar-Outerwrap").on( 'click', function() {
 		$(view).find(".avatarUpload").click();
 	    });
 	    $(view).find(".avatarUpload").fileupload({
@@ -139,14 +139,7 @@ function(app, viblio, Events, header, c_header, hp) {
                     acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
                 },
 		dataType: 'json',
-		start: function() {
-                    // show spinner
-		    $(".changeBannerAvatar i").css( 'visibility', 'visible' );
-		},
 		done: function(e, data) {
-                    // hide spinner
-                    $(".changeBannerAvatar i").css( 'visibility', 'hidden' );
-                    
                     // update avatar in settings and the headers
                     avatar( null );
                     avatar( "/services/user/avatar?uid=-&x=120&y=120"+new Date() );

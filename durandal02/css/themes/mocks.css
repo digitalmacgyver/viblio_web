@@ -62,8 +62,8 @@ input[type="color"],
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     border-color: rgba(0,0,0,.3);
-    box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
+    box-sizing: border-box;
     height: 40px;
     font-size: 17px;
 }
@@ -6773,8 +6773,9 @@ ul.token-input-list-facebook li input {
 .bannerAvatar-Wrap {
     width: 120px;
     position: absolute;
-    bottom: 5px;
-    left: 5px;
+    bottom: 20px;
+    left: 20px;
+    border: 3px solid white;
 }
 
 .bannerAvatar-Wrap .fileinput-button {
@@ -6782,16 +6783,58 @@ ul.token-input-list-facebook li input {
     font-size: 14px;
 }
 
+.bannerAvatar {
+    position: relative;
+}
+
+.bannerAvatar i {
+    position: absolute;
+    cursor: pointer;
+    bottom: 6px;
+    left: 5px;
+    z-index: 1;
+    color: rgb(255, 255, 255);
+    opacity: .65;
+}
+
 .coverAvatar {
     width: 120px;
     height: 120px;
 }
 
-.changeBannerAvatar {
-    cursor: pointer;
-    color: white;
+.changeBannerAvatar-Outerwrap {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
-.changeBannerAvatar i {
+.changeBannerAvatar-Wrap {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+}
+
+.bannerAvatar:hover i {
+    opacity: 1;
+}
+
+.changeBannerAvatar {
+    width: 100%;
     visibility: hidden;
+    cursor: pointer;
+    color: white;
+    position: absolute;
+    bottom: 0;
+    padding: 5px 5px 5px 29px;
+    font-size: 14px;
+    background: rgba(0, 0, 0, 0.65);
+    -moz-box-sizing:border-box; /* Firefox */
+    box-sizing: border-box;
+}
+
+.bannerAvatar:hover .changeBannerAvatar {
+    visibility: visible;
 }
