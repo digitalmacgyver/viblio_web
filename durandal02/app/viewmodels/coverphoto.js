@@ -123,7 +123,9 @@ function(app, viblio, Events, header, c_header, hp) {
         },
         
         detached: function() {
-            $('#fileupload').fileupload('destroy');
+            $('.avatarUpload').fileupload('destroy');
+            $('.albumCoverUpload').fileupload('destroy');
+            $('.userCoverUpload').fileupload('destroy');
         },
         
         compositionComplete: function( _view ) {
@@ -146,7 +148,10 @@ function(app, viblio, Events, header, c_header, hp) {
                     header.updateAvatar();
                     c_header.updateAvatar();
 		}
-	    });
+	    })
+               // prevent the input from grabbing file uploads on drag and drop 
+              .bind('fileuploaddrop', function (e, data) { e.preventDefault(); })
+              .bind('fileuploaddragover', function (e) { e.preventDefault(); });
             
             
             // cover photos - decide which input to use based on if the user is looking at an album or not
@@ -178,7 +183,10 @@ function(app, viblio, Events, header, c_header, hp) {
                     backgroundImageUrl( data.result[0].views.banner.url );
                     handleBackstretch();
                 }
-            });
+            })
+              // prevent the input from grabbing file uploads on drag and drop       
+              .bind('fileuploaddrop', function (e, data) { e.preventDefault(); })
+              .bind('fileuploaddragover', function (e) { e.preventDefault(); });
             
             // album cover photo
             $('.albumCoverUpload').fileupload({
@@ -205,7 +213,10 @@ function(app, viblio, Events, header, c_header, hp) {
                     backgroundImageUrl( data.result[0].views.banner.url );
                     handleBackstretch();
                 }
-            });
+            })
+               // prevent the input from grabbing file uploads on drag and drop      
+              .bind('fileuploaddrop', function (e, data) { e.preventDefault(); })
+              .bind('fileuploaddragover', function (e) { e.preventDefault(); });
             
             handleBackstretch();
             
