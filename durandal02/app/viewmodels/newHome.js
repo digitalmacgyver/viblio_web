@@ -184,37 +184,7 @@ define( ['plugins/router',
         // Hold the pager data back from server
 	// media queries.  Initialize it here so
 	// the first fetch works.
-	self.allVidsPager = {
-	    next_page: 1,
-	    entries_per_page: 20,
-	    total_entries: -1 /* currently unknown */
-	};
-        
-        self.recentPager = {
-            next_page: 1,
-            entries_per_page: 20,
-            total_entries: -1 /* currently unknown */
-        };
-        
-        self.monthPager = {
-	    next_page: 1,
-	    entries_per_page: 20,
-	    total_entries: -1 /* currently unknown */
-	};
-        
-        self.facesPager = {
-	    next_page: 1,
-	    entries_per_page: 20,
-	    total_entries: -1 /* currently unknown */
-	};
-        
-        self.citiesPager = {
-	    next_page: 1,
-	    entries_per_page: 20,
-	    total_entries: -1 /* currently unknown */
-	};
-        
-        self.searchPager = {};
+        self.thePager = ko.observable({});
         
         self.active_filter_label = ko.computed( function() {
             if( self.dateFilterIsActive() ) {
@@ -313,7 +283,7 @@ define( ['plugins/router',
                     var num = data.stats.pending/* + data.stats.visible*/;
                     self.vidsInProcess( num );
                     if( self.vidsInProcess() > 0 && args.uploadsCompleted ) {
-                        self.recentVidsSearch(true);
+                        self.getRecentVids( true );
                     }
                 });
             }
@@ -348,7 +318,7 @@ define( ['plugins/router',
             self.recentUploadsIsActive( false );
             self.showAllVideos();
         } else {
-            self.recentVidsSearch( true );
+            self.getRecentVids( true );
             self.recentUploadsIsActive( true );
             self.unselectOtherFilters();
         }
@@ -427,76 +397,6 @@ define( ['plugins/router',
         self.photos.valueHasMutated();
     };
     
-    newHome.prototype.recentVidsSearch = function( newSearch ) {
-        var self = this;
-        
-        var args = {
-            //days: 30
-        };
-        
-        self.isActiveFlag(true);
-        self.unselectOtherFilters();
-        
-        // Only remove all vids and reset pager if it's a new search
-        if( newSearch ) {
-            self.clearfilters();
-            self.videos.removeAll();
-            self.photos.removeAll();
-            // reset pager
-            self.recentPager = {
-                next_page: 1,
-                entries_per_page: 20,
-                total_entries: -1 /* currently unknown */
-            };
-        }
-        
-        return system.defer( function( dfd ) {
-            if ( self.recentPager.next_page )   {
-                args.page = self.recentPager.next_page;
-                args.rows = self.recentPager.entries_per_page;
-                args.include_tags = 1;
-                args.include_images = 1;
-                // needed for showing pending videos
-                if( self.vidsInProcess() > 0 ) {
-                    args.only_videos=1;
-                    //args.only_visible=0;
-                    args['status[]']=['pending', 'visible', 'complete'];
-                }
-                
-                viblio.api( '/services/mediafile/recently_uploaded', args )
-                    .then( function( json ) {
-                        //console.log( json );
-                        self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
-                        self.recentPager = json.pager;
-                        json.media.forEach( function( mf ) {
-                            self.addMediaFile ( mf );
-                            if( mf.views.image ) {
-                                self.some_more_all( mf, mf.views.image );
-                            }
-                        });
-                        self.videos.valueHasMutated();
-                        dfd.resolve();
-                    });
-            }
-            else {
-                dfd.resolve();
-            }
-        }).promise().then(function(){
-            self.searchQuery(null);
-            self.recentUploadsIsActive(true);
-            
-            self.isActiveFlag(false);
-            
-            // Used to close the dropdown
-            $("body").trigger("click");
-            
-            // tickle the photos filter
-            var old = self.photoViewFilter();
-            self.photoViewFilter(null);
-            self.photoViewFilter( old );
-        });
-    };
-    
     newHome.prototype.monthSelected = function( self, month ) {
         var args;
         if( month.selected() ) {
@@ -512,102 +412,8 @@ define( ['plugins/router',
                 month: self.selectedMonth(),
                 cid: self.cid
             };
-            self.filterVidsSearch( 'dates', 'self.monthPager', args, '/services/yir/videos_for_month', true );
+            self.filterVidsSearch( 'dates', args, '/services/yir/videos_for_month', true );
         }
-    };
-    
-    /*
-     * @param {string} type - one of: "dates", "faces", "cities"
-     * @param {string} pager - a pager object for the search type being used - 
-     *                         one of: self.monthPager, self.facesPager, self.cityPager
-     * @param {object} args - the args to be sent along with the api call
-     * @param {string} api - the endpoint to call
-     * @param {bool} newSearch - whether or not to run a fresh search or not
-     */
-    newHome.prototype.filterVidsSearch = function( type, pager, args, api, newSearch ) {
-	var self = this;
-        
-        self.isActiveFlag(true);
-        
-        // Only remove all vids and reset pager if it's a new search
-        if( newSearch ) {
-            //clear the search contents
-            self.clearSearch();
-            self.unselectOtherFilters(type);
-            //self.videos.removeAll();
-            // reset pager
-            pager = {
-                next_page: 1,
-                entries_per_page: 20,
-                total_entries: -1 /* currently unknown */
-            };    
-        }
-        
-	return system.defer( function( dfd ) {
-	    if ( pager.next_page )   {
-                args.page = pager.next_page;
-                args.rows = pager.entries_per_page;
-                args.include_tags = 1;
-                args.include_contact_info = 1;
-                args.include_images = 1;
-		viblio.api( api, args )
-		    .then( function( json ) {
-                        //console.log( json, args );
-                        self.hits ( json.pager.total_entries );
-			pager = json.pager;
-                        json.media.forEach( function( mf ) {
-                            self.addMediaFile ( mf );
-                            if( mf.views.image ) {
-                                self.some_more_all( mf, mf.views.image );
-                            }
-                        });
-                        self.videos.valueHasMutated();
-			dfd.resolve();
-		    });
-	    }
-	    else {
-		dfd.resolve();
-	    }
-	}).promise().then(function(){
-            // reset active filters
-            self.resetOtherFilters( type );
-            
-            self.isActiveFlag(false);
-            
-            // tickle the photos filter
-            var old = self.photoViewFilter();
-            self.photoViewFilter(null);
-            self.photoViewFilter( old );
-        });
-    };
-    
-    newHome.prototype.resetOtherFilters = function( exception ) {
-        var self = this;
-        
-        if( exception == "dates" ) {
-            self.dateFilterIsActive(true);
-            self.faceFilterIsActive(false);
-            self.selectedFace('');
-            self.cityFilterIsActive(false);
-            self.selectedCity('');
-        } else if ( exception == "faces" ) {
-            self.dateFilterIsActive(false);
-            self.selectedMonth('');
-            self.faceFilterIsActive(true);
-            self.cityFilterIsActive(false);
-            self.selectedCity('');
-        } else if ( exception == "cities" ) {
-            self.dateFilterIsActive(false);
-            self.selectedMonth('');
-            self.faceFilterIsActive(false);
-            self.selectedFace('');
-            self.cityFilterIsActive(true);
-        }
-        
-        self.recentUploadsIsActive(false);
-        self.allVidsIsSelected(false);
-        self.albumFilterIsActive(false);
-        self.selectedFilterAlbum('');
     };
     
     newHome.prototype.faceSelected = function( self, face ) {      
@@ -633,7 +439,7 @@ define( ['plugins/router',
                 args = {
                     contact_uuid: self.selectedFace().uuid
                 };
-                self.filterVidsSearch( 'faces', 'self.facesPager', args, '/services/faces/media_face_appears_in', true );
+                self.filterVidsSearch( 'faces', args, '/services/faces/media_face_appears_in', true );
                 gettingFace = false;
             }
         } else {
@@ -659,8 +465,189 @@ define( ['plugins/router',
             args = {
                 q: self.selectedCity()
             }
-            self.filterVidsSearch( 'cities', 'self.cityPager', args, '/services/mediafile/taken_in_city', true );
+            self.filterVidsSearch( 'cities', args, '/services/mediafile/taken_in_city', true );
         }         
+    };
+    
+    newHome.prototype.newVidsSearch = function() {
+        var self = this;
+        var args;
+        
+        if ( !self.searchQuery() ) {
+            return;
+        } else {          
+            self.searchFilterIsActive(true);
+            self.videos.removeAll();
+            self.photos.removeAll();
+            self.currentSearch = self.searchQuery();
+            args = {
+                q: self.currentSearch
+            };
+            self.filterVidsSearch( null, args, '/services/mediafile/search_by_title_or_description', true );
+        }
+    };
+    
+    newHome.prototype.getRecentVids = function( newSearch ) {
+        var self = this;
+        var args;
+        
+        args = {};
+        if( self.vidsInProcess() > 0 ) {
+            args.only_videos = 1;
+            args['status[]'] = ['pending', 'visible', 'complete'];
+        }
+        self.filterVidsSearch( 'recent', args, '/services/mediafile/recently_uploaded', newSearch );
+    };
+    
+    newHome.prototype.showAllVideos = function() {
+        var self = this;
+        var args;
+        var apiCall;
+        
+        self.searchFilterIsActive( false );
+        self.allVidsIsSelected(true);
+        
+        args = {};
+        if( self.cid ) {
+            args = {
+                contact_uuid: self.cid
+            };
+            apiCall = '/services/faces/media_face_appears_in';
+        } else {
+            args = { 
+                views: ['poster']
+            };
+            apiCall = '/services/mediafile/list_all';
+        }
+        self.filterVidsSearch( 'all', args, apiCall, true );
+    };
+    
+    /*
+     * @param {string} type - one of: "dates", "faces", "cities", "recent", "all" or null 
+     * @param {object} args - the args to be sent along with the api call
+     * @param {string} api - the endpoint to call
+     * @param {bool} newSearch - whether or not to run a fresh search or not
+     */
+    newHome.prototype.filterVidsSearch = function( type, args, api, newSearch ) {
+	var self = this;
+        self.isActiveFlag(true);
+        
+        // Only remove all vids and reset pager if it's a new search
+        if( newSearch ) {
+            //clear the search contents - only if there is a type - if type is null this means it's a search, so keep the current search term
+            if( type ) {
+                self.clearSearch();
+            }
+            
+            if( !type || type == "all" ) {
+                self.clearfilters();
+            }
+            
+            self.unselectOtherFilters(type);
+            // reset pager
+            self.thePager({
+                next_page: 1,
+                entries_per_page: 20,
+                total_entries: -1 /* currently unknown */
+            });    
+        }
+        
+	return system.defer( function( dfd ) {
+	    if ( self.thePager().next_page )   {
+                args.page = self.thePager().next_page;
+                args.rows = self.thePager().entries_per_page;
+                args.include_tags = 1;
+                args.include_contact_info = 1;
+                args.include_images = 1;
+		viblio.api( api, args )
+		    .then( function( json ) {
+                        self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
+			self.thePager(json.pager);
+                        if(json.albums){
+                            json.media = json.albums;
+                        }
+                        json.media.forEach( function( mf ) {
+                            self.addMediaFile ( mf );
+                            if( mf.views.image ) {
+                                self.some_more_all( mf, mf.views.image );
+                            }
+                        });
+                        self.videos.valueHasMutated();
+			dfd.resolve();
+		    });
+	    }
+	    else {
+		dfd.resolve();
+	    }
+	}).promise().then(function(){
+            // reset active filters
+            if( type && type != "all" ) {
+                self.resetOtherFilters( type );
+            }
+            
+            if( self.videos().length > 0 ) {
+                $.when( self.videos()[self.videos().length-1].viewResolved ).then( function() {
+                    self.isActiveFlag(false);
+                });
+            } else {
+                self.isActiveFlag(false);
+            }
+            
+            // tickle the photos filter
+            var old = self.photoViewFilter();
+            self.photoViewFilter(null);
+            self.photoViewFilter( old );
+            
+            if( type == "all" ) {
+                setTimeout(function(){
+                    self.setTitleMargin();
+                }, 300);    
+            }
+        });
+    };
+    
+    newHome.prototype.clearSearch = function( andFilter ) {
+        var self = this;
+        
+        self.searchFilterIsActive( false );
+        self.searchQuery(null);
+        self.videos.removeAll();
+        self.photos.removeAll();
+        
+        if( andFilter ) {
+            self.clearfilters();
+        }
+    };
+    
+    newHome.prototype.resetOtherFilters = function( exception ) {
+        var self = this;
+        
+        self.dateFilterIsActive(false);
+        self.faceFilterIsActive(false);
+        self.cityFilterIsActive(false);
+        self.recentUploadsIsActive(false);
+        self.allVidsIsSelected(false);
+        self.albumFilterIsActive(false);
+        self.selectedFilterAlbum('');    
+            
+        if( exception == "dates" ) {
+            self.dateFilterIsActive(true);
+            self.selectedFace('');
+            self.selectedCity('');
+        } else if ( exception == "faces" ) {
+            self.selectedMonth('');
+            self.faceFilterIsActive(true);
+            self.selectedCity('');
+        } else if ( exception == "cities" ) {
+            self.selectedMonth('');
+            self.selectedFace('');
+            self.cityFilterIsActive(true);
+        } else if ( exception == "recent" ) {
+            self.selectedMonth('');
+            self.selectedFace('');
+            self.selectedCity('');
+            self.recentUploadsIsActive(true);
+        }
     };
         
     newHome.prototype.albumVidsSearch = function( newSearch ) {
@@ -1389,90 +1376,6 @@ define( ['plugins/router',
         self.selectedPhotos.removeAll();
     };
     
-    newHome.prototype.resetSearchPager = function() {
-        var self = this;
-        
-        self.searchPager = {
-            next_page: 1,
-            entries_per_page: 20,
-            total_entries: -1 /* currently unknown */
-        };
-    };
-    
-    newHome.prototype.newVidsSearch = function( newSearch ) {
-        var self = this;
-        
-        if ( !self.searchQuery() ) {
-            return;
-        } else {
-            if( newSearch ) {
-                self.clearfilters();
-                self.unselectOtherFilters(null);
-            }           
-            self.searchFilterIsActive(true);
-            self.videos.removeAll();
-            self.photos.removeAll();
-            self.resetSearchPager();
-            self.currentSearch = self.searchQuery();
-            self.vidsSearch();
-        }
-    };
-    
-    newHome.prototype.vidsSearch = function() {
-        var self = this;
-        
-        var args = {
-            q: self.currentSearch
-        };
-        self.isActiveFlag(true);
-        return system.defer( function( dfd ) {
-            if ( self.searchPager.next_page )   {
-                args.page = self.searchPager.next_page;
-                args.rows = self.searchPager.entries_per_page;
-                args.include_tags = 1;
-                args.include_contact_info = 1;
-                args.include_images = 1;
-                viblio.api( '/services/mediafile/search_by_title_or_description', args )
-                    .then( function( json ) {
-                        self.hits ( json.pager.total_entries );
-                        self.searchPager = json.pager;
-                        json.media.forEach( function( mf ) {
-                            self.addMediaFile ( mf );
-                            if( mf.views.image ) {
-                                self.some_more_all( mf, mf.views.image );
-                            }
-                        });
-                        self.videos.valueHasMutated();
-                        dfd.resolve();
-                    });
-            }
-            else {
-                dfd.resolve();
-            }
-        }).promise().then(function(){
-            self.isActiveFlag(false);
-            
-            // tickle the photos filter
-            var old = self.photoViewFilter();
-            self.photoViewFilter(null);
-            self.photoViewFilter( old );
-        });    
-        
-    };
-    
-    newHome.prototype.clearSearch = function( andFilter ) {
-        var self = this;
-        
-        self.searchFilterIsActive( false );
-        self.searchQuery(null);
-        self.videos.removeAll();
-        self.photos.removeAll();
-        
-        if( andFilter ) {
-            self.clearfilters();
-        }
-    };
-    
     newHome.prototype.unselectOtherFilters = function( currentFilter ) {
         var self = this;
         
@@ -1843,7 +1746,7 @@ define( ['plugins/router',
 
             viblio.api( 'services/mediafile/create_video_summary', args ).then( function( response ) {
                 //console.log( response );
-                self.recentVidsSearch();
+                self.getRecentVids();
             });
         }
     };
@@ -1885,98 +1788,18 @@ define( ['plugins/router',
             },{scope: config.facebook_ask_features()});
         }
     };
-    
-    newHome.prototype.search = function() {
-	var self = this;
-        var apiCall;
-        var args = {};
-        self.isActiveFlag(true);
-	return system.defer( function( dfd ) {
-	    if ( self.allVidsPager.next_page )   {
-                if( self.cid ) {
-                    args = {contact_uuid: self.cid,
-                            page: self.allVidsPager.next_page, 
-                            rows: self.allVidsPager.entries_per_page};
-                    apiCall = viblio.api( '/services/faces/media_face_appears_in', args );
-                } else {
-                    apiCall = viblio.api( '/services/mediafile/list_all', 
-			    { 
-				views: ['poster'],
-				page: self.allVidsPager.next_page, 
-				rows: self.allVidsPager.entries_per_page,
-                                include_tags: 1,
-                                include_contact_info: 1,
-                                include_images: 1
-                            } );
-                }
-		apiCall.then( function( json ) {
-                        self.hits ( json.pager.total_entries );
-			self.allVidsPager = json.pager;
-                        if(json.albums){
-                            json.media = json.albums;
-                        }
-			json.media.forEach( function( mf ) {
-			    self.addMediaFile( mf, {show_select_badge: true, selected: false} );
-                            if( mf.views.image ) {
-                                self.some_more_all( mf, mf.views.image );
-                            }
-			});
-                        self.videos.valueHasMutated();
-			dfd.resolve();
-		    });
-	    }
-	    else {
-		dfd.resolve();
-	    }
-	}).promise().then(function(){
-            if( self.videos().length > 0 ) {
-                $.when( self.videos()[self.videos().length-1].viewResolved ).then( function() {
-                    self.isActiveFlag(false);
-                });
-            } else {
-                self.isActiveFlag(false);
-            }
-            
-            // tickle the photos filter
-            var old = self.photoViewFilter();
-            self.photoViewFilter(null);
-            self.photoViewFilter( old );
-            
-            setTimeout(function(){
-                self.setTitleMargin();
-            }, 300);
-        });
-    };
-    
-    newHome.prototype.showAllVideos = function() {
-        var self = this;
-        $("body").trigger("click");
-        self.searchFilterIsActive( false );
-        self.searchQuery(null);
-        self.unselectOtherFilters();
-        self.clearfilters();
-        self.allVidsIsSelected(true);
-        self.videos.removeAll();
-        self.photos.removeAll();
-        // reset pager
-        self.allVidsPager = {
-	    next_page: 1,
-	    entries_per_page: 20,
-	    total_entries: -1 /* currently unknown */
-	};
-        self.search();
-    };
 
     // bind to scroll() event and when scroll is 150px or less from bottom fetch more data.
     // Uses flag to determine if fetch is already in process, if so a new one will not be made 
     newHome.prototype.scrollHandler = function( event ) {
         var self = event.data;
         var args;
+        var apiCall;
         
         if ( !self.noFiltersAreActive() ) {
             if( self.recentUploadsIsActive() ) {
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                    self.recentVidsSearch();
+                    self.getRecentVids();
                 }
             } else if ( self.dateFilterIsActive() ) {
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
@@ -1984,31 +1807,45 @@ define( ['plugins/router',
                         month: self.selectedMonth(),
                         cid: self.cid
                     };
-                    self.filterVidsSearch( 'dates', 'self.monthPager', args, '/services/yir/videos_for_month' );
+                    self.filterVidsSearch( 'dates', args, '/services/yir/videos_for_month' );
                 }
             } else if( self.faceFilterIsActive() ) {
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
                     args = {
                         contact_uuid: self.selectedFace().uuid
                     };
-                    self.filterVidsSearch( 'faces', 'self.facesPager', args, '/services/faces/media_face_appears_in' );
+                    self.filterVidsSearch( 'faces', args, '/services/faces/media_face_appears_in' );
                 }
             } else if( self.cityFilterIsActive() ) {
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
                     args = {
                         q: self.selectedCity()
                     }
-                    self.filterVidsSearch( 'cities', 'self.cityPager', args, '/services/mediafile/taken_in_city' );
+                    self.filterVidsSearch( 'cities', args, '/services/mediafile/taken_in_city' );
                 }
             }    
         } else {
             if( self.searchFilterIsActive() ) {
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                    self.vidsSearch();
+                    args = {
+                        q: self.currentSearch
+                    };
+                    self.filterVidsSearch( null, args, '/services/mediafile/search_by_title_or_description' );
                 }    
             } else {
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                    self.search();
+                    if( self.cid ) {
+                        args = {
+                            contact_uuid: self.cid
+                        };
+                        apiCall = '/services/faces/media_face_appears_in';
+                    } else {
+                        args = { 
+                            views: ['poster']
+                        };
+                        apiCall = '/services/mediafile/list_all';
+                    }
+                    self.filterVidsSearch( 'all', args, apiCall );
                 } 
             }
         }
@@ -2139,7 +1976,7 @@ define( ['plugins/router',
         });
         
         if( self.showRecent() ){
-            self.recentVidsSearch( true );
+            self.getRecentVids( true );
             router.navigate('#home', { trigger: false, replace: true }); 
         }
         
@@ -2342,7 +2179,7 @@ define( ['plugins/router',
         var self = this;
         var args = {
             album: self.currentAlbum() 
-        }
+        };
 	dialog.showModal( 'viewmodels/nginx-modal', args );
     };
     
