@@ -206,6 +206,9 @@ define( ['plugins/router',
         });
                 
         self.allVidsIsSelected = ko.observable( true );
+        self.allVidsIsSelected.subscribe( function() {
+            app.trigger( 'newHome:noFiltersAreActive' );
+        });
         
         self.isActiveFlag = ko.observable(true);
         
@@ -563,6 +566,7 @@ define( ['plugins/router',
      */
     newHome.prototype.filterVidsSearch = function( type, args, api, newSearch ) {
 	var self = this;
+        var media;
         self.isActiveFlag(true);
         
         // Only remove all vids and reset pager if it's a new search
@@ -599,6 +603,7 @@ define( ['plugins/router',
                         if(json.albums){
                             json.media = json.albums;
                         }
+                        media = json.media;
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
@@ -616,6 +621,11 @@ define( ['plugins/router',
             // reset active filters
             if( type && type != "all" ) {
                 self.resetOtherFilters( type );
+            }
+            
+            // this section handles the cover phots section - if the type is not all then show a slideshow
+            if( type && type != "all" ) {
+                app.trigger( 'newHome:filtersAreActive', media );
             }
             
             if( self.videos().length > 0 ) {

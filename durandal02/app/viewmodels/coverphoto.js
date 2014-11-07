@@ -7,26 +7,35 @@ define( ['durandal/app',
 function(app, viblio, Events, header, c_header, hp) {
     
     var backgroundImageUrl = ko.observable();
+    var defaultImage = "https://s3-us-west-2.amazonaws.com/viblio-external/media/corp-site/viblio-promo-1000-250.gif";
     var albumOrUser = ko.observable("user");
     var currentAlbum = ko.observable( null );
     var avatar = ko.observable( "/services/user/avatar?uid=-&x=120&y=120" );
     var user = viblio.user();
     var hideEdit = ko.observable(null); /* controls visibility on the change avatar button */
+    var busyFlag = ko.observable( false );
+    var hpFlag = ko.computed( function() {
+        if( hp.nhome().isActiveFlag() ) {
+            return true;
+        } else {
+            return false;
+        }
+    });
     var view;
     
     app.on( 'albumList:gotalbum', function( album ) {
         var photos = [];
+        
         albumOrUser( 'album' );
         currentAlbum( album );
         console.log( 'message received', currentAlbum() );
         currentAlbum().media.forEach( function( vid ) {
             vid.views.image.forEach( function( image ) {
                 photos.push( image.url );
-            })
+            });
         });
         backgroundImageUrl( album.views.banner ? album.views.banner.url : null );
         handleBackstretch( photos );
-        
         // the album is shared with the user so show the owner's avatar
         if( album.owner_uuid != user.uuid ) {
             hideEdit( true );
@@ -39,10 +48,30 @@ function(app, viblio, Events, header, c_header, hp) {
         }
     });
     
+    app.on( 'newHome:filtersAreActive', function( media ) {
+        var photos = [];
+        albumOrUser( 'user' );
+        console.log( 'newHome:filtersAreActive message received', media );
+        media.forEach( function( vid ) {
+            vid.views.image.forEach( function( image ) {
+                photos.push( image.url );
+            });
+        });
+        //backgroundImageUrl( null );
+        handleBackstretch( photos );
+    });
+    
     app.on( 'albumList:notactive', function() {
         albumOrUser( 'user' );
         currentAlbum( null );
         console.log( 'message received', currentAlbum() );
+        getBackgroundImage();
+    });
+    
+    app.on( 'newHome:noFiltersAreActive', function( media ) {
+        albumOrUser( 'user' );
+        currentAlbum( null );
+        console.log( 'newHome:noFiltersAreActive message received' );
         getBackgroundImage();
     });
     
@@ -77,7 +106,7 @@ function(app, viblio, Events, header, c_header, hp) {
     }
     
     function handleBackstretch( photos ) {
-        console.log( "photos", photos );
+        console.log( "photos", photos, backgroundImageUrl() );
         if( backgroundImageUrl() ) {
             $('.bannerImage').backstretch( backgroundImageUrl() );
         } else {
@@ -103,8 +132,15 @@ function(app, viblio, Events, header, c_header, hp) {
                 return viblio.api('services/mediafile/get', args).then( function( res ) {
                     console.log( res );
                     backgroundImageUrl( res.media.views.banner.url );
-                    handleBackstretch()
+                    handleBackstretch();
                 });
+            } else {
+                // show the default background;
+                backgroundImageUrl( null );
+                if( $('.bannerImage').data('backstretch') ) {
+                    $('.bannerImage').backstretch("destroy", false);
+                }
+                $('.bannerImage').attr("style", null);
             }
         } else {
             //I've set things so that any time a poster is requested, banners will also be returned.
@@ -117,6 +153,8 @@ function(app, viblio, Events, header, c_header, hp) {
         avatar: avatar,
         albumOrUser: albumOrUser,
         hideEdit: hideEdit,
+        busyFlag: busyFlag,
+        hpFlag: hpFlag,
         
         activate: function() {
             getBackgroundImage();
@@ -168,6 +206,9 @@ function(app, viblio, Events, header, c_header, hp) {
                 options: {
                     acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
                 },
+                start: function() {
+                    busyFlag( true );
+                },
                 change: function (e, data) {
                     console.log( data );
                     $.each(data.files, function (index, file) {
@@ -182,6 +223,7 @@ function(app, viblio, Events, header, c_header, hp) {
                     console.log( data );
                     backgroundImageUrl( data.result[0].views.banner.url );
                     handleBackstretch();
+                    busyFlag( false );
                 }
             })
               // prevent the input from grabbing file uploads on drag and drop       
@@ -192,6 +234,9 @@ function(app, viblio, Events, header, c_header, hp) {
             $('.albumCoverUpload').fileupload({
                 options: {
                     acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
+                },
+                start: function() {
+                    busyFlag( true );
                 },
                 change: function (e, data) {
                     console.log( data );
@@ -212,6 +257,7 @@ function(app, viblio, Events, header, c_header, hp) {
                     console.log( data );
                     backgroundImageUrl( data.result[0].views.banner.url );
                     handleBackstretch();
+                    busyFlag( false );
                 }
             })
                // prevent the input from grabbing file uploads on drag and drop      

@@ -1,5 +1,10 @@
-<div class="bannerImage-Wrap darkBlueBG">
+<div class="bannerImage-Wrap darkBlueBG bottomBorder-Thin">
     <div class="bannerImage">
+        <div class="bannerImageBusy" data-bind="visible: !backgroundImageUrl() && ( busyFlag() || hpFlag() )">
+            <div class="centered">
+                <i class="fa fa-spinner fa-3x fa-spin active"></i>
+            </div>
+        </div>
         <div class="bannerEdit-Wrap" data-bind="tooltip: {title: 'Edit cover photo', placement: 'left'}">
             <div class="editIcon-Wrap">
                 <i class="fa fa-pencil"></i>
