@@ -20,6 +20,8 @@ function( router, app, system, config, viblio, dialog ) {
 
     var fb_appid   = config.facebook_appid();
     var fb_channel = config.facebook_channel();
+    
+    var busyFlag = ko.observable( null );
 
     FB.init({
 	appId: fb_appid,
@@ -141,6 +143,7 @@ function( router, app, system, config, viblio, dialog ) {
     };
     
     function nativeSignup() {
+        busyFlag( true );
 	viblio.api( '/services/na/new_user', { via: 'native',
 					       realm: 'db',
                                                email: signup_email(),
@@ -148,6 +151,7 @@ function( router, app, system, config, viblio, dialog ) {
                                                displayname: signup_displayname() }, handleLoginFailure )
             .then( function( data ) {
 		loginSuccessful( data.user, 'signup_via_native' );
+                busyFlag( false );
             });
     };
 
@@ -158,6 +162,7 @@ function( router, app, system, config, viblio, dialog ) {
 	signup_pw2: signup_pw2,
 	signup_displayname: signup_displayname,
 	signup_valid: signup_valid,
+        busyFlag: busyFlag,
         
 	nativeSignup: nativeSignup,
 	facebookSignup: facebookSignup,

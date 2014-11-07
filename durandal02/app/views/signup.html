@@ -1,7 +1,13 @@
 <div id="login-page">
-  <p class="landingHeaderTitle darkBlueBG">Sign up <span>for a</span> VIBLIO account</p>
-  <div class="orangeBG-Header bottomBorder-Thin"></div>
-  <div class="content-Wrap centeredEl">
+    <div class="signupBusy" data-bind="visible: busyFlag()">
+        <div class="mfLoader">
+            <i class="fa fa-spinner fa-5x fa-spin active"></i>
+            <p class='font18'>Please wait...</p>
+        </div>
+    </div>
+    <p class="landingHeaderTitle darkBlueBG">Sign up <span>for a</span> VIBLIO account</p>
+    <div class="orangeBG-Header bottomBorder-Thin"></div>
+    <div class="content-Wrap centeredEl">
         
     <div id="loginArea" class="mocksWhiteBG centeredEl">
       <div id="fbBtn-Wrap" class="bottomBorder">
