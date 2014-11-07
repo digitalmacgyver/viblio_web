@@ -12,6 +12,7 @@ define(['durandal/app',
     var albumListResolved = $.Deferred();
     var albumList_is_visible = false;
     var top_actors;
+    var coverphoto;
     var unnamed_is_visible = false;
     var firstTime = ko.observable();
     var yvSection;
@@ -43,6 +44,11 @@ define(['durandal/app',
 
     app.on( 'top-actors:composed', function( obj ) {
 	top_actors = obj; 
+    });
+    
+    app.on( 'coverphoto:composed', function( obj ) {
+        console.log( obj );
+        coverphoto = obj;
     });
     
     // Shown after first video upload is completed.
