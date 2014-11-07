@@ -82,6 +82,7 @@
         
         <!-- ko if: show_faces_tags -->  
         <div class='facesTags'>
+            <!-- ko ifnot: in_process_style() -->
             <div class='mfFaces'>
                 <div class='mfFaces-Inner'>
                     <!-- ko foreach: facesToShow -->
@@ -93,6 +94,7 @@
                 </div>
             </div>
             <i class='fa fa-tags' data-bind="click: toggleTags" title='Toggle tags'></i>
+            <!-- /ko -->
 
             <!-- ko if: showFaces -->
                 <div class="facesPopup popover top">
