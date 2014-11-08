@@ -6736,6 +6736,10 @@ ul.token-input-list-facebook li input {
     right: 5px;
     top: 5px;
     text-align: right;
+    -webkit-transition: height 0.5s ease;
+    -moz-transition: height 0.5s ease;
+    -o-transition: height 0.5s ease;
+    transition: height 0.5s ease;
 }
 
 .bannerImage-Wrap .bannerEdit-Wrap .editIcon-Wrap {
@@ -6746,6 +6750,18 @@ ul.token-input-list-facebook li input {
     padding: 10px 12px;
     border-radius: 50px;
     font-size: 24px;
+    -webkit-transition: height 0.5s ease;
+    -moz-transition: height 0.5s ease;
+    -o-transition: height 0.5s ease;
+    transition: height 0.5s ease;
+}
+
+.bannerImage-Wrap .bannerEdit-Wrap .editIcon-Wrap .fa-close {
+    margin-bottom: 10px
+}
+
+.bannerImage-Wrap .bannerEdit-Wrap .editIcon-Wrap .fa {
+    display: block;
 }
 
 .bannerImage-Wrap .bannerEdit-Wrap .editButton {

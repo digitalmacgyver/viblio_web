@@ -5,9 +5,10 @@
                 <i class="fa fa-spinner fa-3x fa-spin active"></i>
             </div>
         </div>
-        <div class="bannerEdit-Wrap" data-bind="tooltip: {title: 'Edit cover photo', placement: 'left'}">
-            <div class="editIcon-Wrap">
-                <i class="fa fa-pencil"></i>
+        <div class="bannerEdit-Wrap" data-bind="visible: !hideCoverEdit()">
+            <div class="editIcon-Wrap" title="Edit cover photo">
+                <i class="fa fa-trash" data-bind="click: removeCoverImage, visible: editExpanded" title="Delete cover photo"></i>
+                <i class="fa fa-pencil" data-bind='click: addCoverImage, attr: { title: editExpanded ? "Choose new cover photo" : null }'></i>
             </div>
             <!--<div class="editButton">
                 <i class="fa fa-pencil"></i> Edit cover photo
@@ -16,7 +17,7 @@
             <input class="albumCoverUpload" style="position: absolute; width:0; height:0; top:0; left:0; visibility:hidden;"  type="file" name="upload" data-url="/services/album/add_or_replace_banner_photo" /> 
         </div>
         <!-- ko if: !backgroundImageUrl() -->
-        <div class="stockBanner centered whiteText">
+        <div class="stockBanner centered whiteText textShadowed">
             <h2>Videos tell the best stories!</h2>
             <p class="stockTagLine">watch, share, extract photos, make mashups, learn connect!</p>
         </div>

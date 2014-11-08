@@ -7,12 +7,12 @@ define( ['durandal/app',
 function(app, viblio, Events, header, c_header, hp) {
     
     var backgroundImageUrl = ko.observable();
-    var defaultImage = "https://s3-us-west-2.amazonaws.com/viblio-external/media/corp-site/viblio-promo-1000-250.gif";
     var albumOrUser = ko.observable("user");
     var currentAlbum = ko.observable( null );
     var avatar = ko.observable( "/services/user/avatar?uid=-&x=120&y=120" );
     var user = viblio.user();
     var hideEdit = ko.observable(null); /* controls visibility on the change avatar button */
+    var hideCoverEdit = ko.observable(null); /* controls visibility on the cover edit button */
     var busyFlag = ko.observable( false );
     var hpFlag = ko.computed( function() {
         if( hp.nhome().isActiveFlag() ) {
@@ -21,29 +21,32 @@ function(app, viblio, Events, header, c_header, hp) {
             return false;
         }
     });
+    var expandEditView = ko.computed( function() {
+        if( backgroundImageUrl() ) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    var editExpanded = ko.observable( false );
     var view;
     
     app.on( 'albumList:gotalbum', function( album ) {
-        var photos = [];
-        
         albumOrUser( 'album' );
         currentAlbum( album );
-        console.log( 'message received', currentAlbum() );
-        currentAlbum().media.forEach( function( vid ) {
-            vid.views.image.forEach( function( image ) {
-                photos.push( image.url );
-            });
-        });
+        var photos = getAlbumPhotos();
         backgroundImageUrl( album.views.banner ? album.views.banner.url : null );
         handleBackstretch( photos );
         // the album is shared with the user so show the owner's avatar
         if( album.owner_uuid != user.uuid ) {
             hideEdit( true );
+            hideCoverEdit( true );
             avatar( "/services/user/avatar?uid=" + album.owner_uuid + "&x=120&y=120" );
         }
         // else it's owned by the viewer, so show the user's avatar
         else {
             hideEdit( false );
+            hideCoverEdit( false );
             avatar( "/services/user/avatar?uid=-&x=120&y=120"+new Date() );
         }
     });
@@ -51,12 +54,14 @@ function(app, viblio, Events, header, c_header, hp) {
     app.on( 'newHome:filtersAreActive', function( media ) {
         var photos = [];
         albumOrUser( 'user' );
-        console.log( 'newHome:filtersAreActive message received', media );
-        media.forEach( function( vid ) {
-            vid.views.image.forEach( function( image ) {
-                photos.push( image.url );
+        if( media ) {
+            media.forEach( function( vid ) {
+                vid.views.image.forEach( function( image ) {
+                    photos.push( image.url );
+                });
             });
-        });
+        }
+        
         //backgroundImageUrl( null );
         handleBackstretch( photos );
     });
@@ -64,30 +69,43 @@ function(app, viblio, Events, header, c_header, hp) {
     app.on( 'albumList:notactive', function() {
         albumOrUser( 'user' );
         currentAlbum( null );
-        console.log( 'message received', currentAlbum() );
         getBackgroundImage();
     });
     
     app.on( 'newHome:noFiltersAreActive', function( media ) {
         albumOrUser( 'user' );
         currentAlbum( null );
-        console.log( 'newHome:noFiltersAreActive message received' );
         getBackgroundImage();
     });
     
     app.on( 'selectedFace:active', function( face ) {
-        console.log( 'face filter is on', face );
         hideEdit( true )
         avatar( face.url );
     });
     
     app.on( 'selectedFace:notactive', function() {
-        console.log( 'face filter is off, show regular avatar' );
-        hideEdit( false );
-        avatar( "/services/user/avatar?uid=-&x=120&y=120"+new Date() );
+        // only revert back to the user avatar if not in an album owned by another user
+        if( albumOrUser( 'user' ) ) {
+            if( currentAlbum() ) {
+                if( currentAlbum().owner_uuid == user.uuid) {
+                    hideEdit( false );
+                    avatar( "/services/user/avatar?uid=-&x=120&y=120"+new Date() );
+                }
+            }
+        }
     });
     
     Events.includeIn( this );
+    
+    function getAlbumPhotos() {
+        var photos = [];
+        currentAlbum().media.forEach( function( vid ) {
+            vid.views.image.forEach( function( image ) {
+                photos.push( image.url );
+            });
+        });
+        return photos;
+    }
     
     function setBackgroundImage() {
         if( albumOrUser() == "user" ) {
@@ -106,7 +124,6 @@ function(app, viblio, Events, header, c_header, hp) {
     }
     
     function handleBackstretch( photos ) {
-        console.log( "photos", photos, backgroundImageUrl() );
         if( backgroundImageUrl() ) {
             $('.bannerImage').backstretch( backgroundImageUrl() );
         } else {
@@ -130,7 +147,6 @@ function(app, viblio, Events, header, c_header, hp) {
                 };
                 
                 return viblio.api('services/mediafile/get', args).then( function( res ) {
-                    console.log( res );
                     backgroundImageUrl( res.media.views.banner.url );
                     handleBackstretch();
                 });
@@ -142,9 +158,41 @@ function(app, viblio, Events, header, c_header, hp) {
                 }
                 $('.bannerImage').attr("style", null);
             }
-        } else {
-            //I've set things so that any time a poster is requested, banners will also be returned.
+        }
+    }
+    
+    function removeCoverImage() {
+        var args = {
+            delete: 1
+        }
+        
+        if( albumOrUser() == "album" ) {
+            var aid = currentAlbum().uuid;
+            args.aid = aid;
             
+            viblio.api( 'services/album/add_or_replace_banner_photo', args ).then( function() {
+                editExpanded( false );
+                backgroundImageUrl( null );
+                var photos = getAlbumPhotos();
+                handleBackstretch( photos );
+            });
+        } else {
+            viblio.api( 'services/user/add_or_replace_banner_photo', args ).then( function() {
+                editExpanded( false );
+                user.banner_uuid = null;
+                backgroundImageUrl( null );
+                getBackgroundImage();
+            });
+        }
+    }
+    
+    function addCoverImage() {
+        if( editExpanded() ) {
+            if( albumOrUser() == "album" ) {
+                $(".albumCoverUpload").click();
+            } else {
+                $(".userCoverUpload").click();
+            }
         }
     }
     
@@ -153,8 +201,13 @@ function(app, viblio, Events, header, c_header, hp) {
         avatar: avatar,
         albumOrUser: albumOrUser,
         hideEdit: hideEdit,
+        hideCoverEdit: hideCoverEdit,
         busyFlag: busyFlag,
         hpFlag: hpFlag,
+        editExpanded: editExpanded,
+        
+        removeCoverImage: removeCoverImage,
+        addCoverImage: addCoverImage,
         
         activate: function() {
             getBackgroundImage();
@@ -164,6 +217,8 @@ function(app, viblio, Events, header, c_header, hp) {
             $('.avatarUpload').fileupload('destroy');
             $('.albumCoverUpload').fileupload('destroy');
             $('.userCoverUpload').fileupload('destroy');
+            $(document).off( 'click.coverPhoto' );
+            $(document).off( 'mouseup.coverPhoto' );
         },
         
         compositionComplete: function( _view ) {
@@ -193,13 +248,27 @@ function(app, viblio, Events, header, c_header, hp) {
             
             
             // cover photos - decide which input to use based on if the user is looking at an album or not
-            $(".editIcon-Wrap").on( 'click', function() {
-                if( albumOrUser() == "album" ) {
-                    $(".albumCoverUpload").click();
+            $(".editIcon-Wrap").on( 'click.coverPhoto', function() {
+                if( expandEditView() ) {
+                    editExpanded( true );
                 } else {
-                    $(".userCoverUpload").click();
+                    if( albumOrUser() == "album" ) {
+                        $(".albumCoverUpload").click();
+                    } else {
+                        $(".userCoverUpload").click();
+                    }
                 }
 	    });
+            // close the edit cover area button when it's clicked outside of
+            $(document).on( 'mouseup.coverPhoto', function (e) {
+                var container = $(".editIcon-Wrap");
+
+                if (!container.is(e.target) // if the target of the click isn't the container...
+                    && container.has(e.target).length === 0) // ... nor a descendant of the container
+                {
+                    editExpanded( false );
+                }
+            });
             
             // user cover photo
             $('.userCoverUpload').fileupload({
@@ -209,20 +278,14 @@ function(app, viblio, Events, header, c_header, hp) {
                 start: function() {
                     busyFlag( true );
                 },
-                change: function (e, data) {
-                    console.log( data );
-                    $.each(data.files, function (index, file) {
-                        console.log('Selected file: ' + file.name);
-                    });
-                },
                 add: function (e, data) {
-                    console.log( data );
                     data.submit();
                 },
                 done: function (e, data) {
-                    console.log( data );
                     backgroundImageUrl( data.result[0].views.banner.url );
                     handleBackstretch();
+                    // close edit button
+                    editExpanded( false );
                     busyFlag( false );
                 }
             })
@@ -238,14 +301,7 @@ function(app, viblio, Events, header, c_header, hp) {
                 start: function() {
                     busyFlag( true );
                 },
-                change: function (e, data) {
-                    console.log( data );
-                    $.each(data.files, function (index, file) {
-                        console.log('Selected file: ' + file.name);
-                    });
-                },
                 add: function (e, data) {
-                    console.log( data );
                     var aid = currentAlbum().uuid;
                     data.formData = {
                         aid: aid,
@@ -254,9 +310,10 @@ function(app, viblio, Events, header, c_header, hp) {
                     data.submit();
                 },
                 done: function (e, data) {
-                    console.log( data );
                     backgroundImageUrl( data.result[0].views.banner.url );
                     handleBackstretch();
+                    // close edit button
+                    editExpanded( false );
                     busyFlag( false );
                 }
             })
