@@ -34,7 +34,6 @@ function(app, viblio, Events, header, c_header, hp) {
     app.on( 'albumList:gotalbum', function( album ) {
         albumOrUser( 'album' );
         currentAlbum( album );
-        console.log( 'message received', currentAlbum() );
         var photos = getAlbumPhotos();
         backgroundImageUrl( album.views.banner ? album.views.banner.url : null );
         handleBackstretch( photos );
@@ -55,8 +54,6 @@ function(app, viblio, Events, header, c_header, hp) {
     app.on( 'newHome:filtersAreActive', function( media ) {
         var photos = [];
         albumOrUser( 'user' );
-        console.log( 'newHome:filtersAreActive message received', media );
-        console.log( media );
         if( media ) {
             media.forEach( function( vid ) {
                 vid.views.image.forEach( function( image ) {
@@ -72,25 +69,22 @@ function(app, viblio, Events, header, c_header, hp) {
     app.on( 'albumList:notactive', function() {
         albumOrUser( 'user' );
         currentAlbum( null );
-        console.log( 'message received', currentAlbum() );
         getBackgroundImage();
     });
     
     app.on( 'newHome:noFiltersAreActive', function( media ) {
         albumOrUser( 'user' );
         currentAlbum( null );
-        console.log( 'newHome:noFiltersAreActive message received' );
         getBackgroundImage();
     });
     
     app.on( 'selectedFace:active', function( face ) {
-        console.log( 'face filter is on', face );
         hideEdit( true )
         avatar( face.url );
     });
     
     app.on( 'selectedFace:notactive', function() {
-        console.log( 'face filter is off, show regular avatar' );
+        // only revert back to the user avatar if not in an album owned by another user
         if( albumOrUser( 'user' ) ) {
             if( currentAlbum() ) {
                 if( currentAlbum().owner_uuid == user.uuid) {
@@ -130,7 +124,6 @@ function(app, viblio, Events, header, c_header, hp) {
     }
     
     function handleBackstretch( photos ) {
-        console.log( "photos", photos, backgroundImageUrl() );
         if( backgroundImageUrl() ) {
             $('.bannerImage').backstretch( backgroundImageUrl() );
         } else {
@@ -154,7 +147,6 @@ function(app, viblio, Events, header, c_header, hp) {
                 };
                 
                 return viblio.api('services/mediafile/get', args).then( function( res ) {
-                    console.log( res );
                     backgroundImageUrl( res.media.views.banner.url );
                     handleBackstretch();
                 });
@@ -166,16 +158,10 @@ function(app, viblio, Events, header, c_header, hp) {
                 }
                 $('.bannerImage').attr("style", null);
             }
-        } else {
-            //I've set things so that any time a poster is requested, banners will also be returned.
-            
         }
     }
     
     function removeCoverImage() {
-        console.log( 'bye bye image' );
-        console.log( editExpanded() );
-        
         var args = {
             delete: 1
         }
@@ -185,7 +171,6 @@ function(app, viblio, Events, header, c_header, hp) {
             args.aid = aid;
             
             viblio.api( 'services/album/add_or_replace_banner_photo', args ).then( function() {
-                console.log( "album image removed" );
                 editExpanded( false );
                 backgroundImageUrl( null );
                 var photos = getAlbumPhotos();
@@ -193,7 +178,6 @@ function(app, viblio, Events, header, c_header, hp) {
             });
         } else {
             viblio.api( 'services/user/add_or_replace_banner_photo', args ).then( function() {
-                console.log( "user image removed" );
                 editExpanded( false );
                 user.banner_uuid = null;
                 backgroundImageUrl( null );
@@ -294,18 +278,10 @@ function(app, viblio, Events, header, c_header, hp) {
                 start: function() {
                     busyFlag( true );
                 },
-                change: function (e, data) {
-                    console.log( data );
-                    $.each(data.files, function (index, file) {
-                        console.log('Selected file: ' + file.name);
-                    });
-                },
                 add: function (e, data) {
-                    console.log( data );
                     data.submit();
                 },
                 done: function (e, data) {
-                    console.log( data );
                     backgroundImageUrl( data.result[0].views.banner.url );
                     handleBackstretch();
                     // close edit button
@@ -325,14 +301,7 @@ function(app, viblio, Events, header, c_header, hp) {
                 start: function() {
                     busyFlag( true );
                 },
-                change: function (e, data) {
-                    console.log( data );
-                    $.each(data.files, function (index, file) {
-                        console.log('Selected file: ' + file.name);
-                    });
-                },
                 add: function (e, data) {
-                    console.log( data );
                     var aid = currentAlbum().uuid;
                     data.formData = {
                         aid: aid,
@@ -341,7 +310,6 @@ function(app, viblio, Events, header, c_header, hp) {
                     data.submit();
                 },
                 done: function (e, data) {
-                    console.log( data );
                     backgroundImageUrl( data.result[0].views.banner.url );
                     handleBackstretch();
                     // close edit button
