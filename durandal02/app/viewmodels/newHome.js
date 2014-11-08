@@ -584,7 +584,7 @@ define( ['plugins/router',
             // reset pager
             self.thePager({
                 next_page: 1,
-                entries_per_page: 20,
+                entries_per_page: 15,
                 total_entries: -1 /* currently unknown */
             });    
         }
