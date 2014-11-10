@@ -91,6 +91,9 @@ function(app, viblio, Events, header, c_header, hp) {
                     hideEdit( false );
                     avatar( "/services/user/avatar?uid=-&x=120&y=120"+new Date() );
                 }
+            } else {
+                hideEdit( false );
+                avatar( "/services/user/avatar?uid=-&x=120&y=120"+new Date() );
             }
         }
     });
@@ -218,7 +221,7 @@ function(app, viblio, Events, header, c_header, hp) {
             $('.albumCoverUpload').fileupload('destroy');
             $('.userCoverUpload').fileupload('destroy');
             $(document).off( 'click.coverPhoto' );
-            $(document).off( 'mouseup.coverPhoto' );
+            $(document).off( 'click.coverPhoto' );
         },
         
         compositionComplete: function( _view ) {
@@ -260,7 +263,7 @@ function(app, viblio, Events, header, c_header, hp) {
                 }
 	    });
             // close the edit cover area button when it's clicked outside of
-            $(document).on( 'mouseup.coverPhoto', function (e) {
+            $(document).on( 'click.coverPhoto', function (e) {
                 var container = $(".editIcon-Wrap");
 
                 if (!container.is(e.target) // if the target of the click isn't the container...
