@@ -444,7 +444,6 @@ define( ['plugins/router',
                 cid: self.cid
             };
             self.filterVidsSearch( 'dates', args, '/services/yir/videos_for_month', true );
-            app.trigger( 'selectedFace:notactive' );
         }
     };
     
@@ -498,7 +497,6 @@ define( ['plugins/router',
                 q: self.selectedCity()
             }
             self.filterVidsSearch( 'cities', args, '/services/mediafile/taken_in_city', true );
-            app.trigger( 'selectedFace:notactive' );
         }         
     };
     
@@ -517,7 +515,6 @@ define( ['plugins/router',
                 q: self.currentSearch
             };
             self.filterVidsSearch( null, args, '/services/mediafile/search_by_title_or_description', true );
-            app.trigger( 'selectedFace:notactive' );
         }
     };
     
@@ -531,7 +528,6 @@ define( ['plugins/router',
             args['status[]'] = ['pending', 'visible', 'complete'];
         }
         self.filterVidsSearch( 'recent', args, '/services/mediafile/recently_uploaded', newSearch );
-        app.trigger( 'selectedFace:notactive' );
     };
     
     newHome.prototype.showAllVideos = function() {
@@ -555,7 +551,6 @@ define( ['plugins/router',
             apiCall = '/services/mediafile/list_all';
         }
         self.filterVidsSearch( 'all', args, apiCall, true );
-        app.trigger( 'selectedFace:notactive' );
     };
     
     /*
@@ -623,9 +618,14 @@ define( ['plugins/router',
                 self.resetOtherFilters( type );
             }
             
-            // this section handles the cover phots section - if the type is not all then show a slideshow
+            // this section handles the cover photos section - if the type is not all then show a slideshow
             if( type && type != "all" ) {
                 app.trigger( 'newHome:filtersAreActive', media );
+            }
+            
+            // this section handles the cover avatar section - calling it here gets the timing correct when exiting from an album
+            if( !type || ( type && type != "faces" ) ) {
+                app.trigger( 'selectedFace:notactive' );
             }
             
             if( self.videos().length > 0 ) {

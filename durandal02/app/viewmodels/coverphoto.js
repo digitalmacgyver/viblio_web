@@ -47,7 +47,7 @@ function(app, viblio, Events, header, c_header, hp) {
         else {
             hideEdit( false );
             hideCoverEdit( false );
-            avatar( "/services/user/avatar?uid=-&x=120&y=120"+new Date() );
+            avatar( "/services/user/avatar?uid=-&x=120&y=120&ignore="+new Date() );
         }
     });
     
@@ -56,9 +56,12 @@ function(app, viblio, Events, header, c_header, hp) {
         albumOrUser( 'user' );
         if( media ) {
             media.forEach( function( vid ) {
-                vid.views.image.forEach( function( image ) {
-                    photos.push( image.url );
-                });
+                console.log( vid );
+                if( vid.views.image && vid.views.image.length > 0 ) {
+                    vid.views.image.forEach( function( image ) {
+                        photos.push( image.url );
+                    });
+                }
             });
         }
         
@@ -67,6 +70,7 @@ function(app, viblio, Events, header, c_header, hp) {
     });
     
     app.on( 'albumList:notactive', function() {
+        console.log( 'albumList:notactive' );
         albumOrUser( 'user' );
         currentAlbum( null );
         getBackgroundImage();
@@ -79,23 +83,25 @@ function(app, viblio, Events, header, c_header, hp) {
     });
     
     app.on( 'selectedFace:active', function( face ) {
-        hideEdit( true )
+        hideEdit( true );
         avatar( face.url );
     });
     
     app.on( 'selectedFace:notactive', function() {
+        console.log( 'selectedFace:notactive', albumOrUser() );
         // only revert back to the user avatar if not in an album owned by another user
-        if( albumOrUser( 'user' ) ) {
+        //if( albumOrUser() == 'user' ) {
             if( currentAlbum() ) {
                 if( currentAlbum().owner_uuid == user.uuid) {
                     hideEdit( false );
-                    avatar( "/services/user/avatar?uid=-&x=120&y=120"+new Date() );
+                    avatar( "/services/user/avatar?uid=-&x=120&y=120&ignore="+new Date() );
                 }
             } else {
+                console.log('this should happen');
                 hideEdit( false );
-                avatar( "/services/user/avatar?uid=-&x=120&y=120"+new Date() );
+                avatar( "/services/user/avatar?uid=-&x=120&y=120&ignore="+new Date() );
             }
-        }
+        //}
     });
     
     Events.includeIn( this );
@@ -103,11 +109,17 @@ function(app, viblio, Events, header, c_header, hp) {
     function getAlbumPhotos() {
         var photos = [];
         currentAlbum().media.forEach( function( vid ) {
-            vid.views.image.forEach( function( image ) {
-                photos.push( image.url );
-            });
+            if( vid.views.image && vid.views.image.length > 0 ) {
+                vid.views.image.forEach( function( image ) {
+                    photos.push( image.url );
+                });
+            }
         });
-        return photos;
+        if( photos.length > 0 ) {
+            return photos;
+        } else {
+            return null;
+        }
     }
     
     function setBackgroundImage() {
@@ -240,7 +252,7 @@ function(app, viblio, Events, header, c_header, hp) {
 		done: function(e, data) {
                     // update avatar in settings and the headers
                     avatar( null );
-                    avatar( "/services/user/avatar?uid=-&x=120&y=120"+new Date() );
+                    avatar( "/services/user/avatar?uid=-&x=120&y=120&ignore="+new Date() );
                     header.updateAvatar();
                     c_header.updateAvatar();
 		}
