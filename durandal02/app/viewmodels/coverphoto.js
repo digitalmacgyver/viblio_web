@@ -56,7 +56,6 @@ function(app, viblio, Events, header, c_header, hp) {
         albumOrUser( 'user' );
         if( media ) {
             media.forEach( function( vid ) {
-                console.log( vid );
                 if( vid.views.image && vid.views.image.length > 0 ) {
                     vid.views.image.forEach( function( image ) {
                         photos.push( image.url );
@@ -70,7 +69,6 @@ function(app, viblio, Events, header, c_header, hp) {
     });
     
     app.on( 'albumList:notactive', function() {
-        console.log( 'albumList:notactive' );
         albumOrUser( 'user' );
         currentAlbum( null );
         getBackgroundImage();
@@ -88,7 +86,6 @@ function(app, viblio, Events, header, c_header, hp) {
     });
     
     app.on( 'selectedFace:notactive', function() {
-        console.log( 'selectedFace:notactive', albumOrUser() );
         // only revert back to the user avatar if not in an album owned by another user
         //if( albumOrUser() == 'user' ) {
             if( currentAlbum() ) {
@@ -97,7 +94,6 @@ function(app, viblio, Events, header, c_header, hp) {
                     avatar( "/services/user/avatar?uid=-&x=120&y=120&ignore="+new Date() );
                 }
             } else {
-                console.log('this should happen');
                 hideEdit( false );
                 avatar( "/services/user/avatar?uid=-&x=120&y=120&ignore="+new Date() );
             }
