@@ -704,28 +704,48 @@ define( ['plugins/router',
             //clear the search contents
             self.clearSearch();
             self.unselectOtherFilters('albums');
+            // reset pager
+            self.thePager({
+                next_page: 1,
+                entries_per_page: 15,
+                total_entries: -1 /* currently unknown */
+            }); 
         }
         
+        var args ={
+            aid: album_id
+        };
+        
         return system.defer( function( dfd ) {
-            viblio.api( 'services/album/get?aid=' + album_id + '&include_contact_info=1&include_tags=1&include_images=1' ).
-                then( function( json ) {
-                    //self.hits ( json.pager.total_entries );
-                    //self.facesPager = json.pager;
-                    self.currentAlbum( json.album );
-                    self.albumIsShared( json.album.is_shared ? true : false );
-                    if( json.album.media.length > 0 ) {
-                        json.album.media.forEach( function( mf ) {
-                            self.addAlbumMediaFile ( mf );
-                            if( mf.views.image ) {
-                                self.some_more_all( mf, mf.views.image );
-                            }
-                        });
-                        self.videos.valueHasMutated();
-                        dfd.resolve();
-                    } else {
-                        dfd.resolve();
-                    }                                               
-                });
+            if ( self.thePager().next_page )   {
+                args.page = self.thePager().next_page;
+                args.rows = self.thePager().entries_per_page;
+                args.include_tags = 1;
+                args.include_contact_info = 1;
+                args.include_images = 1;
+                viblio.api( 'services/album/get', args ).
+                    then( function( json ) {
+                        console.log( json );
+                        self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
+                        self.thePager(json.pager);
+                        self.currentAlbum( json.album );
+                        self.albumIsShared( json.album.is_shared ? true : false );
+                        if( json.album.media.length > 0 ) {
+                            json.album.media.forEach( function( mf ) {
+                                self.addAlbumMediaFile ( mf );
+                                if( mf.views.image ) {
+                                    self.some_more_all( mf, mf.views.image );
+                                }
+                            });
+                            self.videos.valueHasMutated();
+                            dfd.resolve();
+                        } else {
+                            dfd.resolve();
+                        }                                               
+                    });
+	    } else {
+		dfd.resolve();
+	    }   
         }).promise()
         // If the album has videos in it go to it!
           .done(function(){
@@ -1866,7 +1886,11 @@ define( ['plugins/router',
                     }
                     self.filterVidsSearch( 'cities', args, '/services/mediafile/taken_in_city' );
                 }
-            }    
+            } else if( self.albumFilterIsActive() ) {
+                if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
+                    self.albumVidsSearch();
+                }
+            }  
         } else {
             if( self.searchFilterIsActive() ) {
                 if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
