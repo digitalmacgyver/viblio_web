@@ -6,7 +6,8 @@ define( ['durandal/app',
         'viewmodels/hp'], 
 function(app, viblio, Events, header, c_header, hp) {
     
-    var backgroundImageUrl = ko.observable();
+    var albumBackgroundImageUrl = ko.observable();
+    var userBackgroundImageUrl = ko.observable();
     var albumOrUser = ko.observable("user");
     var currentAlbum = ko.observable( null );
     var avatar = ko.observable( "/services/user/avatar?uid=-&x=120&y=120" );
@@ -21,13 +22,22 @@ function(app, viblio, Events, header, c_header, hp) {
             return false;
         }
     });
-    var expandEditView = ko.computed( function() {
-        if( backgroundImageUrl() ) {
-            return true;
-        } else {
-            return false;
+    var backgroundImageExists = ko.computed( function() {
+        if( albumOrUser() == "album" ) {
+            if( albumBackgroundImageUrl() ) {
+                return true;
+            } else {
+                return false;
+            }
+        } else if( albumOrUser() == "user" ) {
+            if( userBackgroundImageUrl() ) {
+                return true;
+            } else {
+                return false;
+            }
         }
     });
+    
     var editExpanded = ko.observable( false );
     var view;
     
@@ -35,7 +45,7 @@ function(app, viblio, Events, header, c_header, hp) {
         albumOrUser( 'album' );
         currentAlbum( album );
         var photos = getAlbumPhotos();
-        backgroundImageUrl( album.views.banner ? album.views.banner.url : null );
+        albumBackgroundImageUrl( album.views.banner ? album.views.banner.url : null );
         handleBackstretch( photos );
         // the album is shared with the user so show the owner's avatar
         if( album.owner_uuid != user.uuid ) {
@@ -71,6 +81,7 @@ function(app, viblio, Events, header, c_header, hp) {
     app.on( 'albumList:notactive', function() {
         albumOrUser( 'user' );
         currentAlbum( null );
+        hideCoverEdit( false );
         getBackgroundImage();
     });
     
@@ -135,22 +146,44 @@ function(app, viblio, Events, header, c_header, hp) {
     }
     
     function handleBackstretch( photos ) {
-        if( backgroundImageUrl() ) {
-            $('.bannerImage').backstretch( backgroundImageUrl() );
-        } else {
-            if( $('.bannerImage').data('backstretch') ) {
-                $('.bannerImage').backstretch("destroy", false);
+        if( albumOrUser() == "user" ) {
+            if( userBackgroundImageUrl() ) {
+                $('.bannerImage').backstretch( userBackgroundImageUrl() );
+            } else {
+                if( $('.bannerImage').data('backstretch') ) {
+                    $('.bannerImage').backstretch("destroy", false);
+                }
+
+                if( photos && photos.length > 0 ) {
+                    $('.bannerImage').backstretch( photos );
+                } else {
+                    $('.bannerImage').attr("style", null);
+                }
             }
-            
-            if( photos && photos.length > 0 ) {
-                $('.bannerImage').backstretch( photos );
+        } 
+        // it's an album
+        else {
+            if( albumBackgroundImageUrl() ) {
+                $('.bannerImage').backstretch( albumBackgroundImageUrl() );
+            } else {
+                if( $('.bannerImage').data('backstretch') ) {
+                    $('.bannerImage').backstretch("destroy", false);
+                }
+
+                if( photos && photos.length > 0 ) {
+                    $('.bannerImage').backstretch( photos );
+                } else {
+                    $('.bannerImage').attr("style", null);
+                }
             }
         }
     }
     
     function getBackgroundImage() {
-        if( albumOrUser() == "user" ) {
+        if( albumOrUser() == "user" && !userBackgroundImageUrl() ) {
             var args;
+            
+            console.log( "user info from getBackgroundImage(): ", viblio.user() );
             
             if( user.banner_uuid ) {
                 args = {
@@ -158,17 +191,19 @@ function(app, viblio, Events, header, c_header, hp) {
                 };
                 
                 return viblio.api('services/mediafile/get', args).then( function( res ) {
-                    backgroundImageUrl( res.media.views.banner.url );
+                    userBackgroundImageUrl( res.media.views.banner.url );
                     handleBackstretch();
                 });
             } else {
                 // show the default background;
-                backgroundImageUrl( null );
+                userBackgroundImageUrl( null );
                 if( $('.bannerImage').data('backstretch') ) {
                     $('.bannerImage').backstretch("destroy", false);
                 }
                 $('.bannerImage').attr("style", null);
             }
+        } else {
+            handleBackstretch();
         }
     }
     
@@ -183,7 +218,7 @@ function(app, viblio, Events, header, c_header, hp) {
             
             viblio.api( 'services/album/add_or_replace_banner_photo', args ).then( function() {
                 editExpanded( false );
-                backgroundImageUrl( null );
+                albumBackgroundImageUrl( null );
                 var photos = getAlbumPhotos();
                 handleBackstretch( photos );
             });
@@ -191,7 +226,7 @@ function(app, viblio, Events, header, c_header, hp) {
             viblio.api( 'services/user/add_or_replace_banner_photo', args ).then( function() {
                 editExpanded( false );
                 user.banner_uuid = null;
-                backgroundImageUrl( null );
+                userBackgroundImageUrl( null );
                 getBackgroundImage();
             });
         }
@@ -208,20 +243,22 @@ function(app, viblio, Events, header, c_header, hp) {
     }
     
     return {
-        backgroundImageUrl: backgroundImageUrl,
+        albumBackgroundImageUrl: albumBackgroundImageUrl,
+        userBackgroundImageUrl: userBackgroundImageUrl,
         avatar: avatar,
         albumOrUser: albumOrUser,
         hideEdit: hideEdit,
         hideCoverEdit: hideCoverEdit,
         busyFlag: busyFlag,
         hpFlag: hpFlag,
+        backgroundImageExists: backgroundImageExists,
         editExpanded: editExpanded,
         
         removeCoverImage: removeCoverImage,
         addCoverImage: addCoverImage,
         
         activate: function() {
-            getBackgroundImage();
+            //getBackgroundImage();
         },
         
         detached: function() {
@@ -260,7 +297,7 @@ function(app, viblio, Events, header, c_header, hp) {
             
             // cover photos - decide which input to use based on if the user is looking at an album or not
             $(".editIcon-Wrap").on( 'click.coverPhoto', function() {
-                if( expandEditView() ) {
+                if( backgroundImageExists() ) {
                     editExpanded( true );
                 } else {
                     if( albumOrUser() == "album" ) {
@@ -293,7 +330,8 @@ function(app, viblio, Events, header, c_header, hp) {
                     data.submit();
                 },
                 done: function (e, data) {
-                    backgroundImageUrl( data.result[0].views.banner.url );
+                    userBackgroundImageUrl( data.result[0].views.banner.url );
+                    viblio.user().banner_uuid = 
                     handleBackstretch();
                     // close edit button
                     editExpanded( false );
@@ -317,11 +355,11 @@ function(app, viblio, Events, header, c_header, hp) {
                     data.formData = {
                         aid: aid,
                         upload: data.files[0]
-                    }
+                    };
                     data.submit();
                 },
                 done: function (e, data) {
-                    backgroundImageUrl( data.result[0].views.banner.url );
+                    albumBackgroundImageUrl( data.result[0].views.banner.url );
                     handleBackstretch();
                     // close edit button
                     editExpanded( false );
