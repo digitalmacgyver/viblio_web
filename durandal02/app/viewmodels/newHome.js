@@ -79,6 +79,14 @@ define( ['plugins/router',
         self.show_find_options = ko.observable(false);
         self.select_all_mode_is_on = ko.observable(false);
         self.select_mode_on = ko.observable(false);
+        self.select_mode_on.subscribe( function( val ) {
+            // send a message to alert when select mode is on or not
+            if( val ) {
+                app.trigger( 'select_mode:on' );
+            } else {
+                app.trigger( 'select_mode:off' );
+            }
+        });
         self.share_mode_on = ko.observable(false);
         self.add_to_mode_on = ko.observable(false);
         self.delete_mode_on = ko.observable(false);
@@ -96,6 +104,14 @@ define( ['plugins/router',
         
         self.facesLabels = ko.observableArray([]);
         self.selectedFace = ko.observable();
+        self.selectedFace.subscribe( function( val ) {
+            // send a message that says the face filter is active or not
+            if( val ) {
+                app.trigger( 'selectedFace:active', val );
+            } else {
+                app.trigger( 'selectedFace:notactive' );
+            }
+        });
         self.faceFilterIsActive = ko.observable(false);
         
         self.citiesLabels = ko.observableArray([]);
@@ -110,7 +126,19 @@ define( ['plugins/router',
         self.selectedFilterAlbum = ko.observable();
         self.currentSelectedFilterAlbum = ko.observable(null);
         self.albumFilterIsActive = ko.observable(false);
+        self.albumFilterIsActive.subscribe( function( val ) {
+            // send a message that says the album filter is not active
+            if( !val ) {
+                app.trigger( 'albumList:notactive' );
+            }
+        });
         self.currentAlbum = ko.observable(null);
+        self.currentAlbum.subscribe( function( val ) {
+            // send a message that includes the newly activated album object
+            if( val ) {
+                app.trigger( 'albumList:gotalbum', val );
+            }
+        });
         self.albumIsShared = ko.observable(null);
         self.currentAlbumAid = ko.observable(null);
         self.currentAlbumTitle = ko.observable(null);
@@ -178,6 +206,9 @@ define( ['plugins/router',
         });
                 
         self.allVidsIsSelected = ko.observable( true );
+        self.allVidsIsSelected.subscribe( function() {
+            app.trigger( 'newHome:noFiltersAreActive' );
+        });
         
         self.isActiveFlag = ko.observable(true);
         
@@ -530,6 +561,7 @@ define( ['plugins/router',
      */
     newHome.prototype.filterVidsSearch = function( type, args, api, newSearch ) {
 	var self = this;
+        var media;
         self.isActiveFlag(true);
         
         // Only remove all vids and reset pager if it's a new search
@@ -539,7 +571,7 @@ define( ['plugins/router',
                 self.clearSearch();
             }
             
-            if( !type || type == "all" ) {
+            if( !type || type == "all" || type == "recent" ) {
                 self.clearfilters();
             }
             
@@ -566,6 +598,7 @@ define( ['plugins/router',
                         if(json.albums){
                             json.media = json.albums;
                         }
+                        media = json.media;
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
@@ -583,6 +616,16 @@ define( ['plugins/router',
             // reset active filters
             if( type && type != "all" ) {
                 self.resetOtherFilters( type );
+            }
+            
+            // this section handles the cover photos section - if the type is not all then show a slideshow
+            if( type && type != "all" ) {
+                app.trigger( 'newHome:filtersAreActive', media );
+            }
+            
+            // this section handles the cover avatar section - calling it here gets the timing correct when exiting from an album
+            if( !type || ( type && type != "faces" ) ) {
+                app.trigger( 'selectedFace:notactive' );
             }
             
             if( self.videos().length > 0 ) {

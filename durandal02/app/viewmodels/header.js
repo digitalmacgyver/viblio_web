@@ -47,7 +47,7 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
         
         updateAvatar: function() {
             avatar( null );
-            avatar( "/services/user/avatar?uid=-&y=37"+new Date() );
+            avatar( "/services/user/avatar?uid=-&y=37&ignore="+new Date() );
         },
 
 	sent_feedback: function() {
