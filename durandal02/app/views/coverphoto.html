@@ -1,0 +1,39 @@
+<div class="bannerImage-Wrap darkBlueBG bottomBorder-Thin">
+    <div class="bannerImage">
+        <div class="bannerImageBusy" data-bind="visible: !backgroundImageExists() && ( busyFlag() || hpFlag() )">
+            <div class="centered">
+                <i class="fa fa-spinner fa-3x fa-spin active"></i>
+            </div>
+        </div>
+        <div class="bannerEdit-Wrap" data-bind="visible: !hideCoverEdit()">
+            <div class="editIcon-Wrap" title="Edit cover photo">
+                <i class="fa fa-trash" data-bind="click: removeCoverImage, visible: editExpanded" title="Delete cover photo"></i>
+                <i class="fa fa-pencil" data-bind='click: addCoverImage, attr: { title: editExpanded ? "Choose new cover photo" : null }'></i>
+            </div>
+            <!--<div class="editButton">
+                <i class="fa fa-pencil"></i> Edit cover photo
+            </div>-->
+            <input class="userCoverUpload" style="position: absolute; width:0; height:0; top:0; left:0; visibility:hidden;"  type="file" name="upload" data-url="/services/user/add_or_replace_banner_photo" /> 
+            <input class="albumCoverUpload" style="position: absolute; width:0; height:0; top:0; left:0; visibility:hidden;"  type="file" name="upload" data-url="/services/album/add_or_replace_banner_photo" /> 
+        </div>
+        <!-- ko if: !backgroundImageExists() -->
+        <div class="stockBanner centered whiteText textShadowed">
+            <h2>Videos tell the best stories!</h2>
+            <p class="stockTagLine">watch, share, extract photos, make mashups, learn connect!</p>
+        </div>
+        <!-- /ko -->    
+    </div>
+    
+    <div class="bannerAvatar-Wrap">
+        <div class="bannerAvatar">
+            <img class="coverAvatar" data-bind="attr: {src: avatar}" />
+            <div class="changeBannerAvatar-Outerwrap" data-bind="visible: !hideEdit() ">
+                <div class="changeBannerAvatar-Wrap">
+                    <i class="fa fa-camera textShadowed"></i>
+                    <div class="changeBannerAvatar">Change Avatar</div>
+                </div>
+            </div>
+        </div>
+        <input style="position: absolute; width:0; height:0; top:0; left:0; visibility:hidden;" class="avatarUpload" type="file" name="upload" data-url="/services/user/add_or_replace_profile_photo" />
+    </div>
+</div>

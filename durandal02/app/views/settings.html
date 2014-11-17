@@ -10,7 +10,7 @@
 	  <tr>
 	    <td>
 	      <div style="cursor: pointer;" class="avatar boxShadowed">
-		<img id="apic" data-bind="attr: {src: avatar}"/>
+                <img id="apic" data-bind="attr: {src: avatar}"/>  
 		<div style="position: relative;" class="darkBlueBG fileinput-button">
 		    <span>Change Avatar</span>
 		    <i class="fa fa-spinner fa-2x fa-spin"></i>
@@ -38,11 +38,11 @@
 	<h3 class="mainLabel">Connected Accounts</h3>
 	<div data-bind="ifnot: linkedFacebook">
 	  <a href="#" data-bind="click: linkAccount.bind( $data, 'facebook' )" class="pull-right link-disconnect">Connect...</a>
-	  <i class="facebookColor fa fa-facebook" /> Connect to your Facebook account for some great features!
+	  <i class="facebookColor fa fa-facebook"></i> Connect to your Facebook account for some great features!
 	</div>
 	<div data-bind="if: linkedFacebook">
 	  <a href="#" data-bind="click: unlinkAccount.bind( $data, 'facebook' )" class="pull-right link-disconnect">Disconnect...</a>
-	  <i class="facebookColor fa fa-facebook" />Connected: <span class="link-link" data-bind="text: links().facebook"></span>
+	  <i class="facebookColor fa fa-facebook"></i>Connected: <span class="link-link" data-bind="text: links().facebook"></span>
 	</div>
       </div>
     </div>

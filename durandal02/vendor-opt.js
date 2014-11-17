@@ -41,7 +41,8 @@ new compressor.minify({
 	'lib/fastclick.js',
         'lib/Magnific-Popup/jquery.magnific-popup.js',
         'lib/fancybox-2.1.5/jquery.fancybox.js',
-        'lib/fancybox-2.1.5/helpers/jquery.fancybox-buttons.js'
+        'lib/fancybox-2.1.5/helpers/jquery.fancybox-buttons.js',
+        'lib/backstretch.js'
     ],
     fileOut: 'build/lib/vendor.all.js',
     callback: function(err, min){

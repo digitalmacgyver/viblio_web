@@ -62,8 +62,8 @@ input[type="color"],
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     border-color: rgba(0,0,0,.3);
-    box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
+    box-sizing: border-box;
     height: 40px;
     font-size: 17px;
 }
@@ -6531,6 +6531,7 @@ ul.token-input-list-facebook li input {
     height: 100%;
     width: 100%;
     background-color: rgba(0,0,0,.4);
+    cursor: not-allowed;
 }
 
 .albumListView .titleWrap {
@@ -6728,6 +6729,161 @@ ul.token-input-list-facebook li input {
 .modalHost,
 .mfp-wrap {
     z-index: 10002 !important;
+}
+
+/**** coverPhoto ****/
+
+.bannerImage-Wrap {
+    max-width: 100%;
+    height: 300px;
+    position: relative;
+}
+
+.bannerEdit-Wrap {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    text-align: right;
+    -webkit-transition: height 0.5s ease;
+    -moz-transition: height 0.5s ease;
+    -o-transition: height 0.5s ease;
+    transition: height 0.5s ease;
+}
+
+.bannerImage-Wrap .bannerEdit-Wrap .editIcon-Wrap {
+    display: inline-block;
+    text-align: right;
+    color: rgb(0, 0, 0);
+    background: rgb(128, 128, 128);
+    padding: 10px 12px;
+    border-radius: 50px;
+    font-size: 24px;
+    -webkit-transition: height 0.5s ease;
+    -moz-transition: height 0.5s ease;
+    -o-transition: height 0.5s ease;
+    transition: height 0.5s ease;
+}
+
+.bannerImage-Wrap .bannerEdit-Wrap .editIcon-Wrap .fa-close {
+    margin-bottom: 10px
+}
+
+.bannerImage-Wrap .bannerEdit-Wrap .editIcon-Wrap .fa {
+    display: block;
+}
+
+.bannerImage-Wrap .bannerEdit-Wrap .editButton {
+    display: block;
+    background: rgba(0, 0, 0, 0.65);
+    padding: 5px;
+    border: 1px solid rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+}
+
+.bannerImage-Wrap .bannerEdit-Wrap:hover .editIcon-Wrap,
+.bannerImage-Wrap .bannerEdit-Wrap .editButton {
+    //display: none;
+}
+
+.bannerImage-Wrap .bannerEdit-Wrap:hover .editButton {
+    //display: block;
+}
+
+.stockBanner p {
+    margin-top: 187px;
+}
+
+.stockBanner {
+    margin-top: 40px;
+}
+
+.bannerImage {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: bottom no-repeat;
+    background-size: auto 85%;
+    background-image: url("https://s3-us-west-2.amazonaws.com/viblio-external/media/corp-site/viblio-promo-1000-250.gif");
+}
+
+.bannerImageBusy {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.65);
+}
+
+.bannerImageBusy .centered {
+    margin-top: 120px;
+}
+
+.bannerAvatar-Wrap {
+    width: 120px;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    border: 3px solid white;
+}
+
+.bannerAvatar-Wrap .fileinput-button {
+    padding: 5px;
+    font-size: 14px;
+}
+
+.bannerAvatar {
+    position: relative;
+}
+
+.bannerAvatar i {
+    position: absolute;
+    cursor: pointer;
+    bottom: 6px;
+    left: 5px;
+    z-index: 1;
+    color: rgb(255, 255, 255);
+    opacity: .65;
+}
+
+.coverAvatar {
+    width: 120px;
+    height: 120px;
+}
+
+.changeBannerAvatar-Outerwrap {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.changeBannerAvatar-Wrap {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+}
+
+.bannerAvatar:hover i {
+    opacity: 1;
+}
+
+.changeBannerAvatar {
+    width: 100%;
+    visibility: hidden;
+    cursor: pointer;
+    color: white;
+    position: absolute;
+    bottom: 0;
+    padding: 5px 5px 5px 29px;
+    font-size: 14px;
+    background: rgba(0, 0, 0, 0.65);
+    -moz-box-sizing:border-box; /* Firefox */
+    box-sizing: border-box;
+}
+
+.bannerAvatar:hover .changeBannerAvatar {
+    visibility: visible;
 }
 
 /**** tryPhotoFinder ****/

@@ -534,6 +534,9 @@
                         in the "<span data-bind="text: selectedFilterAlbum"></span>" album &mdash;-->
                         <span data-bind="text: selectedFilterAlbum().toUpperCase()"></span> Album (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>) &mdash;
                         <span class="subtitle">by <span data-bind="text: currentAlbum().owner.displayname"></span> <img class="img-circle" data-bind="attr: {src: '/services/user/avatar?uid=' + currentAlbum().owner.uuid + '&y=30'}, tooltip: {title: 'Album by ' + currentAlbum().owner.displayname, placement: 'bottom'}"></span>.
+                        <!-- ko if: videos().length == 0 -->
+                        <div class="btn btn-primary" data-bind="click: add_videos_to_empty_album">Add videos to this empty album</div>
+                        <!-- /ko -->
                     </div>
                     <!-- /ko -->
                     
