@@ -221,6 +221,10 @@ a.activated:hover,
     color: white;
 }
 
+.progress {
+    margin-bottom: 0;
+}
+
 .toolbar-btn {
     background-color: transparent;
     color: white;
@@ -959,6 +963,10 @@ input:-moz-placeholder {
 
 .marginB40 {
     margin-bottom: 40px;
+}
+
+.marginB50 {
+    margin-bottom: 50px;
 }
 
 .paddingTopBottom5 {
@@ -6720,4 +6728,41 @@ ul.token-input-list-facebook li input {
 .modalHost,
 .mfp-wrap {
     z-index: 10002 !important;
+}
+
+/**** tryPhotoFinder ****/
+
+.tryPhotoFinder-Page .topBanner {
+    line-height: 1;
+    padding: 15px 20px 20px;
+    font-size: 45px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    font-weight: 700;
+}
+
+.tryPhotoFinder-Page .bottomBanner p,
+.tryPhotoFinder-Page .topBanner p {
+    margin: 0;
+}
+
+.tryPhotoFinder-Page .topBanner span {
+    font-weight: 200;
+}
+
+.tryPhotoFinder-Page .bottomBanner {
+    line-height: 1;
+    padding: 15px 20px 20px;
+    font-size: 55px;
+    text-align: center;
+    font-weight: 200;
+    -moz-box-shadow: 0px 0px 4px 0px;
+    -webkit-box-shadow: 0px 0px 4px 0px;
+    box-shadow: 0px 0px 4px 0px;
+}
+
+.tryPhotoFinder-Page .vup-area {
+    margin-right: 0;
+    margin-left: 0;
+    border: none;
 }

@@ -1,0 +1,40 @@
+<div class="tryPhotoFinder-Page">
+    
+    <div class="signupBusy" data-bind="visible: busyFlag()">
+        <div class="mfLoader">
+            <i class="fa fa-spinner fa-5x fa-spin active"></i>
+            <p class='font18'>Please wait...</p>
+        </div>
+    </div>
+    
+    <div class="topBanner turquoiseBG">
+        <p><span>Get </span> FREE <span>photos from your video!</span></p>
+    </div>
+    
+    <div class="content-Wrap centeredEl marginT50">
+        <div class="centeredEl">
+            <form class="">
+                <div class="centeredEl">
+                    <label>Email address (so we can send you your photos):</label>
+                    <input type="email" data-bind="value: email, valueUpdate: 'keyup' " 
+                           name="email" class="email" id="email" 
+                           placeholder="Enter email address" required />
+
+                    <div class="vup whiteBG marginB50"></div>
+
+                    <div style="text-align: center;" class="centeredEl">
+                        <button type="button" class="btn btn-primary" data-bind="click: sendPhotos, enable: email()">
+                            Send me photos from this video
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </form>
+        </div>   
+    </div>
+    
+    <div class="bottomBanner whiteBG">
+        <p>VIBLIO gives you more from your videos</p>
+    </div> 
+    
+</div>
