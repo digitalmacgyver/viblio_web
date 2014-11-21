@@ -16,6 +16,7 @@ define(['durandal/app',
     var unnamed_is_visible = false;
     var firstTime = ko.observable();
     var yvSection;
+    var showPhotos = ko.observable(null);
     
     var nhome = ko.observable();
     
@@ -127,7 +128,13 @@ define(['durandal/app',
         
         activate: function( args ) {
             
+            // if photos=true then we will want to show the photos view once newHome has been created
+            if( args && args.photos ) {
+                showPhotos( true );
+            }
+            
             if( args ){
+                console.log( "args: ", args );
                 // this cleans up to avoid an extra call to activate when the nhome observable is updated
                 var videos = $('#videos')[0];
                 if( videos ) {
@@ -160,6 +167,8 @@ define(['durandal/app',
                         });
                         customDialogs.showModal( 'viewmodels/loginModal', 'Please log in before uploading new videos to your account.' );
                     }
+                } else {
+                    nhome( new newHome() );
                 }             
             } else {
                 // this cleans up to avoid an extra call to activate when the nhome observable is updated
@@ -198,6 +207,11 @@ define(['durandal/app',
                 activateAlbum( gotToAlbum() );
             }
 	    handle_visibility( albumList_is_visible );
+            
+            // this will switch to the photos view when newHome is created
+            if( showPhotos() ) {
+                nhome().video_mode_on( false );
+            }
 	}
     };
 });

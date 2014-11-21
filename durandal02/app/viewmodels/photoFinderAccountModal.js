@@ -14,6 +14,7 @@ function( router, config, viblio, customDialogs, dialog ) {
         fb_appid   = config.facebook_appid();
         fb_channel = config.facebook_channel();
         
+        // this will ensure that there is no active FB session so no errors are thrown when running FB.init()
         FB._initialized = false;
         FB.init({
             appId: fb_appid,
@@ -142,13 +143,6 @@ function( router, config, viblio, customDialogs, dialog ) {
 	    }
 	},{scope: config.facebook_ask_features()});
     };
-    
-    /*M.prototype.compositionComplete = function( view ) {
-        var self = this;
-        
-        self.view = view;
-        self.me = self;
-    };*/
 
     return M;
 });
