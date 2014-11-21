@@ -5,6 +5,7 @@ define(['plugins/router',
         'viewmodels/landing_header',
         'viewmodels/conditional_header',
         'viewmodels/ks_landing_header',
+        'viewmodels/loginHeader',
         'lib/viblio',
         'lib/customDialogs',
         'viewmodels/emailtest',
@@ -12,7 +13,7 @@ define(['plugins/router',
         'viewmodels/footer',
         'facebook'], 
     
-function (router, app, system, page_header, landing_header, conditional_header, ks_landing_header, viblio, customDialogs,emailtest,config,footer) {
+function (router, app, system, page_header, landing_header, conditional_header, ks_landing_header, loginHeader, viblio, customDialogs,emailtest,config,footer) {
 
     var header = ko.observable( );
     var location = ko.observable();
@@ -245,7 +246,7 @@ function (router, app, system, page_header, landing_header, conditional_header, 
 	      showFooter: true, nav: false,   authenticated: true,   header: conditional_header },
           
             { route: 'try',   moduleId: 'tryPhotoFinder',     title: 'Try Photo Finder',
-	      showFooter: true, nav: false,   authenticated: true,   header: landing_header }
+	      showFooter: true, nav: false,   authenticated: false,   header: landing_header }
 
         ]).buildNavigationModel();
     }

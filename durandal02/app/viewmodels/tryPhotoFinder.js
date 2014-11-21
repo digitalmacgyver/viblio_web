@@ -3,13 +3,15 @@ define( ['plugins/router',
 	 'durandal/system', 
 	 'lib/config', 
 	 'lib/viblio', 
-	 'lib/customDialogs'], 
-function( router, app, system, config, viblio ) {
+	 'lib/customDialogs',
+         'viewmodels/landingUploader'], 
+function( router, app, system, config, viblio, dialogs, Uploader ) {
 
     var email = ko.observable();
     
     var busyFlag = ko.observable( null );
     var user;
+    var UL = ko.observable();
     
     function createAccount() {
         /*New user account creation without a password:
@@ -39,6 +41,7 @@ function( router, app, system, config, viblio ) {
     return {
 	email: email,
         busyFlag: busyFlag,
+        UL: UL,
         
         sendPhotos: sendPhotos,
         
@@ -47,15 +50,9 @@ function( router, app, system, config, viblio ) {
 	},
         
         compositionComplete: function( view ) {
-            // set up uploader
-            $(view).find( '.vup' ).viblio_landinguploader({
-		uuid: viblio.getUser().uuid,
-		endpoint: '/files',
-		done_message: 'Done; Processing...',
-		alert_class: 'alert-error',
-		notify_class: 'alert-success',
-                skip_faces: false
-	    });
+            var self = this;
+            
+            UL(  new Uploader()  );
         }
 
     };

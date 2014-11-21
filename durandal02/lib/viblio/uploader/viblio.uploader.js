@@ -435,7 +435,7 @@
 					self._pauseAllUploads();
 				    }
 				});
-				var row = $('<tr><td class="vup-filename-column"></td><td class="vup-file-progress-column"><div class="progress"></div></td><td class="vup-cancel-column"></td>');
+				var row = $('<tr><td class="vup-filename-column"></td><td class="vup-file-progress-column"></td><td class="vup-cancel-column"></td>');
 				$(row).find(".vup-cancel-column").append(allCancelButton);
 				if ( ! IE )
 				    $(row).find(".vup-cancel-column").append(allPauseButton);
@@ -456,6 +456,7 @@
 				self._cancelUpload($(this).data( 'file' ));
 				cancelButton.remove();
 				pauseButton.remove();
+                                row.find(".vup-file-progress-column .bar").removeClass( 'bar-warning' ).addClass( 'bar-danger' );
 			    });
 
 			    pauseButton.click( function() {
@@ -463,16 +464,18 @@
 				    $(this).find('i').removeClass( 'icon-play' );
 				    $(this).find('i').addClass( 'icon-pause' );
 				    self._resumeUpload($(this).data( 'file' ));
+                                    row.find(".vup-file-progress-column .bar").removeClass( 'bar-warning' );
 				}
 				else {
 				    $(this).find('i').removeClass( 'icon-pause' );
 				    $(this).find('i').addClass( 'icon-play' );
 				    self._pauseUpload($(this).data( 'file' ));
+                                    row.find(".vup-file-progress-column .bar").addClass( 'bar-warning' );
 				}
 			    });
 			    
 			    // create new table row
-			    var row = $('<tr><td class="vup-filename-column"></td><td class="vup-file-progress-column"><div class="progress"></div></td><td class="vup-cancel-column"></td>');
+			    var row = $('<tr><td class="vup-filename-column"></td><td class="vup-file-progress-column"><div class="progress progress-striped"></div></td><td class="vup-cancel-column"></td>');
 			    
 			    // Do the initial viblio uploader HEAD to create the file and
 			    // get back the file id
