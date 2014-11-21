@@ -133,7 +133,7 @@ function( router, config, viblio, customDialogs, dialog ) {
                             self.handleLoginFailure(res);
                           }
 			  ).then( function( json ) {
-			      loginSuccessful( json.user );
+			      self.loginSuccessful( json.user );
 			  });
 	    }
 	},{scope: config.facebook_ask_features()});
