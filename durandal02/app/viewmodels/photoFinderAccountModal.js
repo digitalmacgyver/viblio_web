@@ -30,6 +30,24 @@ function( router, config, viblio, customDialogs, dialog ) {
         dialog.close( this, data );
     };
     
+    // this will send an email to notifications@viblio.com and close the modal once it's completed
+    M.prototype.sendEmail = function( user ) {
+        var self = this;
+        
+        $.ajax({
+            url: '/services/na/emailer',
+            method: 'POST',
+            contentType: 'application/json;charset=utf-8',
+            data: JSON.stringify({
+                subject: "New 'Try Photo Finder' user registration",
+                to: [{ email: 'notifications@viblio.com', name: 'Notifications' }],
+                body: '<p>We have a new user via the "Try Photo Finder" feature.  The email is: ' + user.email + '</p>'
+            })
+        }).then( function() {
+            self.closeModal( user );
+        });
+    };
+    
     M.prototype.loginSuccessful = function( user ) {
         var self = this;
 	// Save the logged in user info to the viblio object,
@@ -40,7 +58,8 @@ function( router, config, viblio, customDialogs, dialog ) {
 	// mixpanel event
 	viblio.mpEvent( 'Signed up via "Try Photo Finder"' );
         
-        self.closeModal( user );
+        // send email to notifications@viblio.com
+        self.sendEmail( user );
     };
 
     M.prototype.handleLoginFailure = function( json ) {
