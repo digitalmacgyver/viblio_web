@@ -377,6 +377,9 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         // this will trigger the number of faces to show to be correct when resizing window
         //$( window ).bind('resize', function(){ self.winWidth( $( window ).width() );} );
         
+        // remove the 'people' tag from the mediafile so it doesn't show in the UI
+        self.tags.remove( 'people' );
+        
         self.viewResolved.resolve();
     };
     
