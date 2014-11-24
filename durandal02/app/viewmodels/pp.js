@@ -491,7 +491,10 @@ define(["durandal/app",
         tags.removeAll();
         if( m.tags && m.tags.length > 0 ){
             m.tags.forEach( function(tag) {
-                tags.push(tag);
+                // don't show the 'people' tag
+                if( tag != 'people' ) {
+                    tags.push(tag);
+                }
             });
         }
     };
