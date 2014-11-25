@@ -221,6 +221,10 @@ a.activated:hover,
     color: white;
 }
 
+.progress {
+    margin: 0 5px;
+}
+
 .toolbar-btn {
     background-color: transparent;
     color: white;
@@ -959,6 +963,10 @@ input:-moz-placeholder {
 
 .marginB40 {
     margin-bottom: 40px;
+}
+
+.marginB50 {
+    margin-bottom: 50px;
 }
 
 .paddingTopBottom5 {
@@ -5374,7 +5382,7 @@ div.fstrip {
 
 
 .vup-area table tr > td {
-    padding-bottom: 3px;
+    //padding-bottom: 3px;
 }
 
 .vup-area {
@@ -6876,4 +6884,77 @@ ul.token-input-list-facebook li input {
 
 .bannerAvatar:hover .changeBannerAvatar {
     visibility: visible;
+}
+
+/**** tryPhotoFinder ****/
+
+.tryPhotoFinder-Page .topBanner {
+    line-height: 1;
+    padding: 15px 20px 20px;
+    font-size: 45px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    font-weight: 700;
+}
+
+.tryPhotoFinder-Page .bottomBanner p,
+.tryPhotoFinder-Page .topBanner p {
+    margin: 0;
+}
+
+.tryPhotoFinder-Page .topBanner span {
+    font-weight: 200;
+}
+
+.tryPhotoFinder-Page .bottomBanner {
+    line-height: 1;
+    padding: 15px 20px 20px;
+    font-size: 55px;
+    text-align: center;
+    font-weight: 200;
+    -moz-box-shadow: 0px 0px 4px 0px;
+    -webkit-box-shadow: 0px 0px 4px 0px;
+    box-shadow: 0px 0px 4px 0px;
+}
+
+.tryPhotoFinder-Page .vup-area {
+    margin-right: 0;
+    margin-left: 0;
+    border: none;
+    height: 240px;
+}
+
+.tryPhotoFinder-Page .vup-alert {
+    top: 44px;
+}
+
+.w200 {
+    width: 200px;
+}
+
+.w50 {
+    width: 50px;
+}
+
+.vup-cancel-column a {
+    display: inline-block;
+    margin-top: 7px;
+}
+
+.landingUploader.hover .vup-instructions {
+    visibility: hidden;
+}
+
+/**** landingUplaoder ****/
+
+.landingUploader {
+    padding: 0;
+}
+
+.photoFinderAccountModal {
+    position: relative;
+}
+
+.photoFinderAccountModal .facebookLoginBtn-Wrap {
+    padding: 20px 40px 40px;
 }

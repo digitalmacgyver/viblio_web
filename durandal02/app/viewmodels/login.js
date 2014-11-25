@@ -73,7 +73,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	    msg += "Otherwise, please re-enter the correct account information.";*/
             msg  = "We do not have an account for the credentials you entered. ";
             msg += "If you don't have a VIBLIO account yet, "
-            msg += "<a class='tomatoFont' id='ksLoginLink' href='/#ks_signup'>get on it</a>! ";
+            msg += "<a class='tomatoFont' id='ksLoginLink' href='/#signup'>get on it</a>! ";
             msg += "Otherwise, re-enter the correct account information.";
 	}
 	else if ( code == "NOLOGIN_PASSWORD_MISMATCH" ) {
