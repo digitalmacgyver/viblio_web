@@ -8,8 +8,9 @@ define(["durandal/app",
 	"viewmodels/person",
 	"lib/related_video",
 	"viewmodels/footer",
-        "lib/customDialogs"], 
-    function(app,system,router,config,viblio,Mediafile,customDialogs,Face,Related,footer,dialog) {
+        "lib/customDialogs",
+        "viewmodels/addVideoModal"], 
+    function(app,system,router,config,viblio,Mediafile,customDialogs,Face,Related,footer,dialog,AddVideoModal) {
         
     var incoming_mid;
     var view;
@@ -156,6 +157,16 @@ define(["durandal/app",
             $('.player').find('video').attr('controls', 'controls');
         }
     });
+    
+    function addVideoToAccount() {
+        var M = new AddVideoModal( playing().media().uuid );
+        
+        app.showDialog( M ).then( function( res ) {
+            if( res == "success" ) {
+                dialog.showModal( 'viewmodels/customBlankModal',  "Success!<br /><br /> This video has been shared to your account! <a class='tomatoFont' href='#login'>Login</a> to view.");
+            }
+        });
+    };
     
     function addVideos() {
         // save current player address along with mid of video to a variable that can be used in the else section of if statement below
@@ -847,6 +858,8 @@ define(["durandal/app",
         
         playVid: playVid,
         playRelated: playRelated,
+        
+        addVideoToAccount: addVideoToAccount,
                 
         shouldShowInteractiveMap: function() {
             if( nolocation() ) {

@@ -3,13 +3,26 @@ define(["durandal/app",
 	"plugins/router",
 	"lib/config",
 	"lib/viblio",
-	"lib/customDialogs"],
-function(app,system,router,config,viblio,customDialogs) {
+	"lib/customDialogs",
+        'plugins/dialog',
+        "viewmodels/addVideoModal"],
+function(app,system,router,config,viblio,customDialogs,dialog,AddVideoModal) {
     var width = ko.observable();
     var height  = ko.observable();
     var poster  = ko.observable();
     var src  = ko.observable();
-    var oniOS = ko.observable( head.browser.ios )
+    var mid = ko.observable();
+    var oniOS = ko.observable( head.browser.ios );
+    var showEmail = ko.observable( false );
+    var email = ko.observable();
+    var emailValid = ko.computed (function() {
+        if ( email() && $('.email')[0].checkValidity() ) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    var showSuccess = ko.observable( false );
     var player, mf;
 
     function resize() {
@@ -36,6 +49,23 @@ function(app,system,router,config,viblio,customDialogs) {
     function getiOSApp() {
         window.open( 'https://itunes.apple.com/us/app/viblio/id883377114?mt=8' );
     }
+    
+    function showEmailEntry() {
+        showEmail( true );
+    }
+    
+    function addVideo() {
+        var args = {
+            email: email(),
+            mid: mid()
+        };
+        viblio.api( 'services/na/add_video_to_email', args ).then( function( res ) {
+            if( res ) {
+                showEmail( false );
+                showSuccess( true );
+            }
+        });
+    };
 
     return {
 	width: width,
@@ -43,7 +73,15 @@ function(app,system,router,config,viblio,customDialogs) {
 	poster: poster,
 	src: src,
         oniOS: oniOS,
+        showEmail: showEmail,
+        email: email,
+        emailValid: emailValid,
+        showSuccess: showSuccess,
+        
+        showEmailEntry: showEmailEntry,
+        
         getiOSApp: getiOSApp,
+        addVideo: addVideo,
 	canActivate: function( args ) {
 	    if ( args && args.mid ) {
 		return system.defer( function( dfd ) {
@@ -57,6 +95,7 @@ function(app,system,router,config,viblio,customDialogs) {
 			}
 			else {
 			    mf = data.media;
+                            mid( mf.uuid );
 			    width( head.screen.width );
 			    height( head.screen.height );
 			    poster( mf.views.poster.url );

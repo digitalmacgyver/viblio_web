@@ -1,20 +1,35 @@
-<div class="phone">
+<div class="phone darkBlueBG">
   <div class="videocontent">
     <a class="brand" href="/#home">
         <img src="css/images/viblioLogo-WhiteWText.png" />
     </a>
-    <!-- ko if: oniOS() -->
-    <div class="button-Wrap iOSDownloadBtn">
-        <a class="btn btn-primary" href="https://itunes.apple.com/us/app/viblio/id883377114?mt=8">
-          Get the VIBLIO iOS APP!
-        </a>
-    </div>
-    <!-- /ko -->
     <video id="videojs" class="video-js vjs-default-skin"
 	   controls preload="auto" width="auto" height="auto"
 	   data-bind="attr:{poster:poster}">
       <source data-bind="attr:{src:src}" type='video/mp4' />
     </video>
+    <div class="tomatoBG marginT15 marginB20 marginSides10">
+        <div class="button-Wrap" data-bind="visible: !showSuccess()">
+            <button class="btn btn-primary" data-bind="click: addVideo, enable: emailValid()">
+                <i class="fa fa-share"></i> Add this video to your account
+            </button>
+        </div>
+        <div class="centeredEl" data-bind="visible: !showSuccess()">
+            <input type="email" name="email" class="text email" data-bind="value: email, valueUpdate: 'keyup'" placeholder="Enter your account email address" />
+        </div>
+        <div class="centeredEl" data-bind="visible: showSuccess()">
+            <p>This video has been added to account</p>
+            <p data-bind="text: email()"></p>
+            <!-- ko if: oniOS() -->
+            <h3>VIBLIO has an iPhone app!</h3>
+            <!-- /ko -->
+            <!-- ko if: oniOS() -->
+            <a href="https://itunes.apple.com/us/app/viblio/id883377114?mt=8">
+                <img class="marginB10" src="/css/images/Download_on_the_App_Store_Badge_US-UK_135x40.png" alt="Download on the App Store"/>
+            </a>
+            <!-- /ko -->
+        </div>
+    </div>
   </div>
 
   <div id="m1" class="phone-video-finished orangeBG-Header" data-bind="click: close">
