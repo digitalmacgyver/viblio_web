@@ -325,10 +325,6 @@ function( app, router, config, viblio, dialog, AccountModal ) {
                 elem.find('.vup-alert').unbind( 'click.vup' );
             });
         });
-        
-        $('#backHomeLink').on('click', function() {
-            console.log( 'link was clicked' );
-        });
     };
 
     UL.prototype.reset = function() {
@@ -366,8 +362,6 @@ function( app, router, config, viblio, dialog, AccountModal ) {
     UL.prototype.activate = function() {
         var self = this;
         
-        console.log( "User info: ", self.user );
-        
         if( !self.user.uuid ) {
             self.wasLoggedIn( false );
         } else {
@@ -380,19 +374,14 @@ function( app, router, config, viblio, dialog, AccountModal ) {
         var elem = $(view);
         self.element = elem;
         
-        console.log( elem );
-        
         // setup the uploader
         if ( self.ios ) {
             // There is a BUG in IOS that prevents multiple file uploads.  See
             // https://github.com/blueimp/jQuery-File-Upload/issues/2627
             // https://github.com/moxiecode/plupload/issues/894
-            $('<input class="uploaderInput" type="file" name="files[]" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;" />').appendTo( elem ).on('click', function(){
-                console.log( 'input was clicked' );
-            });
+            $('<input class="uploaderInput" type="file" name="files[]" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;" />').appendTo( elem );
         }
         else if ( ! self.IE ) {
-            console.log( 'should be appending input' );
             $('<input class="uploaderInput" type="file" name="files[]" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;" />').appendTo( elem );
         }
         elem.append( self.options.template );
@@ -434,9 +423,7 @@ function( app, router, config, viblio, dialog, AccountModal ) {
                 var that = this;
                 self._fu = this;
                 
-                console.log( that, self.uploader, $(this).data("blueimpFileupload") );
-                
-                function handleUpload() {
+                function handleUpload( accountType ) {
                     if( !data ) {
                         return;
                     }
@@ -501,8 +488,8 @@ function( app, router, config, viblio, dialog, AccountModal ) {
                             var xhr = new XMLHttpRequest();
                             xhr.open("POST", endpoint, false ); // sync!
                             xhr.setRequestHeader('Final-Length', file.size );
-                            //console.log( JSON.stringify({uuid: uuid, file:{Path:file.name}, skip_faces: self.options.skip_faces, album_uuid: self.options.upload_to_album ? self.options.album_to_upload_to : null  }) );
-                            xhr.send(JSON.stringify({uuid: uuid, file:{Path:file.name}, skip_faces: self.options.skip_faces, try_photos: true, album_uuid: self.options.upload_to_album ? self.options.album_to_upload_to : null  }));
+                            //console.log( JSON.stringify({uuid: uuid, file:{Path:file.name}, skip_faces: self.options.skip_faces, try_photos: accountType, album_uuid: self.options.upload_to_album ? self.options.album_to_upload_to : null  }) );
+                            xhr.send(JSON.stringify({uuid: uuid, file:{Path:file.name}, skip_faces: self.options.skip_faces, try_photos: accountType, album_uuid: self.options.upload_to_album ? self.options.album_to_upload_to : null  }));
                             if ( xhr.status != 200 && xhr.status != 201 ) {
                                 $(row).find(".vup-filename-column").text(filename);
                                 $(row).find(".progress").html('<div class="bar" style="width:100%;">Upload failed: ' + xhr.statusText + '</div>' );
@@ -549,13 +536,15 @@ function( app, router, config, viblio, dialog, AccountModal ) {
                             elem.find('.vup-instructions').css( 'visibility','visible');
                             return;
                         } else {
+                            // newly created user
                             self.options.uuid( user.uuid );
-                            handleUpload();
+                            handleUpload(1);
                         }
                     });
                 } else {
+                    // already logged in user
                     self.options.uuid( self.user.uuid );
-                    handleUpload();
+                    handleUpload(2);
                 }
                 
             },
@@ -721,8 +710,6 @@ function( app, router, config, viblio, dialog, AccountModal ) {
             
             $(document).bind('drop.VUP', function (e) {
                 e.preventDefault();
-                
-                console.log( 'drop fired', self.options.uuid );
                 
                 if( !self.options.uuid() ) {
                     elem.find('.vup-instructions').css( 'visibility','visible');

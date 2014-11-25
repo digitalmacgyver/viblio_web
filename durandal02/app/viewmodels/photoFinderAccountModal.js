@@ -26,7 +26,6 @@ function( router, config, viblio, customDialogs, dialog ) {
     };
     
     M.prototype.closeModal = function( data ) {
-        console.log( M.prototype, this );
         dialog.close( this, data );
     };
     
@@ -63,7 +62,6 @@ function( router, config, viblio, customDialogs, dialog ) {
     };
 
     M.prototype.handleLoginFailure = function( json ) {
-        console.log( json );
         var self = this;
 	var code = json.code;
 	var msg  = json.detail;
@@ -134,7 +132,6 @@ function( router, config, viblio, customDialogs, dialog ) {
                                                                 self.handleLoginFailure(res);
                                                               } 
             ).then( function( data ) {
-            console.log( data );
             self.loginSuccessful( data.user );
         });
     };
@@ -144,8 +141,6 @@ function( router, config, viblio, customDialogs, dialog ) {
         
 	if ( ! fb_appid )
 	    dialog.showMessage( 'In development, Facebook login will not work.' );
-        
-        console.log( "FB._initialized: ", FB._initialized );
 
 	FB.login(function(response) {
             if (response.authResponse) {
@@ -158,7 +153,6 @@ function( router, config, viblio, customDialogs, dialog ) {
                             self.handleLoginFailure(res);
                           }
 			  ).then( function( json ) {
-                              console.log( "self from within facebookAuthenticate: ", self );
 			      self.loginSuccessful( json.user );
 			  });
 	    }
