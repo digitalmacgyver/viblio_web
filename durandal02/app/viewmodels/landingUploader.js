@@ -31,7 +31,7 @@ function( app, router, config, viblio, dialog, AccountModal ) {
 	    // to set this to https://staging.viblio.com/files.
 	    // If null, it is derived by getting the endpoint from the
 	    // viblio.js plugin.
-	    endpoint: 'https://staging.viblio.com/files',
+	    endpoint: 'https://viblio.com/files',
 	    //
 	    // The file types to accept.  Currently viblio only accepts
 	    // video files.
