@@ -3,7 +3,7 @@
     var IE = (head.browser.ie && head.browser.version < 10);
     var ios = head.browser.ios;
 
-    $.widget( 'viblio.viblio_uploader', {
+    $.widget( 'viblio.viblio_landinguploader', {
 	options: {
 	    // Mostly for debug.  If null, then the viblio uuid for uploads
 	    // will be obtained by the viblio.js plugin.  If not null, it
@@ -23,7 +23,7 @@
 	    //
 	    // The maximum number of concurrent videos that can be uploaded
 	    // in parallel.  Others will wait in a queue until a slot opens up.
-	    concurrent: 4,
+	    concurrent: 1,
 	    //
 	    // The maximum video file size to accept, in bytes
 	    maxFileSize: 10000000000, // 10G
@@ -354,7 +354,7 @@
 		$('<input class="uploaderInput" type="file" name="files[]" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;" />').appendTo( elem );
 	    }
 	    else if ( ! IE ) {
-		$('<input type="file" name="files[]" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;" multiple />').appendTo( elem );
+		$('<input type="file" name="files[]" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;" />').appendTo( elem );
 	    }
 	    elem.append( self.options.template || self._html( IE ) );
 	    if ( self.options.display_stats )
@@ -392,6 +392,9 @@
 		add: function(e, data) {
 		    var that = this;
 		    self._fu = this;
+                    
+                    App.showDialog() 
+                    
 		    data.process().done(function() {
 			return $(that).fileupload('process', data);
                     }).always(function() {
@@ -435,7 +438,7 @@
 					self._pauseAllUploads();
 				    }
 				});
-				var row = $('<tr><td class="vup-filename-column"></td><td class="vup-file-progress-column"></td><td class="vup-cancel-column"></td>');
+				var row = $('<tr><td class="vup-filename-column"></td><td class="vup-file-progress-column"><div class="progress"></div></td><td class="vup-cancel-column"></td>');
 				$(row).find(".vup-cancel-column").append(allCancelButton);
 				if ( ! IE )
 				    $(row).find(".vup-cancel-column").append(allPauseButton);
@@ -456,7 +459,6 @@
 				self._cancelUpload($(this).data( 'file' ));
 				cancelButton.remove();
 				pauseButton.remove();
-                                row.find(".vup-file-progress-column .bar").removeClass( 'bar-warning' ).addClass( 'bar-danger' );
 			    });
 
 			    pauseButton.click( function() {
@@ -464,18 +466,16 @@
 				    $(this).find('i').removeClass( 'icon-play' );
 				    $(this).find('i').addClass( 'icon-pause' );
 				    self._resumeUpload($(this).data( 'file' ));
-                                    row.find(".vup-file-progress-column .bar").removeClass( 'bar-warning' );
 				}
 				else {
 				    $(this).find('i').removeClass( 'icon-pause' );
 				    $(this).find('i').addClass( 'icon-play' );
 				    self._pauseUpload($(this).data( 'file' ));
-                                    row.find(".vup-file-progress-column .bar").addClass( 'bar-warning' );
 				}
 			    });
 			    
 			    // create new table row
-			    var row = $('<tr><td class="vup-filename-column"></td><td class="vup-file-progress-column"><div class="progress progress-striped"></div></td><td class="vup-cancel-column"></td>');
+			    var row = $('<tr><td class="vup-filename-column"></td><td class="vup-file-progress-column"><div class="progress"></div></td><td class="vup-cancel-column"></td>');
 			    
 			    // Do the initial viblio uploader HEAD to create the file and
 			    // get back the file id
@@ -686,7 +686,7 @@
 	_html: function( ie ) {
 	    if ( ! ie ) 
 		return ('\
-      <div class="vup-instructions"><div><p class="line1">Drop videos here</p><p class="line2">(or click)</p><br><br></div></div>\
+      <div class="vup-instructions"><div><p class="line1">Drop video here to try Photo Finder</p><p class="line2">(or click)</p><br><br></div></div>\
       <div class="vup-alert"><span class="alert"></span></div>\
       <div class="vup-area">\
 	<table class="vup-files">\

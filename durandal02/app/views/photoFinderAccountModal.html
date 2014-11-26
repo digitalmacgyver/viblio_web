@@ -1,0 +1,23 @@
+<div id="photoFinderAccountModal" class="whiteBG modalBorder photoFinderAccountModal">
+    <div class='modalCloseX btn btn-modalGrey' data-bind="click: closeModal"><img src='css/images/closeX.png'/></div>
+    <div class="padding40 bottomBorder">
+        <h2>Where should we send your photos?</h2>
+        <div class="centeredEl">
+            <label>Enter your email address:</label>
+            <span data-bind="css: { error: email_entry_error() }">
+                <input type="email" name="email" class="text" data-bind="value: email" placeholder="Email address" />
+            </span>
+            <button class="btn btn-primary pull-right" data-bind="click: nativeAuthenticate">
+                Go!
+            </button>
+        </div>
+    </div>
+    
+    <div id='or-Wrap'>
+        <p>or</p>
+    </div>
+    
+    <div class="facebookLoginBtn-Wrap">
+        <a class="centeredEl facebookLoginBtn" data-bind="click: facebookAuthenticate"><img src="css/images/FBf.png" /> Use your Facebook email </a>
+    </div>
+</div>
