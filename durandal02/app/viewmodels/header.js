@@ -84,11 +84,8 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
 	    app.trigger( 'system:logout' );
 	},
         activate: function() {
-            // check if this is user's first visit
-            /*firstTime( localStorage.firstVisit );
-            if ( firstTime() ) {
-                $('.web-uploader-header-button').popover('show');
-            }*/
+            // update the avatar in case it's still left from the last user
+            this.updateAvatar();
             // check if this is user's first visit
             viblio.localStorage( 'hasUserPushedUploadBefore' ).then(function( data ) {
                 if ( data ) {

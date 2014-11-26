@@ -10,7 +10,7 @@ function(app, viblio, Events, header, c_header, hp) {
     var userBackgroundImageUrl = ko.observable();
     var albumOrUser = ko.observable("user");
     var currentAlbum = ko.observable( null );
-    var avatar = ko.observable( "/services/user/avatar?uid=-&x=120&y=120" );
+    var avatar = ko.observable(null);
     var user = viblio.user();
     var hideEdit = ko.observable(null); /* controls visibility on the change avatar button */
     var hideCoverEdit = ko.observable(null); /* controls visibility on the cover edit button */
@@ -254,11 +254,16 @@ function(app, viblio, Events, header, c_header, hp) {
         backgroundImageExists: backgroundImageExists,
         editExpanded: editExpanded,
         
+        handleBackstretch: handleBackstretch,
         removeCoverImage: removeCoverImage,
         addCoverImage: addCoverImage,
         
         activate: function() {
-            //getBackgroundImage();
+            avatar( "/services/user/avatar?uid=-&x=120&y=120" );
+            user = viblio.user();
+            albumBackgroundImageUrl( null );
+            userBackgroundImageUrl( null );
+            getBackgroundImage();
         },
         
         detached: function() {

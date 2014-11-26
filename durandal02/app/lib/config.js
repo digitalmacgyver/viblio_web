@@ -110,6 +110,7 @@ define( function() {
 	},
 	mixpanel_appid: function() {
 	    return service( window.location.hostname, 'mixpanel' );
-	}
+	},
+        photo_throttle: 20
     };
 });
