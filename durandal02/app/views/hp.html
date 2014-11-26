@@ -6,7 +6,7 @@
         <div class="right"><!-- ko compose: 'viewmodels/albumList' --><!-- /ko --></div>
         <div class="clearfix"></div>
     </div>
-    <div class="facestripToggle btn btn-white" data-bind="click: showFaces() ? function(){ showFaces(false); } : function(){ showFaces(true); }, css: { 'btn-white': showFaces(), 'btn-ltGrey': !showFaces() }">
+    <div class="facestripToggle btn btn-white" data-bind="click: toggleTopStrip, css: { 'btn-white': showFaces(), 'btn-ltGrey': !showFaces() }">
         <span data-bind="if: showFaces" title="Hide People Strip"><i class="fa fa-chevron-up"></i></span>
         <span data-bind="ifnot: showFaces" title="Show People Strip"><i class="fa fa-chevron-down"></i></span>
     </div>

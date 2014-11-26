@@ -590,7 +590,7 @@ define( ['plugins/router',
                 args.rows = self.thePager().entries_per_page;
                 args.include_tags = 1;
                 args.include_contact_info = 1;
-                args.include_images = 1;
+                args.include_images = config.photo_throttle;
 		viblio.api( api, args )
 		    .then( function( json ) {
                         self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
@@ -722,7 +722,7 @@ define( ['plugins/router',
                 args.rows = self.thePager().entries_per_page;
                 args.include_tags = 1;
                 args.include_contact_info = 1;
-                args.include_images = 1;
+                args.include_images = config.photo_throttle;
                 viblio.api( 'services/album/get', args ).
                     then( function( json ) {
                         console.log( json );
