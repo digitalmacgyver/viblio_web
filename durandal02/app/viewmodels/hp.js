@@ -57,6 +57,15 @@ define(['durandal/app',
 	customDialogs.showModal( 'viewmodels/firstTimeUploadModal' ); 
     });
     
+    function toggleTopStrip() {
+        if( showFaces() ) {
+            showFaces( false );
+        } else {
+            showFaces( true );
+            coverphoto.handleBackstretch();
+        }
+    }
+    
     function findMatch( find, inArray ) {
         var match = ko.utils.arrayFirst( inArray, function( a ) {
             return a.uuid === find;
@@ -125,6 +134,8 @@ define(['durandal/app',
         yvSection: yvSection,
         
         showFaces: showFaces,
+        
+        toggleTopStrip: toggleTopStrip,
         
         activate: function( args ) {
             
