@@ -9,13 +9,13 @@
       <source data-bind="attr:{src:src}" type='video/mp4' />
     </video>
     <div class="tomatoBG marginT15 marginB20 marginSides10">
-        <div class="button-Wrap" data-bind="visible: !showSuccess()">
-            <button class="btn btn-primary" data-bind="click: addVideo, enable: emailValid()">
-                <i class="fa fa-share"></i> Add this video to your account
-            </button>
-        </div>
         <div class="centeredEl" data-bind="visible: !showSuccess()">
             <input type="email" name="email" class="text email" data-bind="value: email, valueUpdate: 'keyup'" placeholder="Enter your account email address" />
+            <div class="button-Wrap">
+                <button class="btn btn-primary" data-bind="click: addVideo, enable: emailValid()">
+                    <i class="fa fa-share"></i> Add this video to your account
+                </button>
+            </div>
         </div>
         <div class="centeredEl" data-bind="visible: showSuccess()">
             <p>This video has been added to account</p>
