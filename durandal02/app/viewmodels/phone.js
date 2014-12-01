@@ -42,8 +42,8 @@ function(app,system,router,config,viblio,customDialogs,dialog,AddVideoModal) {
 	$("#videojs").css( 'top', '6px' );
 	$(".videocontent").height( $(window).height() );
 
-	$("#m1").width( $(window).width() );
-	$("#m1").height( $(window).height() );
+	/*$("#m1").width( $(window).width() );
+	$("#m1").height( $(window).height() );*/
     }
     
     function getiOSApp() {
@@ -120,12 +120,12 @@ function(app,system,router,config,viblio,customDialogs,dialog,AddVideoModal) {
             oniOS( head.browser.ios ? true : false );
             
 	    player = $("#videojs");
-	    player.on( 'ended', function() {
+	    /*player.on( 'ended', function() {
 		$("#videojs").css( 'display', 'none' );
 		$("#m1").width( $(window).width() );
 		$("#m1").height( $(window).height() );
 		$("#m1").css( 'display', 'block' );
-	    });
+	    });*/
 	    resize();
 	    document.getElementById('videojs').setAttribute('poster', mf.views.poster.url );
 	    $(window).resize( function() {
@@ -135,9 +135,9 @@ function(app,system,router,config,viblio,customDialogs,dialog,AddVideoModal) {
 	    });
 	},
 
-	close: function() {
+	/*close: function() {
 	    $("#m1").css( 'display', 'none' );
 	    $("#videojs").css( 'display', 'inline-block' );
-	}
+	}*/
     };
 });
