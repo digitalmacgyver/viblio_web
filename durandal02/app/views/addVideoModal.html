@@ -1,0 +1,15 @@
+<div id="addVideoModal" class="whiteBG modalBorder addVideoModal modalBody">
+    <div class='modalCloseX btn btn-modalGrey' data-bind="click: closeModal"><img src='css/images/closeX.png'/></div>
+    <div class="padding40 bottomBorder">
+        <h2>Enter the email address for your account</h2>
+        <div class="centeredEl">
+            <label>Enter your email address:</label>
+            <span>
+                <input type="email" name="email" class="text email" data-bind="value: email, valueUpdate: 'keyup'" placeholder="Email address" />
+            </span>
+            <button class="btn btn-primary pull-right" data-bind="click: addVideo, enable: emailValid()">
+                Add video
+            </button>
+        </div>
+    </div>
+</div>

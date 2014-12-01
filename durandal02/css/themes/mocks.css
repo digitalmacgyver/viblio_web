@@ -706,6 +706,10 @@ button.btn.editable-cancel {
 }
 
 /* Make sure that the container the close x is used with has position:relative */
+.modalBody {
+    position: relative;
+}
+
 .closeX {
     color: white;
     padding: 8px 10px 10px;
@@ -912,6 +916,10 @@ input:-moz-placeholder {
     color: rgba(0,0,0,.5);
 }
 
+.tomatoBG {
+    background-color: rgba(239,85,65,1);
+}
+
 .tomatoFont,
 .tomatoFont:hover {
     color: rgba(239,85,65,1);
@@ -967,6 +975,11 @@ input:-moz-placeholder {
 
 .marginB50 {
     margin-bottom: 50px;
+}
+
+.marginSides10 {
+    margin-right: 10px;
+    margin-left: 10px;
 }
 
 .paddingTopBottom5 {
@@ -5728,6 +5741,19 @@ div.fstrip {
 .phone-video-finished .landingHeaderTitle {
     margin: 8px;
     margin-top: 20px;
+}
+
+.phone .input-append .add-on {
+    height: 40px;
+}
+
+.phone input {
+    margin-top: 10px;
+    width: 90%;
+}
+
+.phone .btn-primary {
+    padding: 8px 32px;
 }
 
 @media screen and (orientation:landscape) {
