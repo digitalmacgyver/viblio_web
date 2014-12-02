@@ -999,6 +999,11 @@ input:-moz-placeholder {
     font-size: 24px;
 }
 
+.font30 {
+    font-size: 30px;
+    line-height: 1;
+}
+
 .padding45 {
     padding: 45px;
 }
@@ -6947,7 +6952,7 @@ ul.token-input-list-facebook li input {
     margin-right: 0;
     margin-left: 0;
     border: none;
-    height: 240px;
+    height: 300px;
 }
 
 .tryPhotoFinder-Page .vup-alert {
@@ -6972,6 +6977,10 @@ ul.token-input-list-facebook li input {
 }
 
 /**** landingUplaoder ****/
+
+.tryPhotoFinder-Page .content-Wrap {
+    max-width: 800px;
+}
 
 .landingUploader {
     padding: 0;

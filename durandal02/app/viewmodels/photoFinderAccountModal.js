@@ -23,6 +23,8 @@ function( router, config, viblio, customDialogs, dialog ) {
             cookie: true,
             xfbml: true
         });
+        
+        self.busyFlag = ko.observable( false );
     };
     
     M.prototype.closeModal = function( data ) {
@@ -43,6 +45,7 @@ function( router, config, viblio, customDialogs, dialog ) {
                 body: '<p>We have a new user via the "Try Photo Finder" feature.  The email is: ' + user.email + '</p>'
             })
         }).then( function() {
+            self.busyFlag( false );
             self.closeModal( user );
         });
     };
@@ -113,7 +116,9 @@ function( router, config, viblio, customDialogs, dialog ) {
             msg: msg,
             parent: self
         };
-	return customDialogs.showModal( 'viewmodels/customBlankModal', args );
+	return customDialogs.showModal( 'viewmodels/customBlankModal', args ).then( function() {
+            self.busyFlag( false );
+        });
     };
 
     M.prototype.nativeAuthenticate = function() {
@@ -127,6 +132,8 @@ function( router, config, viblio, customDialogs, dialog ) {
         var args = {
             email: self.email()
         };
+        
+        self.busyFlag( true );
         
         viblio.api( 'services/na/new_user_no_password', args, function(res){
                                                                 self.handleLoginFailure(res);

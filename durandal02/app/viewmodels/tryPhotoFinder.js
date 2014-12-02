@@ -8,7 +8,7 @@ define( ['plugins/router',
 function( router, app, system, config, viblio, dialogs, Uploader ) {
 
     var UL = ko.observable();
-
+    
     return {
         UL: UL,
         
