@@ -3815,6 +3815,13 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     background-color: rgb(49, 53, 67);
 }
 
+.video-tags {
+    position: absolute;
+    bottom: 3px;
+    left: 8px;
+    max-height: 75px;
+}
+
 .mediafile .video-tags span {
     color: rgba(255,255,255,.6);
     background: rgba(255,255,255,.6);

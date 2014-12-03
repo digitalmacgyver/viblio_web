@@ -54,10 +54,8 @@
                     <!-- /ko -->
                 </a>
             </div>
-            <div class="video-tags"
-                style="position: absolute; bottom: 3px; left: 8px;"
-                data-bind="foreach: tags">
-                <span data-bind="text: $data"></span>
+            <div class="video-tags" data-bind="foreach: tags">
+                <span data-bind="text: $root.viblio.unescapeHtml($data)"></span>
             </div>
         </div>
         <!-- ko ifnot: clean_style() -->
