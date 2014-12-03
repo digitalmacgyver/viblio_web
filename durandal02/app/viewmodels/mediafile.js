@@ -137,6 +137,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         self.newTag = ko.observable(null);
         
         self.viewResolved = $.Deferred();
+        
+        self.viblio = viblio;
     };
     
     Video.prototype.toggleFaces = function() {
@@ -223,7 +225,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
             } else {
                 // tag does not exist, so add it
                 viblio.api(' /services/mediafile/add_tag', args).then( function() {
-                    self.tags.push( args.tag );
+                    self.tags.push( viblio.escapeHtml( args.tag ) );
                     self.tagLabels().forEach( function( t ) {
                         t.selected( false );
                     });
