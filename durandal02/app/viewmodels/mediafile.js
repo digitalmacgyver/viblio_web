@@ -2,7 +2,7 @@
   The main mediafile view/model.  Represents a mediafile from the
   server.  Returns an instance factory.
 */
-define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],function(app, Events, viblio, dialogs) {
+define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs', 'durandal/system'],function(app, Events, viblio, dialogs, system) {
 
     // Temporary.  Used to create random numbers to use for
     // number of video views, ratings, etc.  For GUI development
@@ -278,7 +278,12 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 
     // User clicked on delete(), send an event
     Video.prototype.mfdelete = function() {
-	this.trigger( 'mediafile:delete', this );
+        var self = this;
+        // send a deferred so that we can track when all mediafiles have been removed.
+        // This is handy in situations when we need to wait until ALL deletions have been completed as seen in newHome.js
+	return system.defer( function( dfd ) { 
+            self.trigger( 'mediafile:delete', self, dfd );
+        });
     };
 
     Video.prototype.share = function() {
