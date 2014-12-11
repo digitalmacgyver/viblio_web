@@ -620,7 +620,7 @@
             </div>
 
             <div id="allVidsWrap" class="clearfix photoGallery">
-                <div data-bind="if: !video_mode_on()">
+                <div data-bind="visible: !video_mode_on()">
                     <!-- ko foreach: photos -->
                         <!-- ko compose: $data --><!--/ko-->
                     <!-- /ko -->
