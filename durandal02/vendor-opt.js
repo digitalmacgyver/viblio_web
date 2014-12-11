@@ -11,12 +11,12 @@ var compressor = require('node-minify');
 new compressor.minify({
     type: 'no-compress',
     fileIn: [
-	'lib/jquery/jquery-1.9.1.js',
+	'lib/jquery/jquery-1.9.1.min.js',
 	'lib/jquery/jquery.easing.1.3.js',
 	'lib/jquery/jquery-ui-1.10.3.custom.min.js',
 	'lib/knockout/knockout-3.0.0.js',
-	'lib/bootstrap/js/bootstrap.js',
-	'lib/bootstrap/js/bootstrap-editable.js',
+	'lib/bootstrap/js/bootstrap.min.js',
+	'lib/bootstrap/js/bootstrap-editable.min.js',
 	'lib/bootstrap/js/moment.min.js',
 	'lib/flowplayer/flowplayer-3.2.12.min.js',
 	'lib/flowplayer/plugins/flowplayer.ipad-3.2.12.min.js',
@@ -39,8 +39,8 @@ new compressor.minify({
 	'lib/jquery.cookie.js',
 	'lib/jquery.ui.touch-punch.min.js',
 	'lib/fastclick.js',
-        'lib/Magnific-Popup/jquery.magnific-popup.js',
-        'lib/fancybox-2.1.5/jquery.fancybox.js',
+        'lib/Magnific-Popup/jquery.magnific-popup.min.js',
+        'lib/fancybox-2.1.5/jquery.fancybox.pack.js',
         'lib/fancybox-2.1.5/helpers/jquery.fancybox-buttons.js',
         'lib/backstretch.js'
     ],
