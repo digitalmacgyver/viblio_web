@@ -7,15 +7,11 @@ define(['durandal/app',
     function(app,router,viblio,customDialogs,newHome){
         
     var view;
-    var unnamed;
     var albumList = ko.observable();
     var albumListResolved = $.Deferred();
     var albumList_is_visible = false;
-    var top_actors;
     var coverphoto;
-    var unnamed_is_visible = false;
     var firstTime = ko.observable();
-    var yvSection;
     var showPhotos = ko.observable(null);
     
     var nhome = ko.observable();
@@ -34,17 +30,9 @@ define(['durandal/app',
     
     var gotToAlbum = ko.observable( null );
     
-    app.on( 'unnamed:composed', function( obj ) {
-	unnamed = obj;
-    });
-    
     app.on( 'albumList:composed', function( obj ) {
 	albumList(obj);
         albumListResolved.resolve();
-    });
-
-    app.on( 'top-actors:composed', function( obj ) {
-	top_actors = obj; 
     });
     
     app.on( 'coverphoto:composed', function( obj ) {
@@ -109,14 +97,12 @@ define(['durandal/app',
 
 	    //$(view).find( '.top-strip .cont .left' ).animate({ 'margin-right': '340px' });
 	    $(view).find( '.top-strip .cont .left' ).css('margin-right', albumsWidth);
-            $(top_actors).find( ".sd-pscroll").trigger( 'children-changed' );
 	}
 	else {
 	    $(view).find( '.top-strip .right' ).css( 'display', 'none' );
 
 	    $(view).find( '.top-strip .cont' ).css( 'margin-right', '0px' );
 	    $(view).find( '.top-strip .cont .left' ).css( 'margin-right', '0px' );
-            $(top_actors).find( ".sd-pscroll").trigger( 'children-changed' );
 	}
     }
     
@@ -131,7 +117,6 @@ define(['durandal/app',
     return{
         nhome: nhome,
         albumList: albumList,
-        yvSection: yvSection,
         
         showFaces: showFaces,
         
@@ -206,12 +191,6 @@ define(['durandal/app',
                     viblio.localStorage( 'hasUserBeenHereBefore', true );
                 }
             });
-            
-            this.yvSection = { model:'viewmodels/your-videos' };
-            if ( args && args.last_selected ) {
-                this.yvSection = { model:'viewmodels/your-videos', activationData: args };
-            }
-
         },
         
 	compositionComplete: function( _view ) {
