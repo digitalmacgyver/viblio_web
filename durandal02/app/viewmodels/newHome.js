@@ -585,6 +585,7 @@ define( ['plugins/router',
         }
         
 	return system.defer( function( dfd ) {
+            var photosArr = [];
 	    if ( self.thePager().next_page )   {
                 args.page = self.thePager().next_page;
                 args.rows = self.thePager().entries_per_page;
@@ -602,17 +603,21 @@ define( ['plugins/router',
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
-                                self.some_more_all( mf, mf.views.image );
+                                photosArr.push({
+                                    mf: mf,
+                                    images: mf.views.image 
+                                });
+                                //self.some_more_all( mf, mf.views.image );
                             }
                         });
                         self.videos.valueHasMutated();
-			dfd.resolve();
+			dfd.resolve( photosArr );
 		    });
 	    }
 	    else {
 		dfd.resolve();
 	    }
-	}).promise().then(function(){
+	}).promise().then(function( photosArr ){
             // reset active filters
             if( type && type != "all" ) {
                 self.resetOtherFilters( type );
@@ -635,6 +640,11 @@ define( ['plugins/router',
             } else {
                 self.isActiveFlag(false);
             }
+            
+            // handle the photos now
+            photosArr.forEach( function( set ) {
+                self.some_more_all( set.mf, set.images );
+            });
             
             // tickle the photos filter
             var old = self.photoViewFilter();
