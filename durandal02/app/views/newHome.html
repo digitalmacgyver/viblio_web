@@ -5,7 +5,7 @@
             <ul class='navbar-left nav'>
                 <li class="divider-vertical"></li>
                 <li style="display: inline-block;" class="dropdown navControl">
-                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: recentUploadsIsActive() || allVidsIsSelected() }, disable: isActiveFlag()">
+                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: activeFilterType() == 'recent' || activeFilterType() == 'all' }, disable: isActiveFlag()">
                         <i class='fa fa-th'></i>
                         <span data-bind="visible: wideScreen()"> Library</span>
                         <i class="fa fa-chevron-down"></i>
@@ -15,7 +15,7 @@
                           <div class="scroller">
                               <div class="wrapper">
                                    <ul class="tags-inner">
-                                        <li data-bind='click: getRecentVids'>
+                                        <li data-bind='click: function(){ getRecentVids(true); }'>
                                             <a class="checkboxedLi">
                                                 <i class='fa fa-clock-o'></i>
                                                 <span> Recent</span>                                        
@@ -37,7 +37,7 @@
                 
                 <!-- albums filter -->
                 <!--<li class="dropdown navControl albumsList">
-                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: albumFilterIsActive() }, click: function(){ showMessage( 'albums' ); }, disable: isActiveFlag()" title="Filter by Albums"><i class="fa fa-picture"></i><span data-bind="visible: wideScreen()"> Albums</span></button>
+                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: activeFilterType() == 'album' }, click: function(){ showMessage( 'albums' ); }, disable: isActiveFlag()" title="Filter by Albums"><i class="fa fa-picture"></i><span data-bind="visible: wideScreen()"> Albums</span></button>
                     <ul class="style2DD dropdown-menu tags albumList" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -70,7 +70,7 @@
                 
                 <!-- people filter -->
                 <li style="display: inline-block;" class="dropdown navControl">
-                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: faceFilterIsActive() }, click: function(){ showMessage( 'people' ); }, disable: isActiveFlag()" title="Filter by People"><i class="fa fa-user"></i><span data-bind="visible: wideScreen()"> People</span></button>
+                    <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: activeFilterType() == 'faces' }, click: function(){ showMessage( 'people' ); }, disable: isActiveFlag()" title="Filter by People"><i class="fa fa-user"></i><span data-bind="visible: wideScreen()"> People</span></button>
                     <ul class="style2DD dropdown-menu tags" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -103,7 +103,7 @@
 
                 <!-- places filter -->
                 <li style="display: inline-block;" class="dropdown navControl">
-                    <button class="dropdown-toggle toolbar-btn" data-toggle="dropdown" data-bind="css: { active: cityFilterIsActive }, click: function(){ showMessage( 'places' ); }, disable: isActiveFlag()" title="Filter by Places"><i class="fa fa-map-marker"></i><span data-bind="visible: wideScreen()"> Places</span></button>
+                    <button class="dropdown-toggle toolbar-btn" data-toggle="dropdown" data-bind="css: { active: activeFilterType() == 'cities' }, click: function(){ showMessage( 'places' ); }, disable: isActiveFlag()" title="Filter by Places"><i class="fa fa-map-marker"></i><span data-bind="visible: wideScreen()"> Places</span></button>
                     <ul class="style2DD dropdown-menu tags" role="menu">
                       <li class="tagsScrollWrapper">
                           <div class="scroller">
@@ -140,7 +140,7 @@
                         <div class="input-append">
                             <input type="text" class="search-query" placeholder="Search by title or tag" data-bind="value: searchQuery">
                             <button type="submit" class="btn btn-white" data-bind="click: newVidsSearch, disable: isActiveFlag()"><i class="fa fa-search"></i></button>
-                            <!-- ko if: searchFilterIsActive() -->
+                            <!-- ko if: activeFilterType() == 'search' -->
                             <button class="btn btn-secondary" data-bind="click: showAllVideos, tooltip: {title:'Clear search', placement : 'bottom'}"><i class="fa fa-times"></i></button>
                             <!-- /ko -->
                         </div>
@@ -228,7 +228,7 @@
                                             </a>
                                         </li>    
                                   </ul>
-                                  <ul class="tags-inner" data-bind="visible: !albumFilterIsActive() && video_mode_on()">
+                                  <ul class="tags-inner" data-bind="visible: activeFilterType() != 'album' && video_mode_on()">
                                         <li>
                                             <a href='#' data-bind='click: delete_mode'>
                                                 <div class="btn_text">
@@ -238,7 +238,7 @@
                                             </a>
                                         </li>    
                                   </ul>
-                                   <ul class="tags-inner" data-bind="visible: albumFilterIsActive() && video_mode_on()">
+                                   <ul class="tags-inner" data-bind="visible: activeFilterType() == 'album' && video_mode_on()">
                                         <li>
                                             <a href='#' data-bind='click: delete_mode'>
                                                 <div class="btn_text">
@@ -276,11 +276,11 @@
                     <!-- videos mode -->
                     <span class="vidsSelectedLabel" data-bind="if: video_mode_on()">
                         <span class="selectedNum" data-bind="text: selectedVideos().length"></span> <span data-bind="text: selectedVideos().length == 1 ? 'video' : 'videos' "></span> selected to be  
-                        <!-- ko if: delete_mode_on() && !albumFilterIsActive() -->
+                        <!-- ko if: delete_mode_on() && activeFilterType() != 'album' -->
                         <span>deleted from your account</span>
                         <!-- /ko -->
                         
-                        <!-- ko if: delete_mode_on() && albumFilterIsActive() -->
+                        <!-- ko if: delete_mode_on() && activeFilterType() == 'album' -->
                         <span>removed from this album</span>
                         <!-- /ko -->
                         
@@ -348,10 +348,10 @@
                                 <!-- /ko -->
                                 
                                 <!-- ko if: video_mode_on() -->
-                                    <!-- ko if: albumFilterIsActive() -->
+                                    <!-- ko if: activeFilterType() == 'album' -->
                                     <span>Remove from Album</span>
                                     <!-- /ko -->
-                                    <!-- ko ifnot: albumFilterIsActive() -->
+                                    <!-- ko ifnot: activeFilterType() == 'album' -->
                                     <span>Delete Videos</span>
                                     <!-- /ko -->
                                 <!-- /ko -->
@@ -385,15 +385,15 @@
     </div> <!-- end select-nav -->
     
     <div class="table titleTable">
-        <!-- ko if: isActiveFlag() -->
+        <!-- ko if: performingNewSearch() -->
         <div class="title-block"></div>
         <!-- /ko -->
         
-        <!-- ko if: !isActiveFlag() -->
+        <!-- ko if: !performingNewSearch() -->
 
         <div class="clearfix newHomeTitle-Wrap">
             <!-- ko ifnot: add_to_mode_on() || delete_mode_on()-->
-            <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: noFiltersAreActive() && !searchFilterIsActive()">
+            <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: activeFilterType() == 'all'">
                 <!-- ko if: !video_mode_on() -->
                 <div class="btn-group photoViewFilter" data-toggle="buttons">
                     <span class='meterLabel some'>Less</span>
@@ -428,7 +428,7 @@
                 <!-- /ko -->
             </div>
 
-            <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: !isActiveFlag() && !noFiltersAreActive() || searchFilterIsActive()">
+            <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: !performingNewSearch() && activeFilterType() != 'all' || activeFilterType() == 'search'">
                 <!-- ko if: !video_mode_on() -->
                 <div class="btn-group photoViewFilter" data-toggle="buttons">
                     <span class='meterLabel some'>Less</span>
@@ -450,7 +450,7 @@
                     <span class='meterLabel more'>More</span>
                 </div>
                 <!-- /ko -->
-                <!-- ko if: !albumFilterIsActive() -->
+                <!-- ko if: activeFilterType() != 'album' -->
                 <p class="mainTitleP">
                     <!--You have
                     <span data-bind="text: hits"></span>
@@ -464,7 +464,7 @@
                     <!-- ko ifnot: active_filter_label() == 'Recent' -->
                     <span data-bind="text: active_filter_label() ? active_filter_label().toUpperCase() : '' "></span> Filter (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
                     <!-- /ko -->
-                    <!-- ko if: faceFilterIsActive() -->
+                    <!-- ko if: activeFilterType() == 'faces' -->
                      <img class="selectedFace img-circle" data-bind="attr: {src: selectedFace().url}">
                     <!-- /ko -->
                 </p>
@@ -478,7 +478,7 @@
                 
                 <!-- /ko -->
                 
-                <!-- ko if: albumFilterIsActive() -->
+                <!-- ko if: activeFilterType() == 'album' -->
                     <!-- album is owned by the user -->
                     <!-- ko ifnot: currentSelectedFilterAlbum().shared -->
                         <!-- ko if: albumIsShared() -->
@@ -513,7 +513,7 @@
                                                          event: { blur: function() { currentAlbumTitle.stopEditing(); currentAlbumTitle.save( null, this, 'album:name_changed' ); } }" />
                                 </div>  
                             </div> Album (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
-                            <!-- ko if: videos().length == 0 -->
+                            <!-- ko if: hits() < 1 -->
                             <div class="btn btn-primary" data-bind="click: add_videos_to_empty_album">Add videos to this empty album</div>
                             <!-- /ko -->
                         </div>
@@ -534,7 +534,7 @@
                         in the "<span data-bind="text: selectedFilterAlbum"></span>" album &mdash;-->
                         <span data-bind="text: selectedFilterAlbum().toUpperCase()"></span> Album (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>) &mdash;
                         <span class="subtitle">by <span data-bind="text: currentAlbum().owner.displayname"></span> <img class="img-circle" data-bind="attr: {src: '/services/user/avatar?uid=' + currentAlbum().owner.uuid + '&y=30'}, tooltip: {title: 'Album by ' + currentAlbum().owner.displayname, placement: 'bottom'}"></span>.
-                        <!-- ko if: videos().length == 0 -->
+                        <!-- ko if: hits() < 1 -->
                         <div class="btn btn-primary" data-bind="click: add_videos_to_empty_album">Add videos to this empty album</div>
                         <!-- /ko -->
                     </div>
@@ -566,10 +566,10 @@
                         <!-- /ko -->
                     <!-- /ko -->
                     <!-- ko if: delete_mode_on() -->
-                        <!-- ko if: albumFilterIsActive() -->
+                        <!-- ko if: activeFilterType() == 'album' -->
                         <span>remove from this album.</span>
                         <!-- /ko -->
-                        <!-- ko ifnot: albumFilterIsActive() -->
+                        <!-- ko ifnot: activeFilterType() == 'album' -->
                         <span>delete from your account.</span>
                         <!-- /ko -->
                     <!-- /ko -->        
@@ -578,9 +578,9 @@
             
         </div>
 
-        <!-- /ko --> <!-- End if: !isActiveFlag() -->
+        <!-- /ko --> <!-- End if: !performingNewSearch() -->
 
-        <div data-bind="if: searchFilterIsActive() && hits() < 1 && !isActiveFlag()">
+        <div data-bind="if: activeFilterType() == 'search' && hits() < 1 && !performingNewSearch()">
             <p class="font24 tomatoFont doubleSpaced centered">
               Bummer, I can’t find a video that matches this search.
             </p>
@@ -589,9 +589,18 @@
     </div>
     
     <div class="containerxx">
+        <div class="pagination pagination-centered">
+            <ul>
+                <li data-bind="css: { disabled: !thePager().previous_page }"><a href="#" data-bind="click: function(){ filterVidsSearchPage( thePager().previous_page ); }">&laquo; Prev</a></li>
+                <!-- ko foreach: pager_pages -->
+                <li data-bind="css: { active: $root.thePager().current_page == $data.page_number }"><a href="#" data-bind="text: $data.page_number, click: function(){ $root.filterVidsSearchPage( $data.page_number ); }"></a></li>
+                <!-- /ko -->
+                <li data-bind="css: { disabled: !thePager().next_page }"><a href="#" data-bind="click: function(){ filterVidsSearchPage( thePager().next_page ); }">Next &raquo;</a></li>
+            </ul>
+        </div>
         <div class="table allVidsInner clearfix">    
 
-            <div class="dates" data-bind="visible: !searchFilterIsActive() && video_mode_on()">
+            <div class="dates" data-bind="visible: activeFilterType() != 'search' && video_mode_on()">
                 <div class="scroller">
                     <div class="wrapper textShadowed">
                         <!-- ko foreach: datesLabels -->

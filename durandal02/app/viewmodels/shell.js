@@ -4,7 +4,6 @@ define(['plugins/router',
         'viewmodels/header',
         'viewmodels/landing_header',
         'viewmodels/conditional_header',
-        'viewmodels/ks_landing_header',
         'lib/viblio',
         'lib/customDialogs',
         'viewmodels/emailtest',
@@ -12,7 +11,7 @@ define(['plugins/router',
         'viewmodels/footer',
         'facebook'], 
     
-function (router, app, system, page_header, landing_header, conditional_header, ks_landing_header, viblio, customDialogs,emailtest,config,footer) {
+function (router, app, system, page_header, landing_header, conditional_header, viblio, customDialogs,emailtest,config,footer) {
 
     var header = ko.observable( );
     var location = ko.observable();
@@ -143,8 +142,8 @@ function (router, app, system, page_header, landing_header, conditional_header, 
             { route: 'oops',               moduleId: 'oops',               title: 'Oops',
 	      showFooter: true, nav: false,    authenticated: false,   header: page_header },
 
-            { route: 'videosof',           moduleId: 'videosof',           title: 'Videos Starring',
-	      showFooter: true, nav: false,    authenticated: true,   header: page_header },
+            /*{ route: 'videosof',           moduleId: 'videosof',           title: 'Videos Starring',
+	      showFooter: true, nav: false,    authenticated: true,   header: page_header },*/
 
             { route: 'login',              moduleId: 'login',              title: 'Log in to your Viblio account',
 	      showFooter: ( small_screen ? false : true ), nav: false,   authenticated: false,  header: ( small_screen ? null : landing_header ) },
@@ -153,8 +152,8 @@ function (router, app, system, page_header, landing_header, conditional_header, 
             { route: 'signup',              moduleId: 'signup',              title: 'Sign up for a Viblio account',
 	      showFooter: ( small_screen ? false : true ), nav: false,   authenticated: false,  header: ( small_screen ? null : landing_header ) },
           
-            { route: 'ks_signup',              moduleId: 'ks_signup',              title: 'Sign up for a Viblio account',
-	      showFooter: ( small_screen ? false : true ), nav: false,   authenticated: false,  header: ( small_screen ? null : landing_header ) },
+            /*{ route: 'ks_signup',              moduleId: 'ks_signup',              title: 'Sign up for a Viblio account',
+	      showFooter: ( small_screen ? false : true ), nav: false,   authenticated: false,  header: ( small_screen ? null : landing_header ) },*/
 
             { route: 'confirmed',          moduleId: 'confirmed',          title: 'Account Confirmation',
 	      showFooter: true, nav: false,   authenticated: false,  header: landing_header },
@@ -165,14 +164,14 @@ function (router, app, system, page_header, landing_header, conditional_header, 
             { route: 'upload',             moduleId: 'nginx',              title: 'UPLOAD',
 	      showFooter: true, nav: false,    authenticated: true,   header: page_header },
           
-            { route: 'albums',             moduleId: 'albums',             title: 'ALBUMS',
+            /*{ route: 'albums',             moduleId: 'albums',             title: 'ALBUMS',
 	      showFooter: true, nav: false,   authenticated: true,   header: page_header },
           
             { route: 'viewAlbum',          moduleId: 'viewAlbum',          title: 'Album View',
 	      showFooter: true, nav: false,   authenticated: true,   header: page_header },
 	    
             { route: 'videos',             moduleId: 'your-videos',          title: 'VIDEOS',
-	      showFooter: true, nav: false,   authenticated: true,   header: page_header },
+	      showFooter: true, nav: false,   authenticated: true,   header: page_header },*/
 	    
             { route: 'people',             moduleId: 'people',             title: 'FACES',
 	      showFooter: true, nav: true,    authenticated: true,   header: page_header },
@@ -217,11 +216,11 @@ function (router, app, system, page_header, landing_header, conditional_header, 
             { route: 'map',        moduleId: 'map',     title: 'MAP',
 	      showFooter: true, nav: false,   authenticated: true,   header: page_header },
           
-            { route: 'tutorial',        moduleId: 'tutorial',     title: 'Tray App Tutorial',
+            /*{ route: 'tutorial',        moduleId: 'tutorial',     title: 'Tray App Tutorial',
 	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
           
             { route: 'help',        moduleId: 'help',     title: 'Viblio help',
-	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
+	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },*/
           
             { route: 'whoWeAre',   moduleId: 'whoWeAre',     title: 'Who We Are',
 	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
@@ -229,11 +228,11 @@ function (router, app, system, page_header, landing_header, conditional_header, 
             { route: 'about',   moduleId: 'whatWhoHow',     title: 'What and How',
 	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
           
-            { route: 'ksLanding',        moduleId: 'ksLanding',     title: 'Thanks for supporting VIBLIO',
+            /*{ route: 'ksLanding',        moduleId: 'ksLanding',     title: 'Thanks for supporting VIBLIO',
 	      showFooter: true, nav: false,   authenticated: false,   header: ks_landing_header },
           
             { route: 'ksVoting',        moduleId: 'ksVoting',     title: 'VIBLIO Activity Vote',
-	      showFooter: true, nav: false,   authenticated: false,   header: ks_landing_header },
+	      showFooter: true, nav: false,   authenticated: false,   header: ks_landing_header },*/
           
             { route: 'proVidsLanding',   moduleId: 'proVidsLanding',     title: 'Professional Video Summary',
 	      showFooter: true, nav: false,   authenticated: false,   header: conditional_header },
