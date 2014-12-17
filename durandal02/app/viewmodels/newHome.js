@@ -829,17 +829,44 @@ define( ['plugins/router',
             
         if( exception == "dates" ) {
             self.selectedFace('');
+            self.facesLabels().forEach( function( f ) {
+                f.selected( false );
+            });
             self.selectedCity('');
+            self.citiesLabels().forEach( function( c ) {
+                c.selected( false );
+            });
         } else if ( exception == "faces" ) {
             self.selectedMonth('');
+            self.datesLabels().forEach( function( m ) {
+                m.selected( false );
+            });
             self.selectedCity('');
+            self.citiesLabels().forEach( function( c ) {
+                c.selected( false );
+            });
         } else if ( exception == "cities" ) {
             self.selectedMonth('');
+            self.datesLabels().forEach( function( m ) {
+                m.selected( false );
+            });
             self.selectedFace('');
-        } else if ( exception == "search" || exception == "recent" || exception == "all" || exception == "album" ) {
+            self.facesLabels().forEach( function( f ) {
+                f.selected( false );
+            });
+        } else if ( !exception || exception == "search" || exception == "recent" || exception == "all" || exception == "album" ) {
             self.selectedMonth('');
+            self.datesLabels().forEach( function( m ) {
+                m.selected( false );
+            });
             self.selectedFace('');
+            self.facesLabels().forEach( function( f ) {
+                f.selected( false );
+            });
             self.selectedCity('');
+            self.citiesLabels().forEach( function( c ) {
+                c.selected( false );
+            });
         }
     };
     
