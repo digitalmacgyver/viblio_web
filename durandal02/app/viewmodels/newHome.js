@@ -249,6 +249,13 @@ define( ['plugins/router',
         self.video_mode_on = ko.observable( true );
         self.video_mode_on.subscribe( function( val ) {
             var old = self.photoViewFilter();
+            
+            // photo view
+            if( !val ) {
+                self.getPhotos();
+                self.photos.valueHasMutated();
+            }
+            
             self.photoViewFilter(null);
             self.photoViewFilter( old );
         });
@@ -264,6 +271,7 @@ define( ['plugins/router',
                         p.hideIt();
                     } else {
                         p.showIt();
+                        p.hasBeenShown( true );
                         self.visiblePhotosCount( self.visiblePhotosCount()+1 );
                     }
                 });
@@ -273,16 +281,20 @@ define( ['plugins/router',
                         p.hideIt();
                     } else {
                         p.showIt();
+                        p.hasBeenShown( true );
                         self.visiblePhotosCount( self.visiblePhotosCount()+1 );
                     }
                 });
-            } else {
+            } else if ( val == "all" ) {
                 self.photos().forEach( function( p ) {
                     p.showIt();
+                    p.hasBeenShown( true );
                     self.visiblePhotosCount( self.visiblePhotosCount()+1 );
                 });
             }
         });
+        
+        self.rawPhotos = ko.observableArray([]);
         
         self.performingNewSearch = ko.observable(true);
                 
@@ -301,10 +313,16 @@ define( ['plugins/router',
         });
     };
     
-    newHome.prototype.toggleVideoPhotoMode = function() {
+    newHome.prototype.toggleVideoMode = function() {
         var self = this;
         
-        self.video_mode_on() ? self.video_mode_on(false) : self.video_mode_on(true);
+        self.video_mode_on(true);
+    };
+    
+    newHome.prototype.togglePhotoMode = function() {
+        var self = this;
+        
+        self.video_mode_on(false);
     };
     
     newHome.prototype.getVidsInProcess = function() {
@@ -341,6 +359,70 @@ define( ['plugins/router',
         }
     };
     
+    // this actually creates the photo instance for each photo and pushes it to the photos array
+    /*newHome.prototype.getPhotos = function() {
+        var self = this;
+        
+        console.log( 'getPhotos fired', self.rawPhotos(), self.photos() );
+        
+        var arr = [];
+        //if( self.photos().length == 0 ) {
+            self.rawPhotos().forEach( function( set ) {
+                set.arr.forEach( function( p ) {
+                    arr.push( self.addPhoto( p, self.mfOwnedByViewer( set.mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: set.mf.owner_uuid } ) );
+                });
+            });
+            self.photos( arr );
+        //}
+    };*/
+    
+    newHome.prototype.getPhotos = function() {
+        var self = this;
+        
+        var defs = [];
+        var arr = [];
+        var args, newArr;
+        
+        if( self.photos().length != 0 ) {
+            return;
+        }
+        
+        self.rawPhotos().forEach( function( set ) {
+            defs.push( self.some_more_all( set.mf, set.images ) );
+        });
+        $.when.apply($, defs).done(function( res ) {
+            args = Array.prototype.slice.call(arguments, 0);
+            newArr = args.sort();
+            
+            newArr.forEach( function( set ) {
+                set.arr.forEach( function( p ) {
+                    arr.push( self.addPhoto( p, self.mfOwnedByViewer( set.mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: set.mf.owner_uuid } ) );
+                });
+            });
+            
+            self.photos( arr );
+        });
+    };
+    
+    // this is used to apply a filter type to each photo - one of 'some', 'more' or 'all'
+    /*newHome.prototype.handlePhotos = function( arr ) {
+        var self = this;
+        // clear out the current list of non 'some' photos
+        self.rawPhotos.removeAll();
+        var defs = [];
+        
+        arr.forEach( function( set ) {
+            defs.push( self.some_more_all( set.mf, set.images ) );
+        });
+        
+        $.when.apply($, defs).done(function () {
+            if( !self.video_mode_on() ) {
+                self.getPhotos();
+                self.photos.valueHasMutated();
+            }
+        });
+    };*/
+    
     newHome.prototype.some_more_all = function( mf, images ) {
         var self = this;
         
@@ -354,54 +436,72 @@ define( ['plugins/router',
         var some_count = 0;
         
         var results = [];
-        
-        for (var image in images) {
-            if( !images[image] ) {
-                return;
-            }
-            var timecode = images[image].timecode;
-            var face_score = images[image].face_score;
+        return system.defer( function( dfd ) { 
+            for (var image in images) {
+                if( !images[image] ) {
+                    return;
+                }
+                var timecode = images[image].timecode;
+                var face_score = images[image].face_score;
 
-            //Update the best image we've seen so far for this video.
-            if ( face_score > best_image_score ) {
-                best_image = images[image];
-                best_image_score = face_score;
-            }
-            
-            if( results.indexOf( images[image] ) < 0 ) {
-                if ( face_score >= face_threshold && ( timecode - prior_timecode ) > gap_threshold ) {
-                    //This image is in "some"
-                    images[image].filter = "some";
-                    results.push( images[image] );
-                    some_count++;
-                } else if ( ( timecode - prior_timecode ) > gap_threshold || ( ( face_score >= face_threshold ) && ( timecode - prior_timecode ) > face_gap_threshold ) ) {
-                    //This image is in "more"
-                    images[image].filter = "more";
-                    results.push( images[image] );
-                } else {
-                    //Otherwise, this image belongs to "all"
-                    images[image].filter = "all";
-                    results.push( images[image] );
+                //Update the best image we've seen so far for this video.
+                if ( face_score > best_image_score ) {
+                    best_image = images[image];
+                    best_image_score = face_score;
                 }
 
-                prior_timecode = timecode;   
-            } 
-        }
-        
-        // check to see if there are any "some" photos yet, if not then apply the "some" filter
-        // to the best image for the video
-        if( some_count == 0 ) {
-            // first remove the image from the results array
-            results.splice( results.indexOf( best_image ), 1 );
-            // then re-add it with a filter of "some"
-            best_image.filter = "some";
-            results.push( best_image );
-        }
-        
-        results.forEach( function( p ) {
-            self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } ); 
+                if( results.indexOf( images[image] ) < 0 ) {
+                    if ( face_score >= face_threshold && ( timecode - prior_timecode ) > gap_threshold ) {
+                        //This image is in "some"
+                        images[image].filter = "some";
+                        results.push( images[image] );
+                        some_count++;
+                    } else if ( ( timecode - prior_timecode ) > gap_threshold || ( ( face_score >= face_threshold ) && ( timecode - prior_timecode ) > face_gap_threshold ) ) {
+                        //This image is in "more"
+                        images[image].filter = "more";
+                        results.push( images[image] );
+                    } else {
+                        //Otherwise, this image belongs to "all"
+                        images[image].filter = "all";
+                        results.push( images[image] );
+                    }
+
+                    prior_timecode = timecode;   
+                } 
+            }
+
+            // check to see if there are any "some" photos yet, if not then apply the "some" filter
+            // to the best image for the video
+            if( some_count == 0 ) {
+                // first remove the image from the results array
+                results.splice( results.indexOf( best_image ), 1 );
+                // then re-add it with a filter of "some"
+                best_image.filter = "some";
+                results.push( best_image );
+            }
+
+            /*results.forEach( function( p ) {
+                self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
+            });
+            self.photos.valueHasMutated();*/
+            /*var others = [];
+            results.forEach( function( p ) {
+                if( p.filter == 'some' ) {
+                    //self.somePhotos().push( p );
+                    self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
+                }
+                others.push( p );
+            });
+            self.photos.valueHasMutated();*/
+
+            var set = {
+                mf: mf,
+                arr: results
+            };
+
+            //self.rawPhotos.push( set );
+            dfd.resolve( set );
         });
-        self.photos.valueHasMutated();
     };
     
     newHome.prototype.monthSelected = function( self, month ) {
@@ -487,7 +587,7 @@ define( ['plugins/router',
             return;
         } else {          
             self.videos.removeAll();
-            self.photos.removeAll();
+            //self.photos.removeAll();
             self.currentSearch = self.searchQuery();
             self.activeFilterType('search');
             args = {
@@ -567,7 +667,7 @@ define( ['plugins/router',
             
             // remove all videos and images
             self.videos.removeAll();
-            self.photos.removeAll();
+            //self.photos.removeAll();
             // reset pager
             self.thePager({
                 next_page: 1,
@@ -577,6 +677,7 @@ define( ['plugins/router',
         }
         
 	return system.defer( function( dfd ) {
+            var photosArr = [];
             args.page = args.page ? args.page : 1;
             args.rows = self.thePager().entries_per_page;
             args.include_tags = 1;
@@ -594,13 +695,17 @@ define( ['plugins/router',
                             json.album.media.forEach( function( mf ) {
                                 self.addAlbumMediaFile ( mf );
                                 if( mf.views.image ) {
-                                    self.some_more_all( mf, mf.views.image );
+                                    photosArr.push({
+                                        mf: mf,
+                                        images: mf.views.image 
+                                    });
+                                    //self.some_more_all( mf, mf.views.image );
                                 }
                             });
                             self.videos.valueHasMutated();
-                            dfd.resolve( 'album' );
+                            dfd.resolve( 'album', photosArr );
                         } else {
-                            dfd.resolve( 'album' );
+                            dfd.resolve( 'album', photosArr );
                         } 
                     } else {
                         if(json.albums){
@@ -609,55 +714,19 @@ define( ['plugins/router',
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
-                                self.some_more_all( mf, mf.views.image );
+                                photosArr.push({
+                                    mf: mf,
+                                    images: mf.views.image 
+                                });
+                                //self.some_more_all( mf, mf.views.image );
                             }
                         });
                         self.videos.valueHasMutated();
-                        dfd.resolve( 'other' );
+                        dfd.resolve( 'other', photosArr );
                     }
                 });
 	}).promise()
-        /*.then( function( res ){
-            console.log( res );
-            if( res == 'album' ) {
-                
-            } else {
-                // reset active filters
-                /*if( type && type != "all" ) {
-                    self.resetOtherFilters( type );
-                }*/
-
-                // this section handles the cover photos section - if the type is not all then show a slideshow
-                /*if( type && type != "all" ) {
-                    app.trigger( 'newHome:filtersAreActive', media );
-                }
-
-                // this section handles the cover avatar section - calling it here gets the timing correct when exiting from an album
-                if( !type || ( type && type != "faces" ) ) {
-                    app.trigger( 'selectedFace:notactive' );
-                }
-
-                if( self.videos().length > 0 ) {
-                    $.when( self.videos()[self.videos().length-1].viewResolved ).then( function() {
-                        self.isActiveFlag(false);
-                    });
-                } else {
-                    self.isActiveFlag(false);
-                }
-
-                // tickle the photos filter
-                var old = self.photoViewFilter();
-                self.photoViewFilter(null);
-                self.photoViewFilter( old );
-
-                if( type == "all" ) {
-                    setTimeout(function(){
-                        self.setTitleMargin();
-                    }, 300);    
-                }
-            }
-        })*/
-        .done(function( res ){
+        .done(function( res, photosArr ){
             console.log( res );
             // album searches
             if( res == 'album' ) {
@@ -679,15 +748,46 @@ define( ['plugins/router',
             self.resetOtherFilters( type );
             
             if( self.videos().length > 0 ) {
+                self.performingNewSearch( false );
                 $.when( self.videos()[self.videos().length-1].viewResolved ).then( function() {
                     self.isActiveFlag(false);
-                    self.performingNewSearch( false );
                 });
             } else {
                 self.isActiveFlag(false);
                 self.performingNewSearch( false );
             }
-
+            
+            // handle the photos now
+            //self.handlePhotos( photosArr );
+            //self.rawPhotos.removeAll();
+            self.rawPhotos( photosArr );
+            if( !self.video_mode_on() ) {
+                self.getPhotos();
+            }
+            
+            /*var defs = [];
+            
+            // todo - I'm trying to never deal with an empty array to see if that fixes the cannot read property... error
+            // I was trying to just replace the contents of the rawPhotos array here and in another
+            // part of the code I am trying to do the same idea with the photos array.
+            // So far this has not worked and the error still occurs
+            photosArr.forEach( function( set ) {
+                defs.push( self.some_more_all( set.mf, set.images ) );
+            });
+            $.when.apply($, defs).done(function( res ) {
+                console.log( res );
+                console.log( defs );
+                var objects = arguments;
+                console.log( objects );
+                var args = Array.prototype.slice.call(objects, 0);
+                // 
+                self.rawPhotos( args.sort() );
+                if( !self.video_mode_on() ) {
+                    self.getPhotos();
+                    self.photos.valueHasMutated();
+                }
+            });*/
+            
             // tickle the photos filter
             var old = self.photoViewFilter();
             self.photoViewFilter(null);
@@ -768,6 +868,12 @@ define( ['plugins/router',
     
     newHome.prototype.filterVidsSearchPage = function( page, skipPageCheck ) {
         var self = this;
+        
+        // this will dismiss any requests if the current fetch is not finished yet
+        if( self.isActiveFlag() ) {
+            return;
+        }
+        
         var args = {
             page: page
         }
@@ -836,7 +942,7 @@ define( ['plugins/router',
         
         self.searchQuery(null);
         self.videos.removeAll();
-        self.photos.removeAll();
+        //self.photos.removeAll();
         
         if( andFilter ) {
             self.clearfilters();
@@ -1189,8 +1295,8 @@ define( ['plugins/router',
         });
 
         // Add it to the list - push directly into the underlying array, not the observable
-        var innerArray = self.photos()
-	innerArray.push( p );
+        /*var innerArray = self.photos()
+	innerArray.push( p );*/
         
         // If select all mode is on when new photos are added then add them to the selected array too - only if owned by viewer
         if( self.select_all_mode_is_on() && self.select_mode_on() ) {
@@ -1221,7 +1327,9 @@ define( ['plugins/router',
                     }
                 }    
             }
-        } 
+        }
+        
+        return p;
     };
     
     newHome.prototype.mfOwnedByViewer = function( mf ) {

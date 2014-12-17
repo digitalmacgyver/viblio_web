@@ -174,9 +174,9 @@
                     <span class="videoPhotoLabel" data-bind="css: {active: video_mode_on()}">Video</span>-->
                     
                     <p class="field switch">
-                        <label class="cb-disable" data-bind="click: function(){ video_mode_on(true) }, css: {selected: video_mode_on()}"><span>Videos</span></label>
-                        <label class="cb-enable" data-bind="click: function(){ video_mode_on(false) }, css: {selected: !video_mode_on()}"><span>Photos</span></label>
-                        <input type="checkbox" id="checkbox" class="checkbox" name="field2" data-bind="checked: video_mode_on, disable: isActiveFlag()" />
+                        <label class="cb-disable" data-bind="click: toggleVideoMode, css: {selected: video_mode_on()}"><span>Videos</span></label>
+                        <label class="cb-enable" data-bind="click: togglePhotoMode, css: {selected: !video_mode_on()}"><span>Photos</span></label>
+                        <input type="checkbox" id="checkbox" class="checkbox" name="field2" data-bind="checked: video_mode_on" />
                     </p>
                 </li>
                 <li class="divider-vertical"></li>
@@ -620,15 +620,11 @@
             </div>
 
             <div id="allVidsWrap" class="clearfix photoGallery">
-                <div data-bind="visible: !video_mode_on()">
-                    <!-- ko foreach: photos -->
-                        <!-- ko compose: $data --><!--/ko-->
-                    <!-- /ko -->
+                <div id='photosContainer' data-bind="visible: !video_mode_on(), foreach: photos">
+                    <div data-bind="compose: $data"></div>
                 </div>
-                <div data-bind="visible: video_mode_on()">
-                    <!-- ko foreach: videos -->
-                        <!-- ko compose: $data --><!--/ko-->
-                    <!-- /ko -->
+                <div data-bind="visible: video_mode_on(), foreach: videos">
+                    <div data-bind="compose: $data"></div>
                 </div>
                 <!-- ko if: isActiveFlag() -->
                 <div class="mfLoader">
