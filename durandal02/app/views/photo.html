@@ -14,7 +14,7 @@
             </a>   
             <div class='pointer' data-bind="click:play">
                 <a data-bind="attr:{href:image}">
-                    <img data-bind="attr:{src:image}" />
+                    <img data-bind="attr: {src: !hidden() ? image : ( hasBeenShown() ? image: null ) }" />
                 </a>
                 <!-- ko if: shared_style -->
                 <div class="sharedOwnerWrap">

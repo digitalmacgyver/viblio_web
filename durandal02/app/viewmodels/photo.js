@@ -35,6 +35,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
 	self.media    = ko.observable( data );
 	self.selected = ko.observable( self.options.selected );
         self.hidden = ko.observable( self.options.hidden );
+        self.hasBeenShown = ko.observable( false );
 	self.edittable = ko.observable( false );
         self.shared_style = ko.observable( self.options.shared_style );
         self.gift_style = ko.computed( function() {
@@ -73,6 +74,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
     
     Photo.prototype.showIt = function() {
 	this.hidden( false );
+        //this.hasBeenShown( true );
     };
     
     Photo.prototype.hideIt = function() {
@@ -129,6 +131,11 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
     Photo.prototype.attached = function( view ) {
 	this.view = view;
 	this.trigger( 'photo:attached', this );
+    };
+    
+    Photo.prototype.detached = function( view ) {
+        console.log( "photo is being removed" );
+        //ko.removeNode(view); 
     };
 
     Photo.prototype.compositionComplete = function( view ) {
