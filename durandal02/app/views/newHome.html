@@ -620,11 +620,15 @@
             </div>
 
             <div id="allVidsWrap" class="clearfix photoGallery">
-                <div id='photosContainer' data-bind="visible: !video_mode_on(), foreach: photos">
-                    <div data-bind="compose: $data"></div>
+                <div id='photosContainer' data-bind="visible: !video_mode_on()">
+                    <div data-bind="foreach: photos">
+                        <div data-bind="compose: $data"></div>
+                    </div>
                 </div>
-                <div data-bind="visible: video_mode_on(), foreach: videos">
-                    <div data-bind="compose: $data"></div>
+                <div data-bind="visible: video_mode_on()">
+                    <div data-bind="foreach: videos">
+                        <div data-bind="compose: $data"></div>
+                    </div>
                 </div>
                 <!-- ko if: isActiveFlag() -->
                 <div class="mfLoader">
