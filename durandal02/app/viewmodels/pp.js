@@ -437,8 +437,9 @@ define(["durandal/app",
                 }
             },
             canvas: {
-                backgroundColor:'#254558',
-                backgroundGradient: [0.1, 0]
+                backgroundColor:'rgba(239, 239, 232,1)'
+                //backgroundColor:'#254558',
+                //backgroundGradient: [0.1, 0]
             }
         }).flowplayer().ipad({simulateiDevice: should_simulate()});
 	resizePlayer();
