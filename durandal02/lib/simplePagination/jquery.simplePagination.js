@@ -8,6 +8,11 @@
 * http://flaviusmatis.github.com/license.html
 */
 
+/*
+ * JBG - In order to center the pagination I had to change the core of this code. I changed the main pagination from a list <ul>
+ * to group of spans. Doing this allowed me to use text-align: center to center the pager.
+ */
+
 (function($){
 
 	var methods = {
@@ -160,8 +165,9 @@
 			methods.destroy.call(this);
 			
 			tagName = (typeof this.prop === 'function') ? this.prop('tagName') : this.attr('tagName');
-
-			var $panel = tagName === 'UL' ? this : $('<ul></ul>').appendTo(this);
+                        
+                        //var $panel = tagName === 'UL' ? this : $('<ul></ul>').appendTo(this);
+			var $panel = tagName === 'DIV' ? this : $('<div class="paginationWrap"></div>').appendTo(this);
 
 			// Generate Prev link
 			if (o.prevText) {
@@ -183,7 +189,8 @@
 						}
 					}
 					if (o.edges < interval.start && (interval.start - o.edges != 1)) {
-						$panel.append('<li class="disabled"><span class="ellipse">' + o.ellipseText + '</span></li>');
+                                                //$panel.append('<li class="disabled"><span class="ellipse">' + o.ellipseText + '</span></li>');
+						$panel.append('<span class="disabled"><span class="ellipse">' + o.ellipseText + '</span></span>');
 					} else if (interval.start - o.edges == 1) {
 						methods._appendItem.call(this, o.edges);
 					}
@@ -198,7 +205,8 @@
 					}
 
 					if (o.pages - o.edges > interval.end && (o.pages - o.edges - interval.end != 1)) {
-						$panel.append('<li class="disabled"><span class="ellipse">' + o.ellipseText + '</span></li>');
+                                                //$panel.append('<li class="disabled"><span class="ellipse">' + o.ellipseText + '</span></li>');
+						$panel.append('<span class="disabled"><span class="ellipse">' + o.ellipseText + '</span></span>');
 					} else if (o.pages - o.edges - interval.end == 1) {
 						methods._appendItem.call(this, interval.end);
 					}
@@ -220,7 +228,8 @@
 			if (!o.invertPageOrder) {
 				if (interval.end < o.pages && o.edges > 0) {
 					if (o.pages - o.edges > interval.end && (o.pages - o.edges - interval.end != 1)) {
-						$panel.append('<li class="disabled"><span class="ellipse">' + o.ellipseText + '</span></li>');
+                                                //$panel.append('<li class="disabled"><span class="ellipse">' + o.ellipseText + '</span></li>');
+						$panel.append('<span class="disabled"><span class="ellipse">' + o.ellipseText + '</span></span>');
 					} else if (o.pages - o.edges - interval.end == 1) {
 						methods._appendItem.call(this, interval.end);
 					}
@@ -234,7 +243,8 @@
 			} else {
 				if (interval.start > 0 && o.edges > 0) {
 					if (o.edges < interval.start && (interval.start - o.edges != 1)) {
-						$panel.append('<li class="disabled"><span class="ellipse">' + o.ellipseText + '</span></li>');
+                                                //$panel.append('<li class="disabled"><span class="ellipse">' + o.ellipseText + '</span></li>');
+						$panel.append('<span class="disabled"><span class="ellipse">' + o.ellipseText + '</span></span>');
 					} else if (interval.start - o.edges == 1) {
 						methods._appendItem.call(this, o.edges);
 					}
@@ -267,7 +277,8 @@
 		},
 
 		_appendItem: function(pageIndex, opts) {
-			var self = this, options, $link, o = self.data('pagination'), $linkWrapper = $('<li></li>'), $ul = self.find('ul');
+                        //var self = this, options, $link, o = self.data('pagination'), $linkWrapper = $('<li></li>'), $ul = self.find('ul');
+			var self = this, options, $link, o = self.data('pagination'), $linkWrapper = $('<span class="outerSpan"></span>'), $ul = self.find('.paginationWrap');
 
 			pageIndex = pageIndex < 0 ? 0 : (pageIndex < o.pages ? pageIndex : o.pages - 1);
 
