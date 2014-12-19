@@ -869,35 +869,25 @@ define( ['plugins/router',
             });
         }
     };
-    
+        
     newHome.prototype.handlePager = function( pager, newSearch, redraw ) {
         var self = this;
-        var p;
+        
+        console.log('from handle pager: pager.current_page', pager.current_page, pager, newSearch, redraw);
         
         self.thePager( pager );
-        console.log( "self.thePager() from handlePager: ", self.thePager() );
-        
-        console.log( "pager, newSearch, redraw from handlePager: ", pager, newSearch, redraw );
-        
-        if( redraw ) {
-            p = self.thePager();
-            p.last_page = Math.ceil( p.total_entries/p.entries_per_page );
-        }
-        
-        if( newSearch ) {
-            // clear out pager
-            self.pager_pages.removeAll();
-            while( self.pager_pages().length < pager.last_page ) {
-                self.pager_pages.push( { page_number: self.pager_pages().length+1 } );
-            }
-        }
+        $('.paginationContainer').pagination( 'updateItems', pager.total_entries );
+        $('.paginationContainer').pagination( 'updateItemsOnPage', pager.entries_per_page );
+        $('.paginationContainer').pagination( 'drawPage', Number(pager.current_page) );
     };
     
     newHome.prototype.filterVidsSearchPage = function( page, skipPageCheck ) {
         var self = this;
         
+        console.log('filterVidsSearchPage is happening', page, typeof page, skipPageCheck );
+        
         // this will dismiss any requests if the current fetch is not finished yet
-        if( self.isActiveFlag() ) {
+        if( self.isActiveFlag() /*|| typeof page != 'number'*/ ) {
             return;
         }
         
@@ -907,12 +897,18 @@ define( ['plugins/router',
         var apiCall;
         
         console.log( page );
-        
         if ( skipPageCheck ? page : (page && page <= self.thePager().last_page) && (page && page != self.thePager().current_page) )   {
             console.log( 'a search should be performed' );
             // clear out current videos
             self.videos.removeAll();
             self.photos.removeAll();
+            
+            // deactivate select all mode when going to a new page, unless in the recent filter
+            if( self.activeFilterType() != 'recent' ) {
+                self.select_all_mode_is_on( false );
+            } else {
+                self.select_all_mode_is_on( true );
+            }
             
             // Dates
             if( self.activeFilterType() == 'dates' ) {
@@ -975,101 +971,6 @@ define( ['plugins/router',
             self.clearfilters();
         }
     };
-        
-    /*newHome.prototype.albumVidsSearch = function( newSearch ) {
-        var self = this;
-        var album_id = self.currentAlbumAid();
-        
-        self.isActiveFlag(true);
-        
-        // Only remove all vids and reset pager if it's a new search
-        if( newSearch ) {
-            //clear the search contents
-            self.clearSearch();
-            self.unselectOtherFilters('albums');
-            // reset pager
-            self.thePager({
-                next_page: 1,
-                entries_per_page: 10,
-                total_entries: -1 // currently unknown
-            }); 
-        }
-        
-        var args ={
-            aid: album_id
-        };
-        
-        return system.defer( function( dfd ) {
-            if ( self.thePager().next_page )   {
-                args.page = self.thePager().next_page;
-                args.rows = self.thePager().entries_per_page;
-                args.include_tags = 1;
-                args.include_contact_info = 1;
-                args.include_images = config.photo_throttle;
-                viblio.api( 'services/album/get', args ).
-                    then( function( json ) {
-                        console.log( json );
-                        self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
-                        self.thePager(json.pager);
-                        self.currentAlbum( json.album );
-                        self.albumIsShared( json.album.is_shared ? true : false );
-                        if( json.album.media.length > 0 ) {
-                            json.album.media.forEach( function( mf ) {
-                                self.addAlbumMediaFile ( mf );
-                                if( mf.views.image ) {
-                                    self.some_more_all( mf, mf.views.image );
-                                }
-                            });
-                            self.videos.valueHasMutated();
-                            dfd.resolve();
-                        } else {
-                            dfd.resolve();
-                        }                                               
-                    });
-	    } else {
-		dfd.resolve();
-	    }   
-        }).promise()
-        // If the album has videos in it go to it!
-          .done(function(){
-            self.current_album_is_empty( false );
-            // reset active filters
-            self.selectedMonth('');
-            self.selectedFace('');  
-            self.selectedCity('');
-            //self.albumFilterIsActive(true);
-            
-            self.activeFilterType('album');
-            
-            if( self.videos().length > 0 ) {
-                $.when( self.videos()[self.videos().length-1].viewResolved ).then( function() {
-                    self.isActiveFlag(false);
-                });
-            } else {
-                self.isActiveFlag(false);
-            }
-            
-            // tickle the photos filter
-            var old = self.photoViewFilter();
-            self.photoViewFilter(null);
-            self.photoViewFilter( old );
-        })
-        // if the album is empty then show dialog, when button is clicked drop into select mode from all videos 
-        .fail(function(){
-            self.current_album_is_empty( true );
-            self.selectedVideos.removeAll();
-            
-            dialog.showModal( 'viewmodels/emptyAlbumModal' ).then( function( data ) {
-                if( data == 'Add Videos Now' ) {
-                    self.showAllVideos();
-                    //self.addToAlbumSelected( self, self.currentSelectedFilterAlbum() );
-                    self.add_to_mode( 'existing-blank' );
-                } else {
-                    self.delete_album( true );
-                }                  
-            });
-        });
-    };*/
     
     newHome.prototype.addToEmptyAlbum = function() {
         var self = this;
@@ -1144,7 +1045,7 @@ define( ['plugins/router',
         
 	// Create a new Mediafile with the data from the server - Only albums owned by the viewer will be given the share badge
 
-	var m = new Mediafile( mf, self.mfOwnedByViewer(mf) ? { show_share_badge: !self.select_mode_on(), show_preview: true, show_faces_tags: true, ownedByViewer: true, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on(), popup_player: true, clean_style: true } : { show_preview: true, ro: true, show_faces_tags: true, shared_style: true, owner_uuid: mf.owner_uuid, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on(), popup_player: true, clean_style: true } );	
+	var m = new Mediafile( mf, self.mfOwnedByViewer(mf) ? { show_share_badge: !self.select_mode_on(), show_preview: true, show_faces_tags: true, ownedByViewer: true, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on() ? true : self.selectedVideos().indexOf( mf.uuid ) != -1 ? true : false, popup_player: true, clean_style: true } : { show_preview: true, ro: true, show_faces_tags: true, shared_style: true, owner_uuid: mf.owner_uuid, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on(), popup_player: true, clean_style: true } );	
 
 	// Play a mediafile clip.  This uses the query parameter
 	// passing technique to pass in the mediafile to play.
@@ -1230,7 +1131,7 @@ define( ['plugins/router',
             });    
         } else {
             // Owned by user
-            var m = new Mediafile( mf, { show_share_badge: !self.select_mode_on(), show_select_badge: self.select_mode_on(), show_faces_tags: true, ownedByViewer: true, selected: self.select_all_mode_is_on(), in_process_style: mf.status == 'pending' ? true : false, popup_player: true, clean_style: true } );
+            var m = new Mediafile( mf, { show_share_badge: !self.select_mode_on(), show_select_badge: self.select_mode_on(), show_faces_tags: true, ownedByViewer: true, selected: self.select_all_mode_is_on() ? true : self.selectedVideos().indexOf( mf.uuid ) != -1 ? true : false, in_process_style: mf.status == 'pending' ? true : false, popup_player: true, clean_style: true } );
 
             // Proxy the mediafile play event and send it along to
             // our parent.
@@ -1278,10 +1179,14 @@ define( ['plugins/router',
         // If select all mode is on when new vids are added then add them to the selected array too - only if owned by viewer
         if( self.select_all_mode_is_on() && self.select_mode_on() ) {
             if( self.delete_mode_on() ){
-                self.selectedVideos.push( m.media().uuid );
+                if( self.selectedVideos().indexOf( m.media().uuid ) == -1 ) {
+                    self.selectedVideos.push( m.media().uuid );
+                }
             } else {
                 if( self.mfOwnedByViewer( m ) ) {
-                    self.selectedVideos.push( m.media().uuid );
+                    if( self.selectedVideos().indexOf( m.media().uuid ) == -1 ) {
+                        self.selectedVideos.push( m.media().uuid );
+                    }
                 }    
             }
         } 
@@ -1291,7 +1196,7 @@ define( ['plugins/router',
 	var self = this;
         
 	// Create a new Photo with the data from the server
-	var p = new Photo( ph, options.ownedByViewer ? { ownedByViewer: true, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on() } : { owner_uuid: options.owner_uuid, show_select_badge: self.delete_mode_on() ? self.select_mode_on() : false, selected: self.delete_mode_on() ? self.select_all_mode_is_on() : false } );
+	var p = new Photo( ph, options.ownedByViewer ? { ownedByViewer: true, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on() ? true : self.selectedPhotos().indexOf( ph.uuid ) != -1 ? true : false } : { owner_uuid: options.owner_uuid, show_select_badge: self.delete_mode_on() ? self.select_mode_on() : false, selected: self.delete_mode_on() ? self.select_all_mode_is_on() : false } );
 
 	// Register a callback for when a Mediafile is selected.
 	// This is so we can deselect the previous one to create
@@ -1330,27 +1235,39 @@ define( ['plugins/router',
             if( self.delete_mode_on() ){
                 if( self.photoViewFilter() == "some" ) {
                     if( p.filter() == "some" ) {
-                        self.selectedPhotos.push( p.media().uuid );
+                        if( self.selectedPhotos().indexOf( p.media().uuid ) == -1 ) {
+                            self.selectedPhotos.push( p.media().uuid );
+                        } 
                     }
                 } else if ( self.photoViewFilter() == "more" ) {
                     if( p.filter() != "all" ) {
-                        self.selectedPhotos.push( p.media().uuid );
+                        if( self.selectedPhotos().indexOf( p.media().uuid ) == -1 ) {
+                            self.selectedPhotos.push( p.media().uuid );
+                        } 
                     }
                 } else {
-                    self.selectedPhotos.push( p.media().uuid );
+                    if( self.selectedPhotos().indexOf( p.media().uuid ) == -1 ) {
+                        self.selectedPhotos.push( p.media().uuid );
+                    } 
                 }
             } else {
                 if( options.ownedByViewer ) {
                     if( self.photoViewFilter() == "some" ) {
                         if( p.filter() == "some" ) {
-                            self.selectedPhotos.push( p.media().uuid );
+                            if( self.selectedPhotos().indexOf( p.media().uuid ) == -1 ) {
+                                self.selectedPhotos.push( p.media().uuid );
+                            } 
                         }
                     } else if ( self.photoViewFilter() == "more" ) {
                         if( p.filter() != "all" ) {
-                            self.selectedPhotos.push( p.media().uuid );
+                            if( self.selectedPhotos().indexOf( p.media().uuid ) == -1 ) {
+                                self.selectedPhotos.push( p.media().uuid );
+                            }
                         }
                     } else {
-                        self.selectedPhotos.push( p.media().uuid );
+                        if( self.selectedPhotos().indexOf( p.media().uuid ) == -1 ) {
+                            self.selectedPhotos.push( p.media().uuid );
+                        } 
                     }
                 }    
             }
@@ -1435,7 +1352,7 @@ define( ['plugins/router',
         }, 300);
         
         // for video mode
-        if( self.video_mode_on() ) {
+        /*if( self.video_mode_on() ) {
             self.videos().forEach( function( mf ) {
                 mf.turnOffSelectMode();
             });
@@ -1445,8 +1362,14 @@ define( ['plugins/router',
             self.photos().forEach( function( photo ) {
                 photo.turnOffSelectMode();
             });    
-        }
+        }*/
         
+        self.videos().forEach( function( mf ) {
+            mf.turnOffSelectMode();
+        });
+        self.photos().forEach( function( photo ) {
+            photo.turnOffSelectMode();
+        });
     };
     
     newHome.prototype.clear_all_modes = function() {
@@ -1629,7 +1552,7 @@ define( ['plugins/router',
         
         // turn off select all mode
         self.select_all_mode_is_on( false );
-        // hide select boxes from vids
+        // hide select boxes from vids and photos
         self.deactivate_select_mode();
         // make sure all vids are unselected
         self.videos().forEach( function( mf ) {
@@ -1697,18 +1620,21 @@ define( ['plugins/router',
                 // handle the pager
                 var page;
                 // if the user is on the last page then send in the current page minus one as the page to use for the filterSearch
-                if( self.thePager().current_page == self.thePager().last_page ) {
+                if( Number(self.thePager().current_page) == Number(self.thePager().last_page) ) {
+                    console.log( 'on the last page', Number(self.thePager().total_entries), Number(self.thePager().entries_per_page), 'modulo: ', Number(self.thePager().total_entries) % Number(self.thePager().entries_per_page) );
                     // if there are still photos on the current last page
-                    if( self.thePager().total_entries % self.thePager().entries_per_page != 0 ) {
-                        page = self.thePager().current_page;
+                    if( Number(self.videos().length) % Number(self.thePager().entries_per_page) != 0 ) {
+                        page = Number(self.thePager().current_page);
                     } else {
-                        page = self.thePager().current_page-1
+                        page = Number(self.thePager().current_page-1);
                     }
                 }
                 // else use the current page
                 else {
-                    page = self.thePager().current_page;
+                    console.log( 'Fail - not on the last page' );
+                    page = Number(self.thePager().current_page);
                 }
+                console.log('this is happening', page);
                 self.filterVidsSearchPage( page, true );
                 //self.handlePager( self.thePager(), true, true );
                 
@@ -1983,14 +1909,14 @@ define( ['plugins/router',
             self.videos().forEach( function(video) {
                 video.unselect();
             });
-            self.selectedVideos.removeAll();
+            //self.selectedVideos.removeAll();
         }
         // for photo mode
         else {
             self.photos().forEach( function( photo ) {
                 photo.unselect();
             });
-            self.selectedPhotos.removeAll();
+            //self.selectedPhotos.removeAll();
         }
     };
     
@@ -2320,6 +2246,7 @@ define( ['plugins/router',
         $(window).off( "resize", this.getWindowWidth );
         $(window).off( "resize", this.stickyDates );
         $(window).off( "resize", this.resizePlayer );
+        $('.paginationContainer').pagination('destroy');
     };
     
     newHome.prototype.activate = function() {
@@ -2548,6 +2475,23 @@ define( ['plugins/router',
             delegate: '.photo:not(".hidden") .pointer a', // child items selector, by clicking on it popup will open - by including .photo:not(".hidden") only visible photos will be included in the gallery 
             type: 'image',
             gallery: {enabled:true}
+        });
+        
+        // set up pagination
+        $('.paginationContainer').pagination({
+            //items: self.thePager().total_entries,
+            //itemsOnPage: Number(self.thePager().entries_per_page),
+            displayedPages: 3,
+            edges: 1,
+            hrefTextPrefix: '',
+            cssStyle: 'light-theme',
+            selectOnClick: false,
+            onPageClick: function(pageNumber, event){
+                if( event ) {
+                    event.preventDefault();
+                }
+                self.filterVidsSearchPage(pageNumber);
+            }
         });
     };
 

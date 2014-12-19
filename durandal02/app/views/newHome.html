@@ -589,15 +589,8 @@
     </div>
     
     <div class="containerxx">
-        <div class="pagination pagination-centered">
-            <ul>
-                <li data-bind="css: { disabled: !thePager().previous_page }"><a href="#" data-bind="click: function(){ filterVidsSearchPage( thePager().previous_page ); }">&laquo; Prev</a></li>
-                <!-- ko foreach: pager_pages -->
-                <li data-bind="css: { active: $root.thePager().current_page == $data.page_number }"><a href="#" data-bind="text: $data.page_number, click: function(){ $root.filterVidsSearchPage( $data.page_number ); }"></a></li>
-                <!-- /ko -->
-                <li data-bind="css: { disabled: !thePager().next_page }"><a href="#" data-bind="click: function(){ filterVidsSearchPage( thePager().next_page ); }">Next &raquo;</a></li>
-            </ul>
-        </div>
+        <span class='paginationContainer'></span>
+        
         <div class="table allVidsInner clearfix">    
 
             <div class="dates" data-bind="visible: activeFilterType() != 'search' && video_mode_on()">
