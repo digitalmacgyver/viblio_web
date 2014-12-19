@@ -437,6 +437,7 @@ define(["durandal/app",
                 }
             },
             canvas: {
+                backgroundGradient: 'none',
                 backgroundColor:'rgba(239, 239, 232,1)'
                 //backgroundColor:'#254558',
                 //backgroundGradient: [0.1, 0]

@@ -2103,8 +2103,8 @@ define( ['plugins/router',
                 }
             },
             canvas: {
-                backgroundColor:'rgba(249, 249, 249,1)',
-                //backgroundGradient: [0.1, 0]
+                backgroundGradient: 'none',
+                backgroundColor:'rgba(249, 249, 249,1)'
             }
         }).flowplayer().ipad({simulateiDevice: self.should_simulate()});
     };
