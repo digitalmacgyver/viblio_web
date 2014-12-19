@@ -4357,6 +4357,10 @@ div.tagsPopup.popover.top .custom {
 .pp .comments-header .views span{
     display: block;
 }
+.pp .comments-header .views span.small {
+    font-size: 12px;
+    line-height: 1.25;
+}
 .all-comments {
     /* max-height: 250px; */
     min-height: 100px;
