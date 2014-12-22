@@ -635,7 +635,8 @@ define( ['plugins/router',
         var self = this;
         var args;
         
-        self.activeFilterType('album');
+        // set the code below in the filterVidsSearch() function AFTER the album has been fetched.
+        //self.activeFilterType('album');
         
         args = {};
         args.aid = self.currentAlbumAid();
@@ -691,6 +692,7 @@ define( ['plugins/router',
                     if( type == 'album' ) {
                         self.currentAlbum( json.album );
                         self.albumIsShared( json.album.is_shared ? true : false );
+                        self.activeFilterType('album');
                         if( json.album.media.length > 0 ) {
                             json.album.media.forEach( function( mf ) {
                                 self.addAlbumMediaFile ( mf );
