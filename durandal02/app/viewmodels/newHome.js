@@ -521,7 +521,7 @@ define( ['plugins/router',
                 month: self.selectedMonth(),
                 cid: self.cid
             };
-            self.filterVidsSearch( 'dates', args, '/services/yir/videos_for_month', true );
+            self.filterVidsSearch( 'dates', args, '/services/yir/videos_for_month', true, null );
         }
     };
     
@@ -549,7 +549,7 @@ define( ['plugins/router',
                 args = {
                     contact_uuid: self.selectedFace().uuid
                 };
-                self.filterVidsSearch( 'faces', args, '/services/faces/media_face_appears_in', true );
+                self.filterVidsSearch( 'faces', args, '/services/faces/media_face_appears_in', true, null );
                 gettingFace = false;
             }
         } else {
@@ -575,7 +575,7 @@ define( ['plugins/router',
             args = {
                 q: self.selectedCity()
             };
-            self.filterVidsSearch( 'cities', args, '/services/mediafile/taken_in_city', true );
+            self.filterVidsSearch( 'cities', args, '/services/mediafile/taken_in_city', true, null );
         }         
     };
     
@@ -593,7 +593,7 @@ define( ['plugins/router',
             args = {
                 q: self.currentSearch
             };
-            self.filterVidsSearch( null, args, '/services/mediafile/search_by_title_or_description', true );
+            self.filterVidsSearch( null, args, '/services/mediafile/search_by_title_or_description', true, null );
         }
     };
     
@@ -608,7 +608,7 @@ define( ['plugins/router',
             args.only_videos = 1;
             args['status[]'] = ['pending', 'visible', 'complete'];
         }
-        self.filterVidsSearch( 'recent', args, '/services/mediafile/recently_uploaded', newSearch );
+        self.filterVidsSearch( 'recent', args, '/services/mediafile/recently_uploaded', newSearch, null );
     };
     
     newHome.prototype.showAllVideos = function() {
@@ -628,7 +628,7 @@ define( ['plugins/router',
             args.views = ['poster'];
             apiCall = '/services/mediafile/list_all';
         }
-        self.filterVidsSearch( 'all', args, apiCall, true );
+        self.filterVidsSearch( 'all', args, apiCall, true, null );
     };
     
     newHome.prototype.albumVidsSearch = function( newSearch ) {
@@ -639,7 +639,7 @@ define( ['plugins/router',
         
         args = {};
         args.aid = self.currentAlbumAid();
-        self.filterVidsSearch( 'album', args, 'services/album/get', newSearch );
+        self.filterVidsSearch( 'album', args, 'services/album/get', newSearch, null );
     }; 
     
     
@@ -650,7 +650,7 @@ define( ['plugins/router',
      * @param {string} api - the endpoint to call
      * @param {bool} newSearch - whether or not to run a fresh search or not
      */
-    newHome.prototype.filterVidsSearch = function( type, args, api, newSearch ) {
+    newHome.prototype.filterVidsSearch = function( type, args, api, newSearch, scrollToTop ) {
 	var self = this;
         var media;
         self.isActiveFlag(true);
@@ -751,6 +751,10 @@ define( ['plugins/router',
                 self.performingNewSearch( false );
                 $.when( self.videos()[self.videos().length-1].viewResolved ).then( function() {
                     self.isActiveFlag(false);
+                    // scroll to the top of the page
+                    if( scrollToTop ) {
+                        viblio.goTo( $('.allVidsPage'), -65 );
+                    }
                 });
             } else {
                 self.isActiveFlag(false);
@@ -881,7 +885,7 @@ define( ['plugins/router',
         $('.paginationContainer').pagination( 'drawPage', Number(pager.current_page) );
     };
     
-    newHome.prototype.filterVidsSearchPage = function( page, skipPageCheck ) {
+    newHome.prototype.filterVidsSearchPage = function( page, skipPageCheck, scrollToTop ) {
         var self = this;
         
         console.log('filterVidsSearchPage is happening', page, typeof page, skipPageCheck );
@@ -914,23 +918,23 @@ define( ['plugins/router',
             if( self.activeFilterType() == 'dates' ) {
                 args.month = self.selectedMonth();
                 args.cid = self.cid;
-                self.filterVidsSearch( 'dates', args, '/services/yir/videos_for_month' );
+                self.filterVidsSearch( 'dates', args, '/services/yir/videos_for_month', null, scrollToTop );
             }
             // Faces
             else if( self.activeFilterType() == 'faces' ) {
                 args.contact_uuid = self.selectedFace().uuid;
-                self.filterVidsSearch( 'faces', args, '/services/faces/media_face_appears_in' );
+                self.filterVidsSearch( 'faces', args, '/services/faces/media_face_appears_in', null, scrollToTop  );
             }
             // Cities
             else if( self.activeFilterType() == 'cities' ) {
                 args.q = self.selectedCity();
-                self.filterVidsSearch( 'cities', args, '/services/mediafile/taken_in_city' );
+                self.filterVidsSearch( 'cities', args, '/services/mediafile/taken_in_city', null, scrollToTop );
             }
             // Search
             else if( self.activeFilterType() == 'search' ) {
                 self.currentSearch = self.searchQuery();
                 args.q = self.currentSearch;
-                self.filterVidsSearch( null, args, '/services/mediafile/search_by_title_or_description' );
+                self.filterVidsSearch( null, args, '/services/mediafile/search_by_title_or_description', null, scrollToTop );
             }
             // Recent
             else if( self.activeFilterType() == 'recent' ) {
@@ -938,7 +942,7 @@ define( ['plugins/router',
                     args.only_videos = 1;
                     args['status[]'] = ['pending', 'visible', 'complete'];
                 }
-                self.filterVidsSearch( 'recent', args, '/services/mediafile/recently_uploaded' );
+                self.filterVidsSearch( 'recent', args, '/services/mediafile/recently_uploaded', null, scrollToTop );
             }
             // All
             else if( self.activeFilterType() == 'all' ) {
@@ -949,13 +953,13 @@ define( ['plugins/router',
                     args.views = ['poster'];
                     apiCall = '/services/mediafile/list_all';
                 }
-                self.filterVidsSearch( 'all', args, apiCall );
+                self.filterVidsSearch( 'all', args, apiCall, null, scrollToTop );
             }
             // Albums
             else if( self.activeFilterType() == 'album' ) {
                 args.aid = self.currentAlbumAid();
                 args.updatePager = skipPageCheck;
-                self.filterVidsSearch( 'album', args, 'services/album/get' );
+                self.filterVidsSearch( 'album', args, 'services/album/get', null, scrollToTop );
             }
         }
     };
@@ -1635,7 +1639,7 @@ define( ['plugins/router',
                     page = Number(self.thePager().current_page);
                 }
                 console.log('this is happening', page);
-                self.filterVidsSearchPage( page, true );
+                self.filterVidsSearchPage( page, true, null );
                 //self.handlePager( self.thePager(), true, true );
                 
                 // clean up
@@ -2487,10 +2491,11 @@ define( ['plugins/router',
             cssStyle: 'light-theme',
             selectOnClick: false,
             onPageClick: function(pageNumber, event){
-                if( event ) {
+                if( event && event.type == 'click' ) {
+                    console.log( event );
                     event.preventDefault();
+                    self.filterVidsSearchPage(pageNumber, null, true);
                 }
-                self.filterVidsSearchPage(pageNumber);
             }
         });
     };
