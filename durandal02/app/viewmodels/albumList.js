@@ -130,7 +130,7 @@ define( ['plugins/router',
                         hp.nhome().selectedFilterAlbum( album.label );
                         hp.nhome().currentSelectedFilterAlbum( album );
                         hp.nhome().currentAlbumAid( album.uuid );
-                        hp.nhome().currentAlbumTitle( album.title.toUpperCase() );
+                        hp.nhome().currentAlbumTitle( album.title );
                         $.when( hp.nhome().albumVidsSearch( true ) ).then( function() {
                             gettingAlbum = false;
                         });

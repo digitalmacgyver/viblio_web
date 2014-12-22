@@ -507,7 +507,7 @@
                                     </div>" album.-->
                                     
                              <div class="inline newHomeAlbumTitle" data-bind="liveEditor: currentAlbumTitle, click: setSize">
-                                <div class="newHomeAlbumTitleView view turquoiseFont" data-bind="click: currentAlbumTitle.edit, text: currentAlbumTitle() ? currentAlbumTitle() : 'Click to add album title', tooltip: {title:'Click to edit album title', placement: 'bottom'}"></div>
+                                <div class="newHomeAlbumTitleView view turquoiseFont" data-bind="click: currentAlbumTitle.edit, text: currentAlbumTitle() ? currentAlbumTitle().toUpperCase() : 'Click to add album title', tooltip: {title:'Click to edit album title', placement: 'bottom'}"></div>
                                 <div class="newHomeAlbumTitle-Wrap">
                                     <input type="text" class="newHomeAlbumTitleEdit edit" data-bind="value: currentAlbumTitle, 
                                                          hasFocus: currentAlbumTitle.editing, 
