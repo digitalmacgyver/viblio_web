@@ -392,6 +392,7 @@
         <!-- ko if: !performingNewSearch() -->
 
         <div class="clearfix newHomeTitle-Wrap">
+            <p class='pageNumber'>Page <span data-bind="text: thePager().current_page"></span></p>
             <!-- ko ifnot: add_to_mode_on() || delete_mode_on()-->
             <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: activeFilterType() == 'all'">
                 <!-- ko if: !video_mode_on() -->

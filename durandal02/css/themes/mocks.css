@@ -6463,6 +6463,14 @@ button.linkedin:active {
 .newHomeTitle-Wrap {
     margin-top: 50px;
     padding: 0 40px;
+    position: relative;
+}
+
+.newHomeTitle-Wrap .pageNumber {
+    position: absolute;
+    right: 22px;
+    top: 14px;
+    font-size: 14px;
 }
 
 .newHomeTitle-Wrap .mainTitle {

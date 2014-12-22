@@ -294,8 +294,9 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
         
         // used to scroll to a specific element, passing in plus can be used to adjust the height - example use in newHome's filterVidsSearch's .done section
         goTo: function( el, plus ) {
+            var top = $(el).offset().top + ( plus ? plus : 0 );
             $('html, body').animate({
-                scrollTop: ($(el).offset().top + plus ? plus : 0) + 'px'
+                scrollTop: top + 'px'
             }, 'fast');
         }
     };
