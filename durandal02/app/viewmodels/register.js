@@ -16,7 +16,11 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
     var media = ko.observable();
     var agreeTOS = ko.observable(false);
     var avatar = ko.observable(null);
-
+    
+    var isExistingUser = ko.observable(null);
+    var viewingAlbum = ko.observable( null );
+    var aid = ko.observable( null );
+    
     fb_appid   = config.facebook_appid();
     fb_channel = config.facebook_channel();
 
@@ -48,7 +52,7 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
 	// either go to the personal channel page, or
 	// do a pass thru to the page the user was
 	// trying to get to.
-	router.navigate( viblio.getLastAttempt() || 'home' );
+	router.navigate( viblio.getLastAttempt() || url || 'home' );
     };
 
     function facebookAuthenticate() {
@@ -122,7 +126,11 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
 	labelShowHide: labelShowHide,
         facebookAuthenticate: facebookAuthenticate,
 	avatar: avatar,
-
+        
+        isExistingUser: isExistingUser,
+        viewingAlbum: viewingAlbum,
+        aid: aid,
+        
 	not_correct: function() {
 	    email(null);
 	    correct( false );
@@ -148,7 +156,7 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
 	    view = el;
 	},
 
-	canActivate: function( args ) {
+	/*canActivate: function( args ) {
 	    // In the case when/if user has already registered and perhaps
 	    // clicked on an old email link to this register page, lets bounce
 	    // them to the url directly
@@ -167,37 +175,94 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
 	    else {
 		return true;
 	    }
-	},
+	},*/
 
 	activate: function( args ) {
 	    var testing = 0;
+            var albumArgs;
 	    if ( args ) {
-		if ( args.email ) {
-		    email( args.email );
-		}
-		if ( args.url ) {
-		    url = args.url;
-		}
-		if ( args.test ) {
-		    testing = 1;
-		}
+                if ( args.email ) {
+                    email( args.email );
+                }
+                if ( args.url ) {
+                    url = args.url;
+                }
+                if ( args.test ) {
+                    testing = 1;
+                }
+                
+                if ( args.email && args.url ) {
+                    return viblio.api( '/services/na/valid_email', {email: args.email} ).then( function( json ) {
+                        // they are an existing user
+                        if ( json.valid == 0 && json.why == 'email address taken' ) {
+                            isExistingUser( true );
+                            email( args.email );
+                            url = args.url;
+                            // they are here to view album related stuff
+                            if( url.indexOf('aid') != -1 ) {
+                                viewingAlbum( true );
+                                aid( url.slice( url.indexOf("=")+1 ) );
+                                albumArgs = {
+                                    email: email(),
+                                    aid: aid()
+                                };
+                                viblio.api( 'services/na/find_share_info_for_album', albumArgs ).then( function( json ) {
+                                    media( json.album );
+                                    if ( json.owner ) {
+                                        displayname( json.owner.displayname );
+                                        avatar( '/services/na/avatar?uid=' + json.owner.uuid + '&y=37' );
+                                    }
+                                });
+                            } else {
+                                viewingAlbum( false );
+                            }
+                        }
+                        // they are not a user yet
+                        else {
+                            return viblio.api( 
+                                '/services/na/find_share_info_for_pending',
+                                { email: email(), test: testing } ).then( function( json ) {
+                                    if ( json.owner ) {
+                                        displayname( json.owner.displayname );
+                                        avatar( '/services/na/avatar?uid=' + json.owner.uuid + '&y=37' );
+                                    }
+                                    else {
+                                        displayname( 'Someone' );
+                                        avatar( '/services/na/avatar?uid=' + '' + '&y=37' );
+                                    }
+                                    // We also have the mediafile (json.media ) and so
+                                    // could display the poster, et. al. here.
+                                    media( json.media );
+                                });    
+                        }
+                    });
+                }
 	    }
-	    return viblio.api( 
-		'/services/na/find_share_info_for_pending',
-		{ email: email(), test: testing } ).then( function( json ) {
-		    if ( json.owner ) {
-			displayname( json.owner.displayname );
-			avatar( '/services/na/avatar?uid=' + json.owner.uuid + '&y=37' );
-		    }
-		    else {
-			displayname( 'Someone' );
-			avatar( '/services/na/avatar?uid=' + '' + '&y=37' );
-		    }
-		    // We also have the mediafile (json.media ) and so
-		    // could display the poster, et. al. here.
-                    media(json.media);
-		});
 	},
+        
+        nativeAuthenticate: function() {
+            if ( ! email() ) {
+                handleLoginFailure({ code: "NOLOGIN_NOEMAIL" });
+                return;
+            }
+            if ( ! password() ) {
+                if( $('#loginPassword').val() ) {
+                    password( $('#loginPassword').val() );
+                } else {
+                    handleLoginFailure({ code: "NOLOGIN_PASSWORD_MISMATCH" });
+                    return;
+                }
+            }
+
+            viblio.api( '/services/na/authenticate',
+                        { email: email(),
+                          password: password(),
+                          realm: 'db' },
+                        handleLoginFailure
+                      ).then( function( json ) {
+                          loginSuccessful( json.user );
+                      });
+        },
 
 	done: function() {
 	    viblio.api( '/services/na/new_user', { via: 'share',
