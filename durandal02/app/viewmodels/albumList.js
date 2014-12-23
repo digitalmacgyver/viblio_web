@@ -19,7 +19,7 @@ define( ['plugins/router',
             // base this value on the value of the name variable in the newHome viewmodel
             // newHome is accessed through the homepage (hp)'s instance of newHome (nhome())
             self.albumFilterIsActive = ko.computed( function(){
-                if( hp.nhome().albumFilterIsActive() ) {
+                if( hp.nhome().activeFilterType() == 'album' ) {
                     return true;
                 } else {
                     return false;

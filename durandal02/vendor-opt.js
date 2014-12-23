@@ -42,7 +42,8 @@ new compressor.minify({
         'lib/Magnific-Popup/jquery.magnific-popup.min.js',
         'lib/fancybox-2.1.5/jquery.fancybox.pack.js',
         'lib/fancybox-2.1.5/helpers/jquery.fancybox-buttons.js',
-        'lib/backstretch.js'
+        'lib/backstretch.js',
+        'lib/simplePagination/jquery.simplePagination.js'
     ],
     fileOut: 'build/lib/vendor.all.js',
     callback: function(err, min){

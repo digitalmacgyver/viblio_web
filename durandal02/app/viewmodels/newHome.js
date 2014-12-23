@@ -35,7 +35,7 @@ define( ['plugins/router',
                     return null;
                 }
             } else {
-                return null
+                return null;
             }
         });
         
@@ -100,7 +100,6 @@ define( ['plugins/router',
         self.datesLabels  = ko.observableArray([]);
         self.showingAllDatesLabels = ko.observable(true);
         self.selectedMonth = ko.observable();
-        self.dateFilterIsActive = ko.observable(false);
         
         self.facesLabels = ko.observableArray([]);
         self.selectedFace = ko.observable();
@@ -112,11 +111,9 @@ define( ['plugins/router',
                 app.trigger( 'selectedFace:notactive' );
             }
         });
-        self.faceFilterIsActive = ko.observable(false);
         
         self.citiesLabels = ko.observableArray([]);
         self.selectedCity = ko.observable();
-        self.cityFilterIsActive = ko.observable(false);
         
         self.albumLabels = ko.observableArray();
         self.selectedAddToAlbum = ko.observable();
@@ -125,13 +122,6 @@ define( ['plugins/router',
         self.albumsFilterLabels = ko.observableArray();
         self.selectedFilterAlbum = ko.observable();
         self.currentSelectedFilterAlbum = ko.observable(null);
-        self.albumFilterIsActive = ko.observable(false);
-        self.albumFilterIsActive.subscribe( function( val ) {
-            // send a message that says the album filter is not active
-            if( !val ) {
-                app.trigger( 'albumList:notactive' );
-            }
-        });
         self.currentAlbum = ko.observable(null);
         self.currentAlbum.subscribe( function( val ) {
             // send a message that includes the newly activated album object
@@ -159,25 +149,8 @@ define( ['plugins/router',
         });
         
         // Search section
-        self.searchFilterIsActive = ko.observable(false);
         self.searchQuery = ko.observable(null);
         self.currentSearch = null;
-        
-        self.noFiltersAreActive = ko.computed( function() {
-            if( self.recentUploadsIsActive() || self.dateFilterIsActive() || self.faceFilterIsActive() || self.cityFilterIsActive() || self.albumFilterIsActive() ) {
-                return false;
-            } else {
-                return true;
-            }
-        });
-        
-        self.aFilterIsActive = ko.computed( function() {
-            if( self.recentUploadsIsActive() || self.dateFilterIsActive() || self.faceFilterIsActive() || self.cityFilterIsActive() || self.searchFilterIsActive() ) {
-                return true;
-            } else {
-                return false;
-            }
-        });
         
         self.videos = ko.observableArray([]);
         self.photos = ko.observableArray([]);
@@ -204,11 +177,6 @@ define( ['plugins/router',
                 return false;
             }
         });
-                
-        self.allVidsIsSelected = ko.observable( true );
-        self.allVidsIsSelected.subscribe( function() {
-            app.trigger( 'newHome:noFiltersAreActive' );
-        });
         
         self.isActiveFlag = ko.observable(true);
         
@@ -216,19 +184,29 @@ define( ['plugins/router',
 	// media queries.  Initialize it here so
 	// the first fetch works.
         self.thePager = ko.observable({});
+        self.pager_pages = ko.observableArray([]);
+        self.activeFilterType = ko.observable('all');
+        self.activeFilterType.subscribe( function( newVal ) {
+            if( newVal == 'all' ) {
+                app.trigger( 'newHome:noFiltersAreActive' );
+            }
+            if( newVal != 'album' ) {
+                app.trigger( 'albumList:notactive' );
+            }
+        });
         
         self.active_filter_label = ko.computed( function() {
-            if( self.dateFilterIsActive() ) {
+            if( self.activeFilterType() == 'dates' ) {
                 return self.selectedMonth();
-            } else if( self.faceFilterIsActive() ) {
+            } else if( self.activeFilterType() == 'faces' ) {
                 return self.selectedFace().label;
-            } else if( self.cityFilterIsActive() ) {
+            } else if( self.activeFilterType() == 'cities' ) {
                 return self.selectedCity();
-            } else if( self.albumFilterIsActive() ) {
+            } else if( self.activeFilterType() == 'album' ) {
                 return self.selectedFilterAlbum();
-            } else if( self.searchFilterIsActive() ) {
+            } else if( self.activeFilterType() == 'search') {
                 return self.searchQuery();
-            } else if( self.recentUploadsIsActive() ) {
+            } else if( self.activeFilterType() == 'recent' ) {
                 return 'Recent';
             } else {
                 return null;
@@ -271,6 +249,13 @@ define( ['plugins/router',
         self.video_mode_on = ko.observable( true );
         self.video_mode_on.subscribe( function( val ) {
             var old = self.photoViewFilter();
+            
+            // photo view
+            if( !val ) {
+                self.getPhotos();
+                self.photos.valueHasMutated();
+            }
+            
             self.photoViewFilter(null);
             self.photoViewFilter( old );
         });
@@ -286,6 +271,7 @@ define( ['plugins/router',
                         p.hideIt();
                     } else {
                         p.showIt();
+                        p.hasBeenShown( true );
                         self.visiblePhotosCount( self.visiblePhotosCount()+1 );
                     }
                 });
@@ -295,16 +281,22 @@ define( ['plugins/router',
                         p.hideIt();
                     } else {
                         p.showIt();
+                        p.hasBeenShown( true );
                         self.visiblePhotosCount( self.visiblePhotosCount()+1 );
                     }
                 });
-            } else {
+            } else if ( val == "all" ) {
                 self.photos().forEach( function( p ) {
                     p.showIt();
+                    p.hasBeenShown( true );
                     self.visiblePhotosCount( self.visiblePhotosCount()+1 );
                 });
             }
         });
+        
+        self.rawPhotos = ko.observableArray([]);
+        
+        self.performingNewSearch = ko.observable(true);
                 
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
@@ -321,14 +313,16 @@ define( ['plugins/router',
         });
     };
     
-    newHome.prototype.toggleVideoPhotoMode = function() {
+    newHome.prototype.toggleVideoMode = function() {
         var self = this;
         
-        //$('#myonoffswitch').trigger('click');
-        console.log( $('#myonoffswitch').is(':checked') );
-        //$('#myonoffswitch').is(':checked') ? $('#myonoffswitch').attr('checked', false) : $('#myonoffswitch').attr('checked', true);
+        self.video_mode_on(true);
+    };
+    
+    newHome.prototype.togglePhotoMode = function() {
+        var self = this;
         
-        self.video_mode_on() ? self.video_mode_on(false) : self.video_mode_on(true);
+        self.video_mode_on(false);
     };
     
     newHome.prototype.getVidsInProcess = function() {
@@ -342,7 +336,7 @@ define( ['plugins/router',
         });
     };
     
-    newHome.prototype.toggleRecentVids = function() {
+    /*newHome.prototype.toggleRecentVids = function() {
         var self = this;
         
         if( self.recentUploadsIsActive() ) {
@@ -353,7 +347,7 @@ define( ['plugins/router',
             self.recentUploadsIsActive( true );
             self.unselectOtherFilters();
         }
-    };
+    };*/
     
     newHome.prototype.toggle_find_options = function() {
         var self = this;
@@ -364,6 +358,70 @@ define( ['plugins/router',
             self.show_find_options( true );
         }
     };
+    
+    // this actually creates the photo instance for each photo and pushes it to the photos array
+    /*newHome.prototype.getPhotos = function() {
+        var self = this;
+        
+        console.log( 'getPhotos fired', self.rawPhotos(), self.photos() );
+        
+        var arr = [];
+        //if( self.photos().length == 0 ) {
+            self.rawPhotos().forEach( function( set ) {
+                set.arr.forEach( function( p ) {
+                    arr.push( self.addPhoto( p, self.mfOwnedByViewer( set.mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: set.mf.owner_uuid } ) );
+                });
+            });
+            self.photos( arr );
+        //}
+    };*/
+    
+    newHome.prototype.getPhotos = function() {
+        var self = this;
+        
+        var defs = [];
+        var arr = [];
+        var args, newArr;
+        
+        if( self.photos().length != 0 ) {
+            return;
+        }
+        
+        self.rawPhotos().forEach( function( set ) {
+            defs.push( self.some_more_all( set.mf, set.images ) );
+        });
+        $.when.apply($, defs).done(function( res ) {
+            args = Array.prototype.slice.call(arguments, 0);
+            newArr = args.sort();
+            
+            newArr.forEach( function( set ) {
+                set.arr.forEach( function( p ) {
+                    arr.push( self.addPhoto( p, self.mfOwnedByViewer( set.mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: set.mf.owner_uuid } ) );
+                });
+            });
+            
+            self.photos( arr );
+        });
+    };
+    
+    // this is used to apply a filter type to each photo - one of 'some', 'more' or 'all'
+    /*newHome.prototype.handlePhotos = function( arr ) {
+        var self = this;
+        // clear out the current list of non 'some' photos
+        self.rawPhotos.removeAll();
+        var defs = [];
+        
+        arr.forEach( function( set ) {
+            defs.push( self.some_more_all( set.mf, set.images ) );
+        });
+        
+        $.when.apply($, defs).done(function () {
+            if( !self.video_mode_on() ) {
+                self.getPhotos();
+                self.photos.valueHasMutated();
+            }
+        });
+    };*/
     
     newHome.prototype.some_more_all = function( mf, images ) {
         var self = this;
@@ -378,58 +436,77 @@ define( ['plugins/router',
         var some_count = 0;
         
         var results = [];
-        
-        for (var image in images) {
-            if( !images[image] ) {
-                return;
-            }
-            var timecode = images[image].timecode;
-            var face_score = images[image].face_score;
+        return system.defer( function( dfd ) { 
+            for (var image in images) {
+                if( !images[image] ) {
+                    return;
+                }
+                var timecode = images[image].timecode;
+                var face_score = images[image].face_score;
 
-            //Update the best image we've seen so far for this video.
-            if ( face_score > best_image_score ) {
-                best_image = images[image];
-                best_image_score = face_score;
-            }
-            
-            if( results.indexOf( images[image] ) < 0 ) {
-                if ( face_score >= face_threshold && ( timecode - prior_timecode ) > gap_threshold ) {
-                    //This image is in "some"
-                    images[image].filter = "some";
-                    results.push( images[image] );
-                    some_count++;
-                } else if ( ( timecode - prior_timecode ) > gap_threshold || ( ( face_score >= face_threshold ) && ( timecode - prior_timecode ) > face_gap_threshold ) ) {
-                    //This image is in "more"
-                    images[image].filter = "more";
-                    results.push( images[image] );
-                } else {
-                    //Otherwise, this image belongs to "all"
-                    images[image].filter = "all";
-                    results.push( images[image] );
+                //Update the best image we've seen so far for this video.
+                if ( face_score > best_image_score ) {
+                    best_image = images[image];
+                    best_image_score = face_score;
                 }
 
-                prior_timecode = timecode;   
-            } 
-        }
-        
-        // check to see if there are any "some" photos yet, if not then apply the "some" filter
-        // to the best image for the video
-        if( some_count == 0 ) {
-            // first remove the image from the results array
-            results.splice( results.indexOf( best_image ), 1 );
-            // then re-add it with a filter of "some"
-            best_image.filter = "some";
-            results.push( best_image );
-        }
-        
-        results.forEach( function( p ) {
-            self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } ); 
+                if( results.indexOf( images[image] ) < 0 ) {
+                    if ( face_score >= face_threshold && ( timecode - prior_timecode ) > gap_threshold ) {
+                        //This image is in "some"
+                        images[image].filter = "some";
+                        results.push( images[image] );
+                        some_count++;
+                    } else if ( ( timecode - prior_timecode ) > gap_threshold || ( ( face_score >= face_threshold ) && ( timecode - prior_timecode ) > face_gap_threshold ) ) {
+                        //This image is in "more"
+                        images[image].filter = "more";
+                        results.push( images[image] );
+                    } else {
+                        //Otherwise, this image belongs to "all"
+                        images[image].filter = "all";
+                        results.push( images[image] );
+                    }
+
+                    prior_timecode = timecode;   
+                } 
+            }
+
+            // check to see if there are any "some" photos yet, if not then apply the "some" filter
+            // to the best image for the video
+            if( some_count == 0 ) {
+                // first remove the image from the results array
+                results.splice( results.indexOf( best_image ), 1 );
+                // then re-add it with a filter of "some"
+                best_image.filter = "some";
+                results.push( best_image );
+            }
+
+            /*results.forEach( function( p ) {
+                self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
+            });
+            self.photos.valueHasMutated();*/
+            /*var others = [];
+            results.forEach( function( p ) {
+                if( p.filter == 'some' ) {
+                    //self.somePhotos().push( p );
+                    self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
+                }
+                others.push( p );
+            });
+            self.photos.valueHasMutated();*/
+
+            var set = {
+                mf: mf,
+                arr: results
+            };
+
+            //self.rawPhotos.push( set );
+            dfd.resolve( set );
         });
-        self.photos.valueHasMutated();
     };
     
     newHome.prototype.monthSelected = function( self, month ) {
         var args;
+        
         if( month.selected() ) {
             month.selected(false);
             self.showAllVideos();
@@ -439,11 +516,12 @@ define( ['plugins/router',
             });
             month.selected( true );
             self.selectedMonth( month.label );
+            self.activeFilterType('dates');
             args = {
                 month: self.selectedMonth(),
                 cid: self.cid
             };
-            self.filterVidsSearch( 'dates', args, '/services/yir/videos_for_month', true );
+            self.filterVidsSearch( 'dates', args, '/services/yir/videos_for_month', true, null );
         }
     };
     
@@ -467,10 +545,11 @@ define( ['plugins/router',
                 face.selected( true );
                 self.selectedFace( face );
                 //self.faceVidsSearch( true );
+                self.activeFilterType('faces');
                 args = {
                     contact_uuid: self.selectedFace().uuid
                 };
-                self.filterVidsSearch( 'faces', args, '/services/faces/media_face_appears_in', true );
+                self.filterVidsSearch( 'faces', args, '/services/faces/media_face_appears_in', true, null );
                 gettingFace = false;
             }
         } else {
@@ -492,11 +571,11 @@ define( ['plugins/router',
             });
             city.selected( true );
             self.selectedCity( city.label );
-            //self.cityVidsSearch( true );
+            self.activeFilterType('cities');
             args = {
                 q: self.selectedCity()
-            }
-            self.filterVidsSearch( 'cities', args, '/services/mediafile/taken_in_city', true );
+            };
+            self.filterVidsSearch( 'cities', args, '/services/mediafile/taken_in_city', true, null );
         }         
     };
     
@@ -507,14 +586,14 @@ define( ['plugins/router',
         if ( !self.searchQuery() ) {
             return;
         } else {          
-            self.searchFilterIsActive(true);
             self.videos.removeAll();
-            self.photos.removeAll();
+            //self.photos.removeAll();
             self.currentSearch = self.searchQuery();
+            self.activeFilterType('search');
             args = {
                 q: self.currentSearch
             };
-            self.filterVidsSearch( null, args, '/services/mediafile/search_by_title_or_description', true );
+            self.filterVidsSearch( null, args, '/services/mediafile/search_by_title_or_description', true, null );
         }
     };
     
@@ -522,12 +601,14 @@ define( ['plugins/router',
         var self = this;
         var args;
         
+        self.activeFilterType('recent');
+        
         args = {};
         if( self.vidsInProcess() > 0 ) {
             args.only_videos = 1;
             args['status[]'] = ['pending', 'visible', 'complete'];
         }
-        self.filterVidsSearch( 'recent', args, '/services/mediafile/recently_uploaded', newSearch );
+        self.filterVidsSearch( 'recent', args, '/services/mediafile/recently_uploaded', newSearch, null );
     };
     
     newHome.prototype.showAllVideos = function() {
@@ -535,23 +616,34 @@ define( ['plugins/router',
         var args;
         var apiCall;
         
-        self.searchFilterIsActive( false );
-        self.allVidsIsSelected(true);
+        //self.allVidsIsSelected(true);
+        
+        self.activeFilterType('all');
         
         args = {};
         if( self.cid ) {
-            args = {
-                contact_uuid: self.cid
-            };
+            args.contact_uuid = self.cid;
             apiCall = '/services/faces/media_face_appears_in';
         } else {
-            args = { 
-                views: ['poster']
-            };
+            args.views = ['poster'];
             apiCall = '/services/mediafile/list_all';
         }
-        self.filterVidsSearch( 'all', args, apiCall, true );
+        self.filterVidsSearch( 'all', args, apiCall, true, null );
     };
+    
+    newHome.prototype.albumVidsSearch = function( newSearch ) {
+        var self = this;
+        var args;
+        
+        // set the code below in the filterVidsSearch() function AFTER the album has been fetched.
+        //self.activeFilterType('album');
+        
+        args = {};
+        args.aid = self.currentAlbumAid();
+        self.filterVidsSearch( 'album', args, 'services/album/get', newSearch, null );
+    }; 
+    
+    
     
     /*
      * @param {string} type - one of: "dates", "faces", "cities", "recent", "all" or null 
@@ -559,236 +651,331 @@ define( ['plugins/router',
      * @param {string} api - the endpoint to call
      * @param {bool} newSearch - whether or not to run a fresh search or not
      */
-    newHome.prototype.filterVidsSearch = function( type, args, api, newSearch ) {
+    newHome.prototype.filterVidsSearch = function( type, args, api, newSearch, scrollToTop ) {
 	var self = this;
         var media;
         self.isActiveFlag(true);
         
+        console.log( type, args, api, newSearch );
+        
         // Only remove all vids and reset pager if it's a new search
         if( newSearch ) {
+            self.performingNewSearch( true );
             //clear the search contents - only if there is a type - if type is null this means it's a search, so keep the current search term
             if( type ) {
                 self.clearSearch();
             }
             
-            if( !type || type == "all" || type == "recent" ) {
-                self.clearfilters();
-            }
-            
-            self.unselectOtherFilters(type);
+            // remove all videos and images
+            self.videos.removeAll();
+            //self.photos.removeAll();
             // reset pager
             self.thePager({
                 next_page: 1,
-                entries_per_page: 10,
+                entries_per_page: 20,
                 total_entries: -1 /* currently unknown */
-            });    
+            });
         }
         
 	return system.defer( function( dfd ) {
-	    if ( self.thePager().next_page )   {
-                args.page = self.thePager().next_page;
-                args.rows = self.thePager().entries_per_page;
-                args.include_tags = 1;
-                args.include_contact_info = 1;
-                args.include_images = config.photo_throttle;
-		viblio.api( api, args )
-		    .then( function( json ) {
-                        self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
-			self.thePager(json.pager);
+            var photosArr = [];
+            args.page = args.page ? args.page : 1;
+            args.rows = self.thePager().entries_per_page;
+            args.include_tags = 1;
+            args.include_contact_info = 1;
+            args.include_images = config.photo_throttle;
+            viblio.api( api, args )
+                .then( function( json ) {
+                    console.log( json );
+                    self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
+                    self.handlePager( json.pager, newSearch || args.updatePager, args.updatePager );
+                    if( type == 'album' ) {
+                        self.currentAlbum( json.album );
+                        self.albumIsShared( json.album.is_shared ? true : false );
+                        self.activeFilterType('album');
+                        if( json.album.media.length > 0 ) {
+                            json.album.media.forEach( function( mf ) {
+                                self.addAlbumMediaFile ( mf );
+                                if( mf.views.image ) {
+                                    photosArr.push({
+                                        mf: mf,
+                                        images: mf.views.image 
+                                    });
+                                    //self.some_more_all( mf, mf.views.image );
+                                }
+                            });
+                            self.videos.valueHasMutated();
+                            dfd.resolve( 'album', photosArr );
+                        } else {
+                            dfd.resolve( 'album', photosArr );
+                        } 
+                    } else {
                         if(json.albums){
                             json.media = json.albums;
                         }
-                        media = json.media;
                         json.media.forEach( function( mf ) {
                             self.addMediaFile ( mf );
                             if( mf.views.image ) {
-                                self.some_more_all( mf, mf.views.image );
+                                photosArr.push({
+                                    mf: mf,
+                                    images: mf.views.image 
+                                });
+                                //self.some_more_all( mf, mf.views.image );
                             }
                         });
                         self.videos.valueHasMutated();
-			dfd.resolve();
-		    });
-	    }
-	    else {
-		dfd.resolve();
-	    }
-	}).promise().then(function(){
-            // reset active filters
-            if( type && type != "all" ) {
-                self.resetOtherFilters( type );
+                        dfd.resolve( 'other', photosArr );
+                    }
+                });
+	}).promise()
+        .done(function( res, photosArr ){
+            console.log( res );
+            // album searches
+            if( res == 'album' ) {
+                self.current_album_is_empty( false );
+            }
+            // all searches other than album
+            else {
+                // this section handles the cover photos section - if the type is not all then show a slideshow
+                if( type && type != "all" ) {
+                    app.trigger( 'newHome:filtersAreActive', media );
+                }
+
+                // this section handles the cover avatar section - calling it here gets the timing correct when exiting from an album
+                if( !type || ( type && type != "faces" ) ) {
+                    app.trigger( 'selectedFace:notactive' );
+                }
             }
             
-            // this section handles the cover photos section - if the type is not all then show a slideshow
-            if( type && type != "all" ) {
-                app.trigger( 'newHome:filtersAreActive', media );
-            }
-            
-            // this section handles the cover avatar section - calling it here gets the timing correct when exiting from an album
-            if( !type || ( type && type != "faces" ) ) {
-                app.trigger( 'selectedFace:notactive' );
-            }
+            self.resetOtherFilters( type );
             
             if( self.videos().length > 0 ) {
+                self.performingNewSearch( false );
                 $.when( self.videos()[self.videos().length-1].viewResolved ).then( function() {
                     self.isActiveFlag(false);
+                    // scroll to the top of the page
+                    if( scrollToTop ) {
+                        viblio.goTo( $('.allVidsPage'), -65 );
+                    }
                 });
             } else {
                 self.isActiveFlag(false);
+                self.performingNewSearch( false );
             }
+            
+            // handle the photos now
+            //self.handlePhotos( photosArr );
+            //self.rawPhotos.removeAll();
+            self.rawPhotos( photosArr );
+            if( !self.video_mode_on() ) {
+                self.getPhotos();
+            }
+            
+            /*var defs = [];
+            
+            // todo - I'm trying to never deal with an empty array to see if that fixes the cannot read property... error
+            // I was trying to just replace the contents of the rawPhotos array here and in another
+            // part of the code I am trying to do the same idea with the photos array.
+            // So far this has not worked and the error still occurs
+            photosArr.forEach( function( set ) {
+                defs.push( self.some_more_all( set.mf, set.images ) );
+            });
+            $.when.apply($, defs).done(function( res ) {
+                console.log( res );
+                console.log( defs );
+                var objects = arguments;
+                console.log( objects );
+                var args = Array.prototype.slice.call(objects, 0);
+                // 
+                self.rawPhotos( args.sort() );
+                if( !self.video_mode_on() ) {
+                    self.getPhotos();
+                    self.photos.valueHasMutated();
+                }
+            });*/
             
             // tickle the photos filter
             var old = self.photoViewFilter();
             self.photoViewFilter(null);
             self.photoViewFilter( old );
-            
+
             if( type == "all" ) {
                 setTimeout(function(){
                     self.setTitleMargin();
                 }, 300);    
             }
+        })
+        // if the album is empty then show dialog, when button is clicked drop into select mode from all videos 
+        .fail(function( res ){
+            if( res == 'album' ) {
+                self.current_album_is_empty( true );
+                self.selectedVideos.removeAll();
+
+                dialog.showModal( 'viewmodels/emptyAlbumModal' ).then( function( data ) {
+                    if( data == 'Add Videos Now' ) {
+                        self.showAllVideos();
+                        //self.addToAlbumSelected( self, self.currentSelectedFilterAlbum() );
+                        self.add_to_mode( 'existing-blank' );
+                    } else {
+                        self.delete_album( true );
+                    }                  
+                });
+            }
         });
-    };
-    
-    newHome.prototype.clearSearch = function( andFilter ) {
-        var self = this;
-        
-        self.searchFilterIsActive( false );
-        self.searchQuery(null);
-        self.videos.removeAll();
-        self.photos.removeAll();
-        
-        if( andFilter ) {
-            self.clearfilters();
-        }
     };
     
     newHome.prototype.resetOtherFilters = function( exception ) {
         var self = this;
         
-        self.dateFilterIsActive(false);
-        self.faceFilterIsActive(false);
-        self.cityFilterIsActive(false);
-        self.recentUploadsIsActive(false);
-        self.allVidsIsSelected(false);
-        self.albumFilterIsActive(false);
-        self.selectedFilterAlbum('');    
+        console.log( "exception: ", exception ); 
+        
+        if( exception != "album" ) {
+            self.selectedFilterAlbum('');    
+        }
             
         if( exception == "dates" ) {
-            self.dateFilterIsActive(true);
             self.selectedFace('');
+            self.facesLabels().forEach( function( f ) {
+                f.selected( false );
+            });
             self.selectedCity('');
+            self.citiesLabels().forEach( function( c ) {
+                c.selected( false );
+            });
         } else if ( exception == "faces" ) {
             self.selectedMonth('');
-            self.faceFilterIsActive(true);
+            self.datesLabels().forEach( function( m ) {
+                m.selected( false );
+            });
             self.selectedCity('');
+            self.citiesLabels().forEach( function( c ) {
+                c.selected( false );
+            });
         } else if ( exception == "cities" ) {
             self.selectedMonth('');
+            self.datesLabels().forEach( function( m ) {
+                m.selected( false );
+            });
             self.selectedFace('');
-            self.cityFilterIsActive(true);
-        } else if ( exception == "recent" ) {
+            self.facesLabels().forEach( function( f ) {
+                f.selected( false );
+            });
+        } else if ( !exception || exception == "search" || exception == "recent" || exception == "all" || exception == "album" ) {
             self.selectedMonth('');
+            self.datesLabels().forEach( function( m ) {
+                m.selected( false );
+            });
             self.selectedFace('');
+            self.facesLabels().forEach( function( f ) {
+                f.selected( false );
+            });
             self.selectedCity('');
-            self.recentUploadsIsActive(true);
+            self.citiesLabels().forEach( function( c ) {
+                c.selected( false );
+            });
         }
     };
         
-    newHome.prototype.albumVidsSearch = function( newSearch ) {
+    newHome.prototype.handlePager = function( pager, newSearch, redraw ) {
         var self = this;
-        var album_id = self.currentAlbumAid();
         
-        self.isActiveFlag(true);
+        console.log('from handle pager: pager.current_page', pager.current_page, pager, newSearch, redraw);
         
-        // Only remove all vids and reset pager if it's a new search
-        if( newSearch ) {
-            //clear the search contents
-            self.clearSearch();
-            self.unselectOtherFilters('albums');
-            // reset pager
-            self.thePager({
-                next_page: 1,
-                entries_per_page: 10,
-                total_entries: -1 /* currently unknown */
-            }); 
+        self.thePager( pager );
+        $('.paginationContainer').pagination( 'updateItems', pager.total_entries );
+        $('.paginationContainer').pagination( 'updateItemsOnPage', pager.entries_per_page );
+        $('.paginationContainer').pagination( 'drawPage', Number(pager.current_page) );
+    };
+    
+    newHome.prototype.filterVidsSearchPage = function( page, skipPageCheck, scrollToTop ) {
+        var self = this;
+        
+        console.log('filterVidsSearchPage is happening', page, typeof page, skipPageCheck );
+        
+        // this will dismiss any requests if the current fetch is not finished yet
+        if( self.isActiveFlag() /*|| typeof page != 'number'*/ ) {
+            return;
         }
         
-        var args ={
-            aid: album_id
-        };
+        var args = {
+            page: page
+        }
+        var apiCall;
         
-        return system.defer( function( dfd ) {
-            if ( self.thePager().next_page )   {
-                args.page = self.thePager().next_page;
-                args.rows = self.thePager().entries_per_page;
-                args.include_tags = 1;
-                args.include_contact_info = 1;
-                args.include_images = config.photo_throttle;
-                viblio.api( 'services/album/get', args ).
-                    then( function( json ) {
-                        console.log( json );
-                        self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
-                        self.thePager(json.pager);
-                        self.currentAlbum( json.album );
-                        self.albumIsShared( json.album.is_shared ? true : false );
-                        if( json.album.media.length > 0 ) {
-                            json.album.media.forEach( function( mf ) {
-                                self.addAlbumMediaFile ( mf );
-                                if( mf.views.image ) {
-                                    self.some_more_all( mf, mf.views.image );
-                                }
-                            });
-                            self.videos.valueHasMutated();
-                            dfd.resolve();
-                        } else {
-                            dfd.resolve();
-                        }                                               
-                    });
-	    } else {
-		dfd.resolve();
-	    }   
-        }).promise()
-        // If the album has videos in it go to it!
-          .done(function(){
-            self.current_album_is_empty( false );
-            // reset active filters
-            self.recentUploadsIsActive(false);
-            self.dateFilterIsActive(false);
-            self.selectedMonth('');
-            self.faceFilterIsActive(false);
-            self.selectedFace('');
-            self.allVidsIsSelected(false);
-            self.cityFilterIsActive(false);
-            self.selectedCity('');
-            self.albumFilterIsActive(true);
+        console.log( page );
+        if ( skipPageCheck ? page : (page && page <= self.thePager().last_page) && (page && page != self.thePager().current_page) )   {
+            console.log( 'a search should be performed' );
+            // clear out current videos
+            self.videos.removeAll();
+            self.photos.removeAll();
             
-            if( self.videos().length > 0 ) {
-                $.when( self.videos()[self.videos().length-1].viewResolved ).then( function() {
-                    self.isActiveFlag(false);
-                });
+            // deactivate select all mode when going to a new page, unless in the recent filter
+            if( self.activeFilterType() != 'recent' ) {
+                self.select_all_mode_is_on( false );
             } else {
-                self.isActiveFlag(false);
+                self.select_all_mode_is_on( true );
             }
             
-            // tickle the photos filter
-            var old = self.photoViewFilter();
-            self.photoViewFilter(null);
-            self.photoViewFilter( old );
-        })
-        // if the album is empty then show dialog, when button is clicked drop into select mode from all videos 
-        .fail(function(){
-            self.current_album_is_empty( true );
-            self.selectedVideos.removeAll();
-            
-            dialog.showModal( 'viewmodels/emptyAlbumModal' ).then( function( data ) {
-                if( data == 'Add Videos Now' ) {
-                    self.showAllVideos();
-                    //self.addToAlbumSelected( self, self.currentSelectedFilterAlbum() );
-                    self.add_to_mode( 'existing-blank' );
+            // Dates
+            if( self.activeFilterType() == 'dates' ) {
+                args.month = self.selectedMonth();
+                args.cid = self.cid;
+                self.filterVidsSearch( 'dates', args, '/services/yir/videos_for_month', null, scrollToTop );
+            }
+            // Faces
+            else if( self.activeFilterType() == 'faces' ) {
+                args.contact_uuid = self.selectedFace().uuid;
+                self.filterVidsSearch( 'faces', args, '/services/faces/media_face_appears_in', null, scrollToTop  );
+            }
+            // Cities
+            else if( self.activeFilterType() == 'cities' ) {
+                args.q = self.selectedCity();
+                self.filterVidsSearch( 'cities', args, '/services/mediafile/taken_in_city', null, scrollToTop );
+            }
+            // Search
+            else if( self.activeFilterType() == 'search' ) {
+                self.currentSearch = self.searchQuery();
+                args.q = self.currentSearch;
+                self.filterVidsSearch( null, args, '/services/mediafile/search_by_title_or_description', null, scrollToTop );
+            }
+            // Recent
+            else if( self.activeFilterType() == 'recent' ) {
+                if( self.vidsInProcess() > 0 ) {
+                    args.only_videos = 1;
+                    args['status[]'] = ['pending', 'visible', 'complete'];
+                }
+                self.filterVidsSearch( 'recent', args, '/services/mediafile/recently_uploaded', null, scrollToTop );
+            }
+            // All
+            else if( self.activeFilterType() == 'all' ) {
+                if( self.cid ) {
+                    args.contact_uuid = self.cid;
+                    apiCall = '/services/faces/media_face_appears_in';
                 } else {
-                    self.delete_album( true );
-                }                  
-            });
-        });
+                    args.views = ['poster'];
+                    apiCall = '/services/mediafile/list_all';
+                }
+                self.filterVidsSearch( 'all', args, apiCall, null, scrollToTop );
+            }
+            // Albums
+            else if( self.activeFilterType() == 'album' ) {
+                args.aid = self.currentAlbumAid();
+                args.updatePager = skipPageCheck;
+                self.filterVidsSearch( 'album', args, 'services/album/get', null, scrollToTop );
+            }
+        }
+    };
+    
+    newHome.prototype.clearSearch = function( andFilter ) {
+        var self = this;
+        
+        self.searchQuery(null);
+        self.videos.removeAll();
+        //self.photos.removeAll();
+        
+        if( andFilter ) {
+            self.clearfilters();
+        }
     };
     
     newHome.prototype.addToEmptyAlbum = function() {
@@ -864,7 +1051,7 @@ define( ['plugins/router',
         
 	// Create a new Mediafile with the data from the server - Only albums owned by the viewer will be given the share badge
 
-	var m = new Mediafile( mf, self.mfOwnedByViewer(mf) ? { show_share_badge: !self.select_mode_on(), show_preview: true, show_faces_tags: true, ownedByViewer: true, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on(), popup_player: true, clean_style: true } : { show_preview: true, ro: true, show_faces_tags: true, shared_style: true, owner_uuid: mf.owner_uuid, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on(), popup_player: true, clean_style: true } );	
+	var m = new Mediafile( mf, self.mfOwnedByViewer(mf) ? { show_share_badge: !self.select_mode_on(), show_preview: true, show_faces_tags: true, ownedByViewer: true, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on() ? true : self.selectedVideos().indexOf( mf.uuid ) != -1 ? true : false, popup_player: true, clean_style: true } : { show_preview: true, ro: true, show_faces_tags: true, shared_style: true, owner_uuid: mf.owner_uuid, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on(), popup_player: true, clean_style: true } );	
 
 	// Play a mediafile clip.  This uses the query parameter
 	// passing technique to pass in the mediafile to play.
@@ -880,12 +1067,15 @@ define( ['plugins/router',
             self.playingVidIndex( self.videos().indexOf( m ) );
             self.playingVidUUID( m.media().uuid );
 	});
-
-        m.on( 'mediafile:delete', function( m ) {
-            viblio.api( '/services/album/remove_media?', { aid: self.currentAlbumAid(), mid: m.media().uuid } ).then( function() {
+        
+        // in this case the deferred (dfd) is created in the actual mediafile (mediafile.js) itself and it is resolved once the api call has been made
+        m.on( 'mediafile:delete', function( m, dfd ) {
+            return viblio.api( '/services/album/remove_media?', { aid: self.currentAlbumAid(), mid: m.media().uuid } ).then( function() {
                 viblio.mpEvent( 'remove_video_from_album' );
                 // Remove from allVids
                 self.videos.remove( m );
+                // resolve the deferred that was passed in
+                dfd.resolve();
             });
         });
         
@@ -935,16 +1125,19 @@ define( ['plugins/router',
                 self.playingVidIndex( self.videos().indexOf( m ) );
                 self.playingVidUUID( m.media().uuid );
             });
-            m.on( 'mediafile:delete', function( m ) {
-                viblio.api( '/services/mediafile/delete_share', { mid: m.media().uuid } ).then( function( data ) {
+            // in this case the deferred (dfd) is created in the actual mediafile (mediafile.js) itself and it is resolved once the api call has been made
+            m.on( 'mediafile:delete', function( m, dfd ) {
+                return viblio.api( '/services/mediafile/delete_share', { mid: m.media().uuid } ).then( function( data ) {
                     viblio.mpEvent( 'delete_share' );
                     self.videos.remove( m );
                     self.hits( self.hits()-1 );
+                    // resolve the deferred that was passed in
+                    dfd.resolve();
                 });
             });    
         } else {
             // Owned by user
-            var m = new Mediafile( mf, { show_share_badge: !self.select_mode_on(), show_select_badge: self.select_mode_on(), show_faces_tags: true, ownedByViewer: true, selected: self.select_all_mode_is_on(), in_process_style: mf.status == 'pending' ? true : false, popup_player: true, clean_style: true } );
+            var m = new Mediafile( mf, { show_share_badge: !self.select_mode_on(), show_select_badge: self.select_mode_on(), show_faces_tags: true, ownedByViewer: true, selected: self.select_all_mode_is_on() ? true : self.selectedVideos().indexOf( mf.uuid ) != -1 ? true : false, in_process_style: mf.status == 'pending' ? true : false, popup_player: true, clean_style: true } );
 
             // Proxy the mediafile play event and send it along to
             // our parent.
@@ -957,7 +1150,7 @@ define( ['plugins/router',
                 self.playingVidUUID( m.media().uuid );
             });
 
-            m.on( 'mediafile:delete', function( m ) {
+            m.on( 'mediafile:delete', function( m, dfd ) {
                 viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function( json ) {
                     viblio.mpEvent( 'delete_video' );
                     self.videos.remove( m );
@@ -967,6 +1160,8 @@ define( ['plugins/router',
                             app.trigger( 'top-actor:remove', contact );
                         });
                     }
+                    // resolve the deferred that was passed in
+                    dfd.resolve();
                 });
             });
         } 
@@ -990,10 +1185,14 @@ define( ['plugins/router',
         // If select all mode is on when new vids are added then add them to the selected array too - only if owned by viewer
         if( self.select_all_mode_is_on() && self.select_mode_on() ) {
             if( self.delete_mode_on() ){
-                self.selectedVideos.push( m.media().uuid );
+                if( self.selectedVideos().indexOf( m.media().uuid ) == -1 ) {
+                    self.selectedVideos.push( m.media().uuid );
+                }
             } else {
                 if( self.mfOwnedByViewer( m ) ) {
-                    self.selectedVideos.push( m.media().uuid );
+                    if( self.selectedVideos().indexOf( m.media().uuid ) == -1 ) {
+                        self.selectedVideos.push( m.media().uuid );
+                    }
                 }    
             }
         } 
@@ -1003,7 +1202,7 @@ define( ['plugins/router',
 	var self = this;
         
 	// Create a new Photo with the data from the server
-	var p = new Photo( ph, options.ownedByViewer ? { ownedByViewer: true, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on() } : { owner_uuid: options.owner_uuid, show_select_badge: self.delete_mode_on() ? self.select_mode_on() : false, selected: self.delete_mode_on() ? self.select_all_mode_is_on() : false } );
+	var p = new Photo( ph, options.ownedByViewer ? { ownedByViewer: true, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on() ? true : self.selectedPhotos().indexOf( ph.uuid ) != -1 ? true : false } : { owner_uuid: options.owner_uuid, show_select_badge: self.delete_mode_on() ? self.select_mode_on() : false, selected: self.delete_mode_on() ? self.select_all_mode_is_on() : false } );
 
 	// Register a callback for when a Mediafile is selected.
 	// This is so we can deselect the previous one to create
@@ -1034,39 +1233,53 @@ define( ['plugins/router',
         });
 
         // Add it to the list - push directly into the underlying array, not the observable
-        var innerArray = self.photos()
-	innerArray.push( p );
+        /*var innerArray = self.photos()
+	innerArray.push( p );*/
         
         // If select all mode is on when new photos are added then add them to the selected array too - only if owned by viewer
         if( self.select_all_mode_is_on() && self.select_mode_on() ) {
             if( self.delete_mode_on() ){
                 if( self.photoViewFilter() == "some" ) {
                     if( p.filter() == "some" ) {
-                        self.selectedPhotos.push( p.media().uuid );
+                        if( self.selectedPhotos().indexOf( p.media().uuid ) == -1 ) {
+                            self.selectedPhotos.push( p.media().uuid );
+                        } 
                     }
                 } else if ( self.photoViewFilter() == "more" ) {
                     if( p.filter() != "all" ) {
-                        self.selectedPhotos.push( p.media().uuid );
+                        if( self.selectedPhotos().indexOf( p.media().uuid ) == -1 ) {
+                            self.selectedPhotos.push( p.media().uuid );
+                        } 
                     }
                 } else {
-                    self.selectedPhotos.push( p.media().uuid );
+                    if( self.selectedPhotos().indexOf( p.media().uuid ) == -1 ) {
+                        self.selectedPhotos.push( p.media().uuid );
+                    } 
                 }
             } else {
                 if( options.ownedByViewer ) {
                     if( self.photoViewFilter() == "some" ) {
                         if( p.filter() == "some" ) {
-                            self.selectedPhotos.push( p.media().uuid );
+                            if( self.selectedPhotos().indexOf( p.media().uuid ) == -1 ) {
+                                self.selectedPhotos.push( p.media().uuid );
+                            } 
                         }
                     } else if ( self.photoViewFilter() == "more" ) {
                         if( p.filter() != "all" ) {
-                            self.selectedPhotos.push( p.media().uuid );
+                            if( self.selectedPhotos().indexOf( p.media().uuid ) == -1 ) {
+                                self.selectedPhotos.push( p.media().uuid );
+                            }
                         }
                     } else {
-                        self.selectedPhotos.push( p.media().uuid );
+                        if( self.selectedPhotos().indexOf( p.media().uuid ) == -1 ) {
+                            self.selectedPhotos.push( p.media().uuid );
+                        } 
                     }
                 }    
             }
-        } 
+        }
+        
+        return p;
     };
     
     newHome.prototype.mfOwnedByViewer = function( mf ) {
@@ -1145,7 +1358,7 @@ define( ['plugins/router',
         }, 300);
         
         // for video mode
-        if( self.video_mode_on() ) {
+        /*if( self.video_mode_on() ) {
             self.videos().forEach( function( mf ) {
                 mf.turnOffSelectMode();
             });
@@ -1155,8 +1368,14 @@ define( ['plugins/router',
             self.photos().forEach( function( photo ) {
                 photo.turnOffSelectMode();
             });    
-        }
+        }*/
         
+        self.videos().forEach( function( mf ) {
+            mf.turnOffSelectMode();
+        });
+        self.photos().forEach( function( photo ) {
+            photo.turnOffSelectMode();
+        });
     };
     
     newHome.prototype.clear_all_modes = function() {
@@ -1185,7 +1404,7 @@ define( ['plugins/router',
         
         self.activate_select_mode();
         //only select all vids if the recent filter is on
-        if( self.recentUploadsIsActive() ) {
+        if( self.activeFilterType() == 'recent' ) {
             self.selectAll();
         }
         self.clear_all_modes();
@@ -1211,7 +1430,7 @@ define( ['plugins/router',
         self.delete_mode_on(true);
         
         // If an album is selected AND it's not owned by the user then only select user's vids
-        if( self.albumFilterIsActive() && self.currentSelectedFilterAlbum().shared == 1 ) {
+        if( self.activeFilterType() == 'album' && self.currentSelectedFilterAlbum().shared == 1 ) {
             self.activate_select_mode();
         } 
         // else select ALL vids - those owned by the user and shared with the user
@@ -1280,8 +1499,9 @@ define( ['plugins/router',
         var self = this;
         
         var len = self.video_mode_on() ? self.selectedVideos().length : self.selectedPhotos().length;
-        var albumOrAccount = self.albumFilterIsActive() ? 'this album' : 'your account';
+        var albumOrAccount = self.activeFilterType() == 'album' ? 'this album' : 'your account';
         var message = 'Are you sure you want to remove ' + len + ( len == 1 ? (self.video_mode_on() ? ' video' : ' photo') :  (self.video_mode_on() ? ' videos' : ' photos') ) + ' from ' + albumOrAccount + '?';
+        var deleteArr = [];
         
         if( len > 0 ) {
             app.showMessage( message, 'Delete Confirmation', ['Yes', 'No']).then( function( data ) {
@@ -1290,10 +1510,15 @@ define( ['plugins/router',
                     if( self.video_mode_on() ) {
                         self.videos().forEach( function( mf ) {
                             if( mf.selected() ) {
-                                mf.mfdelete();
+                                // create an array of deferreds (a deferred is created and resolved when deleting a mediafile)
+                                // this way we can do something once ALL of the selected mediafiles have been deleted
+                                deleteArr.push( mf.mfdelete() );
                             }
                         });
-                        dfd.resolve();
+                        // do things that need to wait until ALL deferreds are done
+                        $.when.apply($, deleteArr).done(function () {
+                            dfd.resolve();
+                        });
                     }
                     // photos
                     else {
@@ -1333,7 +1558,7 @@ define( ['plugins/router',
         
         // turn off select all mode
         self.select_all_mode_is_on( false );
-        // hide select boxes from vids
+        // hide select boxes from vids and photos
         self.deactivate_select_mode();
         // make sure all vids are unselected
         self.videos().forEach( function( mf ) {
@@ -1393,9 +1618,33 @@ define( ['plugins/router',
             }
             
         } else if ( self.delete_mode_on() ) {
+            //console.log( "self.thePager() before delete: ",  self.thePager() );
             return system.defer( function( dfd ) {
                 self.handle_delete( dfd );
             }).promise().done( function() {
+                //console.log( "self.thePager() after delete: ",  self.thePager() );
+                // handle the pager
+                var page;
+                // if the user is on the last page then send in the current page minus one as the page to use for the filterSearch
+                if( Number(self.thePager().current_page) == Number(self.thePager().last_page) ) {
+                    console.log( 'on the last page', Number(self.thePager().total_entries), Number(self.thePager().entries_per_page), 'modulo: ', Number(self.thePager().total_entries) % Number(self.thePager().entries_per_page) );
+                    // if there are still photos on the current last page
+                    if( Number(self.videos().length) % Number(self.thePager().entries_per_page) != 0 ) {
+                        page = Number(self.thePager().current_page);
+                    } else {
+                        page = Number(self.thePager().current_page-1);
+                    }
+                }
+                // else use the current page
+                else {
+                    console.log( 'Fail - not on the last page' );
+                    page = Number(self.thePager().current_page);
+                }
+                console.log('this is happening', page);
+                self.filterVidsSearchPage( page, true, null );
+                //self.handlePager( self.thePager(), true, true );
+                
+                // clean up
                 self.clean_up_after_select_mode();    
             });
         } else {
@@ -1428,7 +1677,7 @@ define( ['plugins/router',
         });
         
         if( self.current_album_is_empty() ) {
-            self.albumFilterIsActive( false );
+            //self.albumFilterIsActive( false );
             self.selectedFilterAlbum( null );
             self.currentSelectedFilterAlbum( null );
             hp.albumList().unselectAllAlbums();
@@ -1474,15 +1723,15 @@ define( ['plugins/router',
     newHome.prototype.clearfilters = function() {
         var self = this;
         // reset active filters
-        self.recentUploadsIsActive(false);
-        self.dateFilterIsActive(false);
+        //self.recentUploadsIsActive(false);
+        //self.dateFilterIsActive(false);
         self.selectedMonth('');
-        self.faceFilterIsActive(false);
+        //self.faceFilterIsActive(false);
         self.selectedFace('');
-        self.allVidsIsSelected(false);
-        self.cityFilterIsActive(false);
+        //self.allVidsIsSelected(false);
+        //self.cityFilterIsActive(false);
         self.selectedCity('');
-        self.albumFilterIsActive(false);
+        //self.albumFilterIsActive(false);
         self.selectedFilterAlbum('');
     };
     
@@ -1587,7 +1836,7 @@ define( ['plugins/router',
                 var hp = require('viewmodels/hp');
                 // if the album filter is active then pass in the aid of the current album so it can be highlighted via albumList.js
                 if( hp.albumList() ) {
-                    hp.albumList().getAllAlbumsLabels( self.albumFilterIsActive() ? self.currentAlbumAid() : null ).then( function() {
+                    hp.albumList().getAllAlbumsLabels( self.activeFilterType() == 'album' ? self.currentAlbumAid() : null ).then( function() {
                         dfd.resolve();
                     });
                 }
@@ -1602,7 +1851,7 @@ define( ['plugins/router',
         // for video mode
         if( self.video_mode_on() ) {
             if( self.delete_mode_on() ) {
-                if( self.albumFilterIsActive() ) {
+                if( self.activeFilterType == 'album' ) {
                     // if the current album has been shared with the user only allow them to delete their own videos
                     if( self.currentSelectedFilterAlbum().shared ) {
                         self.videos().forEach( function(video) {
@@ -1666,14 +1915,14 @@ define( ['plugins/router',
             self.videos().forEach( function(video) {
                 video.unselect();
             });
-            self.selectedVideos.removeAll();
+            //self.selectedVideos.removeAll();
         }
         // for photo mode
         else {
             self.photos().forEach( function( photo ) {
                 photo.unselect();
             });
-            self.selectedPhotos.removeAll();
+            //self.selectedPhotos.removeAll();
         }
     };
     
@@ -1715,24 +1964,20 @@ define( ['plugins/router',
     newHome.prototype.getAlbumName = function() {
         var self = this;
         
-        if( self.noFiltersAreActive() ) {
-            if( self.searchQuery() ) {
-                return self.searchQuery();
-            } else {
-                return "New album";
-            }           
-        } else {
-            if( self.recentUploadsIsActive() ) {
-                return 'Recent Uploads';
-            } else if( self.dateFilterIsActive() ) {
-                return self.selectedMonth();
-            } else if( self.faceFilterIsActive() ) {
-                return self.selectedFace().contact_name;
-            } else if( self.albumFilterIsActive() ) {
-                return self.selectedFilterAlbum();    
-            } else {
-                return self.selectedCity();
-            }
+        if( self.activeFilterType() == 'dates' ) {
+            return self.selectedMonth();
+        } else if( self.activeFilterType() == 'faces' ) {
+            return self.selectedFace().contact_name;
+        } else if( self.activeFilterType() == 'cities' ) {
+            return self.selectedCity();
+        } else if( self.activeFilterType() == 'album' ) {
+            return self.selectedFilterAlbum();
+        } else if( self.activeFilterType() == 'search') {
+            return self.searchQuery();
+        } else if( self.activeFilterType() == 'recent' ) {
+            return 'Recent Uploads';
+        } else if( self.activeFilterType() == 'all' ) {
+            return "New Album"
         }
     };
     
@@ -1854,7 +2099,7 @@ define( ['plugins/router',
 
     // bind to scroll() event and when scroll is 150px or less from bottom fetch more data.
     // Uses flag to determine if fetch is already in process, if so a new one will not be made 
-    newHome.prototype.scrollHandler = function( event ) {
+    /*newHome.prototype.scrollHandler = function( event ) {
         var self = event.data;
         var args;
         var apiCall;
@@ -1916,7 +2161,7 @@ define( ['plugins/router',
                 } 
             }
         }
-    };
+    };*/
     
     newHome.prototype.setTitleMargin = function() {
         var self = this;
@@ -1992,7 +2237,7 @@ define( ['plugins/router',
     };
     
     newHome.prototype.attached = function() {
-	$(window).scroll( this, this.scrollHandler );
+	//$(window).scroll( this, this.scrollHandler );
         $(window).scroll( this, this.stickyDates );
         $(window).scroll( this, this.stickyToolbars );
         $(window).resize( this, this.getWindowWidth );
@@ -2001,12 +2246,13 @@ define( ['plugins/router',
     };
 
     newHome.prototype.detached = function() {
-	$(window).off( "scroll", this.scollHandler );
+	//$(window).off( "scroll", this.scollHandler );
         $(window).off( "scroll", this.stickyDates );
         $(window).off( "scroll", this.stickyToolbars );
         $(window).off( "resize", this.getWindowWidth );
         $(window).off( "resize", this.stickyDates );
         $(window).off( "resize", this.resizePlayer );
+        $('.paginationContainer').pagination('destroy');
     };
     
     newHome.prototype.activate = function() {
@@ -2235,6 +2481,24 @@ define( ['plugins/router',
             delegate: '.photo:not(".hidden") .pointer a', // child items selector, by clicking on it popup will open - by including .photo:not(".hidden") only visible photos will be included in the gallery 
             type: 'image',
             gallery: {enabled:true}
+        });
+        
+        // set up pagination
+        $('.paginationContainer').pagination({
+            //items: self.thePager().total_entries,
+            //itemsOnPage: Number(self.thePager().entries_per_page),
+            displayedPages: 3,
+            edges: 1,
+            hrefTextPrefix: '',
+            cssStyle: 'light-theme',
+            selectOnClick: false,
+            onPageClick: function(pageNumber, event){
+                if( event && event.type == 'click' ) {
+                    console.log( event );
+                    event.preventDefault();
+                    self.filterVidsSearchPage(pageNumber, null, true);
+                }
+            }
         });
     };
 

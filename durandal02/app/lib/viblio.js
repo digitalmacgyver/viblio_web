@@ -290,6 +290,14 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
             div.innerHTML = escapedStr;
             var child = div.childNodes[0];
             return child ? child.nodeValue : '';
+        },
+        
+        // used to scroll to a specific element, passing in plus can be used to adjust the height - example use in newHome's filterVidsSearch's .done section
+        goTo: function( el, plus ) {
+            var top = $(el).offset().top + ( plus ? plus : 0 );
+            $('html, body').animate({
+                scrollTop: top + 'px'
+            }, 'fast');
         }
     };
 });

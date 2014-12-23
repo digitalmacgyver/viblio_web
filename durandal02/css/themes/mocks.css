@@ -279,6 +279,32 @@ a.activated:hover,
 .modalBorder {
     border: 6px solid rgb(148, 148, 148);
 }
+
+/*paging*/
+.paginationContainer {
+    text-align: center;
+    padding: 5px;
+}
+.paginationContainer a, 
+.paginationContainer span {
+    float: none;
+    margin: 0;
+    border-radius: 0;
+    padding: 4px 10px;
+}
+.paginationContainer span.current {
+    background: rgb(28,184,209);
+    border-color: rgb(19, 112, 137);
+}
+.paginationContainer span.disabled,
+.paginationContainer span.outerSpan {
+    padding: 4px 0;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    background: rgba(0, 0, 0, 0);
+    box-shadow: none;
+    margin: 0 5px 0 0;
+}
 /***************** START OF MORE GENERAL CSS CLASSES **************************/
 
 
@@ -6436,7 +6462,15 @@ button.linkedin:active {
 
 .newHomeTitle-Wrap {
     margin-top: 50px;
-    padding: 0 40px;
+    padding: 0 65px 0 40px;
+    position: relative;
+}
+
+.newHomeTitle-Wrap .pageNumber {
+    position: absolute;
+    right: 22px;
+    top: 14px;
+    font-size: 14px;
 }
 
 .newHomeTitle-Wrap .mainTitle {
