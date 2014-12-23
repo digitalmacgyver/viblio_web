@@ -1,12 +1,11 @@
 <div id="register-page">
-    <p class="landingHeaderTitle darkBlueBG" data-bind="visible: !isExistingUser()">Almost there! <span>Create your VIBLIO Account:</span></p>
-    <p class="landingHeaderTitle darkBlueBG" data-bind="visible: isExistingUser()">New videos <span>have been</span> added to a shared album!</p>
+    <p class="landingHeaderTitle darkBlueBG">Almost there! <span>Create your VIBLIO Account:</span></p>
     <div class="orangeBG-Header bottomBorder-Thin"></div>
     <div class="content-Wrap centeredEl">
     
         <div id="register-Wrap" class='centeredEl'>
            <div id="videoPoster-Wrap" class='bottomBorder-Thick'>    
-                <div id="shareFrom" data-bind="visible: !aid()">
+                <div id="shareFrom">
                     <img class="boxShadowed" data-bind="attr: { src: avatar }" />
 		    <!-- ko if: media() && media().is_album == 1 -->
                     <p><strong><span data-bind="text: displayname()"></span></strong> shared an Album with you!</p>
@@ -15,39 +14,30 @@
                     <p><strong><span data-bind="text: displayname()"></span></strong> shared a Video with you!</p>
 		    <!-- /ko -->
                 </div>
-               <div id="shareFrom" data-bind="visible: aid()">
-                    <img class="boxShadowed" data-bind="attr: { src: avatar }" />
-                    <p>Videos have been added to <strong><span data-bind="text: displayname()"></span></strong>'s album</p>
-                </div>
 		<div class="clearfix"></div>
-                <div data-bind="if: media()">
-                    <div class="mediafile" data-bind="attr: { id: media().uuid }">
-                        <div class="boxShadowed">
+                <div class="mediafile" data-bind="attr: { id: media().uuid }">
+                    <div class="boxShadowed">
+                        <div>
+                            <img data-bind="attr: { src: media().views.poster ? media().views.poster.url : '' }" />
+                        </div>
+                        <div class="information">
+                            <!-- ko if: media().eyes > 0 -->
+                            <div class="aux pull-right" title="View count"><!--<i class="fa fa-eye-open"></i><br>--><span data-bind="text: media().eyes">0</span><br><span class="small">Fan</span><br><span class="small" data-bind="text: media().eyes == 1 ? 'View' : 'Views' "></span></div>
+                            <!-- /ko -->
                             <div>
-                                <img data-bind="attr: { src: media().views.poster ? media().views.poster.url : '' }" />
-                            </div>
-                            <div class="information">
-                                <!-- ko if: media().eyes > 0 -->
-                                <div class="aux pull-right" title="View count"><!--<i class="fa fa-eye-open"></i><br>--><span data-bind="text: media().eyes">0</span><br><span class="small">Fan</span><br><span class="small" data-bind="text: media().eyes == 1 ? 'View' : 'Views' "></span></div>
-                                <!-- /ko -->
-                                <div>
-                                    <div class="view title truncate" data-bind="text: media().title || 'Unnamed video'"></div>  
-                                </div>
+                                <div class="view title truncate" data-bind="text: media().title || 'Unnamed video'"></div>  
                             </div>
                         </div>
-                    </div>    
+                    </div>
                 </div>
-                <p data-bind="visible: !isExistingUser()">
+                <p>
                     Please take a moment to create your <strong>free</strong> account before watching. This helps ensure <span data-bind="text: displayname()"></span>'s Video is only seen by people who were invited.
-                </p>
-                <p data-bind="visible: isExistingUser()">
-                    Please log in to see the new videos added to this album.
                 </p>
             </div>
 
             <div id="loginArea" class="mocksWhiteBG centeredEl">
               <div id="fbBtn-Wrap" class="bottomBorder">
-                  <a id="facebookLoginBtn" class="centeredEl facebookLoginBtn" data-bind="click: facebookAuthenticate"><img src="css/images/FBf.png" /> <span data-bind="text: isExistingUser() ? 'Log in' : 'Connect'"></span> with Facebook </a>
+                <a id="facebookLoginBtn" class="centeredEl facebookLoginBtn" data-bind="click: facebookAuthenticate"><img src="css/images/FBf.png" /> Connect with Facebook </a>
               </div>
               <div id='or-Wrap'>
                 <p>or</p>
@@ -56,21 +46,16 @@
                 <div class="centeredEl">
                     <div id="registerForm-Wrap">
                         <input type="email" data-bind="value: email, enable: false" />
-                        <input id="loginPassword" type="password" name="pword" class="text" data-bind="value: password, valueUpdate: 'afterkeydown', attr: { placeholder: isExistingUser() ? 'Password' : 'Choose a password' }" required/>
-                        <div data-bind="visible: !isExistingUser()">
-                            <div class="password-helper">
-                                <p> Your password must be at least 6 characters. </p>
-                            </div>
-                            <label class="checkbox">
-                                <input name="agreeTOS" data-bind="checked: agreeTOS" type="checkbox"> I agree to the VIBLIO <span class="turquoiseFont" data-bind="click: displayTerms">Terms of Service</span>
-                            </label>
-                            <button class="btn btn-primary" data-bind="click: done, enable: agreeTOS() && validPassword()">
-                                Watch Video
-                            </button>
+                        <input id="loginPassword" type="password" name="pword" class="text" data-bind="value: password, valueUpdate: 'afterkeydown'" placeholder="Choose a password" required/>
+                        <div class="password-helper">
+                            <p> Your password must be at least 6 characters. </p>
                         </div>
-                        <div data-bind="visible: isExistingUser()">
-                            <button class="btn btn-primary" data-bind="text: aid() ? 'Log In' : 'Watch Video', click: nativeAuthenticate"></button>   
-                        </div>
+                        <label class="checkbox">
+                            <input name="agreeTOS" data-bind="checked: agreeTOS" type="checkbox"> I agree to the VIBLIO <span class="turquoiseFont" data-bind="click: displayTerms">Terms of Service</span>
+                        </label>
+                        <button class="btn btn-primary" data-bind="click:done,enable: agreeTOS() && validPassword()">
+                            Watch Video
+                        </button>
                         <div class="clearfix"></div>
                     </div>
                 </div>
@@ -78,7 +63,7 @@
             </div>
             <div class='clearfix'></div>
         </div>    
-        <!--<p id='toLogin'>Already a member? <a class="turquoiseFont" href="/#login">Log In &raquo;</a></p>-->
+        <p id='toLogin'>Already a member? <a class="turquoiseFont" href="/#login">Log In &raquo;</a></p>
     </div>
     
 </div>
