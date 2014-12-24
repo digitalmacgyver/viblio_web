@@ -297,6 +297,10 @@ define( ['plugins/router',
         self.rawPhotos = ko.observableArray([]);
         
         self.performingNewSearch = ko.observable(true);
+        
+        self.tagList = ko.observableArray([]);
+        self.monthTagList = ko.observableArray([]);
+        self.activeTag = ko.observable( null );
                 
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
@@ -348,7 +352,7 @@ define( ['plugins/router',
             self.unselectOtherFilters();
         }
     };*/
-    
+        
     newHome.prototype.toggle_find_options = function() {
         var self = this;
         
@@ -357,6 +361,121 @@ define( ['plugins/router',
         } else {
             self.show_find_options( true );
         }
+    };
+    
+    newHome.prototype.handleTags = function( tags ) {
+        var self = this;
+        
+        var obj;
+        var set;
+        var max_tags_frequency = 0;
+        var min_tags_frequency = 99999999;
+        var max_months_frequency = 0;
+        var min_months_frequency = 99999999;
+        var min_font_size = 10;
+        var max_font_size = 25;
+        var arr = [];
+        var monthNames = ['January ', 'February ', 'March ', 'April ', 'May ', 'June ', 'July ', 'August ', 'September ', 'October ', 'November ', 'December '];
+        var months = [];
+        var regEx;
+        
+        function containsRegex(a, regex){
+            for(var i = 0; i < a.length; i++) {
+              if(a[i].search(regex) > -1){
+                return i;
+              }
+            }
+            return -1;
+        }
+        
+        function getLabelSize( frequency, minFrequency, maxFrequency ) {
+            var weight = ( frequency - minFrequency ) / ( maxFrequency - minFrequency );
+            var fontSize = min_font_size + Math.round( ( max_font_size - min_font_size ) * weight );
+            return fontSize + "pt"; 
+        }
+        
+        return system.defer( function( dfd ) { 
+            for( obj in tags ) {
+                set = {
+                    name: viblio.unescapeHtml( viblio.unescapeHtml(obj) ),
+                    freq: tags[obj],
+                    fontSize: null
+                };
+                // handle months
+                if( obj.indexOf( ' ' ) > 0 ) {
+                    regEx = obj.slice( 0, obj.indexOf( ' ' )+1 );
+                    if( containsRegex( monthNames, regEx ) > 0 ) {
+                        if( tags[obj] > max_months_frequency ) {
+                            max_months_frequency = tags[obj];
+                        }
+                        if( tags[obj] < min_months_frequency ) {
+                            min_months_frequency = tags[obj];
+                        }
+                        months.push( set );  
+                    }
+                    // handle other tags
+                    else {
+                        if( tags[obj] > max_tags_frequency ) {
+                            max_tags_frequency = tags[obj];
+                        }
+                        if( tags[obj] < min_tags_frequency ) {
+                            min_tags_frequency = tags[obj];
+                        }
+                        arr.push( set );    
+                    }
+                }
+                // handle other tags
+                else {
+                    if( tags[obj] > max_tags_frequency ) {
+                        max_tags_frequency = tags[obj];
+                    }
+                    if( tags[obj] < min_tags_frequency ) {
+                        min_tags_frequency = tags[obj];
+                    }
+                    arr.push( set );    
+                }
+            }
+            //self.tagList( set );
+            dfd.resolve( arr, months );
+        }).promise().then( function( tags, months ) {
+            console.log( tags, months );
+            //set tag size
+            tags.forEach( function( tag ) {
+                tag.fontSize = getLabelSize( tag.freq, min_tags_frequency, max_tags_frequency );
+            });
+            self.tagList( tags );
+            
+            months.forEach( function( tag ) {
+                tag.fontSize = getLabelSize( tag.freq, min_months_frequency, max_months_frequency );
+            });
+            self.monthTagList( months );
+            console.log( self.tagList(), self.monthTagList() );    
+        });
+    };
+    
+    newHome.prototype.tagSearch = function( tag ) {
+        var self = this;
+        var args;
+        
+        // remove all photos since this does not run through the filterVidsSearchPage() function which normally clears out the photos 
+        self.photos.removeAll();
+        
+        self.activeTag( tag );
+        
+        // set the code below in the filterVidsSearch() function AFTER the album has been fetched.
+        //self.activeFilterType('album');
+        
+        args = {
+            'tags[]': [tag]
+        };
+        args.aid = self.currentAlbumAid();
+        self.filterVidsSearch( 'album', args, 'services/album/get', true, true );
+    }; 
+    
+    newHome.prototype.clearTag = function() {
+        var self = this;
+        
+        self.albumVidsSearch( true, true );
     };
     
     // this actually creates the photo instance for each photo and pushes it to the photos array
@@ -631,16 +750,21 @@ define( ['plugins/router',
         self.filterVidsSearch( 'all', args, apiCall, true, null );
     };
     
-    newHome.prototype.albumVidsSearch = function( newSearch ) {
+    newHome.prototype.albumVidsSearch = function( newSearch, scrollToTop ) {
         var self = this;
         var args;
         
         // set the code below in the filterVidsSearch() function AFTER the album has been fetched.
         //self.activeFilterType('album');
         
+        // set the activeTag to null
+        if( newSearch ) {
+            self.activeTag( null );
+        }
+        
         args = {};
         args.aid = self.currentAlbumAid();
-        self.filterVidsSearch( 'album', args, 'services/album/get', newSearch, null );
+        self.filterVidsSearch( 'album', args, 'services/album/get', newSearch, scrollToTop );
     }; 
     
     
@@ -654,6 +778,7 @@ define( ['plugins/router',
     newHome.prototype.filterVidsSearch = function( type, args, api, newSearch, scrollToTop ) {
 	var self = this;
         var media;
+        var tags;
         self.isActiveFlag(true);
         
         console.log( type, args, api, newSearch );
@@ -692,6 +817,7 @@ define( ['plugins/router',
                     if( type == 'album' ) {
                         self.currentAlbum( json.album );
                         self.albumIsShared( json.album.is_shared ? true : false );
+                        tags = json.all_tags;
                         self.activeFilterType('album');
                         if( json.album.media.length > 0 ) {
                             json.album.media.forEach( function( mf ) {
@@ -710,6 +836,9 @@ define( ['plugins/router',
                             dfd.resolve( 'album', photosArr );
                         } 
                     } else {
+                        // set the activeTag to null
+                        self.activeTag( null );
+                        
                         if(json.albums){
                             json.media = json.albums;
                         }
@@ -769,6 +898,11 @@ define( ['plugins/router',
             self.rawPhotos( photosArr );
             if( !self.video_mode_on() ) {
                 self.getPhotos();
+            }
+            
+            // handle tags
+            if( self.activeFilterType() == 'album' ) {
+                self.handleTags( tags );
             }
             
             /*var defs = [];
@@ -1821,7 +1955,7 @@ define( ['plugins/router',
                 var arr = [];
                 data.albums.forEach( function( album ) {
                     var _album = album;
-                    _album.label = album.title;
+                    _album.label = viblio.unescapeHtml( album.title );
                     _album.selected = ko.observable( false );
                     _album.shared = album.is_shared;
                     arr.push( _album );
@@ -2045,9 +2179,9 @@ define( ['plugins/router',
     newHome.prototype.create_video_summary = function() {
         var self = this;
         
-        if( selectedPhotos().length > 0 ) {
+        if( self.selectedPhotos().length > 0 ) {
             var args = {
-                'images[]': selectedPhotos(),
+                'images[]': self.selectedPhotos(),
                 'summary_type' : 'moments',
                 'title': albumTitle() + ' Summary Video'
             };
@@ -2238,19 +2372,19 @@ define( ['plugins/router',
     
     newHome.prototype.attached = function() {
 	//$(window).scroll( this, this.scrollHandler );
-        $(window).scroll( this, this.stickyDates );
+        //$(window).scroll( this, this.stickyDates );
         $(window).scroll( this, this.stickyToolbars );
         $(window).resize( this, this.getWindowWidth );
-        $(window).resize( this, this.stickyDates );
+        //$(window).resize( this, this.stickyDates );
         $(window).resize( this, this.resizePlayer );
     };
 
     newHome.prototype.detached = function() {
 	//$(window).off( "scroll", this.scollHandler );
-        $(window).off( "scroll", this.stickyDates );
+        //$(window).off( "scroll", this.stickyDates );
         $(window).off( "scroll", this.stickyToolbars );
         $(window).off( "resize", this.getWindowWidth );
-        $(window).off( "resize", this.stickyDates );
+        //$(window).off( "resize", this.stickyDates );
         $(window).off( "resize", this.resizePlayer );
         $('.paginationContainer').pagination('destroy');
     };

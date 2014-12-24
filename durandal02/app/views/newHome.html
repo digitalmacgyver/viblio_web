@@ -513,7 +513,16 @@
                                                          hasFocus: currentAlbumTitle.editing, 
                                                          event: { blur: function() { currentAlbumTitle.stopEditing(); currentAlbumTitle.save( null, this, 'album:name_changed' ); } }" />
                                 </div>  
-                            </div> Album (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
+                             </div> Album 
+                                <span class='titleTag-Wrap' data-bind="visible: activeTag()">&mdash;
+                                    <span class='titleTag tag mocksWhiteBG'>
+                                        <span class='tagLabel' data-bind="text: activeTag()"></span>
+                                        <i class="fa fa-times" title="Clear tag" data-bind="click: clearTag"></i>
+                                    </span>
+                                    <span> tag</span>
+                                </span>
+                             
+                                (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
                             <!-- ko if: hits() < 1 -->
                             <div class="btn btn-primary" data-bind="click: add_videos_to_empty_album">Add videos to this empty album</div>
                             <!-- /ko -->
@@ -533,7 +542,7 @@
                         <span data-bind="text: videos().length"></span>
                         <span data-bind="text: videos().length == 1 ? ' video ' : ' videos'"></span>
                         in the "<span data-bind="text: selectedFilterAlbum"></span>" album &mdash;-->
-                        <span data-bind="text: selectedFilterAlbum().toUpperCase()"></span> Album (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>) &mdash;
+                        <span data-bind="text: selectedFilterAlbum().toUpperCase()"></span> Album <span class='titleTag' data-bind="visible: activeTag()">&mdash; <span data-bind="text:  activeTag()+' tag' "></span></span> (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>) &mdash;
                         <span class="subtitle">by <span data-bind="text: currentAlbum().owner.displayname"></span> <img class="img-circle" data-bind="attr: {src: '/services/user/avatar?uid=' + currentAlbum().owner.uuid + '&y=30'}, tooltip: {title: 'Album by ' + currentAlbum().owner.displayname, placement: 'bottom'}"></span>.
                         <!-- ko if: hits() < 1 -->
                         <div class="btn btn-primary" data-bind="click: add_videos_to_empty_album">Add videos to this empty album</div>
@@ -589,29 +598,29 @@
 
     </div>
     
-    <div class="containerxx">
+    <div class="containerxx clearfix" data-bind="css: {tagsVisible: activeFilterType() == 'album'}">
         <div class="table allVidsInner clearfix">    
 
-            <div class="dates" data-bind="visible: activeFilterType() != 'search' && video_mode_on()">
+            <!--<div class="dates" data-bind="visible: activeFilterType() != 'search' && video_mode_on()">
                 <div class="scroller">
                     <div class="wrapper textShadowed">
                         <!-- ko foreach: datesLabels -->
-                        <div class="year">
+                        <!--<div class="year">
                             <h1 data-bind="click: $parent.monthSelected.bind( $data, $parent ), css:{sel: $data.selected()}">
                                 <span data-bind="text: $data.shortMonth"></span> <span data-bind="text: $data.year"></span>
                             </h1>
                         </div>               
                         <!-- /ko -->
-                        <div class="year">
+                        <!--<div class="year">
                             <h1 data-bind="click: showAllVideos, css:{sel: !selectedMonth()}">
                                 <span>All</span>
                             </h1>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
 
-            <div id="allVidsWrap" class="clearfix photoGallery">
+            <div id="allVidsWrap" class="allVidsWrap clearfix photoGallery">
                 <div id='photosContainer' data-bind="visible: !video_mode_on()">
                     <div data-bind="foreach: photos">
                         <div data-bind="compose: $data"></div>
@@ -631,6 +640,25 @@
             </div>
 
         </div>
-        <div class='paginationContainer'></div>
+        <div class='tagsList-Wrapper' data-bind="visible: activeFilterType() == 'album' ">
+            <div class='tagsList'>
+                <h3>Tags</h3>
+                <ul>
+                    <!-- ko foreach: tagList -->
+                    <li data-bind="click: function(){ $parent.tagSearch($data.name); }, text: $data.name, style: {'font-size': $data.fontSize }"></li>
+                    <!-- /ko -->
+                </ul>
+            </div>
+
+            <div class='tagsList' data-bind="visible: monthTagList().length > 0">
+                <h3>Dates</h3>
+                <ul>
+                    <!-- ko foreach: monthTagList -->
+                    <li data-bind="click: function(){ $parent.tagSearch($data.name); }, text: $data.name, style: {'font-size': $data.fontSize }"></li>
+                    <!-- /ko -->
+                </ul>
+            </div>    
+        </div>
     </div>
+    <div class='paginationContainer'></div>
 </div>
