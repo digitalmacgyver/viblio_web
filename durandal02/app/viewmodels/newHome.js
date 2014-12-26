@@ -339,20 +339,7 @@ define( ['plugins/router',
             self.vidsInProcess( num );
         });
     };
-    
-    /*newHome.prototype.toggleRecentVids = function() {
-        var self = this;
-        
-        if( self.recentUploadsIsActive() ) {
-            self.recentUploadsIsActive( false );
-            self.showAllVideos();
-        } else {
-            self.getRecentVids( true );
-            self.recentUploadsIsActive( true );
-            self.unselectOtherFilters();
-        }
-    };*/
-        
+
     newHome.prototype.toggle_find_options = function() {
         var self = this;
         
@@ -477,24 +464,7 @@ define( ['plugins/router',
         
         self.albumVidsSearch( true, true );
     };
-    
-    // this actually creates the photo instance for each photo and pushes it to the photos array
-    /*newHome.prototype.getPhotos = function() {
-        var self = this;
-        
-        console.log( 'getPhotos fired', self.rawPhotos(), self.photos() );
-        
-        var arr = [];
-        //if( self.photos().length == 0 ) {
-            self.rawPhotos().forEach( function( set ) {
-                set.arr.forEach( function( p ) {
-                    arr.push( self.addPhoto( p, self.mfOwnedByViewer( set.mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: set.mf.owner_uuid } ) );
-                });
-            });
-            self.photos( arr );
-        //}
-    };*/
-    
+
     newHome.prototype.getPhotos = function() {
         var self = this;
         
@@ -522,25 +492,6 @@ define( ['plugins/router',
             self.photos( arr );
         });
     };
-    
-    // this is used to apply a filter type to each photo - one of 'some', 'more' or 'all'
-    /*newHome.prototype.handlePhotos = function( arr ) {
-        var self = this;
-        // clear out the current list of non 'some' photos
-        self.rawPhotos.removeAll();
-        var defs = [];
-        
-        arr.forEach( function( set ) {
-            defs.push( self.some_more_all( set.mf, set.images ) );
-        });
-        
-        $.when.apply($, defs).done(function () {
-            if( !self.video_mode_on() ) {
-                self.getPhotos();
-                self.photos.valueHasMutated();
-            }
-        });
-    };*/
     
     newHome.prototype.some_more_all = function( mf, images ) {
         var self = this;
@@ -599,26 +550,11 @@ define( ['plugins/router',
                 results.push( best_image );
             }
 
-            /*results.forEach( function( p ) {
-                self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
-            });
-            self.photos.valueHasMutated();*/
-            /*var others = [];
-            results.forEach( function( p ) {
-                if( p.filter == 'some' ) {
-                    //self.somePhotos().push( p );
-                    self.addPhoto( p, self.mfOwnedByViewer( mf ) ? { ownedByViewer: true } : { ownedByViewer: false, owner_uuid: mf.owner_uuid } );
-                }
-                others.push( p );
-            });
-            self.photos.valueHasMutated();*/
-
             var set = {
                 mf: mf,
                 arr: results
             };
 
-            //self.rawPhotos.push( set );
             dfd.resolve( set );
         });
     };
@@ -735,8 +671,6 @@ define( ['plugins/router',
         var args;
         var apiCall;
         
-        //self.allVidsIsSelected(true);
-        
         self.activeFilterType('all');
         
         args = {};
@@ -781,8 +715,6 @@ define( ['plugins/router',
         var tags;
         self.isActiveFlag(true);
         
-        console.log( type, args, api, newSearch );
-        
         // Only remove all vids and reset pager if it's a new search
         if( newSearch ) {
             self.performingNewSearch( true );
@@ -793,7 +725,7 @@ define( ['plugins/router',
             
             // remove all videos and images
             self.videos.removeAll();
-            //self.photos.removeAll();
+            self.photos.removeAll();
             // reset pager
             self.thePager({
                 next_page: 1,
@@ -811,7 +743,6 @@ define( ['plugins/router',
             args.include_images = config.photo_throttle;
             viblio.api( api, args )
                 .then( function( json ) {
-                    console.log( json );
                     self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
                     self.handlePager( json.pager, newSearch || args.updatePager, args.updatePager );
                     if( type == 'album' ) {
@@ -858,7 +789,6 @@ define( ['plugins/router',
                 });
 	}).promise()
         .done(function( res, photosArr ){
-            console.log( res );
             // album searches
             if( res == 'album' ) {
                 self.current_album_is_empty( false );
@@ -893,40 +823,16 @@ define( ['plugins/router',
             }
             
             // handle the photos now
-            //self.handlePhotos( photosArr );
-            //self.rawPhotos.removeAll();
             self.rawPhotos( photosArr );
             if( !self.video_mode_on() ) {
                 self.getPhotos();
+                self.photos.valueHasMutated();
             }
             
             // handle tags
             if( self.activeFilterType() == 'album' ) {
                 self.handleTags( tags );
             }
-            
-            /*var defs = [];
-            
-            // todo - I'm trying to never deal with an empty array to see if that fixes the cannot read property... error
-            // I was trying to just replace the contents of the rawPhotos array here and in another
-            // part of the code I am trying to do the same idea with the photos array.
-            // So far this has not worked and the error still occurs
-            photosArr.forEach( function( set ) {
-                defs.push( self.some_more_all( set.mf, set.images ) );
-            });
-            $.when.apply($, defs).done(function( res ) {
-                console.log( res );
-                console.log( defs );
-                var objects = arguments;
-                console.log( objects );
-                var args = Array.prototype.slice.call(objects, 0);
-                // 
-                self.rawPhotos( args.sort() );
-                if( !self.video_mode_on() ) {
-                    self.getPhotos();
-                    self.photos.valueHasMutated();
-                }
-            });*/
             
             // tickle the photos filter
             var old = self.photoViewFilter();
@@ -959,9 +865,7 @@ define( ['plugins/router',
     };
     
     newHome.prototype.resetOtherFilters = function( exception ) {
-        var self = this;
-        
-        console.log( "exception: ", exception ); 
+        var self = this; 
         
         if( exception != "album" ) {
             self.selectedFilterAlbum('');    
@@ -1013,8 +917,6 @@ define( ['plugins/router',
     newHome.prototype.handlePager = function( pager, newSearch, redraw ) {
         var self = this;
         
-        console.log('from handle pager: pager.current_page', pager.current_page, pager, newSearch, redraw);
-        
         self.thePager( pager );
         $('.paginationContainer').pagination( 'updateItems', pager.total_entries );
         $('.paginationContainer').pagination( 'updateItemsOnPage', pager.entries_per_page );
@@ -1023,8 +925,6 @@ define( ['plugins/router',
     
     newHome.prototype.filterVidsSearchPage = function( page, skipPageCheck, scrollToTop ) {
         var self = this;
-        
-        console.log('filterVidsSearchPage is happening', page, typeof page, skipPageCheck );
         
         // this will dismiss any requests if the current fetch is not finished yet
         if( self.isActiveFlag() /*|| typeof page != 'number'*/ ) {
@@ -1036,9 +936,7 @@ define( ['plugins/router',
         }
         var apiCall;
         
-        console.log( page );
         if ( skipPageCheck ? page : (page && page <= self.thePager().last_page) && (page && page != self.thePager().current_page) )   {
-            console.log( 'a search should be performed' );
             // clear out current videos
             self.videos.removeAll();
             self.photos.removeAll();
@@ -1761,7 +1659,6 @@ define( ['plugins/router',
                 var page;
                 // if the user is on the last page then send in the current page minus one as the page to use for the filterSearch
                 if( Number(self.thePager().current_page) == Number(self.thePager().last_page) ) {
-                    console.log( 'on the last page', Number(self.thePager().total_entries), Number(self.thePager().entries_per_page), 'modulo: ', Number(self.thePager().total_entries) % Number(self.thePager().entries_per_page) );
                     // if there are still photos on the current last page
                     if( Number(self.videos().length) % Number(self.thePager().entries_per_page) != 0 ) {
                         page = Number(self.thePager().current_page);
@@ -1771,12 +1668,9 @@ define( ['plugins/router',
                 }
                 // else use the current page
                 else {
-                    console.log( 'Fail - not on the last page' );
                     page = Number(self.thePager().current_page);
                 }
-                console.log('this is happening', page);
                 self.filterVidsSearchPage( page, true, null );
-                //self.handlePager( self.thePager(), true, true );
                 
                 // clean up
                 self.clean_up_after_select_mode();    
@@ -2230,72 +2124,6 @@ define( ['plugins/router',
             },{scope: config.facebook_ask_features()});
         }
     };
-
-    // bind to scroll() event and when scroll is 150px or less from bottom fetch more data.
-    // Uses flag to determine if fetch is already in process, if so a new one will not be made 
-    /*newHome.prototype.scrollHandler = function( event ) {
-        var self = event.data;
-        var args;
-        var apiCall;
-        
-        if ( !self.noFiltersAreActive() ) {
-            if( self.recentUploadsIsActive() ) {
-                if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                    self.getRecentVids();
-                }
-            } else if ( self.dateFilterIsActive() ) {
-                if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                    args = {
-                        month: self.selectedMonth(),
-                        cid: self.cid
-                    };
-                    self.filterVidsSearch( 'dates', args, '/services/yir/videos_for_month' );
-                }
-            } else if( self.faceFilterIsActive() ) {
-                if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                    args = {
-                        contact_uuid: self.selectedFace().uuid
-                    };
-                    self.filterVidsSearch( 'faces', args, '/services/faces/media_face_appears_in' );
-                }
-            } else if( self.cityFilterIsActive() ) {
-                if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                    args = {
-                        q: self.selectedCity()
-                    }
-                    self.filterVidsSearch( 'cities', args, '/services/mediafile/taken_in_city' );
-                }
-            } else if( self.albumFilterIsActive() ) {
-                if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                    self.albumVidsSearch();
-                }
-            }  
-        } else {
-            if( self.searchFilterIsActive() ) {
-                if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                    args = {
-                        q: self.currentSearch
-                    };
-                    self.filterVidsSearch( null, args, '/services/mediafile/search_by_title_or_description' );
-                }    
-            } else {
-                if( !self.isActiveFlag() && $(window).scrollTop() + $(window).height() > $(document).height() - 150 ) {
-                    if( self.cid ) {
-                        args = {
-                            contact_uuid: self.cid
-                        };
-                        apiCall = '/services/faces/media_face_appears_in';
-                    } else {
-                        args = { 
-                            views: ['poster']
-                        };
-                        apiCall = '/services/mediafile/list_all';
-                    }
-                    self.filterVidsSearch( 'all', args, apiCall );
-                } 
-            }
-        }
-    };*/
     
     newHome.prototype.setTitleMargin = function() {
         var self = this;
@@ -2628,7 +2456,6 @@ define( ['plugins/router',
             selectOnClick: false,
             onPageClick: function(pageNumber, event){
                 if( event && event.type == 'click' ) {
-                    console.log( event );
                     event.preventDefault();
                     self.filterVidsSearchPage(pageNumber, null, true);
                 }
