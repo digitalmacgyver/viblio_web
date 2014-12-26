@@ -134,7 +134,6 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
     };
     
     Photo.prototype.detached = function( view ) {
-        console.log( "photo is being removed" );
         //ko.removeNode(view); 
     };
 
