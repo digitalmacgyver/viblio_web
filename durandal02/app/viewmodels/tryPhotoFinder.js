@@ -14,7 +14,7 @@ function( router, app, system, config, viblio, dialogs, Uploader ) {
         
         compositionComplete: function( view ) {
             var self = this;
-            
+            console.log( window.location.host );
             UL(  new Uploader()  );
         }
 
