@@ -51,6 +51,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 	logoutTimeout = setTimeout( function() {
 	    self.api( '/services/na/logout' ).then( function() {
 		self.setUser( null );
+                self.setLastAttempt( null );
 		router.navigate( 'login' );
 	    });
 	}, ( 1000 * seconds ) );
@@ -66,6 +67,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 	logoutTimeout = null;
 	self.api( '/services/na/logout' ).then( function() {
 	    self.setUser( null );
+            self.setLastAttempt( null );
 	    router.navigate( 'login' );
 	});
     };

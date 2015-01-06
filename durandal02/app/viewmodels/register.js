@@ -156,15 +156,19 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
 	    view = el;
 	},
 
-	/*canActivate: function( args ) {
-	    // In the case when/if user has already registered and perhaps
-	    // clicked on an old email link to this register page, lets bounce
-	    // them to the url directly
+	canActivate: function( args ) {
+	    // If the user is already logged in then, just send them directly to the 
+            // album
 	    if ( args && args.email && args.url ) {
 		return system.defer( function( dfd ) {
 		    viblio.api( '/services/na/valid_email', {email: args.email} ).then( function( json ) {
 			if ( json.valid == 0 && json.why == 'email address taken' ) {
-			    dfd.resolve({redirect: args.url});
+                            if( viblio.user() && viblio.user().email && viblio.user().email == args.email ) {
+                                console.log( viblio.user() );
+                                dfd.resolve({redirect: args.url});
+                            } else {
+                                dfd.resolve( true );
+                            }
 			}
 			else {
 			    dfd.resolve( true );
@@ -175,7 +179,7 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
 	    else {
 		return true;
 	    }
-	},*/
+	},
 
 	activate: function( args ) {
 	    var testing = 0;
