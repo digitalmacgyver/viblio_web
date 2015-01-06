@@ -391,7 +391,7 @@ define( ['plugins/router',
                 // handle months
                 if( obj.indexOf( ' ' ) > 0 ) {
                     regEx = obj.slice( 0, obj.indexOf( ' ' )+1 );
-                    if( containsRegex( monthNames, regEx ) > 0 ) {
+                    if( containsRegex( monthNames, regEx ) >= 0 ) {
                         if( tags[obj] > max_months_frequency ) {
                             max_months_frequency = tags[obj];
                         }
@@ -431,11 +431,17 @@ define( ['plugins/router',
                 tag.fontSize = getLabelSize( tag.freq, min_tags_frequency, max_tags_frequency );
             });
             self.tagList( tags );
+            // sort the tags alphabetically
+            self.tagList.sort(function(left, right) { return left.name == right.name ? 0 : (left.name < right.name ? -1 : 1) });
             
             months.forEach( function( tag ) {
+                // add a unix timestamp to sort by
+                tag.date = moment( tag.name, "MMMM YYYY" ).unix();
                 tag.fontSize = getLabelSize( tag.freq, min_months_frequency, max_months_frequency );
             });
             self.monthTagList( months );
+            // sort chronilogically
+            self.monthTagList.sort(function(left, right) { return left.date == right.date ? 0 : (left.date < right.date ? -1 : 1) })
             console.log( self.tagList(), self.monthTagList() );    
         });
     };
@@ -926,6 +932,8 @@ define( ['plugins/router',
     newHome.prototype.filterVidsSearchPage = function( page, skipPageCheck, scrollToTop ) {
         var self = this;
         
+        console.log( self.activeFilterType() )
+        
         // this will dismiss any requests if the current fetch is not finished yet
         if( self.isActiveFlag() /*|| typeof page != 'number'*/ ) {
             return;
@@ -991,6 +999,9 @@ define( ['plugins/router',
             }
             // Albums
             else if( self.activeFilterType() == 'album' ) {
+                if( self.activeTag() ) {
+                    args['tags[]'] = [self.activeTag()];
+                }
                 args.aid = self.currentAlbumAid();
                 args.updatePager = skipPageCheck;
                 self.filterVidsSearch( 'album', args, 'services/album/get', null, scrollToTop );
