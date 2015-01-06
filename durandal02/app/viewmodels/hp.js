@@ -28,7 +28,7 @@ define(['durandal/app',
         }
     });
     
-    var gotToAlbum = ko.observable( null );
+    var goToAlbum = ko.observable( null );
     
     app.on( 'albumList:composed', function( obj ) {
 	albumList(obj);
@@ -36,7 +36,7 @@ define(['durandal/app',
     });
     
     app.on( 'coverphoto:composed', function( obj ) {
-        console.log( obj );
+        //console.log( obj );
         coverphoto = obj;
     });
     
@@ -132,7 +132,6 @@ define(['durandal/app',
             }
             
             if( args ){
-                console.log( "args: ", args );
                 // this cleans up to avoid an extra call to activate when the nhome observable is updated
                 var videos = $('#videos')[0];
                 if( videos ) {
@@ -141,7 +140,7 @@ define(['durandal/app',
                 
                 if( args.aid ) {
                     nhome( new newHome( {aid: args.aid} ) );
-                    gotToAlbum(args.aid);
+                    goToAlbum(args.aid);
                 } else if( args.fid ) {
                     nhome( new newHome( {fid: args.fid} ) );  
                 } else if( args.addAlbum ) {
@@ -174,7 +173,7 @@ define(['durandal/app',
                 if( videos ) {
                     ko.cleanNode(videos);
                 }
-                
+                goToAlbum( null );
                 nhome( new newHome() );
             }
                        
@@ -195,8 +194,8 @@ define(['durandal/app',
         
 	compositionComplete: function( _view ) {
 	    view = _view;
-            if( gotToAlbum() ) {
-                activateAlbum( gotToAlbum() );
+            if( goToAlbum() ) {
+                activateAlbum( goToAlbum() );
             }
 	    handle_visibility( albumList_is_visible );
             
