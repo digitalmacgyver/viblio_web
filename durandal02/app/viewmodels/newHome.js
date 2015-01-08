@@ -63,6 +63,29 @@ define( ['plugins/router',
             }
         });
         
+        self.showSearchResults = ko.computed( function() {
+            if( args ) {
+                if( args.search ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        });
+        self.searchResultToShow = ko.computed(function(){
+            if( args ) {
+                if( args.search ) {
+                    return args.search;
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        });
+        
         self.activateWithRegSearch = ko.observable( args ? false : true );
         
         self.windowWidth = ko.observable( $(window).width() );
@@ -2118,6 +2141,12 @@ define( ['plugins/router',
         
         if( self.showRecent() ){
             self.getRecentVids( true );
+            router.navigate('#home', { trigger: false, replace: true }); 
+        }
+        
+        if( self.showSearchResults() ){
+            self.searchQuery( self.searchResultToShow() );
+            self.newVidsSearch();
             router.navigate('#home', { trigger: false, replace: true }); 
         }
         

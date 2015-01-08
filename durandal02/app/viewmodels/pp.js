@@ -772,6 +772,10 @@ define(["durandal/app",
 		    known_faces.remove( face );
 	    });
     }
+    
+    function seePhotos() {
+        router.navigate('home?search='+title()+'&photos=more');
+    }
 
     return {
         fixHeight: fixHeight,
@@ -862,6 +866,7 @@ define(["durandal/app",
         playRelated: playRelated,
         
         addVideoToAccount: addVideoToAccount,
+        seePhotos: seePhotos,
                 
         shouldShowInteractiveMap: function() {
             if( nolocation() ) {
