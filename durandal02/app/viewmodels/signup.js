@@ -122,7 +122,9 @@ function( router, app, system, config, viblio, dialog ) {
 	    msg  = "We are very sorry, but something strange happened.  Please try ";
 	    msg += "logging in again.";
 	}
-	return dialog.showModal( 'viewmodels/customBlankModal', msg );
+	return dialog.showModal( 'viewmodels/customBlankModal', msg ).then( function() {
+            busyFlag( false );
+        });
     };
 
     function facebookSignup() {
