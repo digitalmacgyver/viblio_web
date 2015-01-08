@@ -7128,11 +7128,11 @@ ul.token-input-list-facebook li input {
     line-height: 1.5;
 }
 
-.titleTag-Wrap i {
+.titleTag-Wrap i.turquoiseFont {
     opacity: .65;
 }
 
-.titleTag-Wrap i:hover {
+.titleTag-Wrap i.turquoiseFont:hover {
     cursor: pointer;
     opacity: 1;
 }
