@@ -164,6 +164,8 @@ define(['durandal/app',
                         });
                         customDialogs.showModal( 'viewmodels/loginModal', 'Please log in before uploading new videos to your account.' );
                     }
+                } else if( args.search ) {
+                    nhome( new newHome( {search: args.search} ) );
                 } else {
                     nhome( new newHome() );
                 }             
@@ -200,7 +202,7 @@ define(['durandal/app',
 	    handle_visibility( albumList_is_visible );
             
             // this will switch to the photos view when newHome is created and will put it in the specified mode
-            // For example if ?photos=all then photo mode will be runed on and the photo filter will be set to show all photos
+            // For example if ?photos=all then photo mode will be turned on and the photo filter will be set to show all photos
             if( showPhotos() ) {
                 nhome().video_mode_on( false );
                 nhome().photoViewFilter( showPhotos() );

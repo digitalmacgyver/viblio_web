@@ -18,23 +18,34 @@ function( app, system, dialog, Loading, ChangePassword, IMap, ShareVid, ShareAlb
     return {
 	showMessage: function( msg, title, options ) {
 	    // return app.showMessage( msg, title, options );
-	    return dialog.showAnimated( new dialog.MessageBox( msg, title, options ) );
+            if( !dialog.isOpen() ) {
+                return dialog.showAnimated( new dialog.MessageBox( msg, title, options ) );
+            }
 	},
 	showError: function( msg, title, options ) {
 	    // return app.showMessage( msg, title, options );
-	    return dialog.showAnimated( new dialog.MessageBox( msg, title, options ) );
+            if( !dialog.isOpen() ) {
+                return dialog.showAnimated( new dialog.MessageBox( msg, title, options ) );
+            }
 	},
 	showWarning: function( msg, title, options ) {
 	    // return app.showMessage( msg, title, options );
-	    return dialog.showAnimated( new dialog.MessageBox( msg, title, options ) );
+            if( !dialog.isOpen() ) {
+                return dialog.showAnimated( new dialog.MessageBox( msg, title, options ) );
+            }
 	},
 	showInfo: function( msg, title, options ) {
 	    // return app.showMessage( msg, title, options );
-	    return dialog.showAnimated( new dialog.MessageBox( msg, title, options ) );
+            if( !dialog.isOpen() ) {
+                return dialog.showAnimated( new dialog.MessageBox( msg, title, options ) );
+            }
 	},
 	showModal: function( obj, activationData, context ) {
 	    // return app.showDialog( obj, activationData, context );
-	    return dialog.showAnimated( obj, activationData );
+            if( !dialog.isOpen() ) {
+                return dialog.showAnimated( obj, activationData );
+            }
+	    
 	},
 	showLoading: function() {
 	    if ( loading == null ) {
@@ -48,31 +59,49 @@ function( app, system, dialog, Loading, ChangePassword, IMap, ShareVid, ShareAlb
 	    loading = null;
 	},
 	showPassword: function() {
-	    return dialog.showAnimated( new ChangePassword() );
+            if( !dialog.isOpen() ) {
+                return dialog.showAnimated( new ChangePassword() );
+            }
 	},
 	showInteractiveMap: function( mediafile, options ) {
-	    return app.showDialog( new IMap( mediafile, options ) );
+            if( !dialog.isOpen() ) {
+                return app.showDialog( new IMap( mediafile, options ) );
+            }
 	},
 	showMagicTag: function( face ) {
-	    return dialog.showAnimated( new MagicTag( face ) );
+            if( !dialog.isOpen() ) {
+                return dialog.showAnimated( new MagicTag( face ) );
+            }
 	},
 	showContactCard: function( face ) {
-	    return dialog.showAnimated( new ContactCard( face ) );
+            if( !dialog.isOpen() ) {
+                return dialog.showAnimated( new ContactCard( face ) );
+            }
 	},
 	showShareVidModal: function( mediafile ) {
-	    return dialog.showAnimated( new ShareVid( mediafile ) );
+            if( !dialog.isOpen() ) {
+                return dialog.showAnimated( new ShareVid( mediafile ) );
+            }
 	},
 	showShareAlbumModal: function( mediafile, args ) {
-	    return dialog.showAnimated( new ShareAlbum( mediafile, args ) );
+            if( !dialog.isOpen() ) {
+                return dialog.showAnimated( new ShareAlbum( mediafile, args ) );
+            }
 	},
         showShareNewAlbumModal: function( mediafile, args ) {
-	    return dialog.showAnimated( new ShareNewAlbum( mediafile, args ) );
+            if( !dialog.isOpen() ) {
+                return dialog.showAnimated( new ShareNewAlbum( mediafile, args ) );
+            }
 	},
 	showWebPlayerError: function( title, message, err ) {
-	    return dialog.showAnimated( new WebPlayerError( title, message, err ) );
+            if( !dialog.isOpen() ) {
+                return dialog.showAnimated( new WebPlayerError( title, message, err ) );
+            }
 	},
 	showTextPrompt: function( msg, title, options ) {
-	    return dialog.showAnimated( new TextPrompt( msg, title, options ) );
+            if( !dialog.isOpen() ) {
+                return dialog.showAnimated( new TextPrompt( msg, title, options ) );
+            }
 	}
     };
 });

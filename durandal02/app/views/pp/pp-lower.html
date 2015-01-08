@@ -30,8 +30,11 @@
                         </a>
                         <!-- /ko -->
                         <!-- ko if: get_the_app_button_visible -->
-                        <a class="btn btn-primary" data-bind="click: addVideoToAccount">
+                        <a class="btn btn-primary" data-bind="click: addVideoToAccount, visible: !loggedIn()">
                             <i class="fa fa-share"></i> Add this video to your account
+                        </a>
+                        <a class="btn btn-primary" data-bind="click: seePhotos, visible: loggedIn()">
+                            <i class="fa fa-share"></i> See photos from this video
                         </a>
                         <!-- /ko -->
                     </div>    

@@ -1,4 +1,4 @@
-define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'lib/customDialogs', 'plugins/http', 'knockout', 'facebook'], function( router, app, system, config, viblio, dialog, http, ko ) {
+define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib/viblio', 'lib/customDialogs', 'plugins/http', 'knockout', 'plugins/dialog', 'facebook'], function( router, app, system, config, viblio, dialogs, http, ko, dialog ) {
 
     var email = ko.observable();
     var email_entry_error = ko.observable( false );
@@ -93,7 +93,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	    msg  = "We are very sorry, but something strange happened.  Please try ";
 	    msg += "logging in again.";
 	}
-	return dialog.showModal( 'viewmodels/customBlankModal', msg );
+        return dialogs.showModal( 'viewmodels/customBlankModal', msg );
     };
 
     function nativeAuthenticate() {
@@ -122,7 +122,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 
     function facebookAuthenticate() {
 	if ( ! fb_appid )
-	    dialog.showMessage( 'In development, Facebook login will not work.' );
+	    dialogs.showMessage( 'In development, Facebook login will not work.' );
 
 	FB.login(function(response) {
             if (response.authResponse) {
@@ -167,7 +167,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
             success     : function(data) {
                 if (data.result != "success") {
                     // Something went wrong, do something to notify the user. maybe alert(data.msg);
-                    dialog.showMessage( data.msg, 'Beta Signup' );
+                    dialogs.showMessage( data.msg, 'Beta Signup' );
                 } else {
 		    viblio.mpEvent( 'register_for_beta' );
                     showBetaReservedModal();
@@ -177,7 +177,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     };
     
     function showBetaReservedModal() {
-        dialog.showModal('viewmodels/betaReserved');
+        dialogs.showModal('viewmodels/betaReserved');
     };
 
     function signup() {
