@@ -7053,39 +7053,6 @@ ul.token-input-list-facebook li input {
 
 /*** tag Clouds ***/
 
-/*.tagsList-Wrapper {
-    float: left;
-    position: relative;
-    z-index: 1;
-}
-
-.tagsList {
-    width:268px;
-    background-color:#575454; 
-    text-align:center; 
-    padding:5px;
-    overflow:auto; 
-    font-size:70%;
-    font-family: arial;
-}
-
-.tagsList ul {
-    margin:0; 
-    padding:0;
-}
-
-.tagsList li {
-    list-style-type:none; 
-    float:left; 
-    margin:0 10px; 
-    min-height:35px;
-}
-
-.tagsList li:hover {
-    text-decoration: underline;
-    cursor: pointer;
-}*/
-
 .tagsList-Wrapper {
     float: left;
     position: relative;
@@ -7098,10 +7065,14 @@ ul.token-input-list-facebook li input {
 
 .tagsList { 
     text-align : center; 
-    padding : 10px; 
+    padding : 0 10px 20px; 
     width : 258px; 
     line-height : 1.5em;
     overflow:auto; 
+}
+
+.tagsList h3 {
+    margin: -10px 0 10px !important;
 }
 
 .tagsList ul {
