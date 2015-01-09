@@ -311,6 +311,15 @@ define( ['plugins/router',
                 });
             }
         });
+        
+        // data for feedback thumbs
+        self.thumbsData = ko.computed( function() {
+            var username = viblio.user().displayname;
+            var email = viblio.user().email;
+            var id = viblio.user().uuid;
+            console.log( viblio.user(), 'username:'+username+', email:'+email+', id:'+id );
+            return 'username:'+username+', email:'+email+', id:'+id;
+        });
     };
     
     newHome.prototype.toggleVideoMode = function() {
@@ -323,6 +332,8 @@ define( ['plugins/router',
         var self = this;
         
         self.video_mode_on(false);
+        // initialize the feedback thumbs widget on the photos page
+        feedbackThumbsWidget.feedbackthumbsInitTF();
     };
     
     newHome.prototype.getVidsInProcess = function() {
@@ -2327,6 +2338,7 @@ define( ['plugins/router',
                 }
             }
         });
+        
     };
 
     newHome.prototype.add_videos = function() {

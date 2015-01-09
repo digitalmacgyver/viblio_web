@@ -7038,3 +7038,17 @@ ul.token-input-list-facebook li input {
 .photoFinderAccountModal .facebookLoginBtn-Wrap {
     padding: 20px 40px 40px;
 }
+
+/**** Feedback Thumbs ****/
+
+.thumbs-Wrap {
+    display: inline-block;
+    float: left;
+    font-size: 15px;
+    font-weight: normal;
+}
+
+.thumbs-Wrap .timely-feedback-button-thumbs {
+    display: inline-block;
+    font-size: 12px;
+}
