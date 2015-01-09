@@ -392,8 +392,8 @@
         <!-- ko if: !performingNewSearch() -->
 
         <div class="clearfix newHomeTitle-Wrap">
-            <p class='pageNumber'>Page <span data-bind="text: thePager().current_page"></span></p>
-            <!-- ko ifnot: add_to_mode_on() || delete_mode_on()-->
+            <p class='pageNumber' data-bind="visible: !showAlbumError()">Page <span data-bind="text: thePager().current_page"></span></p>
+            <!-- ko ifnot: add_to_mode_on() || delete_mode_on() || showAlbumError() -->
             <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: activeFilterType() == 'all'">
                 <!-- ko if: !video_mode_on() -->
                 <div class="btn-group photoViewFilter" data-toggle="buttons">
@@ -585,6 +585,13 @@
             <p class="font24 tomatoFont doubleSpaced centered">
               Bummer, I can’t find a video that matches this search.
             </p>
+        </div>
+        
+        <div data-bind="if: showAlbumError()">
+            <p class="font24 tomatoFont doubleSpaced centered marginT50">
+                :( Sorry, this album is <span data-bind="text: albumErrorMsg()"></span>.
+            </p>
+            <p class="centered"><span class="btn btn-primary" data-bind="click: add_videos">Upload Videos</span></p>
         </div>
 
     </div>
