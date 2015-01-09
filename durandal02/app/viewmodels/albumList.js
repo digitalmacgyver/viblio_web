@@ -95,7 +95,7 @@ define( ['plugins/router',
                     var arr = [];
                     data.albums.forEach( function( album ) {
                         var _album = album;
-                        _album.label = album.title;
+                        _album.label = viblio.unescapeHtml( album.title );
                         _album.selected = ko.observable( false );
                         _album.shared = album.is_shared;
                         arr.push( _album );
@@ -149,7 +149,7 @@ define( ['plugins/router',
                         hp.nhome().selectedFilterAlbum( album.label );
                         hp.nhome().currentSelectedFilterAlbum( album );
                         hp.nhome().currentAlbumAid( album.uuid );
-                        hp.nhome().currentAlbumTitle( album.title );
+                        hp.nhome().currentAlbumTitle( viblio.unescapeHtml( album.title ) );
                         $.when( hp.nhome().albumVidsSearch( true ) ).then( function() {
                             gettingAlbum = false;
                         });
