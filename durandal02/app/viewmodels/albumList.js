@@ -49,6 +49,25 @@ define( ['plugins/router',
             app.on( 'select_mode:off', function() {
                 self.showBlockout( false );
             });
+            // this will remove an album that has been unshared with the user from the self.albumsFilterLabels() array
+            app.on( 'album:delete_shared_album', function( data ) {
+                var album;
+                if( viblio.findMatch( data.aid, 'uuid', self.albumsFilterLabels() ) != 'Error' ) {
+                    album = viblio.findMatch( data.aid, 'uuid', self.albumsFilterLabels() );
+                    self.albumsFilterLabels.remove( album );
+                }
+            });
+            
+            // this will add a new album to the user's list when another user shares an album
+            app.on( 'album:new_shared_album', function( data ) {
+                $.when( self.getAllAlbumsLabels() ).then( function() {
+                    if( self.albumFilterIsActive() && hp.nhome().currentAlbumAid() != null ) {
+                        self.highlightActiveAlbum( hp.nhome().currentAlbumAid() );
+                    }    
+                });
+            });
+            
+            Events.includeIn( self );
         };
         
         albumList.prototype.unselectAllAlbums = function() {

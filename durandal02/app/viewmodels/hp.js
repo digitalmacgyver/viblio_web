@@ -36,7 +36,6 @@ define(['durandal/app',
     });
     
     app.on( 'coverphoto:composed', function( obj ) {
-        //console.log( obj );
         coverphoto = obj;
     });
     
@@ -67,8 +66,8 @@ define(['durandal/app',
     
     // 
     function activateAlbum( aid ) {
-        var def = $.Deferred();
         $.when(albumListResolved).then(function() {
+            // the album exists and is found in the albumList
             if( findMatch( aid, albumList().albumsFilterLabels() ) != 'Error' ) {
                 var album = findMatch( aid, albumList().albumsFilterLabels() );
                 nhome().selectedFilterAlbum( album.label );
@@ -81,8 +80,13 @@ define(['durandal/app',
                 
                 //this strips the aid params off of the url after navigation
                 router.navigate('#home', { trigger: false, replace: true });                  
-            } else {
-                router.navigate('#home');
+            }
+            // The album does not exist - either a private or nonexistant album -
+            // run the search function anyway and let the errorCallback handle the error that will
+            // come back from the server
+            else {
+                nhome().currentAlbumAid( goToAlbum );
+                nhome().albumVidsSearch( true );
             }
         });
     };
