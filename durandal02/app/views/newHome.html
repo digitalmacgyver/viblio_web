@@ -200,6 +200,9 @@
                                       <li>
                                           <a class="fb-icon-link" href="#" data-bind="click: function() { add_to_mode( 'facebook' ); }">Select photos to post to <img class="fb-icon" src="css/images/facebook/FB-f-Logo__blue_29.png" alt="Facebook logo"> album</a>
                                       </li>
+                                      <li>
+                                          <a href="#" data-bind="click: function() { add_to_mode( 'summary' ); }">Create a summary video</a>
+                                      </li>
                                   </ul>
                               </div>                  
                           </div>
@@ -304,9 +307,12 @@
                     
                     <!-- photos mode -->
                     <span class="vidsSelectedLabel" data-bind="if: !video_mode_on()">
-                        <span class="selectedNum" data-bind="text: selectedPhotos().length"></span> <span data-bind="text: selectedPhotos().length == 1 ? 'photo' : 'photos' "></span> selected
+                        <span class="selectedNum" data-bind="text: selectedPhotos().length"></span> <span data-bind="text: create_summary_vid_mode_on() ? selectedPhotos().length == 1 ? 'moment' : 'moments' : selectedPhotos().length == 1 ? 'photo' : 'photos' "></span> selected
                         <!-- ko if: create_facebook_album_mode_on() -->
                         <span>for your photo album</span>
+                        <!-- /ko -->
+                        <!-- ko if: create_summary_vid_mode_on() -->
+                        <span>for your summary video</span>
                         <!-- /ko -->
                         <!-- ko if: delete_mode_on() -->
                         <span>to be removed from your account</span>
@@ -363,8 +369,12 @@
                             <!-- ko if: add_to_existing_vid_album_mode_on() || add_to_existing_blank_album_mode_on()-->
                             <span>Add to Album</span>
                             <!-- /ko -->
+                            
                             <!-- ko if: create_facebook_album_mode_on() -->
                             <span>Post as <img class="fb-icon" src="css/images/facebook/FB-f-Logo__blue_29.png" alt="Facebook logo"/> album</span>
+                            <!-- /ko -->
+                            <!-- ko if: create_summary_vid_mode_on() -->
+                            <span>Create Summary Video</span>
                             <!-- /ko -->
                         </div>    
                     </a>
@@ -547,7 +557,7 @@
             
             <!-- ko if: add_to_mode_on() || delete_mode_on() -->
             <div style="display: block; text-align: center;" class="mainTitle textShadowed paddingTopBottom5">
-                Select the videos you want to
+                Select the <span data-bind="text: video_mode_on() ? 'videos' : create_summary_vid_mode_on() ? 'moments' : 'photos' "></span> you want to
                     <!-- ko if: add_to_mode_on() -->
                         <!-- ko if: create_facebook_album_mode_on() -->
                             <span> post to your <img src="css/images/facebook/FB-f-Logo__blue_29.png" alt="Facebook logo"> Facebook page </span>
@@ -563,6 +573,9 @@
                             <!-- /ko -->
                             <!-- ko if: add_to_existing_blank_album_mode_on() -->
                             <span>this blank album</span>
+                            <!-- /ko -->
+                            <!-- ko if: create_summary_vid_mode_on() -->
+                            <span>a new summary video</span>
                             <!-- /ko -->
                         <!-- /ko -->
                     <!-- /ko -->

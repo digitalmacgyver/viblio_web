@@ -117,6 +117,7 @@ define( ['plugins/router',
         self.add_to_existing_vid_album_mode_on = ko.observable(false);
         self.add_to_existing_blank_album_mode_on = ko.observable(false);
         self.create_facebook_album_mode_on = ko.observable(false);
+        self.create_summary_vid_mode_on = ko.observable(false);
         
         self.toolbarHeight = ko.observable( self.select_mode_on() ? $('.select-nav').height() : $('.vids-nav').height() );
         
@@ -1353,6 +1354,7 @@ define( ['plugins/router',
         self.add_to_existing_vid_album_mode_on(false);
         self.add_to_existing_blank_album_mode_on(false);
         self.create_facebook_album_mode_on(false);
+        self.create_summary_vid_mode_on(false);
     };
     
     newHome.prototype.share_mode = function() {
@@ -1384,6 +1386,9 @@ define( ['plugins/router',
         }
         if( type == 'facebook' ) {
             self.create_facebook_album_mode_on(true);
+        }
+        if( type == 'summary' ) {
+            self.create_summary_vid_mode_on(true);
         }
         self.add_to_mode_on(true);
     };
@@ -1578,6 +1583,16 @@ define( ['plugins/router',
                         dialog.showModal( 'viewmodels/customBlankModal', 'We\'re sorry. Facebook is unable to complete your request at this time. Please try again later.' ).then( function() {
                             self.cancel_select_mode();
                         });
+                    });
+                }
+                // create a summary video
+                else if( self.create_summary_vid_mode_on() ) {
+                    return system.defer( function( dfd ) {
+                        self.create_video_summary( dfd );
+                    }).promise().done( function( response ) {
+                        self.clean_up_after_select_mode();
+                    }).fail( function() {
+                        self.cancel_select_mode();
                     });
                 }
             }
@@ -2003,20 +2018,36 @@ define( ['plugins/router',
         }
     };
     
-    newHome.prototype.create_video_summary = function() {
+    newHome.prototype.create_video_summary = function( dfd ) {
         var self = this;
         
-        if( selectedPhotos().length > 0 ) {
+        if( self.selectedPhotos().length > 0 ) {
             var args = {
-                'images[]': selectedPhotos(),
+                'images[]': self.selectedPhotos(),
                 'summary_type' : 'moments',
-                'title': albumTitle() + ' Summary Video'
+                'title': self.getAlbumName() + ' Summary Video'
             };
-
-            viblio.api( 'services/mediafile/create_video_summary', args ).then( function( response ) {
-                //console.log( response );
-                self.getRecentVids();
+            viblio.api( 'services/mediafile/create_video_summary', args ).done( function( response ) {
+                viblio.api('services/mediafile/list_status').then( function( data ) {
+                    console.log( data );
+                    self.numVidsPending( data.stats.pending );
+                    var num = data.stats.pending/* + data.stats.visible*/;
+                    self.vidsInProcess( num );
+                    if( self.vidsInProcess() > 0 ) {
+                        // go to recent vids filter
+                        self.recentVidsSearch( true );
+                        // go to video mode
+                        self.video_mode_on( true );
+                        // scroll to the top of the page
+                        $(document).scrollTop(0);
+                    }
+                });
+                dfd.resolve( response );
+            }).fail( function() {
+                dfd.reject();
             });
+        } else {
+            dfd.reject();
         }
     };
     
