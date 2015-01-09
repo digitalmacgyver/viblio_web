@@ -320,6 +320,9 @@ define( ['plugins/router',
         self.rawPhotos = ko.observableArray([]);
         
         self.performingNewSearch = ko.observable(true);
+        
+        self.showAlbumError = ko.observable( false );
+        self.albumErrorMsg = ko.observable( null );
                 
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
@@ -334,6 +337,31 @@ define( ['plugins/router',
                 });
             }
         });
+        
+        // removes a video from the user's view when a video is removed from another user's shared album
+        app.on( 'album:delete_shared_album_video', function( data ) {
+            var video;
+            if( self.activeFilterType() == 'album' ) {
+                if( self.currentAlbumAid() == data.aid ) {
+                    if( findVidMatch( data.mid, self.videos() ) != 'Error' ) {
+                        video = findVidMatch( data.mid, self.videos() );
+                        self.videos.remove( video );
+                    }
+                }
+            }
+        });
+    };
+    
+    // used to lookup a match in the inArray and return the matching object
+    findVidMatch = function( find, inArray ) {
+        var match = ko.utils.arrayFirst( inArray, function( a ) {
+            return a.media().uuid === find;
+        });
+        if (match) {
+            return match;  
+        } else {
+            return 'Error';
+        }    
     };
     
     newHome.prototype.toggleVideoMode = function() {
@@ -591,24 +619,40 @@ define( ['plugins/router',
     newHome.prototype.albumVidsSearch = function( newSearch ) {
         var self = this;
         var args;
-        
+        var errorCallback = function( res, data ) {
+            self.showAlbumErrorFunc( data.code )
+        }
         // set the code below in the filterVidsSearch() function AFTER the album has been fetched.
         //self.activeFilterType('album');
         
         args = {};
         args.aid = self.currentAlbumAid();
-        self.filterVidsSearch( 'album', args, 'services/album/get', newSearch, null );
+        self.filterVidsSearch( 'album', args, 'services/album/get', newSearch, null, errorCallback );
     }; 
     
-    
+    newHome.prototype.showAlbumErrorFunc = function( code ) {
+        var self = this;
+        
+        self.performingNewSearch(false);
+        self.isActiveFlag(false);
+        if( code == '403' ) {
+            self.albumErrorMsg( 'private' );
+        } else if ( code == '404' ) {
+            self.albumErrorMsg( 'unavailable' );
+        }
+        //this strips the aid params off of the url after navigation
+        router.navigate('#home', { trigger: false, replace: true });   
+        self.showAlbumError(true);
+    };
     
     /*
      * @param {string} type - one of: "dates", "faces", "cities", "recent", "all" or null 
      * @param {object} args - the args to be sent along with the api call
      * @param {string} api - the endpoint to call
-     * @param {bool} newSearch - whether or not to run a fresh search or not
+     * @param {bool} newSearch - whether to run a fresh search or not
+     * @param {bool} scrollToTop - whether to scroll to the top of the videos/photos section after the search or not 
      */
-    newHome.prototype.filterVidsSearch = function( type, args, api, newSearch, scrollToTop ) {
+    newHome.prototype.filterVidsSearch = function( type, args, api, newSearch, scrollToTop, errorCallback ) {
 	var self = this;
         var media;
         self.isActiveFlag(true);
@@ -639,7 +683,7 @@ define( ['plugins/router',
             args.include_tags = 1;
             args.include_contact_info = 1;
             args.include_images = config.photo_throttle;
-            viblio.api( api, args )
+            viblio.api( api, args, errorCallback ? errorCallback : null )
                 .then( function( json ) {
                     self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
                     self.handlePager( json.pager, newSearch || args.updatePager, args.updatePager );
@@ -2246,6 +2290,7 @@ define( ['plugins/router',
               wrap: '<div class="fancybox-wrap" tabIndex="-1">' +
                     '<div class="fancybox-skin">' +
                     '<div class="fancybox-outer"><div class="fancyboxVidLoader centered"><div class="fancyboxVidLoader-Inner"><i class="fa fa-spinner fa-spin fa-5x active"></i><p class="font18">Loading...</p></div></div>' +
+                    '<div class="fancyboxVidError fancyboxVidLoader-Inner centered font18"> :( Sorry, this video is private.</div>' + 
                     '<a title="Previous" class="fancybox-nav fancybox-prev" href="javascript:;"><span></span></a>' +
                     '<a title="Next" class="fancybox-nav fancybox-next" href="javascript:;"><span></span></a>' +
                     '<div id="player">' + // player container replaces fancybox-inner
@@ -2303,13 +2348,22 @@ define( ['plugins/router',
                 });
                 PlayerPage.relatedVids( arr );
                 
+                $('.fancyboxVidError').hide();
                 $('.fancyboxVidLoader').show();
-                return viblio.api( api, { mid: self.playingVidUUID()  } ).then( function( json ) {
-                    var mf = json.media;
-                    self.setUpFlowplayer( '#player', mf );
-                    self.resizePlayer();
-                    $('.fancyboxVidLoader').hide();
-                });
+                var errorCallback = function() {
+                    // having a callback prevents the default error notification from being shown
+                };
+                return viblio.api( api, { mid: self.playingVidUUID()  }, errorCallback )
+                    .then( function( json ) {
+                        var mf = json.media;
+                        self.setUpFlowplayer( '#player', mf );
+                        self.resizePlayer();
+                        $('.fancyboxVidLoader').hide();
+                    })
+                    .fail( function() {
+                        $('.fancyboxVidLoader').hide();
+                        $('.fancyboxVidError').show();
+                    });
             },
             
             afterLoad: function(current, previous) {
