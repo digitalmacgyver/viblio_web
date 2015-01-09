@@ -2035,7 +2035,7 @@ define( ['plugins/router',
                     self.vidsInProcess( num );
                     if( self.vidsInProcess() > 0 ) {
                         // go to recent vids filter
-                        self.recentVidsSearch( true );
+                        self.getRecentVids( true );
                         // go to video mode
                         self.video_mode_on( true );
                         // scroll to the top of the page
