@@ -852,7 +852,7 @@ define(["durandal/app",
         tagLabels: tagLabels,
         tags: tags,
         newTagSelected: newTagSelected,
-        newTag: newTag,
+        newTag: newTag, 
         
         tagSelected: tagSelected,
         addTag: addTag,
@@ -1045,7 +1045,11 @@ define(["durandal/app",
 		incoming_mid = args.mid;
 
 	    if ( route == 'new_player' ) {
-                    return viblio.api( '/services/mediafile/get', { mid: incoming_mid } ).then( function( json ) {
+                    return viblio.api( '/services/mediafile/get', { mid: incoming_mid }, function( error ) {
+					customDialogs.showWebPlayerError( "We're Sorry", error.message, error );
+				    })
+                    .then( function( json ) {
+                        console.log( 'this is happening' );
                         var mf = json.media;
                         // Set now playing
                         playing( new Mediafile( mf ) );

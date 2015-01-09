@@ -226,9 +226,14 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 				dialogs.showMessage( data.message, 'Authentication Failure' );
 			}
 			else {
-			    if ( self.getLastAttempt() == null )
-				self.setLastAttempt( router.activeInstruction().config.route );
-			    router.navigate( 'login' );
+                            if( errorCallback ) {
+                                errorCallback({detail: data.message, 
+					       code: data.detail }, data);
+                            } else {
+                                if ( self.getLastAttempt() == null )
+                                    self.setLastAttempt( router.activeInstruction().config.route );
+                                router.navigate( 'login' );    
+                            }
 			}
 		    }
 		    else if ( data.detail && data.detail.match( /NOLOGIN_/g ) ) {
@@ -243,7 +248,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 		    else {
 			if ( errorCallback ) {
 			    errorCallback({message: data.message,
-					   detail: data.detail });
+					   detail: data.detail }, data);
 			}
 			else {
 			    self.mpEvent( 'serverError', { reason: 'bad request' } );
@@ -253,12 +258,12 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 			    self.log( data.detail );
 			}
 		    }
-		    deferred.reject( x, 'error' );
+		    deferred.reject( x, 'error', data );
 		}
 		else if ( data && data.error ) {
 		    if ( errorCallback ) {
 			errorCallback({message: data.message,
-				       detail: data.detail });
+				       detail: data.detail }, data);
 		    }
 		    else {
 			self.mpEvent( 'serverError', { reason: 'server exception' } );
@@ -298,6 +303,18 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
             $('html, body').animate({
                 scrollTop: top + 'px'
             }, 'fast');
+        },
+        
+        // used to lookup a match in the inArray and return the matching object
+        findMatch: function( find, type, inArray ) {
+            var match = ko.utils.arrayFirst( inArray, function( a ) {
+                return a[type] === find;
+            });
+            if (match) {
+                return match;  
+            } else {
+                return 'Error';
+            }    
         }
     };
 });

@@ -28,7 +28,7 @@ define(['durandal/app',
         }
     });
     
-    var gotToAlbum = ko.observable( null );
+    var goToAlbum = ko.observable( null );
     
     app.on( 'albumList:composed', function( obj ) {
 	albumList(obj);
@@ -36,7 +36,6 @@ define(['durandal/app',
     });
     
     app.on( 'coverphoto:composed', function( obj ) {
-        console.log( obj );
         coverphoto = obj;
     });
     
@@ -67,8 +66,8 @@ define(['durandal/app',
     
     // 
     function activateAlbum( aid ) {
-        var def = $.Deferred();
         $.when(albumListResolved).then(function() {
+            // the album exists and is found in the albumList
             if( findMatch( aid, albumList().albumsFilterLabels() ) != 'Error' ) {
                 var album = findMatch( aid, albumList().albumsFilterLabels() );
                 nhome().selectedFilterAlbum( album.label );
@@ -81,8 +80,13 @@ define(['durandal/app',
                 
                 //this strips the aid params off of the url after navigation
                 router.navigate('#home', { trigger: false, replace: true });                  
-            } else {
-                router.navigate('#home');
+            }
+            // The album does not exist - either a private or nonexistant album -
+            // run the search function anyway and let the errorCallback handle the error that will
+            // come back from the server
+            else {
+                nhome().currentAlbumAid( goToAlbum );
+                nhome().albumVidsSearch( true );
             }
         });
     };
@@ -132,7 +136,6 @@ define(['durandal/app',
             }
             
             if( args ){
-                console.log( "args: ", args );
                 // this cleans up to avoid an extra call to activate when the nhome observable is updated
                 var videos = $('#videos')[0];
                 if( videos ) {
@@ -141,7 +144,7 @@ define(['durandal/app',
                 
                 if( args.aid ) {
                     nhome( new newHome( {aid: args.aid} ) );
-                    gotToAlbum(args.aid);
+                    goToAlbum(args.aid);
                 } else if( args.fid ) {
                     nhome( new newHome( {fid: args.fid} ) );  
                 } else if( args.addAlbum ) {
@@ -195,8 +198,8 @@ define(['durandal/app',
         
 	compositionComplete: function( _view ) {
 	    view = _view;
-            if( gotToAlbum() ) {
-                activateAlbum( gotToAlbum() );
+            if( goToAlbum() ) {
+                activateAlbum( goToAlbum() );
             }
 	    handle_visibility( albumList_is_visible );
             
