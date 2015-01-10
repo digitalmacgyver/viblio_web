@@ -620,8 +620,8 @@ define( ['plugins/router',
         var self = this;
         var args;
         var errorCallback = function( res, data ) {
-            self.showAlbumErrorFunc( data.code )
-        }
+            self.showAlbumErrorFunc( data.code );
+        };
         // set the code below in the filterVidsSearch() function AFTER the album has been fetched.
         //self.activeFilterType('album');
         

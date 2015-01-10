@@ -182,6 +182,7 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
 	},
 
 	activate: function( args ) {
+            console.log( 'register activate fired' );
 	    var testing = 0;
             var albumArgs;
 	    if ( args ) {
@@ -210,12 +211,18 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
                                     email: email(),
                                     aid: aid()
                                 };
-                                viblio.api( 'services/na/find_share_info_for_album', albumArgs ).then( function( json ) {
+                                viblio.api( 'services/na/find_share_info_for_album', albumArgs )
+                                .then( function( json ) {
                                     media( json.album );
                                     if ( json.owner ) {
                                         displayname( json.owner.displayname );
                                         avatar( '/services/na/avatar?uid=' + json.owner.uuid + '&y=37' );
                                     }
+                                })
+                                // this will allow the error callback in newhome's albumVidsSearch() method
+                                // to handle the error
+                                .fail( function(xhr, status, data) {
+                                    router.navigate( 'home?aid='+aid() );
                                 });
                             } else {
                                 viewingAlbum( false );
@@ -225,19 +232,20 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
                         else {
                             return viblio.api( 
                                 '/services/na/find_share_info_for_pending',
-                                { email: email(), test: testing } ).then( function( json ) {
-                                    if ( json.owner ) {
-                                        displayname( json.owner.displayname );
-                                        avatar( '/services/na/avatar?uid=' + json.owner.uuid + '&y=37' );
-                                    }
-                                    else {
-                                        displayname( 'Someone' );
-                                        avatar( '/services/na/avatar?uid=' + '' + '&y=37' );
-                                    }
-                                    // We also have the mediafile (json.media ) and so
-                                    // could display the poster, et. al. here.
-                                    media( json.media );
-                                });    
+                                { email: email(), test: testing } )
+                            .then( function( json ) {
+                                if ( json.owner ) {
+                                    displayname( json.owner.displayname );
+                                    avatar( '/services/na/avatar?uid=' + json.owner.uuid + '&y=37' );
+                                }
+                                else {
+                                    displayname( 'Someone' );
+                                    avatar( '/services/na/avatar?uid=' + '' + '&y=37' );
+                                }
+                                // We also have the mediafile (json.media ) and so
+                                // could display the poster, et. al. here.
+                                media( json.media );
+                            });    
                         }
                     });
                 }
