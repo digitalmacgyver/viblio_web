@@ -7061,11 +7061,15 @@ ul.token-input-list-facebook li input {
     margin : 0; 
     font-family : "Lucida Grande","Lucida Sans Unicode",Arial,Verdana,sans-serif; 
     overflow : hidden; 
-} 
+}
+
+.tagsList-Wrapper hr {
+    margin: 20px;
+}
 
 .tagsList { 
     text-align : center; 
-    padding : 0 10px 20px; 
+    padding : 0 10px; 
     width : 258px; 
     line-height : 1.5em;
     overflow:auto; 

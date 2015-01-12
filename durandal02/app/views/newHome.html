@@ -654,14 +654,14 @@
         </div>
         <div class='tagsList-Wrapper' data-bind="visible: activeFilterType() == 'album' ">
             <div class='tagsList'>
-                <h3>Tags</h3>
+                <h3><i class="fa fa-tags"></i></h3>
                 <ul>
                     <!-- ko foreach: tagList -->
                     <li data-bind="click: function(){ $parent.tagSearch($data.name); }, text: $data.name, style: {'font-size': $data.fontSize }"></li>
                     <!-- /ko -->
                 </ul>
             </div>
-
+            <hr>
             <div class='tagsList' data-bind="visible: monthTagList().length > 0">
                 <ul>
                     <!-- ko foreach: monthTagList -->
