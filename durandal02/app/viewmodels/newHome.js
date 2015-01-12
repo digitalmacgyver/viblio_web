@@ -994,6 +994,11 @@ define( ['plugins/router',
         $('.paginationContainer').pagination( 'updateItems', pager.total_entries );
         $('.paginationContainer').pagination( 'updateItemsOnPage', pager.entries_per_page );
         $('.paginationContainer').pagination( 'drawPage', Number(pager.current_page) );
+        
+        // hide the pager prev and next buttons when there is only 1 page of results
+        if( self.thePager().last_page == 1 ) {
+            $( self.element ).find( '.paginationContainer .prev, .paginationContainer .next' ).hide();
+        }
     };
     
     newHome.prototype.filterVidsSearchPage = function( page, skipPageCheck, scrollToTop ) {
