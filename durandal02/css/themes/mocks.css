@@ -7065,6 +7065,7 @@ ul.token-input-list-facebook li input {
 
 .tagsList-Wrapper hr {
     margin: 20px;
+    border-bottom: 2px solid rgb(255, 255, 255);
 }
 
 .tagsList { 
