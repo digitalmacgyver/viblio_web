@@ -150,7 +150,7 @@ define( ['plugins/router',
                         hp.nhome().currentSelectedFilterAlbum( album );
                         hp.nhome().currentAlbumAid( album.uuid );
                         hp.nhome().currentAlbumTitle( viblio.unescapeHtml( album.title ) );
-                        $.when( hp.nhome().albumVidsSearch( true ) ).then( function() {
+                        $.when( hp.nhome().albumVidsSearch( true, null ) ).then( function() {
                             gettingAlbum = false;
                         });
                     }

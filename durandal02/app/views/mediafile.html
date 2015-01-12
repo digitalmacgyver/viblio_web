@@ -119,7 +119,7 @@
                             <ul class="currentTags" data-bind="visible: showTags()">
                                 <!-- ko foreach: tags -->
                                 <li class="tag mocksWhiteBG">
-                                    <span class="tagLabel" data-bind="text: $data"></span>
+                                    <span class="tagLabel" data-bind="text: $parent.viblio.unescapeHtml($data)"></span>
                                     <!-- ko if: $parent.tags_editable() -->
                                     <i class="fa fa-times" title="Remove" data-bind="click: $parent.removeTag.bind( $data, $parent )"></i>
                                     <!-- /ko -->
