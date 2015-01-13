@@ -336,6 +336,8 @@ define( ['plugins/router',
             console.log( viblio.user(), 'username:'+username+', email:'+email+', id:'+id );
             return 'username:'+username+', email:'+email+', id:'+id;
         });
+        
+        self.searchForVidsWithNoDates = ko.observable( false );
                 
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
@@ -514,6 +516,8 @@ define( ['plugins/router',
         
         // remove all photos since this does not run through the filterVidsSearchPage() function which normally clears out the photos 
         self.photos.removeAll();
+        
+        self.searchForVidsWithNoDates( false );
         
         self.activeTag( tag );
         
@@ -741,6 +745,8 @@ define( ['plugins/router',
         
         self.activeFilterType('all');
         
+        self.searchForVidsWithNoDates( false );
+        
         args = {};
         if( self.cid ) {
             args.contact_uuid = self.cid;
@@ -764,6 +770,7 @@ define( ['plugins/router',
         // set the activeTag to null
         if( newSearch ) {
             self.activeTag( null );
+            self.searchForVidsWithNoDates( false );
         }
         
         args = {};
@@ -771,14 +778,47 @@ define( ['plugins/router',
         self.filterVidsSearch( 'album', args, 'services/album/get', newSearch, scrollToTop, errorCallback );
     }; 
     
+    newHome.prototype.noDatesSearch = function(  ) {
+        var self = this;
+        var args;
+        
+        self.searchForVidsWithNoDates( true );
+        
+        // remove all photos since this does not run through the filterVidsSearchPage() function which normally clears out the photos 
+        self.photos.removeAll();
+        
+        self.activeTag( null );
+        
+        args = {
+            no_dates: 1
+        };
+        if( self.activeFilterType() === 'album' ) {
+            args.aid = self.currentAlbumAid();
+            self.filterVidsSearch( 'album', args, 'services/album/get', true, true );    
+        } else if( self.activeFilterType() === 'all' ) {
+            args.views = ['poster'];
+            self.filterVidsSearch( 'all', args, '/services/mediafile/list_all', true, true );
+        }
+    };
+    
+    newHome.prototype.clearNoDates = function() {
+        var self = this;
+        
+        if( self.activeFilterType() === 'album' ) {
+            self.albumVidsSearch( true, true );    
+        } else if( self.activeFilterType() === 'all' ) {
+            self.showAllVideos()
+        }
+    };
+    
     newHome.prototype.showAlbumErrorFunc = function( code ) {
         var self = this;
         
         self.performingNewSearch(false);
         self.isActiveFlag(false);
-        if( code == '403' ) {
+        if( code === '403' ) {
             self.albumErrorMsg( 'private' );
-        } else if ( code == '404' ) {
+        } else if ( code === '404' ) {
             self.albumErrorMsg( 'unavailable' );
         }
         //this strips the aid params off of the url after navigation
@@ -904,6 +944,10 @@ define( ['plugins/router',
             } else {
                 self.isActiveFlag(false);
                 self.performingNewSearch( false );
+                // scroll to the top of the page
+                if( scrollToTop ) {
+                    viblio.goTo( $('.allVidsPage'), -65 );
+                }
             }
             
             // handle the photos now
@@ -1078,12 +1122,20 @@ define( ['plugins/router',
                     args.views = ['poster'];
                     apiCall = '/services/mediafile/list_all';
                 }
+                // only return videos without dates
+                if( self.searchForVidsWithNoDates() ) {
+                    args.no_dates = 1; 
+                }
                 self.filterVidsSearch( 'all', args, apiCall, null, scrollToTop );
             }
             // Albums
             else if( self.activeFilterType() == 'album' ) {
                 if( self.activeTag() ) {
                     args['tags[]'] = [self.activeTag()];
+                }
+                // only return videos without dates
+                if( self.searchForVidsWithNoDates() ) {
+                    args.no_dates = 1; 
                 }
                 args.aid = self.currentAlbumAid();
                 args.updatePager = skipPageCheck;

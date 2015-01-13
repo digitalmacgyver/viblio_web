@@ -419,6 +419,12 @@
                 <p class="mainTitleP">
                     <!--You have <span data-bind="text: hits"></span>-->
                     ALL <span data-bind="text: video_mode_on() ? ' Videos ' : ' Photos ' "></span> (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
+                    <span class='titleTag-Wrap' data-bind="visible: searchForVidsWithNoDates()">
+                        <span class='titleTag'>
+                            &mdash; <span class='tagLabel'>No Dates</span>
+                        </span>
+                        <i class="fa fa-undo turquoiseFont" title="Clear no dates filter" data-bind="click: clearNoDates"></i>
+                    </span>
                     <!--<span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private VIBLIO Library.-->
                 </p>
                 <!-- ko if: hits() > 0 && video_mode_on() --> 
@@ -521,7 +527,13 @@
                                     </span>
                                     <i class="fa fa-undo turquoiseFont" title="Clear tag" data-bind="click: clearTag"></i>
                                 </span>
-                            <!-- ko if: hits() < 1 -->
+                                <span class='titleTag-Wrap' data-bind="visible: searchForVidsWithNoDates()">
+                                    <span class='titleTag'>
+                                        &mdash; <span class='tagLabel'>No Dates</span>
+                                    </span>
+                                    <i class="fa fa-undo turquoiseFont" title="Clear no dates filter" data-bind="click: clearNoDates"></i>
+                                </span>
+                            <!-- ko if: hits() < 1 && !activeTag() && !searchForVidsWithNoDates() -->
                             <div class="btn btn-primary" data-bind="click: add_videos_to_empty_album">Add videos to this empty album</div>
                             <!-- /ko -->
                         </div>
@@ -548,6 +560,12 @@
                                 &mdash; <i class="fa fa-tag"></i><span class='tagLabel' data-bind="text: activeTag()"></span>
                             </span>
                             <i class="fa fa-undo turquoiseFont" title="Clear tag" data-bind="click: clearTag"></i>
+                        </span>
+                        <span class='titleTag-Wrap' data-bind="visible: searchForVidsWithNoDates()">
+                            <span class='titleTag'>
+                                &mdash; <span class='tagLabel'>No Dates</span>
+                            </span>
+                            <i class="fa fa-undo turquoiseFont" title="Clear no dates filter" data-bind="click: clearNoDates"></i>
                         </span>
                         <!-- ko if: hits() < 1 -->
                         <div class="btn btn-primary" data-bind="click: add_videos_to_empty_album">Add videos to this empty album</div>
@@ -610,7 +628,7 @@
 
     </div>
     
-    <div class="containerxx clearfix" data-bind="css: {tagsVisible: activeFilterType() == 'album'}">
+    <div class="containerxx clearfix" data-bind="css: {tagsVisible: activeFilterType() == 'album', noDatesIndent: activeFilterType() == 'all' }">
         <div class="table allVidsInner clearfix">    
 
             <!--<div class="dates" data-bind="visible: activeFilterType() != 'search' && video_mode_on()">
@@ -652,23 +670,32 @@
             </div>
 
         </div>
-        <div class='tagsList-Wrapper' data-bind="visible: activeFilterType() == 'album' ">
+        <div class='tagsList-Wrapper' data-bind="visible: activeFilterType() == 'album' || activeFilterType() == 'all' ">
+            <div data-bind="visible: activeFilterType() == 'album'">
+                <div class='tagsList'>
+                    <h3><i class="fa fa-tags"></i></h3>
+                    <ul>
+                        <!-- ko foreach: tagList -->
+                        <li data-bind="click: function(){ $parent.tagSearch($data.name); }, text: $data.name, style: {'font-size': $data.fontSize }"></li>
+                        <!-- /ko -->
+                    </ul>
+                </div>
+                <hr>
+                <div class='tagsList' data-bind="visible: monthTagList().length > 0">
+                    <ul>
+                        <!-- ko foreach: monthTagList -->
+                        <li data-bind="click: function(){ $parent.tagSearch($data.name); }, text: $data.name, style: {'font-size': $data.fontSize }"></li>
+                        <!-- /ko -->
+                    </ul>
+                </div>    
+            </div>
             <div class='tagsList'>
-                <h3><i class="fa fa-tags"></i></h3>
                 <ul>
-                    <!-- ko foreach: tagList -->
-                    <li data-bind="click: function(){ $parent.tagSearch($data.name); }, text: $data.name, style: {'font-size': $data.fontSize }"></li>
-                    <!-- /ko -->
+                    <li data-bind="click: noDatesSearch">
+                        No Dates
+                    </li>
                 </ul>
             </div>
-            <hr>
-            <div class='tagsList' data-bind="visible: monthTagList().length > 0">
-                <ul>
-                    <!-- ko foreach: monthTagList -->
-                    <li data-bind="click: function(){ $parent.tagSearch($data.name); }, text: $data.name, style: {'font-size': $data.fontSize }"></li>
-                    <!-- /ko -->
-                </ul>
-            </div>    
         </div>
     </div>
     <div class='paginationContainer'></div>
