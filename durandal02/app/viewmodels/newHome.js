@@ -784,7 +784,7 @@ define( ['plugins/router',
             self.filterVidsSearch( 'album', args, 'services/album/get', true, true );    
         } else if( self.activeFilterType() === 'all' ) {
             args.views = ['poster'];
-            self.filterVidsSearch( 'all', args, '/services/mediafile/list_all', true, null );
+            self.filterVidsSearch( 'all', args, '/services/mediafile/list_all', true, true );
         }
     };
     
@@ -931,6 +931,10 @@ define( ['plugins/router',
             } else {
                 self.isActiveFlag(false);
                 self.performingNewSearch( false );
+                // scroll to the top of the page
+                if( scrollToTop ) {
+                    viblio.goTo( $('.allVidsPage'), -65 );
+                }
             }
             
             // handle the photos now
