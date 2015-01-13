@@ -327,6 +327,8 @@ define( ['plugins/router',
         
         self.showAlbumError = ko.observable( false );
         self.albumErrorMsg = ko.observable( null );
+        
+        self.searchForVidsWithNoDates = ko.observable( false );
                 
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
@@ -730,6 +732,8 @@ define( ['plugins/router',
         
         self.activeFilterType('all');
         
+        self.searchForVidsWithNoDates( false );
+        
         args = {};
         if( self.cid ) {
             args.contact_uuid = self.cid;
@@ -745,14 +749,15 @@ define( ['plugins/router',
         var self = this;
         var args;
         var errorCallback = function( res, data ) {
-            self.showAlbumErrorFunc( data.code )
-        }
+            self.showAlbumErrorFunc( data.code );
+        };
         // set the code below in the filterVidsSearch() function AFTER the album has been fetched.
         //self.activeFilterType('album');
         
         // set the activeTag to null
         if( newSearch ) {
             self.activeTag( null );
+            self.searchForVidsWithNoDates( false );
         }
         
         args = {};
@@ -760,14 +765,47 @@ define( ['plugins/router',
         self.filterVidsSearch( 'album', args, 'services/album/get', newSearch, scrollToTop, errorCallback );
     }; 
     
+    newHome.prototype.noDatesSearch = function(  ) {
+        var self = this;
+        var args;
+        
+        self.searchForVidsWithNoDates( true );
+        
+        // remove all photos since this does not run through the filterVidsSearchPage() function which normally clears out the photos 
+        self.photos.removeAll();
+        
+        self.activeTag( null );
+        
+        args = {
+            no_dates: 1
+        };
+        if( self.activeFilterType() === 'album' ) {
+            args.aid = self.currentAlbumAid();
+            self.filterVidsSearch( 'album', args, 'services/album/get', true, true );    
+        } else if( self.activeFilterType() === 'all' ) {
+            args.views = ['poster'];
+            self.filterVidsSearch( 'all', args, '/services/mediafile/list_all', true, null );
+        }
+    };
+    
+    newHome.prototype.clearNoDates = function() {
+        var self = this;
+        
+        if( self.activeFilterType() === 'album' ) {
+            self.albumVidsSearch( true, true );    
+        } else if( self.activeFilterType() === 'all' ) {
+            self.showAllVideos()
+        }
+    };
+    
     newHome.prototype.showAlbumErrorFunc = function( code ) {
         var self = this;
         
         self.performingNewSearch(false);
         self.isActiveFlag(false);
-        if( code == '403' ) {
+        if( code === '403' ) {
             self.albumErrorMsg( 'private' );
-        } else if ( code == '404' ) {
+        } else if ( code === '404' ) {
             self.albumErrorMsg( 'unavailable' );
         }
         //this strips the aid params off of the url after navigation
@@ -994,6 +1032,11 @@ define( ['plugins/router',
         $('.paginationContainer').pagination( 'updateItems', pager.total_entries );
         $('.paginationContainer').pagination( 'updateItemsOnPage', pager.entries_per_page );
         $('.paginationContainer').pagination( 'drawPage', Number(pager.current_page) );
+        
+        // hide the pager prev and next buttons
+        if( self.thePager().last_page == 1 ) {
+            $( self.element ).find( '.paginationContainer .prev, .paginationContainer .next' ).hide();
+        }
     };
     
     newHome.prototype.filterVidsSearchPage = function( page, skipPageCheck, scrollToTop ) {
@@ -1062,12 +1105,20 @@ define( ['plugins/router',
                     args.views = ['poster'];
                     apiCall = '/services/mediafile/list_all';
                 }
+                // only return videos without dates
+                if( self.searchForVidsWithNoDates() ) {
+                    args.no_dates = 1; 
+                }
                 self.filterVidsSearch( 'all', args, apiCall, null, scrollToTop );
             }
             // Albums
             else if( self.activeFilterType() == 'album' ) {
                 if( self.activeTag() ) {
                     args['tags[]'] = [self.activeTag()];
+                }
+                // only return videos without dates
+                if( self.searchForVidsWithNoDates() ) {
+                    args.no_dates = 1; 
                 }
                 args.aid = self.currentAlbumAid();
                 args.updatePager = skipPageCheck;
