@@ -395,10 +395,6 @@
             <p class='pageNumber'>Page <span data-bind="text: thePager().current_page"></span></p>
             <!-- ko ifnot: add_to_mode_on() || delete_mode_on()-->
             <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: activeFilterType() == 'all'">
-                <div class="thumbs-Wrap" data-bind="visible: !video_mode_on()">
-                    How do you like photo finder?&nbsp;
-                    <div class="timely-feedback-button-thumbs" id="bizhash54a6e884632387.21209458" survey="surveyhash54a6e886314fb9.97766480" data-bind="attr: {data: thumbsData() }"></div>
-                </div>
                 <!-- ko if: !video_mode_on() -->
                 <div class="btn-group photoViewFilter" data-toggle="buttons">
                     <span class='meterLabel some'>Less</span>
@@ -636,5 +632,11 @@
 
         </div>
         <div class='paginationContainer'></div>
+    </div>
+    <div class="feedbackThumbsTab" data-bind="slideVisible: !video_mode_on()">
+        <div class="thumbs-Wrap">
+            Tell us how you like the photo view.&nbsp;
+            <div class="timely-feedback-button-thumbs" id="bizhash54a6e884632387.21209458" survey="surveyhash54a6e886314fb9.97766480" data-bind="attr: {data: thumbsData() }"></div>
+        </div>    
     </div>
 </div>

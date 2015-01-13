@@ -122,9 +122,9 @@ a.activated:hover,
 .btn-primary:active,
 .btn:active,
 .btn:hover {
-    -moz-box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
-    -webkit-box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
-    box-shadow: inset 0 0 0 50px rgba(0,0,0,.1);
+    -moz-box-shadow: inset 0 0 0 50px rgba(0,0,0,.1) !important;
+    -webkit-box-shadow: inset 0 0 0 50px rgba(0,0,0,.1) !important;
+    box-shadow: inset 0 0 0 50px rgba(0,0,0,.1) !important;
 }
 
 .btn:hover,
@@ -142,8 +142,8 @@ a.activated:hover,
 }
 
 .btn-primary {
-    color: white;
-    background-color: rgba(239,85,65,1);
+    color: white !important;
+    background-color: rgba(239,85,65,1) !important;
 }
 
 .btn-primary.disabled, .btn-primary[disabled], .btn-primary[disabled]:hover {
@@ -164,12 +164,12 @@ a.activated:hover,
 .btn-primary:active,
 .btn-primary.active,
 .btn-primary:hover {
-    background-color: rgba(239,85,65,1);
+    background-color: rgba(239,85,65,1) !important;
 }
 
 .btn-secondary {
-    color: white;
-    background-color: rgba(179,179,179,1);
+    color: white !important;
+    background-color: rgba(179,179,179,1) !important;
 }
 
 .btn-secondary:focus,
@@ -178,8 +178,8 @@ a.activated:hover,
 .btn-secondary:hover,
 .btn-secondary.disabled,
 .btn-secondary[disabled] {
-    background-color: rgba(179,179,179,1);
-    color: white;
+    background-color: rgba(179,179,179,1) !important;
+    color: white !important;
 }
 
 .btn-blue {
@@ -7041,14 +7041,24 @@ ul.token-input-list-facebook li input {
 
 /**** Feedback Thumbs ****/
 
+.feedbackThumbsTab {
+    position: fixed;
+    bottom: 0;
+    right: 45px;
+    background-color: rgb(49, 53, 67);
+    padding: 4px 10px;
+    color: rgb(255, 255, 255);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, .65);
+}
+
 .thumbs-Wrap {
-    display: inline-block;
-    float: left;
-    font-size: 15px;
+    font-size: 12px;
     font-weight: normal;
 }
 
 .thumbs-Wrap .timely-feedback-button-thumbs {
     display: inline-block;
-    font-size: 12px;
+    font-size: 8px;
 }
