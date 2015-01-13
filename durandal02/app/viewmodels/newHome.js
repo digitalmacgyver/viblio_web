@@ -506,6 +506,8 @@ define( ['plugins/router',
         // remove all photos since this does not run through the filterVidsSearchPage() function which normally clears out the photos 
         self.photos.removeAll();
         
+        self.searchForVidsWithNoDates( false );
+        
         self.activeTag( tag );
         
         // set the code below in the filterVidsSearch() function AFTER the album has been fetched.
