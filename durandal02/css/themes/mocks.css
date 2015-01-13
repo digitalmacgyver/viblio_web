@@ -7143,6 +7143,7 @@ ul.token-input-list-facebook li input {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, .65);
+    z-index: 1;
 }
 
 .thumbs-Wrap {
