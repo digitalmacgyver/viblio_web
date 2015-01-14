@@ -471,6 +471,7 @@
 
 		// Navigate to next gallery item
 		next: function ( direction ) {
+                    console.log( 'next fired');
 			var current = F.current;
 
 			if (current) {
@@ -480,8 +481,6 @@
 
 				F.jumpto(current.index + 1, direction, 'next');
 			}
-                        // Added by Jesse to allow vid navigation
-                        F.trigger("onNext");
 		},
 
 		// Navigate to previous gallery item
@@ -495,8 +494,6 @@
 
 				F.jumpto(current.index - 1, direction, 'prev');
 			}
-                        // Added by Jesse to allow vid navigation
-                        F.trigger("onPrev");
 		},
 
 		// Navigate to gallery item by index

@@ -2510,22 +2510,6 @@ define( ['plugins/router',
                     '</div></div></div></div>' 
             },
             
-            onNext: function() {
-                if( self.playingVidIndex()+1 < self.videos().length ) {
-                    self.playingVidIndex( self.playingVidIndex()+1 );
-                    self.playingVid( self.videos()[self.playingVidIndex()] );
-                    self.playingVidUUID( self.videos()[self.playingVidIndex()].media().uuid );
-                }
-            },
-            
-            onPrev: function() {
-                if( self.playingVidIndex()-1 >= 0 ) {
-                    self.playingVidIndex( self.playingVidIndex()-1 );
-                    self.playingVid( self.videos()[self.playingVidIndex()] );
-                    self.playingVidUUID( self.videos()[self.playingVidIndex()].media().uuid );
-                }
-            },
-            
             beforeShow: function () {
                 //console.log( self.playingVid().media() );
                 if( head.mobile ) {
@@ -2583,9 +2567,19 @@ define( ['plugins/router',
                 // Needed to fire the correct functions when the nav buttons are clicked (prev and next)
                 var F = $.fancybox;
                 $('.fancybox-prev span').on('click', function() {
+                    if( self.playingVidIndex()-1 >= 0 ) {
+                        self.playingVidIndex( self.playingVidIndex()-1 );
+                        self.playingVid( self.videos()[self.playingVidIndex()] );
+                        self.playingVidUUID( self.videos()[self.playingVidIndex()].media().uuid );
+                    }
                     F.prev();
                 });
                 $('.fancybox-next span').on('click', function() {
+                    if( self.playingVidIndex()+1 < self.videos().length ) {
+                        self.playingVidIndex( self.playingVidIndex()+1 );
+                        self.playingVid( self.videos()[self.playingVidIndex()] );
+                        self.playingVidUUID( self.videos()[self.playingVidIndex()].media().uuid );
+                    }
                     F.next();
                 });
                 
