@@ -333,8 +333,8 @@ define( ['plugins/router',
             var username = viblio.user().displayname;
             var email = viblio.user().email;
             var id = viblio.user().uuid;
-            console.log( viblio.user(), 'username:'+username+', email:'+email+', id:'+id );
-            return 'username:'+username+', email:'+email+', id:'+id;
+            var filter = self.activeFilterType();
+            return 'username:'+username+', email:'+email+', id:'+id+' ,filter:'+filter;
         });
         
         self.searchForVidsWithNoDates = ko.observable( false );
