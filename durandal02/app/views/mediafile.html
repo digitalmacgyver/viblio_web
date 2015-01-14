@@ -19,13 +19,13 @@
                 <div class="inline" title="select" data-bind="ifnot: $data.selected()">
                     <i class="fa fa-square-o"></i>
                 </div>
-            </a>   
-            <a class="mplay-icon pointer" data-bind="click:play, attr:{href:image}, css: { fancybox: popup_player }">
-                <i class="fa fa-play-circle"></i> 
-            </a>
+            </a>  
             <i class="fa fa-ok-sign"></i>
             <div class='pointer' data-bind="click:play">
-                <a data-bind="attr:{href:image}, css: { fancybox: popup_player }">
+                <a data-bind="attr:{href:image, rel: popup_player ? 'gallery1' : null}, css: { fancybox: popup_player }">
+                    <div class="mplay-icon pointer">
+                        <i class="fa fa-play-circle"></i> 
+                    </div>
                     <img data-bind="attr:{src:image}" />
                     <!-- ko if: shared_style -->
                     <div class="sharedOwnerWrap">

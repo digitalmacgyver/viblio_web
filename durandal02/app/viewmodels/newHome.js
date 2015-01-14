@@ -2564,24 +2564,10 @@ define( ['plugins/router',
             },
             
             afterLoad: function(current, previous) {
-                // Needed to fire the correct functions when the nav buttons are clicked (prev and next)
-                var F = $.fancybox;
-                $('.fancybox-prev span').on('click', function() {
-                    if( self.playingVidIndex()-1 >= 0 ) {
-                        self.playingVidIndex( self.playingVidIndex()-1 );
-                        self.playingVid( self.videos()[self.playingVidIndex()] );
-                        self.playingVidUUID( self.videos()[self.playingVidIndex()].media().uuid );
-                    }
-                    F.prev();
-                });
-                $('.fancybox-next span').on('click', function() {
-                    if( self.playingVidIndex()+1 < self.videos().length ) {
-                        self.playingVidIndex( self.playingVidIndex()+1 );
-                        self.playingVid( self.videos()[self.playingVidIndex()] );
-                        self.playingVidUUID( self.videos()[self.playingVidIndex()].media().uuid );
-                    }
-                    F.next();
-                });
+                // When prev and next buttons are clicked, play the correct movie
+                self.playingVidIndex( current.index );
+                self.playingVid( self.videos()[self.playingVidIndex()] );
+                self.playingVidUUID( self.videos()[self.playingVidIndex()].media().uuid );
                 
                 $('.fancybox-outer').height( ($("#player").width()*9) / 16 );
             },

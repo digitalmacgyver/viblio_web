@@ -471,7 +471,6 @@
 
 		// Navigate to next gallery item
 		next: function ( direction ) {
-                    console.log( 'next fired');
 			var current = F.current;
 
 			if (current) {
