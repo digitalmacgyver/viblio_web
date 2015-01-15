@@ -280,7 +280,9 @@ define(['plugins/router','lib/viblio','lib/customDialogs','durandal/system', 'li
 	    viblio.api( '/services/na/new_user', { via: 'share',
 						   email: email(),
 						   password: password(),
-						   displayname: email() }, handleLoginFailure )
+						   displayname: email(),
+                                                   creation_reason: 'private_share'
+                                                 }, handleLoginFailure )
 		.then( function( data ) {
 		    // Save the logged in user info to the viblio object,
 		    // which serves as a global exchange
