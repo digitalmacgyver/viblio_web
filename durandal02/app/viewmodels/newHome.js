@@ -2025,9 +2025,24 @@ define( ['plugins/router',
             var args = {
                 'images[]': self.selectedPhotos(),
                 'summary_type' : 'moments',
-                'title': self.getAlbumName() + ' Summary Video'
+                'title': self.getAlbumName() + ' Summary Video',
+                'summary_options': {
+                    'duration_method': 'shortest'
+                }
             };
-            viblio.api( 'services/mediafile/create_video_summary', args ).done( function( response ) {
+            
+            var json = {
+                type: 'POST',
+                url: 'services/mediafile/create_video_summary',
+                contentType: 'application/json',
+                data: ko.toJSON(args),
+                processData: false
+            };
+            
+            console.log( json );
+            
+            jQuery.ajax( json ).done( function( response ) {
+                console.log( response );
                 viblio.api('services/mediafile/list_status').then( function( data ) {
                     console.log( data );
                     self.numVidsPending( data.stats.pending );
@@ -2044,11 +2059,35 @@ define( ['plugins/router',
                 });
                 dfd.resolve( response );
             }).fail( function() {
+                console.log( 'request failed' );
                 dfd.reject();
             });
         } else {
             dfd.reject();
         }
+            
+            /*viblio.api( 'services/mediafile/create_video_summary', args ).done( function( response ) {
+                viblio.api('services/mediafile/list_status').then( function( data ) {
+                    console.log( data );
+                    self.numVidsPending( data.stats.pending );
+                    var num = data.stats.pending/* + data.stats.visible*//*;
+                    self.vidsInProcess( num );
+                    if( self.vidsInProcess() > 0 ) {
+                        // go to recent vids filter
+                        self.getRecentVids( true );
+                        // go to video mode
+                        self.video_mode_on( true );
+                        // scroll to the top of the page
+                        $(document).scrollTop(0);
+                    }
+                });
+                dfd.resolve( response );
+            }).fail( function() {
+                dfd.reject();
+            });
+        } else {
+            dfd.reject();
+        }*/
     };
     
     newHome.prototype.create_fb_album = function( dfd ) {
