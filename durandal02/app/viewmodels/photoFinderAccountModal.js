@@ -131,7 +131,8 @@ function( router, config, viblio, customDialogs, dialog ) {
         
         var args = {
             email: self.email(),
-            try_photos: 1
+            try_photos: 1,
+            creation_reason: 'try_photos' 
         };
         
         self.busyFlag( true );

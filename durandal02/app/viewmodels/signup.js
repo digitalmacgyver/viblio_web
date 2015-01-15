@@ -150,7 +150,9 @@ function( router, app, system, config, viblio, dialog ) {
 					       realm: 'db',
                                                email: signup_email(),
                                                password: signup_pw1(),
-                                               displayname: signup_displayname() }, handleLoginFailure )
+                                               displayname: signup_displayname(),
+                                               creation_reason: 'signup_email'
+                                             }, handleLoginFailure )    
             .then( function( data ) {
 		loginSuccessful( data.user, 'signup_via_native' );
                 busyFlag( false );

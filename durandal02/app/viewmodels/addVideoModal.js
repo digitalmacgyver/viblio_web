@@ -43,7 +43,8 @@ function( router, config, viblio, customDialogs, dialog ) {
         
         var args = {
             email: self.email(),
-            mid: self.mid
+            mid: self.mid,
+            creation_reason: 'public_share' 
         };
         viblio.api( 'services/na/add_video_to_email', args ).then( function( res ) {
             if( res ) {
