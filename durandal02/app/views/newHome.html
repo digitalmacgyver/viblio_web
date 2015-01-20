@@ -577,7 +577,7 @@
                             </span>
                             <i class="fa fa-undo turquoiseFont" title="Clear no dates filter" data-bind="click: clearNoDates"></i>
                         </span>
-                        <!-- ko if: hits() < 1 -->
+                        <!-- ko if: hits() < 1 && !activeTag() && !searchForVidsWithNoDates() -->
                         <div class="btn btn-primary" data-bind="click: add_videos_to_empty_album">Add videos to this empty album</div>
                         <!-- /ko -->
                     </div>
