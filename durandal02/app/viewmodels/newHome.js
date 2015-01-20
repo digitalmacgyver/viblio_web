@@ -913,6 +913,8 @@ define( ['plugins/router',
                 });
 	}).promise()
         .done(function( res, photosArr ){
+            // the api worked, so make sure album error is hidden
+            self.showAlbumError(false);
             // album searches
             if( res == 'album' ) {
                 self.current_album_is_empty( false );
