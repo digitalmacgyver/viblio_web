@@ -2032,11 +2032,11 @@ define( ['plugins/router',
             };
             
             var json = {
-                type: 'POST',
                 url: 'services/mediafile/create_video_summary',
-                contentType: 'application/json',
+                type: "POST",
                 data: ko.toJSON(args),
-                processData: false
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
             };
             
             console.log( json );
