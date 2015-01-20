@@ -2254,21 +2254,23 @@ define( ['plugins/router',
             
             jQuery.ajax( json ).done( function( response ) {
                 console.log( response );
-                viblio.api('services/mediafile/list_status').then( function( data ) {
-                    console.log( data );
-                    self.numVidsPending( data.stats.pending );
-                    var num = data.stats.pending/* + data.stats.visible*/;
-                    self.vidsInProcess( num );
-                    if( self.vidsInProcess() > 0 ) {
-                        // go to recent vids filter
-                        self.getRecentVids( true );
-                        // go to video mode
-                        self.video_mode_on( true );
-                        // scroll to the top of the page
-                        $(document).scrollTop(0);
-                    }
+                dialog.showModal( 'viewmodels/summaryVidSuccessModal' ).then( function() {
+                    viblio.api('services/mediafile/list_status').then( function( data ) {
+                        console.log( data );
+                        self.numVidsPending( data.stats.pending );
+                        var num = data.stats.pending/* + data.stats.visible*/;
+                        self.vidsInProcess( num );
+                        if( self.vidsInProcess() > 0 ) {
+                            // go to recent vids filter
+                            self.getRecentVids( true );
+                            // go to video mode
+                            self.video_mode_on( true );
+                            // scroll to the top of the page
+                            $(document).scrollTop(0);
+                        }
+                    });
+                    dfd.resolve( response );    
                 });
-                dfd.resolve( response );
             }).fail( function() {
                 console.log( 'request failed' );
                 dfd.reject();
