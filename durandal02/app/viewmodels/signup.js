@@ -178,7 +178,7 @@ function( router, app, system, config, viblio, dialog ) {
 		$.cookie( 'vb_facebook_referal', 'true', { expires: 1, path: '/' } );
 	    }
             if( args && args.email ) {
-                signup_email( args.email );
+                signup_email( decodeURIComponent(args.email) );
                 disableEmail(true);
             }
 	}

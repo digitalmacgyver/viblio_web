@@ -156,7 +156,8 @@ function( router, config, viblio, customDialogs, dialog ) {
 		viblio.api( '/services/na/authenticate',
 			    { realm: 'facebook',
                               access_token: response.authResponse.accessToken,
-                              try_photos: 1
+                              try_photos: 1,
+                              creation_reason: 'try_photos'
                             },
                           function(res){
                             self.handleLoginFailure(res);

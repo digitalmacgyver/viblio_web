@@ -38,7 +38,7 @@ define(['plugins/router', 'viewmodels/whoWeAre', 'lib/viblio', 'plugins/dialog']
                 body: '<p>We have a new beta tester user.  The email is: ' + email + '</p>'
             })
         }).then( function() {
-            router.navigate( '#signup?email='+email );
+            router.navigate( '#signup?email='+encodeURIComponent(email) );
         });
     };
     
