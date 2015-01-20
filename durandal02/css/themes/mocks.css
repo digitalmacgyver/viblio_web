@@ -6602,6 +6602,19 @@ ul.token-input-list-facebook li input {
     clear: both
 }
 
+.fancybox-title .vidDownloadLink-Wrap {
+    margin-top: -8px
+}
+
+.fancybox-title .vidDownloadLink {
+    color: black;
+    opacity: .65;
+}
+
+.fancybox-title .vidDownloadLink:hover {
+    opacity: 1;
+}
+
 .fancyboxVidLoader {
     width: 100%;
     height: 100%;

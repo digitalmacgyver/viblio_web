@@ -489,7 +489,6 @@ define( ['plugins/router',
             //self.tagList( set );
             dfd.resolve( arr, months );
         }).promise().then( function( tags, months ) {
-            console.log( tags, months );
             //set tag size
             tags.forEach( function( tag ) {
                 tag.fontSize = getLabelSize( tag.freq, min_tags_frequency, max_tags_frequency );
@@ -506,7 +505,6 @@ define( ['plugins/router',
             self.monthTagList( months );
             // sort chronilogically
             self.monthTagList.sort(function(left, right) { return left.date == right.date ? 0 : (left.date < right.date ? -1 : 1) })
-            console.log( self.tagList(), self.monthTagList() );    
         });
     };
     
@@ -1060,8 +1058,6 @@ define( ['plugins/router',
     
     newHome.prototype.filterVidsSearchPage = function( page, skipPageCheck, scrollToTop ) {
         var self = this;
-        
-        console.log( self.activeFilterType() )
         
         // this will dismiss any requests if the current fetch is not finished yet
         if( self.isActiveFlag() /*|| typeof page != 'number'*/ ) {
@@ -2513,20 +2509,20 @@ define( ['plugins/router',
             },
             
             beforeShow: function () {
-                //console.log( self.playingVid().media() );
                 if( head.mobile ) {
                     this.helpers.buttons = {position: 'bottom'};
                 }
                 var F = $.fancybox;
-                var el;
-                var href;
-                var api;
+                var el, href, api, dl, dl_link;
                 if( self.mfOwnedByViewer( self.playingVid() ) ) {
                     api = '/services/mediafile/get';
                     href = "new_player?mid=";
+                    dl_link = self.playingVid().media().views.main.download_url ? self.playingVid().media().views.main.download_url : null;
+                    dl = "<div class='vidDownloadLink-Wrap pull-right'><a class='vidDownloadLink' title='Download This Video' href='"+ dl_link +"'><i class='fa fa-2x fa-cloud-download'></i></a></div>"
                 } else {
                     api = '/services/na/media_shared';
                     href= "web_player?mid=";
+                    dl = "";
                 }
                 el = " &mdash; <a class='vidDetails' href='#" + href + self.playingVidUUID() + "'onclick='$.fancybox.close()'> Details</a>";
                 // if the vid is shared
@@ -2537,7 +2533,7 @@ define( ['plugins/router',
                     el += "<br/><span>" + self.playingVid().media().eyes + " Fan Views</span>";
                 }
                 
-                this.title = "<span>"+self.playingVid().title()+"</span>"+el;
+                this.title = "<span>"+self.playingVid().title()+"</span>"+el+dl;
                 
                 var arr = [];
                 self.videos().forEach( function(vid){
