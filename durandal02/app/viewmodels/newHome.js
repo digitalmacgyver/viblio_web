@@ -816,9 +816,9 @@ define( ['plugins/router',
         
         self.performingNewSearch(false);
         self.isActiveFlag(false);
-        if( code === '403' ) {
+        if( code == '403' ) {
             self.albumErrorMsg( 'private' );
-        } else if ( code === '404' ) {
+        } else if ( code == '404' ) {
             self.albumErrorMsg( 'unavailable' );
         }
         //this strips the aid params off of the url after navigation
