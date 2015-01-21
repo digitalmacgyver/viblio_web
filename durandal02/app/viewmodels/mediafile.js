@@ -23,6 +23,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs', 'd
         
         var self = this;
         
+        self.data = data;
+        
 	data.eyes = data.view_count || 0;
 
 	self.options = $.extend({
@@ -94,7 +96,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs', 'd
         self.showFaces = ko.observable( false );
         
         self.showTags = ko.observable( false );
-	self.tags = ko.observableArray( data.tags );
+	self.tags = ko.observableArray([]);
 
 	self.title = ko.observable( viblio.unescapeHtml( data.title ) );
 	self.description = ko.observable( data.description );
@@ -171,12 +173,28 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs', 'd
                 var showDate = date_utc.format( 'MMMM YYYY' );
                 self.media().recording_date = dstring;
                 viblio.api( '/services/mediafile/change_recording_date', { mid: self.media().uuid, date: dstring } ).then( function( tagsArray ) {
-                    self.tags( tagsArray );
+                    //self.tags( tagsArray );
+                    self.handleTags( tagsArray );
                     // instead of showing the chosen date just show the calendar icon
                     $('.recording-date').html( '<i class="fa fa-calendar"></i>' );
                 });
                 return null;
             }
+        });
+        
+        // control placement of tags list so it can flow outside of overflow: hidden parent
+        $(self.view).find('.navControl').on('click', function() {
+            var $menuItem = $(this),
+            $submenu = $('> .dropdown-menu', $menuItem);
+
+            // grab the menu item's position relative to its positioned parent
+            var menuItemPos = $menuItem.position();
+
+            // place the submenu in the correct position relevant to the menu item
+            $submenu.css({
+                top: menuItemPos.top + $menuItem.outerHeight(),
+                left: menuItemPos.left
+            });
         });
     };
     
@@ -211,10 +229,10 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs', 'd
         };
         
         if( args.tag ) {
-            // check to see if video already has selectred tag
+            // check to see if video already has selected tag
             var present = false;
             self.tags().forEach( function( t ) {
-                if( t == args.tag ) {
+                if( t.label == args.tag ) {
                     present = true;
                 }
             });
@@ -225,7 +243,13 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs', 'd
             } else {
                 // tag does not exist, so add it
                 viblio.api(' /services/mediafile/add_tag', args).then( function() {
-                    self.tags.push( viblio.escapeHtml( args.tag ) );
+                    var tag = {
+                        label: args.tag
+                    };
+                    if( tag.label.indexOf( ' ' ) == -1 ) {
+                        tag.truncate = true;
+                    }
+                    self.tags.push( tag );
                     self.tagLabels().forEach( function( t ) {
                         t.selected( false );
                     });
@@ -244,7 +268,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs', 'd
         
         var args = {
             mid: $parent.media().uuid,
-            tag: $data
+            tag: $data.label
         };
         viblio.api('/services/mediafile/rm_tag', args).then( function() {
             $parent.tags.remove( $data );
@@ -328,7 +352,34 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs', 'd
         }      
         this.show_select_badge( false );
     };
-
+    
+    Video.prototype.handleTags = function( tagsArr ) {
+        var self = this;
+        
+        var arr = [];
+        tagsArr.forEach( function( tag ) {
+            // remove the 'people' tag from the mediafile so it doesn't show in the UI
+            if( tag != 'people' ) {
+                tag = {
+                    label: tag
+                };
+                if( tag.label.indexOf( ' ' ) == -1 ) {
+                    tag.truncate = true;
+                }
+                arr.push( tag );    
+            }
+        });
+        
+        self.tags( arr );
+        self.tags.valueHasMutated();
+    };
+    
+    Video.prototype.activate = function( ) {
+        var self = this;
+        
+        self.handleTags( self.data.tags );
+    };
+    
     // Send an event, so those above can manage screen
     // redraws, if needed.
     Video.prototype.attached = function( view ) {
@@ -383,9 +434,6 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs', 'd
         
         // this will trigger the number of faces to show to be correct when resizing window
         //$( window ).bind('resize', function(){ self.winWidth( $( window ).width() );} );
-        
-        // remove the 'people' tag from the mediafile so it doesn't show in the UI
-        self.tags.remove( 'people' );
         
         self.viewResolved.resolve();
     };

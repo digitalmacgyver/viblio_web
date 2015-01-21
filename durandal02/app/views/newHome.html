@@ -533,7 +533,7 @@
                                 (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
                                 <span class='titleTag-Wrap' data-bind="visible: activeTag()">
                                     <span class='titleTag'>
-                                        &mdash; <i class="fa fa-tag"></i><span class='tagLabel' data-bind="text: activeTag()"></span>
+                                        &mdash; <i class="fa fa-tag"></i><span class='tagLabel truncate' data-bind="text: activeTag()"></span>
                                     </span>
                                     <i class="fa fa-undo turquoiseFont" title="Clear tag" data-bind="click: clearTag"></i>
                                 </span>
@@ -567,7 +567,7 @@
                         <span class="subtitle">by <span data-bind="text: currentAlbum().owner.displayname"></span> <img class="img-circle" data-bind="attr: {src: '/services/user/avatar?uid=' + currentAlbum().owner.uuid + '&y=30'}, tooltip: {title: 'Album by ' + currentAlbum().owner.displayname, placement: 'bottom'}"></span>.
                         <span class='titleTag-Wrap' data-bind="visible: activeTag()">
                             <span class='titleTag'>
-                                &mdash; <i class="fa fa-tag"></i><span class='tagLabel' data-bind="text: activeTag()"></span>
+                                &mdash; <i class="fa fa-tag"></i><span class='tagLabel truncate' data-bind="text: activeTag()"></span>
                             </span>
                             <i class="fa fa-undo turquoiseFont" title="Clear tag" data-bind="click: clearTag"></i>
                         </span>
@@ -686,10 +686,18 @@
         <div class='tagsList-Wrapper' data-bind="visible: activeFilterType() == 'album' || activeFilterType() == 'all' ">
             <div data-bind="visible: activeFilterType() == 'album'">
                 <div class='tagsList'>
-                    <h3><i class="fa fa-tags"></i></h3>
+                    <h3>
+                        <i class="fa fa-tags"></i>
+                        <span data-bind="visible: activeTag()">
+                            &mdash; <i class="fa fa-undo turquoiseFont" title="Clear active tag filter" data-bind="click: clearTag"></i>
+                        </span>
+                        <span data-bind="visible: searchForVidsWithNoDates()">
+                            &mdash; <i class="fa fa-undo turquoiseFont" title="Clear no dates filter" data-bind="click: clearNoDates"></i>
+                        </span>
+                    </h3>
                     <ul>
                         <!-- ko foreach: tagList -->
-                        <li data-bind="click: function(){ $parent.tagSearch($data.name); }, text: $data.name, style: {'font-size': $data.fontSize }"></li>
+                        <li data-bind="click: function(){ $parent.tagSearch($data); }, text: $data.name, style: {'font-size': $data.fontSize }, css: {truncate: $data.truncate, active: $data.selected()}"></li>
                         <!-- /ko -->
                     </ul>
                 </div>
@@ -697,14 +705,14 @@
                 <div class='tagsList' data-bind="visible: monthTagList().length > 0">
                     <ul>
                         <!-- ko foreach: monthTagList -->
-                        <li data-bind="click: function(){ $parent.tagSearch($data.name); }, text: $data.name, style: {'font-size': $data.fontSize }"></li>
+                        <li data-bind="click: function(){ $parent.tagSearch($data); }, text: $data.name, style: {'font-size': $data.fontSize }, css: {truncate: $data.truncate, active: $data.selected()}"></li>
                         <!-- /ko -->
                     </ul>
                 </div>    
             </div>
-            <div class='tagsList'>
+            <div class='tagsList' data-bind="visible: showNoDates()">
                 <ul>
-                    <li data-bind="click: noDatesSearch">
+                    <li data-bind="click: noDatesSearch, css: {active: searchForVidsWithNoDates()}">
                         No Dates
                     </li>
                 </ul>
