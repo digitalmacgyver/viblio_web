@@ -517,8 +517,6 @@ define( ['plugins/router',
         var self = this;
         var args;
         
-        console.log( tag, tag.selected() );
-        
         // unselect all tags
         self.tagList().forEach( function( tag ) {
             tag.selected( false );
@@ -528,7 +526,6 @@ define( ['plugins/router',
         });
         
         tag.selected( true );
-        console.log( tag, tag.selected() );
         
         // remove all photos since this does not run through the filterVidsSearchPage() function which normally clears out the photos 
         self.videos.removeAll();
@@ -884,8 +881,7 @@ define( ['plugins/router',
             args.include_images = config.photo_throttle;
             viblio.api( api, args, errorCallback ? errorCallback : null )
                 .then( function( json ) {
-                    console.log( json );
-                    self.showNoDates( json.no_date_return );
+                    self.showNoDates( json.no_date_return ? json.no_date_return : false );
                     self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
                     self.handlePager( json.pager, newSearch || args.updatePager, args.updatePager );
                     if( type == 'album' ) {
@@ -980,7 +976,6 @@ define( ['plugins/router',
             
             // handle tags
             if( self.activeFilterType() == 'album' && newSearch ) {
-                console.log( 'updating tags' );
                 self.handleTags( tags );
             }
             
@@ -2271,13 +2266,9 @@ define( ['plugins/router',
                 dataType: "json"
             };
             
-            console.log( json );
-            
             jQuery.ajax( json ).done( function( response ) {
-                console.log( response );
                 dialog.showModal( 'viewmodels/summaryVidSuccessModal' ).then( function() {
                     viblio.api('services/mediafile/list_status').then( function( data ) {
-                        console.log( data );
                         self.numVidsPending( data.stats.pending );
                         var num = data.stats.pending/* + data.stats.visible*/;
                         self.vidsInProcess( num );
@@ -2293,35 +2284,11 @@ define( ['plugins/router',
                     dfd.resolve( response );    
                 });
             }).fail( function() {
-                console.log( 'request failed' );
                 dfd.reject();
             });
         } else {
             dfd.reject();
         }
-            
-            /*viblio.api( 'services/mediafile/create_video_summary', args ).done( function( response ) {
-                viblio.api('services/mediafile/list_status').then( function( data ) {
-                    console.log( data );
-                    self.numVidsPending( data.stats.pending );
-                    var num = data.stats.pending/* + data.stats.visible*//*;
-                    self.vidsInProcess( num );
-                    if( self.vidsInProcess() > 0 ) {
-                        // go to recent vids filter
-                        self.getRecentVids( true );
-                        // go to video mode
-                        self.video_mode_on( true );
-                        // scroll to the top of the page
-                        $(document).scrollTop(0);
-                    }
-                });
-                dfd.resolve( response );
-            }).fail( function() {
-                dfd.reject();
-            });
-        } else {
-            dfd.reject();
-        }*/
     };
     
     newHome.prototype.create_fb_album = function( dfd ) {
