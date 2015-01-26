@@ -339,6 +339,7 @@ define( ['plugins/router',
         });
         
         self.searchForVidsWithNoDates = ko.observable( false );
+        self.showNoDates = ko.observable( false );
                 
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
@@ -432,7 +433,8 @@ define( ['plugins/router',
         var regEx;
         
         function containsRegex(a, regex){
-            for(var i = 0; i < a.length; i++) {
+            var l = a.length
+            for(var i = 0; i < l; i++) {
               if(a[i].search(regex) > -1){
                 return i;
               }
@@ -447,11 +449,12 @@ define( ['plugins/router',
         }
         
         return system.defer( function( dfd ) { 
-            for( obj in tags ) {
+            for( var obj in tags ) {
                 set = {
                     name: viblio.unescapeHtml( viblio.unescapeHtml(obj) ),
                     freq: tags[obj],
-                    fontSize: null
+                    fontSize: null,
+                    selected: ko.observable( false )
                 };
                 // handle months
                 if( obj.indexOf( ' ' ) > 0 ) {
@@ -478,6 +481,7 @@ define( ['plugins/router',
                 }
                 // handle other tags
                 else {
+                    set.truncate = true;
                     if( tags[obj] > max_tags_frequency ) {
                         max_tags_frequency = tags[obj];
                     }
@@ -513,21 +517,32 @@ define( ['plugins/router',
         var self = this;
         var args;
         
+        // unselect all tags
+        self.tagList().forEach( function( tag ) {
+            tag.selected( false );
+        });
+        self.monthTagList().forEach( function( tag ) {
+            tag.selected( false );
+        });
+        
+        tag.selected( true );
+        
         // remove all photos since this does not run through the filterVidsSearchPage() function which normally clears out the photos 
+        self.videos.removeAll();
         self.photos.removeAll();
         
         self.searchForVidsWithNoDates( false );
         
-        self.activeTag( tag );
+        self.activeTag( tag.name );
         
         // set the code below in the filterVidsSearch() function AFTER the album has been fetched.
         //self.activeFilterType('album');
         
         args = {
-            'tags[]': [tag]
+            'tags[]': [tag.name]
         };
         args.aid = self.currentAlbumAid();
-        self.filterVidsSearch( 'album', args, 'services/album/get', true, true );
+        self.filterVidsSearch( 'album', args, 'services/album/get', false, true );
     }; 
     
     newHome.prototype.clearTag = function() {
@@ -866,6 +881,7 @@ define( ['plugins/router',
             args.include_images = config.photo_throttle;
             viblio.api( api, args, errorCallback ? errorCallback : null )
                 .then( function( json ) {
+                    self.showNoDates( json.no_date_return ? json.no_date_return : false );
                     self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
                     self.handlePager( json.pager, newSearch || args.updatePager, args.updatePager );
                     if( type == 'album' ) {
@@ -959,7 +975,7 @@ define( ['plugins/router',
             }
             
             // handle tags
-            if( self.activeFilterType() == 'album' ) {
+            if( self.activeFilterType() == 'album' && newSearch ) {
                 self.handleTags( tags );
             }
             
@@ -2250,13 +2266,9 @@ define( ['plugins/router',
                 dataType: "json"
             };
             
-            console.log( json );
-            
             jQuery.ajax( json ).done( function( response ) {
-                console.log( response );
                 dialog.showModal( 'viewmodels/summaryVidSuccessModal' ).then( function() {
                     viblio.api('services/mediafile/list_status').then( function( data ) {
-                        console.log( data );
                         self.numVidsPending( data.stats.pending );
                         var num = data.stats.pending/* + data.stats.visible*/;
                         self.vidsInProcess( num );
@@ -2272,35 +2284,11 @@ define( ['plugins/router',
                     dfd.resolve( response );    
                 });
             }).fail( function() {
-                console.log( 'request failed' );
                 dfd.reject();
             });
         } else {
             dfd.reject();
         }
-            
-            /*viblio.api( 'services/mediafile/create_video_summary', args ).done( function( response ) {
-                viblio.api('services/mediafile/list_status').then( function( data ) {
-                    console.log( data );
-                    self.numVidsPending( data.stats.pending );
-                    var num = data.stats.pending/* + data.stats.visible*//*;
-                    self.vidsInProcess( num );
-                    if( self.vidsInProcess() > 0 ) {
-                        // go to recent vids filter
-                        self.getRecentVids( true );
-                        // go to video mode
-                        self.video_mode_on( true );
-                        // scroll to the top of the page
-                        $(document).scrollTop(0);
-                    }
-                });
-                dfd.resolve( response );
-            }).fail( function() {
-                dfd.reject();
-            });
-        } else {
-            dfd.reject();
-        }*/
     };
     
     newHome.prototype.create_fb_album = function( dfd ) {

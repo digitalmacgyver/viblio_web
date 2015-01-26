@@ -55,7 +55,7 @@
                 </a>
             </div>
             <div class="video-tags" data-bind="foreach: tags">
-                <span data-bind="text: $root.viblio.unescapeHtml($data)"></span>
+                <span data-bind="text: $root.viblio.unescapeHtml($data.label)"></span>
             </div>
         </div>
         <!-- ko ifnot: clean_style() -->
@@ -119,14 +119,14 @@
                             <ul class="currentTags" data-bind="visible: showTags()">
                                 <!-- ko foreach: tags -->
                                 <li class="tag mocksWhiteBG">
-                                    <span class="tagLabel" data-bind="text: $parent.viblio.unescapeHtml($data)"></span>
+                                    <div class="tagLabel" data-bind="text: $parent.viblio.unescapeHtml($data.label), css: {truncate: $data.truncate}"></div>
                                     <!-- ko if: $parent.tags_editable() -->
                                     <i class="fa fa-times" title="Remove" data-bind="click: $parent.removeTag.bind( $data, $parent )"></i>
                                     <!-- /ko -->
                                 </li>
                                 <!-- /ko -->
                                 <!-- ko if: tags_editable() -->
-                                <li class="tag mocksWhiteBG dropdown navControl">
+                                <li class="tag mocksWhiteBG navControl">
                                     <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-bind="click: function(){ selectedTag( null ); }"><i class="fa fa-plus"></i> Add Tag</a>
                                     <ul class="style2DD dropdown-menu tags" role="menu">
                                         <li class="tagsScrollWrapper">
@@ -151,7 +151,7 @@
                                                 </div>                  
                                             </div>
                                         </li>
-                                      </ul>                           
+                                    </ul>   
                                 </li>
                                 <li class="tag mocksWhiteBG recording-date editable" title="Add a date">
                                     <i class="fa fa-calendar"></i>

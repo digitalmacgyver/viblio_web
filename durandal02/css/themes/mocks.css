@@ -1059,6 +1059,10 @@ input:-moz-placeholder {
     font-style: italic;
 }
 
+.relative {
+    position: relative;
+}
+
 /********************  Page Header Section  *****************************/
 
 #page-header .navbar {
@@ -2315,6 +2319,8 @@ input:-moz-placeholder {
 
 .currentTags {
     //display: inline-block;
+    max-height: 200px;
+    overflow: auto;
     min-height: 20px;
     padding: 19px;
     margin-left: 0;
@@ -2753,7 +2759,7 @@ div.token-input-dropdown-facebook {
     margin-right: -278px;
 }
 .noDatesIndent .allVidsInner {
-    margin-right: -104px;
+    margin-right: -110px;
 }
 
 .allVidsPage .yir {
@@ -2805,7 +2811,7 @@ div.token-input-dropdown-facebook {
     margin-right: 278px;
 }
 .noDatesIndent .allVidsWrap {
-    margin-right: 104px;
+    margin-right: 110px;
 }
 
 .allVidsPage .media-container {
@@ -3567,6 +3573,29 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     .mediafile .truncate {
         width: 198px;
     }
+    
+    .tagsPopup .tag {
+        margin-top: 0 !important;
+        vertical-align: top;
+    }
+    
+    .tagsPopup .tag:not(.dropdown) {
+        overflow: hidden;
+    }
+    
+    .tagsPopup .tagLabel {
+        display: inline-block;
+        vertical-align: top;
+    }
+    
+    .tagsPopup .truncate {
+        width: auto;
+        max-width: 168px;
+    }
+    
+    .tagsPopup .dropdown-menu {
+        min-width: 50%;
+    }
 
 .pp-related-column-related-videos .mediafile {
     //width: 270px;
@@ -3860,6 +3889,7 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     bottom: 3px;
     left: 8px;
     max-height: 75px;
+    max-width: 100%;
 }
 
 .mediafile .video-tags span {
@@ -7090,18 +7120,32 @@ ul.token-input-list-facebook li input {
 
 .tagsList { 
     text-align : center; 
-    padding : 0 10px; 
+    padding : 3px 10px 0; 
     width : 258px; 
-    line-height : 1.5em;
-    overflow:auto; 
+    line-height: 1.5em;
+    overflow-x: hidden; 
+    overflow-y: auto;
 }
 
 .noDatesIndent .tagsList {
-    width: 84px
+    width: 90px
 }
 
 .tagsList h3 {
     margin: -10px 0 10px !important;
+}
+
+.tagsList h3 span {
+    font-size: 16px;
+}
+
+.tagsList h3 span i {
+    opacity: .65;
+    cursor: pointer;
+}
+
+.tagsList h3 span i:hover {
+    opacity: 1;
 }
 
 .tagsList ul {
@@ -7116,6 +7160,19 @@ ul.token-input-list-facebook li input {
     opacity: .65;
     text-decoration : none;
     line-height: .95em;
+    max-width: 248px;
+    overflow: hidden;
+}
+
+.tagsList li.active {
+    opacity: 1;
+    text-decoration : underline;
+    font-weight: bold;
+}
+
+.tagsList .truncate {
+    width: auto;
+    max-width: 258px;
 }
 
 .tagsList li:hover {
@@ -7142,6 +7199,13 @@ ul.token-input-list-facebook li input {
     position: relative;
     text-shadow: none;
     font-weight: 400;
+}
+
+.titleTag .truncate {   
+    width: auto;
+    max-width: 200px;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 /**** Feedback Thumbs ****/
