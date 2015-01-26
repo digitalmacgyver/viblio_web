@@ -4,7 +4,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
     var user = ko.observable();
 
     var cached_gifs = {};
-
+    
     var setUser = function( u ) {
 	if ( u ) {
 	    if ( u.uuid != user().uuid ) {
