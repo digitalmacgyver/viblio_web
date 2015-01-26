@@ -589,11 +589,11 @@ define(["durandal/app",
         
             viblio.api( '/services/mediafile/add_comment',
                     { mid: playing().media().uuid,
-                      txt: usercomment()
+                      txt: viblio.escapeHtml(usercomment())
                     } ).then( function( json ) {
                         usercomment('');
                         var c = json.comment;
-                        var hash = { comment: c.comment };
+                        var hash = { comment: viblio.unescapeHtml(c.comment) };
                         hash['who'] = c.who || 'anonymous'; 
                         hash['when'] = prettyWhen( new Date(), new Date() );
                         comments.unshift( hash );
