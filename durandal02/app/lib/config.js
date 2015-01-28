@@ -45,6 +45,7 @@ define( function() {
 	},
 	'test.viblio.com': {
 	    facebook: '165824470255570',
+	    email: 'support-staging.viblio.com'
 	}
     };
 
