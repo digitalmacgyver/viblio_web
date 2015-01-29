@@ -2602,7 +2602,7 @@ define( ['plugins/router',
                     api = '/services/mediafile/get';
                     href = "new_player?mid=";
                     dl_link = self.playingVid().media().views.main.download_url ? self.playingVid().media().views.main.download_url : null;
-                    dl = "<div class='vidDownloadLink-Wrap pull-right'><a class='vidDownloadLink' title='Download This Video' href='"+ dl_link +"'><i class='fa fa-2x fa-cloud-download'></i></a></div>"
+                    dl = "<div class='vidDownloadLink-Wrap pull-right hideOnMobile'><a class='vidDownloadLink' title='Download This Video' href='"+ dl_link +"'><i class='fa fa-2x fa-cloud-download'></i></a></div>"
                 } else {
                     api = '/services/na/media_shared';
                     href= "web_player?mid=";

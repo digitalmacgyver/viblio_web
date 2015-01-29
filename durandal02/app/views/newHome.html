@@ -82,7 +82,9 @@
                                                 <div class="itemActive-Wrap">
                                                     <div class="itemActive" data-bind="css: { on: $data.selected() }"></div>
                                                 </div>
-                                                <div class="inline tagLabel" data-bind="text: $data.label, css:{ sel: $data.selected() }"></div>
+                                                <div class="inline tagLabel" data-bind="css:{ sel: $data.selected() }">
+                                                    <span data-bind="text: $data.label, css: {truncate: $parent.shell.onMobile()}"></span>
+                                                </div>
                                                 <!--<div class="checkboxPadding"></div>
                                                 <div class="checkbox-Wrap" data-bind="if: $data.selected()">
                                                     <i class="fa fa-check-square-o"></i>
@@ -115,7 +117,9 @@
                                                 <div class="itemActive-Wrap">
                                                     <div class="itemActive" data-bind="css: { on: $data.selected() }"></div>
                                                 </div>
-                                                <div class="inline tagLabel" data-bind="text: $data.label, css:{ sel: $data.selected() }"></div>
+                                                <div class="inline tagLabel" data-bind="css:{ sel: $data.selected() }">
+                                                    <span data-bind="text: $data.label, css: {truncate: $parent.shell.onMobile()}"></span>
+                                                </div>
                                                 <!--<div class="checkboxPadding"></div>
                                                 <div class="checkbox-Wrap" data-bind="if: $data.selected()">
                                                     <i class="fa fa-check-square-o"></i>
@@ -146,20 +150,20 @@
                         </div>
                     </form>    
                 </li>
-                <li class="divider-vertical" data-bind="visible: !shell.onMobile()"></li>
+                <li class="divider-vertical hideOnMobile"></li>
 
             </ul><!-- end navbar-left -->
             
             <ul class='navbar-right nav pull-right'>
-                <li class="divider-vertical" data-bind="visible: showInProcessCount()"></li>
+                <li class="divider-vertical hideOnMobile" data-bind="visible: showInProcessCount()"></li>
                 <!-- In Process --> 
-                <li class="" data-bind="visible: showInProcessCount()">
+                <li class="hideOnMobile" data-bind="visible: showInProcessCount()">
                     <span class="vidsInProcessLabel">
                         <span class="badge badge-turquise" data-bind="text: vidsInProcess"></span> <span class="turquoiseFont"><span data-bind="text: vidsInProcess() == 1 ? 'Video' : 'Videos'"></span> In Process</span>
                     </span>
                 </li>
                 
-                <li class="divider-vertical"></li>
+                <li class="divider-vertical hideOnMobile"></li>
                 
                 <!-- video mode toggle -->
                 <li class="videoPhotoSwitch" data-bind="tooltip: {title: 'Toggle between photos and the videos they are from', placement: 'bottom' }">
@@ -193,7 +197,7 @@
                                           <a href="#" data-bind="click: function() { add_to_mode( 'new' ); }">New Video Album</a>
                                       </li>
                                       <li>
-                                          <a href="#" data-bind="click: function() { add_to_mode( 'existing' ); }">Add more videos to an existing album</a>
+                                          <a href="#" data-bind="click: function() { add_to_mode( 'existing' ); }">Add <span class="hideOnMobile">more</span> videos to an existing album</a>
                                       </li>
                                   </ul>
                                   <ul class="tags-inner" data-bind="visible: !video_mode_on()">

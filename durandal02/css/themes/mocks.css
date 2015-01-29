@@ -7219,3 +7219,38 @@ ul.token-input-list-facebook li input {
     display: inline-block;
     font-size: 8px;
 }
+
+/*** mobile **/
+.mobile .albumListView {
+    min-width: 0;
+}
+
+.mobile .navbar .nav {
+    margin: 0;
+    font-size: 13px;
+}
+
+.mobile .albumListView .mainTitle {
+    margin-bottom: 0px;
+}
+
+.mobile .tags-inner > li > a {
+    padding: 2px;
+}
+
+.mobile .albumListView .scroller {
+    height: 108px;
+}
+
+.mobile .truncate {
+    display: inline-block;
+}
+
+.mobile .newHomeTitle-Wrap .mainTitle {
+    font-size: 20px;
+    line-height: 20px;
+}
+
+.mobile .newHomeTitle-Wrap .pageNumber {
+    font-size: 12px;
+}
