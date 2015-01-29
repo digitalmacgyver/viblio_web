@@ -133,15 +133,23 @@
                                             <div class="scroller">
                                                 <div class="wrapper">
                                                     <ul class="tags-inner">
+                                                        <!-- ko ifnot: newTagSelected() -->
+                                                        <li data-bind="click: function(){ selectedTag( 'New Tag' ); }, clickBubble: false">
+                                                            <a class="checkboxedLi">
+                                                                <i class='fa fa-plus'></i>
+                                                                <div class="inline tagLabel" data-bind="css:{sel: $data.selected()}">New Tag</div>
+                                                            </a>
+                                                        </li>
+                                                        <!-- ko if: show_predefined_tags() --><li class="divider"></li><!-- /ko -->
+                                                        <!-- /ko -->
                                                       <!-- ko foreach: tagLabels -->
-                                                        <!-- ko ifnot: $parent.newTagSelected() -->
+                                                        <!-- ko ifnot: $parent.newTagSelected() || !$parent.show_predefined_tags() -->
                                                                 <li data-bind="click: $parent.tagSelected.bind( $data, $parent ), clickBubble: false">
                                                                     <a class="checkboxedLi">
                                                                         <!-- ko if: $data.label == 'New Tag' --> <i class='fa fa-plus'></i> <!-- /ko -->
                                                                         <div class="inline tagLabel" data-bind="text: $data.label, css:{sel: $data.selected()}"></div>
                                                                     </a>
                                                                 </li>
-                                                                <!-- ko if: $data.label == 'New Tag' --> <li class="divider"></li> <!-- /ko -->
                                                             <!-- /ko -->
                                                         <!-- /ko -->
                                                       <li data-bind="visible: newTagSelected()">
