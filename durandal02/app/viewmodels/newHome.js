@@ -1241,11 +1241,37 @@ define( ['plugins/router',
     
     newHome.prototype.addAlbumMediaFile = function( mf ) {
 	var self = this;
-        
+        var options = {};
 	// Create a new Mediafile with the data from the server - Only albums owned by the viewer will be given the share badge
 
-	var m = new Mediafile( mf, self.mfOwnedByViewer(mf) ? { show_share_badge: !self.select_mode_on(), show_preview: true, show_faces_tags: true, ownedByViewer: true, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on() ? true : self.selectedVideos().indexOf( mf.uuid ) != -1 ? true : false, popup_player: true, clean_style: true } : { show_preview: true, ro: true, show_faces_tags: true, shared_style: true, owner_uuid: mf.owner_uuid, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on(), popup_player: true, clean_style: true } );	
-
+	//var m = new Mediafile( mf, self.mfOwnedByViewer(mf) ? { show_share_badge: !self.select_mode_on(), show_preview: true, show_faces_tags: true, ownedByViewer: true, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on() ? true : self.selectedVideos().indexOf( mf.uuid ) != -1 ? true : false, popup_player: true, clean_style: true } : { show_preview: true, ro: true, show_faces_tags: true, shared_style: true, owner_uuid: mf.owner_uuid, show_select_badge: self.select_mode_on(), selected: self.select_all_mode_is_on(), popup_player: true, clean_style: true } );	
+        
+        if( self.mfOwnedByViewer(mf) ) {
+            options = { 
+                show_share_badge: !self.select_mode_on(), 
+                show_preview: true, 
+                show_faces_tags: true, 
+                ownedByViewer: true, 
+                show_select_badge: self.select_mode_on(), 
+                selected: self.select_all_mode_is_on() ? true : self.selectedVideos().indexOf( mf.uuid ) != -1 ? true : false, 
+                popup_player: true, 
+                clean_style: true,
+                show_predefined_tags: viblio.user().user_type == 'individual' ? true : false
+            };
+        } else {
+            options = {
+                show_preview: true, 
+                ro: true, 
+                show_faces_tags: true, 
+                shared_style: true, 
+                owner_uuid: mf.owner_uuid, 
+                show_select_badge: self.select_mode_on(), 
+                selected: self.select_all_mode_is_on(), 
+                popup_player: true, 
+                clean_style: true
+            };
+        }
+        var m = new Mediafile( mf, options );
 	// Play a mediafile clip.  This uses the query parameter
 	// passing technique to pass in the mediafile to play.
 	/*m.on( 'mediafile:play', function( m ) {
@@ -1304,20 +1330,22 @@ define( ['plugins/router',
     // Add a new mediafile to our managed list of mediafiles
     newHome.prototype.addMediaFile = function( mf ) {
 	var self = this;
+        var options = {};
         if( mf.status == 'failed' ) {
             return;
         }   
         if( mf.is_shared == 1 ) {
             // Shared with user
-            var m = new Mediafile( mf, { ro: true, shared_style: true, owner_uuid: mf.owner_uuid, show_faces_tags: true, show_select_badge: self.delete_mode_on() ? self.select_mode_on() : false, selected: self.delete_mode_on() ? self.select_all_mode_is_on() : false, popup_player: true, clean_style: true } ); //m.ro( true );
-            /*m.on( 'mediafile:play', function( m ) {
-                router.navigate( 'web_player?mid=' + m.media().uuid );
-            });*/
-            m.on( 'mediafile:play', function( m ) {
-                self.playingVid( m );
-                self.playingVidIndex( self.videos().indexOf( m ) );
-                self.playingVidUUID( m.media().uuid );
-            });
+            options = {
+                ro: true,
+                shared_style: true,
+                owner_uuid: mf.owner_uuid,
+                show_faces_tags: true,
+                show_select_badge: self.delete_mode_on() ? self.select_mode_on() : false,
+                selected: self.delete_mode_on() ? self.select_all_mode_is_on() : false,
+                popup_player: true, clean_style: true
+            }
+            var m = new Mediafile( mf, options ); //m.ro( true );
             // in this case the deferred (dfd) is created in the actual mediafile (mediafile.js) itself and it is resolved once the api call has been made
             m.on( 'mediafile:delete', function( m, dfd ) {
                 return viblio.api( '/services/mediafile/delete_share', { mid: m.media().uuid } ).then( function( data ) {
@@ -1330,19 +1358,17 @@ define( ['plugins/router',
             });    
         } else {
             // Owned by user
-            var m = new Mediafile( mf, { show_share_badge: !self.select_mode_on(), show_select_badge: self.select_mode_on(), show_faces_tags: true, ownedByViewer: true, selected: self.select_all_mode_is_on() ? true : self.selectedVideos().indexOf( mf.uuid ) != -1 ? true : false, in_process_style: mf.status == 'pending' ? true : false, popup_player: true, clean_style: true } );
-
-            // Proxy the mediafile play event and send it along to
-            // our parent.
-            /*m.on( 'mediafile:play', function( m ) {
-                router.navigate( 'new_player?mid=' + m.media().uuid );
-            });*/
-            m.on( 'mediafile:play', function( m ) {
-                self.playingVid( m );
-                self.playingVidIndex( self.videos().indexOf( m ) );
-                self.playingVidUUID( m.media().uuid );
-            });
-
+            options = { 
+                show_share_badge: !self.select_mode_on(), 
+                show_select_badge: self.select_mode_on(), 
+                show_faces_tags: true, 
+                ownedByViewer: true, 
+                selected: self.select_all_mode_is_on() ? true : self.selectedVideos().indexOf( mf.uuid ) != -1 ? true : false, 
+                in_process_style: mf.status == 'pending' ? true : false, popup_player: true, 
+                clean_style: true,
+                show_predefined_tags: viblio.user().user_type == 'individual' ? true : false
+            };
+            var m = new Mediafile( mf, options );
             m.on( 'mediafile:delete', function( m, dfd ) {
                 viblio.api( '/services/mediafile/delete', { uuid: m.media().uuid } ).then( function( json ) {
                     viblio.mpEvent( 'delete_video' );
@@ -1357,7 +1383,13 @@ define( ['plugins/router',
                     dfd.resolve();
                 });
             });
-        } 
+        }
+        
+        m.on( 'mediafile:play', function( m ) {
+            self.playingVid( m );
+            self.playingVidIndex( self.videos().indexOf( m ) );
+            self.playingVidUUID( m.media().uuid );
+        });
         
         m.on( 'mediafile:selected', function( m ) {
             // make sure video isn't already in the selectedVideos array

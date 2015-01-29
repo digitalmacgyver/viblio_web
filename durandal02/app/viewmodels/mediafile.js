@@ -41,7 +41,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs', 'd
             show_faces_tags: false,
             ownedByViewer: false,
             popup_player: false,
-            clean_style: false
+            clean_style: false,
+            show_predefined_tags: true
 	}, options );
         
 	self.media    = ko.observable( data );
@@ -70,6 +71,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs', 'd
         self.show_select_badge = ko.observable( self.options.show_select_badge );
         self.show_delete_mode = ko.observable( self.options.show_delete_mode );
         self.show_faces_tags = ko.observable( self.options.show_faces_tags );
+        
+        self.show_predefined_tags = ko.observable( self.options.show_predefined_tags );
         
         self.winWidth = ko.observable( $(window).width() );
         self.tags_editable = ko.observable( self.options.ownedByViewer );
@@ -122,7 +125,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs', 'd
             }*/
 	});
         
-        self.tagLabels = ko.observableArray([{label: 'New Tag', selected: ko.observable(false)},{label: 'Animals', selected: ko.observable(false)},{label: 'At home', selected: ko.observable(false)},{label: 'Beach', selected: ko.observable(false)},
+        self.tagLabels = ko.observableArray([/*{label: 'New Tag', selected: ko.observable(false)},*/{label: 'Animals', selected: ko.observable(false)},{label: 'At home', selected: ko.observable(false)},{label: 'Beach', selected: ko.observable(false)},
         {label: 'Children', selected: ko.observable(false)},{label: 'On the road', selected: ko.observable(false)},{label: 'Outdoors', selected: ko.observable(false)},{label: 'Parties', selected: ko.observable(false)},
         {label: 'Performances', selected: ko.observable(false)},{label: 'Pets', selected: ko.observable(false)},{label: 'Presentations', selected: ko.observable(false)}, {label: 'Sports - balls', selected: ko.observable(false)},
         {label: 'Sports - snow', selected: ko.observable(false)}, {label: 'Sports – water', selected: ko.observable(false)},{label: 'Vacation', selected: ko.observable(false)}]);
