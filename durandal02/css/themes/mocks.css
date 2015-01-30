@@ -5290,6 +5290,8 @@ a.a-drop-view:focus{
 
 .nginx-modal {
     position: relative;
+    max-height: 100%;
+    overflow: scroll;
 }
 
 .nginx-modal .paddingDiv {
@@ -7253,4 +7255,44 @@ ul.token-input-list-facebook li input {
 
 .mobile .newHomeTitle-Wrap .pageNumber {
     font-size: 12px;
+}
+
+.mobile .alertify {
+    top: 20px;
+}
+
+.mobile .nginx-modal .albumsList {
+    font-size: 20px;
+}
+
+.mobile .nginx-modal .albumsList > p {
+    font-size: 14px;
+    margin: 10px auto;
+}
+
+.mobile .nginx-modal .vup {
+    margin-top: 0;
+}
+
+.mobile .nginx-modal .vup-area {
+    height: 150px !important;
+}
+
+.mobile .nginx-modal .vup-data-title,
+.mobile .nginx-modal .vup-data-point {
+    font-size: 14px;
+}
+
+.mobile .vup-files .vup-filename-column {
+    width: 75px;
+}
+
+.mobile .vup-files .vup-filename-column div {
+    max-width: 100%; 
+    font-size: 14px;    
+}
+
+.mobile .vup-alert {
+    line-height: 1.25;
+    font-size: 14px;
 }
