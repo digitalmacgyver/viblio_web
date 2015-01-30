@@ -1970,40 +1970,6 @@ define( ['plugins/router',
         self.selectedFilterAlbum('');
     };
     
-    newHome.prototype.nameMonths = function( month ) {
-        var self = this;
-        
-        var shortName;
-        var longName;
-        var year;
-        
-        if ( month != 'Missing dates' ) {
-            shortName = month.slice(0,3);
-            longName = month.slice(0, month.indexOf(' '));
-            year = month.slice(month.length-4);
-        } else {
-            shortName = 'No';
-            longName = '';
-            year = 'Dates';
-        }
-        self.datesLabels.push( { shortMonth: shortName, longMonth: longName, year: year, label: month, selected: ko.observable(false) } );        
-    };
-    
-    newHome.prototype.getAllDatesLabels = function() {
-        var self = this;
-        var args = {};
-        args = {
-            cid: self.cid
-        };
-        self.datesLabels.removeAll();
-        viblio.api( '/services/yir/months', args ).then( function(data) {
-            data.months.forEach( function( month ) {
-                self.nameMonths( month );
-            });
-            self.showingAllDatesLabels( true );
-        });
-    };
-    
     newHome.prototype.getAllFacesLabels = function() {
         var self = this;
         var args = {};
@@ -2456,9 +2422,6 @@ define( ['plugins/router',
     newHome.prototype.activate = function() {
 	var self = this;
         self.videos.removeAll();
-        
-        // get months and create labels to use as selectors
-        self.getAllDatesLabels();
         
         // get faces and create labels to use as filters
         self.getAllFacesLabels().then( function() {
