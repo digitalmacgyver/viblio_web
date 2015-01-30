@@ -95,7 +95,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 	// or error (red).  Wait can be 0 to keep the notification on
 	// the screen until user clicks on it.
 	notify: function( msg, type, wait ) {
-	    alertify.log( msg, type, wait );
+            alertify.log( msg, type, wait );
 	},
 
 	setLastAttempt: function( attempt, qs ) {
