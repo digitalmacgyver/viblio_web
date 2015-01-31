@@ -23,7 +23,8 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
                                { name: 'Google+', addClass: 'gPlus', url:'https://plusone.google.com/_/+1/confirm?hl=en&url=' + self.googleLink(), imgName: 'gPlus.png' },
                                { name: 'tumblr', addClass: 'tumblr', url:'http://www.tumblr.com/share/photo?' + self.tumblrLink(), imgName: 'tumblr.png' }
                              ];
-                             
+        
+        self.embedCodeUrl = ko.observable(null);
         self.embedCode = ko.observable(null);
     };
     
@@ -106,7 +107,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	return 'source=' + thumbnail + '&caption=' + caption + '&click_thru=' + clickthru;
     };
     
-    S.prototype.getEmbedCode = function() {
+    S.prototype.getEmbedCode = function( type ) {
         var self = this;
         
         var args = { 
@@ -116,25 +117,40 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
         };
         var viblio = require( 'lib/viblio' );
         
-        if( !self.embedCode() ) {
+        function createCode() {
+            if( type == 'wp' ) {
+                return '[gigya src="https://releases.flowplayer.org/swf/flowplayer-3.2.18.swf" height="295" id="undefined" name="undefined" type="application/x-shockwave-flash" movie="https://releases.flowplayer.org/swf/flowplayer-3.2.18.swf" allowfullscreen="true" allowscriptaccess="always" flashvars=\'config={"clip":{ "url":"' + self.embedCodeUrl() + '"} }\' ]​'
+            } else {
+                return '<object height="295" id="undefined" name="undefined" data="https://releases.flowplayer.org/swf/flowplayer-3.2.18.swf" type="application/x-shockwave-flash"><param name="movie" value="https://releases.flowplayer.org/swf/flowplayer-3.2.18.swf" /><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="flashvars" value=\'config={"clip":{ "url":"' + self.embedCodeUrl() + '"} }\' /></object>'
+            }
+        }
+        
+        function handleCode() {
+            self.embedCode( createCode() );
+            $('.embedCode').height('190px').css('display','block');
+        }
+        
+        if( !self.embedCodeUrl() ) {
             viblio.api( 'services/mediafile/add_share', args ).then( function( data ) {
-                var url = data.embed_url;
-
-                var code = '<object height="295" id="undefined" name="undefined" data="https://releases.flowplayer.org/swf/flowplayer-3.2.18.swf" type="application/x-shockwave-flash"><param name="movie" value="https://releases.flowplayer.org/swf/flowplayer-3.2.18.swf" /><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="flashvars" value=\'config={"clip":{ "url":"' + url + '"} }\' /></object>'
-
+                self.embedCodeUrl( data.embed_url );
                 // add mixpanel events
                 viblio.mpEvent( 'share', { type: 'embed' } );
                 viblio.mpPeopleIncrement('Video Shares from Browser', 1);
-
-                self.embedCode( code );
-                $('.embedCode').height('190px').css('display','block');
+                
+                handleCode();
             });    
         } else {
-            $('.embedCode').toggle();
+            if( createCode() == self.embedCode() ) {
+                $('.embedCode').toggle();
+            } else {
+                handleCode();
+            }
         }
     };
 
     S.prototype.closeModal = function() {
+        var self = this;
+        self.embedCode( null );
         dialog.close(this);
     };
     
@@ -164,7 +180,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     S.prototype.compositionComplete = function( view, parent ) {
         var self = this;
 	self.view = view;
-        cloudsponge.init({
+        /*cloudsponge.init({
             domain_key:config.cloudsponge_appid(),
             textarea_id: null,
 
@@ -181,7 +197,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
                         name: c.first_name });
                 });
             }
-        });
+        });*/
         
         // Sets up placeholder compatability for IE when needed
         $('input, textarea').placeholder();
