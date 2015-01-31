@@ -391,8 +391,6 @@ define( ['plugins/router',
         var self = this;
         
         self.video_mode_on(false);
-        // initialize the feedback thumbs widget on the photos page
-        feedbackThumbsWidget.feedbackthumbsInitTF();
     };
     
     newHome.prototype.getVidsInProcess = function() {

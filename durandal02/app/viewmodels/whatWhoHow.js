@@ -221,7 +221,7 @@ define(['plugins/router',
 	},
         
         activate: function(args) {
-            if (args ) {
+            if ( args ) {
                 if ( args.showWhat ) {
                     showWhat( true );
                     showWho( false );
@@ -252,6 +252,10 @@ define(['plugins/router',
                     showHow( true );
                     showPrivacy( false );
                     showFAQ( false );
+                }
+                
+                if( args.selected && args.selected == 'feedback' ) {
+                    selectFeedback();
                 }
             }
         },
