@@ -21,7 +21,8 @@
             </button>
         </div>
         <div class="embedCode-Wrap">
-            <p class="bigTitle" data-bind="click: getEmbedCode">Embed Code</p>
+            <p class="bigTitle" data-bind="click: function(){ getEmbedCode(); }">Embed Code</p>
+            <p class="bigTitle" data-bind="click: function(){ getEmbedCode('wp'); }">WordPress Embed Code</p>
             <textarea type="text" class="text embedCode" data-bind="value: embedCode" placeholder="Click button above to generate the embed code snippet"></textarea>
         </div>
         
