@@ -119,7 +119,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
         
         function createCode() {
             if( type == 'wp' ) {
-                return '[gigya src="https://releases.flowplayer.org/swf/flowplayer-3.2.18.swf" height="295" id="undefined" name="undefined" type="application/x-shockwave-flash" movie="https://releases.flowplayer.org/swf/flowplayer-3.2.18.swf" allowfullscreen="true" allowscriptaccess="always" flashvars="config={"clip":{ "url":"' + self.embedCodeUrl() + '"} }" ]​'
+                return '[gigya src="https://releases.flowplayer.org/swf/flowplayer-3.2.18.swf" height="295" id="undefined" name="undefined" type="application/x-shockwave-flash" movie="https://releases.flowplayer.org/swf/flowplayer-3.2.18.swf" allowfullscreen="true" allowscriptaccess="always" flashvars=\'config={"clip":{ "url":"' + self.embedCodeUrl() + '"} }\' ]​'
             } else {
                 return '<object height="295" id="undefined" name="undefined" data="https://releases.flowplayer.org/swf/flowplayer-3.2.18.swf" type="application/x-shockwave-flash"><param name="movie" value="https://releases.flowplayer.org/swf/flowplayer-3.2.18.swf" /><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="flashvars" value=\'config={"clip":{ "url":"' + self.embedCodeUrl() + '"} }\' /></object>'
             }
