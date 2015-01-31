@@ -195,7 +195,7 @@ function (router, app, system, page_header, landing_header, conditional_header, 
 	      showFooter: true, nav: false,   authenticated: true,   header: page_header },*/
 	    
             { route: 'people',             moduleId: 'people',             title: 'FACES',
-	      showFooter: true, nav: ( onMobile ? false : true ),    authenticated: true,   header: page_header },
+	      showFooter: true, nav: ( onMobile() ? false : true ),    authenticated: true,   header: page_header },
 	    
             { route: 'raw',                moduleId: 'raw',                title: 'Raw Upload',
 	      showFooter: true, nav: false,    authenticated: true,   header: page_header },

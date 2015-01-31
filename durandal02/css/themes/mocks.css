@@ -765,6 +765,8 @@ button.btn.editable-cancel {
 }
 
 .messageBox {
+    width: 500px;
+    margin: 10px;
     background-color: white;
     border: 1px solid lightgrey;
     -webkit-border-radius: 0px;
@@ -1047,6 +1049,7 @@ input:-moz-placeholder {
 }
 
 .blankModal {
+    width: 600px;
     background: white;
     position: relative;
 }
@@ -2591,10 +2594,8 @@ input.edit,
 /********************  Share Video Modal Section  *************************/
 
 #shareVidModal {
-    width: 100%;
+    width: 600px;
     position: relative;
-    height: 100%;
-    overflow-y: auto;
 }
 
 #sharingDiv {
@@ -4276,11 +4277,22 @@ div.tagsPopup.popover.top .custom {
 }
 
 .alertify {
-    height: 80%;
+    height: 100%;
+    width: 100%;
     background: transparent;
     box-shadow: none;
     border: none;
-    top: 75px;
+    top: 0;
+    left: 0;
+    margin: 0;
+    overflow-y: scroll;
+    border-radius: 0;
+}
+
+.alertify > div {
+    margin: 50px auto !important;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 /************************* PLAYER PAGE *******************************/
@@ -5290,8 +5302,8 @@ a.a-drop-view:focus{
 
 .nginx-modal {
     position: relative;
-    max-height: 100%;
-    overflow: scroll;
+    /*max-height: 100%;
+    overflow: scroll;*/
 }
 
 .nginx-modal .paddingDiv {
@@ -5317,6 +5329,7 @@ a.a-drop-view:focus{
     font-size: 40px;
     font-weight: bold;
     padding: 40px 12px 0;
+    line-height: 1;
 }
 
 .nginx-modal .albumsList a {
@@ -6577,7 +6590,7 @@ button.linkedin:active {
 /******** Privacy Matters ********/
 
 .privacyMatters-Wrap {
-    overflow-y: scroll;
+    height: auto;
 }
 
 .inset {

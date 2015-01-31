@@ -39,6 +39,7 @@ define( ['plugins/dialog'], function( dialog ) {
     };
 
     Context.prototype.addHost = function(theDialog) {
+        console.log( theDialog );
         var body = $('body');
         var blockout = $('<div class="modalBlockout"></div>')
             .css({ 'z-index': dialog.getNextZIndex(), 'opacity': this.blockoutOpacity })
@@ -139,6 +140,17 @@ define( ['plugins/dialog'], function( dialog ) {
         $('.autofocus', child).each(function() {
             $(this).focus();
         });
+        
+        // center vertically
+        /*$.when( context.model.compositionComplete() ).then( function() {
+            console.log( 'compositionComplete is done' );
+            
+            console.log( "child: ", child, $(child).outerHeight(), "parent: ", parent, $(parent).height(), $(parent).height() - $(child).height() );
+            console.log( 'context: ', context );
+            
+            var t = ( $(parent).height() - $(child).height() )/2; 
+            $(child).css( "top", t > 0 ? t : 0 );
+        });*/
     };
 
     return new Context();
