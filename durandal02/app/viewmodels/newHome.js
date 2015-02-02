@@ -2365,7 +2365,7 @@ define( ['plugins/router',
     };
     
     newHome.prototype.stickyToolbars = function() {       
-        var maxPos = 65; //height of header
+        var maxPos = 49; //height of header
         
         var scrollTop = $(window).scrollTop(),
         elementOffset = $('.toolbar').offset().top,
@@ -2378,7 +2378,7 @@ define( ['plugins/router',
             if( distance <= maxPos ){
                 $('.toolbar').addClass('stuck');            
             }
-            if ( $('.allVidsPage').offset().top - scrollTop >= 65 ) {
+            if ( $('.allVidsPage').offset().top - scrollTop >= maxPos ) {
                 $('.toolbar').removeClass('stuck');
             } 
         } else {
