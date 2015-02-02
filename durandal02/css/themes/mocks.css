@@ -3950,6 +3950,14 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     vertical-align: middle;
 }
 
+.mediafile .sharedOwnerAvatar {
+    height: 33px;
+    width: auto;
+    max-width: 33px;
+    margin-top: 0;
+    vertical-align: baseline;
+}
+
 @media (max-width: 1280px) {
     .allAlbumVids .mediafile .sharedOwnerWrap .truncate {
         max-width: 135px;

@@ -27,12 +27,6 @@
                         <i class="fa fa-play-circle"></i> 
                     </div>
                     <img data-bind="attr:{src:image}" />
-                    <!-- ko if: shared_style -->
-                    <div class="sharedOwnerWrap">
-                        <img class="boxShadowed avatar" data-bind="attr: {src: owner_avatar}" />
-                        <span class="truncate" data-bind="text: owner_name"></span>
-                    </div>
-                    <!-- /ko -->
                     
                     <!-- ko if: clean_style() -->
                     <div class="information clean">
@@ -81,17 +75,22 @@
         <!-- ko if: show_faces_tags -->  
         <div class='facesTags'>
             <!-- ko ifnot: in_process_style() -->
-            <div class='mfFaces'>
-                <div class='mfFaces-Inner'>
-                    <!-- ko foreach: facesToShow -->
-                    <img class='img-circle' data-bind="attr: {src: $data.url, title: $data.contact.contact_name}" />
-                    <!-- /ko -->
-                    <!-- ko if: facesLeft() > 0 -->
-                    <a href="#" data-bind="click: toggleFaces" class="facesToggle">... <span data-bind="text: facesLeft"></span></a>
-                    <!-- /ko -->
+                <div class='mfFaces'>
+                    <div class='mfFaces-Inner'>
+                        <!-- ko foreach: facesToShow -->
+                        <img class='img-circle' data-bind="attr: {src: $data.url, title: $data.contact.contact_name}" />
+                        <!-- /ko -->
+                        <!-- ko if: facesLeft() > 0 -->
+                        <a href="#" data-bind="click: toggleFaces" class="facesToggle">... <span data-bind="text: facesLeft"></span></a>
+                        <!-- /ko -->
+                    </div>
                 </div>
-            </div>
-            <i class='fa fa-tags' data-bind="click: toggleTags" title='Toggle tags'></i>
+                <!-- ko ifnot: shared_style -->
+                <i class='fa fa-tags' data-bind="click: toggleTags" title='Toggle tags'></i>
+                <!-- /ko -->
+                <!-- ko if: shared_style -->
+                <img class="sharedOwnerAvatar boxShadowed avatar" data-bind="attr: {src: owner_avatar, title:owner_name}" />
+                <!-- /ko -->
             <!-- /ko -->
 
             <!-- ko if: showFaces -->
