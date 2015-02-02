@@ -92,7 +92,7 @@ define( ['plugins/router',
             var self = this;
             
             if( !self.allIsSelected() ) {
-                hp.nhome().showAllVideos();
+                hp.nhome().showAllVideos( "album list" );
             }
         };
         
@@ -101,7 +101,7 @@ define( ['plugins/router',
             var self = this;
             
             if( !self.recentIsSelected() ) {
-                hp.nhome().getRecentVids( true );
+                hp.nhome().getRecentVids( true, "album list" );
             }
         };
         

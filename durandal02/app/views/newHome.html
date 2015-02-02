@@ -3,7 +3,7 @@
     <div class='vids-nav navbar toolbar' data-bind='visible: select_mode_on() == false'>
         <div class='navbar-inner'>
             <ul class='navbar-left nav'>
-                <!--<li class="divider-vertical"></li>
+                <li class="divider-vertical"></li>
                 <li style="display: inline-block;" class="dropdown navControl">
                     <button class="dropdown-toggle toolbar-btn" href="#" data-toggle="dropdown" data-bind="css: { active: activeFilterType() == 'recent' || activeFilterType() == 'all' }, disable: isActiveFlag()">
                         <i class='fa fa-th'></i>
@@ -15,13 +15,13 @@
                           <div class="scroller">
                               <div class="wrapper">
                                    <ul class="tags-inner">
-                                        <li data-bind='click: function(){ getRecentVids(true); }'>
+                                        <li data-bind='click: function(){ getRecentVids(true, "toolbar"); }'>
                                             <a class="checkboxedLi">
                                                 <i class='fa fa-clock-o'></i>
                                                 <span> Recent</span>                                        
                                             </a>
                                         </li>
-                                        <li data-bind='click: showAllVideos'>
+                                        <li data-bind='click: function(){ showAllVideos( "toolbar" ); }'>
                                             <a class="checkboxedLi">
                                                 <i class='fa fa-th'></i>
                                                 <span> All</span>                                        
@@ -32,7 +32,7 @@
                           </div>
                       </li>
                     </ul>
-                </li>-->
+                </li>
                 <li class="divider-vertical"></li>
                 
                 <!-- people filter -->
