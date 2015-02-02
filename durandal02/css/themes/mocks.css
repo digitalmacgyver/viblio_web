@@ -1,7 +1,7 @@
 body {
     background-color: rgba(239,239,232,1);
     color: rgba(117,117,128,1);
-    padding-top: 65px; /* match header height */
+    padding-top: 49px; /* match header height */
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 16px;
 }
@@ -1077,15 +1077,19 @@ input:-moz-placeholder {
 }
 
 .navbar .brand {
-    padding: 2px 14px 7px 0;
+    padding: 2px 14px 4px 0;
+}
+
+.navbar .brand img {
+    height: 40px;
 }
 
 #page-header .btn-navbar {
-    margin: 18px 20px 0 0;
+    margin: 10px 20px 0 0;
 }
 
 #page-header .navbar .pagesNav > li > a {
-    padding: 20px 22px 8px 22px;
+    padding: 10px 22px 8px;
     margin: 0 2px;
     font-size: 18px;
     color: white;
@@ -1096,7 +1100,7 @@ input:-moz-placeholder {
 
 @media (max-width: 979px) {
     #page-header .navbar .pagesNav > li > a {
-        padding: 20px 6px 8px 6px;
+        padding: 10px 6px 8px;
     }
 }
 
@@ -1209,7 +1213,7 @@ input:-moz-placeholder {
 }
 
 #page-header .navbar .nav .dropdown-toggle {
-    padding: 17px 20px 19px 12px;
+    padding: 10px 20px 12px 12px;
     outline: none;
 }
 
@@ -4929,7 +4933,7 @@ a.a-drop-view:focus{
 .albumView .albumsList.stuck {
     position: fixed;
     right: 0;
-    top: 65px;
+    top: 49px;
 }
 
 @media (max-width: 900px) {
@@ -5130,7 +5134,7 @@ a.a-drop-view:focus{
 .dates.stuck {
     position: fixed;
     right: 0;
-    top: 108px; /*height of header 65 + toolbar 43*/
+    top: 92px; /*height of header 49 + toolbar 43*/
 }
 
 @media (max-width: 900px) {
@@ -6215,7 +6219,7 @@ button.linkedin:active {
 .albumView .albumsList.stuck {
     position: fixed;
     right: 0;
-    top: 65px;
+    top: 49px;
 }
 
 @media (max-width: 900px) {
@@ -6316,7 +6320,7 @@ button.linkedin:active {
 
 .toolbar.stuck {
     position: fixed;
-    top: 65px;  /* height of header */
+    top: 49px;  /* height of header */
 }
 
 @media (max-width: 900px) {
