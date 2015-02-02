@@ -27,7 +27,7 @@
 	    //
 	    // The maximum video file size to accept, in bytes
 	    maxFileSize: 10000000000, // 10G
-	    minFileSize: 64 * 1024,  // 64Kb
+	    minFileSize: 128 * 1024,  // 128Kb
 	    //
 	    // Whether to generate dynamic css classes that can be used to
 	    // animate the dropzone.
@@ -65,7 +65,7 @@
                 maxNumberOfFiles: 'Maximum number of files exceeded',
                 acceptFileTypes: 'Only video file types are uploadable',
                 maxFileSize: 'This video is too large, we can only accept up to 10Gb.',
-                minFileSize: 'This video is too small to be a real video.  Please try to find the original.'
+                minFileSize: 'This video appears to be a pointer file to the real video.  Find the original video file and upload that file instead.'
             },
             
             skip_faces: false,

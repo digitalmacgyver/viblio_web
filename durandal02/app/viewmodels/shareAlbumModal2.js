@@ -13,7 +13,7 @@ function( router, app, system, config, viblio, dialog ) {
 	self.is_shared = ko.observable( self.album.is_shared ? true: false );
 	self.shared_with = ko.observable();
 	self.members = ko.observableArray([]);
-	self.albumTitle = ko.observable( '"' + self.album.title + '"' );
+	self.albumTitle = ko.observable( null );
         self.private = ko.observable( 'private' );
         self.shareVidEmailValid = ko.observable(false);
 	self.shareVidEmail = ko.observable();
@@ -128,7 +128,13 @@ function( router, app, system, config, viblio, dialog ) {
     S.prototype.no_remove = function(a,b) {
 	$(b.target).parent().css( 'display', 'none' );
     };
-        
+    
+    S.prototype.activate = function( view, parent ) {
+        var self = this;
+        var viblio = require( 'lib/viblio' );
+        self.albumTitle( '"' + viblio.unescapeHtml( self.album.title ) + '"' );
+    };
+    
     S.prototype.compositionComplete = function( view, parent ) {
         var self = this;
 	self.view = view;
@@ -144,7 +150,7 @@ function( router, app, system, config, viblio, dialog ) {
 	    });
 	}
 
-        cloudsponge.init({
+        /*cloudsponge.init({
             domain_key:config.cloudsponge_appid(),
             textarea_id: null,
 
@@ -161,7 +167,7 @@ function( router, app, system, config, viblio, dialog ) {
                         name: c.first_name });
                 });
             }
-        });
+        });*/
         
         // Sets up placeholder compatability for IE when needed
         $('input, textarea').placeholder();
