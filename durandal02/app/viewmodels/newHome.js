@@ -643,7 +643,7 @@ define( ['plugins/router',
         });
     };
     
-    newHome.prototype.monthSelected = function( self, month ) {
+    /*newHome.prototype.monthSelected = function( self, month ) {
         var args;
         
         if( month.selected() ) {
@@ -662,7 +662,7 @@ define( ['plugins/router',
             };
             self.filterVidsSearch( 'dates', args, '/services/yir/videos_for_month', true, null );
         }
-    };
+    };*/
     
     newHome.prototype.faceSelected = function( self, face ) {      
         var gettingFace;

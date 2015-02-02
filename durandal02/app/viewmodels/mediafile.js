@@ -245,7 +245,7 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs', 'd
                 return
             } else {
                 // tag does not exist, so add it
-                viblio.api(' /services/mediafile/add_tag', args).then( function() {
+                viblio.api('/services/mediafile/add_tag', args).then( function() {
                     var tag = {
                         label: args.tag
                     };

@@ -556,7 +556,7 @@ define(["durandal/app",
                 return
             } else {
                 // tag does not exist, so add it
-                viblio.api(' /services/mediafile/add_tag', args).then( function() {
+                viblio.api( '/services/mediafile/add_tag', args).then( function() {
                     tags.push( args.tag );
                     tagLabels().forEach( function( t ) {
                         t.selected( false );
