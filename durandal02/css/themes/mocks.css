@@ -6697,7 +6697,7 @@ ul.token-input-list-facebook li input {
 
 .albumListView .scroller {
     width: auto;
-    height: 208px;
+    height: 300px;
     overflow-y: scroll;
 }
 

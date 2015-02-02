@@ -43,6 +43,23 @@ define( ['plugins/router',
             });
             
             self.showBlockout = ko.observable( false );
+            
+            self.allIsSelected = ko.computed( function() {
+                if( hp.nhome().activeFilterType() == 'all' ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            
+            self.recentIsSelected = ko.computed( function() {
+                if( hp.nhome().activeFilterType() == 'recent' ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            
             app.on( 'select_mode:on', function() {
                 self.showBlockout( true );
             });
@@ -68,6 +85,24 @@ define( ['plugins/router',
             });
             
             Events.includeIn( self );
+        };
+        
+        // call hp.nhome's showAllVideos method 
+        albumList.prototype.showAllVideos = function() {
+            var self = this;
+            
+            if( !self.allIsSelected() ) {
+                hp.nhome().showAllVideos();
+            }
+        };
+        
+        // call hp.nhome's getRecentVids method 
+        albumList.prototype.getRecentVids = function() {
+            var self = this;
+            
+            if( !self.recentIsSelected() ) {
+                hp.nhome().getRecentVids( true );
+            }
         };
         
         albumList.prototype.unselectAllAlbums = function() {
