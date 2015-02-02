@@ -736,7 +736,7 @@ define( ['plugins/router',
         }
     };
     
-    newHome.prototype.getRecentVids = function( newSearch ) {
+    newHome.prototype.getRecentVids = function( newSearch, source ) {
         var self = this;
         var args;
         
@@ -748,9 +748,12 @@ define( ['plugins/router',
             args['status[]'] = ['pending', 'visible', 'complete'];
         }
         self.filterVidsSearch( 'recent', args, '/services/mediafile/recently_uploaded', newSearch, null );
+        
+        // record mixpanel event
+        viblio.mpEvent( 'Get recent videos', {from: source} );
     };
     
-    newHome.prototype.showAllVideos = function() {
+    newHome.prototype.showAllVideos = function( source ) {
         var self = this;
         var args;
         var apiCall;
@@ -768,6 +771,9 @@ define( ['plugins/router',
             apiCall = '/services/mediafile/list_all';
         }
         self.filterVidsSearch( 'all', args, apiCall, true, null );
+        
+        // record mixpanel event
+        viblio.mpEvent( 'Get all videos', {from: source} );
     };
     
     newHome.prototype.albumVidsSearch = function( newSearch, scrollToTop ) {
