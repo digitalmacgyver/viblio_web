@@ -55,7 +55,7 @@ define(['lib/viblio',
                 var arr = [];
                 data.albums.forEach( function( album ) {
                     var _album = album;
-                    _album.label = album.title;
+                    _album.label = viblio.unescapeHtml( album.title );
                     _album.selected = ko.observable( false );
                     _album.shared = album.is_shared;
                     arr.push( _album );
