@@ -49,7 +49,7 @@
                 </a>
             </div>
             <div class="video-tags" data-bind="foreach: tags">
-                <span data-bind="text: $root.viblio.unescapeHtml($data.label)"></span>
+                <span class="truncate" data-bind="text: $root.viblio.unescapeHtml($data.label)"></span>
             </div>
         </div>
         <!-- ko ifnot: clean_style() -->

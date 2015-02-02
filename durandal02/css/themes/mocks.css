@@ -3913,6 +3913,11 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     -webkit-border-radius: 3px;
 }
 
+.mediafile .video-tags .truncate {
+    width: auto;
+    max-width: 250px;
+}
+
 .mediafile .sharedOwnerWrap {
     position: absolute;
     width: 100%;
@@ -6916,6 +6921,16 @@ ul.token-input-list-facebook li input {
 
 .bannerImage-Wrap .bannerEdit-Wrap .editIcon-Wrap .fa {
     display: block;
+    opacity: .65;
+    cursor: pointer;
+}
+
+.bannerImage-Wrap .bannerEdit-Wrap .editIcon-Wrap .fa:hover {
+    opacity: 1;
+}
+
+.bannerImage-Wrap .bannerEdit-Wrap .editIcon-Wrap .fa-camera {
+    font-size: 19px;
 }
 
 .bannerImage-Wrap .bannerEdit-Wrap .editButton {
