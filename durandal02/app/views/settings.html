@@ -6,33 +6,29 @@
     <div id="accountInfo" class="mocksWhiteBG">
       <div class="bottomBorder paddedDiv">
 	<h3 class="mainLabel">Account Information</h3>
-	<table class="account-info">
-	  <tr>
-	    <td>
-	      <div style="cursor: pointer;" class="avatar boxShadowed">
+        <div class="account-info">
+            <div class="avatarWrap">
+                <div style="cursor: pointer;" class="avatar boxShadowed">
                 <img id="apic" data-bind="attr: {src: avatar}"/>  
 		<div style="position: relative;" class="darkBlueBG fileinput-button">
                     <span data-bind="visible: !showSpinner()">Change Avatar</span>
                     <i class="fa fa-spinner fa-2x fa-spin" data-bind="visible: showSpinner()"></i>
 		</div>
-	      </div>
-	      <input style="position: absolute; width:0; height:0; top:0; left:0; visibility:hidden;" class="fileupload" type="file" name="upload" data-url="/services/user/add_or_replace_profile_photo" />
-	    </td>
-	    <td class="email-password">
-	      <form>
+                </div>
+                <input style="position: absolute; width:0; height:0; top:0; left:0; visibility:hidden;" class="fileupload" type="file" name="upload" data-url="/services/user/add_or_replace_profile_photo" />
+            </div>
+            <form class="account-info-form email-password">
 		<fieldset>
-		  <label for="displayname">Display Name</label>
-		  <input type="text" name="displayname" data-bind="value: displayname" required />
+                    <label for="displayname">Display Name</label>
+                    <input type="text" name="displayname" data-bind="value: displayname" required />
 		</fieldset>
 		<fieldset>
-		  <label for="email">Email address</label>
-		  <input type="email" name="email" data-bind="value: email, enable: false" />
+                    <label for="email">Email address</label>
+                    <input type="email" name="email" data-bind="value: email, enable: false" />
 		</fieldset>
 		<a href="#" data-bind="click: changePassword">Change Password...</a>
-	      </form>
-	    </td>
-	  </tr>
-	</table>
+	    </form>
+	</div>
       </div>
       <div  class="bottomBorder-Thick paddedDiv">
 	<h3 class="mainLabel">Connected Accounts</h3>
