@@ -24,15 +24,15 @@ define(['lib/viblio','lib/config','plugins/dialog','plugins/router'],function(vi
             });
             
             // set the height of the privacy matters modal content so it won't overflow the window
-            self.setHeight();
+            //self.setHeight();
             
-            $(window).resize( this, self.setHeight );
-        },
+            //$(window).resize( this, self.setHeight );
+        }/*,
         
         detached: function() {
             var self = this;
             
             $(window).off( "resize", self.setHeight );
-        }
+        }*/
     };
 });
