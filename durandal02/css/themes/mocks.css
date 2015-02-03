@@ -2899,6 +2899,17 @@ div.token-input-dropdown-facebook {
     -moz-box-sizing:border-box; /* Firefox */
 }
 
+.account-info .avatarWrap {
+    width: 120px;
+    float: left;
+    vertical-align: top;
+    margin-right: 30px
+}
+
+.email-password input {
+    width: 100%;
+}
+
 /********************  Change Password Modal  *****************************/
 
 #changePasswordModal {
@@ -7413,10 +7424,17 @@ ul.token-input-list-facebook li input {
 }
 
 .mobile #apic {
-    width: 60px;
-    
+    width: 80px;
 }
 
 .mobile .avatar div {
-    width: 60px;
+    width: 80px;
+}
+
+.mobile .account-info .avatarWrap {
+    width: 80px;
+}
+
+.mobile .content-Wrap > div {
+    margin-bottom: 10px;
 }
