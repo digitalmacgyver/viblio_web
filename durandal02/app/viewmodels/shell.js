@@ -19,6 +19,27 @@ function (router, app, system, page_header, landing_header, conditional_header, 
 
     var small_screen = app.small_screen;
     
+    //var onMobile = ko.observable( head.mobile );
+    
+    var windowWidth = ko.observable( $(window).width() );
+    var onMobile = ko.computed( function() {
+        console.log( windowWidth() );
+        if( windowWidth() < 600 ) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    
+    var wideScreen = ko.computed( function() {
+        if( windowWidth() > 1200 ) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+
+    
     router.on('router:route:activating').then(function(instance, instruction, router){
         location(instruction.config.title);
     });
@@ -174,7 +195,7 @@ function (router, app, system, page_header, landing_header, conditional_header, 
 	      showFooter: true, nav: false,   authenticated: true,   header: page_header },*/
 	    
             { route: 'people',             moduleId: 'people',             title: 'FACES',
-	      showFooter: true, nav: true,    authenticated: true,   header: page_header },
+	      showFooter: true, nav: ( onMobile() ? false : true ),    authenticated: true,   header: page_header },
 	    
             { route: 'raw',                moduleId: 'raw',                title: 'Raw Upload',
 	      showFooter: true, nav: false,    authenticated: true,   header: page_header },
@@ -254,11 +275,26 @@ function (router, app, system, page_header, landing_header, conditional_header, 
 	header: header,
         footer: footer,
         showFooter: showFooter,
+        
+        onMobile: onMobile,
+        wideScreen: wideScreen,
 
         search: function() {
             //It's really easy to show a message box.
             //You can add custom options too. Also, it returns a promise for the user's response.
             app.showMessage('Search not yet implemented...');
+        },
+        
+        getWindowWidth: function( event ) {
+            windowWidth( $(window).width() );
+        },
+
+        attached: function() {
+            $(window).resize( this, this.getWindowWidth );
+        },
+
+        detached: function() {
+            $(window).off( "resize", this.getWindowWidth );
         },
 
         activate: function ( args ) {

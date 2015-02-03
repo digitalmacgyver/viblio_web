@@ -272,6 +272,11 @@ function(app, viblio, Events, header, c_header, hp) {
             $('.userCoverUpload').fileupload('destroy');
             $(document).off( 'click.coverPhoto' );
             $(document).off( 'click.coverPhoto' );
+            
+            // clean up backstretch
+            if( $('.bannerImage').data('backstretch') ) {
+                $('.bannerImage').backstretch("destroy", false);
+            }
         },
         
         compositionComplete: function( _view ) {

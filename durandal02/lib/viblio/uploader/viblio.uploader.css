@@ -12,6 +12,9 @@
 }
 .vup-files .vup-filename-column {
     width: 200px;
+}
+.vup-files .vup-filename-column div {
+    max-width: 100%;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -83,6 +86,8 @@
     cursor: pointer;
     max-height: 500px;
     overflow: auto;
+    position: relative;
+    z-index: 1;
     -moz-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.1); /* Firefox */
     -webkit-box-shadow: 3px 3px 0px 1px rgba(0,0,0,.1);
     box-shadow: 3px 3px 0px 1px rgba(0,0,0,.1); 
@@ -95,7 +100,7 @@
 }
 
 .vup-alert .alertCloseX {
-    width: 600px;
+    width: 100%;
     display: block;
     margin-right: auto;
     margin-left: auto;

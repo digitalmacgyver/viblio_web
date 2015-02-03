@@ -8,12 +8,15 @@ define( ['plugins/router',
          'lib/config',
          'viewmodels/hp',
          'viewmodels/pp',
-         'viewmodels/photo'], 
+         'viewmodels/photo',
+         'viewmodels/shell'], 
     
-    function( router,viblio, Mediafile, app, Events, system, dialog, config, hp, PlayerPage, Photo ) {
+    function( router,viblio, Mediafile, app, Events, system, dialog, config, hp, PlayerPage, Photo,shell ) {
 
     var newHome = function( args ) {
 	var self = this;
+        
+        self.shell = shell;
         
         // Go to a specific face - fid provided via link from an email
         self.goToFace = ko.computed( function() {
@@ -988,11 +991,13 @@ define( ['plugins/router',
             self.photoViewFilter(null);
             self.photoViewFilter( old );
 
-            if( type == "all" ) {
+            /*if( type == "all" ) {
                 setTimeout(function(){
                     self.setTitleMargin();
                 }, 300);    
-            }
+            }*/
+            
+            self.setTitleMargin();
         })
         // if the album is empty then show dialog, when button is clicked drop into select mode from all videos 
         .fail(function( res ){
@@ -2333,6 +2338,7 @@ define( ['plugins/router',
     
     newHome.prototype.setTitleMargin = function() {
         var self = this;
+        console.log( 'setTitleMargin fired', self.toolbarHeight() );
         self.toolbarHeight( self.select_mode_on() ? $('.select-nav').height() : $('.vids-nav').height() );
         var marginTop = self.toolbarHeight() > 43 ? 50 + (self.toolbarHeight() - 43) : 50;
         $('.newHomeTitle-Wrap').css('margin-top', marginTop );
@@ -2405,19 +2411,25 @@ define( ['plugins/router',
     };
     
     newHome.prototype.attached = function() {
+        var self = this;
 	//$(window).scroll( this, this.scrollHandler );
         //$(window).scroll( this, this.stickyDates );
         $(window).scroll( this, this.stickyToolbars );
         $(window).resize( this, this.getWindowWidth );
+        $(window).on( 'resize.mymethod', function() {
+            self.setTitleMargin(); 
+        });
         //$(window).resize( this, this.stickyDates );
         $(window).resize( this, this.resizePlayer );
     };
 
     newHome.prototype.detached = function() {
+        var self = this;
 	//$(window).off( "scroll", this.scollHandler );
         //$(window).off( "scroll", this.stickyDates );
         $(window).off( "scroll", this.stickyToolbars );
         $(window).off( "resize", this.getWindowWidth );
+        $(window).off("resize.mymethod");
         //$(window).off( "resize", this.stickyDates );
         $(window).off( "resize", this.resizePlayer );
         $('.paginationContainer').pagination('destroy');
@@ -2577,7 +2589,7 @@ define( ['plugins/router',
                     api = '/services/mediafile/get';
                     href = "new_player?mid=";
                     dl_link = self.playingVid().media().views.main.download_url ? self.playingVid().media().views.main.download_url : null;
-                    dl = "<div class='vidDownloadLink-Wrap pull-right'><a class='vidDownloadLink' title='Download This Video' href='"+ dl_link +"'><i class='fa fa-2x fa-cloud-download'></i></a></div>"
+                    dl = "<div class='vidDownloadLink-Wrap pull-right hideOnMobile'><a class='vidDownloadLink' title='Download This Video' href='"+ dl_link +"'><i class='fa fa-2x fa-cloud-download'></i></a></div>"
                 } else {
                     api = '/services/na/media_shared';
                     href= "web_player?mid=";

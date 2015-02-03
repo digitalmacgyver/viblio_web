@@ -5333,6 +5333,8 @@ a.a-drop-view:focus{
 
 .nginx-modal {
     position: relative;
+    max-height: 100%;
+    overflow: scroll;
 }
 
 .nginx-modal .paddingDiv {
@@ -5394,6 +5396,10 @@ a.a-drop-view:focus{
     width: auto;
     display: none;
     position: relative;
+}
+
+.hp .top-strip .right.fullwidth {
+    float: none;
 }
 
 /** top-actors **/
@@ -6338,6 +6344,27 @@ button.linkedin:active {
     }
 }
 
+@media (max-width: 800px) {
+    .toolbar .navbar-inner {
+        padding: 0;
+    }
+    .navbar-inner .divider-vertical {
+        margin: 0 4px;
+    }
+    .vidsSelectedLabel {
+        padding: 10px 0 9px;
+    }
+}
+
+@media (max-width: 670px) {
+    .hideOnMobile,
+    .toolbar .toolbar-label {
+        display: none;
+    }
+}
+
+
+
 .toolbar .scroller {
     max-height: 250px;
     overflow-y: scroll;
@@ -6461,14 +6488,14 @@ button.linkedin:active {
 
 .cb-enable, 
 .cb-disable, 
-.cb-enable span, 
-.cb-disable span {
+.cb-enable > span, 
+.cb-disable > span {
     display: block; 
     float: left; 
 }
 
-.cb-enable span,
-.cb-disable span { 
+.cb-enable > span,
+.cb-disable > span { 
     line-height: 30px;
     display: block; 
     background-color: grey;
@@ -6479,8 +6506,8 @@ button.linkedin:active {
     box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-.cb-enable.selected span,
-.cb-disable.selected span { 
+.cb-enable.selected > span,
+.cb-disable.selected > span { 
     background-color: rgba(28,184,209,1);
     color: #fff;
     -webkit-box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.4),
@@ -6677,6 +6704,10 @@ ul.token-input-list-facebook li input {
     width: 340px;
 }
 
+.fullwidth .albumListView {
+    width: auto;
+}
+
 .albumListView .activeBlockout {
     position: absolute;
     height: 100%;
@@ -6850,6 +6881,28 @@ ul.token-input-list-facebook li input {
 .photoViewFilter .viewFilter.on label::after,
 .photoViewFilter .viewFilter.on label::before {
     background-color: rgb(49, 53, 67);
+}
+
+/* handle photoViewFilter for smaller screens */
+@media( max-width: 450px ) {
+    .photoViewFilter .viewFilter {
+        width: 76px;
+    }
+    /*the line*/
+    .photoViewFilter .viewFilter label::after {
+        left: -36px;
+        width: 60px;
+    }
+    /*the circle*/
+    .photoViewFilter .viewFilter label::before {
+        right: 32px;
+    }
+    .photoViewFilter .meterLabel.some {
+        margin-right: -25px;
+    }
+    .photoViewFilter .meterLabel.more {
+        margin-left: -33px;
+    }
 }
 
 /**** refer ****/
@@ -7254,4 +7307,116 @@ ul.token-input-list-facebook li input {
 .thumbs-Wrap .timely-feedback-button-thumbs {
     display: inline-block;
     font-size: 8px;
+}
+
+/*** mobile **/
+.mobile h3 {
+    font-size: 20px;
+}
+
+.mobile .paddedDiv {
+    padding: 20px;
+}
+
+.mobile .mainLabel {
+    margin-bottom: 10px;
+}
+
+.mobile form {
+    margin: 0 0 10px;
+}
+
+.mobile .albumListView {
+    min-width: 0;
+}
+
+.mobile .navbar .nav {
+    margin: 0;
+    font-size: 13px;
+}
+
+.mobile .facestripToggle {
+    padding: 0 10px;
+    margin-left: -17px;
+    font-size: 14px;
+    z-index: 1051;
+}
+
+.mobile .title-Wrap {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.mobile .albumListView .mainTitle {
+    margin-bottom: 0px;
+}
+
+.mobile .tags-inner > li > a {
+    padding: 2px;
+}
+
+.mobile .albumListView .scroller {
+    height: 108px;
+}
+
+.mobile .truncate {
+    display: inline-block;
+}
+
+.mobile .newHomeTitle-Wrap .mainTitle {
+    font-size: 20px;
+    line-height: 20px;
+}
+
+.mobile .newHomeTitle-Wrap .pageNumber {
+    font-size: 12px;
+}
+
+.mobile .alertify {
+    top: 20px;
+}
+
+.mobile .nginx-modal .albumsList {
+    font-size: 20px;
+}
+
+.mobile .nginx-modal .albumsList > p {
+    font-size: 14px;
+    margin: 10px auto;
+}
+
+.mobile .nginx-modal .vup {
+    margin-top: 0;
+}
+
+.mobile .nginx-modal .vup-area {
+    height: 150px !important;
+}
+
+.mobile .nginx-modal .vup-data-title,
+.mobile .nginx-modal .vup-data-point {
+    font-size: 14px;
+}
+
+.mobile .vup-files .vup-filename-column {
+    width: 75px;
+}
+
+.mobile .vup-files .vup-filename-column div {
+    max-width: 100%; 
+    font-size: 14px;    
+}
+
+.mobile .vup-alert {
+    line-height: 1.25;
+    font-size: 14px;
+}
+
+.mobile #apic {
+    width: 60px;
+    
+}
+
+.mobile .avatar div {
+    width: 60px;
 }

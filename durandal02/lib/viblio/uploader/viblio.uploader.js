@@ -435,7 +435,7 @@
 					self._pauseAllUploads();
 				    }
 				});
-				var row = $('<tr><td class="vup-filename-column"></td><td class="vup-file-progress-column"></td><td class="vup-cancel-column"></td>');
+				var row = $('<tr><td class="vup-filename-column"><div></div></td><td class="vup-file-progress-column"></td><td class="vup-cancel-column"></td>');
 				$(row).find(".vup-cancel-column").append(allCancelButton);
 				if ( ! IE )
 				    $(row).find(".vup-cancel-column").append(allPauseButton);
@@ -475,7 +475,7 @@
 			    });
 			    
 			    // create new table row
-			    var row = $('<tr><td class="vup-filename-column"></td><td class="vup-file-progress-column"><div class="progress progress-striped"></div></td><td class="vup-cancel-column"></td>');
+			    var row = $('<tr><td class="vup-filename-column"><div></div></td><td class="vup-file-progress-column"><div class="progress progress-striped"></div></td><td class="vup-cancel-column"></td>');
 			    
 			    // Do the initial viblio uploader HEAD to create the file and
 			    // get back the file id
@@ -488,7 +488,7 @@
                             //console.log( JSON.stringify({uuid: uuid, file:{Path:file.name}, skip_faces: self.options.skip_faces, album_uuid: self.options.upload_to_album ? self.options.album_to_upload_to : null  }) );
                             xhr.send(JSON.stringify({uuid: uuid, file:{Path:file.name}, skip_faces: self.options.skip_faces, album_uuid: self.options.upload_to_album ? self.options.album_to_upload_to : null  }));
 			    if ( xhr.status != 200 && xhr.status != 201 ) {
-				$(row).find(".vup-filename-column").text(filename);
+				$(row).find(".vup-filename-column div").text(filename);
 				$(row).find(".progress").html('<div class="bar" style="width:100%;">Upload failed: ' + xhr.statusText + '</div>' );
 				// Add the new file upload row to our list (table) of file uploads
 				$(row).appendTo(elem.find(".vup-files"));
@@ -498,7 +498,7 @@
 				var submit_url = xhr.getResponseHeader("Location");
 				var sessionID = submit_url.split('/').pop();
 
-				$(row).find(".vup-filename-column").text(filename);
+				$(row).find(".vup-filename-column div").text(filename);
 				if ( ! IE )
 				    $(row).find(".progress").html('<div class="bar" style="width:0%;">' + self.options.waiting_message + '</div>' );
 				else
@@ -614,7 +614,7 @@
 
                     // Grab its current retry count
                     retryCount = row.data("retries") || 1;
-		    var filename = row.find(".vup-filename-column").text();
+		    var filename = row.find(".vup-filename-column div").text();
 
                     // Get our maxRetries and retryTimeout settings
                     maxRetries = $(this).data("blueimpFileupload").options.maxRetries + 1;

@@ -2,9 +2,10 @@ define(['durandal/app',
         "plugins/router",
 	"lib/viblio",
         "lib/customDialogs",
-        "viewmodels/newHome"],
+        "viewmodels/newHome",
+        'viewmodels/shell'],
     
-    function(app,router,viblio,customDialogs,newHome){
+    function(app,router,viblio,customDialogs,newHome,shell){
         
     var view;
     var albumList = ko.observable();
@@ -37,6 +38,7 @@ define(['durandal/app',
     
     app.on( 'coverphoto:composed', function( obj ) {
         coverphoto = obj;
+        handle_visibility( albumList() );
     });
     
     // Shown after first video upload is completed.
@@ -49,7 +51,9 @@ define(['durandal/app',
             showFaces( false );
         } else {
             showFaces( true );
-            coverphoto.handleBackstretch();
+            if( coverphoto ) {
+                coverphoto.handleBackstretch();
+            }
         }
     }
     
@@ -92,6 +96,7 @@ define(['durandal/app',
     };
     
     function handle_visibility( visible ) {
+        console.log( 'handle_visibility fired', visible );
 	albumList_is_visible = visible;
         var albumsWidth;
 	if ( visible ) {
@@ -125,6 +130,8 @@ define(['durandal/app',
         showFaces: showFaces,
         
         toggleTopStrip: toggleTopStrip,
+        
+        shell: shell,
         
         activate: function( args ) {
             

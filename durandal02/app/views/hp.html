@@ -1,9 +1,13 @@
 <div class="hp">
     <div class="top-strip darkBlueBG" data-bind="slideVisible: showFaces">
-        <div class="cont">
-            <div class="left"><!-- ko compose: 'viewmodels/coverphoto' --><!-- /ko --></div>
+        <div class="cont" data-bind="if: !shell.onMobile()">
+            <div class="left">
+                <!-- ko compose: 'viewmodels/coverphoto' --><!-- /ko -->
+            </div>
         </div>
-        <div class="right"><!-- ko compose: 'viewmodels/albumList' --><!-- /ko --></div>
+        <div class="right" data-bind="css: {fullwidth: shell.onMobile()}">
+            <!-- ko compose: 'viewmodels/albumList' --><!-- /ko -->
+        </div>
         <div class="clearfix"></div>
     </div>
     <div class="facestripToggle btn btn-white" data-bind="click: toggleTopStrip, css: { 'btn-white': showFaces(), 'btn-ltGrey': !showFaces() }">
