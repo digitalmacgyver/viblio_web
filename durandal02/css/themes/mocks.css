@@ -7223,6 +7223,22 @@ ul.token-input-list-facebook li input {
 }
 
 /*** mobile **/
+.mobile h3 {
+    font-size: 20px;
+}
+
+.mobile .paddedDiv {
+    padding: 20px;
+}
+
+.mobile .mainLabel {
+    margin-bottom: 10px;
+}
+
+.mobile form {
+    margin: 0 0 10px;
+}
+
 .mobile .albumListView {
     min-width: 0;
 }
@@ -7230,6 +7246,18 @@ ul.token-input-list-facebook li input {
 .mobile .navbar .nav {
     margin: 0;
     font-size: 13px;
+}
+
+.mobile .facestripToggle {
+    padding: 0 10px;
+    margin-left: -17px;
+    font-size: 14px;
+    z-index: 1051;
+}
+
+.mobile .title-Wrap {
+    padding: 10px;
+    margin-bottom: 10px;
 }
 
 .mobile .albumListView .mainTitle {
@@ -7295,4 +7323,13 @@ ul.token-input-list-facebook li input {
 .mobile .vup-alert {
     line-height: 1.25;
     font-size: 14px;
+}
+
+.mobile #apic {
+    width: 60px;
+    
+}
+
+.mobile .avatar div {
+    width: 60px;
 }

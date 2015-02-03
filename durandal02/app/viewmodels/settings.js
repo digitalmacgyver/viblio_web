@@ -29,6 +29,8 @@ define(['durandal/app',
     var email_upload  = ko.observable();
     var email_face    = ko.observable();
     var email_viblio  = ko.observable();
+    
+    var showSpinner = ko.observable( false );
 
     /**
     var email_changes = ko.computed( function() {
@@ -146,6 +148,8 @@ define(['durandal/app',
 	email_face: email_face,
 	email_viblio: email_viblio,
 	email_changes: email_changes,
+        
+        showSpinner: showSpinner,
 
 	linkAccount: function( provider ) {
 	    if ( provider == 'facebook' ) {
@@ -247,15 +251,17 @@ define(['durandal/app',
 		dataType: 'json',
 		start: function() {
                     // show spinner
-		    $(".avatar div i").css( 'visibility', 'visible' );
+		    //$(".avatar div i").css( 'visibility', 'visible' );
+                    showSpinner( true );
 		},
 		done: function(e, data) {
 		    // hide spinner
-                    $(".avatar div i").css( 'visibility', 'hidden' );
+                    //$(".avatar div i").css( 'visibility', 'hidden' );
+                    showSpinner( false );
                     
                     // update avatar in settings and the headers
                     avatar( null );
-                    avatar( "/services/user/avatar?uid=-&x=120&y=120"+new Date() );
+                    avatar( "/services/user/avatar?uid=-&x=120&y=120&ignore="+new Date() );
                     header.updateAvatar();
                     c_header.updateAvatar();
 		}
