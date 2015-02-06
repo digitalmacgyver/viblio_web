@@ -8,7 +8,7 @@
 	   data-bind="attr:{poster:poster}">
       <source data-bind="attr:{src:src}" type='video/mp4' />
     </video>
-    <div class="tomatoBG marginT15 marginB20 marginSides10">
+      <div class="tomatoBG marginT15 marginB20 marginSides10" data-bind="ifnot: loggedIn()">
         <div class="centeredEl" data-bind="visible: !showSuccess()">
             <input type="email" name="email" class="text email" data-bind="value: email, valueUpdate: 'keyup'" placeholder="Enter your account email address" />
             <div class="button-Wrap">

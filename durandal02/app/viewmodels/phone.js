@@ -24,9 +24,16 @@ function(app,system,router,config,viblio,customDialogs,dialog,AddVideoModal) {
     });
     var showSuccess = ko.observable( false );
     var player, mf;
+    var loggedIn = ko.computed( function() {
+        if( viblio.user ) {
+            return true;
+        } else {
+            return false;
+        }
+    });
 
-    function resize() {
-	var width = head.screen.width;
+    function resizePlayer() {
+	var width = $(window).width();
 	var height = ( width * 9 ) / 16;
 	var top = 6;
 	if ( height > $(window).height() ) {
@@ -37,6 +44,9 @@ function(app,system,router,config,viblio,customDialogs,dialog,AddVideoModal) {
 	/*else {
 	    top = ($(window).height() - height) / 2;
 	}*/
+        
+        console.log( width, height );
+        
 	$("#videojs").css( 'width', width + 'px' );
 	$("#videojs").css( 'height', height + 'px' );
 	$("#videojs").css( 'top', '6px' );
@@ -77,6 +87,7 @@ function(app,system,router,config,viblio,customDialogs,dialog,AddVideoModal) {
         email: email,
         emailValid: emailValid,
         showSuccess: showSuccess,
+        loggedIn: loggedIn,
         
         showEmailEntry: showEmailEntry,
         
@@ -113,6 +124,17 @@ function(app,system,router,config,viblio,customDialogs,dialog,AddVideoModal) {
 		return false;
 	    }
 	},
+        
+        attached: function() {
+            $(window).on( 'resize.phone', resizePlayer );
+        },
+
+        detached: function() {
+            $(window).off( '.phone' );
+            if(flowplayer()){
+                flowplayer().unload();
+            }
+        },
 
 	compositionComplete: function() {
 	    var self = this;
@@ -126,13 +148,8 @@ function(app,system,router,config,viblio,customDialogs,dialog,AddVideoModal) {
 		$("#m1").height( $(window).height() );
 		$("#m1").css( 'display', 'block' );
 	    });*/
-	    resize();
+	    resizePlayer();
 	    document.getElementById('videojs').setAttribute('poster', mf.views.poster.url );
-	    $(window).resize( function() {
-		setTimeout( function() {
-		    resize();
-		},100 );
-	    });
 	},
 
 	/*close: function() {
