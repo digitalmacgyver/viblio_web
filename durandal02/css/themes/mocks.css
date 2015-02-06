@@ -2722,8 +2722,11 @@ div.token-input-dropdown-facebook {
 
 #sendAlbumEmail textarea {
     height: 65px;
-    width: 84%;
-    float: right;
+    width: 100%;
+}
+
+.shareVidMessage-Wrap {
+    margin-left: 60px;
 }
 
 .vertTop {
@@ -7340,6 +7343,7 @@ ul.token-input-list-facebook li input {
     font-size: 20px;
 }
 
+.mobile .shareVidLink-form,
 .mobile .paddedDiv {
     padding: 20px;
 }
@@ -7399,16 +7403,29 @@ ul.token-input-list-facebook li input {
 }
 
 .mobile .alertify {
-    top: 20px;
+    //top: 20px;
 }
 
 .mobile .nginx-modal .albumsList {
     font-size: 20px;
 }
 
-.mobile .nginx-modal .albumsList > p {
+.mobile .nginx-modal .midWeightFont {
     font-size: 14px;
     margin: 10px auto;
+    padding: 0 12px;
+}
+
+.mobile .nginx-modal .albumsList > ul {
+    max-width: 100%;
+}
+
+.mobile .truncate {
+    width: 100%
+}
+
+.mobile .nginx-modal .albumsList .tags-inner > li > a.checkboxedLi {
+    display: block;
 }
 
 .mobile .nginx-modal .vup {
@@ -7452,4 +7469,13 @@ ul.token-input-list-facebook li input {
 
 .mobile .content-Wrap > div {
     margin-bottom: 10px;
+}
+
+.mobile .shared-icon-wrap .inner-icon {
+    line-height: 1.75;
+}
+
+.mobile .shareLink-Wrap,
+.mobile .shareLink-Wrap input {
+    max-width: 100%
 }
