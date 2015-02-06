@@ -144,6 +144,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs', 'd
         self.viewResolved = $.Deferred();
         
         self.viblio = viblio;
+        
+        self.mobile = head.mobile;
     };
     
     Video.prototype.toggleFaces = function() {
@@ -394,6 +396,8 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs', 'd
 	var self = this;
 	self.view = view;
 	self.trigger( 'mediafile:composed', self );
+        
+        console.log( "mobile: ", self.mobile );
 
 	if ( self.options.show_preview ) {
 	    if ( self.media().views.poster_animated && 

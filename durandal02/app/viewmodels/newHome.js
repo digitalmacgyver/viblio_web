@@ -1263,7 +1263,7 @@ define( ['plugins/router',
                 ownedByViewer: true, 
                 show_select_badge: self.select_mode_on(), 
                 selected: self.select_all_mode_is_on() ? true : self.selectedVideos().indexOf( mf.uuid ) != -1 ? true : false, 
-                popup_player: true, 
+                popup_player: head.mobile ? false: true,
                 clean_style: true,
                 show_predefined_tags: viblio.user().user_type == 'individual' ? true : false
             };
@@ -1276,7 +1276,7 @@ define( ['plugins/router',
                 owner_uuid: mf.owner_uuid, 
                 show_select_badge: self.select_mode_on(), 
                 selected: self.select_all_mode_is_on(), 
-                popup_player: true, 
+                popup_player: head.mobile ? false: true,
                 clean_style: true
             };
         }
@@ -1291,9 +1291,13 @@ define( ['plugins/router',
 	});*/
         
         m.on( 'mediafile:play', function( m ) {
-            self.playingVid( m );
-            self.playingVidIndex( self.videos().indexOf( m ) );
-            self.playingVidUUID( m.media().uuid );
+            if( head.mobile ) {
+                router.navigate( 'phone?mid=' + m.media().uuid )
+            } else {
+                self.playingVid( m );
+                self.playingVidIndex( self.videos().indexOf( m ) );
+                self.playingVidUUID( m.media().uuid );    
+            }
 	});
         
         // in this case the deferred (dfd) is created in the actual mediafile (mediafile.js) itself and it is resolved once the api call has been made
@@ -1352,7 +1356,8 @@ define( ['plugins/router',
                 show_faces_tags: true,
                 show_select_badge: self.delete_mode_on() ? self.select_mode_on() : false,
                 selected: self.delete_mode_on() ? self.select_all_mode_is_on() : false,
-                popup_player: true, clean_style: true
+                popup_player: head.mobile ? false: true, 
+                clean_style: true
             }
             var m = new Mediafile( mf, options ); //m.ro( true );
             // in this case the deferred (dfd) is created in the actual mediafile (mediafile.js) itself and it is resolved once the api call has been made
@@ -1373,7 +1378,8 @@ define( ['plugins/router',
                 show_faces_tags: true, 
                 ownedByViewer: true, 
                 selected: self.select_all_mode_is_on() ? true : self.selectedVideos().indexOf( mf.uuid ) != -1 ? true : false, 
-                in_process_style: mf.status == 'pending' ? true : false, popup_player: true, 
+                in_process_style: mf.status == 'pending' ? true : false, 
+                popup_player: head.mobile ? false: true,
                 clean_style: true,
                 show_predefined_tags: viblio.user().user_type == 'individual' ? true : false
             };
@@ -1395,9 +1401,13 @@ define( ['plugins/router',
         }
         
         m.on( 'mediafile:play', function( m ) {
-            self.playingVid( m );
-            self.playingVidIndex( self.videos().indexOf( m ) );
-            self.playingVidUUID( m.media().uuid );
+            if( head.mobile ) {
+                router.navigate( 'phone?mid=' + m.media().uuid )
+            } else {
+                self.playingVid( m );
+                self.playingVidIndex( self.videos().indexOf( m ) );
+                self.playingVidUUID( m.media().uuid );
+            }
         });
         
         m.on( 'mediafile:selected', function( m ) {
