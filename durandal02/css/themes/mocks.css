@@ -6166,16 +6166,22 @@ button.linkedin:active {
 }
 
 .tags-inner > li > a.checkboxedLi {
-    display: table;
+    display: block;
     width: 100%;
     -moz-box-sizing:border-box; /* Firefox */
     box-sizing: border-box;
 }
 
 .checkboxedLi > div {
-    display: table-cell;
     vertical-align: middle;
 }
+
+.checkboxedLi .tagLabel {
+    display: block !important;
+    margin-left: 12px;
+    width: auto !important;
+}
+
 .checkbox-Wrap {
     //display: inline-block;
     float: right;
@@ -6183,13 +6189,16 @@ button.linkedin:active {
 }
 
 .itemActive-Wrap {
-    width: 6px;
+    width: 12px;
+    float: left;
+    vertical-align: middle;
 }
 
 .itemActive {
     height: 6px;
     width: 6px;
-    margin-right: 5px;
+    margin: 8px auto;
+    float: none;
 }
 
 .itemActive.on {
@@ -6782,13 +6791,8 @@ ul.token-input-list-facebook li input {
     color: rgb(28, 184, 209);
 }
 
-.albumListView .scroller .tagLabel.truncate {
-    max-width: 160px;
-}
-
 .albumListView .scroller .tagLabel .truncate {
     width: auto;
-    max-width: 260px;
     line-height: 20px;
     vertical-align: bottom;
 }
@@ -7497,4 +7501,8 @@ ul.token-input-list-facebook li input {
 .mobile .allVidsPage .mediafile {
     float: none;
     margin: auto;
+}
+
+.mobile .navbar-inner .style2DD.dropdown-menu {
+    max-width: 240px;
 }
