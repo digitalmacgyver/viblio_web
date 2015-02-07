@@ -21,7 +21,7 @@
                 </div>
             </a>  
             <i class="fa fa-ok-sign"></i>
-            <div class='pointer' data-bind="click:play">
+            <div class='pointer' data-bind="click: play, clickBubble: !selectModeOn()">
                 <a data-bind="attr:{href:image, rel: popup_player ? 'gallery1' : null}, css: { fancybox: popup_player }">
                     <div class="mplay-icon pointer">
                         <i class="fa fa-play-circle"></i> 

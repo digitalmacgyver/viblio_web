@@ -12,7 +12,7 @@
                     <i class="fa fa-square-o"></i>
                 </div>
             </a>   
-            <div class='pointer' data-bind="click:play">
+            <div class='pointer' data-bind="click:play, clickBubble: !selectModeOn()">
                 <a data-bind="attr:{href:image}">
                     <img data-bind="attr: {src: !hidden() ? image : ( hasBeenShown() ? image: null ) }" />
                 </a>

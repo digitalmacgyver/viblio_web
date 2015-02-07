@@ -146,6 +146,16 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs', 'd
         self.viblio = viblio;
         
         self.mobile = head.mobile;
+        
+        self.selectModeOn = ko.observable( false );
+        // this will be triggered when the select mode is turned on
+        app.on( 'select_mode:on', function() {
+            self.selectModeOn( true );
+        });
+        // this will be triggered when the select mode is turned off
+        app.on( 'select_mode:off', function() {
+            self.selectModeOn( false );
+        });
     };
     
     Video.prototype.toggleFaces = function() {

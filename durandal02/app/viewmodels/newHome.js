@@ -1291,14 +1291,24 @@ define( ['plugins/router',
 	});*/
         
         m.on( 'mediafile:play', function( m ) {
-            if( head.mobile ) {
-                router.navigate( 'phone?mid=' + m.media().uuid )
-            } else {
-                self.playingVid( m );
-                self.playingVidIndex( self.videos().indexOf( m ) );
-                self.playingVidUUID( m.media().uuid );    
+            // If select mode is on, then only select the video
+            if( self.select_mode_on() ) {
+                // only allow selection if the select badge is showing
+                if( m.show_select_badge() ) {
+                    m.selected() ? m.unselect() : m.select();
+                }
             }
-	});
+            // else trigger the play action
+            else {
+                if( head.mobile ) {
+                    router.navigate( 'phone?mid=' + m.media().uuid );
+                } else {
+                    self.playingVid( m );
+                    self.playingVidIndex( self.videos().indexOf( m ) );
+                    self.playingVidUUID( m.media().uuid );
+                }    
+            }
+        });
         
         // in this case the deferred (dfd) is created in the actual mediafile (mediafile.js) itself and it is resolved once the api call has been made
         m.on( 'mediafile:delete', function( m, dfd ) {
@@ -1401,12 +1411,22 @@ define( ['plugins/router',
         }
         
         m.on( 'mediafile:play', function( m ) {
-            if( head.mobile ) {
-                router.navigate( 'phone?mid=' + m.media().uuid )
-            } else {
-                self.playingVid( m );
-                self.playingVidIndex( self.videos().indexOf( m ) );
-                self.playingVidUUID( m.media().uuid );
+            // If select mode is on, then only select the video
+            if( self.select_mode_on() ) {
+                // only allow selection if the select badge is showing
+                if( m.show_select_badge() ) {
+                    m.selected() ? m.unselect() : m.select();
+                }
+            } 
+            // else trigger the play action
+            else {
+                if( head.mobile ) {
+                    router.navigate( 'phone?mid=' + m.media().uuid );
+                } else {
+                    self.playingVid( m );
+                    self.playingVidIndex( self.videos().indexOf( m ) );
+                    self.playingVidUUID( m.media().uuid );
+                }    
             }
         });
         
@@ -1466,6 +1486,12 @@ define( ['plugins/router',
 	p.on( 'photo:play', function( p ) {
             //console.log( $(p.view).find('img') );
             //$(p.view).find('img').magnificPopup({type:'image'});
+            if( self.select_mode_on() ) {
+                // only allow selection if the select badge is showing
+                if( p.show_select_badge() ) {
+                    p.selected() ? p.unselect() : p.select();
+                }
+            }
 	});
         
         p.on( 'photo:delete', function( p ) {
@@ -2071,7 +2097,8 @@ define( ['plugins/router',
         // for video mode
         if( self.video_mode_on() ) {
             if( self.delete_mode_on() ) {
-                if( self.activeFilterType == 'album' ) {
+                console.log()
+                if( self.activeFilterType() == 'album' ) {
                     // if the current album has been shared with the user only allow them to delete their own videos
                     if( self.currentSelectedFilterAlbum().shared ) {
                         self.videos().forEach( function(video) {

@@ -61,7 +61,16 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs'],fu
         self.download_url = ko.observable( data.download_url );
 
 	Events.includeIn( self );
-
+        
+        self.selectModeOn = ko.observable( false );
+        // this will be triggered when the select mode is turned on
+        app.on( 'select_mode:on', function() {
+            self.selectModeOn( true );
+        });
+        // this will be triggered when the select mode is turned off
+        app.on( 'select_mode:off', function() {
+            self.selectModeOn( false );
+        });
     };
     
     Photo.prototype.highlight = function() {
