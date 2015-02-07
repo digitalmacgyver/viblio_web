@@ -701,9 +701,9 @@
             <td><span class="vup-data-point vup-overall-size"></span></td>\
 	  </tr>\
 	  <tr>\
-            <td><span class="vup-data-title">Upload Speed</span></td>\
-            <td><span class="vup-data-title">Percent Done</span></td>\
-            <td><span class="vup-data-title">Data Uploaded</span></td>\
+            <td><span class="vup-data-title">Speed</span></td>\
+            <td><span class="vup-data-title">Done</span></td>\
+            <td><span class="vup-data-title">Uploaded</span></td>\
 	  </tr>\
 	</table>\
       </div>\

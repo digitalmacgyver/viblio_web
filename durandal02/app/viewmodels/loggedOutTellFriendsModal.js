@@ -7,7 +7,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
     var emailTemplate = ko.observable();
     
     function showLoggedOutTellFriendsModal() {
-        dialog.show('viewmodels/loggedOutTellFriendsModal');
+        dialog.showAnimated('viewmodels/loggedOutTellFriendsModal');
     };
     
     function closeModal() {

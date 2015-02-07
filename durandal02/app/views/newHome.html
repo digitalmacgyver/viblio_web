@@ -572,7 +572,7 @@
 
     </div>
     
-    <div class="containerxx clearfix" data-bind="css: {tagsVisible: activeFilterType() == 'album', noDatesIndent: activeFilterType() == 'all' }">
+    <div class="containerxx clearfix" data-bind="css: {tagsVisible: activeFilterType() == 'album' && !shell.onMobile(), noDatesIndent: activeFilterType() == 'all' && !shell.onMobile() }">
         <div class="table allVidsInner clearfix">
 
             <div id="allVidsWrap" class="allVidsWrap clearfix photoGallery">
@@ -632,10 +632,12 @@
         </div>
     </div>
     <div class='paginationContainer'></div>
-    <div class="feedbackThumbsTab" data-bind="slideVisible: !video_mode_on()">
-        <div class="thumbs-Wrap">
-            Tell us how you like the photo view.&nbsp;
-            <div class="timely-feedback-button-thumbs" id="bizhash54a6e884632387.21209458" survey="surveyhash54a6e886314fb9.97766480" data-bind="attr: {data: thumbsData() }"></div>
+    <div class="hideOnMobile">
+        <div class="feedbackThumbsTab" data-bind="slideVisible: !video_mode_on()">
+            <div class="thumbs-Wrap">
+                Tell us how you like the photo view.&nbsp;
+                <div class="timely-feedback-button-thumbs" id="bizhash54a6e884632387.21209458" survey="surveyhash54a6e886314fb9.97766480" data-bind="attr: {data: thumbsData() }"></div>
+            </div>    
         </div>    
     </div>
 </div>

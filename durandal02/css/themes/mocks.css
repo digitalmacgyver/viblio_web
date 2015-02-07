@@ -409,8 +409,8 @@ a.activated:hover,
     padding: 8px 5px;
     position: relative;
     text-align: center;
-    box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
+    box-sizing: border-box;
     font-weight: 600;
     font-size: 16px;
     color: rgba(0,0,0,.5);
@@ -1450,10 +1450,9 @@ input:-moz-placeholder {
     text-shadow: 2px 2px rgba(0,0,0,.2);
     border-bottom: 3px inset rgba(0,0,0,.2);
     background-color: rgba(48,97,148,1);
-    padding-top: 2px;
     font-size: 20px;
-    box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
+    box-sizing: border-box;
     cursor: pointer;
     position: relative;
 }
@@ -1467,17 +1466,25 @@ input:-moz-placeholder {
     cursor: default;
 }
 
-.facebookLoginBtn img {
-    margin: 0 41px 0 28px;
-    border-right: 1px solid rgba(0,0,0,.3);
-    padding: 21px 26px 19px 0;
-    position: relative;
-    top: -2px;
+.facebookLoginBtn .image-Wrap {
+    float: left;
+    width: 65px;
+    height: 100%;
+    border-right: 1px solid rgba(0, 0, 0, 0.3);
 }
 
-.facebookLoginBtn.ks img {
-    margin: 0;
-    margin-right: 35px;
+.facebookLoginBtn img {
+    margin: 18px auto;
+    display: block;
+}
+
+.facebookLoginBtn .text-Wrap {
+    margin-left: 65px;
+    text-align: center;
+    padding: 20px 0 0;
+    height: 100%;
+    -moz-box-sizing:border-box; /* Firefox */
+    box-sizing: border-box;
 }
 
 .facebookLoginBtn:hover {
@@ -1688,8 +1695,8 @@ input:-moz-placeholder {
     border-bottom: 3px inset rgba(0,0,0,.2);
     text-align: center;
     padding-top: 18px;
-    box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
+    box-sizing: border-box;
 }
 
 .fb {
@@ -2283,6 +2290,7 @@ input:-moz-placeholder {
 
 .underVidTable td {
     padding: 10px;
+    -moz-box-sizing:border-box; /* Firefox */
     box-sizing: border-box;
 }
 
@@ -2899,8 +2907,8 @@ div.token-input-dropdown-facebook {
     color: white;
     padding: 2px 0 4px 4px;
     width: 120px;
-    box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
+    box-sizing: border-box;
 }
 
 .account-info .avatarWrap {
@@ -2950,9 +2958,10 @@ div.token-input-dropdown-facebook {
 
 #loggedOutTellFriendsModal {
     width: 600px;
+    max-width: 100%;
     position: relative;
-    box-sizing: border-box;
     -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 #loggedOutTellFriendsForm .bigTitle {
@@ -2993,8 +3002,8 @@ div.token-input-dropdown-facebook {
 p.uitoken-input ul.token-input-list-facebook {
     border: 1px solid rgba(0,0,0,.3);
     width: inherit;
-    box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
+    box-sizing: border-box;
 }
 
 ul.token-input-list-facebook {
@@ -3736,8 +3745,8 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     width: 100%;
     background-color: white;
     position: relative;
-    box-sizing: border-box;
     -moz-box-sizing:border-box; /* Firefox */
+    box-sizing: border-box;
     padding: 17px 5px;
     height: 54px;
 }
@@ -4056,8 +4065,8 @@ background:transparent url(../images/tutorial/control_left.jpg) no-repeat 0 0;
     width: 100%;
     background-color: rgb(255, 255, 255);
     position: relative;
+    -moz-box-sizing:border-box; /* Firefox */
     box-sizing: border-box;
-    -moz-box-sizing: border-box;
     padding: 6px 5px;
     height: 54px;
 }
@@ -4351,6 +4360,7 @@ div.tagsPopup.popover.top .custom {
     margin: 50px auto !important;
     width: 600px;
     max-width: 100%;
+    -moz-box-sizing:border-box; /* Firefox */
     box-sizing: border-box;
 }
 
@@ -5906,11 +5916,16 @@ div.fstrip {
    experience */
 @media (max-width: 480px) {
     .landingHeaderTitle {
-	font-size: 32px;
-	padding: 12px 20px 6px;
+	font-size: 24px;
+	padding: 4px 20px 4px;
     }
     .orangeBG-Header {
 	height: auto;
+    }
+    .orangeBG-Header p {
+        padding-top: 2px;
+        font-size: 18px;
+        margin-bottom: 2px;
     }
     #login-page .content-Wrap {
 	padding-top: 12px;
@@ -5920,20 +5935,16 @@ div.fstrip {
 	margin-top: 0;
     }
     #fbBtn-Wrap {
-	padding: 24px 0;
-    }
-    #facebookLoginBtn {
-	font-size: 17px;
-	max-width: 87%;
-    }
-    #facebookLoginBtn img {
-	margin: 0 25px 0 28px;
+	padding: 18px 0;
     }
     #or-Wrap p {
 	font-size: 20px;
     }
     #loginArea form {
 	padding: 2px 20px 6px;
+    }
+    #loginArea form div input {
+        margin-bottom: 10px;
     }
     .signupLink {
 	margin-top: 2px;
@@ -6157,6 +6168,7 @@ button.linkedin:active {
 .tags-inner > li > a.checkboxedLi {
     display: table;
     width: 100%;
+    -moz-box-sizing:border-box; /* Firefox */
     box-sizing: border-box;
 }
 
@@ -7365,13 +7377,6 @@ ul.token-input-list-facebook li input {
     font-size: 13px;
 }
 
-.mobile .facestripToggle {
-    padding: 0 10px;
-    margin-left: -17px;
-    font-size: 14px;
-    z-index: 1051;
-}
-
 .mobile .title-Wrap {
     padding: 10px;
     margin-bottom: 10px;
@@ -7402,17 +7407,13 @@ ul.token-input-list-facebook li input {
     font-size: 12px;
 }
 
-.mobile .alertify {
-    //top: 20px;
-}
-
 .mobile .nginx-modal .albumsList {
     font-size: 20px;
 }
 
 .mobile .nginx-modal .midWeightFont {
-    font-size: 14px;
-    margin: 10px auto;
+    font-size: 12px;
+    margin: 8px auto;
     padding: 0 12px;
 }
 
@@ -7433,12 +7434,21 @@ ul.token-input-list-facebook li input {
 }
 
 .mobile .nginx-modal .vup-area {
-    height: 150px !important;
+    height: 100px !important;
+}
+
+.mobile .vup-instructions {
+    margin-top: 10px;
+    height: 112px;
 }
 
 .mobile .nginx-modal .vup-data-title,
 .mobile .nginx-modal .vup-data-point {
     font-size: 14px;
+}
+
+.mobile .nginx-modal .paddedDiv {
+    padding-top: 0;
 }
 
 .mobile .vup-files .vup-filename-column {
@@ -7478,4 +7488,13 @@ ul.token-input-list-facebook li input {
 .mobile .shareLink-Wrap,
 .mobile .shareLink-Wrap input {
     max-width: 100%
+}
+
+.mobile .containerxx {
+    padding: 0;
+}
+
+.mobile .allVidsPage .mediafile {
+    float: none;
+    margin: auto;
 }
