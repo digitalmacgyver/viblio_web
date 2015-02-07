@@ -2348,7 +2348,6 @@ define( ['plugins/router',
     
     newHome.prototype.setTitleMargin = function() {
         var self = this;
-        console.log( 'setTitleMargin fired', self.toolbarHeight() );
         self.toolbarHeight( self.select_mode_on() ? $('.select-nav').height() : $('.vids-nav').height() );
         var marginTop = self.toolbarHeight() > 43 ? 50 + (self.toolbarHeight() - 43) : 50;
         $('.newHomeTitle-Wrap').css('margin-top', marginTop );

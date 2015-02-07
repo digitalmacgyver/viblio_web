@@ -23,7 +23,6 @@ function (router, app, system, page_header, landing_header, conditional_header, 
     
     var windowWidth = ko.observable( $(window).width() );
     var onMobile = ko.computed( function() {
-        console.log( windowWidth() );
         if( windowWidth() < 600 ) {
             return true;
         } else {
