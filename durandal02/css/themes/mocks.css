@@ -6412,11 +6412,9 @@ button.linkedin:active {
 @media (max-width: 670px) {
     .hideOnMobile,
     .toolbar .toolbar-label {
-        display: none;
+        display: none !important;
     }
 }
-
-
 
 .toolbar .scroller {
     max-height: 250px;
@@ -7362,154 +7360,160 @@ ul.token-input-list-facebook li input {
 }
 
 /*** mobile **/
-.mobile h3 {
-    font-size: 20px;
-}
+@media (max-width: 600px) {    
+    h3 {
+        font-size: 20px;
+    }
 
-.mobile .shareVidLink-form,
-.mobile .paddedDiv {
-    padding: 50px 20px 20px;
-}
+    .shareVidLink-form,
+    .paddedDiv {
+        padding: 50px 20px 20px;
+    }
 
-.mobile .mainLabel {
-    margin-bottom: 10px;
-}
+    .mainLabel {
+        margin-bottom: 10px;
+    }
 
-.mobile form {
-    margin: 0 0 10px;
-}
+    form {
+        margin: 0 0 10px;
+    }
 
-.mobile .albumListView {
-    min-width: 0;
-}
+    .albumListView {
+        min-width: 0;
+    }
 
-.mobile .navbar .nav {
-    margin: 0;
-    font-size: 13px;
-}
+    .navbar .nav {
+        margin: 0;
+        font-size: 13px;
+    }
 
-.mobile .title-Wrap {
-    padding: 10px;
-    margin-bottom: 10px;
-}
+    .title-Wrap {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
 
-.mobile .albumListView .mainTitle {
-    margin-bottom: 0px;
-}
+    .albumListView .mainTitle {
+        margin-bottom: 0px;
+    }
 
-.mobile .tags-inner > li > a {
-    padding: 2px;
-}
+    .tags-inner > li > a {
+        padding: 2px;
+    }
 
-.mobile .albumListView .scroller {
-    height: 108px;
-}
+    .albumListView .scroller {
+        height: 108px;
+    }
 
-.mobile .truncate {
-    display: inline-block;
-}
+    .truncate {
+        display: inline-block;
+    }
 
-.mobile .newHomeTitle-Wrap .mainTitle {
-    font-size: 20px;
-    line-height: 20px;
-}
+    .newHomeTitle-Wrap .mainTitle {
+        font-size: 20px;
+        line-height: 20px;
+    }
 
-.mobile .newHomeTitle-Wrap .pageNumber {
-    font-size: 12px;
-}
+    .newHomeTitle-Wrap .pageNumber {
+        font-size: 12px;
+    }
 
-.mobile .nginx-modal .albumsList {
-    font-size: 20px;
-}
+    .nginx-modal .albumsList {
+        font-size: 20px;
+    }
 
-.mobile .nginx-modal .midWeightFont {
-    font-size: 12px;
-    margin: 8px auto;
-    padding: 0 12px;
-}
+    .nginx-modal .midWeightFont {
+        font-size: 12px;
+        margin: 8px auto;
+        padding: 0 12px;
+    }
 
-.mobile .nginx-modal .albumsList > ul {
-    max-width: 100%;
-}
+    .nginx-modal .albumsList > ul {
+        max-width: 100%;
+    }
 
-.mobile .truncate {
-    width: 100%
-}
+    .truncate {
+        width: 100%
+    }
 
-.mobile .nginx-modal .albumsList .tags-inner > li > a.checkboxedLi {
-    display: block;
-}
+    .nginx-modal .albumsList .tags-inner > li > a.checkboxedLi {
+        display: block;
+    }
 
-.mobile .nginx-modal .vup {
-    margin-top: 0;
-}
+    .nginx-modal .vup {
+        margin-top: 0;
+    }
 
-.mobile .nginx-modal .vup-area {
-    height: 100px !important;
-}
+    .nginx-modal .vup-area {
+        height: 100px !important;
+    }
 
-.mobile .vup-instructions {
-    margin-top: 10px;
-    height: 112px;
-}
+    .vup-instructions {
+        margin-top: 10px;
+        height: 112px;
+    }
 
-.mobile .nginx-modal .vup-data-title,
-.mobile .nginx-modal .vup-data-point {
-    font-size: 14px;
-}
+    .nginx-modal .vup-data-title,
+    .nginx-modal .vup-data-point {
+        font-size: 14px;
+    }
 
-.mobile .nginx-modal .paddedDiv {
-    padding-top: 0;
-}
+    .nginx-modal .paddedDiv {
+        padding-top: 0;
+    }
 
-.mobile .vup-files .vup-filename-column {
-    width: 75px;
-}
+    .vup-files .vup-filename-column {
+        width: 75px;
+    }
 
-.mobile .vup-files .vup-filename-column div {
-    max-width: 100%; 
-    font-size: 14px;    
-}
+    .vup-files .vup-filename-column div {
+        max-width: 100%; 
+        font-size: 14px;    
+    }
 
-.mobile .vup-alert {
-    line-height: 1.25;
-    font-size: 14px;
-}
+    .vup-alert {
+        line-height: 1.25;
+        font-size: 14px;
+    }
 
-.mobile #apic {
-    width: 80px;
-}
+    #apic {
+        width: 80px;
+    }
 
-.mobile .avatar div {
-    width: 80px;
-}
+    .avatar div {
+        width: 80px;
+    }
 
-.mobile .account-info .avatarWrap {
-    width: 80px;
-}
+    .account-info .avatarWrap {
+        width: 80px;
+    }
 
-.mobile .content-Wrap > div {
-    margin-bottom: 10px;
-}
+    .content-Wrap > div {
+        margin-bottom: 10px;
+    }
 
-.mobile .shared-icon-wrap .inner-icon {
-    line-height: 1.75;
-}
+    .shared-icon-wrap .inner-icon {
+        line-height: 1.75;
+    }
 
-.mobile .shareLink-Wrap,
-.mobile .shareLink-Wrap input {
-    max-width: 100%
-}
+    .shareLink-Wrap,
+    .shareLink-Wrap input {
+        max-width: 100%
+    }
 
-.mobile .containerxx {
-    padding: 0;
-}
+    .containerxx {
+        padding: 0;
+    }
 
-.mobile .allVidsPage .mediafile {
-    float: none;
-    margin: auto;
-}
+    .allVidsPage .mediafile {
+        float: none;
+        margin: auto;
+    }
+    
+    .allVidsPage .mediafile.photo {
+        float: left;
+    }
 
-.mobile .navbar-inner .style2DD.dropdown-menu {
-    max-width: 240px;
+    .navbar-inner .style2DD.dropdown-menu {
+        max-width: 240px;
+    }
 }
