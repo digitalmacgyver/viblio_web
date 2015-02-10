@@ -85,8 +85,8 @@
                         <!-- /ko -->
                     </div>
                 </div>
-                <!-- ko ifnot: shared_style || mobile -->
-                <i class='fa fa-tags' data-bind="click: toggleTags" title='Toggle tags'></i>
+                <!-- ko ifnot: shared_style -->
+                <i class='fa fa-tags hideOnMobile' data-bind="click: toggleTags" title='Toggle tags'></i>
                 <!-- /ko -->
                 <!-- ko if: shared_style -->
                 <img class="sharedOwnerAvatar boxShadowed avatar" data-bind="attr: {src: owner_avatar, title:owner_name}" />

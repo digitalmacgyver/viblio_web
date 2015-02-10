@@ -6412,7 +6412,7 @@ button.linkedin:active {
 @media (max-width: 670px) {
     .hideOnMobile,
     .toolbar .toolbar-label {
-        display: none;
+        display: none !important;
     }
 }
 
@@ -7507,6 +7507,10 @@ ul.token-input-list-facebook li input {
     .allVidsPage .mediafile {
         float: none;
         margin: auto;
+    }
+    
+    .allVidsPage .mediafile.photo {
+        float: left;
     }
 
     .navbar-inner .style2DD.dropdown-menu {
