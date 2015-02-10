@@ -2652,6 +2652,8 @@ li.token-input-token-facebook {
 
 div.token-input-dropdown-facebook {
     z-index: 10009;
+    max-height: 200px;
+    overflow-y: scroll;
 }
 
 #sendVidEmail textarea {
@@ -4336,10 +4338,11 @@ div.tagsPopup.popover.top .custom {
 /* Make the alertify messages a bit bigger */
 .alertify-log {
     font-size: 18px;
-    padding: 18px;
+    padding: 8px;
 }
 .alertify-logs {
     width: 350px;
+    max-width: 94%;
 }
 
 .alertify {
@@ -6676,6 +6679,10 @@ button.linkedin:active {
 .inset {
     padding-left: 40px;   
     margin-top: 10px;
+}
+
+.uitoken-input {
+    position: relative;
 }
 
 ul.token-input-list-facebook li input {

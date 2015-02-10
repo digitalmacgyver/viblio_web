@@ -106,6 +106,8 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 		      return '<li>' + item.name + '&nbsp;(' + (item.id || item.name) + ')</li>';
 		  }
 		});
+                
+            $("#token-input-friendsEmails").attr("placeholder", "Email");    
 	},
         
         showLoggedOutTellFriendsModal: showLoggedOutTellFriendsModal,

@@ -104,7 +104,7 @@ function (router, app, system, page_header, landing_header, conditional_header, 
 			dfd.resolve({});
 		    }
 		}, function() {
-		    viblio.notify( 'Server communication failure!', 'error' );
+		    //viblio.notify( 'Server communication failure!', 'error' );
 		    dfd.resolve(false);
 		});
 	    }).promise();

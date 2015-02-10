@@ -63,7 +63,7 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
             args.template = 15;
             args.placeholder = "I discovered Viblio, a great way to privately organize and share videos.  I'd love it if you signed up and shared some of your videos with me.";
             args.logout = false;
-            dialog.show('viewmodels/loggedOutTellFriendsModal', args);
+            dialog.showAnimated('viewmodels/loggedOutTellFriendsModal', args);
         },
 	web_uploader: function() {
             viblio.localStorage( 'hasUserPushedUploadBefore', true );
