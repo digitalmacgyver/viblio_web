@@ -88,7 +88,7 @@ function( router, app, system, config, viblio, dialog ) {
         var self = this;
 	self.view = view;
 
-        cloudsponge.init({
+        /*cloudsponge.init({
             domain_key:config.cloudsponge_appid(),
             textarea_id: null,
 
@@ -105,7 +105,7 @@ function( router, app, system, config, viblio, dialog ) {
                         name: c.first_name });
                 });
             }
-        });
+        });*/
         
         // Sets up placeholder compatability for IE when needed
         $('input, textarea').placeholder();

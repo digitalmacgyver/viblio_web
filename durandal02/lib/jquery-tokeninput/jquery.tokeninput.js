@@ -344,7 +344,7 @@ $.TokenList = function (input, url_or_data, settings) {
     var dropdown = $("<div>")
         .addClass(settings.classes.dropdown)
         //.appendTo("body")
-        .appendTo('.uitoken-input') /* Added by JBG to work with modals */
+        .appendTo( token_list.parent('.uitoken-input') ) /* Added by JBG to work with modals */
         .hide();
 
     // Magic element to help us resize the text input
@@ -679,8 +679,13 @@ $.TokenList = function (input, url_or_data, settings) {
                     hidden_input.change();
                     return false;
                 })
+                .bind('touchend', function (event) {
+                    add_token($(event.target).closest("li").data("tokeninput"));
+                    hidden_input.change();
+                    return false;
+                }) /* Added by JBG to work on mobile */
                 .hide();
-
+            
             $.each(results, function(index, value) {
                 var this_li = settings.resultsFormatter(value);
                 

@@ -72,7 +72,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 	    var self = this;
 	    self.view = view;
 
-	    cloudsponge.init({
+	    /*cloudsponge.init({
 		domain_key:config.cloudsponge_appid(),
 		textarea_id: null,
 
@@ -89,7 +89,7 @@ define( ['plugins/router', 'durandal/app', 'durandal/system', 'lib/config', 'lib
 			    name: c.first_name });
 		    });
 		}
-	    });
+	    });*/
             
             // Sets up placeholder compatability for IE when needed
             $('input, textarea').placeholder();
