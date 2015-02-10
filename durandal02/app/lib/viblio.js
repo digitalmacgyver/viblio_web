@@ -95,6 +95,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 	// or error (red).  Wait can be 0 to keep the notification on
 	// the screen until user clicks on it.
 	notify: function( msg, type, wait ) {
+            wait ? wait = wait : wait = 0;
             alertify.log( msg, type, wait );
 	},
 
@@ -205,7 +206,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 		}
 
 		self.mpEvent( 'serverError', { reason: 'cannot connect' } );
-		self.notify( 'Server communication failure!', 'error' );
+		//self.notify( 'Server communication failure!', 'error' );
 
 		if ( errorCallback )
 		    errorCallback({message: 'Cannot communicate with server',
@@ -269,7 +270,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
 		    }
 		    else {
 			self.mpEvent( 'serverError', { reason: 'server exception' } );
-			self.notify( 'Server exception', 'error' );
+			//self.notify( 'Server exception', 'error' );
 			self.log( 'API (exception) ERROR' );
 			self.log( data.message );
 			self.log( data.detail );
