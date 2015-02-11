@@ -2311,6 +2311,8 @@ define( ['plugins/router',
             };
             
             jQuery.ajax( json ).done( function( response ) {
+                // log event in mixpanel
+                viblio.mpEvent( 'made_summary' );
                 dialog.showModal( 'viewmodels/summaryVidSuccessModal' ).then( function() {
                     viblio.api('services/mediafile/list_status').then( function( data ) {
                         self.numVidsPending( data.stats.pending );
