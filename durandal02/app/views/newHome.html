@@ -382,6 +382,12 @@
                 <p class="mainTitleP">
                     <!--You have <span data-bind="text: hits"></span>-->
                     ALL <span data-bind="text: video_mode_on() ? ' Videos ' : ' Photos ' "></span> (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
+                    <span class='titleTag-Wrap' data-bind="visible: activeTag()">
+                        <span class='titleTag'>
+                            &mdash; <i class="fa fa-tag"></i><span class='tagLabel truncate' data-bind="text: activeTag()"></span>
+                        </span>
+                        <i class="fa fa-undo turquoiseFont" title="Clear tag" data-bind="click: clearTag"></i>
+                    </span>
                     <span class='titleTag-Wrap' data-bind="visible: searchForVidsWithNoDates()">
                         <span class='titleTag'>
                             &mdash; <span class='tagLabel'>No Dates</span>
@@ -431,6 +437,18 @@
                     <!-- ko if: activeFilterType() == 'faces' -->
                      <img class="selectedFace img-circle" data-bind="attr: {src: selectedFace().url}">
                     <!-- /ko -->
+                    <span class='titleTag-Wrap' data-bind="visible: activeTag()">
+                        <span class='titleTag'>
+                            &mdash; <i class="fa fa-tag"></i><span class='tagLabel truncate' data-bind="text: activeTag()"></span>
+                        </span>
+                        <i class="fa fa-undo turquoiseFont" title="Clear tag" data-bind="click: clearTag"></i>
+                    </span>
+                    <span class='titleTag-Wrap' data-bind="visible: searchForVidsWithNoDates()">
+                        <span class='titleTag'>
+                            &mdash; <span class='tagLabel'>No Dates</span>
+                        </span>
+                        <i class="fa fa-undo turquoiseFont" title="Clear no dates filter" data-bind="click: clearNoDates"></i>
+                    </span>
                 </p>
                 
                 <!-- ko if: hits() > 0 && video_mode_on() --> 
@@ -572,7 +590,7 @@
 
     </div>
     
-    <div class="containerxx clearfix" data-bind="css: {tagsVisible: activeFilterType() == 'album' && !shell.onMobile(), noDatesIndent: activeFilterType() == 'all' && !shell.onMobile() }">
+    <div class="containerxx clearfix" data-bind="css: {tagsVisible: !shell.onMobile()}">
         <div class="table allVidsInner clearfix">
 
             <div id="allVidsWrap" class="allVidsWrap clearfix photoGallery">
@@ -595,8 +613,8 @@
             </div>
 
         </div>
-        <div class='tagsList-Wrapper' data-bind="visible: !shell.onMobile() && (activeFilterType() == 'album' || activeFilterType() == 'all') ">
-            <div data-bind="visible: activeFilterType() == 'album'">
+        <div class='tagsList-Wrapper' data-bind="visible: !shell.onMobile()">
+            <div>
                 <div class='tagsList'>
                     <h3>
                         <i class="fa fa-tags"></i>
@@ -624,7 +642,7 @@
             </div>
             <div class='tagsList' data-bind="visible: showNoDates()">
                 <ul>
-                    <li data-bind="click: noDatesSearch, css: {active: searchForVidsWithNoDates()}">
+                    <li data-bind="click: noDatesSearch, style: {'font-size': noDatesSize() }, css: {active: searchForVidsWithNoDates()}">
                         No Dates
                     </li>
                 </ul>
