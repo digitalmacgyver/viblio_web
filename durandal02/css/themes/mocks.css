@@ -7360,7 +7360,23 @@ ul.token-input-list-facebook li input {
 }
 
 /*** mobile **/
-@media (max-width: 600px) {    
+@media (max-width: 600px) {
+    #fbBtn-Wrap {
+        padding: 6px 0 14px;
+    }
+    .facebookLoginBtn {
+        height: 45px;
+        max-width: 96%
+    }
+    
+    .facebookLoginBtn img {
+        margin: 10px auto;
+    }
+    
+    .facebookLoginBtn .text-Wrap {
+        padding: 10px 0 0;
+    }
+    
     h3 {
         font-size: 20px;
     }
