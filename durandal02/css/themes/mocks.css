@@ -1667,6 +1667,10 @@ input:-moz-placeholder {
     cursor: pointer;
 }
 
+.shareIconList li:last-of-type {
+    margin-right: 0;
+}
+
 .shareIconList li label {
     margin-bottom: -32px;
     font-size: 14px;
@@ -6391,13 +6395,19 @@ button.linkedin:active {
     top: 49px;  /* height of header */
 }
 
+@media (max-width: 960px) {
+    .toolbar .toolbar-label {
+        display: none !important;
+    }
+}
+
 @media (max-width: 900px) {
     .toolbar.stuck {
         top: 0;
     }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 870px) {
     .toolbar .navbar-inner {
         padding: 0;
     }
@@ -6407,11 +6417,16 @@ button.linkedin:active {
     .vidsSelectedLabel {
         padding: 10px 0 9px;
     }
+    .vids-nav .search-query {
+        width: 150px;
+    }
+    .navbar-left.nav {
+        margin: 0;
+    }
 }
 
 @media (max-width: 670px) {
-    .hideOnMobile,
-    .toolbar .toolbar-label {
+    .hideOnMobile {
         display: none !important;
     }
 }
@@ -6420,62 +6435,6 @@ button.linkedin:active {
     max-height: 250px;
     overflow-y: scroll;
 }
-
-/*.onoffswitch {
-    position: relative; width: 126px;
-    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
-}
-
-.onoffswitch-checkbox {
-    display: none;
-}
-
-.onoffswitch-label {
-    display: block; overflow: hidden; cursor: pointer;
-    border: 2px solid #FFFFF; border-radius: 2px;
-}
-
-.onoffswitch-inner {
-    display: block; width: 200%; margin-left: -100%;
-    -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s;
-    -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s;
-}
-
-.onoffswitch-inner:before, .onoffswitch-inner:after {
-    display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
-    font-size: 15px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
-    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
-}
-
-.onoffswitch-inner:before {
-    content: "Video View";
-    padding-left: 9px;
-    background-color: rgb(28, 184, 209); color: #FFFFFF;
-}
-
-.onoffswitch-inner:after {
-    content: "Photo View";
-    padding-right: 9px;
-    background-color: #EEEEEE; color: #999999;
-    text-align: right;
-}
-
-.onoffswitch-switch {
-    display: block; width: 23px; margin: 3.5px;
-    background: #FFFFFF;
-    border: 2px solid #FFFFF; border-radius: 2px;
-    position: absolute; top: 0; bottom: 0; right: 92px;
-    -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s;
-    -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; 
-}
-
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-    margin-left: 0;
-}
-
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-    right: 0px; 
-}*/
 
 .videoPhotoLabel {
     color: white;
@@ -7531,5 +7490,26 @@ ul.token-input-list-facebook li input {
 
     .navbar-inner .style2DD.dropdown-menu {
         max-width: 240px;
+    }
+    
+    #shareVidModal .bigTitle {
+        margin-bottom: 0;
+    }
+    
+    .shareLink-Wrap {
+        margin-bottom: 10px;
+    }
+    
+    .shareIconList li {
+        margin-right: 20px
+    }
+    
+    .shareIconList a {
+        padding-top: 9px;
+    }
+    
+    .shareIcon {
+        width: 45px;
+        height: 45px;
     }
 }
