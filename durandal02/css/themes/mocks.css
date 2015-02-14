@@ -6604,20 +6604,25 @@ button.linkedin:active {
 
 .newHomeTitle-Wrap {
     margin-top: 50px;
-    padding: 0 65px 0 40px;
+    padding: 0;
     position: relative;
 }
 
 .newHomeTitle-Wrap .pageNumber {
-    position: absolute;
+    /*position: absolute;
     right: 22px;
-    top: 14px;
+    top: 14px;*/
     font-size: 14px;
+    margin: 10px 20px;
 }
 
 .newHomeTitle-Wrap .mainTitle {
     margin-bottom: 0;
     font-size: 28px;
+}
+
+.newHomeTitle-Wrap .mainTitle p {
+    padding: 2px 75px 0;
 }
 
 .mainTitleCTA {
@@ -6626,15 +6631,14 @@ button.linkedin:active {
 
 .mainTitleP {
     margin-bottom: 5px;
-    display: inline-block;
 }
 
 .shared-icon-wrap {
     position: relative;
     display: inline-block;
     vertical-align: middle;
-    margin-bottom: 10px;
     cursor: pointer;
+    margin-left: 20px;
 }
 
 .shared-icon-wrap .outer-icon {
