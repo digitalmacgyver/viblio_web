@@ -1667,6 +1667,10 @@ input:-moz-placeholder {
     cursor: pointer;
 }
 
+.shareIconList li:last-of-type {
+    margin-right: 0;
+}
+
 .shareIconList li label {
     margin-bottom: -32px;
     font-size: 14px;
@@ -6391,13 +6395,19 @@ button.linkedin:active {
     top: 49px;  /* height of header */
 }
 
+@media (max-width: 960px) {
+    .toolbar .toolbar-label {
+        display: none !important;
+    }
+}
+
 @media (max-width: 900px) {
     .toolbar.stuck {
         top: 0;
     }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 870px) {
     .toolbar .navbar-inner {
         padding: 0;
     }
@@ -6407,77 +6417,24 @@ button.linkedin:active {
     .vidsSelectedLabel {
         padding: 10px 0 9px;
     }
-}
-
-@media (max-width: 670px) {
-    .hideOnMobile,
-    .toolbar .toolbar-label {
-        display: none;
+    .vids-nav .search-query {
+        width: 150px;
+    }
+    .navbar-left.nav {
+        margin: 0;
     }
 }
 
-
+@media (max-width: 670px) {
+    .hideOnMobile {
+        display: none !important;
+    }
+}
 
 .toolbar .scroller {
     max-height: 250px;
     overflow-y: scroll;
 }
-
-/*.onoffswitch {
-    position: relative; width: 126px;
-    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
-}
-
-.onoffswitch-checkbox {
-    display: none;
-}
-
-.onoffswitch-label {
-    display: block; overflow: hidden; cursor: pointer;
-    border: 2px solid #FFFFF; border-radius: 2px;
-}
-
-.onoffswitch-inner {
-    display: block; width: 200%; margin-left: -100%;
-    -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s;
-    -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s;
-}
-
-.onoffswitch-inner:before, .onoffswitch-inner:after {
-    display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
-    font-size: 15px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
-    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
-}
-
-.onoffswitch-inner:before {
-    content: "Video View";
-    padding-left: 9px;
-    background-color: rgb(28, 184, 209); color: #FFFFFF;
-}
-
-.onoffswitch-inner:after {
-    content: "Photo View";
-    padding-right: 9px;
-    background-color: #EEEEEE; color: #999999;
-    text-align: right;
-}
-
-.onoffswitch-switch {
-    display: block; width: 23px; margin: 3.5px;
-    background: #FFFFFF;
-    border: 2px solid #FFFFF; border-radius: 2px;
-    position: absolute; top: 0; bottom: 0; right: 92px;
-    -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s;
-    -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; 
-}
-
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-    margin-left: 0;
-}
-
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-    right: 0px; 
-}*/
 
 .videoPhotoLabel {
     color: white;
@@ -7366,154 +7323,197 @@ ul.token-input-list-facebook li input {
 }
 
 /*** mobile **/
-.mobile h3 {
-    font-size: 20px;
-}
+@media (max-width: 600px) {
+    #fbBtn-Wrap {
+        padding: 6px 0 14px;
+    }
+    .facebookLoginBtn {
+        height: 45px;
+        max-width: 96%
+    }
+    
+    .facebookLoginBtn img {
+        margin: 10px auto;
+    }
+    
+    .facebookLoginBtn .text-Wrap {
+        padding: 10px 0 0;
+    }
+    
+    h3 {
+        font-size: 20px;
+    }
 
-.mobile .shareVidLink-form,
-.mobile .paddedDiv {
-    padding: 50px 20px 20px;
-}
+    .shareVidLink-form,
+    .paddedDiv {
+        padding: 50px 20px 20px;
+    }
 
-.mobile .mainLabel {
-    margin-bottom: 10px;
-}
+    .mainLabel {
+        margin-bottom: 10px;
+    }
 
-.mobile form {
-    margin: 0 0 10px;
-}
+    form {
+        margin: 0 0 10px;
+    }
 
-.mobile .albumListView {
-    min-width: 0;
-}
+    .albumListView {
+        min-width: 0;
+    }
 
-.mobile .navbar .nav {
-    margin: 0;
-    font-size: 13px;
-}
+    .navbar .nav {
+        margin: 0;
+        font-size: 13px;
+    }
 
-.mobile .title-Wrap {
-    padding: 10px;
-    margin-bottom: 10px;
-}
+    .title-Wrap {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
 
-.mobile .albumListView .mainTitle {
-    margin-bottom: 0px;
-}
+    .albumListView .mainTitle {
+        margin-bottom: 0px;
+    }
 
-.mobile .tags-inner > li > a {
-    padding: 2px;
-}
+    .tags-inner > li > a {
+        padding: 2px;
+    }
 
-.mobile .albumListView .scroller {
-    height: 108px;
-}
+    .albumListView .scroller {
+        height: 108px;
+    }
 
-.mobile .truncate {
-    display: inline-block;
-}
+    .truncate {
+        display: inline-block;
+    }
 
-.mobile .newHomeTitle-Wrap .mainTitle {
-    font-size: 20px;
-    line-height: 20px;
-}
+    .newHomeTitle-Wrap .mainTitle {
+        font-size: 20px;
+        line-height: 20px;
+    }
 
-.mobile .newHomeTitle-Wrap .pageNumber {
-    font-size: 12px;
-}
+    .newHomeTitle-Wrap .pageNumber {
+        font-size: 12px;
+    }
 
-.mobile .nginx-modal .albumsList {
-    font-size: 20px;
-}
+    .nginx-modal .albumsList {
+        font-size: 20px;
+    }
 
-.mobile .nginx-modal .midWeightFont {
-    font-size: 12px;
-    margin: 8px auto;
-    padding: 0 12px;
-}
+    .nginx-modal .midWeightFont {
+        font-size: 12px;
+        margin: 8px auto;
+        padding: 0 12px;
+    }
 
-.mobile .nginx-modal .albumsList > ul {
-    max-width: 100%;
-}
+    .nginx-modal .albumsList > ul {
+        max-width: 100%;
+    }
 
-.mobile .truncate {
-    width: 100%
-}
+    .truncate {
+        width: 100%
+    }
 
-.mobile .nginx-modal .albumsList .tags-inner > li > a.checkboxedLi {
-    display: block;
-}
+    .nginx-modal .albumsList .tags-inner > li > a.checkboxedLi {
+        display: block;
+    }
 
-.mobile .nginx-modal .vup {
-    margin-top: 0;
-}
+    .nginx-modal .vup {
+        margin-top: 0;
+    }
 
-.mobile .nginx-modal .vup-area {
-    height: 100px !important;
-}
+    .nginx-modal .vup-area {
+        height: 100px !important;
+    }
 
-.mobile .vup-instructions {
-    margin-top: 10px;
-    height: 112px;
-}
+    .vup-instructions {
+        margin-top: 10px;
+        height: 112px;
+    }
 
-.mobile .nginx-modal .vup-data-title,
-.mobile .nginx-modal .vup-data-point {
-    font-size: 14px;
-}
+    .nginx-modal .vup-data-title,
+    .nginx-modal .vup-data-point {
+        font-size: 14px;
+    }
 
-.mobile .nginx-modal .paddedDiv {
-    padding-top: 0;
-}
+    .nginx-modal .paddedDiv {
+        padding-top: 0;
+    }
 
-.mobile .vup-files .vup-filename-column {
-    width: 75px;
-}
+    .vup-files .vup-filename-column {
+        width: 75px;
+    }
 
-.mobile .vup-files .vup-filename-column div {
-    max-width: 100%; 
-    font-size: 14px;    
-}
+    .vup-files .vup-filename-column div {
+        max-width: 100%; 
+        font-size: 14px;    
+    }
 
-.mobile .vup-alert {
-    line-height: 1.25;
-    font-size: 14px;
-}
+    .vup-alert {
+        line-height: 1.25;
+        font-size: 14px;
+    }
 
-.mobile #apic {
-    width: 80px;
-}
+    #apic {
+        width: 80px;
+    }
 
-.mobile .avatar div {
-    width: 80px;
-}
+    .avatar div {
+        width: 80px;
+    }
 
-.mobile .account-info .avatarWrap {
-    width: 80px;
-}
+    .account-info .avatarWrap {
+        width: 80px;
+    }
 
-.mobile .content-Wrap > div {
-    margin-bottom: 10px;
-}
+    .content-Wrap > div {
+        margin-bottom: 10px;
+    }
 
-.mobile .shared-icon-wrap .inner-icon {
-    line-height: 1.75;
-}
+    .shared-icon-wrap .inner-icon {
+        line-height: 1.75;
+    }
 
-.mobile .shareLink-Wrap,
-.mobile .shareLink-Wrap input {
-    max-width: 100%
-}
+    .shareLink-Wrap,
+    .shareLink-Wrap input {
+        max-width: 100%
+    }
 
-.mobile .containerxx {
-    padding: 0;
-}
+    .containerxx {
+        padding: 0;
+    }
 
-.mobile .allVidsPage .mediafile {
-    float: none;
-    margin: auto;
-}
+    .allVidsPage .mediafile {
+        float: none;
+        margin: auto;
+    }
+    
+    .allVidsPage .mediafile.photo {
+        float: left;
+    }
 
-.mobile .navbar-inner .style2DD.dropdown-menu {
-    max-width: 240px;
+    .navbar-inner .style2DD.dropdown-menu {
+        max-width: 240px;
+    }
+    
+    #shareVidModal .bigTitle {
+        margin-bottom: 0;
+    }
+    
+    .shareLink-Wrap {
+        margin-bottom: 10px;
+    }
+    
+    .shareIconList li {
+        margin-right: 20px
+    }
+    
+    .shareIconList a {
+        padding-top: 9px;
+    }
+    
+    .shareIcon {
+        width: 45px;
+        height: 45px;
+    }
 }

@@ -7,7 +7,7 @@
                 <a data-bind="click: $parent.addPublicShare.bind($data,$parent,name), attr: { href: url, class: 'shareIcon pop ' + addClass, title: 'Share this page on ' + name }" >
                     <img data-bind="attr: { src: 'css/images/shareIcons/' + imgName}"/>
                 </a>
-                <label data-bind="text: name"></label>
+                <label class="hideOnMobile" data-bind="text: name"></label>
             </li>
         </ul>
     </div>

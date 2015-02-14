@@ -2,7 +2,12 @@
   The main mediafile view/model.  Represents a mediafile from the
   server.  Returns an instance factory.
 */
-define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs', 'durandal/system'],function(app, Events, viblio, dialogs, system) {
+define(['durandal/app', 
+        'durandal/events', 
+        'lib/viblio', 
+        'lib/customDialogs',
+        'durandal/system'],
+    function(app, Events, viblio, dialogs, system) {
 
     // Temporary.  Used to create random numbers to use for
     // number of video views, ratings, etc.  For GUI development
@@ -144,8 +149,6 @@ define(['durandal/app', 'durandal/events', 'lib/viblio', 'lib/customDialogs', 'd
         self.viewResolved = $.Deferred();
         
         self.viblio = viblio;
-        
-        self.mobile = head.mobile;
         
         self.selectModeOn = ko.observable( false );
         // this will be triggered when the select mode is turned on
