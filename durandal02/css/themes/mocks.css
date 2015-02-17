@@ -7500,6 +7500,16 @@ ul.token-input-list-facebook li input {
         margin-bottom: 10px;
     }
     
+    #sharingDiv {
+        padding: 45px 19px 20px;
+    }
+    
+    .shareVidLink-form, .paddedDiv {
+        padding: 20px 20px 20px;
+    }
+}
+
+@media( max-width: 500px ) {
     .shareIconList li {
         margin-right: 20px
     }
