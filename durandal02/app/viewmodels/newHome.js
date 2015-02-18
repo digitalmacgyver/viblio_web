@@ -1265,19 +1265,23 @@ define( ['plugins/router',
                 selected: self.select_all_mode_is_on() ? true : self.selectedVideos().indexOf( mf.uuid ) != -1 ? true : false, 
                 popup_player: head.mobile ? false: true,
                 clean_style: true,
-                show_predefined_tags: viblio.user().user_type == 'individual' ? true : false
+                show_predefined_tags: viblio.user().user_type == 'individual' ? true : false,
+                select_mode_on: self.select_mode_on()
             };
-        } else {
+        } 
+        // mf is shared with user
+        else {
             options = {
                 show_preview: true, 
                 ro: true, 
                 show_faces_tags: true, 
                 shared_style: true, 
-                owner_uuid: mf.owner_uuid, 
-                show_select_badge: self.select_mode_on(), 
+                owner_uuid: mf.owner_uuid,
+                show_select_badge: self.albumIsShared() ? false : self.delete_mode_on() ? self.select_mode_on() : false,
                 selected: self.select_all_mode_is_on(), 
                 popup_player: head.mobile ? false: true,
-                clean_style: true
+                clean_style: true,
+                select_mode_on: self.select_mode_on()
             };
         }
         var m = new Mediafile( mf, options );
@@ -1367,7 +1371,8 @@ define( ['plugins/router',
                 show_select_badge: self.delete_mode_on() ? self.select_mode_on() : false,
                 selected: self.delete_mode_on() ? self.select_all_mode_is_on() : false,
                 popup_player: head.mobile ? false: true, 
-                clean_style: true
+                clean_style: true,
+                select_mode_on: self.select_mode_on()
             }
             var m = new Mediafile( mf, options ); //m.ro( true );
             // in this case the deferred (dfd) is created in the actual mediafile (mediafile.js) itself and it is resolved once the api call has been made
@@ -1391,7 +1396,8 @@ define( ['plugins/router',
                 in_process_style: mf.status == 'pending' ? true : false, 
                 popup_player: head.mobile ? false: true,
                 clean_style: true,
-                show_predefined_tags: viblio.user().user_type == 'individual' ? true : false
+                show_predefined_tags: viblio.user().user_type == 'individual' ? true : false,
+                select_mode_on: self.select_mode_on()
             };
             var m = new Mediafile( mf, options );
             m.on( 'mediafile:delete', function( m, dfd ) {
@@ -2097,7 +2103,6 @@ define( ['plugins/router',
         // for video mode
         if( self.video_mode_on() ) {
             if( self.delete_mode_on() ) {
-                console.log()
                 if( self.activeFilterType() == 'album' ) {
                     // if the current album has been shared with the user only allow them to delete their own videos
                     if( self.currentSelectedFilterAlbum().shared ) {
