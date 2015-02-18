@@ -449,7 +449,7 @@
                 <!-- ko if: !hits() > 0 && video_mode_on() --> 
                 <p><span class="btn btn-primary" data-bind="click: add_videos">Upload Videos</span></p>
                 <!-- /ko -->
-                <p class="mainTitleP">
+                <p class="mainTitleP" data-bind="css: {paddingTop0: video_mode_on()}">
                     <!-- ko if: active_filter_label() == 'Recent' -->
                     <span data-bind="text: active_filter_label() ? active_filter_label().toUpperCase() : '' "></span><span data-bind="text: video_mode_on() ? ' Videos ' : ' Photos ' "></span>(<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
                     <!-- /ko -->
@@ -469,7 +469,7 @@
                             <span class="btn btn-primary" data-bind="click: share_mode">Invite friends</span>
                             <span class="hideOnMobile">to privately see this album.</span>
                         </p>
-                        <div class="mainTitleP">       
+                        <div class="mainTitleP" data-bind="css: {paddingTop0: video_mode_on()}">       
                              <div class="inline newHomeAlbumTitle" data-bind="liveEditor: currentAlbumTitle, click: setSize">
                                 <div class="newHomeAlbumTitleView view turquoiseFont" data-bind="click: currentAlbumTitle.edit, text: currentAlbumTitle() ? currentAlbumTitle().toUpperCase() : 'Click to add album title', tooltip: {title:'Click to edit album title', placement: 'bottom'}"></div>
                                 <div class="newHomeAlbumTitle-Wrap">

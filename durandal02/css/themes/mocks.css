@@ -6584,6 +6584,8 @@ button.linkedin:active {
 
 .newHomeTitle-Wrap .mainTitle p {
     padding: 2px 75px 0;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .mainTitleCTA {
@@ -6836,6 +6838,7 @@ ul.token-input-list-facebook li input {
 
 .photoViewFilter.btn-group {
     font-size: 20px;
+    margin-bottom: 9px;
 }
 
 .photoViewFilter .meterLabel {
@@ -7403,14 +7406,18 @@ ul.token-input-list-facebook li input {
     .truncate {
         display: inline-block;
     }
-
+    
+    .photoViewFilter.btn-group {
+        margin-bottom: 0;
+    }
+    
     .newHomeTitle-Wrap .mainTitle {
         font-size: 20px;
         line-height: 20px;
     }
     
     .newHomeTitle-Wrap .mainTitleP {
-        padding-top: 20px;
+        padding-top: 16px;
     }
 
     .newHomeTitle-Wrap .pageNumber {
