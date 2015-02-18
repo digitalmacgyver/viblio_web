@@ -602,7 +602,7 @@
             </div>
 
         </div>
-        <div class='tagsList-Wrapper' data-bind="visible: !shell.onMobile() && (activeFilterType() == 'album' || activeFilterType() == 'all') ">
+        <div class='tagsList-Wrapper' data-bind="visible: !shell.onMobile() && (activeFilterType() == 'album' || activeFilterType() == 'all') && hits() > 0">
             <div data-bind="visible: activeFilterType() == 'album'">
                 <div class='tagsList'>
                     <h3>
@@ -620,7 +620,7 @@
                         <!-- /ko -->
                     </ul>
                 </div>
-                <hr>
+                <hr data-bind="visible: monthTagList().length > 0">
                 <div class='tagsList' data-bind="visible: monthTagList().length > 0">
                     <ul>
                         <!-- ko foreach: monthTagList -->
