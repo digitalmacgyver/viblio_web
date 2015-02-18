@@ -1015,6 +1015,10 @@ input:-moz-placeholder {
     padding-bottom: 5px;
 }
 
+.paddingTop0 {
+    padding-top: 0 !important;
+}
+
 .font18 {
     font-size: 18px;
 }
@@ -6588,6 +6592,8 @@ button.linkedin:active {
 
 .mainTitleP {
     margin-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .shared-icon-wrap {
@@ -6615,6 +6621,7 @@ button.linkedin:active {
     font-size: 50px;
     vertical-align: middle;
     margin-bottom: 10px;
+    margin-left: 20px;
     display: inline-block;
 }
 
@@ -6899,22 +6906,28 @@ ul.token-input-list-facebook li input {
 /* handle photoViewFilter for smaller screens */
 @media( max-width: 450px ) {
     .photoViewFilter .viewFilter {
-        width: 76px;
+        //width: 76px;
+        width: 47px;
     }
     /*the line*/
     .photoViewFilter .viewFilter label::after {
-        left: -36px;
-        width: 60px;
+        //left: -36px;
+        //width: 60px;
+        left: -22px;
+        width: 31px
     }
     /*the circle*/
     .photoViewFilter .viewFilter label::before {
-        right: 32px;
+        right: 18px;
     }
     .photoViewFilter .meterLabel.some {
-        margin-right: -25px;
+        //margin-right: -25px;
+        margin-right: -10px;
     }
     .photoViewFilter .meterLabel.more {
-        margin-left: -33px;
+        //margin-left: -33px;
+        margin-left: -21px;
+        margin-right: 0;
     }
 }
 
@@ -7374,6 +7387,10 @@ ul.token-input-list-facebook li input {
     .albumListView .mainTitle {
         margin-bottom: 0px;
     }
+    
+    .mainTitle .btn {
+        padding: 8px 26px;
+    }
 
     .tags-inner > li > a {
         padding: 2px;
@@ -7391,9 +7408,21 @@ ul.token-input-list-facebook li input {
         font-size: 20px;
         line-height: 20px;
     }
+    
+    .newHomeTitle-Wrap .mainTitleP {
+        padding-top: 20px;
+    }
 
     .newHomeTitle-Wrap .pageNumber {
         font-size: 12px;
+        margin: 10px 10px 10px 0;
+    }
+    
+    .fa.pull-left {
+        margin-right: 0 !important;
+    }
+    .newHomeTitle-Wrap .bigIcon {
+        margin: 0 0 0 10px;
     }
 
     .nginx-modal .albumsList {
@@ -7468,6 +7497,10 @@ ul.token-input-list-facebook li input {
 
     .content-Wrap > div {
         margin-bottom: 10px;
+    }
+    
+    .shared-icon-wrap {
+        margin-left: 10px;
     }
 
     .shared-icon-wrap .inner-icon {
