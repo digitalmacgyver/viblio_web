@@ -336,11 +336,11 @@ function(app, viblio, Events, header, c_header, hp, dialogs) {
             $('.userCoverUpload').fileupload({
                 maxNumberOfFiles: 1,
                 acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-                maxFileSize: 500000, // 500MB,
+                maxFileSize: 500000, // 500 KB,
                 messages: {
                     maxNumberOfFiles: 'Please only upload one image.',
                     acceptFileTypes: 'Only image file types are uploadable.',
-                    maxFileSize: 'This image is too large, we can only accept up to 500MB.'
+                    maxFileSize: 'This image is too large, we can only accept up to 500 KB.'
                 },
                 start: function() {
                     busyFlag( true );
@@ -378,11 +378,11 @@ function(app, viblio, Events, header, c_header, hp, dialogs) {
             $('.albumCoverUpload').fileupload({
                 maxNumberOfFiles: 1,
                 acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-                maxFileSize: 500000, // 500MB,
+                maxFileSize: 500000, // 500 KB,
                 messages: {
                     maxNumberOfFiles: 'Please only upload one image.',
                     acceptFileTypes: 'Only image file types are uploadable.',
-                    maxFileSize: 'This image is too large, we can only accept up to 500MB.'
+                    maxFileSize: 'This image is too large, we can only accept up to 500 KB.'
                 },
                 start: function() {
                     busyFlag( true );
