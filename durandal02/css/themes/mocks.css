@@ -1015,6 +1015,10 @@ input:-moz-placeholder {
     padding-bottom: 5px;
 }
 
+.paddingTop0 {
+    padding-top: 0 !important;
+}
+
 .font18 {
     font-size: 18px;
 }
@@ -6561,20 +6565,27 @@ button.linkedin:active {
 
 .newHomeTitle-Wrap {
     margin-top: 50px;
-    padding: 0 65px 0 40px;
+    padding: 0;
     position: relative;
 }
 
 .newHomeTitle-Wrap .pageNumber {
-    position: absolute;
+    /*position: absolute;
     right: 22px;
-    top: 14px;
+    top: 14px;*/
     font-size: 14px;
+    margin: 10px 20px 10px 0;
 }
 
 .newHomeTitle-Wrap .mainTitle {
     margin-bottom: 0;
     font-size: 28px;
+}
+
+.newHomeTitle-Wrap .mainTitle p {
+    padding: 2px 75px 0;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .mainTitleCTA {
@@ -6583,6 +6594,8 @@ button.linkedin:active {
 
 .mainTitleP {
     margin-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
     display: inline-block;
 }
 
@@ -6590,8 +6603,8 @@ button.linkedin:active {
     position: relative;
     display: inline-block;
     vertical-align: middle;
-    margin-bottom: 10px;
     cursor: pointer;
+    margin-left: 20px;
 }
 
 .shared-icon-wrap .outer-icon {
@@ -6611,6 +6624,7 @@ button.linkedin:active {
     font-size: 50px;
     vertical-align: middle;
     margin-bottom: 10px;
+    margin-left: 20px;
     display: inline-block;
 }
 
@@ -6825,6 +6839,7 @@ ul.token-input-list-facebook li input {
 
 .photoViewFilter.btn-group {
     font-size: 20px;
+    margin-bottom: 9px;
 }
 
 .photoViewFilter .meterLabel {
@@ -6839,7 +6854,6 @@ ul.token-input-list-facebook li input {
 
 .photoViewFilter .meterLabel.more {
     margin-left: -38px;
-    margin-right: 20px;
 }
 
 .photoViewFilter .viewFilter {
@@ -6895,22 +6909,28 @@ ul.token-input-list-facebook li input {
 /* handle photoViewFilter for smaller screens */
 @media( max-width: 450px ) {
     .photoViewFilter .viewFilter {
-        width: 76px;
+        //width: 76px;
+        width: 47px;
     }
     /*the line*/
     .photoViewFilter .viewFilter label::after {
-        left: -36px;
-        width: 60px;
+        //left: -36px;
+        //width: 60px;
+        left: -22px;
+        width: 31px
     }
     /*the circle*/
     .photoViewFilter .viewFilter label::before {
-        right: 32px;
+        right: 18px;
     }
     .photoViewFilter .meterLabel.some {
-        margin-right: -25px;
+        //margin-right: -25px;
+        margin-right: -10px;
     }
     .photoViewFilter .meterLabel.more {
-        margin-left: -33px;
+        //margin-left: -33px;
+        margin-left: -21px;
+        margin-right: 0;
     }
 }
 
@@ -7370,6 +7390,10 @@ ul.token-input-list-facebook li input {
     .albumListView .mainTitle {
         margin-bottom: 0px;
     }
+    
+    .mainTitle .btn {
+        padding: 8px 26px;
+    }
 
     .tags-inner > li > a {
         padding: 2px;
@@ -7382,14 +7406,30 @@ ul.token-input-list-facebook li input {
     .truncate {
         display: inline-block;
     }
-
+    
+    .photoViewFilter.btn-group {
+        margin-bottom: 0;
+    }
+    
     .newHomeTitle-Wrap .mainTitle {
         font-size: 20px;
         line-height: 20px;
     }
+    
+    .newHomeTitle-Wrap .mainTitleP {
+        //padding-top: 16px;
+    }
 
     .newHomeTitle-Wrap .pageNumber {
         font-size: 12px;
+        margin: 10px 10px 10px 0;
+    }
+    
+    .fa.pull-left {
+        margin-right: 0 !important;
+    }
+    .newHomeTitle-Wrap .bigIcon {
+        margin: 0 0 0 10px;
     }
 
     .nginx-modal .albumsList {
@@ -7464,6 +7504,10 @@ ul.token-input-list-facebook li input {
 
     .content-Wrap > div {
         margin-bottom: 10px;
+    }
+    
+    .shared-icon-wrap {
+        margin-left: 10px;
     }
 
     .shared-icon-wrap .inner-icon {

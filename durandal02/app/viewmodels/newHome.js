@@ -393,7 +393,11 @@ define( ['plugins/router',
     newHome.prototype.togglePhotoMode = function() {
         var self = this;
         
+        var prev = self.albumIsShared();
+        
         self.video_mode_on(false);
+        self.albumIsShared( false );
+        self.albumIsShared( prev );
     };
     
     newHome.prototype.getVidsInProcess = function() {
