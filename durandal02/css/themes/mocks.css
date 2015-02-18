@@ -6574,7 +6574,7 @@ button.linkedin:active {
     right: 22px;
     top: 14px;*/
     font-size: 14px;
-    margin: 10px 20px;
+    margin: 10px 20px 10px 0;
 }
 
 .newHomeTitle-Wrap .mainTitle {
@@ -6596,6 +6596,7 @@ button.linkedin:active {
     margin-bottom: 5px;
     margin-left: 10px;
     margin-right: 10px;
+    display: inline-block;
 }
 
 .shared-icon-wrap {
@@ -6853,7 +6854,6 @@ ul.token-input-list-facebook li input {
 
 .photoViewFilter .meterLabel.more {
     margin-left: -38px;
-    margin-right: 20px;
 }
 
 .photoViewFilter .viewFilter {
@@ -7417,7 +7417,7 @@ ul.token-input-list-facebook li input {
     }
     
     .newHomeTitle-Wrap .mainTitleP {
-        padding-top: 16px;
+        //padding-top: 16px;
     }
 
     .newHomeTitle-Wrap .pageNumber {
