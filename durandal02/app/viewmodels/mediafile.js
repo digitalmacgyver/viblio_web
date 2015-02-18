@@ -47,7 +47,8 @@ define(['durandal/app',
             ownedByViewer: false,
             popup_player: false,
             clean_style: false,
-            show_predefined_tags: true
+            show_predefined_tags: true,
+            select_mode_on: false // this is if the app is in select mode
 	}, options );
         
 	self.media    = ko.observable( data );
@@ -150,7 +151,7 @@ define(['durandal/app',
         
         self.viblio = viblio;
         
-        self.selectModeOn = ko.observable( false );
+        self.selectModeOn = ko.observable( self.options.select_mode_on );
         // this will be triggered when the select mode is turned on
         app.on( 'select_mode:on', function() {
             self.selectModeOn( true );
