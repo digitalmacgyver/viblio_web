@@ -4,27 +4,34 @@
   <div class="content-Wrap centeredEl">
         
     <div id="loginArea" class="mocksWhiteBG centeredEl">
-      <div id="fbBtn-Wrap" class="bottomBorder">
-        <a id="facebookLoginBtn" class="centeredEl facebookLoginBtn" data-bind="click: facebookAuthenticate"><img src="css/images/FBf.png" /> Log in with Facebook </a>
-      </div>
-      <div id='or-Wrap'>
-        <p>or</p>
-      </div>
-      <form class="bottomBorder-Thick">
-        <div class="centeredEl">
-          <span data-bind="css: { error: email_entry_error() }">
-            <input id="loginEmail" type="email" name="email" class="text" data-bind="value: email" placeholder="Email address" />
-          </span>
-          <span data-bind="css: { error: password_entry_error() }">
-            <input id="loginPassword" type="password" name="pword" class="text" data-bind="value: password" placeholder="Password" />
-          </span>
-          <a id='forgotPasswordLink' class='turquoiseFont' href="#forgotPassword">Forgot Password?</a>
-          <button class="btn btn-primary" data-bind="click: nativeAuthenticate">
-            Log In
-          </button>
+        <div id="fbBtn-Wrap" class="bottomBorder">
+            <a class="facebookLoginBtn centeredEl" data-bind="click: facebookAuthenticate">
+                <div class="image-Wrap">
+                    <img src="css/images/FBf.png" /> 
+                </div>
+                <div class="text-Wrap">
+                    Log in with Facebook
+                </div>
+            </a>
         </div>
+        <div id='or-Wrap'>
+          <p>or</p>
+        </div>
+        <form class="bottomBorder-Thick">
+          <div class="centeredEl">
+            <span data-bind="css: { error: email_entry_error() }">
+              <input id="loginEmail" type="email" name="email" class="text" data-bind="value: email" placeholder="Email address" />
+            </span>
+            <span data-bind="css: { error: password_entry_error() }">
+              <input id="loginPassword" type="password" name="pword" class="text" data-bind="value: password" placeholder="Password" />
+            </span>
+            <a id='forgotPasswordLink' class='turquoiseFont' href="#forgotPassword">Forgot Password?</a>
+            <button class="btn btn-primary" data-bind="click: nativeAuthenticate">
+              Log In
+            </button>
+          </div>
 
-      </form>
+        </form>
     </div>
   </div>          
 </div>

@@ -46,9 +46,16 @@
             </div>
 
             <div id="loginArea" class="mocksWhiteBG centeredEl">
-              <div id="fbBtn-Wrap" class="bottomBorder">
-                  <a id="facebookLoginBtn" class="centeredEl facebookLoginBtn" data-bind="click: facebookAuthenticate"><img src="css/images/FBf.png" /> <span data-bind="text: isExistingUser() ? 'Log in' : 'Connect'"></span> with Facebook </a>
-              </div>
+                <div id="fbBtn-Wrap" class="bottomBorder">
+                    <a class="facebookLoginBtn centeredEl" data-bind="click: facebookAuthenticate">
+                        <div class="image-Wrap">
+                            <img src="css/images/FBf.png" /> 
+                        </div>
+                        <div class="text-Wrap">
+                            <span data-bind="text: isExistingUser() ? 'Log in' : 'Connect'"></span> with Facebook
+                        </div>
+                    </a>
+                </div>
               <div id='or-Wrap'>
                 <p>or</p>
               </div>
