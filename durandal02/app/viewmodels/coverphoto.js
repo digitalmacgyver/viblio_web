@@ -2,9 +2,10 @@ define( ['durandal/app',
 	 'lib/viblio',
          'durandal/events',
          'viewmodels/header',
-        'viewmodels/conditional_header',
-        'viewmodels/hp'], 
-function(app, viblio, Events, header, c_header, hp) {
+         'viewmodels/conditional_header',
+         'viewmodels/hp',
+         'lib/customDialogs'], 
+function(app, viblio, Events, header, c_header, hp, dialogs) {
     
     var albumBackgroundImageUrl = ko.observable();
     var userBackgroundImageUrl = ko.observable();
@@ -40,6 +41,9 @@ function(app, viblio, Events, header, c_header, hp) {
     
     var editExpanded = ko.observable( false );
     var view;
+    
+    var maxFileSize = 500000;
+    var acceptFileTypes = /(\.|\/)(gif|jpe?g|png)$/i; 
     
     app.on( 'albumList:gotalbum', function( album ) {
         albumOrUser( 'album' );
@@ -330,14 +334,32 @@ function(app, viblio, Events, header, c_header, hp) {
             
             // user cover photo
             $('.userCoverUpload').fileupload({
-                options: {
-                    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
+                maxNumberOfFiles: 1,
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+                maxFileSize: 500000, // 500MB,
+                messages: {
+                    maxNumberOfFiles: 'Please only upload one image.',
+                    acceptFileTypes: 'Only image file types are uploadable.',
+                    maxFileSize: 'This image is too large, we can only accept up to 500MB.'
                 },
                 start: function() {
                     busyFlag( true );
                 },
                 add: function (e, data) {
-                    data.submit();
+                    var that = this;
+		    data.process().done(function() {
+			return $(that).fileupload('process', data);
+                    }).always(function() {
+                        // show the error
+			if ( data.files.error ) {
+                            var msg = data.files[0].name + ": " + data.files[0].error;
+			    return dialogs.showModal( 'viewmodels/customBlankModal', msg );
+			}
+                        // upload the image
+			else {
+                            data.submit();
+                        }
+                    });
                 },
                 done: function (e, data) {
                     userBackgroundImageUrl( data.result[0].views.banner.url );
@@ -354,8 +376,13 @@ function(app, viblio, Events, header, c_header, hp) {
             
             // album cover photo
             $('.albumCoverUpload').fileupload({
-                options: {
-                    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
+                maxNumberOfFiles: 1,
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+                maxFileSize: 500000, // 500MB,
+                messages: {
+                    maxNumberOfFiles: 'Please only upload one image.',
+                    acceptFileTypes: 'Only image file types are uploadable.',
+                    maxFileSize: 'This image is too large, we can only accept up to 500MB.'
                 },
                 start: function() {
                     busyFlag( true );
@@ -366,7 +393,22 @@ function(app, viblio, Events, header, c_header, hp) {
                         aid: aid,
                         upload: data.files[0]
                     };
-                    data.submit();
+                    
+                    var that = this;
+		    data.process().done(function() {
+			return $(that).fileupload('process', data);
+                    }).always(function() {
+                        // show the error
+			if ( data.files.error ) {
+                            var msg = data.files[0].name + ": " + data.files[0].error;
+			    return dialogs.showModal( 'viewmodels/customBlankModal', msg );
+			}
+                        // upload the image
+			else {
+                            data.submit();
+                        }
+                    });
+                    
                 },
                 done: function (e, data) {
                     albumBackgroundImageUrl( data.result[0].views.banner.url );
