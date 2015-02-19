@@ -718,9 +718,16 @@ define( ['plugins/router',
             city.selected( true );
             self.selectedCity( city.label );
             self.activeFilterType('cities');
-            args = {
-                q: self.selectedCity()
-            };
+            if( self.selectedCity() != 'Location not set') {
+                args = {
+                    q: self.selectedCity()
+                };    
+            } else {
+                args = {
+                    no_location: 1
+                };
+            }
+            
             self.filterVidsSearch( 'cities', args, '/services/mediafile/taken_in_city', true, null );
         }         
     };
@@ -1124,7 +1131,11 @@ define( ['plugins/router',
             }
             // Cities
             else if( self.activeFilterType() == 'cities' ) {
-                args.q = self.selectedCity();
+                if( self.selectedCity() == 'Location not set' ) {
+                    args.no_location = 1;
+                } else {
+                    args.q = self.selectedCity();
+                }
                 self.filterVidsSearch( 'cities', args, '/services/mediafile/taken_in_city', null, scrollToTop );
             }
             // Search
@@ -2065,6 +2076,12 @@ define( ['plugins/router',
                 _city.selected = ko.observable( false );
                 self.citiesLabels.push( _city );
             });
+            // add the "Location not set" option
+            var noLoc = {
+                label: "Location not set",
+                selected: ko.observable( false )
+            };
+            self.citiesLabels.push( noLoc );
         });
     };
     
