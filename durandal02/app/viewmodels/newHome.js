@@ -2533,6 +2533,7 @@ define( ['plugins/router',
         var title = $('.fancybox-title').height();
 	$("#player, #player video, #player > div, .fancybox-outer").height( player_height ).css( 'max-height', head.screen.innerHeight-(200+title) );
         $('.fancybox-nav').height( $("#player").height()-30 );
+        $.fancybox.reposition();
     };
     
     newHome.prototype.should_simulate = function() {
