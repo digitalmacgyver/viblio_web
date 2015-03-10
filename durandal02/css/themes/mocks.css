@@ -6440,6 +6440,10 @@ button.linkedin:active {
     overflow-y: scroll;
 }
 
+.navbar-right span.closeX {
+    right: 0 !important;
+}
+
 .videoPhotoLabel {
     color: white;
     margin: 5px 4px 0;
