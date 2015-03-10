@@ -115,7 +115,7 @@
                 <li class="divider-vertical hideOnMobile"></li>
                 
                 <!-- video mode toggle -->
-                <li class="videoPhotoSwitch" data-bind="tooltip: {title: 'Toggle between photos and the videos they are from', placement: 'bottom' }">
+                <li class="videoPhotoSwitch" data-bind="tooltip: {title: '<span class=\'closeX\'>x</span>Toggle between photos and the videos they are from', html: true, placement: 'bottom' }">
                     
                     <p class="field switch">
                         <label class="cb-disable" data-bind="click: toggleVideoMode, css: {selected: video_mode_on()}"><span><i class="fa fa-video-camera"></i><span class="toolbar-label"> Videos</span></span></label>
