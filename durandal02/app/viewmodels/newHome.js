@@ -2724,6 +2724,7 @@ define( ['plugins/router',
             },
             
             beforeShow: function () {
+                $("body").css({'overflow-y':'hidden'});
                 if( head.mobile ) {
                     this.helpers.buttons = {position: 'bottom'};
                 }
@@ -2790,6 +2791,10 @@ define( ['plugins/router',
               if(flowplayer()){
                   flowplayer().unload();
               }
+            },
+            
+            afterClose: function(){
+                $("body").css({'overflow-y':'visible'});
             }
         });
         
