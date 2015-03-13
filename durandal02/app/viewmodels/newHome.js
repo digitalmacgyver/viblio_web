@@ -522,6 +522,9 @@ define( ['plugins/router',
         var self = this;
         var args;
         
+        if( self.isActiveFlag() )
+            return;
+        
         // unselect all tags
         self.tagList().forEach( function( tag ) {
             tag.selected( false );
@@ -806,6 +809,9 @@ define( ['plugins/router',
     newHome.prototype.noDatesSearch = function(  ) {
         var self = this;
         var args;
+        
+        if( self.isActiveFlag() )
+            return;
         
         self.searchForVidsWithNoDates( true );
         
