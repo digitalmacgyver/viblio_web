@@ -96,7 +96,6 @@ define(['durandal/app',
     };
     
     function handle_visibility( visible ) {
-        console.log( 'handle_visibility fired', visible );
 	albumList_is_visible = visible;
         var albumsWidth;
 	if ( visible ) {
