@@ -404,6 +404,7 @@ define(['durandal/app',
         $('body').scrollTop( 0 );
         faces_for_visible( false );
         taggedDoneVisible( true );
+        setMargin();
     }
     
     function selectionDone() {
@@ -411,6 +412,7 @@ define(['durandal/app',
         selected( null );
         deselectAll();
         activeMode( null );
+        setMargin();
     }
     
     function setMargin( e, el ) {
