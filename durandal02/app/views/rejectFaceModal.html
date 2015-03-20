@@ -1,0 +1,18 @@
+<div class="messageBox">
+    <div class="modal-header">
+        <h3>Please Confirm</h3>
+    </div>
+    <div class="modal-body">
+        <p class="message">Continuing will remove this face from this group and put it back in the unnamed faces list below. Are you sure you want to do that?</p>
+        <br>
+        <label class="form-group font12">
+            Do not show this message again
+            <input type="checkbox" name="doNotShowAgain" data-bind="checked: doNotShowAgain">
+        </label>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary autofocus" data-bind="click: function () { selectOption('Yes'); }">Yes</button>
+
+        <button class="btn" data-bind="click: function () { selectOption('No'); }">No</button>
+    </div>
+</div>
