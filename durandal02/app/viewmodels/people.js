@@ -56,6 +56,8 @@ define(['durandal/app',
 	    });
 	}
 	else {
+            activeMode( null );
+            taggedDoneVisible( false );
 	    unknown_faces().forEach( function( f ) {
 		f.name( 'insert name' );
 		f.show_tag3( true );
@@ -84,7 +86,10 @@ define(['durandal/app',
 	// Delete this contact from the database.
 	viblio.mpEvent( 'face_delete_unidentified_contact' );
 	viblio.api( '/services/faces/delete_contact', { cid: f.data.uuid } ).then( function() {
-	    unknown_faces.remove( f );
+            $( f.view ).fadeOut( "slow", function() {
+                // Animation complete.
+                unknown_faces.remove( f );
+            });
 	});
     }
 
@@ -115,8 +120,11 @@ define(['durandal/app',
 		    //unknown_faces.unshift( f );
                     addto_faces_unknown( f.data )
 		});
-		known_faces.remove( f );
-		$(view).find( ".horizontal-scroller").trigger( 'children-changed' );
+                $( f.view ).fadeOut( "slow", function() {
+                    // Animation complete.
+                    known_faces.remove( f );
+                    $(view).find( ".horizontal-scroller").trigger( 'children-changed' );
+                });
 		if ( faces_for_visible() && ( selected() == f ) ) {
 		    faces_for_visible( false );
 		}
@@ -132,10 +140,8 @@ define(['durandal/app',
         //var num_faces_for = faces_for().length;
         var ids = [];
         if( viblio.getLocalStorage( 'rejectFace.doNotShowAgain' ) == "true" ) {
-            console.log( 'do not show' );
             handleRemoval();
         } else {
-            console.log( 'show' );
             customDialogs.showModal( 'viewmodels/rejectFaceModal' ).then( function( res ) {
                 if ( res == 'Yes' ) {
                     handleRemoval();
@@ -147,7 +153,10 @@ define(['durandal/app',
             // handle face in GUI
             ids.push( f.data.alt_id );
             f.data.contact_name = 'insert name';
-            faces_for.remove( f );
+            $( f.view ).fadeOut( "slow", function() {
+                // Animation complete.
+                faces_for.remove( f );
+            });
             addto_faces_unknown( f.data );
 
             // handle face in DB
@@ -179,7 +188,7 @@ define(['durandal/app',
 
     // Add a face to the known faces panel, and do the required setup
     //
-    function addto_faces_known( contact, order ) {
+    function addto_faces_known( contact, order, scrollTo ) {
 	var face = new Face( contact, { 
 	    leftBadgeIcon: 'fa fa-times-circle-o',
 	    leftBadgeClick: removeKnown,
@@ -206,6 +215,10 @@ define(['durandal/app',
 	// Notify hscroller that its managed children count changed (so it can redraw)
 	face.on( 'person:composed', function() {
 	    $(view).find( ".horizontal-scroller").trigger( 'children-changed' );
+            if( scrollTo ) {
+                $(view).find( ".horizontal-scroller").smoothDivScroll( "scrollToElement", "number", known_faces.indexOf( face ) );
+            }
+            
 	});
 
 	face.on( 'person:mouseover', function() {
@@ -226,6 +239,9 @@ define(['durandal/app',
     }
 
     function addto_faces_unknown( contact ) {
+        if( activeMode() == "select" ) {
+            contact.contact_name = selected_name();
+        }
 	var f = new Face( contact, { 
 	    clickable: false, 
 	    leftBadgeIcon: 'fa fa-times-circle-o',
@@ -268,7 +284,10 @@ define(['durandal/app',
 		    cid: selected().data.uuid,
                     contact_name: selected().name()
                 } ).then( function() {
-                    unknown_faces.remove( f );
+                    $( f.view ).fadeOut( "slow", function() {
+                        // Animation complete.
+                        unknown_faces.remove( f );
+                    });
 		});
 	    });
 	});
@@ -298,15 +317,20 @@ define(['durandal/app',
 		contact_name: name 
             } ).then( function() {
                 // move this face to the identified list
-                unknown_faces.remove( v );
+                $( f.view ).fadeOut( "slow", function() {
+                    // Animation complete.
+                    unknown_faces.remove( v );
+                });
                 if ( ! match ) {
-                    var face = addto_faces_known( v.data );
+                    var face = addto_faces_known( v.data, null, true );
                     // and slide down the faces_of panel so that edit mode
                     // turns into click-to-confirm
                     person_selected( face, null, v.data );
                 }
                 else {
                     person_selected( match, null, v.data );
+                    // scroll to item in known list
+                    $(view).find( ".horizontal-scroller").smoothDivScroll("scrollToElement", "number", known_faces.indexOf(match) );
                 }
             });
 	});
@@ -336,8 +360,8 @@ define(['durandal/app',
         alt_face.on( 'person:composed', function( p ) {
             if( p.data.highlight ) {
                 console.log( p, $(p.view).offset().top );
-                //$('body').scrollTop( $(p.view).offset().top );
-                viblio.goTo( p.view, -$(view).find('.identified-Wrap').height() );
+                $('body').scrollTop( 0 );
+                //viblio.goTo( p.view, -$(view).find('.identified-Wrap').height() );
             }
         });
 	return alt_face;
@@ -348,6 +372,7 @@ define(['durandal/app',
 	    // its selected, so deselect it
 	    clipboard.remove( f );
 	    $(f.view).removeClass( 'selected' );
+            setMargin();
             // scroll to the top of the page
             $('body').scrollTop( 0 );
 	    faces_for_visible( false );
@@ -357,6 +382,7 @@ define(['durandal/app',
 	    // its not selected, so select it.
             // this will ensure the tagged done button is hidden when a new fave is selected
             taggedDoneVisible( false );
+            setMargin();
 	    deselectAll();
 	    clipboard.push( f );
 	    viblio.api( '/services/faces/photos_of', { cid: f.data.uuid } ).then( function( photos ) {
@@ -416,8 +442,6 @@ define(['durandal/app',
     }
     
     function setMargin( e, el ) {
-        console.log( 'setMargin is firing', view );
-        
         if( !view || $(view).find('.identified-Wrap').height() == 0 ) {
             setTimeout( function(){
                 setMargin()
@@ -451,7 +475,6 @@ define(['durandal/app',
         args.rows = thePager().entries_per_page;
 
         viblio.api( '/services/faces/contacts_present_in_videos', args ).then( function( data ) {
-            console.log( data );
             handlePager( data.pager );
             // the initial fetch has already been done, so clear out the exisitng unknown faces
             if( fetched() ) {
@@ -553,6 +576,8 @@ define(['durandal/app',
 	attached: function( v ) {
 	    this.view = v;
 	    view = v;
+            
+            fetched( false );
 	},
 
 	canDeactivate: function() {
