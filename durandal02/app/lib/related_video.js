@@ -52,8 +52,8 @@ define(['lib/viblio',
                 self.search( playingVid().media().uuid, {},
                 function(){
                     pp.resizePlayer;
-                    pp.playRelated( self.mediafiles()()[0] );
-                    self.mediafiles()()[0].selected( true );
+                    /*pp.playRelated( self.mediafiles()()[0] );
+                    self.mediafiles()()[0].selected( true );*/
                 });
             } else {
                 self.search( playingVid().media().uuid, { related: relatedList() },

@@ -960,7 +960,7 @@ define(["durandal/app",
 					    var mf = data.media;
 					    // Set now playing
 					    playing( new Mediafile( mf ) );
-				    title( viblio.unescapeHtml( mf.title ) || 'Untitled' );
+                                            title( viblio.unescapeHtml( mf.title ) || 'Untitled' );
 					    description( mf.description || '' );
 
 					    if ( mf.lat )
@@ -1054,7 +1054,6 @@ define(["durandal/app",
 					customDialogs.showWebPlayerError( "We're Sorry", error.message, error );
 				    })
                     .then( function( json ) {
-                        console.log( 'this is happening' );
                         var mf = json.media;
                         // Set now playing
                         playing( new Mediafile( mf ) );
@@ -1092,7 +1091,11 @@ define(["durandal/app",
 
 	    if ( pp_related_column_visible() ) {
                 // reset next_available_clip
-                next_available_clip( 0 );
+                if( relatedVids.length ) {
+                    next_available_clip( 0 );
+                } else {
+                    disable_next( true );
+                }
 		Related.init( '.pp-related-column-related-videos', mediafiles, relatedVids, playing, this, query_in_progress, function( m ) {
 		    playRelated( m );
 		}, ( route == 'web_player' ));
