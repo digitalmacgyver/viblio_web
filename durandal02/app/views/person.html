@@ -1,4 +1,4 @@
-<div class="person" data-bind="event:{mouseover: mouseover, mouseleave: mouseleave}">
+<div class="person" data-bind="event:{mouseover: mouseover, mouseleave: mouseleave}, css: {selected: highlight}">
   <div>
     <div data-bind="if: hasStarPower()">
       <img class="star" data-bind="visible: star, attr: { src: starColor }"/>

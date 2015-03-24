@@ -2575,7 +2575,7 @@ define( ['plugins/router',
         $(window).off("resize.mymethod");
         //$(window).off( "resize", this.stickyDates );
         $(window).off( "resize", this.resizePlayer );
-        $('.paginationContainer').pagination('destroy');
+        $(self.element).find('.paginationContainer').pagination('destroy');
     };
     
     newHome.prototype.activate = function() {

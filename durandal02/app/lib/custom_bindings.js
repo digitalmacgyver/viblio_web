@@ -83,12 +83,12 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
             ko.utils.extend(tag1, value);
 
 	    tag1.orig = tag1.name();
-
+            
 	    if ( tag1.state == 'accept' ) 
-		$element.addClass( 'tag1-accepted' );
+                $element.addClass( 'tag1-accepted' );
 	    else
-		$element.addClass( 'tag1-rejected' );
-
+                $element.addClass( 'tag1-rejected' );
+		
 	    $element.on( 'mouseover', function( e ) {
 		$element.removeClass( 'tag1-accepted' );
 		$element.removeClass( 'tag1-rejected' );
@@ -131,8 +131,41 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
                     e.preventDefault();
 
 	    });
-	}
+        }
+    };
+    
+    ko.bindingHandlers.tag1 = {
+	init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+	    var $element = $(element);
+            var value = ko.utils.unwrapObservable(valueAccessor()) || {};
+	    var tag1 = { state: 'accept' };
+	    //build a new object that has the global options with overrides from the binding
+            $.extend(true, tag1, ko.bindingHandlers.tag1);
+            if (value.options && tag1.options) {
+                ko.utils.extend(tag1.options, value.options);
+                delete value.options;
+            }
+            ko.utils.extend(tag1, value);
 
+	    tag1.orig = tag1.name();
+            $element.removeClass( 'tag1-accepted' );
+            $element.removeClass( 'tag1-rejected' );
+            $element.toggleClass( 'tag1-hover' );
+            tag1.name( 'click to reject' );
+
+	    $element.on( 'click', function( e ) {
+		if ( tag1.state == 'accept' ) {
+		    tag1.state = 'reject';
+		}
+
+		if ( tag1.changed ) 
+		    tag1.changed.call( bindingContext['$data'], tag1.state );
+
+		if ( e.preventDefault ) 
+                    e.preventDefault();
+
+	    });
+	}
     };
 
     ko.bindingHandlers.tag2 = {
@@ -194,7 +227,7 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
 		display: tag3.display,
 		mode: tag3.mode,
 		type: 'typeahead',
-		value: ( tag3.name() == 'unknown' ? null : tag3.name() ),
+		value: ( tag3.name() == 'insert name' ? null : tag3.name() ),
 		source: '/services/faces/all_contacts',
 		sourceCache: false,
 		sourceError: 'Sorry, we encountered an error.',
@@ -214,7 +247,7 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
 				provider = data.provider;
 			    }
 			});
-			return '<img style="width: 30px; height: 30px; margin-right: 6px;" src="' + src + '"/><strong>' + item.text + '</strong><p class="contactSource"><span>Source: </span>' + provider + '</p>';
+			return '<img style="width: 40px; height: 40px; margin-right: 6px; float: left" src="' + src + '"/><strong class="contactName">' + item.text + '</strong><p class="contactSource"><span>Source: </span>' + provider + '</p>';
 		    }
 		},
 		validate: function( value ) {
@@ -348,7 +381,7 @@ define(['durandal/app', 'lib/config', 'durandal/system'],function(app, config, s
 	    ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
                 $(element).smoothDivScroll("destroy");
             });
-	}
+        }
     };
     
     // Bind to Return keypress.

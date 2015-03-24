@@ -187,8 +187,6 @@ function(app, viblio, Events, header, c_header, hp, dialogs) {
         if( albumOrUser() == "user" && !userBackgroundImageUrl() ) {
             var args;
             
-            console.log( "user info from getBackgroundImage(): ", viblio.user() );
-            
             if( user.banner_uuid ) {
                 args = {
                     mid: user.banner_uuid

@@ -12,8 +12,9 @@ define( ['durandal/app',
 	 'viewmodels/shareAlbumModal2',
          'viewmodels/shareNewAlbumModal',
 	 'viewmodels/webPlayerError', 
-	 'viewmodels/text_prompt'], 
-function( app, system, dialog, Loading, ChangePassword, IMap, ShareVid, ShareAlbum, ShareNewAlbum, WebPlayerError, TextPrompt ) {
+	 'viewmodels/text_prompt',
+         'viewmodels/rejectFaceModal'], 
+function( app, system, dialog, Loading, ChangePassword, IMap, ShareVid, ShareAlbum, ShareNewAlbum, WebPlayerError, TextPrompt, RejectFace ) {
     var loading  = null;
     return {
 	showMessage: function( msg, title, options ) {
