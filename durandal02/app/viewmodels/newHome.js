@@ -1820,7 +1820,7 @@ define( ['plugins/router',
         
         if( self.currentSelectedFilterAlbum().shared == 0 ) {
             // owned by viewer - delete
-            message = 'If you delete this album, individual videos are not deleted, but no one you <br />shared this album with will be able to see this collection anymore. <br /> Do you want to continue?';
+            message = 'If you delete this album, individual videos are not deleted, but no one you shared this album with will be able to see this collection anymore. <br /> Do you want to continue?';
             app.showMessage( message, 'Delete Confirmation', ['Yes', 'No']).then( function( data ) {
                 if( data == 'Yes' ) {
                     viblio.api( '/services/album/delete_album', { aid: self.currentSelectedFilterAlbum().uuid } ).then( function() {
