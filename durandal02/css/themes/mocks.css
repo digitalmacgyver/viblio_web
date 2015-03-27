@@ -1080,6 +1080,10 @@ input:-moz-placeholder {
     position: relative;
 }
 
+.block {
+    display: block !important;
+}
+
 /********************  Page Header Section  *****************************/
 
 #page-header .navbar {
