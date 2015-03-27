@@ -17,7 +17,9 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 
 	    leftBadgeMode: 'hidden',
 	    leftBadgeIcon: null,
-	    leftBadgeClick: null
+	    leftBadgeClick: null,
+            
+            highlight: false
 	}, options || {} );
 
 	this.options = options;
@@ -36,7 +38,7 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
 	this.leftBadgeOn  = ko.observable( options.leftBadgeMode == 'static' );
 
 	this.url = ko.observable( data.url );
-	this.name = ko.observable( data.contact_name ? data.contact_name : 'unknown' );
+	this.name = ko.observable( data.contact_name ? data.contact_name : 'insert name' );
 	this.email = ko.observable( data.contact_email );
 
 	this.url.subscribe( function( v ) {
@@ -105,6 +107,7 @@ define(['durandal/events','lib/customDialogs'],function(Events,customDialogs) {
             });
         };
 	this.selected = ko.observable( false );
+        this.highlight = ko.observable( options.highlight );
         
 	Events.includeIn( this );
     };

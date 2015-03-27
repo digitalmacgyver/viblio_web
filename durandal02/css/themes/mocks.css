@@ -510,9 +510,18 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
     border-bottom: 1px solid rgba(117,117,128,.6);
 }
 
+.person .typeahead.dropdown-menu {
+    width: 194px;
+}
+
+.person .contactName {
+    font-size: 14px;
+}
+
 .person .contactSource {
     margin: 0;
     font-weight: 200;
+    font-size: small;
 }
 
 .person .contactSource span {
@@ -579,7 +588,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 }
 
 .faces-container.horizontal-scroller {
-    height: 208px;
+    height: 185px;
 }
 
 .horizontal-scroller .fwd {
@@ -616,7 +625,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
     margin-bottom: 22px;
 }
 
-.horizontal-strip .title span {
+.horizontal-strip .title > span {
     color: white;
     font-weight: 100;
     font-size: 31.5px;
@@ -1017,6 +1026,10 @@ input:-moz-placeholder {
 
 .paddingTop0 {
     padding-top: 0 !important;
+}
+
+.font12 {
+    font-size: 12px;
 }
 
 .font18 {
@@ -3194,6 +3207,25 @@ ul.token-input-list-facebook {
     position: relative;
 }
 
+#people-page .identified-Wrap {
+    position: fixed;
+    top: 49px;
+    left: 0;
+    right: 0;
+    z-index: 1051;
+    min-height: 271px;
+}
+
+@media( max-width: 900px ) {
+    #people-page .identified-Wrap {
+        position: static;
+    }
+    
+    #people-page .scrollable {
+        margin-top: 0; 
+    }
+}
+
 #people-page .known_faces-container .person.selected {
     background-color: #24b8d1;
 }
@@ -3213,6 +3245,7 @@ ul.token-input-list-facebook {
     background-image: url(../images/arrowBlue.png);
     top: -20px;
     left: 200px;
+    z-index: 1004;
 }
 
 #people-page .faces-for-face .title button.pull-right {
@@ -3233,6 +3266,10 @@ ul.token-input-list-facebook {
 
 #people-page .no-faces-for {
     color: white;
+}
+
+#people-page .mainTitle {
+    margin-bottom: 0;
 }
 
 /* new stuff for new-player page */

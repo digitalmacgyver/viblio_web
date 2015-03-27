@@ -176,6 +176,18 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
             
             return deferred.promise();
         },
+        
+        setLocalStorage: function( key, val ) {
+            key = user().uuid + ':' + key;
+            if( val != null ) {
+                localStorage.setItem( key, val );
+            }
+        },
+        
+        getLocalStorage: function( key ) {
+            key = user().uuid + ':' + key;
+            return localStorage.getItem( key );
+        },
 
         // Increment people properties to send notifications based off of them
         // Use example: viblio.mpPeopleIncrement('Video View Count', 1);                    
@@ -303,6 +315,7 @@ define(['plugins/router', 'durandal/app', 'durandal/system', 'lib/messageq', 'li
         // used to scroll to a specific element, passing in plus can be used to adjust the height - example use in newHome's filterVidsSearch's .done section
         goTo: function( el, plus ) {
             var top = $(el).offset().top + ( plus ? plus : 0 );
+            console.log( top );
             $('html, body').animate({
                 scrollTop: top + 'px'
             }, 'fast');
