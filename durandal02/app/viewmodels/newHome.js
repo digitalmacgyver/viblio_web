@@ -2709,7 +2709,10 @@ define( ['plugins/router',
                     type: 'inside',
                     position: 'top'
                 },
-                buttons	: {}
+                buttons	: {},
+                overlay : {
+                    locked : true
+                }
             },
             tpl: {
               // wrap template with custom inner DIV: the empty player container
@@ -2724,7 +2727,7 @@ define( ['plugins/router',
             },
             
             beforeShow: function () {
-                $("body").css({'overflow-y':'hidden'});
+                //$("body").css({'overflow-y':'hidden'});
                 if( head.mobile ) {
                     this.helpers.buttons = {position: 'bottom'};
                 }
@@ -2794,7 +2797,7 @@ define( ['plugins/router',
             },
             
             afterClose: function(){
-                $("body").css({'overflow-y':'visible'});
+                //$("body").css({'overflow-y':'visible'});
             }
         });
         
