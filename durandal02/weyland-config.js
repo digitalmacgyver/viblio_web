@@ -20,8 +20,7 @@ exports.config = function(weyland) {
                     'transitions' : '../lib/durandal/js/transitions',
 		    'jquery' : 'empty:',
 		    'knockout': 'empty:',
-		    'facebook': '../lib/cdn/all',
-		    'cloudsponge': '../lib/cdn/address_books'
+		    'facebook': '../lib/cdn/all'
                 },
                 inlineText: true,
                 optimize : 'none',

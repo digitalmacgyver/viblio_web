@@ -92,9 +92,6 @@ define( function() {
 	facebook_ask_features: function() {
 	    return 'email,user_photos,user_videos,read_friendlists,friends_photos,friends_videos,publish_stream,publish_actions';
 	},
-	cloudsponge_appid: function() {
-	    return service( window.location.hostname, 'csponge' );
-	},
 	geoLocationOfVideoAnalytics: "37.451269,-122.158495",
 	cf_domain: function() {
 	    return service( window.location.hostname, 'cloudfront' );

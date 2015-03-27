@@ -40,8 +40,6 @@ function( router, app, system, config, viblio, dialog ) {
     S.prototype.cimport = function() {
 	var viblio = require( 'lib/viblio' );
 	viblio.mpEvent( 'address_book_import' );
-	cloudsponge.launch({
-	});
     };
 
     S.prototype.closeModal = function() {
@@ -149,25 +147,6 @@ function( router, app, system, config, viblio, dialog ) {
 		self.members( members );
 	    });
 	}
-
-        /*cloudsponge.init({
-            domain_key:config.cloudsponge_appid(),
-            textarea_id: null,
-
-	    selectionLimit: 20,  // limit the number of contacts that can be selected
-	    selectionLimitMessage: 'To prevent spam detection, please select 20 or less contacts at one time',
-	    displaySelectAllNone: false, // do not show the select all/nune links
-
-	    sources: ['yahoo','gmail','aol','plaxo' ],
-
-            afterSubmitContacts: function( contacts, source, owner ) {
-                contacts.forEach( function( c ) {
-                    $(view).find( "#shareVidEmail" ).tokenInput( "add", {
-                        id: c.selectedEmail(), 
-                        name: c.first_name });
-                });
-            }
-        });*/
         
         // Sets up placeholder compatability for IE when needed
         $('input, textarea').placeholder();
