@@ -2619,7 +2619,10 @@ define( ['plugins/router',
                     type: 'inside',
                     position: 'top'
                 },
-                buttons	: {}
+                buttons	: {},
+                overlay : {
+                    locked : true
+                }
             },
             tpl: {
               // wrap template with custom inner DIV: the empty player container
