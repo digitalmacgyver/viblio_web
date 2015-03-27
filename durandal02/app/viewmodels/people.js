@@ -115,7 +115,7 @@ define(['durandal/app',
 	customDialogs.showMessage( 'This will move ' + f.name() + ' from your set of identified faces to your unknown faces.  Are you sure you want to do that?', 'Please Confirm', ['Yes', 'No'] ).then( function( res ) {
 	    if ( res == 'Yes' ) {
 		viblio.mpEvent( 'face_delete_identified_contact' );
-		viblio.api( '/services/faces/change_contact', { uuid: f.data.uuid, contact_name: null } ).then( function() {
+		viblio.api( '/services/faces/change_contact', { uuid: f.data.uuid } ).then( function() {
                     f.name('insert name');
 		    //unknown_faces.unshift( f );
                     addto_faces_unknown( f.data )
