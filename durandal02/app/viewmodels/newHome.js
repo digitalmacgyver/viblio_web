@@ -590,6 +590,9 @@ define( ['plugins/router',
     newHome.prototype.clearTag = function() {
         var self = this;
         
+        if( self.isActiveFlag() )
+            return;
+        
         //self.albumVidsSearch( true, true );
         
         var args = self.lastSearchObj.args;
@@ -894,6 +897,9 @@ define( ['plugins/router',
     
     newHome.prototype.clearNoDates = function() {
         var self = this;
+        
+        if( self.isActiveFlag() )
+            return;
         
         /*if( self.activeFilterType() === 'album' ) {
             self.albumVidsSearch( true, true );    
