@@ -289,7 +289,6 @@ define( ['plugins/router',
         
         self.photoViewFilter = ko.observable( "some" );
         self.photoViewFilter.subscribe( function( val ) {
-            //console.log( "photoViewFilter tickled" );
             // reset counter to 0
             self.visiblePhotosCount( 0 );
             if( val == "some" ) {
@@ -348,7 +347,6 @@ define( ['plugins/router',
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
                 viblio.api('services/mediafile/list_status').then( function( data ) {
-                    //console.log( data );
                     self.numVidsPending( data.stats.pending );
                     var num = data.stats.pending/* + data.stats.visible*/;
                     self.vidsInProcess( num );
@@ -405,7 +403,6 @@ define( ['plugins/router',
         var self = this;
         
         viblio.api('services/mediafile/list_status').then( function( data ) {
-            //console.log( data );
             self.numVidsPending( data.stats.pending );
             var num = data.stats.pending/* + data.stats.visible*/;
             self.vidsInProcess( num );
@@ -1590,8 +1587,6 @@ define( ['plugins/router',
         });
 
 	p.on( 'photo:play', function( p ) {
-            //console.log( $(p.view).find('img') );
-            //$(p.view).find('img').magnificPopup({type:'image'});
             if( self.select_mode_on() ) {
                 // only allow selection if the select badge is showing
                 if( p.show_select_badge() ) {
@@ -1702,20 +1697,7 @@ define( ['plugins/router',
         }
         // for photo mode
         else {
-            /*if( !self.delete_mode_on() ) {
-                self.photos().forEach( function( photo ) {
-                    //console.log( photo );
-                    if( photo.options.ownedByViewer ) {
-                        photo.turnOnSelectMode();
-                    }
-                });    
-            } else {
-                self.photos().forEach( function( photo ) {
-                    photo.turnOnSelectMode();
-                }); 
-            }*/
             self.photos().forEach( function( photo ) {
-                //console.log( photo );
                 if( photo.options.ownedByViewer ) {
                     photo.turnOnSelectMode();
                 }
@@ -1732,19 +1714,6 @@ define( ['plugins/router',
         setTimeout(function(){
             self.setTitleMargin();
         }, 300);
-        
-        // for video mode
-        /*if( self.video_mode_on() ) {
-            self.videos().forEach( function( mf ) {
-                mf.turnOffSelectMode();
-            });
-        }
-        // for photo mode
-        else {
-            self.photos().forEach( function( photo ) {
-                photo.turnOffSelectMode();
-            });    
-        }*/
         
         self.videos().forEach( function( mf ) {
             mf.turnOffSelectMode();
@@ -2008,11 +1977,9 @@ define( ['plugins/router',
             }
             
         } else if ( self.delete_mode_on() ) {
-            //console.log( "self.thePager() before delete: ",  self.thePager() );
             return system.defer( function( dfd ) {
                 self.handle_delete( dfd );
             }).promise().done( function() {
-                //console.log( "self.thePager() after delete: ",  self.thePager() );
                 // handle the pager
                 var page;
                 // if the user is on the last page then send in the current page minus one as the page to use for the filterSearch
@@ -2306,7 +2273,6 @@ define( ['plugins/router',
     };
     
     newHome.prototype.addToAlbumSelected = function( self, album ) {
-        //console.log( 'addToAlbumSelected fired', self, album )
         self.albumLabels().forEach( function( a ) {
             a.selected( false );
         });
@@ -2532,9 +2498,6 @@ define( ['plugins/router',
         elementOffset = $('.toolbar').offset().top,
         distance      = (elementOffset - scrollTop);
         
-        //console.log( distance );
-        //console.log( $('.allVidsPage').offset().top - scrollTop );
-        
         if ( $(window).width() >= 900 ) {
             if( distance <= maxPos ){
                 $('.toolbar').addClass('stuck');            
@@ -2686,6 +2649,11 @@ define( ['plugins/router',
                 backgroundColor:'rgba(249, 249, 249,1)'
             }
         }).flowplayer().ipad({simulateiDevice: self.should_simulate()});
+        var api = flowplayer();
+        api.onLoad( function() {
+            // just to make sure the fancybox is in the right spot, fire this here
+            $.fancybox.reposition();
+        });
     };
     
     // In attached, attach the mCustomScrollbar we're presently
@@ -2760,6 +2728,10 @@ define( ['plugins/router',
                 
                 this.title = "<span>"+self.playingVid().title()+"</span>"+el+dl;
                 
+                // fire this here to avoid flickering as the flowplayer/fancybox try to size themselves. Now it's all down before
+                // anything is shown.
+                self.resizePlayer();
+                
                 var arr = [];
                 self.videos().forEach( function(vid){
                     if( vid != self.playingVid() ) {
@@ -2776,9 +2748,8 @@ define( ['plugins/router',
                 return viblio.api( api, { mid: self.playingVidUUID()  }, errorCallback )
                     .then( function( json ) {
                         var mf = json.media;
-                        self.setUpFlowplayer( '#player', mf );
-                        self.resizePlayer();
                         $('.fancyboxVidLoader').hide();
+                        self.setUpFlowplayer( '#player', mf );
                     })
                     .fail( function() {
                         $('.fancyboxVidLoader').hide();
@@ -2792,7 +2763,7 @@ define( ['plugins/router',
                 self.playingVid( self.videos()[self.playingVidIndex()] );
                 self.playingVidUUID( self.videos()[self.playingVidIndex()].media().uuid );
                 
-                $('.fancybox-outer').height( ($("#player").width()*9) / 16 );
+                //$('.fancybox-outer').height( ($("#player").width()*9) / 16 );
             },
             
             beforeClose: function () {
