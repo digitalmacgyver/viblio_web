@@ -6,7 +6,7 @@
         <span class="cancelX" data-bind="click: unselectAllAlbums, if: selectedAddToAlbum() != null, tooltip: {title: 'Unselect this album', placement : 'bottom'}"> &times;</span>
         <ul class="style2DD dropdown-menu" role="menu">
           <li class="tagsScrollWrapper">
-              <div class="scroller">
+              <div class="scroller ie9-scroll-fix">
                   <div class="wrapper">
                       <ul class="tags-inner">
                         <!-- ko foreach: albumsList -->
