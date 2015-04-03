@@ -360,7 +360,7 @@ define(['durandal/app',
         alt_face.on( 'person:composed', function( p ) {
             if( p.data.highlight ) {
                 console.log( p, $(p.view).offset().top );
-                $('body').scrollTop( 0 );
+                $("body,html,document").scrollTop( 0 );
                 //viblio.goTo( p.view, -$(view).find('.identified-Wrap').height() );
             }
         });
@@ -374,7 +374,7 @@ define(['durandal/app',
 	    $(f.view).removeClass( 'selected' );
             setMargin();
             // scroll to the top of the page
-            $('body').scrollTop( 0 );
+            $("body,html,document").scrollTop( 0 );
 	    faces_for_visible( false );
 	    selected(null);
 	}
@@ -410,7 +410,7 @@ define(['durandal/app',
 		    addto_faces_for( data );
 		});
                 // scroll to the top of the page
-                $('body').scrollTop( 0 );
+                $("body,html,document").scrollTop( 0 );
 		faces_for_visible( true );
                 // highlight the new face in the identified faces
                 $(f.view).addClass( 'selected' );
@@ -427,7 +427,7 @@ define(['durandal/app',
     
     function selectMoreFaces() {
         // scroll to the top of the page
-        $('body').scrollTop( 0 );
+        $("body,html,document").scrollTop( 0 );
         faces_for_visible( false );
         taggedDoneVisible( true );
         setMargin();
@@ -491,7 +491,7 @@ define(['durandal/app',
                 }
             });
             fetched( true );
-            $('body').scrollTop( 0 );
+            $("body,html,document").scrollTop( 0 );
         });
     }
 
@@ -568,7 +568,7 @@ define(['durandal/app',
 	    var self = this;
 	    deselectAll();
             // scroll to the top of the page
-            $('body').scrollTop( 0 );
+            $("body,html,document").scrollTop( 0 );
 	    self.faces_for_visible( false );
             selected(null);
         },
