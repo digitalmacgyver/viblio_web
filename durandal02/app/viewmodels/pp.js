@@ -217,7 +217,7 @@ define(["durandal/app",
     //
     function playVid( m ) {
         // Scroll to top of page
-        $(document).scrollTop(0);
+        $("body,html,document").scrollTop(0);
 
         if ( playing() )
             playing().unhighlight();

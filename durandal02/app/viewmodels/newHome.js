@@ -2305,7 +2305,7 @@ define( ['plugins/router',
                             // go to video mode
                             self.video_mode_on( true );
                             // scroll to the top of the page
-                            $(document).scrollTop(0);
+                            $("body,html,document").scrollTop(0);
                         }
                     });
                     dfd.resolve( response );    

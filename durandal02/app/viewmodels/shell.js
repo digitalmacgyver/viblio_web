@@ -45,7 +45,7 @@ function (router, app, system, page_header, landing_header, conditional_header, 
     
     // scroll to top of page before new view has loaded
     router.on('router:navigation:attached').then(function(){
-        $(document).scrollTop(0);
+        $("body,html,document").scrollTop(0);
         // Sets up placeholder compatability for IE when needed
         $('input, textarea').placeholder();
     });

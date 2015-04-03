@@ -59,7 +59,7 @@ define( ['plugins/router',
         $.when(viewResolved).then(function (view) {
             var $bookmark = $(bookmark);
             // scroll to the top of the chosen seciton minus 65 (the height of the header);
-            $(document.body).animate({ scrollTop: $bookmark.offset().top-65 });
+            $("body,html,document").animate({ scrollTop: $bookmark.offset().top-65 });
         });
     };
     
@@ -70,12 +70,12 @@ define( ['plugins/router',
         
         // if you're already at that URL just scroll to that position
         if( router.activeInstruction().params[0] == hash ) {
-            $(document.body).animate({ scrollTop: $bookmark.offset().top-65 });
+            $("body,html,document").animate({ scrollTop: $bookmark.offset().top-65 });
         }
         // else add the url to the history and then scroll to that section (this is useful for a refresh since it will load on refresh, but won't cause a page reload)
         else {
             router.navigate( url, { replace: true, trigger: false } );
-            $(document.body).animate({ scrollTop: $bookmark.offset().top-65 });
+            $("body,html,document").animate({ scrollTop: $bookmark.offset().top-65 });
         }
     }
     
