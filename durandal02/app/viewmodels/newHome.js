@@ -2652,6 +2652,7 @@ define( ['plugins/router',
         var api = flowplayer();
         api.onLoad( function() {
             // just to make sure the fancybox is in the right spot, fire this here
+            $('.fancybox-nav').height( $("#player").height()-30 );
             $.fancybox.reposition();
         });
     };
@@ -2693,9 +2694,7 @@ define( ['plugins/router',
               wrap: '<div class="fancybox-wrap" tabIndex="-1">' +
                     '<div class="fancybox-skin">' +
                     '<div class="fancybox-outer"><div class="fancyboxVidLoader centered"><div class="fancyboxVidLoader-Inner"><i class="fa fa-spinner fa-spin fa-5x active"></i><p class="font18">Loading...</p></div></div>' +
-                    '<div class="fancyboxVidError fancyboxVidLoader-Inner centered font18"> :( Sorry, this video is private.</div>' + 
-                    '<a title="Previous" class="fancybox-nav fancybox-prev" href="javascript:;"><span></span></a>' +
-                    '<a title="Next" class="fancybox-nav fancybox-next" href="javascript:;"><span></span></a>' +
+                    '<div class="fancyboxVidError fancyboxVidLoader-Inner centered font18"> :( Sorry, this video is private.</div>' +
                     '<div id="player">' + // player container replaces fancybox-inner
                     '</div></div></div></div>' 
             },
@@ -2767,10 +2766,10 @@ define( ['plugins/router',
             },
             
             beforeClose: function () {
-              // important! unload the player
-              if(flowplayer()){
-                  flowplayer().unload();
-              }
+                // important! unload the player
+                if(flowplayer()){
+                    flowplayer().unload();
+                }
             },
             
             afterClose: function(){
