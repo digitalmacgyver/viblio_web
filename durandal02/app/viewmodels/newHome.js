@@ -982,7 +982,6 @@ define( ['plugins/router',
             args.include_images = config.photo_throttle;
             viblio.api( api, args, errorCallback ? errorCallback : null )
                 .then( function( json ) {
-                    console.log( json );
                     self.showNoDates( json.no_date_return ? json.no_date_return : false );
                     self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
                     self.handlePager( json.pager, newSearch || args.updatePager, args.updatePager );

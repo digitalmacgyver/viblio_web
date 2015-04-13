@@ -136,7 +136,6 @@ define(['durandal/app',
     }    
     
     function removeFromFacesOf( f ) {
-        console.log( f, viblio.getLocalStorage( 'rejectFace.doNotShowAgain' ) );
         //var num_faces_for = faces_for().length;
         var ids = [];
         if( viblio.getLocalStorage( 'rejectFace.doNotShowAgain' ) == "true" ) {
@@ -162,7 +161,6 @@ define(['durandal/app',
             // handle face in DB
             viblio.mpEvent( 'face_remove_false_positives' );
             viblio.api( '/services/faces/remove_false_positives',{ ids: ids } ).then( function( data ) {
-                console.log( data );
                 if ( data.contact && data.contact.url && selected() ) {
                     selected().url( data.contact.url );
                 }
@@ -359,7 +357,6 @@ define(['durandal/app',
         // scroll to the newly added face
         alt_face.on( 'person:composed', function( p ) {
             if( p.data.highlight ) {
-                console.log( p, $(p.view).offset().top );
                 $("body,html,document").scrollTop( 0 );
                 //viblio.goTo( p.view, -$(view).find('.identified-Wrap').height() );
             }
@@ -449,7 +446,6 @@ define(['durandal/app',
         } else {
             // set top-margin for unnamed
             if( $(window).width() >= 900 ) {
-                console.log( 'setting to', $(view).find('.identified-Wrap').height() )
                 $(view).find('.scrollable').css('margin-top', $(view).find('.identified-Wrap').height() + 'px');      
             } else {
                 $(view).find('.scrollable').css('margin-top', '0');

@@ -95,12 +95,9 @@ function(router, app, viblio, config, dialogs, Events, dialog) {
                 }
             });
             viblio.localStorage( 'firstUploadMessageHasBeenShown' ).then(function( data ) {
-                console.log( data );
                 if( data ) {
-                    console.log( "videosHaveBeenUploaded is true" );
                     videosHaveBeenUploaded( true );
                 } else {
-                    console.log( "videosHaveBeenUploaded is false" )
                     videosHaveBeenUploaded( false );
                 }
             });
