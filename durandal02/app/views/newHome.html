@@ -347,59 +347,20 @@
         </div><!-- end navbar-inner -->       
     </div> <!-- end select-nav -->
     
+    <!-- Begin title section -->
     <div class="table titleTable">
         <!-- ko if: performingNewSearch() -->
-        <div class="title-block"></div>
+        <div class="title-block" data-bind="if: performingNewSearch()"></div>
         <!-- /ko -->
         
         <!-- ko if: !performingNewSearch() -->
-
         <div class="clearfix newHomeTitle-Wrap">
             <p class='pageNumber pull-right' data-bind="visible: !showAlbumError()">Page <span data-bind="text: thePager().current_page"></span></p>
             <!-- ko ifnot: add_to_mode_on() || delete_mode_on() || showAlbumError() -->
-            <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: activeFilterType() == 'all'">
-                <!-- ko if: !video_mode_on() -->
-                <div class="btn-group photoViewFilter" data-toggle="buttons">
-                    <span class='meterLabel some'>Less</span>
-                    <span class="viewFilter on">
-                        <label class="someLabel">
-                            <input type="radio" name="options" value="some" id="some" data-bind="checked: photoViewFilter">
-                        </label>    
-                    </span>
-                    <span class="viewFilter" data-bind="css: { on: photoViewFilter() == 'more' || photoViewFilter() == 'all' }">
-                        <label>
-                            <input type="radio" name="options" value="more" id="more" data-bind="checked: photoViewFilter">
-                        </label>    
-                    </span>
-                    <span class="viewFilter" data-bind="css: { on: photoViewFilter() == 'all' }">
-                        <label>
-                            <input type="radio" name="options" value="all" id="all" data-bind="checked: photoViewFilter">
-                        </label>
-                    </span>
-                    <span class='meterLabel more'>More</span>
-                </div>
-                <!-- /ko -->
+            
+            <div style="display: block; text-align: center;" class="mainTitle textShadowed">
                 
-                <!-- ko if: hits() > 0 && video_mode_on() --> 
-                <p><span class="btn btn-primary" data-bind="click: function() { add_to_mode( 'new' ); }">Create an album</span> <span class="hideOnMobile">from these videos to privately share with friends and family.</span></p>
-                <!-- /ko -->
-                <!-- ko if: !hits() > 0 && video_mode_on() --> 
-                <p><span class="btn btn-primary" data-bind="click: add_videos">Upload Videos</span></p>
-                <!-- /ko -->
-                <p class="mainTitleP">
-                    <!--You have <span data-bind="text: hits"></span>-->
-                    ALL <span data-bind="text: video_mode_on() ? ' Videos ' : ' Photos ' "></span> (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
-                    <span class='titleTag-Wrap' data-bind="visible: searchForVidsWithNoDates()">
-                        <span class='titleTag'>
-                            &mdash; <span class='tagLabel'>No Dates</span>
-                        </span>
-                        <i class="fa fa-undo turquoiseFont" title="Clear no dates filter" data-bind="click: clearNoDates"></i>
-                    </span>
-                    <!--<span data-bind="text: hits() == 1 ? ' video ' : ' videos'"></span> in your private VIBLIO Library.-->
-                </p>
-            </div>
-
-            <div style="display: block; text-align: center;" class="mainTitle textShadowed" data-bind="if: !performingNewSearch() && activeFilterType() != 'all' || activeFilterType() == 'search'">
+                <!-- Folder icons for albums -->
                 <!-- ko if: activeFilterType() == 'album' -->
                     <!-- album is owned by the user -->
                     <!-- ko ifnot: currentSelectedFilterAlbum().shared -->
@@ -415,12 +376,15 @@
                         <i class='fa fa-folder-o bigIcon pull-left'></i>
                         <!-- /ko -->
                     <!-- /ko -->
-                    
+
                     <!-- album is owned by another user and shared with viewer -->
                     <!-- ko if: currentSelectedFilterAlbum().shared -->
                         <i class='fa fa-folder bigIcon turquoiseFont pull-left' title="This album is shared with you."></i>
                     <!-- /ko -->
                 <!-- /ko -->
+                
+                
+                <!-- Photos controls -->
                 <!-- ko if: !video_mode_on() -->
                 <div class="btn-group photoViewFilter" data-toggle="buttons">
                     <span class='meterLabel some'>Less</span>
@@ -442,67 +406,83 @@
                     <span class='meterLabel more'>More</span>
                 </div>
                 <!-- /ko -->
-                <!-- ko if: activeFilterType() != 'album' -->
-                <!-- ko if: hits() > 0 && video_mode_on() --> 
-                <p><span class="btn btn-primary" data-bind="click: function() { add_to_mode( 'new' ); }">Create an album</span> <span class="hideOnMobile">from these videos to privately share with friends and family.</span></p>
+                
+                
+                <!-- CTAs -->
+                <!-- ko if: hits() > 0 && video_mode_on() && activeFilterType() != 'album' --> 
+                <p>
+                    <span class="btn btn-primary" data-bind="click: function() { add_to_mode( 'new' ); }">Create an album</span>
+                    <span class="hideOnMobile">from these videos to privately share with friends and family.</span>
+                </p>
                 <!-- /ko -->
+
                 <!-- ko if: !hits() > 0 && video_mode_on() --> 
-                <p><span class="btn btn-primary" data-bind="click: add_videos">Upload Videos</span></p>
-                <!-- /ko -->
-                <p class="mainTitleP" data-bind="css: {paddingTop0: video_mode_on()}">
-                    <!-- ko if: active_filter_label() == 'Recent' -->
-                    <span data-bind="text: active_filter_label() ? active_filter_label().toUpperCase() : '' "></span><span data-bind="text: video_mode_on() ? ' Videos ' : ' Photos ' "></span>(<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
-                    <!-- /ko -->
-                    <!-- ko ifnot: active_filter_label() == 'Recent' -->
-                    <span data-bind="text: active_filter_label() ? active_filter_label().toUpperCase() : '' "></span> Filter (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
-                    <!-- /ko -->
-                    <!-- ko if: activeFilterType() == 'faces' -->
-                     <img class="selectedFace img-circle" data-bind="attr: {src: selectedFace().url}">
-                    <!-- /ko -->
+                <p>
+                    <span class="btn btn-primary" data-bind="click: add_videos">Upload Videos</span>
                 </p>
                 <!-- /ko -->
                 
-                <!-- ko if: activeFilterType() == 'album' -->
-                    <!-- album is owned by the user -->
-                    <!-- ko ifnot: currentSelectedFilterAlbum().shared -->
-                        <p data-bind="visible: !currentSelectedFilterAlbum().shared && video_mode_on()">
-                            <span class="btn btn-primary" data-bind="click: share_mode">Invite friends</span>
-                            <span class="hideOnMobile">to privately see this album.</span>
-                        </p>
-                        <div class="mainTitleP" data-bind="css: {paddingTop0: video_mode_on()}">       
-                             <div class="inline newHomeAlbumTitle" data-bind="liveEditor: currentAlbumTitle, click: setSize">
-                                <div class="newHomeAlbumTitleView view turquoiseFont" data-bind="click: currentAlbumTitle.edit, text: currentAlbumTitle() ? currentAlbumTitle().toUpperCase() : 'Click to add album title', tooltip: {title:'Click to edit album title', placement: 'bottom'}"></div>
-                                <div class="newHomeAlbumTitle-Wrap">
-                                    <input type="text" class="newHomeAlbumTitleEdit edit" data-bind="value: currentAlbumTitle, 
-                                                         hasFocus: currentAlbumTitle.editing, 
-                                                         event: { blur: function() { currentAlbumTitle.stopEditing(); currentAlbumTitle.save( null, this, 'album:name_changed' ); } }" />
-                                </div>  
-                             </div> Album
-                                (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
-                                <span class='titleTag-Wrap' data-bind="visible: activeTag()">
-                                    <span class='titleTag'>
-                                        &mdash; <i class="fa fa-tag"></i><span class='tagLabel truncate' data-bind="text: activeTag()"></span>
-                                    </span>
-                                    <i class="fa fa-undo turquoiseFont" title="Clear tag" data-bind="click: clearTag"></i>
-                                </span>
-                                <span class='titleTag-Wrap' data-bind="visible: searchForVidsWithNoDates()">
-                                    <span class='titleTag'>
-                                        &mdash; <span class='tagLabel'>No Dates</span>
-                                    </span>
-                                    <i class="fa fa-undo turquoiseFont" title="Clear no dates filter" data-bind="click: clearNoDates"></i>
-                                </span>
-                            <!-- ko if: hits() < 1 && !activeTag() && !searchForVidsWithNoDates() -->
-                            <div class="btn btn-primary" data-bind="click: add_videos_to_empty_album">Add videos to this empty album</div>
-                            <!-- /ko -->
-                        </div>
-                    <!-- /ko -->
-                    
-                    <!-- album is owned by another user and shared with viewer -->
-                    <!-- ko if: currentSelectedFilterAlbum().shared -->
-                    <div class="mainTitleP" data-bind="css: {paddingTop0: video_mode_on()}">
-                        <span data-bind="text: selectedFilterAlbum().toUpperCase()"></span> Album 
-                        (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>) &mdash;
-                        <span class="subtitle">by <span data-bind="text: currentAlbum().owner.displayname"></span> <img class="img-circle" data-bind="attr: {src: '/services/user/avatar?uid=' + currentAlbum().owner.uuid + '&y=30'}, tooltip: {title: 'Album by ' + currentAlbum().owner.displayname, placement: 'bottom'}"></span>.
+                <!-- ko if: activeFilterType() == 'album' && !currentSelectedFilterAlbum().shared -->
+                <p data-bind="visible: !currentSelectedFilterAlbum().shared && video_mode_on()">
+                    <span class="btn btn-primary" data-bind="click: share_mode">Invite friends</span>
+                    <span class="hideOnMobile">to privately see this album.</span>
+                </p>
+                <!-- /ko -->
+                
+                
+                <!-- Title Section -->
+                <div data-bind="style: { display: video_mode_on() ? 'block' : 'inline-block'  }">
+                    <div class="mainTitleP">
+                        <!-- Title for all videos -->
+                        <!-- ko if: activeFilterType() == 'all' -->
+                        <span>
+                            ALL <span data-bind="text: video_mode_on() ? ' Videos ' : ' Photos ' "></span> (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
+                        </span>
+                        <!-- /ko -->
+
+                        <!-- title for non albums -->
+                        <!-- ko if: activeFilterType() != 'album' && activeFilterType() != 'all'  -->
+                            <span data-bind="css: {paddingTop0: video_mode_on()}">
+                                <!-- ko if: active_filter_label() == 'Recent' -->
+                                <span data-bind="text: active_filter_label() ? active_filter_label().toUpperCase() : '' "></span><span data-bind="text: video_mode_on() ? ' Videos ' : ' Photos ' "></span>(<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
+                                <!-- /ko -->
+                                <!-- ko ifnot: active_filter_label() == 'Recent' -->
+                                <span data-bind="text: active_filter_label() ? active_filter_label().toUpperCase() : '' "></span> Filter (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>)
+                                <!-- /ko -->
+                                <!-- ko if: activeFilterType() == 'faces' -->
+                                <img class="selectedFace img-circle" data-bind="attr: {src: selectedFace().url}">
+                                <!-- /ko -->
+                            </span>
+                        <!-- /ko -->
+
+                        <!-- title for albums -->
+                        <!-- ko if: activeFilterType() == 'album' -->
+                            <div class="mainTitleP" data-bind="css: {paddingTop0: video_mode_on()}">     
+                                <!-- ko ifnot: currentSelectedFilterAlbum().shared -->
+                                <div class="inline newHomeAlbumTitle" data-bind="liveEditor: currentAlbumTitle, click: setSize">
+                                    <div class="newHomeAlbumTitleView view turquoiseFont" data-bind="click: currentAlbumTitle.edit, text: currentAlbumTitle() ? currentAlbumTitle().toUpperCase() : 'Click to add album title', tooltip: {title:'Click to edit album title', placement: 'bottom'}"></div>
+                                    <div class="newHomeAlbumTitle-Wrap">
+                                        <input type="text" class="newHomeAlbumTitleEdit edit" data-bind="value: currentAlbumTitle, 
+                                                             hasFocus: currentAlbumTitle.editing, 
+                                                             event: { blur: function() { currentAlbumTitle.stopEditing(); currentAlbumTitle.save( null, this, 'album:name_changed' ); } }" />
+                                    </div>  
+                                </div>
+                                <!-- /ko -->
+
+                                <!-- ko if: currentSelectedFilterAlbum().shared -->
+                                <span data-bind="text: selectedFilterAlbum().toUpperCase()"></span>
+                                <!-- /ko -->
+                                Album
+                                (<span data-bind="text: hits ? hits : 0, visible: video_mode_on()"></span><span data-bind="text: visiblePhotosCount, visible: !video_mode_on()"></span>) <span data-bind="if: currentSelectedFilterAlbum().shared">&mdash;</span>
+                                <span class="subtitle" data-bind="if: currentSelectedFilterAlbum().shared">by <span data-bind="text: currentAlbum().owner.displayname"></span> <img class="img-circle" data-bind="attr: {src: '/services/user/avatar?uid=' + currentAlbum().owner.uuid + '&y=30'}, tooltip: {title: 'Album by ' + currentAlbum().owner.displayname, placement: 'bottom'}"></span>
+                                    
+                                <!-- ko if: hits() < 1 && !activeTag() && !searchForVidsWithNoDates() -->
+                                <div class="btn btn-primary" data-bind="click: add_videos_to_empty_album">Add videos to this empty album</div>
+                                <!-- /ko -->
+                            </div>
+                        <!-- /ko -->
+                        
+                        <!-- Active Tag -->
                         <span class='titleTag-Wrap' data-bind="visible: activeTag()">
                             <span class='titleTag'>
                                 &mdash; <i class="fa fa-tag"></i><span class='tagLabel truncate' data-bind="text: activeTag()"></span>
@@ -515,16 +495,12 @@
                             </span>
                             <i class="fa fa-undo turquoiseFont" title="Clear no dates filter" data-bind="click: clearNoDates"></i>
                         </span>
-                        <!-- ko if: hits() < 1 && !activeTag() && !searchForVidsWithNoDates() -->
-                        <div class="btn btn-primary" data-bind="click: add_videos_to_empty_album">Add videos to this empty album</div>
-                        <!-- /ko -->
                     </div>
-                    <!-- /ko -->
-                    
-                <!-- /ko -->
+                </div>
             </div>
             <!-- /ko --> <!-- End ifnot: add_to_mode_on() || delete_mode_on() -->
             
+            <!-- Selection Titles Section -->
             <!-- ko if: add_to_mode_on() || delete_mode_on() -->
             <div style="display: block; text-align: center;" class="mainTitle textShadowed paddingTopBottom5">
                 Select the <span data-bind="text: video_mode_on() ? 'videos' : create_summary_vid_mode_on() ? 'moments' : 'photos' "></span> you want to
@@ -559,9 +535,7 @@
                     <!-- /ko -->        
             </div>
             <!-- /ko --> <!-- End if: add_to_mode_on()-->
-            
         </div>
-
         <!-- /ko --> <!-- End if: !performingNewSearch() -->
 
         <div data-bind="if: activeFilterType() == 'search' && hits() < 1 && !performingNewSearch()">
@@ -576,10 +550,10 @@
             </p>
             <p class="centered"><span class="btn btn-primary" data-bind="click: add_videos">Upload Videos</span></p>
         </div>
-
-    </div>
+    </div> <!-- end <div class="table titleTable"> - main title container -->
+    <!-- End title section -->
     
-    <div class="containerxx clearfix" data-bind="css: {tagsVisible: activeFilterType() == 'album' && !shell.onMobile(), noDatesIndent: activeFilterType() == 'all' && !shell.onMobile() }">
+    <div class="containerxx clearfix" data-bind="css: {tagsVisible: !shell.onMobile()}">
         <div class="table allVidsInner clearfix">
 
             <div id="allVidsWrap" class="allVidsWrap clearfix photoGallery">
@@ -602,8 +576,8 @@
             </div>
 
         </div>
-        <div class='tagsList-Wrapper' data-bind="visible: !shell.onMobile() && (activeFilterType() == 'album' || activeFilterType() == 'all') && hits() > 0">
-            <div data-bind="visible: activeFilterType() == 'album'">
+        <div class='tagsList-Wrapper' data-bind="visible: !shell.onMobile()">
+            <div>
                 <div class='tagsList'>
                     <h3>
                         <i class="fa fa-tags"></i>
@@ -620,7 +594,7 @@
                         <!-- /ko -->
                     </ul>
                 </div>
-                <hr data-bind="visible: monthTagList().length > 0">
+                <hr data-bind="visible: monthTagList().length > 0 || showNoDates()">
                 <div class='tagsList' data-bind="visible: monthTagList().length > 0">
                     <ul>
                         <!-- ko foreach: monthTagList -->
@@ -631,13 +605,14 @@
             </div>
             <div class='tagsList' data-bind="visible: showNoDates()">
                 <ul>
-                    <li data-bind="click: noDatesSearch, css: {active: searchForVidsWithNoDates()}">
+                    <li data-bind="click: noDatesSearch, style: {'font-size': noDatesSize() }, css: {active: searchForVidsWithNoDates()}">
                         No Dates
                     </li>
                 </ul>
             </div>
         </div>
     </div>
+    <!-- End video and photos container -->
     <div class='paginationContainer'></div>
     <div class="hideOnMobile">
         <div class="feedbackThumbsTab" data-bind="slideVisible: !video_mode_on()">

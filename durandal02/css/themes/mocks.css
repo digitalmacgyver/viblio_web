@@ -336,13 +336,9 @@ a.activated:hover,
 
 .person .right-badge {
     position: absolute;
-    height: 40px;
-    width: 40px;
-    right: -10px;
-    top: -5px;
+    right: 5px;
 
     color: white;
-    font-size: 40px;
 
     -moz-text-shadow: 1px 1px rgba(0,0,0,.2);
     -webkit-text-shadow: 1px 1px rgba(0,0,0,.2);
@@ -510,9 +506,18 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
     border-bottom: 1px solid rgba(117,117,128,.6);
 }
 
+.person .typeahead.dropdown-menu {
+    width: 194px;
+}
+
+.person .contactName {
+    font-size: 14px;
+}
+
 .person .contactSource {
     margin: 0;
     font-weight: 200;
+    font-size: small;
 }
 
 .person .contactSource span {
@@ -579,7 +584,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 }
 
 .faces-container.horizontal-scroller {
-    height: 208px;
+    height: 185px;
 }
 
 .horizontal-scroller .fwd {
@@ -614,9 +619,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', end
 .horizontal-strip .title {
     margin-left: 45px;
     margin-bottom: 22px;
+    padding-right: 10px;
 }
 
-.horizontal-strip .title span {
+.horizontal-strip .title > span {
     color: white;
     font-weight: 100;
     font-size: 31.5px;
@@ -1019,6 +1025,10 @@ input:-moz-placeholder {
     padding-top: 0 !important;
 }
 
+.font12 {
+    font-size: 12px;
+}
+
 .font18 {
     font-size: 18px;
 }
@@ -1068,6 +1078,10 @@ input:-moz-placeholder {
 
 .relative {
     position: relative;
+}
+
+.block {
+    display: block !important;
 }
 
 /* This fixes the bug that makes scrollable list item expand the container */
@@ -3202,6 +3216,25 @@ ul.token-input-list-facebook {
     position: relative;
 }
 
+#people-page .identified-Wrap {
+    position: fixed;
+    top: 49px;
+    left: 0;
+    right: 0;
+    z-index: 1051;
+    min-height: 271px;
+}
+
+@media( max-width: 900px ) {
+    #people-page .identified-Wrap {
+        position: static;
+    }
+    
+    #people-page .scrollable {
+        margin-top: 0; 
+    }
+}
+
 #people-page .known_faces-container .person.selected {
     background-color: #24b8d1;
 }
@@ -3221,10 +3254,11 @@ ul.token-input-list-facebook {
     background-image: url(../images/arrowBlue.png);
     top: -20px;
     left: 200px;
+    z-index: 1004;
 }
 
 #people-page .faces-for-face .title button.pull-right {
-    margin-right: 50px;
+    margin-right: 40px;
 }
 
 #people-page .person .right-badge {
@@ -3235,12 +3269,16 @@ ul.token-input-list-facebook {
     cursor: pointer;
 }
 
-#people-page .person i.fa-camera {
+/*#people-page .person i.fa-camera {
     color: rgb(80,184,71);
-}
+}*/
 
 #people-page .no-faces-for {
     color: white;
+}
+
+#people-page .mainTitle {
+    margin-bottom: 0;
 }
 
 /* new stuff for new-player page */

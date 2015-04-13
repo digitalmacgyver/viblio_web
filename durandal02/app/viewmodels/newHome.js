@@ -342,6 +342,7 @@ define( ['plugins/router',
         
         self.searchForVidsWithNoDates = ko.observable( false );
         self.showNoDates = ko.observable( false );
+        self.noDatesSize = ko.observable( null );
                 
         app.on('nginxModal:closed2', function( args ) {
             if( document.location.hash == '#home' ) {
@@ -428,7 +429,7 @@ define( ['plugins/router',
         var max_months_frequency = 0;
         var min_months_frequency = 99999999;
         var min_font_size = 10;
-        var max_font_size = 25;
+        var max_font_size = 30;
         var arr = [];
         var monthNames = ['January ', 'February ', 'March ', 'April ', 'May ', 'June ', 'July ', 'August ', 'September ', 'October ', 'November ', 'December '];
         var months = [];
@@ -445,16 +446,24 @@ define( ['plugins/router',
         }
         
         function getLabelSize( frequency, minFrequency, maxFrequency ) {
-            var weight = ( frequency - minFrequency ) / ( maxFrequency - minFrequency );
-            var fontSize = min_font_size + Math.round( ( max_font_size - min_font_size ) * weight );
-            return fontSize + "pt"; 
+            frequency = Number( frequency );
+            minFrequency = Number( minFrequency );
+            maxFrequency = Number( maxFrequency );
+            if( minFrequency == maxFrequency && maxFrequency > 1 ) {
+                return max_font_size + "pt";
+            } else {
+                var weight = ( frequency - minFrequency ) / ( maxFrequency - minFrequency );
+                var fontSize = min_font_size + Math.round( ( max_font_size - min_font_size ) * weight );
+                return fontSize + "pt";     
+            }
         }
         
         return system.defer( function( dfd ) { 
             for( var obj in tags ) {
+                var num = Number( tags[obj] );
                 set = {
                     name: viblio.unescapeHtml( viblio.unescapeHtml(obj) ),
-                    freq: tags[obj],
+                    freq: num,
                     fontSize: null,
                     selected: ko.observable( false )
                 };
@@ -462,33 +471,46 @@ define( ['plugins/router',
                 if( obj.indexOf( ' ' ) > 0 ) {
                     regEx = obj.slice( 0, obj.indexOf( ' ' )+1 );
                     if( containsRegex( monthNames, regEx ) >= 0 ) {
-                        if( tags[obj] > max_months_frequency ) {
-                            max_months_frequency = tags[obj];
+                        if( num > max_months_frequency ) {
+                            max_months_frequency = num;
                         }
-                        if( tags[obj] < min_months_frequency ) {
-                            min_months_frequency = tags[obj];
+                        if( num < min_months_frequency ) {
+                            min_months_frequency = num;
                         }
                         months.push( set );  
                     }
                     // handle other tags
                     else {
-                        if( tags[obj] > max_tags_frequency ) {
-                            max_tags_frequency = tags[obj];
+                        // treat "No Dates" tag as a date
+                        if( obj == 'No Dates' ) {
+                            if( num > max_months_frequency ) {
+                                max_months_frequency = num;
+                            }
+                            if( num < min_months_frequency ) {
+                                min_months_frequency = num;
+                            }
+                            months.push( set );      
                         }
-                        if( tags[obj] < min_tags_frequency ) {
-                            min_tags_frequency = tags[obj];
-                        }
-                        arr.push( set );    
+                        // handle other tags
+                        else {
+                            if( num > max_tags_frequency ) {
+                                max_tags_frequency = num;
+                            }
+                            if( num < min_tags_frequency ) {
+                                min_tags_frequency = num;
+                            }
+                            arr.push( set );      
+                        }  
                     }
                 }
                 // handle other tags
                 else {
                     set.truncate = true;
-                    if( tags[obj] > max_tags_frequency ) {
-                        max_tags_frequency = tags[obj];
+                    if( num > max_tags_frequency ) {
+                        max_tags_frequency = num;
                     }
-                    if( tags[obj] < min_tags_frequency ) {
-                        min_tags_frequency = tags[obj];
+                    if( num < min_tags_frequency ) {
+                        min_tags_frequency = num;
                     }
                     arr.push( set );    
                 }
@@ -508,9 +530,16 @@ define( ['plugins/router',
                 // add a unix timestamp to sort by
                 tag.date = moment( tag.name, "MMMM YYYY" ).unix();
                 tag.fontSize = getLabelSize( tag.freq, min_months_frequency, max_months_frequency );
+                // grab the sizing for the "No Dates" tag and save it, then remove it from the array
+                if( tag.name == "No Dates" ) {
+                    // grab the size
+                    self.noDatesSize( tag.fontSize );
+                    // then remove it
+                    months.splice( months.indexOf( tag ), 1 );
+                }
             });
             self.monthTagList( months );
-            // sort chronilogically
+            // sort chronalogically
             self.monthTagList.sort(function(left, right) { return left.date == right.date ? 0 : (left.date < right.date ? -1 : 1) })
         });
     };
@@ -540,20 +569,35 @@ define( ['plugins/router',
         
         self.activeTag( tag.name );
         
-        // set the code below in the filterVidsSearch() function AFTER the album has been fetched.
-        //self.activeFilterType('album');
+        // base the search args off of the lastSearchObj - this is created when a search is performed
+        // and contains all relevent search info
+        args = self.lastSearchObj.args;
+        // override the page 1
+        args.page = 1;
+        // Add the tags parameter
+        args['tags[]'] = [tag.name];
+        // clear out no_dates if it's there
+        if( args.no_dates ) {
+            delete args.no_dates;
+        }
         
-        args = {
-            'tags[]': [tag.name]
-        };
-        args.aid = self.currentAlbumAid();
-        self.filterVidsSearch( 'album', args, 'services/album/get', false, true );
+        self.filterVidsSearch( self.lastSearchObj.type, args, self.lastSearchObj.api, false, true );
     }; 
     
     newHome.prototype.clearTag = function() {
         var self = this;
         
-        self.albumVidsSearch( true, true );
+        if( self.isActiveFlag() )
+            return;
+        
+        //self.albumVidsSearch( true, true );
+        
+        var args = self.lastSearchObj.args;
+        if( args['tags[]'] ) {
+            delete args['tags[]'];
+        }
+        self.activeTag( null );
+        self.filterVidsSearch( self.lastSearchObj.type, args, self.lastSearchObj.api, true, true );
     };
 
     newHome.prototype.getPhotos = function() {
@@ -718,9 +762,16 @@ define( ['plugins/router',
             city.selected( true );
             self.selectedCity( city.label );
             self.activeFilterType('cities');
-            args = {
-                q: self.selectedCity()
-            };
+            if( self.selectedCity() != 'Location not set') {
+                args = {
+                    q: self.selectedCity()
+                };    
+            } else {
+                args = {
+                    no_location: 1
+                };
+            }
+            
             self.filterVidsSearch( 'cities', args, '/services/mediafile/taken_in_city', true, null );
         }         
     };
@@ -794,7 +845,7 @@ define( ['plugins/router',
         
         // set the activeTag to null
         if( newSearch ) {
-            self.activeTag( null );
+            //self.activeTag( null );
             self.searchForVidsWithNoDates( false );
         }
         
@@ -815,9 +866,7 @@ define( ['plugins/router',
         // remove all photos since this does not run through the filterVidsSearchPage() function which normally clears out the photos 
         self.photos.removeAll();
         
-        self.activeTag( null );
-        
-        args = {
+        /*args = {
             no_dates: 1
         };
         if( self.activeFilterType() === 'album' ) {
@@ -826,17 +875,41 @@ define( ['plugins/router',
         } else if( self.activeFilterType() === 'all' ) {
             args.views = ['poster'];
             self.filterVidsSearch( 'all', args, '/services/mediafile/list_all', true, true );
+        }*/
+        
+        // base the search args off of the lastSearchObj - this is created when a search is performed
+        // and contains all relevent search info
+        args = self.lastSearchObj.args;
+        // override the page to 1
+        args.page = 1;
+        // Add the no_dates parameter
+        args.no_dates = 1
+        // clear out the tag
+        if( args['tags[]'] ) {
+            delete args['tags[]'];
         }
+        
+        self.filterVidsSearch( self.lastSearchObj.type, args, self.lastSearchObj.api, true, true );
     };
     
     newHome.prototype.clearNoDates = function() {
         var self = this;
         
-        if( self.activeFilterType() === 'album' ) {
+        if( self.isActiveFlag() )
+            return;
+        
+        /*if( self.activeFilterType() === 'album' ) {
             self.albumVidsSearch( true, true );    
         } else if( self.activeFilterType() === 'all' ) {
             self.showAllVideos()
+        }*/
+        
+        var args = self.lastSearchObj.args;
+        if( args.no_dates ) {
+            delete args.no_dates;
         }
+        self.searchForVidsWithNoDates( false );
+        self.filterVidsSearch( self.lastSearchObj.type, args, self.lastSearchObj.api, true, true );
     };
     
     newHome.prototype.showAlbumErrorFunc = function( code ) {
@@ -863,6 +936,15 @@ define( ['plugins/router',
      */
     newHome.prototype.filterVidsSearch = function( type, args, api, newSearch, scrollToTop, errorCallback ) {
 	var self = this;
+        // this creates an object with all needed parameters to the current search
+        self.lastSearchObj = {
+            type: type,
+            args: args,
+            api: api,
+            newSearch: newSearch,
+            scrollToTop: scrollToTop,
+            errorCallback: errorCallback
+        };
         var media;
         var tags;
         self.isActiveFlag(true);
@@ -874,6 +956,11 @@ define( ['plugins/router',
             if( type ) {
                 self.clearSearch();
             }
+            
+            // reset the activeTag to null
+            self.activeTag( null );
+            // handle no dates search
+            self.searchForVidsWithNoDates( args.no_dates ? true : false );
             
             // remove all videos and images
             self.videos.removeAll();
@@ -895,13 +982,15 @@ define( ['plugins/router',
             args.include_images = config.photo_throttle;
             viblio.api( api, args, errorCallback ? errorCallback : null )
                 .then( function( json ) {
+                    console.log( json );
                     self.showNoDates( json.no_date_return ? json.no_date_return : false );
                     self.hits ( json.pager.total_entries ? json.pager.total_entries : 0 );
                     self.handlePager( json.pager, newSearch || args.updatePager, args.updatePager );
+                    tags = json.all_tags;
                     if( type == 'album' ) {
                         self.currentAlbum( json.album );
                         self.albumIsShared( json.album.is_shared ? true : false );
-                        tags = json.all_tags;
+                        //tags = json.all_tags;
                         self.activeFilterType('album');
                         if( json.album.media.length > 0 ) {
                             json.album.media.forEach( function( mf ) {
@@ -921,7 +1010,7 @@ define( ['plugins/router',
                         } 
                     } else {
                         // set the activeTag to null
-                        self.activeTag( null );
+                        //self.activeTag( null );
                         
                         if(json.albums){
                             json.media = json.albums;
@@ -989,7 +1078,7 @@ define( ['plugins/router',
             }
             
             // handle tags
-            if( self.activeFilterType() == 'album' && newSearch ) {
+            if( newSearch ) {
                 self.handleTags( tags );
             }
             
@@ -1100,6 +1189,14 @@ define( ['plugins/router',
         var args = {
             page: page
         }
+        // handle tags
+        if( self.activeTag() ) {
+            args['tags[]'] = [self.activeTag()];
+        }
+        // only return videos without dates
+        if( self.searchForVidsWithNoDates() ) {
+            args.no_dates = 1; 
+        }
         var apiCall;
         
         if ( skipPageCheck ? page : (page && page <= self.thePager().last_page) && (page && page != self.thePager().current_page) )   {
@@ -1127,7 +1224,11 @@ define( ['plugins/router',
             }
             // Cities
             else if( self.activeFilterType() == 'cities' ) {
-                args.q = self.selectedCity();
+                if( self.selectedCity() == 'Location not set' ) {
+                    args.no_location = 1;
+                } else {
+                    args.q = self.selectedCity();
+                }
                 self.filterVidsSearch( 'cities', args, '/services/mediafile/taken_in_city', null, scrollToTop );
             }
             // Search
@@ -1153,21 +1254,10 @@ define( ['plugins/router',
                     args.views = ['poster'];
                     apiCall = '/services/mediafile/list_all';
                 }
-                // only return videos without dates
-                if( self.searchForVidsWithNoDates() ) {
-                    args.no_dates = 1; 
-                }
                 self.filterVidsSearch( 'all', args, apiCall, null, scrollToTop );
             }
             // Albums
             else if( self.activeFilterType() == 'album' ) {
-                if( self.activeTag() ) {
-                    args['tags[]'] = [self.activeTag()];
-                }
-                // only return videos without dates
-                if( self.searchForVidsWithNoDates() ) {
-                    args.no_dates = 1; 
-                }
                 args.aid = self.currentAlbumAid();
                 args.updatePager = skipPageCheck;
                 self.filterVidsSearch( 'album', args, 'services/album/get', null, scrollToTop );
@@ -1705,7 +1795,7 @@ define( ['plugins/router',
         
         if( self.currentSelectedFilterAlbum().shared == 0 ) {
             // owned by viewer - delete
-            message = 'If you delete this album, individual videos are not deleted, but no one you <br />shared this album with will be able to see this collection anymore. <br /> Do you want to continue?';
+            message = 'If you delete this album, individual videos are not deleted, but no one you shared this album with will be able to see this collection anymore. <br /> Do you want to continue?';
             app.showMessage( message, 'Delete Confirmation', ['Yes', 'No']).then( function( data ) {
                 if( data == 'Yes' ) {
                     viblio.api( '/services/album/delete_album', { aid: self.currentSelectedFilterAlbum().uuid } ).then( function() {
@@ -2038,6 +2128,12 @@ define( ['plugins/router',
                 _city.selected = ko.observable( false );
                 self.citiesLabels.push( _city );
             });
+            // add the "Location not set" option
+            var noLoc = {
+                label: "Location not set",
+                selected: ko.observable( false )
+            };
+            self.citiesLabels.push( noLoc );
         });
     };
     
@@ -2448,7 +2544,7 @@ define( ['plugins/router',
         $(window).off("resize.mymethod");
         //$(window).off( "resize", this.stickyDates );
         $(window).off( "resize", this.resizePlayer );
-        $('.paginationContainer').pagination('destroy');
+        $(self.element).find('.paginationContainer').pagination('destroy');
     };
     
     newHome.prototype.activate = function() {
@@ -2604,7 +2700,7 @@ define( ['plugins/router',
             },
             
             beforeShow: function () {
-                $("body").css({'overflow-y':'hidden'});
+                //$("body").css({'overflow-y':'hidden'});
                 if( head.mobile ) {
                     this.helpers.buttons = {position: 'bottom'};
                 }
@@ -2677,7 +2773,7 @@ define( ['plugins/router',
             },
             
             afterClose: function(){
-                $("body").css({'overflow-y':'visible'});
+                //$("body").css({'overflow-y':'visible'});
             }
         });
         
