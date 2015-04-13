@@ -504,7 +504,7 @@ define(['durandal/app',
 	faces_for: faces_for,
 	faces_for_visible: faces_for_visible,
 	selected_name: selected_name,
-	fetched: ko.observable( false ),
+	fetched: fetched,
         taggedDoneVisible: taggedDoneVisible,
         
         setMargin: setMargin,

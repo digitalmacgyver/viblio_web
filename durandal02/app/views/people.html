@@ -10,20 +10,22 @@
                 <button class="btn btn-primary" data-bind="click: selectionDone">Done</button>
                 <!-- /ko -->
             </div>
-            <!-- ko if: fetched() && known_faces().length < 1 -->
-            <div class="marginL45">
+            <!-- ko if: fetched() && known_faces().length == 0 -->
+            <div class="marginL45 clearfix marginT15">
                 <div class="pull-left marginR45">
                     <img id='avatarImg' src="css/images/avatar.png" alt="avatar" >
                     <label for='avatarImg' class='centered alphaGreyFont font18'>Sophie</label>
                 </div>
                 <p class="font24 whiteText marginR45">This is where we'll show the faces you have tagged in your videos.  Now you'll be able to search videos by these faces.</p>
             </div>
-            <!-- /ko -->  
-            <div class="faces-container" data-bind="hscroller:{ setupComplete: setMargin }"> 
+            <!-- /ko -->
+            <!-- ko ifnot: fetched() && known_faces().length == 0 -->
+            <div class="faces-container" data-bind="hscroller:{ setupComplete: setMargin }">
                 <!-- ko foreach: known_faces -->
                 <!-- ko compose: $data --><!-- /ko -->
                 <!-- /ko -->
             </div>
+            <!-- /ko -->
         </div>
     </div>
     

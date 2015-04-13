@@ -3225,6 +3225,10 @@ ul.token-input-list-facebook {
     min-height: 271px;
 }
 
+#avatarImg {
+    height: 144px;
+}
+
 @media( max-width: 900px ) {
     #people-page .identified-Wrap {
         position: static;
