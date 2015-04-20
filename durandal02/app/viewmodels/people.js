@@ -214,9 +214,8 @@ define(['durandal/app',
 	face.on( 'person:composed', function() {
 	    $(view).find( ".horizontal-scroller").trigger( 'children-changed' );
             if( scrollTo ) {
-                $(view).find( ".horizontal-scroller").smoothDivScroll( "scrollToElement", "number", known_faces.indexOf( face ) );
-            }
-            
+                $(view).find( ".horizontal-scroller").smoothDivScroll( "scrollToElement", "number", known_faces.indexOf( face )+1 );
+            }  
 	});
 
 	face.on( 'person:mouseover', function() {
@@ -377,7 +376,7 @@ define(['durandal/app',
 	}
 	else {
 	    // its not selected, so select it.
-            // this will ensure the tagged done button is hidden when a new fave is selected
+            // this will ensure the tagged done button is hidden when a new face is selected
             taggedDoneVisible( false );
             setMargin();
 	    deselectAll();
