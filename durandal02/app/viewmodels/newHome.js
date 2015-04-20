@@ -2703,17 +2703,15 @@ define( ['plugins/router',
                 if( head.mobile ) {
                     this.helpers.buttons = {position: 'bottom'};
                 }
+                
                 var F = $.fancybox;
                 var el, href, api, dl, dl_link;
                 if( self.mfOwnedByViewer( self.playingVid() ) ) {
                     api = '/services/mediafile/get';
                     href = "new_player?mid=";
-                    dl_link = self.playingVid().media().views.main.download_url ? self.playingVid().media().views.main.download_url : null;
-                    dl = "<div class='vidDownloadLink-Wrap pull-right hideOnMobile'><a class='vidDownloadLink' title='Download This Video' href='"+ dl_link +"'><i class='fa fa-2x fa-cloud-download'></i></a></div>"
                 } else {
                     api = '/services/na/media_shared';
                     href= "web_player?mid=";
-                    dl = "";
                 }
                 el = " &mdash; <a class='vidDetails' href='#" + href + self.playingVidUUID() + "'onclick='$.fancybox.close()'> Details</a>";
                 // if the vid is shared
@@ -2723,8 +2721,10 @@ define( ['plugins/router',
                 if( self.playingVid().media().eyes > 0 ) {
                     el += "<br/><span>" + self.playingVid().media().eyes + " Fan Views</span>";
                 }
-                
-                this.title = "<span>"+self.playingVid().title()+"</span>"+el+dl;
+                // handle download link - now added to all videos
+                dl_link = self.playingVid().media().views.main.download_url ? self.playingVid().media().views.main.download_url : null;
+                dl = "<div class='vidDownloadLink-Wrap pull-right hideOnMobile'><a class='vidDownloadLink' title='Download This Video' href='"+ dl_link +"'><i class='fa fa-2x fa-cloud-download'></i></a></div>"
+                this.title = "<span>"+self.playingVid().title()+"</span>"+dl+el;
                 
                 // fire this here to avoid flickering as the flowplayer/fancybox try to size themselves. Now it's all down before
                 // anything is shown.
