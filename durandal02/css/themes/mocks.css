@@ -6755,7 +6755,8 @@ ul.token-input-list-facebook li input {
 }
 
 .fancybox-title .vidDownloadLink-Wrap {
-    margin-top: -8px
+    /*margin-top: -8px;*/
+    margin-left: 10px;
 }
 
 .fancybox-title .vidDownloadLink {
