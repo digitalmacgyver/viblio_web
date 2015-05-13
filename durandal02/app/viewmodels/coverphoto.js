@@ -42,7 +42,7 @@ function(app, viblio, Events, header, c_header, hp, dialogs) {
     var editExpanded = ko.observable( false );
     var view;
     
-    var maxFileSize = 1000000; //1MB
+    var maxFileSize = 1500000; //1.5MB
     var acceptFileTypes = /(\.|\/)(gif|jpe?g|png)$/i; 
     
     app.on( 'albumList:gotalbum', function( album ) {
@@ -357,7 +357,7 @@ function(app, viblio, Events, header, c_header, hp, dialogs) {
             $('.userCoverUpload').fileupload({
                 maxNumberOfFiles: 1,
                 acceptFileTypes: acceptFileTypes,
-                maxFileSize: maxFileSize, // 1MB
+                maxFileSize: maxFileSize,
                 messages: {
                     maxNumberOfFiles: 'Please only upload one image.',
                     acceptFileTypes: 'Only image file types are uploadable.',
@@ -399,7 +399,7 @@ function(app, viblio, Events, header, c_header, hp, dialogs) {
             $('.albumCoverUpload').fileupload({
                 maxNumberOfFiles: 1,
                 acceptFileTypes: acceptFileTypes,
-                maxFileSize: maxFileSize, // 1MB
+                maxFileSize: maxFileSize,
                 messages: {
                     maxNumberOfFiles: 'Please only upload one image.',
                     acceptFileTypes: 'Only image file types are uploadable.',
