@@ -361,7 +361,7 @@ function(app, viblio, Events, header, c_header, hp, dialogs) {
                 messages: {
                     maxNumberOfFiles: 'Please only upload one image.',
                     acceptFileTypes: 'Only image file types are uploadable.',
-                    maxFileSize: 'This image is too large, we can only accept up to 1MB (1000KB).'
+                    maxFileSize: 'This image is too large, we can only accept up to 1.5MB (1500KB).'
                 },
                 start: function() {
                     busyFlag( true );
@@ -403,7 +403,7 @@ function(app, viblio, Events, header, c_header, hp, dialogs) {
                 messages: {
                     maxNumberOfFiles: 'Please only upload one image.',
                     acceptFileTypes: 'Only image file types are uploadable.',
-                    maxFileSize: 'This image is too large, we can only accept up to 1MB (1000KB).'
+                    maxFileSize: 'This image is too large, we can only accept up to 1.5MB (1500KB).'
                 },
                 start: function() {
                     busyFlag( true );
