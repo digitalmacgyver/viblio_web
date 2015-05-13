@@ -42,7 +42,7 @@ function(app, viblio, Events, header, c_header, hp, dialogs) {
     var editExpanded = ko.observable( false );
     var view;
     
-    var maxFileSize = 500000;
+    var maxFileSize = 1000000; //1MB
     var acceptFileTypes = /(\.|\/)(gif|jpe?g|png)$/i; 
     
     app.on( 'albumList:gotalbum', function( album ) {
@@ -290,10 +290,33 @@ function(app, viblio, Events, header, c_header, hp, dialogs) {
 		$(view).find(".avatarUpload").click();
 	    });
 	    $(view).find(".avatarUpload").fileupload({
-                options: {
-                    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
+                acceptFileTypes: acceptFileTypes,
+                maxFileSize: 500000, // 500 KB
+                messages: {
+                    maxNumberOfFiles: 'Please only upload one image.',
+                    acceptFileTypes: 'Only image file types are uploadable.',
+                    maxFileSize: 'This image is too large, we can only accept up to 500 KB.'
                 },
 		dataType: 'json',
+                start: function() {
+                    busyFlag( true );
+                },
+                add: function (e, data) {
+                    var that = this;
+		    data.process().done(function() {
+			return $(that).fileupload('process', data);
+                    }).always(function() {
+                        // show the error
+			if ( data.files.error ) {
+                            var msg = data.files[0].name + ": " + data.files[0].error;
+			    return dialogs.showModal( 'viewmodels/customBlankModal', msg );
+			}
+                        // upload the image
+			else {
+                            data.submit();
+                        }
+                    });
+                },
 		done: function(e, data) {
                     // update avatar in settings and the headers
                     avatar( null );
@@ -333,12 +356,12 @@ function(app, viblio, Events, header, c_header, hp, dialogs) {
             // user cover photo
             $('.userCoverUpload').fileupload({
                 maxNumberOfFiles: 1,
-                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-                maxFileSize: 500000, // 500 KB,
+                acceptFileTypes: acceptFileTypes,
+                maxFileSize: maxFileSize, // 1MB
                 messages: {
                     maxNumberOfFiles: 'Please only upload one image.',
                     acceptFileTypes: 'Only image file types are uploadable.',
-                    maxFileSize: 'This image is too large, we can only accept up to 500 KB.'
+                    maxFileSize: 'This image is too large, we can only accept up to 1MB (1000KB).'
                 },
                 start: function() {
                     busyFlag( true );
@@ -375,12 +398,12 @@ function(app, viblio, Events, header, c_header, hp, dialogs) {
             // album cover photo
             $('.albumCoverUpload').fileupload({
                 maxNumberOfFiles: 1,
-                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-                maxFileSize: 500000, // 500 KB,
+                acceptFileTypes: acceptFileTypes,
+                maxFileSize: maxFileSize, // 1MB
                 messages: {
                     maxNumberOfFiles: 'Please only upload one image.',
                     acceptFileTypes: 'Only image file types are uploadable.',
-                    maxFileSize: 'This image is too large, we can only accept up to 500 KB.'
+                    maxFileSize: 'This image is too large, we can only accept up to 1MB (1000KB).'
                 },
                 start: function() {
                     busyFlag( true );
