@@ -405,7 +405,7 @@ define(["durandal/app",
                 scaling: 'fit',
                 provider: 'rtmp',
                 onStart: function( clip ) {
-                    viblio.mpEvent( 'play', { action: 'play' } );
+                    viblio.mpEvent( 'play', { action: 'play', video_uuid: mf.uuid, viewer_uuid: viblio.user() ? viblio.user().uuid : "Not_Logged_In" } );
                     viblio.mpPeopleIncrement('Video Plays from Browser', 1);
                     hidePlayerOverlay();
                 },
