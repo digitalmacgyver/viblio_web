@@ -2609,6 +2609,7 @@ define( ['plugins/router',
     };
     
     newHome.prototype.setUpFlowplayer = function( elem, mf ) {
+        console.log( mf );
         var self = this;
         $(elem).flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
             ratio: 9/16,
@@ -2619,7 +2620,7 @@ define( ['plugins/router',
                 scaling: 'fit',
                 provider: 'rtmp',
                 onStart: function( clip ) {
-                    viblio.mpEvent( 'play', { action: 'play' } );
+                    viblio.mpEvent( 'play', { action: 'play', video_uuid: mf.uuid, viewer_uuid: viblio.user() ? viblio.user().uuid : "Not_Logged_In" } );
                     viblio.mpPeopleIncrement('Video Plays from Browser', 1);
                     //hidePlayerOverlay();
                 },
