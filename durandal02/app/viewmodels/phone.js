@@ -148,9 +148,11 @@ function(app,system,router,config,viblio,customDialogs,dialog,AddVideoModal) {
 		$("#m1").height( $(window).height() );
 		$("#m1").css( 'display', 'block' );
 	    });*/
+            player.on( 'loadstart', function() {
+                viblio.mpEvent( 'play', { action: 'play', video_uuid: mf.uuid, viewer_uuid: viblio.user() ? viblio.user().uuid : "Not_Logged_In" } );
+	    });
 	    resizePlayer();
 	    document.getElementById('videojs').setAttribute('poster', mf.views.poster.url );
-            viblio.mpEvent( 'play', { action: 'play', video_uuid: mf.uuid, viewer_uuid: viblio.user() ? viblio.user().uuid : "Not_Logged_In" } );
 	},
 
 	/*close: function() {
