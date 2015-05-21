@@ -2609,7 +2609,6 @@ define( ['plugins/router',
     };
     
     newHome.prototype.setUpFlowplayer = function( elem, mf ) {
-        console.log( mf );
         var self = this;
         $(elem).flowplayer( { src: "lib/flowplayer/flowplayer-3.2.16.swf", wmode: 'opaque' }, {
             ratio: 9/16,

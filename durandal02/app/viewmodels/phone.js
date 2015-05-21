@@ -45,8 +45,6 @@ function(app,system,router,config,viblio,customDialogs,dialog,AddVideoModal) {
 	    top = ($(window).height() - height) / 2;
 	}*/
         
-        console.log( width, height );
-        
 	$("#videojs").css( 'width', width + 'px' );
 	$("#videojs").css( 'height', height + 'px' );
 	$("#videojs").css( 'top', '6px' );
