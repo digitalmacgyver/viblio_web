@@ -150,6 +150,7 @@ function(app,system,router,config,viblio,customDialogs,dialog,AddVideoModal) {
 	    });*/
 	    resizePlayer();
 	    document.getElementById('videojs').setAttribute('poster', mf.views.poster.url );
+            viblio.mpEvent( 'play', { action: 'play', video_uuid: mf.uuid, viewer_uuid: viblio.user() ? viblio.user().uuid : "Not_Logged_In" } );
 	},
 
 	/*close: function() {
